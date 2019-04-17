@@ -1,0 +1,16 @@
+git s# Logs
+logs
+*.log
+npm-debug.log*
+coverage
+.vscode
+.DS_Store
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm
+
+# Prod Bundle
+dist
