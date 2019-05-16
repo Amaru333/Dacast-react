@@ -1,0 +1,20 @@
+import { connect } from "react-redux";
+import { @@COMPONENT_NAME@@ } from "../components/@@COMPONENT_NAME@@/@@COMPONENT_NAME@@";
+import { ThunkDispatch } from 'redux-thunk';
+
+import { ApplicationState } from "../redux-flow/store";
+import { Action } from "../redux-flow/store/@@COMPONENT_NAME@@";
+
+export function mapStateToProps( state: ApplicationState) {
+    return {
+        //Return from global state to component props
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        //Return from dispatch function to component props
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(@@COMPONENT_NAME@@);

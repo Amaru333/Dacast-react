@@ -1,0 +1,23 @@
+{
+  "name": "@dacast-front/cli",
+  "version": "1.0.0",
+  "description": "private CLI for Dacast front project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "QuentinDacast",
+  "license": "ISC",
+  "bin": {
+    "dacast-generate-screen": "./commands/generateScreen.js",
+    "dacast-generate-component-files": "./commands/generateComponentFiles.js",
+    "dacast-generate-container-files": "./commands/generateContainerFiles.js",
+    "dacast-generate-redux-files": "./commands/generateReduxFlowFiles.js"
+  },
+  "dependencies": {
+    "readline": "^1.3.0",
+    "readline-sync": "^1.4.9",
+    "shelljs": "^0.8.3",
+    "yargs": "^13.2.4"
+  }
+}

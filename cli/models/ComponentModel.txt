@@ -1,0 +1,20 @@
+import * as React from "react";
+
+export interface @@COMPONENT_NAME@@Props {
+    // Your props here
+}
+
+export class @@COMPONENT_NAME@@ extends React.Component<@@COMPONENT_NAME@@Props> {
+
+    constructor(props: @@COMPONENT_NAME@@Props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                {/** Render here */}
+            </React.Fragment>
+        );
+    }
+}

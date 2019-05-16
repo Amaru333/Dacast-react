@@ -1,0 +1,14 @@
+import { Reducer } from "redux";
+import { Action } from "./actions";
+import { ActionTypes, initialState, @@COMPONENT_NAME@@State } from "./types";
+
+const reducer: Reducer<@@COMPONENT_NAME@@State> = (state = initialState, action: Action) => {
+    switch (action.type) {
+        // Your Case here
+        default:
+            return state;
+    }
+};
+
+// Named export
+export { reducer as @@COMPONENT_NAME@@Reducer };
