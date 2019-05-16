@@ -3,7 +3,7 @@ import { TodoList } from "../components/Todos/TodoList";
 import { ThunkDispatch } from 'redux-thunk';
 
 import { ApplicationState } from "../redux-flow/store";
-import { Action, addTodo, toggleTodo, toggleTodoTimeout } from "../redux-flow/store/todos";
+import { Action, addTodo, toggleTodo, toggleTodoTimeout } from "../redux-flow/store/Todos";
 
 export function mapStateToProps( state: ApplicationState) {
     return {

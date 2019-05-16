@@ -1,6 +1,6 @@
 import { List } from "@material-ui/core";
 import * as React from "react";
-import { AddTodoAction, Todo, ToggleTodoAction } from "../../redux-flow/store/todos";
+import { AddTodoAction, Todo, ToggleTodoAction } from "../../redux-flow/store/Todos";
 import TodoAdd from "./TodoAdd";
 import TodoItem from "./TodoItem";
 

@@ -1,7 +1,7 @@
 import { Button, Grid, Paper } from "@material-ui/core";
 import * as React from "react";
 import { ValidatorForm, TextValidator,  } from "react-material-ui-form-validator";
-import { AddTodoAction } from "../../redux-flow/store/todos";
+import { AddTodoAction } from "../../redux-flow/store/Todos";
 
 export interface TodoAddProps {
     addTodo: (value: string) => AddTodoAction;

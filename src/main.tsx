@@ -7,7 +7,7 @@ import TodoList from "./containers/TodoList";
 import { ApplicationState } from "./redux-flow/store";
 
 // Import Main styles for this application
-import "../scss/style.scss";
+import "./scss/style.scss";
 
 // Any additional component props go here.
 interface MainProps {

@@ -1,6 +1,6 @@
 import { Checkbox, ListItem, ListItemText } from "@material-ui/core";
 import * as React from "react";
-import { ToggleTodoAction } from "../../redux-flow/store/todos";
+import { ToggleTodoAction } from "../../redux-flow/store/Todos";
 
 export interface TodoItemProps {
     todo: { name: string; done: boolean };

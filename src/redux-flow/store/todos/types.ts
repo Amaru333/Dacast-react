@@ -19,7 +19,7 @@ export enum ActionTypes {
 }
 
 // Type-safe initialState!
-export const initialState: TodosState = {
+export const todosInitialState: TodosState = {
     data: [],
 };
 

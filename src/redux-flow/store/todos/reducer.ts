@@ -1,10 +1,10 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, initialState, TodosState } from "./types";
+import { ActionTypes, todosInitialState, TodosState } from "./types";
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
 // everything will remain type-safe.
-const reducer: Reducer<TodosState> = (state = initialState, action: Action) => {
+const reducer: Reducer<TodosState> = (state = todosInitialState, action: Action) => {
     switch (action.type) {
         case ActionTypes.ADD_TODO: {
             const todo = action.payload.todo;
@@ -34,4 +34,4 @@ const reducer: Reducer<TodosState> = (state = initialState, action: Action) => {
 
 // Instead of using default export, we use named exports. That way we can group these exports
 // inside the `index.js` folder.
-export { reducer as todoReducer };
+export { reducer as TodosReducer };
