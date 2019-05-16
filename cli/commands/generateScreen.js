@@ -15,9 +15,17 @@ while(componentName === "") {
 shell.echo(" Your component name: "+componentName);
 var isReduxLogic = readlineSync.keyInYNStrict("Is your component need a Redux logic? ");
 
-shell.exec('dacast-generate-component-files --cn '+componentName)
+shell.echo('-n', '                     (0%)\r');
+shell.exec('dacast-generate-component-files --cn '+componentName, {async: true}, () => {
+    shell.echo('-n', '#####                     (33%)\r');
+    if(isReduxLogic) {
 
-if(isReduxLogic) {
-    shell.exec('dacast-generate-redux-files --cn '+componentName)
-    shell.exec('dacast-generate-container-files --cn '+componentName)
-}
+        shell.exec('dacast-generate-redux-files --cn '+componentName, {async: true}, () => {
+            shell.echo('-n', '#############             (66%)\r');
+            shell.exec('dacast-generate-container-files --cn '+componentName, {async: true}, () => {
+                shell.echo('-n', '#######################   (100%)\r');
+            })
+        })
+    }
+})
+
