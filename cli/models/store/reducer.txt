@@ -1,8 +1,8 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, initialState, @@COMPONENT_NAME@@State } from "./types";
+import { ActionTypes, @@COMPONENT_NAME_LOW@@InitialState, @@COMPONENT_NAME@@State } from "./types";
 
-const reducer: Reducer<@@COMPONENT_NAME@@State> = (state = initialState, action: Action) => {
+const reducer: Reducer<@@COMPONENT_NAME@@State> = (state = @@COMPONENT_NAME_LOW@@InitialState, action: Action) => {
     switch (action.type) {
         // Your Case here
         default:

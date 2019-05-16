@@ -46,7 +46,9 @@ var reducerContent = shell.sed(/@@COMPONENT_NAME@@/g, componentName, reducerMode
 shell.cat(indexModel).to(newIndexFile);
 shell.cat(actionsModel).to(newActionsFile);
 
-shell.exec(" echo '"+ reducerContent +"' >> "+ newReducerFile +" ", {silent: true});
+shell.exec(" echo '"+ reducerContent +"' >> "+ newReducerFile +" ", {silent: true}, () => {
+    shell.sed('-i', /@@COMPONENT_NAME_LOW@@/g, componentNameLow, newReducerFile );
+})
 shell.exec(" echo '"+ typesContent +"' >> "+ newTypesFile +" ", {silent: true, async: true}, () => {
     shell.sed('-i', /@@COMPONENT_NAME_LOW@@/g, componentNameLow, newTypesFile );
 });

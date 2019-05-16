@@ -15,9 +15,7 @@ while(componentName === "") {
 shell.echo(" Your component name: "+componentName);
 var isReduxLogic = readlineSync.keyInYNStrict("Is your component need a Redux logic? ");
 
-var topLevel = shell.exec('git rev-parse --show-toplevel', {silent: true});
-
-shell.mkdir('-p', topLevel.stdout.replace('\n', '')+'/src/components/'+componentName);
+shell.exec('dacast-generate-component-files --cn '+componentName)
 
 if(isReduxLogic) {
     shell.exec('dacast-generate-redux-files --cn '+componentName)

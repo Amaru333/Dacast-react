@@ -6,12 +6,6 @@ var argv = require('yargs')
         alias: 'cn',
         describe: 'Your component name.'
     })
-    .option('container', {
-        alias: 'c',
-        describe: 'Boolean if your component is a container.',
-        default: false,
-    })
-    .boolean('container')
     .check( (argv) => {
         if(!utils.isValidComponentName(argv['component-name'])) {
             throw("Invalid component name (no numbers and CamelCase)")
@@ -36,7 +30,3 @@ shell.touch( newComponentPath );
 
 var componentContent = shell.sed(/@@COMPONENT_NAME@@/g, componentName, modelComponentPath );
 shell.exec(" echo '"+ componentContent +"' >> "+ newComponentPath +" ", {silent: true})
-
-if(argv['container']) {
-    shell.exec(" dacast-generate-container-files --cn "+componentName)
-}
