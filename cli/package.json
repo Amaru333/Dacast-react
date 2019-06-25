@@ -15,6 +15,7 @@
     "dacast-generate-redux-files": "./commands/generateReduxFlowFiles.js"
   },
   "dependencies": {
+    "ascii-text-generator": "^1.0.5",
     "readline": "^1.3.0",
     "readline-sync": "^1.4.9",
     "shelljs": "^0.8.3",

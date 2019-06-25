@@ -8,7 +8,7 @@ var argv = require('yargs')
     })
     .check( (argv) => {
         if(!utils.isValidComponentName(argv['component-name'])) {
-            throw("Invalid component name (no numbers and CamelCase)")
+            throw("Invalid component name (no numbers/space and CamelCase)")
         } else {
             return true
         }

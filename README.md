@@ -13,6 +13,41 @@ $ npm install
 $ npm start
 ```
 
+## How to setup the CLI
+
+```
+$ cd cli
+```
+
+```
+$ npm install
+```
+
+```
+$ npm link
+```
+
+## How to use the CLI
+
+```
+$ dacast-generate-screen
+```
+
+Follow the step. Note: the component/container should not exist yet and the name should be CamelCase without spaces, numbers or specials characters.
+
+If it's only a component:
+- The command will create a file in src/components/YourComponentName/YourComponentName.tsx
+
+If it's a container:
+- The command will create a file in src/components/YourComponentName/YourComponentName.tsx
+- The command will create a file in src/containers/YourComponentName.tsx
+- The command will create the Redux logic at src/redux-flow/store/YourComponentName/[actions/index/reducer/types].tsx
+- The command will add your containers inital-state/reducer/state at src/redux-flow/store/index.ts
+
+Note: You can move the components or containers place without so much trouble. I will improve that later, still thinking about an easy way.
+
+For any idea, bug report or inquiry about the CLI to make it easier to develop fast and clean React/TS/Redux application contact Quentin or make a merge-request.
+
 ## Other npm script : 
 
 ```
@@ -66,5 +101,5 @@ The testing environment will probably be in Jest and Enzyme. Still to be define
 
 ## Eslint
 
-This project uses @typescript-eslint and plugin:react/recommended specs so you can write error-free react and typescript code, if you use Visual Studio Code, you can install eslint from the extension tab to activate this function, other editors just google _name of the editor + eslint_ you will find how to enable it for your editor.
+This project uses @typescript-eslint and plugin:react/recommended specs so you can write clean react and typescript code, if you use Visual Studio Code, you can install eslint from the extension tab to activate this function, other editors just google _name of the editor + eslint_ you will find how to enable it for your editor.
 

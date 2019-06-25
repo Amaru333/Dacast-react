@@ -8,7 +8,7 @@ var argv = require('yargs')
     })
     .check( (argv) => {
         if(!utils.isValidComponentName(argv['component-name'])) {
-            throw("Invalid component name (no numbers and CamelCase)")
+            throw("Invalid component name (no numbers/space and CamelCase)")
         } else {
             return true
         }
@@ -22,6 +22,12 @@ var topLevel = shell.exec('git rev-parse --show-toplevel', {silent: true});
 var topLevel = topLevel.stdout.replace('\n', '');
 
 var newDirPath = topLevel+'/src/components/'+componentName;
+
+if (shell.test('-d', newDirPath)) {
+    shell.echo("Component already exist!");
+    shell.exit(1)
+}
+
 var newComponentPath = newDirPath+'/'+componentName+'.tsx';
 var modelComponentPath = topLevel+'/cli/models/ComponentModel.txt';
 
