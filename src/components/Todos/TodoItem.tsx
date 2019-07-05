@@ -30,6 +30,6 @@ export default class TodoItem extends React.Component<TodoItemProps> {
     }
 
     toggleTodoBind = () => {
-        this.props.toggleTodoTimeout(this.props.id);
+        this.props.toggleTodo(this.props.id);
     }
 }
