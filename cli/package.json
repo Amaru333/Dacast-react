@@ -12,7 +12,8 @@
     "dacast-generate-screen": "./commands/generateScreen.js",
     "dacast-generate-component-files": "./commands/generateComponentFiles.js",
     "dacast-generate-container-files": "./commands/generateContainerFiles.js",
-    "dacast-generate-redux-files": "./commands/generateReduxFlowFiles.js"
+    "dacast-generate-redux-files": "./commands/generateReduxFlowFiles.js",
+    "dacast-generate-component-storybook": "./commands/generateComponentStorybook.js"
   },
   "dependencies": {
     "ascii-text-generator": "^1.0.5",

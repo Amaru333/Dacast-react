@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { todosInitialState, TodosState, TodosReducer } from "./todos";
+import { todosInitialState, TodosState, TodosReducer } from "./Todos";
 
 export interface ApplicationState {
     todos: TodosState;
