@@ -4,14 +4,15 @@ type Size = 'large' | 'small'
 type Type = 'primary' | 'secondary' | 'ghost' | 'tertiary'
 
 export interface ButtonAppProps {
-    size: Size,
+    sizeButton: Size,
     type: Type,
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export class ButtonApp extends React.Component<ButtonAppProps> {
+type ButtonProps = ButtonAppProps & React.HTMLProps<HTMLButtonElement>;
 
-    constructor(props: ButtonAppProps) {
+export class ButtonApp extends React.Component<ButtonProps> {
+
+    constructor(props: ButtonProps) {
         super(props);
     }
 
