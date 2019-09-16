@@ -18,7 +18,7 @@ export class ButtonApp extends React.Component<ButtonProps> {
 
     render() {
 
-        var { size, type, ...other } = this.props;
+        var { sizeButton, type, ...other } = this.props;
 
         return (
             <button {...other} >
