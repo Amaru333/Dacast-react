@@ -37,4 +37,5 @@ const InputStyle = styled.input<InputProps>`
     border: 1px solid;
     background: #F5F7FA;
     box-sizing: border-box;
+    padding: 8px 12px;
 `;

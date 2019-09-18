@@ -1,5 +1,6 @@
 // import original module declarations
 import 'styled-components'
+import { ColorsApp } from './types';
 
 // and extend them!
 declare module 'styled-components' {
@@ -7,7 +8,7 @@ declare module 'styled-components' {
     borderRadius: string
 
     colors: {
-        [key:string]: string
+        [key in ColorsApp]: string
     }
   }
 }
