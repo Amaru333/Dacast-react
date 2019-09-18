@@ -6,22 +6,32 @@ import {Button} from '../components/FormsComponents/Button/Button'
 storiesOf('Buttons', module)
   .add('Large button', () => ( 
   <React.Fragment>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary"  >Primary</Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary"  >Secondary</Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary"   >Tertiary</Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary"  disabled  >Primary disabled</Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary"  disabled >Secondary disabled</Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary"  disabled >Tertiary disabled</Button>
+    <div className="m3">
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
+    </div>
+    <div className="m3">
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+    </div>
+    
   </React.Fragment>
 
   ))
   .add('Small button', () => ( 
     <React.Fragment>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary"  >Primary</Button>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary"   >Secondary</Button>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary"   >Tertiary</Button>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" disabled  >Primary disabled</Button>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary"  disabled >Secondary disabled</Button>
-      <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary"  disabled >Tertiary disabled</Button>
-    </React.Fragment> 
+    <div className="m3">
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  >Primary</Button>
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  >Secondary</Button>
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"   >Tertiary</Button>
+    </div>
+    <div className="m3">
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+    </div>
+    
+  </React.Fragment>
   ));
