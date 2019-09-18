@@ -7,8 +7,7 @@ declare module 'styled-components' {
     borderRadius: string
 
     colors: {
-      main: string
-      secondary: string
+        [key:string]: string
     }
   }
 }

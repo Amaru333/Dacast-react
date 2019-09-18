@@ -18,13 +18,23 @@ export class Input extends React.Component<InputProps> {
         var { myCustomProps, ...other } = this.props;
 
         return (
-            <InputStyle myCustomProps={myCustomProps}  {...other} />
+            <ContainerStyle>
+                <InputStyle myCustomProps={myCustomProps}  {...other} />
+            </ContainerStyle>
         );
     }
 }
 
+const ContainerStyle = styled.div<InputProps>`
+    flex: 1;
+    flex-direction: column;
+    width:auto;
+    height:auto;
+`;
+
+
 const InputStyle = styled.input<InputProps>`
-    border: 1px solid #C8D1E0;
+    border: 1px solid ${props => props.theme.colors.orange};
     background: #F5F7FA;
     box-sizing: border-box;
 `;

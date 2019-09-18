@@ -1,18 +1,21 @@
 import { addParameters, configure } from '@storybook/react';
-import { themes } from '@storybook/theming';
+import { Theme } from '../src/styled/themes/dacast-theme';
 const { addDecorator } = require('@storybook/react');
-const { withPropsTable } = require('storybook-addon-react-docgen');
+import { ThemeProvider } from 'styled-components';
+import React from 'react';
+//const { withPropsTable } = require('storybook-addon-react-docgen');
 
 // automatically import all files ending in *.stories.js
 const req = require.context('../src/stories', true, /.stories.tsx$/);
 function loadStories() {
     req.keys().forEach(req);
 }
-addDecorator(withPropsTable);
-addParameters({
-    options: {
-      theme: themes.normal,
-    },
-});
+
+//addDecorator(withPropsTable);
+addDecorator((story) => (
+    <ThemeProvider theme={Theme}>
+        {story()}
+    </ThemeProvider>
+))
 
 configure(loadStories, module);
