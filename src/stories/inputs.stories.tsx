@@ -4,9 +4,8 @@ import { action } from '@storybook/addon-actions';
 import {Input} from '../components/FormsComponents/Input/Input'
 
 storiesOf('Inputs', module)
-  .add('Primary button', () => ( 
+  .add('Text input', () => ( 
   <React.Fragment>
-    <Input  defaultValue="test"  /> 
     <Input  placeholder="helo" onKeyPress={action("key-press")} /> 
   </React.Fragment>
 

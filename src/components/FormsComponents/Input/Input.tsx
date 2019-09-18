@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from 'styled-components';
 
 export interface InputSpecificProps {
-    myCustomProps?: any
+    label?: string
 }
 
 type InputProps = InputSpecificProps & React.HTMLAttributes<HTMLInputElement>;
@@ -15,11 +15,11 @@ export class Input extends React.Component<InputProps> {
 
     render() {
 
-        var { myCustomProps, ...other } = this.props;
+        var { label, ...other } = this.props;
 
         return (
             <ContainerStyle>
-                <InputStyle myCustomProps={myCustomProps}  {...other} />
+                <InputStyle  {...other} />
             </ContainerStyle>
         );
     }
@@ -34,8 +34,15 @@ const ContainerStyle = styled.div<InputProps>`
 
 
 const InputStyle = styled.input<InputProps>`
-    border: 1px solid;
-    background: #F5F7FA;
+    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+    background: ${props => props.theme.colors["gray-10"]};
     box-sizing: border-box;
     padding: 8px 12px;
+    ::placeholder{
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 24px;
+    }
 `;

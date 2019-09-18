@@ -3,6 +3,7 @@ import { Theme } from '../src/styled/themes/dacast-theme';
 const { addDecorator } = require('@storybook/react');
 import { ThemeProvider } from 'styled-components';
 import React from 'react';
+import "../src/scss/style.scss";
 
 // automatically import all files ending in *.stories.js
 const req = require.context('../src/stories', true, /.stories.tsx$/);

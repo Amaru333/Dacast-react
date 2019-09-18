@@ -118,3 +118,7 @@ This project uses @typescript-eslint and plugin:react/recommended specs so you c
 
 This project uses Storybook. You can write new stories in /stories. To launch storybook locally, just type 'npm run storybook' on your terminal. Storybook is also available on preprod at /storybook from the root url.
 
+## Basscss
+
+https://basscss.com/
+
