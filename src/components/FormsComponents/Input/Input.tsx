@@ -34,7 +34,7 @@ const ContainerStyle = styled.div<InputProps>`
 
 
 const InputStyle = styled.input<InputProps>`
-    border: 1px solid ${props => props.theme.colors.orange};
+    border: 1px solid;
     background: #F5F7FA;
     box-sizing: border-box;
 `;
