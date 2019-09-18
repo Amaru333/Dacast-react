@@ -3,14 +3,25 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import {Button} from '../components/FormsComponents/Button/Button'
 
-storiesOf('Welcome', module).add('to Storybook', () => <React.Fragment> Yo </React.Fragment> );
-
 storiesOf('Buttons', module)
-  .add('Primary button', () => ( 
+  .add('Large button', () => ( 
   <React.Fragment>
-    <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary"  > Button Primary  </Button>
-    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary"   > Button Primary  </Button>
-    <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary"   > Button Primary  </Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary"  >Primary</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary"  >Secondary</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary"   >Tertiary</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary"  disabled  >Primary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary"  disabled >Secondary disabled</Button>
+    <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary"  disabled >Tertiary disabled</Button>
   </React.Fragment>
 
-  ) );
+  ))
+  .add('Small button', () => ( 
+    <React.Fragment>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary"  >Primary</Button>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary"   >Secondary</Button>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary"   >Tertiary</Button>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" disabled  >Primary disabled</Button>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary"  disabled >Secondary disabled</Button>
+      <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary"  disabled >Tertiary disabled</Button>
+    </React.Fragment> 
+  ));
