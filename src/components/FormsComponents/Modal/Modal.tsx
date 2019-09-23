@@ -11,6 +11,13 @@ export interface ModalCustomProps{
     isWarning?: boolean;
 }
 
+// whats going on:
+// - Modal title passed in as a prop
+// - icons being used are just a placeholder for now
+// - Closing X or warning symbol added to title using isClosable and isWarning props
+// - Buttons, forms and other components to be added inside the Modal tags - is there a better way of doing this?
+// - Main issue is that I didn't know how to make a ModalFooter style component and then add buttons to it - this means I've had to put half the style in the component and half in style.scss
+
 export class Modal extends React.Component<ModalCustomProps>{
     constructor(props: ModalCustomProps) {
         super(props)
