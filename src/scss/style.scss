@@ -5,3 +5,18 @@
 .dflex {
     display: flex
 }
+
+.modal-content {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 32px;
+    & > * { 
+        margin-bottom: 8px;
+    }
+}
+
+.modal-footer {
+    & > * { 
+        margin-right: 12px;
+    }
+}
