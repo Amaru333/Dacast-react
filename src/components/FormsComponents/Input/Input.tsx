@@ -4,11 +4,11 @@ import { Text } from '../../Typography/Text';
 import Icon from '@material-ui/core/Icon';
 
 export interface InputSpecificProps {
-    label?: string,
-    icon?: string,
-    help?: string,
-    isError?: boolean,
-    disabled?: boolean
+    label?: string;
+    icon?: string;
+    help?: string;
+    isError?: boolean;
+    disabled?: boolean;
 }
 
 type InputProps = InputSpecificProps & React.HTMLAttributes<HTMLInputElement>;

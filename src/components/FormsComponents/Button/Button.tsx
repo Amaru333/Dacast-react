@@ -5,23 +5,23 @@ type Size = "large" | "small";
 type Type = "primary" | "secondary" | "tertiary";
 
 export interface ButtonCustomProps {
-  sizeButton: Size;
-  typeButton: Type;
-  disabled?: boolean
+    sizeButton: Size;
+    typeButton: Type;
+    disabled?: boolean;
 }
 
 type ButtonProps = ButtonCustomProps & React.HTMLAttributes<HTMLButtonElement>;
 
 export class Button extends React.Component<ButtonProps> {
-  constructor(props: ButtonProps) {
-    super(props);
-  }
+    constructor(props: ButtonProps) {
+        super(props);
+    }
 
-  render() {
-    return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
-  }
+    render() {
+        return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
+    }
 
-  static defaultProps = {typeButton: "primary"}
+    static defaultProps = {typeButton: "primary"}
 }
 
 const ButtonStyle = styled.button<ButtonProps>`

@@ -22,14 +22,14 @@ export class Modal extends React.Component<ModalCustomProps>{
         const isWarning = this.props.isWarning;
 
         return  <ModalContainerStyle {...this.props}>
-                    <ModalTitleStyle>
-                        { isWarning ? <ReportProblemOutlinedIcon></ReportProblemOutlinedIcon> : null}
-                        <Text size={24} weight="med">{this.props.titleModal}</Text>
-                        { isClosable ? <ModalCloseButtonStyle><CloseIcon></CloseIcon></ModalCloseButtonStyle>: null}
-                    </ModalTitleStyle>
-                    <ModalContentStyle>{this.props.children}</ModalContentStyle>
-                </ModalContainerStyle>
-        }
+            <ModalTitleStyle>
+                { isWarning ? <ReportProblemOutlinedIcon></ReportProblemOutlinedIcon> : null}
+                <Text size={24} weight="med">{this.props.titleModal}</Text>
+                { isClosable ? <ModalCloseButtonStyle><CloseIcon></CloseIcon></ModalCloseButtonStyle>: null}
+            </ModalTitleStyle>
+            <ModalContentStyle>{this.props.children}</ModalContentStyle>
+        </ModalContainerStyle>
+    }
 
     
     static defaultProps = {sizeModal: "large"}
