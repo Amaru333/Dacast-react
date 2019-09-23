@@ -42,7 +42,9 @@ function returnLineHeight(size: number) {
             return 32;
         case 20:
             return 28;
-        case 16 || 14:
+        case 16 :
+            return 24;
+        case 14 :
             return 24;
         case 12:
             return 18;
