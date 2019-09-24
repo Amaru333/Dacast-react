@@ -18,6 +18,7 @@ var toggleModal = ( name : any ) => {
 }
 
 storiesOf('Modals', module)
+<<<<<<< HEAD
   .add('Modal', () => ( 
     <React.Fragment>
         <Button onClick={() => toggleModal("modal1") } > Open warning modal </Button>
@@ -38,14 +39,33 @@ storiesOf('Modals', module)
             <div className="modal-content">
                 <Input label="Test 1"></Input>
                 <Input label="Test 2"></Input>
+=======
+    .add('Modal', () => ( 
+        <React.Fragment>
+            <Modal sizeModal="small" titleModal="Test title" isWarning>
+                <div className="modal-content">
+                    <Text size={14} weight="med">This is some text</Text>
+                </div>
+                <div className="modal-footer">
+                    <Button sizeButton="large" typeButton="primary">Primary</Button>
+                    <Button sizeButton="large" typeButton="tertiary">Tertiary</Button>
+                </div>
+            </Modal>
+
+            <Modal sizeModal="small" titleModal="Modal With Inputs" isClosable>
+                <div className="modal-content">
+                    <Input label="Test 1"></Input>
+                    <Input label="Test 2"></Input>
+>>>>>>> d5bd7e7a2a0b2627220ec7befd8c47390c5ea04a
                 
-            </div>
-            <div className="modal-footer">
-                <Button sizeButton="large" typeButton="primary">Do the thing</Button>
-                <Button sizeButton="large" typeButton="secondary">Don't do the thing</Button>
-            </div>
+                </div>
+                <div className="modal-footer">
+                    <Button sizeButton="large" typeButton="primary">Do the thing</Button>
+                    <Button sizeButton="large" typeButton="secondary">Don&apos;t do the thing</Button>
+                </div>
             
 
+<<<<<<< HEAD
         </Modal>
        
         <Button onClick={() => toggleModal("modal3") } > Open large modal </Button>
@@ -53,12 +73,20 @@ storiesOf('Modals', module)
             <div className="modal-content">
                 <Input label="Test 1"></Input>
                 <Input label="Test 2"></Input>
+=======
+            </Modal>
+
+            <Modal titleModal="Modal With Inputs" isClosable>
+                <div className="modal-content">
+                    <Input label="Test 1"></Input>
+                    <Input label="Test 2"></Input>
+>>>>>>> d5bd7e7a2a0b2627220ec7befd8c47390c5ea04a
                 
-            </div>
-            <div className="modal-footer">
-            <Button sizeButton="large" typeButton="primary">Do the thing</Button>
-            <Button sizeButton="large" typeButton="tertiary">Don't do the thing</Button>
-            </div>
-        </Modal>
-    </React.Fragment>
-  ))
+                </div>
+                <div className="modal-footer">
+                    <Button sizeButton="large" typeButton="primary">Do the thing</Button>
+                    <Button sizeButton="large" typeButton="tertiary">Don&apos;t do the thing</Button>
+                </div>
+            </Modal>
+        </React.Fragment>
+    ))

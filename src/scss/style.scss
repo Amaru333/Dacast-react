@@ -5,7 +5,9 @@
 .dflex {
     display: flex
 }
-
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
 .modal-content {
     display: flex;
     flex-direction: row;

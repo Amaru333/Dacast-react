@@ -15,6 +15,7 @@ export interface ModalCustomProps {
   toggle: () => void;
 }
 
+<<<<<<< HEAD
 export class Modal extends React.Component<ModalCustomProps> {
   constructor(props: ModalCustomProps) {
     super(props);
@@ -48,6 +49,28 @@ export class Modal extends React.Component<ModalCustomProps> {
   }
 
   static defaultProps = { size: "large", opened: false, toggle: () => {} };
+=======
+export class Modal extends React.Component<ModalCustomProps>{
+    constructor(props: ModalCustomProps) {
+        super(props)
+    }
+    render() {
+        const isClosable = this.props.isClosable;
+        const isWarning = this.props.isWarning;
+
+        return  <ModalContainerStyle {...this.props}>
+            <ModalTitleStyle>
+                { isWarning ? <ReportProblemOutlinedIcon></ReportProblemOutlinedIcon> : null}
+                <Text size={24} weight="med">{this.props.titleModal}</Text>
+                { isClosable ? <ModalCloseButtonStyle><CloseIcon></CloseIcon></ModalCloseButtonStyle>: null}
+            </ModalTitleStyle>
+            <ModalContentStyle>{this.props.children}</ModalContentStyle>
+        </ModalContainerStyle>
+    }
+
+    
+    static defaultProps = {sizeModal: "large"}
+>>>>>>> d5bd7e7a2a0b2627220ec7befd8c47390c5ea04a
 }
 
 const OverlayStyle = styled.div<{opened: boolean}>`

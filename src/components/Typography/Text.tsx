@@ -6,9 +6,9 @@ type Size = 48 | 40 | 32 | 24 | 20 | 16 | 14 | 12 | 10;
 type Weight = 'reg' | 'med';
 
 export interface TextSpecificProps {
-    size: Size,
-    weight: Weight,
-    color: ColorsApp
+    size: Size;
+    weight: Weight;
+    color: ColorsApp;
 }
 
 type TextProps = TextSpecificProps & React.HTMLAttributes<HTMLSpanElement>;
@@ -42,7 +42,9 @@ function returnLineHeight(size: number) {
             return 32;
         case 20:
             return 28;
-        case 16 || 14:
+        case 16 :
+            return 24;
+        case 14 :
             return 24;
         case 12:
             return 18;
