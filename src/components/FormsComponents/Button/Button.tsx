@@ -21,11 +21,9 @@ export class Button extends React.Component<ButtonProps> {
         return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
     }
 
-<<<<<<< HEAD
+
   static defaultProps = {typeButton: "primary", sizeButton: "large"}
-=======
-    static defaultProps = {typeButton: "primary"}
->>>>>>> d5bd7e7a2a0b2627220ec7befd8c47390c5ea04a
+
 }
 
 const ButtonStyle = styled.button<ButtonProps>`
