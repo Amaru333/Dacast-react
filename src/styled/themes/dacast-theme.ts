@@ -49,6 +49,8 @@ const Theme: DefaultTheme = {
     'purple': '#7048E8',
     'blue-2': '#2899F6',
     'orange': '#DE8536',
+    'overlay70': 'rgba(34, 47, 62, 0.7)',
+    'overlay40': 'rgba(34, 47, 62, 0.4)'
   },
 }
 
