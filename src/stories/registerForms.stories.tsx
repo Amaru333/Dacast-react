@@ -15,7 +15,7 @@ stories.add('Sign Up', () => {
     return (
         <ScrollableContainer>
             <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "75%" }} size="small" opened={true} title="Sign Up" >
+            <Modal hideOverlay={true} style={{ top: "465px" }} size="small" opened={true} title="Sign Up" >
                 <ModalContent className="clearfix">
                     <div className="col col-12">
                         <Input type="text" className="col col-6 pr1" label="First Name" placeholder="First Name" />
