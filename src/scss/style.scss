@@ -12,6 +12,10 @@ input:focus, textarea:focus, select:focus{
 a:link {
     color: #284CEB;
 }
+
+* {
+   transition: all .2s linear;
+}
   
 /* visited link */
 a:visited {

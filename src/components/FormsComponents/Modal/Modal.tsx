@@ -13,18 +13,10 @@ export interface ModalCustomProps {
     icon?: { name: string, color: ColorsApp };
     opened: boolean;
     toggle: () => void;
+    hideOverlay? : boolean;
 }
 
 type ModalProps = ModalCustomProps & React.HTMLAttributes<HTMLDivElement>
-
-export interface ModalCustomProps {
-    size: Size;
-    title: string;
-    isClosable?: boolean;
-    icon?: { name: string, color: ColorsApp };
-    opened: boolean;
-    toggle: () => void;
-}
 
 export class ModalContent extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
     constructor(props: React.HTMLAttributes<HTMLDivElement>) {
@@ -58,7 +50,7 @@ export class Modal extends React.Component<ModalProps> {
     }
 
     render() {
-        var { isClosable, icon, ...other } = this.props;
+        var { isClosable, icon, hideOverlay, ...other } = this.props;
 
         return (
             <React.Fragment>
@@ -78,12 +70,12 @@ export class Modal extends React.Component<ModalProps> {
                     </ModalTitleStyle>
                     {this.props.children}
                 </ModalContainerStyle>
-                <OverlayStyle opened={this.props.opened} />
+                <OverlayStyle opened={this.props.opened && !hideOverlay} />
             </React.Fragment>
         );
     }
 
-    static defaultProps = { size: "large", opened: false, toggle: () => { } };
+    static defaultProps = { size: "large", opened: false, toggle: () => { }, hideOverlay: false};
 
 }
 const IconStyle = styled.div<{ iconColor: ColorsApp }>`
