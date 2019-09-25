@@ -10,7 +10,7 @@ export interface ModalCustomProps {
     size: Size;
     title: string;
     isClosable?: boolean;
-    icon?: { name: string, color: ColorsApp };
+    icon?: { name: string; color: ColorsApp };
     opened: boolean;
     toggle: () => void;
     hideOverlay? : boolean;

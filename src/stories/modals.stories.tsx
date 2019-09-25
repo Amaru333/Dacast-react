@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf, forceReRender } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import { Modal, ModalContent, ModalFooter } from '../components/FormsComponents/Modal/Modal'
 import { Button } from '../components/FormsComponents/Button/Button'
 import { Input } from '../components/FormsComponents/Input/Input'
