@@ -122,3 +122,7 @@ This project uses Storybook. You can write new stories in /stories. To launch st
 
 https://basscss.com/
 
+## Material UI Icons
+
+https://material-ui.com/components/material-icons/
+

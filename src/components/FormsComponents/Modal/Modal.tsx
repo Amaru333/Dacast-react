@@ -1,57 +1,97 @@
 import * as React from "react";
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import { Text } from "../../Typography/Text";
-import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
-import CloseIcon from "@material-ui/icons/Close";
+import Icon from '@material-ui/core/Icon';
+import { ColorsApp } from '../../../styled/types';
 
 type Size = "large" | "small";
 
 export interface ModalCustomProps {
-  size: Size;
-  title: string;
-  isClosable?: boolean;
-  isWarning?: boolean;
-  opened: boolean;
-  toggle: () => void;
+    size: Size;
+    title: string;
+    isClosable?: boolean;
+    icon?: { name: string, color: ColorsApp };
+    opened: boolean;
+    toggle: () => void;
 }
 
-export class Modal extends React.Component<ModalCustomProps> {
-  constructor(props: ModalCustomProps) {
-    super(props);
-  }
+type ModalProps = ModalCustomProps & React.HTMLAttributes<HTMLDivElement>
 
-  render() {
-    const isClosable = this.props.isClosable;
-    const isWarning = this.props.isWarning;
-
-    return (
-      <React.Fragment>
-        <ModalContainerStyle {...this.props}>
-          <ModalTitleStyle>
-            {isWarning ? (
-              <ReportProblemOutlinedIcon></ReportProblemOutlinedIcon>
-            ) : null}
-            <Text size={24} weight="med">
-              {this.props.title}
-            </Text>
-            {isClosable && this.props.toggle ? (
-              <ModalCloseButtonStyle onClick={() => this.props.toggle()}>
-                <CloseIcon></CloseIcon>
-              </ModalCloseButtonStyle>
-            ) : null}
-          </ModalTitleStyle>
-          <ModalContentStyle>{this.props.children}</ModalContentStyle>
-        </ModalContainerStyle>
-        <OverlayStyle opened={this.props.opened} />
-      </React.Fragment>
-    );
-  }
-
-  static defaultProps = { size: "large", opened: false, toggle: () => {} };
-
+export interface ModalCustomProps {
+    size: Size;
+    title: string;
+    isClosable?: boolean;
+    icon?: { name: string, color: ColorsApp };
+    opened: boolean;
+    toggle: () => void;
 }
 
-const OverlayStyle = styled.div<{opened: boolean}>`
+export class ModalContent extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
+    constructor(props: React.HTMLAttributes<HTMLDivElement>) {
+        super(props);
+    }
+    render() {
+        return (
+            <ModalBodyStyle {...this.props} >
+                {this.props.children}
+            </ModalBodyStyle>
+        )
+    }
+}
+
+export class ModalFooter extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
+    constructor(props: React.HTMLAttributes<HTMLDivElement>) {
+        super(props);
+    }
+    render() {
+        return (
+            <ModalFooterStyle {...this.props} >
+                {this.props.children}
+            </ModalFooterStyle>
+        )
+    }
+}
+
+export class Modal extends React.Component<ModalProps> {
+    constructor(props: ModalProps) {
+        super(props);
+    }
+
+    render() {
+        var { isClosable, icon, ...other } = this.props;
+
+        return (
+            <React.Fragment>
+                <ModalContainerStyle {...other}>
+                    <ModalTitleStyle>
+                        {icon ? (
+                            <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
+                        ) : null}
+                        <Text size={24} weight="med">
+                            {this.props.title}
+                        </Text>
+                        {isClosable && this.props.toggle ? (
+                            <ModalCloseButtonStyle onClick={() => this.props.toggle()}>
+                                <Icon>close</Icon>
+                            </ModalCloseButtonStyle>
+                        ) : null}
+                    </ModalTitleStyle>
+                    <ModalContentStyle>{this.props.children}</ModalContentStyle>
+                </ModalContainerStyle>
+                <OverlayStyle opened={this.props.opened} />
+            </React.Fragment>
+        );
+    }
+
+    static defaultProps = { size: "large", opened: false, toggle: () => { } };
+
+}
+const IconStyle = styled.div<{ iconColor: ColorsApp }>`
+    color: ${props => props.theme.colors[props.iconColor]};
+    float: left;
+`;
+
+const OverlayStyle = styled.div<{ opened: boolean }>`
     display: none;
     position: fixed;
     top: 0;
@@ -60,11 +100,11 @@ const OverlayStyle = styled.div<{opened: boolean}>`
     bottom: 0;
     ${props => props.opened && css`
         display: block;
-        background: ${props => props.theme.colors.overlay70 };
+        background: ${props => props.theme.colors.overlay70};
     `}
 `;
 
-const ModalContainerStyle = styled.div<ModalCustomProps>`
+const ModalContainerStyle = styled.div<ModalProps>`
   box-sizing: border-box;
   padding: 24px;
   width: ${props => (props.size === "small" ? "400px" : "600px")};
@@ -84,6 +124,20 @@ const ModalTitleStyle = styled.div`
 const ModalCloseButtonStyle = styled.button`
   float: right;
   border: none;
-  background: white;
 `;
 const ModalContentStyle = styled.div``;
+
+const ModalBodyStyle = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 32px;
+    & > * { 
+        margin-bottom: 8px;
+    }
+`;
+
+const ModalFooterStyle = styled.div`
+    & > * { 
+        margin-right: 12px;
+    }
+`;
