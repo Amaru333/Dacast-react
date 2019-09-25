@@ -9,21 +9,17 @@ import { Button } from '../components/FormsComponents/Button/Button';
 import { Text } from "../components/Typography/Text";
 
 
-storiesOf('Login', module)
-    .add('Login form', () => ( 
+storiesOf('Password Reset', module)
+    .add('Password Reset form', () => ( 
         <React.Fragment>
-            <Modal size="small" opened={true} title="User Login">
+            <Modal size="small" opened={true} title="Password Reset" isClosable>
                 <ModalContent className="clearfix">
-                    
-                        <Input className="col col-12" label="Email Address" placeholder="Email Address"></Input>
-                        <Input className="col col-12" label="Password" icon="visibility_off" placeholder="Password"></Input>
-                    
-                        
-                    
-                    <Text className="col-12" size={12} weight="reg">Don't have an account? <a href="#">Sign up</a></Text>
+                        <Text className="col-12" size={14} weight="reg" color="gray-3">Enter your email address to reset your password.</Text>
+                        <Input className="col col-12" label="Email Address" placeholder="Email Address"></Input>   
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Log In</Button>
+                    <Button>Reset Password</Button>
+                    <Button typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </Modal>
 
