@@ -25,7 +25,7 @@ export class Input extends React.Component<InputProps> {
 
         return (
             <ContainerStyle>
-                {label ? <LabelStyle disabled={this.props.disabled} > <Text size={14} weight="med" > {this.props.label} </Text> </LabelStyle> : null}
+                {label ? <LabelStyle disabled={this.props.disabled} > <Text color={ this.props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {this.props.label} </Text> </LabelStyle> : null}
                 <RelativeContainer>
                     <InputStyle isError={isError} {...other} />
                     {icon ? <IconStyle><Icon>{icon}</Icon></IconStyle> : null}

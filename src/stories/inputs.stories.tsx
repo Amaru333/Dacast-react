@@ -26,7 +26,7 @@ storiesOf('Inputs', module)
                 <Input label="Whatever label"  placeholder="Placeholder" /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input label="Whatever label" placeholder="Placeholder" help="Error for this input" icon="error" disabled /> 
+                <Input label="Whatever label" placeholder="Placeholder" help="Info for this input" icon="error" disabled /> 
             </StorybookInputContainerStyle>
         </React.Fragment>
 
