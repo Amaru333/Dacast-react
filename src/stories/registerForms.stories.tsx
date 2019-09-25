@@ -43,7 +43,7 @@ stories.add('Log In', () => {
     return (
         <ScrollableContainer>
             <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "365px" }} size="small" opened={true} title="User Login" >
+            <Modal hideOverlay={true} style={{ top: "332px" }} size="small" opened={true} title="User Login" >
                 <ModalContent className="clearfix">
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />
                     <Input type="password" className="col col-12" label="Password" icon="visibility_off" placeholder="Password" />
@@ -61,7 +61,7 @@ stories.add('Reset Password', () => {
     return (
         <ScrollableContainer>
             <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "317px" }} size="small" opened={true} title="Password Reset" >
+            <Modal hideOverlay={true} style={{ top: "287px" }} size="small" opened={true} title="Password Reset" >
                 <ModalContent className="clearfix">
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">Enter your email address to reset your password.</Text>
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />   
@@ -79,7 +79,7 @@ var ImageStyle = styled.img`
     width: 307.5px;
     left: 50%;
     right: 50%;
-    top: 16%;
+    top: 85px;
     position: absolute;
     display: block;
     transform: translate(-50%,-50%);
