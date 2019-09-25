@@ -76,7 +76,7 @@ export class Modal extends React.Component<ModalProps> {
                             </ModalCloseButtonStyle>
                         ) : null}
                     </ModalTitleStyle>
-                    <ModalContentStyle>{this.props.children}</ModalContentStyle>
+                    {this.props.children}
                 </ModalContainerStyle>
                 <OverlayStyle opened={this.props.opened} />
             </React.Fragment>
@@ -125,12 +125,12 @@ const ModalCloseButtonStyle = styled.button`
   float: right;
   border: none;
 `;
-const ModalContentStyle = styled.div``;
 
 const ModalBodyStyle = styled.div`
     display: flex;
     flex-direction: row;
     margin-bottom: 32px;
+    flex-wrap: wrap;
     & > * { 
         margin-bottom: 8px;
     }

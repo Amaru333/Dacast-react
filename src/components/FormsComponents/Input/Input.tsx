@@ -9,7 +9,35 @@ export interface InputSpecificProps {
     help?: string;
     isError?: boolean;
     disabled?: boolean;
+    type?: InputType;
 }
+
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'select'
+  | 'file'
+  | 'radio'
+  | 'checkbox'
+  | 'textarea'
+  | 'button'
+  | 'reset'
+  | 'submit'
+  | 'date'
+  | 'datetime-local'
+  | 'hidden'
+  | 'image'
+  | 'month'
+  | 'number'
+  | 'range'
+  | 'search'
+  | 'tel'
+  | 'url'
+  | 'week'
+  | 'password'
+  | 'datetime'
+  | 'time'
+  | 'color';
 
 type InputProps = InputSpecificProps & React.HTMLAttributes<HTMLInputElement>;
 
@@ -21,10 +49,10 @@ export class Input extends React.Component<InputProps> {
 
     render() {
 
-        var { label, icon, help, isError, ...other } = this.props;
+        var { label, icon, help, isError, className, ...other } = this.props;
 
         return (
-            <ContainerStyle>
+            <ContainerStyle className={className} >
                 {label ? <LabelStyle disabled={this.props.disabled} > <Text color={ this.props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {this.props.label} </Text> </LabelStyle> : null}
                 <RelativeContainer>
                     <InputStyle isError={isError} {...other} />
@@ -44,7 +72,6 @@ export class Input extends React.Component<InputProps> {
 const ContainerStyle = styled.div<InputProps>`
     display: flex;
     flex-direction: column;
-    width:auto;
     height:auto;
 `;
 
@@ -65,7 +92,6 @@ const IconStyle = styled.div<InputProps>`
 
 const LabelStyle = styled.label<InputProps>`
     display: flex;
-    width:auto;
     height:auto;
     margin-bottom: 4px;
 `;
