@@ -72,7 +72,6 @@ export class Input extends React.Component<InputProps> {
 const ContainerStyle = styled.div<InputProps>`
     display: flex;
     flex-direction: column;
-    width:auto;
     height:auto;
 `;
 
@@ -93,7 +92,6 @@ const IconStyle = styled.div<InputProps>`
 
 const LabelStyle = styled.label<InputProps>`
     display: flex;
-    width:auto;
     height:auto;
     margin-bottom: 4px;
 `;
