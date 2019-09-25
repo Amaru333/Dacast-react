@@ -13,7 +13,8 @@
         "types": ["react"]
     },
     "include": [
-        "./src/**/**/*"
+        "./src/**/**/*",
+        "./src/declaration.d.ts"
     ],
     "exclude": [
         "node_modules",

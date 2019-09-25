@@ -104,6 +104,7 @@ const OverlayStyle = styled.div<{ opened: boolean }>`
     `}
 `;
 
+//Should be fixed ...
 const ModalContainerStyle = styled.div<ModalProps>`
   box-sizing: border-box;
   padding: 24px;
@@ -111,7 +112,7 @@ const ModalContainerStyle = styled.div<ModalProps>`
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
   display: ${props => (props.opened ? "block" : "none")};
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
