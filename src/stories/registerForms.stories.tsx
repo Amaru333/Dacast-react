@@ -82,7 +82,7 @@ stories.add('Confirm Email Address', () => {
             <Modal hideOverlay={true} style={{ top: "317px" }} size="small" opened={true} title="Confirm Email Address" >
                 <ModalContent className="clearfix">
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">We have sent an email to <a href="#">john.doe@hotmail.com.</a></Text>
-                    <Text className="col col-12" size={14} weight="reg" color="gray-3">To complete the registration process pleae click the link in the email to confirm your email address.</Text>  
+                    <Text className="col col-12" size={14} weight="reg" color="gray-3">To complete the registration process please click the link in the email to confirm your email address.</Text>  
                 </ModalContent>
                 <ModalFooter>
                     <Text className="col col-12" size={12} weight="reg" color="gray-3">Didn't recieve an email? <a href="#">Re-send email confirmation.</a></Text>
