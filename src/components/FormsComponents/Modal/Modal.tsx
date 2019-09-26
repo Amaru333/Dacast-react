@@ -99,7 +99,7 @@ const OverlayStyle = styled.div<{ opened: boolean }>`
 //Should be fixed ...
 const ModalContainerStyle = styled.div<ModalProps>`
   box-sizing: border-box;
-  padding: 24px 24px 32px 24px;
+  padding: 24px;
   width: ${props => (props.size === "small" ? "400px" : "600px")};
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
@@ -122,7 +122,7 @@ const ModalCloseButtonStyle = styled.button`
 const ModalBodyStyle = styled.div`
     display: flex;
     flex-direction: row;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
     & > * { 
         margin-bottom: 8px;
