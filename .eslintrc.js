@@ -17,6 +17,7 @@ module.exports = {
     rules: {
         "@typescript-eslint/explicit-member-accessibility": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/no-var-requires": 0
+        "@typescript-eslint/no-var-requires": 0,
+        "react/no-unescaped-entities": 0
     }
 };
