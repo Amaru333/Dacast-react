@@ -5,5 +5,14 @@ import { Toast } from '../components/Toasts';
 
 storiesOf('Toasts', module)
     .add('Toasts', () => (
-        <Toast icon={{name: "warning", color: "red"}}>Test Toast</Toast>
+        <React.Fragment>
+            <Toast notificationType="error">Error</Toast>
+            <Toast notificationType="success">Success</Toast>
+            <Toast notificationType="information">Information</Toast>
+            <Toast notificationType="warning">Warning</Toast>
+            <Toast notificationType="other">Other</Toast>
+
+        </React.Fragment>
+        
+        
     ))
