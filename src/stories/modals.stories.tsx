@@ -1,7 +1,6 @@
 import React from 'react';
 import { storiesOf, forceReRender } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { Modal, ModalContent, ModalFooter } from '../components/FormsComponents/Modal/Modal'
+import { Modal, ModalContent, ModalFooter } from '../components/Modal/Modal'
 import { Button } from '../components/FormsComponents/Button/Button'
 import { Input } from '../components/FormsComponents/Input/Input'
 import { Text } from '../components/Typography/Text'
@@ -20,8 +19,8 @@ var toggleModal = (name: any) => {
 storiesOf('Modals', module)
     .add('Modal', () => (
         <React.Fragment>
-            <Button onClick={() => toggleModal("modal1")} > Open warning modal </Button>
-            <Modal icon={{ name: "warning", color: "red" }} opened={openedModals['modal1']} toggle={() => toggleModal("modal1")} size="small" title="Test title" isClosable>
+            <Button className="m2" onClick={() => toggleModal("modal1")} > Open warning modal </Button>
+            <Modal icon={{ name: "warning", color: "red" }} opened={openedModals['modal1']} toggle={() => toggleModal("modal1")} size="small" title="Test title">
                 <ModalContent>
                     <Text size={14} weight="med">This is some text</Text>
                 </ModalContent>
@@ -31,8 +30,8 @@ storiesOf('Modals', module)
                 </ModalFooter>
             </Modal>
 
-            <Button onClick={() => toggleModal("modal2")} > Open small modal </Button>
-            <Modal toggle={() => toggleModal("modal2")} opened={openedModals['modal2']} size="small" title="Modal With Inputs" isClosable>
+            <Button className="m2" onClick={() => toggleModal("modal2")} > Open small modal </Button>
+            <Modal toggle={() => toggleModal("modal2")} opened={openedModals['modal2']} size="small" title="Modal With Inputs">
                 <ModalContent>
                     <Input label="Test 1"></Input>
                     <Input label="Test 2"></Input>
@@ -46,8 +45,8 @@ storiesOf('Modals', module)
 
             </Modal>
 
-            <Button onClick={() => toggleModal("modal3")} > Open large modal </Button>
-            <Modal toggle={() => toggleModal("modal3")} opened={openedModals['modal3']} title="Modal With Inputs" isClosable>
+            <Button className="m2" onClick={() => toggleModal("modal3")} > Open large modal </Button>
+            <Modal toggle={() => toggleModal("modal3")} opened={openedModals['modal3']} title="Modal With Inputs">
                 <ModalContent>
                     <Input label="Test 1"></Input>
                     <Input label="Test 2"></Input>

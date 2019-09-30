@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import {Input} from '../components/FormsComponents/Input/Input'
 import styled from 'styled-components';
 import "../scss/style.scss";

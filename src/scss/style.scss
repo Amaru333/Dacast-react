@@ -8,3 +8,31 @@
 input:focus, textarea:focus, select:focus{
     outline: none;
 }
+/* unvisited link */
+a:link {
+    color: #284CEB;
+}
+
+* {
+   transition: all .2s linear;
+}
+  
+/* visited link */
+a:visited {
+    color: #284CEB;
+}
+  
+/* mouse over link */
+a:hover {
+    color: #203DBC;
+    text-decoration: underline;
+}
+
+/* selected link */
+a:active {
+    color: #284CEB;
+}
+
+a {
+    text-decoration: none;
+}
