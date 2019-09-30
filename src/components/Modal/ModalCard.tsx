@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
-import { ModalCardProps } from './type';
+import { ModalCardProps } from './ModalType';
 import { ModalContent, ModalFooter } from './Modal';
-import { ModalCardContainerStyle, ModalTitleStyle, IconStyle } from './style';
+import { ModalCardContainerStyle, ModalTitleStyle, IconStyle } from './ModalStyle';
 
 export { ModalContent, ModalFooter} ;
 export class ModalCard extends React.Component<ModalCardProps> {
