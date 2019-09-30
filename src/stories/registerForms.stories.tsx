@@ -1,21 +1,21 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { Modal, ModalFooter, ModalContent } from '../components/FormsComponents/Modal/Modal';
+import { ModalCard, ModalFooter, ModalContent } from '../components/Modal/ModalCard';
 import { Input } from '../components/FormsComponents/Input/Input';
 import { Text } from '../components/Typography/Text';
 import { Button } from '../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 
-const logo = require('./logo.png');
+const logo = require('../../public/assets/logo.png');
 const stories = storiesOf('Register Forms', module);
 stories.addDecorator(withKnobs);
 
 stories.add('Sign Up', () => {
     return (
         <ScrollableContainer>
-            <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "465px" }} size="small" opened={true} title="Sign Up" >
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className="mx-auto" size="small" title="Sign Up" >
                 <ModalContent className="clearfix">
                     <div className="col col-12">
                         <Input type="text" className="col col-6 pr1" label="First Name" placeholder="First Name" />
@@ -34,7 +34,7 @@ stories.add('Sign Up', () => {
                     <Button>Sign Up</Button>
                     <Button typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
-            </Modal>
+            </ModalCard>
         </ScrollableContainer>
     );
 })
@@ -42,8 +42,8 @@ stories.add('Sign Up', () => {
 stories.add('Log In', () => {
     return (
         <ScrollableContainer>
-            <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "332px" }} size="small" opened={true} title="User Login" >
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className="mx-auto" size="small" title="User Login" >
                 <ModalContent className="clearfix">
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />
                     <Input type="password" className="col col-12" label="Password" icon="visibility_off" placeholder="Password" />
@@ -52,7 +52,7 @@ stories.add('Log In', () => {
                 <ModalFooter>
                     <Button>Log In</Button>
                 </ModalFooter>
-            </Modal>
+            </ModalCard>
         </ScrollableContainer>
     );
 })
@@ -60,8 +60,8 @@ stories.add('Log In', () => {
 stories.add('Reset Password', () => {
     return (
         <ScrollableContainer>
-            <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "287px" }} size="small" opened={true} title="Password Reset" >
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className="mx-auto" size="small" title="Password Reset" >
                 <ModalContent className="clearfix">
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">Enter your email address to reset your password.</Text>
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />   
@@ -70,7 +70,7 @@ stories.add('Reset Password', () => {
                     <Button>Reset Password</Button>
                     <Button typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
-            </Modal>
+            </ModalCard>
         </ScrollableContainer>
     );
 })
@@ -78,8 +78,8 @@ stories.add('Reset Password', () => {
 stories.add('Confirm Email Address', () => {
     return (
         <ScrollableContainer>
-            <ImageStyle src={logo} />
-            <Modal hideOverlay={true} style={{ top: "317px" }} size="small" opened={true} title="Confirm Email Address" >
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className="mx-auto" size="small" title="Confirm Email Address" >
                 <ModalContent className="clearfix">
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">We have sent an email to <a href="#">john.doe@hotmail.com.</a></Text>
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">To complete the registration process please click the link in the email to confirm your email address.</Text>  
@@ -87,19 +87,14 @@ stories.add('Confirm Email Address', () => {
                 <ModalFooter>
                     <Text className="col col-12" size={12} weight="reg" color="gray-3">Didn't recieve an email? <a href="#">Re-send email confirmation.</a></Text>
                 </ModalFooter>
-            </Modal>
+            </ModalCard>
         </ScrollableContainer>
     )
 })
 
 var ImageStyle = styled.img`
     width: 307.5px;
-    left: 50%;
-    right: 50%;
-    top: 85px;
-    position: absolute;
     display: block;
-    transform: translate(-50%,-50%);
     box-sizing: border-box;
 `
 
