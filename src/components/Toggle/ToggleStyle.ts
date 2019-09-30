@@ -14,7 +14,7 @@ export const ToggleLabelStyle = styled.label`
   width: 32px;
   height: 20px;
   border-radius: 15px;
-  background: #bebebe;
+  background: ${props => props.theme.colors['gray-6']};
   cursor: pointer;
   &::after {
     content: "";
@@ -24,7 +24,7 @@ export const ToggleLabelStyle = styled.label`
     height: 14px;
     margin: 3px;
     margin-left: 4px;
-    background: #ffffff;
+    background: ${props => props.theme.colors['white']};
     
     transition: 0.2s;
   }
@@ -43,7 +43,7 @@ export const ToggleStyle = styled.input`
   width: 32px;
   height: 20px;
   &:checked + ${ToggleLabelStyle} {
-    background: #4967EE;
+    background: ${props => props.theme.colors['violet']};
     &::after {
       content: "";
       display: block;
