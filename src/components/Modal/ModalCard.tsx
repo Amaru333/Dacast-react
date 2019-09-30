@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
-import { ModalCardProps } from './ModalType';
+import { ModalCardProps } from './ModalTypes';
 import { ModalContent, ModalFooter } from './Modal';
 import { ModalCardContainerStyle, ModalTitleStyle, IconStyle } from './ModalStyle';
 

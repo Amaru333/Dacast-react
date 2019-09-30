@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
-import { ModalProps } from './ModalType';
+import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
 
 export class Modal extends React.Component<ModalProps> {

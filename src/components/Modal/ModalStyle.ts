@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ModalProps, ModalCardProps } from './ModalType';
+import { ModalProps, ModalCardProps } from './ModalTypes';
 import { ColorsApp } from '../../styled/types';
 
 export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
