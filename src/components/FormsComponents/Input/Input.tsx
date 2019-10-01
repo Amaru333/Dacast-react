@@ -1,45 +1,8 @@
 import * as React from "react";
-import styled, { css } from 'styled-components';
 import { Text } from '../../Typography/Text';
 import Icon from '@material-ui/core/Icon';
-
-export interface InputSpecificProps {
-    label?: string;
-    icon?: string;
-    help?: string;
-    isError?: boolean;
-    disabled?: boolean;
-    type?: InputType;
-}
-
-export type InputType =
-  | 'text'
-  | 'email'
-  | 'select'
-  | 'file'
-  | 'radio'
-  | 'checkbox'
-  | 'textarea'
-  | 'button'
-  | 'reset'
-  | 'submit'
-  | 'date'
-  | 'datetime-local'
-  | 'hidden'
-  | 'image'
-  | 'month'
-  | 'number'
-  | 'range'
-  | 'search'
-  | 'tel'
-  | 'url'
-  | 'week'
-  | 'password'
-  | 'datetime'
-  | 'time'
-  | 'color';
-
-type InputProps = InputSpecificProps & React.HTMLAttributes<HTMLInputElement>;
+import { InputProps } from './InputTypes';
+import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle } from './InputStyle';
 
 export class Input extends React.Component<InputProps> {
 
@@ -68,69 +31,3 @@ export class Input extends React.Component<InputProps> {
     static defaultProps = { isError: false, disabled: false }
 
 }
-
-const ContainerStyle = styled.div<InputProps>`
-    display: flex;
-    flex-direction: column;
-    height:auto;
-`;
-
-const HelpStyle = styled.div<InputProps>`
-    margin-top: 8px;
-`;
-
-const RelativeContainer = styled(ContainerStyle)`
-    position: relative;
-`;
-
-const IconStyle = styled.div<InputProps>`
-    position: absolute;
-    right: 12px;
-    top: 8px;    
-    color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
-`;
-
-const LabelStyle = styled.label<InputProps>`
-    display: flex;
-    height:auto;
-    margin-bottom: 4px;
-`;
-
-const InputStyle = styled.input<InputProps>`
-    display: flex;
-    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
-    background: ${props => props.theme.colors["gray-10"]};
-    box-sizing: border-box;
-    padding: 8px 12px;
-    height:40px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 24px;
-    color: ${props => props.theme.colors["gray-1"]};
-    ${props => props.isError && css`
-        border-bottom: 2px solid ${props => props.theme.colors["red"]};
-        background: ${props => props.theme.colors["red10"]};
-    `}
-    ${props => props.disabled && css`
-        background: ${props => props.theme.colors["gray-8"]};
-    `}
-    ::placeholder{
-        font-family: Roboto;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 24px;
-        color: ${props => props.theme.colors["gray-5"]};
-        ${props => props.disabled && css`
-            color: ${props => props.theme.colors["gray-6"]} ;
-        `}
-    }
-    &:focus {
-        border: 1px solid ${props => props.theme.colors["violet"]} ;
-        ${props => props.isError && css`
-            border-bottom: 2px solid ${props => props.theme.colors["red"]};
-        `}
-    }
-`;
