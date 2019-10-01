@@ -10,13 +10,16 @@ export interface InputCheckboxSpecificProps {
 
 type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;
 
-export const InputCheckbox: React.SFC<InputCheckboxProps> = (props) => {
+export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
 
     let checkboxRef = React.useRef<HTMLInputElement>(null);
+    const [indeterminate, setIndeterminate] = React.useState<boolean | undefined>(props.indeterminate ? props.indeterminate : false)
 
     const handleIndeterminate = () => {
-        if(checkboxRef.current !== null && typeof checkboxRef.current !== 'undefined' && props.indeterminate === true) {
-            checkboxRef.current.indeterminate = true
+        if(checkboxRef.current !== null && typeof checkboxRef.current !== 'undefined') {
+            checkboxRef.current.indeterminate = !indeterminate
+            checkboxRef.current.checked = false
+            setIndeterminate(!indeterminate)
         }
     }
     let {label, className, ...other} = props;
