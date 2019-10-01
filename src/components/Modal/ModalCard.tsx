@@ -20,7 +20,7 @@ export class ModalCard extends React.Component<ModalCardProps> {
                     {icon ? (
                         <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
                     ) : null}
-                    <Text size={24} weight="med">
+                    <Text color="gray-1" size={24} weight="med">
                         {this.props.title}
                     </Text>
                 </ModalTitleStyle>

@@ -19,7 +19,7 @@ export class Modal extends React.Component<ModalProps> {
                         {icon ? (
                             <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
                         ) : null}
-                        <Text size={24} weight="med">
+                        <Text color="gray-1" size={24} weight="med">
                             {this.props.title}
                         </Text>
                         <ModalCloseButtonStyle onClick={() => this.props.toggle()}>

@@ -15,7 +15,7 @@ export class Toggle extends React.Component<ToggleProps> {
            <ToggleWrapperStyle {...this.props}>
                <ToggleStyle id={this.props.label} type="checkbox" />
                 <ToggleLabelStyle htmlFor={this.props.label}>
-                    <LabelTextStyle size={16} weight="med">{this.props.label}</LabelTextStyle>
+                    <LabelTextStyle color="gray-1" size={16} weight="med">{this.props.label}</LabelTextStyle>
                 </ToggleLabelStyle>
            </ToggleWrapperStyle> 
         );

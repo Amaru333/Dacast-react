@@ -2,19 +2,13 @@ import * as React from "react";
 import { TextProps } from './TextTypes';
 import { SpanStyle } from './TextStyle';
 
-export class Text extends React.Component<TextProps> {
+export const Text: React.FC<TextProps> = props => {
 
-    constructor(props: TextProps) {
-        super(props);
-    }
+    var { size, weight, ...other } = props;
 
-    render() {
-
-        var { size, weight, ...other } = this.props;
-
-        return (
-            <SpanStyle size={size} weight={weight} {...other} > {this.props.children}  </SpanStyle>
-        );
-    }
-    static defaultProps = { color: "gray-1" };
+    return (
+        <SpanStyle size={size} weight={weight} {...other} > {props.children}  </SpanStyle>
+    );
 }
+
+Text.defaultProps = { color: "gray-1" };
