@@ -15,23 +15,22 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
     let checkboxRef = React.useRef<HTMLInputElement>(null);
     const [indeterminate, setIndeterminate] = React.useState<boolean | undefined>(props.indeterminate ? props.indeterminate : false)
 
-    const handleIndeterminate = () => {
-        if(checkboxRef.current !== null && typeof checkboxRef.current !== 'undefined') {
-            checkboxRef.current.indeterminate = !indeterminate
+    React.useEffect(() => {
+        if(checkboxRef.current && indeterminate) {
+            checkboxRef.current.indeterminate = true
             checkboxRef.current.checked = false
-            setIndeterminate(!indeterminate)
         }
-    }
+    }, []);
+
     let {label, className, ...other} = props;
 
     return (
         <ContainerStyle className={className} >
-            <InputCheckboxStyle {...other} type="checkbox" ref={checkboxRef} onClick={handleIndeterminate} />
+            <InputCheckboxStyle {...other} type="checkbox" ref={checkboxRef} onClick={() => setIndeterminate(!indeterminate)} />
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
         </ContainerStyle>
     )
-    }
-
+}
 InputCheckbox.defaultProps = {disabled: false, indeterminate: false}
 
 const ContainerStyle = styled.div<InputCheckboxProps>`
