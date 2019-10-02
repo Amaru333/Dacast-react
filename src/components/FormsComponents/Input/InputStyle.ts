@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { InputProps } from './InputTypes';
+import { InputProps, InputCheckboxProps } from './InputTypes';
 
 export const ContainerStyle = styled.div<InputProps>`
     display: flex;
@@ -26,6 +26,7 @@ export const LabelStyle = styled.label<InputProps>`
     display: flex;
     height:auto;
     margin-bottom: 4px;
+    align-items: center;
 `;
 
 export const InputStyle = styled.input<InputProps>`
@@ -66,3 +67,52 @@ export const InputStyle = styled.input<InputProps>`
         `}
     }
 `;
+
+export const InputCheckboxStyle = styled.input<InputCheckboxProps>`
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+`;
+
+export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined, disabled: boolean | undefined, isFocus: boolean, indeterminate: boolean | undefined, checkbox : React.RefObject<HTMLInputElement>}>`
+    display: flex;
+    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    box-sizing: border-box;
+    border-radius: 2px;
+    height:16px;
+    width: 16px;
+    cursor: pointer;
+    margin-right: 8px;
+    ${props => ((!props.checkbox.current && props.defaultChecked) || (props.checkbox.current && props.checkbox.current.checked))  && css`
+        &:after{
+            font-family: Material Icons;
+            content: "check";
+            color: ${props => props.theme.colors["white"]};
+        }
+        border: none;
+        background: ${props => props.theme.colors["violet"]};
+    `}
+    ${props => (props.indeterminate) && css`
+        &:after{
+            font-family: Material Icons;
+            content: "remove";
+            color: ${props => props.theme.colors["white"]};
+        }
+        border: none;
+        background: ${props => props.theme.colors["violet"]};
+    `}
+    ${props => ((props.disabled) || (props.checkbox.current && props.checkbox.current.disabled)) && css`
+        opacity: 0.5;
+        cursor: auto;
+    `}
+    ${props => props.isFocus && css`
+        outline: rgb(59, 153, 252) auto 5px;
+    `}
+`
