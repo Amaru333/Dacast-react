@@ -34,22 +34,19 @@ storiesOf('Inputs', module)
         .add('Checkbox input', () => ( 
         <React.Fragment>
             <StorybookInputContainerStyle>
-                <InputCheckbox disabled={false} label="Checkbox1" /> 
+                <InputCheckbox id="checkbox1" label="Checkbox" /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <InputCheckbox disabled label="Disabled"/>  
+                <InputCheckbox id="checkbox2" disabled label="Disabled"/>  
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <InputCheckbox disabled={false} defaultChecked label="default checked"/> 
+                <InputCheckbox id="checkbox3" defaultChecked label="Default checked"/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <InputCheckbox disabled defaultChecked label="disabled checked"/>  
+                <InputCheckbox id="checkbox4" disabled defaultChecked label="Diabled checked"/>  
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <InputCheckbox disabled={false} indeterminate label="indeterminate"/> 
-            </StorybookInputContainerStyle>
-            <StorybookInputContainerStyle>
-                <InputCheckbox disabled id="test" indeterminate label="disabled indeterminate" />  
+                <InputCheckbox id="checkbox6" disabled indeterminate label="Disabled indeterminate" />  
             </StorybookInputContainerStyle>
         </React.Fragment>
 
