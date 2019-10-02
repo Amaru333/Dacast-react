@@ -11,7 +11,7 @@ const stories = storiesOf('Progress', module);
 stories.addDecorator(withKnobs);
 
 stories.add('Loading spinner', () => {
-        const color = select<ColorsApp>("Colors", ColorsAppArray, "blue");
+        const color = select<ColorsApp>("Colors", ColorsAppArray, "dark-violet");
         return(
             <React.Fragment>
             <StorybookProgressContainerStyle>
