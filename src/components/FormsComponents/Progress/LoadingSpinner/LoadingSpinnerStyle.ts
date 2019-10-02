@@ -13,28 +13,6 @@ const spin = keyframes`
 
 export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
   
-  /* border: 7px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 7px solid ${props => props.theme.colors[props.color]};
-  border-right: 7px solid ${props => props.theme.colors[props.color]};
-  width: 72px;
-  height: 72px;
-
-  animation: ${spin} 2s linear infinite;
-  ${props => (props.size == "small") && css`
-    height: 32px;
-    width: 32px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid ${props.theme.colors[props.color]};
-    border-right: 3px solid ${props.theme.colors[props.color]};
-  `}
-  ${props => (props.size == "medium") && css`
-    height: 48px;
-    width: 48px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid ${props.theme.colors[props.color]};
-    border-right: 5px solid ${props.theme.colors[props.color]};
-  `} */
   border-style: solid;
   border-color: ${props => props.theme.colors[props.color]} ${props => props.theme.colors[props.color]} 
   ${props => props.theme.colors["gray-9"]} ${props => props.theme.colors["gray-9"]};
