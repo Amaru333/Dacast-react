@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {Input} from '../components/FormsComponents/Input/Input'
+import {InputCheckbox} from '../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import "../scss/style.scss";
 
@@ -26,6 +27,26 @@ storiesOf('Inputs', module)
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
                 <Input label="Whatever label" placeholder="Placeholder" help="Info for this input" icon="error" disabled /> 
+            </StorybookInputContainerStyle>
+        </React.Fragment>
+
+    ) )
+        .add('Checkbox input', () => ( 
+        <React.Fragment>
+            <StorybookInputContainerStyle>
+                <InputCheckbox id="checkbox1" label="Checkbox" /> 
+            </StorybookInputContainerStyle>
+            <StorybookInputContainerStyle>
+                <InputCheckbox id="checkbox2" disabled label="Disabled"/>  
+            </StorybookInputContainerStyle>
+            <StorybookInputContainerStyle>
+                <InputCheckbox id="checkbox3" defaultChecked label="Default checked"/> 
+            </StorybookInputContainerStyle>
+            <StorybookInputContainerStyle>
+                <InputCheckbox id="checkbox4" disabled defaultChecked label="Diabled checked"/>  
+            </StorybookInputContainerStyle>
+            <StorybookInputContainerStyle>
+                <InputCheckbox id="checkbox6" disabled indeterminate label="Disabled indeterminate" />  
             </StorybookInputContainerStyle>
         </React.Fragment>
 

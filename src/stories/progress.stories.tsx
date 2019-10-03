@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import {LoadingSpinner} from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {ProgressBar} from '../components/FormsComponents/Progress/ProgressBar/ProgressBar'
 import styled from 'styled-components';
 import { withKnobs, select } from '@storybook/addon-knobs';
@@ -25,6 +26,23 @@ stories.add('Progress Bar', () => {
     </React.Fragment>
     );
 });
+
+stories.add('Loading spinner', () => {
+        const color = select<ColorsApp>("Colors", ColorsAppArray, "dark-violet");
+        return(
+            <React.Fragment>
+            <StorybookProgressContainerStyle>
+                <LoadingSpinner  size="large" color={color}/> 
+            </StorybookProgressContainerStyle>
+            <StorybookProgressContainerStyle>
+                <LoadingSpinner size="medium" color={color}/> 
+            </StorybookProgressContainerStyle>
+            <StorybookProgressContainerStyle>
+                <LoadingSpinner size="small" color={color}/> 
+            </StorybookProgressContainerStyle>
+        </React.Fragment>
+        )
+    });
 
 const StorybookProgressContainerStyle = styled.div`
     width: 200px;
