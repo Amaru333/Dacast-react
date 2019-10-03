@@ -1,9 +1,9 @@
 import styled, { css, keyframes } from "styled-components";
 import { ProgressBarProps } from './ProgressBarType';
 
-const move = keyframes`
+const move = (endValue: string) =>  keyframes`
    from { width: 0px; }
-   to { width: 100%; }
+   to { width: ${endValue}; }
 `;
 
 export const ProgressBarContainerStyle = styled.div<ProgressBarProps>`
@@ -24,7 +24,7 @@ export const ProgressBarStyle = styled.div<ProgressBarProps>`
     background-color: ${props => props.theme.colors[props.color]};
     height: 8px;
     border-radius: 4px;
-    animation: ${move} 5s linear infinite;
+    animation: ${props => move(props.startingValue)} 2s linear normal forwards;
     ${props => (props.size == "small") && css`
     height: 4px;
   `}
