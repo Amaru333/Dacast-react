@@ -46,7 +46,8 @@ export const ColorsAppArray: ColorsApp[] = [
     'blue-2',
     'orange',
     'overlay70',
-    'overlay40'
+    'overlay40',
+    'overlay20'
 ]
 
 export type ColorsApp =
@@ -97,4 +98,5 @@ export type ColorsApp =
     'blue-2' |
     'orange'  |
     'overlay70' |
-    'overlay40';
+    'overlay40'|
+    'overlay20';

@@ -72,7 +72,7 @@ export const InputCheckboxStyle = styled.input<InputCheckboxProps>`
 
 `;
 
-export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined, disabled: boolean | undefined, isFocus: boolean, indeterminate: boolean | undefined, checkbox : React.RefObject<HTMLInputElement>}>`
+export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; disabled: boolean | undefined; isFocus: boolean; indeterminate: boolean | undefined; checkbox: React.RefObject<HTMLInputElement>}>`
     display: flex;
     border: 1px solid ${props => props.theme.colors["gray-7"]} ;
     background-color: ${props => props.theme.colors["gray-10"]};

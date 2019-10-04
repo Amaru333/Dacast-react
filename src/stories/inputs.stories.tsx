@@ -31,7 +31,7 @@ storiesOf('Inputs', module)
         </React.Fragment>
 
     ) )
-        .add('Checkbox input', () => ( 
+    .add('Checkbox input', () => ( 
         <React.Fragment>
             <StorybookInputContainerStyle>
                 <InputCheckbox id="checkbox1" label="Checkbox" /> 
