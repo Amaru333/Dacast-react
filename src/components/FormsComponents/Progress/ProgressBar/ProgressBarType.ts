@@ -1,5 +1,4 @@
 import { ColorsApp } from '../../../../styled/types';
-import { TextProps } from '../../../Typography/TextTypes';
 
 type Size = "large" | "small";
 

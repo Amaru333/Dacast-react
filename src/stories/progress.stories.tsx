@@ -11,26 +11,25 @@ const stories = storiesOf('Progress', module);
 stories.addDecorator(withKnobs);
 
 stories.add('Progress Bar', () => {
-    const color = select<ColorsApp>("Colors", ColorsAppArray, "gray-1");
     return (
         <React.Fragment>
-        <StorybookProgressContainerStyle>
-            <ProgressBar size="small" color="blue" startingValue="10%" label="someLabel"/> 
-        </StorybookProgressContainerStyle>
-        <StorybookProgressContainerStyle>
-        <ProgressBar size="large" color="red" startingValue="20%" /> 
-        </StorybookProgressContainerStyle>
-        <StorybookProgressContainerStyle>
-        <ProgressBar size="small" color="yellow" startingValue="90%" /> 
-        </StorybookProgressContainerStyle>
-    </React.Fragment>
+            <StorybookProgressContainerStyle>
+                <ProgressBar size="small" color="blue" startingValue="10%" label="someLabel"/> 
+            </StorybookProgressContainerStyle>
+            <StorybookProgressContainerStyle>
+                <ProgressBar size="large" color="red" startingValue="20%" /> 
+            </StorybookProgressContainerStyle>
+            <StorybookProgressContainerStyle>
+                <ProgressBar size="small" color="yellow" startingValue="90%" /> 
+            </StorybookProgressContainerStyle>
+        </React.Fragment>
     );
 });
 
 stories.add('Loading spinner', () => {
-        const color = select<ColorsApp>("Colors", ColorsAppArray, "dark-violet");
-        return(
-            <React.Fragment>
+    const color = select<ColorsApp>("Colors", ColorsAppArray, "dark-violet");
+    return(
+        <React.Fragment>
             <StorybookProgressContainerStyle>
                 <LoadingSpinner  size="large" color={color}/> 
             </StorybookProgressContainerStyle>
@@ -41,8 +40,8 @@ stories.add('Loading spinner', () => {
                 <LoadingSpinner size="small" color={color}/> 
             </StorybookProgressContainerStyle>
         </React.Fragment>
-        )
-    });
+    )
+});
 
 const StorybookProgressContainerStyle = styled.div`
     width: 200px;

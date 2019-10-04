@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { TooltipProps } from './TooltipTypes';
 
-export const StorybookInputContainerStyle = styled.div<TooltipProps  & {visibility: boolean; top: number; left:number}>`
+export const StorybookInputContainerStyle = styled.div<TooltipProps  & {visibility: boolean; top: number; left: number}>`
     background-color: ${props => props.theme.colors["gray-10"] };
     border: 1px solid ${props => props.theme.colors["gray-7"] };
     border-radius: ${props => props.theme.borderRadius };
