@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from "styled-components";
-import { ProgressBarProps } from './ProgressBarType';
+import { ProgressBarProps } from './ProgressBarTypes';
 
 const move = (endValue: string) =>  keyframes`
    from { width: 0px; }
