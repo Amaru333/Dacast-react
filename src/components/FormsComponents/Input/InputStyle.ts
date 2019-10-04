@@ -69,15 +69,7 @@ export const InputStyle = styled.input<InputProps>`
 `;
 
 export const InputCheckboxStyle = styled.input<InputCheckboxProps>`
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+
 `;
 
 export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined, disabled: boolean | undefined, isFocus: boolean, indeterminate: boolean | undefined, checkbox : React.RefObject<HTMLInputElement>}>`
