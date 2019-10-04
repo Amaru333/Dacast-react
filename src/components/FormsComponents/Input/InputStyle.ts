@@ -116,3 +116,32 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined, di
         outline: rgb(59, 153, 252) auto 5px;
     `}
 `
+
+export const InputRadioStyle = styled.input`
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;    
+`
+
+export const RadioStyle = styled.div<InputProps>`
+    display: flex;
+    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    box-sizing: border-box;
+    border-radius: 50%;
+    height:16px;
+    width: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    &:checked {
+            
+            background-color: ${props => props.theme.colors["violet"]};
+        }
+    
+`
