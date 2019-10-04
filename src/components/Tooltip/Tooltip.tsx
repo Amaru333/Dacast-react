@@ -12,7 +12,6 @@ export const Tooltip: React.FC<TooltipProps> = (props:TooltipProps) => {
 
     React.useEffect(() => {
         let target = document.getElementById(props.target);
-        console.log(tooltip!.current!.clientHeight)
         setTop(target!.offsetTop - (tooltip!.current!.clientHeight + 2) );
         setLeft(target!.offsetLeft + ((target!.clientWidth - tooltip!.current!.clientWidth) / 2) );
 
