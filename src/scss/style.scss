@@ -36,3 +36,7 @@ a:active {
 a {
     text-decoration: none;
 }
+
+.noTransition {
+    transition: none !important;
+}

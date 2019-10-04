@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ToggleLabelStyle, ToggleWrapperStyle, ToggleStyle, LabelTextStyle} from "./ToggleStyle"
-import { ToggleProps } from './ToggleType';
+import { ToggleProps } from './ToggleTypes';
 
 
 export class Toggle extends React.Component<ToggleProps> {
