@@ -1,22 +1,42 @@
 import * as React from "react";
-import { InputProps } from './InputTypes';
+import { RadioProps } from './InputTypes';
 import { Text } from '../../Typography/Text';
-import { LabelStyle, InputRadioStyle, ContainerStyle, RadioStyle } from './InputStyle';
+import { RadioLabelStyle, InputRadioStyle, RelativeContainer, RadioTextStyle } from './InputStyle';
 
-export const InputRadio = (props: InputProps) => {
+export const InputRadio = (props: RadioProps) => {
 
-    let {label, ...other} = props
+    
+    const [checked, setChecked] = React.useState<boolean>(false)
+    const [focus, setFocus] = React.useState<boolean>(false)
+    let radioButtonRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {}, [focus, checked]);
+
+    let {label, name, ...other} = props
 
     return (
 
-        <ContainerStyle {...props}>
-            <InputRadioStyle type="radio"/>
-            <LabelStyle>
-                <RadioStyle></RadioStyle>
-                {label ? <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight="med" > {props.label} </Text> : null} 
-            </LabelStyle>
-        </ContainerStyle>
+        <RelativeContainer {...props}>
+            <InputRadioStyle 
+                checked={props.checked} 
+                name={props.name} 
+                disabled={props.disabled} 
+                type="radio" 
+                onFocus={() => setFocus(true)} 
+                onBlur={() => setFocus(false) } 
+                onClick={() => setChecked(!checked)}
+                ref={radioButtonRef}
+            />
+            <RadioLabelStyle isFocus={focus}>
+                {label ? <RadioTextStyle 
+                            color={props.disabled ? "gray-4" : "gray-1"} 
+                            size={14} weight="med"                   
+                        > 
+                            {props.label} 
+                        </RadioTextStyle> 
+                    : null} 
+            </RadioLabelStyle>
+        </RelativeContainer>
         
     )
 
-}
+}   

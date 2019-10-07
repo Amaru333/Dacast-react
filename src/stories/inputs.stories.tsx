@@ -55,8 +55,14 @@ storiesOf('Inputs', module)
 
         .add('Radio button input', () => (
             <React.Fragment>
-                <InputRadio label="Test"></InputRadio>
+                <InputRadio name="test" label="Test"></InputRadio>
+                <InputRadio name="test" label="Test 2"></InputRadio>
+                <InputRadio name="test" label="Test 3"></InputRadio>
+                <InputRadio disabled name="test-disabled" label="Disabled Test"></InputRadio>
+                <InputRadio  disabled name="test-disabled" label="Disabled Test 2"></InputRadio>
+                <InputRadio checked disabled name="test-disabled" label="Disabled Test 3"></InputRadio>
             </React.Fragment>
+            
         ));
 
 const StorybookInputContainerStyle = styled.div`
