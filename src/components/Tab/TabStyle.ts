@@ -15,13 +15,17 @@ export const TabHeaderContainer = styled.div<TabProps>`
 `;
 
 
-export const TabStyle = styled.div<{selected: boolean}>`
+export const TabStyle = styled.div<{selected: boolean, orientation: string}>`
     display: flex;
+    flex-flow: column;
     height: 40px;
     min-width: 84px;
     ${props => props.selected && css`
         background-color: ${props => props.theme.colors["violet20"]};
         color: ${props => props.theme.colors["dark-violet"]};
+    `}
+    ${props => props.selected && props.orientation == "vertical" && css`
+        border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
     `}
     &:hover {
         cursor: pointer;

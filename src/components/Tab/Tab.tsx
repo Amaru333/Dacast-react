@@ -15,10 +15,11 @@ export const Tab = (props:TabProps) => {
             props.list.map((tab, i) => {
                 return (
                     <TabStyle 
-                    key={"TabHeader"+i.toString()} 
+                    key={tab+i.toString()}
+                    orientation={props.orientation} 
                     selected={selectedTab === tab} 
                     onClick={() => handleTabClick(tab)}>
-                        <Text size={14} weight="reg">{tab}</Text>
+                        <Text className="center" size={14} weight="reg" color={selectedTab === tab ? "dark-violet" : "gray-1"}>{tab}</Text>
                     </TabStyle>
                 )
             })
@@ -29,7 +30,7 @@ export const Tab = (props:TabProps) => {
         return (
             props.contentList.map((tabContent, i) => {
                 return (
-                <TabContentStyle key={"TabContent"+i.toString()} isDisplayed={props.list[i] === selectedTab}>
+                <TabContentStyle key={props.list[i] + "content"+i.toString()} isDisplayed={props.list[i] === selectedTab}>
                     {tabContent()}
                 </TabContentStyle>
                 )
