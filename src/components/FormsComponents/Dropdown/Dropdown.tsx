@@ -3,7 +3,6 @@ import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle} from './DropdownStyle';
 import { DropdownProps } from './DropdownTypes';
-import { select } from '@storybook/addon-knobs';
 
 export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     const [isOpened, setOpen] = React.useState<boolean>(false);
@@ -49,6 +48,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     //useDetectClickOutside(dropdownListRef, clickOutside);
     const renderList = () => {
         let itemsList = props.list;
+        console.log(itemsList);
         if(props.dropdownType === "Multiple" && itemsList.indexOf("Select all") === -1) {
             itemsList.unshift("Select all");
         }
@@ -56,12 +56,14 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             itemsList.map((item, i) => {
                 return (
                     props.dropdownType === 'Single' ?                 
-                    <DropdownItem key={i} id={i.toString()} hasBottomBorder={false} isSelected={selectedItem === item} onClick={() => setSelectedItem(item)}> 
+                    <DropdownItem key={i} id={i.toString()+'Single'} hasBottomBorder={false} isSelected={selectedItem === item} onClick={() => setSelectedItem(item)}> 
                         {item} {selectedItem === item ? <DropdownIconStyle><Icon>check</Icon></DropdownIconStyle> : null}
                     </DropdownItem>
                     : props.dropdownType === 'Multiple' ?
-                    <DropdownItem key={i} hasBottomBorder={item === "Select all"} isSelected={false} id={i.toString()}> 
-                        <InputCheckbox id={i.toString()} indeterminate={item === "Select all" ? (checkedCheckboxes.length < props.list.length && checkedCheckboxes.length > 0) ? true : false : false} defaultChecked={item === "Select all" ? checkedCheckboxes.length === props.list.length ? true : false : checkedCheckboxes.includes(i) ? true : false} label={item} onChange={(e) => handleCheckboxChange(e, i)}/> 
+                    <DropdownItem key={i} hasBottomBorder={item === "Select all"} isSelected={false}  > 
+                        <InputCheckbox 
+                            id={i.toString()} 
+                            label={item}/> 
                     </DropdownItem>
                     : null
                 )                
