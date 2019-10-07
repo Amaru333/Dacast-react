@@ -6,29 +6,24 @@ import { ModalContent, ModalFooter } from './Modal';
 import { ModalCardContainerStyle, ModalTitleStyle, IconStyle } from './ModalStyle';
 
 export { ModalContent, ModalFooter} ;
-export class ModalCard extends React.Component<ModalCardProps> {
-    constructor(props: ModalCardProps) {
-        super(props);
-    }
 
-    render() {
-        var { icon, ...other } = this.props;
+export const ModalCard = (props: ModalCardProps) => {
 
-        return (
-            <ModalCardContainerStyle {...other}>
-                <ModalTitleStyle>
-                    {icon ? (
-                        <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
-                    ) : null}
-                    <Text size={24} weight="med">
-                        {this.props.title}
-                    </Text>
-                </ModalTitleStyle>
-                {this.props.children}
-            </ModalCardContainerStyle>
-        );
-    }
+    var { icon, ...other } = props;
 
-    static defaultProps = { size: "large"};
-
+    return (
+        <ModalCardContainerStyle {...other}>
+            <ModalTitleStyle>
+                {icon ? (
+                    <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
+                ) : null}
+                <Text color="gray-1" size={24} weight="med">
+                    {props.title}
+                </Text>
+            </ModalTitleStyle>
+            {props.children}
+        </ModalCardContainerStyle>
+            );
 }
+
+ModalCard.defaultProps = { size: "large"};
