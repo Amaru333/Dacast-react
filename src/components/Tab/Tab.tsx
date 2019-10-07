@@ -27,10 +27,10 @@ export const Tab = (props:TabProps) => {
 
     const renderTabsContent = () => {
         return (
-            props.contentList.map ((tabContent, i) => {
+            props.contentList.map((tabContent, i) => {
                 return (
                 <TabContentStyle key={"TabContent"+i.toString()} isDisplayed={props.list[i] === selectedTab}>
-                    {tabContent}
+                    {tabContent()}
                 </TabContentStyle>
                 )
             })
