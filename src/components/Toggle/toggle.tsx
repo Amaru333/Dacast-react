@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ToggleLabelStyle, ToggleWrapperStyle, ToggleStyle, LabelTextStyle} from "./ToggleStyle"
-import { ToggleProps } from './ToggleType';
+import { ToggleProps } from './ToggleTypes';
 
 
 export class Toggle extends React.Component<ToggleProps> {
@@ -12,12 +12,12 @@ export class Toggle extends React.Component<ToggleProps> {
         
 
         return (
-           <ToggleWrapperStyle {...this.props}>
-               <ToggleStyle id={this.props.label} type="checkbox" />
+            <ToggleWrapperStyle {...this.props}>
+                <ToggleStyle id={this.props.label} type="checkbox" />
                 <ToggleLabelStyle htmlFor={this.props.label}>
                     <LabelTextStyle size={16} weight="med">{this.props.label}</LabelTextStyle>
                 </ToggleLabelStyle>
-           </ToggleWrapperStyle> 
+            </ToggleWrapperStyle> 
         );
     }
 

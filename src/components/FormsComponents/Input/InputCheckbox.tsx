@@ -4,7 +4,7 @@ import { InputCheckboxProps } from './InputTypes';
 import { ContainerStyle, InputCheckboxStyle, LabelStyle, CheckBoxStyle } from './InputStyle';
 
 
-export const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
+export const InputCheckbox: React.FC<InputCheckboxProps> = (props: InputCheckboxProps) => {
 
     let checkboxRef = React.useRef<HTMLInputElement>(null);
     const [focus, setFocus] = React.useState<boolean>(false)
