@@ -3,7 +3,7 @@ import { ButtonProps } from './ButtonTypes';
 import { ButtonStyle } from './ButtonStyle';
 
 
-export const Button: React.FunctionComponent<ButtonProps> = (props) => {
+export const Button = (props : ButtonProps) => {
 
     return <ButtonStyle {...props}>{props.children}</ButtonStyle>;
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextProps } from './TextTypes';
 import { SpanStyle } from './TextStyle';
 
-export const Text: React.FC<TextProps> = props => {
+export const Text = (props: TextProps) => {
 
     var { size, weight, ...other } = props;
 
