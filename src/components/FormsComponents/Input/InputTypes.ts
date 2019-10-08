@@ -32,7 +32,7 @@ export interface InputSpecificProps {
     help?: string;
     isError?: boolean;
     disabled?: boolean;
-    type?: InputType;
+    type?: InputType;  
 }
 
 export interface CheckboxSpecificProps {
@@ -49,3 +49,12 @@ export interface InputCheckboxSpecificProps {
 }
 
 export type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;
+
+export interface RadioSpecificProps {
+    name?: string;
+    checked?: boolean;
+    label?: string;
+    disabled?: boolean;
+}
+
+export type RadioProps = RadioSpecificProps & React.HTMLAttributes<HTMLInputElement>;

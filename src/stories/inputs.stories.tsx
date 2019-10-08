@@ -4,6 +4,7 @@ import {Input} from '../components/FormsComponents/Input/Input'
 import {InputCheckbox} from '../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import "../scss/style.scss";
+import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
 
 storiesOf('Inputs', module)
     .add('Text input', () => ( 
@@ -50,7 +51,19 @@ storiesOf('Inputs', module)
             </StorybookInputContainerStyle>
         </React.Fragment>
 
-    ) );
+    ) )
+
+        .add('Radio button input', () => (
+            <React.Fragment>
+                <InputRadio name="test" label="Test"></InputRadio>
+                <InputRadio name="test" label="Test 2"></InputRadio>
+                <InputRadio name="test" label="Test 3"></InputRadio>
+                <InputRadio disabled name="test-disabled" label="Disabled Test"></InputRadio>
+                <InputRadio  disabled name="test-disabled" label="Disabled Test 2"></InputRadio>
+                <InputRadio checked disabled name="test-disabled" label="Disabled Test 3"></InputRadio>
+            </React.Fragment>
+            
+        ));
 
 const StorybookInputContainerStyle = styled.div`
     width: 200px;

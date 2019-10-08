@@ -4,61 +4,51 @@ import Icon from '@material-ui/core/Icon';
 import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
 
-export class Modal extends React.Component<ModalProps> {
-    constructor(props: ModalProps) {
-        super(props);
-    }
+export const Modal = (props: ModalProps) => {
 
-    render() {
-        var { icon, ...other } = this.props;
+    var { icon, ...other } = props;
 
-        return (
-            <React.Fragment>
-                <ModalContainerStyle {...other}>
-                    <ModalTitleStyle>
-                        {icon ? (
-                            <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
-                        ) : null}
-                        <Text size={24} weight="med">
-                            {this.props.title}
-                        </Text>
-                        <ModalCloseButtonStyle onClick={() => this.props.toggle()}>
-                            <Icon>close</Icon>
-                        </ModalCloseButtonStyle>
-                    </ModalTitleStyle>
-                    {this.props.children}
-                </ModalContainerStyle>
-                <OverlayStyle opened={this.props.opened } />
-            </React.Fragment>
-        );
-    }
-
-    static defaultProps = { size: "large", opened: false};
+    return (
+        <React.Fragment>
+            <ModalContainerStyle {...other}>
+                <ModalTitleStyle>
+                    {icon ? (
+                        <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
+                    ) : null}
+                    <Text color="gray-1" size={24} weight="med">
+                        {props.title}
+                    </Text>
+                    <ModalCloseButtonStyle onClick={() => props.toggle()}>
+                        <Icon>close</Icon>
+                    </ModalCloseButtonStyle>
+                </ModalTitleStyle>
+                {props.children}
+            </ModalContainerStyle>
+            <OverlayStyle opened={props.opened } />
+        </React.Fragment>
+    );
 
 }
 
-export class ModalContent extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
-    constructor(props: React.HTMLAttributes<HTMLDivElement>) {
-        super(props);
-    }
-    render() {
-        return (
-            <ModalBodyStyle {...this.props} >
-                {this.props.children}
-            </ModalBodyStyle>
-        )
-    }
+Modal.defaultProps = { size: "large", opened: false};
+
+
+export const ModalContent = (props: React.HTMLAttributes<HTMLDivElement>) => {
+
+    return (
+        <ModalBodyStyle {...props} >
+            {props.children}
+        </ModalBodyStyle>
+    )
+
 }
 
-export class ModalFooter extends React.Component<React.HTMLAttributes<HTMLDivElement>> {
-    constructor(props: React.HTMLAttributes<HTMLDivElement>) {
-        super(props);
-    }
-    render() {
-        return (
-            <ModalFooterStyle {...this.props} >
-                {this.props.children}
-            </ModalFooterStyle>
-        )
-    }
+export const ModalFooter = (props: React.HTMLAttributes<HTMLDivElement>) => {
+
+    return (
+        <ModalFooterStyle {...props} >
+            {props.children}
+        </ModalFooterStyle>
+    )
+
 }

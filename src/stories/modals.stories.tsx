@@ -19,10 +19,10 @@ var toggleModal = (name: any) => {
 storiesOf('Modals', module)
     .add('Modal', () => (
         <React.Fragment>
-            <Button className="m2" onClick={() => toggleModal("modal1")} > Open warning modal </Button>
+            <Button className="m2" onClick={() => toggleModal("modal1")} sizeButton="large" typeButton="primary" > Open warning modal </Button>
             <Modal icon={{ name: "warning", color: "red" }} opened={openedModals['modal1']} toggle={() => toggleModal("modal1")} size="small" title="Test title">
                 <ModalContent>
-                    <Text size={14} weight="med">This is some text</Text>
+                    <Text color="gray-1" size={14} weight="med">This is some text</Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button sizeButton="large" typeButton="primary">Primary</Button>
@@ -30,7 +30,7 @@ storiesOf('Modals', module)
                 </ModalFooter>
             </Modal>
 
-            <Button className="m2" onClick={() => toggleModal("modal2")} > Open small modal </Button>
+            <Button className="m2" onClick={() => toggleModal("modal2")} sizeButton="large" typeButton="primary" > Open small modal </Button>
             <Modal toggle={() => toggleModal("modal2")} opened={openedModals['modal2']} size="small" title="Modal With Inputs">
                 <ModalContent>
                     <Input label="Test 1"></Input>
@@ -45,7 +45,7 @@ storiesOf('Modals', module)
 
             </Modal>
 
-            <Button className="m2" onClick={() => toggleModal("modal3")} > Open large modal </Button>
+            <Button className="m2" onClick={() => toggleModal("modal3")} sizeButton="large" typeButton="primary" > Open large modal </Button>
             <Modal toggle={() => toggleModal("modal3")} opened={openedModals['modal3']} title="Modal With Inputs">
                 <ModalContent>
                     <Input label="Test 1"></Input>

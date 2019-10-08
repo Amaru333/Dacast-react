@@ -4,30 +4,23 @@ import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle } from './InputStyle';
 
-export class Input extends React.Component<InputProps> {
+export const Input: React.FC<InputProps> = props => {
 
-    constructor(props: InputProps) {
-        super(props);
-    }
+    var { label, icon, help, isError, className, ...other } = props;
 
-    render() {
-
-        var { label, icon, help, isError, className, ...other } = this.props;
-
-        return (
-            <ContainerStyle className={className} >
-                {label ? <LabelStyle disabled={this.props.disabled} > <Text color={ this.props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {this.props.label} </Text> </LabelStyle> : null}
-                <RelativeContainer>
-                    <InputStyle isError={isError} {...other} />
-                    {icon ? <IconStyle><Icon>{icon}</Icon></IconStyle> : null}
-                </RelativeContainer>
-                {help ? <HelpStyle>
-                    <Text color={this.props.isError ? "red" : this.props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
-                </HelpStyle> : null}
-            </ContainerStyle>
-        );
-    }
-
-    static defaultProps = { isError: false, disabled: false }
+    return (
+        <ContainerStyle className={className} >
+            {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
+            <RelativeContainer>
+                <InputStyle isError={isError} {...other} />
+                {icon ? <IconStyle><Icon>{icon}</Icon></IconStyle> : null}
+            </RelativeContainer>
+            {help ? <HelpStyle>
+                <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
+            </HelpStyle> : null}
+        </ContainerStyle>
+    );
 
 }
+
+Input.defaultProps = { isError: false, disabled: false }

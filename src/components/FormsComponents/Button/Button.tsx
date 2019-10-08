@@ -3,15 +3,10 @@ import { ButtonProps } from './ButtonTypes';
 import { ButtonStyle } from './ButtonStyle';
 
 
-export class Button extends React.Component<ButtonProps> {
-    constructor(props: ButtonProps) {
-        super(props);
-    }
+export const Button = (props : ButtonProps) => {
 
-    render() {
-        return <ButtonStyle {...this.props}>{this.props.children}</ButtonStyle>;
-    }
-
-    static defaultProps = {typeButton: "primary", sizeButton: "large"}
+    return <ButtonStyle {...props}>{props.children}</ButtonStyle>;
 
 }
+
+Button.defaultProps = {typeButton: "primary", sizeButton: "large"}

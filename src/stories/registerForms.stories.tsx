@@ -26,13 +26,13 @@ stories.add('Sign Up', () => {
                     <Input className="col col-12" type="tel" label="Contact Number" placeholder="Contact Number" />
                     <Input className="col col-12" type="password" label="Password" placeholder="Password" icon="visibility_off" />
                     <p>
-                        <Text size={12} weight="reg" >Already have an account? <a href="#" >Log in.</a></Text><br />
-                        <Text size={12} weight="reg" >By signing up, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></Text>
+                        <Text color="gray-1" size={12} weight="reg" >Already have an account? <a href="#" >Log in.</a></Text><br />
+                        <Text color="gray-1" size={12} weight="reg" >By signing up, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></Text>
                     </p>
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Sign Up</Button>
-                    <Button typeButton="tertiary">Cancel</Button>
+                    <Button sizeButton="large" typeButton="primary">Sign Up</Button>
+                    <Button sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </ModalCard>
         </ScrollableContainer>
@@ -47,10 +47,10 @@ stories.add('Log In', () => {
                 <ModalContent className="clearfix">
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />
                     <Input type="password" className="col col-12" label="Password" icon="visibility_off" placeholder="Password" />
-                    <Text className="col col-12" size={12} weight="reg">Don&apos;t have an account? <a href="#">Sign up</a></Text>
+                    <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="#">Sign up</a></Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Log In</Button>
+                    <Button sizeButton="large" typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
         </ScrollableContainer>
@@ -67,8 +67,8 @@ stories.add('Reset Password', () => {
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" />   
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Reset Password</Button>
-                    <Button typeButton="tertiary">Cancel</Button>
+                    <Button sizeButton="large" typeButton="primary">Reset Password</Button>
+                    <Button sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </ModalCard>
         </ScrollableContainer>
