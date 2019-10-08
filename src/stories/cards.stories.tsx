@@ -19,7 +19,7 @@ storiesOf('Cards', module)
         </Container>
     ))
 
-    var Container = styled.div`
+var Container = styled.div`
     height: 1400px;
     width:auto;
     background: #EBEFF5;
@@ -27,11 +27,11 @@ storiesOf('Cards', module)
     padding-top: 50px;
     text-align: center;
 `
-    var CardContent = styled.div`
+var CardContent = styled.div`
     margin: 75px 95px 20px;
     `
 
-    var CardTitle = styled.div`
+var CardTitle = styled.div`
     float:left;
     `
     

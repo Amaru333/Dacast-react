@@ -23,7 +23,7 @@ export const ModalCard = (props: ModalCardProps) => {
             </ModalTitleStyle>
             {props.children}
         </ModalCardContainerStyle>
-            );
+    );
 }
 
 ModalCard.defaultProps = { size: "large"};

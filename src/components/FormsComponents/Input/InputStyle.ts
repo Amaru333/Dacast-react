@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { InputProps, InputCheckboxProps, RadioProps } from './InputTypes';
+import { InputProps, InputCheckboxProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div<InputProps>`
@@ -139,7 +139,7 @@ export const RadioLabelStyle = styled.label<{isFocus: boolean}>`
     `}
 `
 
-export const InputRadioStyle = styled.input<{checked: boolean | undefined, disabled: boolean | undefined}>`
+export const InputRadioStyle = styled.input<{checked: boolean | undefined; disabled: boolean | undefined}>`
     opacity: 0;
     z-index: 1;
     border-radius: 50%;

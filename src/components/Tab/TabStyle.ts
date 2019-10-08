@@ -15,7 +15,7 @@ export const TabHeaderContainer = styled.div<TabProps>`
 `;
 
 
-export const TabStyle = styled.div<{selected: boolean, orientation: string}>`
+export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
     display: flex;
     flex-flow: column;
     height: 40px;

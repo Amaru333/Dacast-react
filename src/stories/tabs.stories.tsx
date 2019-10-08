@@ -33,24 +33,24 @@ const functionTest4 = () => {
 storiesOf('Tabs', module)
     .add('Tab', () => {
         return ( 
-        <React.Fragment>
-            <StorybookTabContainerStyle>
-                <Tab 
-                    list={["tab1", "tab2", "tab3", "tab4"]} 
-                    orientation="horizontal"
-                    contentList={[functionTest1, functionTest2, functionTest3, functionTest4]}  
-                />                    
-            </StorybookTabContainerStyle>
-            <StorybookTabContainerStyle>
-                <Tab 
-                    list={["tab1", "tab2", "tab3", "tab4"]} 
-                    orientation="vertical"
-                    contentList={[functionTest1, functionTest2, functionTest3, functionTest4]} 
-                />
-            </StorybookTabContainerStyle>
-        </React.Fragment>
+            <React.Fragment>
+                <StorybookTabContainerStyle>
+                    <Tab 
+                        list={["tab1", "tab2", "tab3", "tab4"]} 
+                        orientation="horizontal"
+                        contentList={[functionTest1, functionTest2, functionTest3, functionTest4]}  
+                    />                    
+                </StorybookTabContainerStyle>
+                <StorybookTabContainerStyle>
+                    <Tab 
+                        list={["tab1", "tab2", "tab3", "tab4"]} 
+                        orientation="vertical"
+                        contentList={[functionTest1, functionTest2, functionTest3, functionTest4]} 
+                    />
+                </StorybookTabContainerStyle>
+            </React.Fragment>
 
-    )});
+        )});
 
 const StorybookTabContainerStyle = styled.div`
     float: left;

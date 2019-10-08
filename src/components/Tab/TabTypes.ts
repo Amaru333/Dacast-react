@@ -1,7 +1,7 @@
 interface TabSpecificProps {
-    list: Array<string>;
+    list: string[];
     orientation: string;
-    contentList: Array<Function>;
+    contentList: Function[];
 }
 
 export type TabProps = TabSpecificProps & React.HTMLAttributes<HTMLDivElement>;
