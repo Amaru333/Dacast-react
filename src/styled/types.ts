@@ -1,5 +1,6 @@
 export const ColorsAppArray: ColorsApp[] = [
     'black',
+    'coral',
     'gray-1',
     'gray-2',
     'gray-3',
@@ -52,6 +53,7 @@ export const ColorsAppArray: ColorsApp[] = [
 
 export type ColorsApp =
     'black' |
+    'coral' |
     'gray-1' |
     'gray-2' |
     'gray-3' |
