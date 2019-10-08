@@ -26,8 +26,8 @@ export const BadgeStyle = styled.div<{number: string}>`
     text-align: center;
     ${props => props.number.length === 0 && css`
     border-radius: 100px;
-    height: 10px;
-    min-width: 10px;
+    height: 8px;
+    min-width: 8px;
     `}  
 `
 
