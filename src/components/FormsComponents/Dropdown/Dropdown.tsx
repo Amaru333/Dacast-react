@@ -9,7 +9,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     /** Commun States/Ref */
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>("Pick one options");
+    const [selectedItem, setSelectedItem] = React.useState<string>("Select");
     const [checkedCheckboxes, setCheckedCheckboxes] = React.useState<DropdownListType>( props.list );
     const [selectAllState, setSelectAllState] = React.useState<0 | 1 | 2>(0);
 
@@ -28,7 +28,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         } else if (numberChecked == 1) {
             setSelectedItem(Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name] )[0] );
         } else {
-            setSelectedItem("Pick one options")
+            setSelectedItem("Select")
         }
     }
 
