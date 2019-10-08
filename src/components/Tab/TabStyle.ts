@@ -19,9 +19,11 @@ export const TabStyle = styled.div<{selected: boolean, orientation: string}>`
     display: flex;
     flex-flow: column;
     height: 40px;
+    justify-content: center;
+    align-items: center;
     min-width: 84px;
     ${props => props.selected && css`
-        background-color: ${props => props.theme.colors["violet20"]};
+        background-color: ${props => props.theme.colors["violet20"]} !important;
         color: ${props => props.theme.colors["dark-violet"]};
     `}
     ${props => props.selected && props.orientation == "vertical" && css`
@@ -29,6 +31,10 @@ export const TabStyle = styled.div<{selected: boolean, orientation: string}>`
     `}
     &:hover {
         cursor: pointer;
+        background-color: ${props => props.theme.colors["gray-10"]};
+        span {
+            font-weight: 500 !important;
+        }
     }
 `;
 
