@@ -4,7 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle } from './InputStyle';
 
-export const Input: React.FC<InputProps> = props => {
+export const Input = (props: InputProps) => {
 
     var { label, icon, help, isError, className, ...other } = props;
 

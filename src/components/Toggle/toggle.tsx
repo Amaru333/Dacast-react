@@ -2,7 +2,7 @@ import * as React from "react";
 import { ToggleLabelStyle, ToggleWrapperStyle, ToggleStyle, LabelTextStyle} from "./ToggleStyle"
 import { ToggleProps } from './ToggleTypes';
 
-export const Toggle: React.FC<ToggleProps> = (props) => {
+export const Toggle = (props: ToggleProps) => {
 
     return (
         <ToggleWrapperStyle {...props}>
@@ -11,7 +11,7 @@ export const Toggle: React.FC<ToggleProps> = (props) => {
                 <LabelTextStyle color="gray-1" size={16} weight="med">{props.label}</LabelTextStyle>
             </ToggleLabelStyle>
         </ToggleWrapperStyle> 
-            );
+    );
 
 }
 
