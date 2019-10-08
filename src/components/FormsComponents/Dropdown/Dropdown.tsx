@@ -7,11 +7,15 @@ import { DropdownProps } from './DropdownTypes';
 export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
+    //No, the first item is not pick by default, it's not even checked visually. 
+    //We can see "1 item selected" or 'item1' but it should be a props or something else"
     const [selectedItem, setSelectedItem] = React.useState<string>(props.dropdownType !== 'Search' ? props.list[0] : "placeholder");
     const [checkedCheckboxes, setCheckedCheckboxes] = React.useState<Array<string>>([]);
     const [selectAll, setSelectAll] = React.useState<string>("none");
 
-    React.useEffect(() => {}, [selectAll, checkedCheckboxes, selectedItem])
+    React.useEffect(() => {
+        handleMultiTitle();
+    }, [selectAll, checkedCheckboxes, selectedItem])
 
     const iconDropdownOpened = "arrow_drop_up";
     const iconDropdownClosed = "arrow_drop_down";
@@ -22,6 +26,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
     const handleMultiTitle = () => {
        if(props.dropdownType === "Multiple") {
+            console.log(checkedCheckboxes);
             const selectedItemLabel = checkedCheckboxes.length === 0 ? selectedItem : checkedCheckboxes.length === 1 ? checkedCheckboxes.length + " item selected" : checkedCheckboxes.length + " items selected";
             setSelectedItem(selectedItemLabel);
         }
@@ -30,33 +35,22 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     const handleCheckboxChange = (e: React.FormEvent<HTMLInputElement>, item: string) => {
         let tempArray = checkedCheckboxes;
         const propsList = props.list.filter(item => item !== "Select all")
-        // console.log(item);
         
-        // // the checkbox is checked
         if(e.currentTarget.checked) {
-            console.log("checked");
-            // the select all checkbox is checked
             if(item === "Select all") {
-                console.log("select all checked");
-                // adding all items in props in the checked array
                 tempArray = propsList;
-            } else { // any other checkbox is checked
-                console.log("something else checked");
-                // adding the checkbox in the array if it isn't already there
+            } else { 
                 if(!tempArray.includes(item)) {
                     tempArray.push(item);
                 }
             }
         }
-        else { // a checkbox is unchecked
-            console.log("Unchecked");
-            if(item === "Select all") { // the select all checkbox is unchecked
-                console.log("select all Unchecked");
-                tempArray = [] // the temp array is empty
+        else { 
+            if(item === "Select all") { 
+                tempArray = [] 
             }
-            else{ // any other checkbox is unchecked 
-                console.log("something else unchecked");
-                tempArray = tempArray.filter(checkbox => checkbox !== item) // removing the checkbox from the array
+            else{
+                tempArray = tempArray.filter(checkbox => checkbox !== item) 
             }
 
         }
@@ -70,12 +64,8 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         else {
             setSelectAll("indeterminate")
         }
-        console.log(tempArray)
-        console.log(propsList)
-        console.log(propsList.length);
-        console.log(tempArray.length)
+        console.log(tempArray);
         setCheckedCheckboxes(tempArray);
-        handleMultiTitle();
     }
 
     const handleDefaultChecked = (item: string) => {
@@ -99,7 +89,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         }
     }
 
-    //useDetectClickOutside(dropdownListRef, clickOutside);
+
     const renderList = () => {
         let itemsList = props.list;
         if(props.dropdownType === "Multiple" && itemsList.indexOf("Select all") === -1) {
@@ -119,7 +109,6 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
                             label={item}
                             indeterminate={handleIndeterminate(item)}
                             defaultChecked={handleDefaultChecked(item)}
-
                             onChange={(e) => handleCheckboxChange(e, item)}/> 
                     </DropdownItem>
                     : null

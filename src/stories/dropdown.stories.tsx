@@ -15,11 +15,11 @@ stories.add('Dropdown', () => {
     return(
         <React.Fragment>
         <StorybookDropdownContainerStyle>
-            <Dropdown  title="title" dropdownType="Single" list={["item1", "item2", "item3"]}/> 
+            <Dropdown  title="My dropdown" dropdownType="Single" list={["item1", "item2", "item3"]}/> 
         </StorybookDropdownContainerStyle>
         <StorybookDropdownContainerStyle>
             <Dropdown  
-                title="title" dropdownType="Multiple" list={["item1", "item2", "item3"]}/> 
+                title="My checkbox dropdown" dropdownType="Multiple" list={["item1", "item2", "item3"]}/> 
         </StorybookDropdownContainerStyle>
     </React.Fragment>
     )
