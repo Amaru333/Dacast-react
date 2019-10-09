@@ -29,9 +29,9 @@ var Container = styled.div`
 `
 var CardContent = styled.div`
     margin: 75px 95px 20px;
-    `
+`
 
 var CardTitle = styled.div`
     float:left;
-    `
+`
     

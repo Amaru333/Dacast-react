@@ -3,17 +3,21 @@ import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
 import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
+import { useOutsideAlerter } from '../../utils/utils';
 
 export const Modal = (props: ModalProps) => {
 
     var { icon, ...other } = props;
 
+    let modalRef = React.useRef<HTMLDivElement>(null);
+    useOutsideAlerter(modalRef, () => props.toggle());
+
     return (
         <React.Fragment>
-            <ModalContainerStyle {...other}>
+            <ModalContainerStyle ref={modalRef} {...other}>
                 <ModalTitleStyle>
                     {icon ? (
-                        <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
+                        <IconStyle onClick={ e=> true } iconColor={icon.color} >{icon.name}</IconStyle>
                     ) : null}
                     <Text color="gray-1" size={24} weight="med">
                         {props.title}

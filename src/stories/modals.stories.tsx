@@ -20,7 +20,7 @@ storiesOf('Modals', module)
     .add('Modal', () => (
         <React.Fragment>
             <Button className="m2" onClick={() => toggleModal("modal1")} sizeButton="large" typeButton="primary" > Open warning modal </Button>
-            <Modal icon={{ name: "warning", color: "red" }} opened={openedModals['modal1']} toggle={() => toggleModal("modal1")} size="small" title="Test title">
+            <Modal icon={{ name: "warning", color: "red" }} opened={openedModals['modal1']} toggle={() => toggleModal("modal1")} size="small" title="This is the title">
                 <ModalContent>
                     <Text color="gray-1" size={14} weight="med">This is some text</Text>
                 </ModalContent>
