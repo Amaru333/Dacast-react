@@ -1,12 +1,15 @@
 import { List } from 'material-ui';
 
-type DropdownType = "Single" | "Multiple" | "Search";
-
 export type DropdownListType = {[key: string]: boolean};
 
+export const dropdownIcons = {
+    opened: "arrow_drop_up",
+    closed: "arrow_drop_down"
+}
+
 interface DropdownCustomProps {
-    dropdownType: DropdownType;
-    title: string;
+    id: string;
+    dropdownTitle: string;
     list: DropdownListType;
 }
 

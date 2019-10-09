@@ -10,11 +10,6 @@ export const ContainerStyle = styled.div<DropdownProps>`
 
 export const DropdownLabel = styled.div`
     display: flex;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
 `;
 
 export const TitleContainer = styled.div<{isOpened: boolean}>`
@@ -37,16 +32,11 @@ export const TitleContainer = styled.div<{isOpened: boolean}>`
 
 export const Title = styled.div`
     padding: 8px 44px 8px 12px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 24px;
 `;
 
 export const IconStyle = styled.div`
     position: absolute;
-    right: 2%;
+    right: 8%;
     top: 17%;
 `;
 
@@ -63,10 +53,11 @@ export const DropdownList = styled.ul<{displayDropdown: boolean}>`
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
 `;
 
-export const DropdownItem = styled.li<{isSelected: boolean, hasBottomBorder: boolean}>`
+export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
     min-height: 32px;
+    padding: 4px 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
@@ -75,13 +66,16 @@ export const DropdownItem = styled.li<{isSelected: boolean, hasBottomBorder: boo
         background-color: ${props => props.theme.colors["violet10"]};
         color: ${props => props.theme.colors["dark-violet"]};
     `}
-    ${props => props.hasBottomBorder && css`
-        border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    `}
+`;
+
+export const BorderItem = styled.div<{}>`
+    border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
+    width: 112%;
+    margin-left: -6%;
 `;
 
 export const DropdownIconStyle = styled.div`
     position: absolute;
     right: 2%;
-    top: 2%;
+    top: 15%;
 `;

@@ -41,11 +41,14 @@ export interface CheckboxSpecificProps {
 
 export type InputProps = InputSpecificProps & React.HTMLAttributes<HTMLInputElement>;
 
+export type labelWeight = "reg" | "med";
+
 export interface InputCheckboxSpecificProps {
     id: string;
     label?: string;
     disabled?: boolean;
     indeterminate?: boolean;
+    labelWeight?: labelWeight;
 }
 
 export type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;

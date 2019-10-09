@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import {Dropdown} from '../components/FormsComponents/Dropdown/Dropdown';
+import {DropdownCheckbox} from '../components/FormsComponents/Dropdown/DropdownCheckbox';
+import {DropdownSingle} from '../components/FormsComponents/Dropdown/DropdownSingle';
 import { withKnobs, select } from '@storybook/addon-knobs';
 import styled from 'styled-components';
 import { ColorsApp, ColorsAppArray } from '../styled/types';
@@ -15,11 +16,17 @@ stories.add('Dropdown', () => {
     return(
         <React.Fragment>
         <StorybookDropdownContainerStyle>
-            <Dropdown  title="My dropdown" dropdownType="Single" list={{ "item1":false, "item2":false, "item3":false }}/> 
+            <DropdownSingle 
+                id="singleDopdown"
+                dropdownTitle="My dropdown" 
+                list={{ "item1":false, "item2":false, "item3":false }}/> 
         </StorybookDropdownContainerStyle>
         <StorybookDropdownContainerStyle>
-            <Dropdown  
-                title="My checkbox dropdown" dropdownType="Multiple" list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }/> 
+            <DropdownCheckbox  
+                id="checkboxDropdown"
+                dropdownTitle="My checkbox dropdown"
+                list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }
+            /> 
         </StorybookDropdownContainerStyle>
     </React.Fragment>
     )
