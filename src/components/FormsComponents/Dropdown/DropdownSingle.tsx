@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle} from './DropdownStyle';
-import { DropdownProps } from './DropdownTypes';
+import { DropdownProps, dropdownIcons } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 
 export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -11,11 +11,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [selectedItem, setSelectedItem] = React.useState<string>("Select");
 
     React.useEffect(() => {}, [selectedItem])
-
-    const dropdownIcons = {
-        opened: "arrow_drop_up",
-        closed: "arrow_drop_down"
-    }
 
     const renderList = () => {
         let itemsList = props.list;

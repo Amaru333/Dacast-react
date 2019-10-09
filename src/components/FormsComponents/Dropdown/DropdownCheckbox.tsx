@@ -2,7 +2,7 @@ import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem } from './DropdownStyle';
-import { DropdownProps, DropdownListType } from './DropdownTypes';
+import { DropdownProps, DropdownListType , dropdownIcons} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 
 export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -18,11 +18,6 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
         handleTitle();
         handleSelectAllState();
     }, [checkedCheckboxes, selectedItem])
-
-    const dropdownIcons = {
-        opened: "arrow_drop_up",
-        closed: "arrow_drop_down"
-    }
 
     const handleTitle = () => {
         const numberChecked = Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name]).length;
