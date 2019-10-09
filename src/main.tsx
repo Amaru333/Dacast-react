@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { Store } from "redux";
 
 import { TopAppBar } from "./components/TopAppBar";
-import TodoList from "./containers/TodoList";
+//import TodoList from "./containers/TodoList";
 import { ApplicationState } from "./redux-flow/store";
 
 // Import Main styles for this application
@@ -19,7 +19,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     return (
         <Provider store={store}>
             <TopAppBar/>
-            <TodoList />
         </Provider>
     );
 };
