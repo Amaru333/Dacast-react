@@ -1,6 +1,5 @@
 import * as React from "react";
 import { RadioProps } from './InputTypes';
-import { Text } from '../../Typography/Text';
 import { RadioLabelStyle, InputRadioStyle, RelativeContainer, RadioTextStyle } from './InputStyle';
 
 export const InputRadio = (props: RadioProps) => {

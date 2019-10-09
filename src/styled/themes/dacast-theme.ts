@@ -4,6 +4,7 @@ const Theme: DefaultTheme = {
     borderRadius: '4px',
     colors: {
         'black': "#000000",
+        'coral': "#E12D2D",
         'gray-1': '#222F3E',
         'gray-2': '#434A54',
         'gray-3': '#58606E',
