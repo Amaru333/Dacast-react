@@ -28,7 +28,7 @@ export const InputRadio = (props: RadioProps) => {
             <RadioLabelStyle isFocus={focus}>
                 {label ? <RadioTextStyle 
                     color={props.disabled ? "gray-4" : "gray-1"} 
-                    size={14} weight="med"                   
+                    size={14} weight="reg"                   
                 > 
                     {label} 
                 </RadioTextStyle> 

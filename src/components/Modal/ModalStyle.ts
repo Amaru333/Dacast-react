@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
 import { ModalProps, ModalCardProps } from './ModalTypes';
 import { ColorsApp } from '../../styled/types';
+import Icon from '@material-ui/core/Icon';
 
-export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
+export const IconStyle = styled(Icon)<{ iconColor: ColorsApp }>`
     color: ${props => props.theme.colors[props.iconColor]};
     float: left;
     margin-top: 4px;
@@ -24,25 +25,29 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
 
 
 export const ModalContainerStyle = styled.div<ModalProps>`
-  box-sizing: border-box;
-  padding: 24px;
-  width: ${props => (props.size === "small" ? "400px" : "600px")};
-  border-radius: ${props => props.theme.borderRadius};
-  box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
-  display: ${props => (props.opened ? "block" : "none")};
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: ${props => props.theme.colors["white"]};
-  z-index: 9999;
+    box-sizing: border-box;
+    padding: 24px;
+    width: ${props => (props.size === "small" ? "400px" : "600px")};
+    border-radius: ${props => props.theme.borderRadius};
+    box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
+    display: ${props => (props.opened ? "block" : "none")};
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: ${props => props.theme.colors["white"]};
+    z-index: 9999;
 `;
 export const ModalTitleStyle = styled.div`
-  margin-bottom: 16px;
+    margin-bottom: 16px;
+    align-items: center;
+    display: flex;
 `;
 export const ModalCloseButtonStyle = styled.button`
-  float: right;
-  border: none;
+    float: right;
+    border: none;
+    margin-left: auto;
+    cursor: pointer;
 `;
 
 export const ModalBodyStyle = styled.div`
@@ -62,12 +67,12 @@ export const ModalFooterStyle = styled.div`
 `;
 
 export const ModalCardContainerStyle = styled.div<ModalCardProps>`
-  box-sizing: border-box;
-  padding: 24px;
-  width: ${props => (props.size === "small" ? "400px" : "600px")};
-  border-radius: ${props => props.theme.borderRadius};
-  box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
-  position:relative;
-  background-color: ${props => props.theme.colors["white"]};
-  z-index: 9999;
+    box-sizing: border-box;
+    padding: 24px;
+    width: ${props => (props.size === "small" ? "400px" : "600px")};
+    border-radius: ${props => props.theme.borderRadius};
+    box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
+    position:relative;
+    background-color: ${props => props.theme.colors["white"]};
+    z-index: 9999;
 `;

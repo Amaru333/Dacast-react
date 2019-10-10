@@ -1,9 +1,9 @@
 import styled, { css, keyframes } from "styled-components";
 import { ProgressBarProps } from './ProgressBarTypes';
 
-const move = (endValue: string) =>  keyframes`
+const move = (endValue: number) =>  keyframes`
    from { width: 0px; }
-   to { width: ${endValue}; }
+   to { width: ${endValue}%; }
 `;
 
 export const ProgressBarContainerStyle = styled.div<ProgressBarProps>`

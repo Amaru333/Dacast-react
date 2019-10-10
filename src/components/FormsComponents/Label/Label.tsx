@@ -10,3 +10,5 @@ export const Label = (props: LabelProps) => {
         </LabelStyleContainer>
     );
 }
+
+Label.defaultProps = { size: 14 , weight:"reg" };
