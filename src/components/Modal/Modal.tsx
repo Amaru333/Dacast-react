@@ -17,7 +17,7 @@ export const Modal = (props: ModalProps) => {
             <ModalContainerStyle ref={modalRef} {...other}>
                 <ModalTitleStyle>
                     {icon ? (
-                        <IconStyle onClick={ e=> true } iconColor={icon.color} >{icon.name}</IconStyle>
+                        <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
                     ) : null}
                     <Text color="gray-1" size={24} weight="med">
                         {props.title}

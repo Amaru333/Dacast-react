@@ -3,7 +3,7 @@ import { ModalProps, ModalCardProps } from './ModalTypes';
 import { ColorsApp } from '../../styled/types';
 import Icon from '@material-ui/core/Icon';
 
-export const IconStyle = styled(Icon)<{ iconColor: ColorsApp }>`
+export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
     color: ${props => props.theme.colors[props.iconColor]};
     float: left;
     margin-top: 4px;
