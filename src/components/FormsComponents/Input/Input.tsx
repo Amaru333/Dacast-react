@@ -6,7 +6,7 @@ import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, I
 
 export const Input = (props: InputProps) => {
 
-    var { label, icon, help, isError, className, ...other } = props;
+    var { label, name, icon, help, isError, className, ...other } = props;
 
     return (
         <ContainerStyle className={className} >

@@ -32,7 +32,8 @@ export interface InputSpecificProps {
     help?: string;
     isError?: boolean;
     disabled?: boolean;
-    type?: InputType;  
+    type?: InputType;
+    name?: string  
 }
 
 export interface CheckboxSpecificProps {

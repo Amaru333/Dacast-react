@@ -6,6 +6,7 @@ import { Input } from '../components/FormsComponents/Input/Input';
 import { Text } from '../components/Typography/Text';
 import { Button } from '../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
+import { SignupForm } from '../components/Forms/SignupForm';
 
 const logo = require('../../public/assets/logo.png');
 const stories = storiesOf('Register Forms', module);
@@ -37,6 +38,12 @@ stories.add('Sign Up', () => {
             </ModalCard>
         </ScrollableContainer>
     );
+})
+
+stories.add('Sign Up with validation', () => {
+    return (
+        <SignupForm />
+    )
 })
 
 stories.add('Log In', () => {
