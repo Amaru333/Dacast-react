@@ -21,7 +21,7 @@ ElementMenu.defaultProps = {active: false}
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 ​
     const [selectedElement, setSelectedElement] = React.useState<string>(props.routes[0].name);
-    React.useEffect(() => {}, []);
+    React.useEffect(() => {}, [selectedElement]);
 
     const renderMenu = () => {
         return props.routes.map((element, i) => {
@@ -34,10 +34,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             else {
                 return (
                     <Link to={element.path} onClick={() => setSelectedElement(element.name)} key={i} >
-                    <ElementMenu active={selectedElement === element.name} icon={element.iconName!}>
-                        {element.name} 
-                    </ElementMenu>
-                </Link>
+                        <ElementMenu active={selectedElement === element.name} icon={element.iconName!}>
+                            {element.name} 
+                        </ElementMenu>
+                    </Link>
                 )
             }
         })

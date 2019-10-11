@@ -25,15 +25,13 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
             font-weight: 500;
         }
     `}
-    &:last-child {
-        margin-bottom: 25px;
-    }
 `;
 ​
 export const IconStyle = styled.div`
     display: flex;
     flex-direction: row;
     margin-right: 19px;
+    color: ${props => props.theme.colors["gray-1"]};
 `;
 ​
 export const SectionTitle = styled(Text)`
@@ -53,6 +51,7 @@ export const ContainerStyle = styled.div<MainMenuProps>`
     width: 235px;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
+    overflow-y: scroll;
 `;
 ​
 export const ImageStyle = styled.img`
