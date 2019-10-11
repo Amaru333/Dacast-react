@@ -1,7 +1,17 @@
 import * as React from "react";
 
+export interface FormFieldProps {
+    firstName? : string
+    lastName?: string
+    companyWebsite?: string
+    email?: string
+    contactNumber?: string
+    password?: string
+
+}
+
  export const useForm = (callback: () => void) => {
-    const [formData, setFormData] = React.useState({firstName: ""});
+    const [formData, setFormData] = React.useState<FormFieldProps>({});
 
     const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
 
