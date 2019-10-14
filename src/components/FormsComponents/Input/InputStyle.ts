@@ -166,7 +166,7 @@ export const InputRadioStyle = styled.input<{checked: boolean | undefined; disab
     &:focus + ${RadioLabelStyle} {
         &::before {
             box-shadow: 0 0 0 3px ${props => props.theme.colors["blue60"]}, inset 0 0 0 .15em ${props => props.theme.colors["white"]
-            }
+}
         }
     }
 `

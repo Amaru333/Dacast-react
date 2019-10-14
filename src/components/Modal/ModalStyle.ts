@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { ModalProps, ModalCardProps } from './ModalTypes';
 import { ColorsApp } from '../../styled/types';
-import Icon from '@material-ui/core/Icon';
 
 export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
     color: ${props => props.theme.colors[props.iconColor]};

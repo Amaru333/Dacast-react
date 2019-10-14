@@ -12,4 +12,4 @@ export interface ToastType {
 export interface ToastProps {
     toast: ToastType;
     hideToast: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
-  }
+}

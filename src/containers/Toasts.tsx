@@ -9,10 +9,10 @@ const mapStateToProps = (state: ApplicationState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-  hideToast: (toast: ToastType) => dispatch(hideToast(toast))
+    hideToast: (toast: ToastType) => dispatch(hideToast(toast))
 });
 
 export default connect<StateProps, DispatchProps, {}>(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ToastsComponent);

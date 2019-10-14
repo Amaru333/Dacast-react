@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { DropdownProps } from './DropdownTypes';
-import { ColorsApp } from '../../../styled/types';
 
 export const ContainerStyle = styled.div<DropdownProps>`
     display: flex;

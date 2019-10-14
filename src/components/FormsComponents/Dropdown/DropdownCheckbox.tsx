@@ -17,11 +17,6 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
 
     useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
-    React.useEffect(() => {
-        handleTitle();
-        handleSelectAllState();
-    }, [checkedCheckboxes, selectedItem])
-
     const handleTitle = () => {
         const numberChecked = Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name]).length;
         if(numberChecked > 1) {
@@ -43,16 +38,23 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
             setSelectAllState('undeterminate')
         }
     }
+    
+    React.useEffect(() => {
+        handleTitle();
+        handleSelectAllState();
+    }, [checkedCheckboxes, selectedItem])
+
+    
 
     const handleSelectAllChange = () => {
         if(selectAllState === 'unchecked' || selectAllState === 'undeterminate') { 
             setCheckedCheckboxes({
                 ...Object.keys(checkedCheckboxes).reduce((reduced, key) => ({ ...reduced, [key]: true }), {})
-              })
+            })
         } else {
             setCheckedCheckboxes({
                 ...Object.keys(checkedCheckboxes).reduce((reduced, key) => ({ ...reduced, [key]: false }), {})
-              })
+            })
         }
     }
 
@@ -79,7 +81,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                                 </DropdownItem>
                                 <BorderItem />
                             </>
-                        : null}
+                            : null}
                         <DropdownItem key={props.id + '_' + name} isSelected={false}  > 
                             <InputCheckbox 
                                 id={props.id + '_' + name} 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { storiesOf, forceReRender } from '@storybook/react';
+import { storiesOf } from '@storybook/react';
 import { showToastNotification} from '../redux-flow/store/toasts/actions';
 import Home, { DispatchProps }from '../components/Toasts';
 import {Size, NotificationType } from '../components/Toast/ToastTypes';
@@ -21,6 +21,6 @@ storiesOf('Toasts', module)
         <React.Fragment>
             <HomeContainer />
         </React.Fragment>
-        ))
+    ))
     
         

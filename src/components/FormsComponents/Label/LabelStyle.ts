@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { LabelProps } from './LabelTypes';
 
 export const LabelStyleContainer = styled.div<LabelProps>`

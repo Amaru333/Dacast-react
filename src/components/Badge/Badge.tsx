@@ -8,7 +8,7 @@ export const Badge = (props: BadgeProps) => {
     return (
         <BadgeStyle {...props}>
             {
-            <TextStyle color="white" size={12} weight="med">{props.number > 999 ? "999+" : props.number}</TextStyle>
+                <TextStyle color="white" size={12} weight="med">{props.number > 999 ? "999+" : props.number}</TextStyle>
             }
         </BadgeStyle>
     )

@@ -18,7 +18,7 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = (props: InputCheckbox
             <InputCheckboxStyle checked={props.defaultChecked}  onFocus={() => setFocus(true)} onBlur={() => setFocus(false) }  {...other} type="checkbox" onClick={() => setChecked(!checked)} ref={checkboxRef} />
             <LabelStyle htmlFor={props.id}>
                 <CheckBoxStyle indeterminate={props.indeterminate}  isFocus={focus} disabled={props.disabled} defaultChecked={props.defaultChecked} checkbox={checkboxRef} ></CheckBoxStyle>
-                {label ? <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight={props.labelWeight!} > {props.label} </Text> : null} 
+                {label ? <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight={props.labelWeight} > {props.label} </Text> : null} 
             </LabelStyle>
         </ContainerStyle>
     )

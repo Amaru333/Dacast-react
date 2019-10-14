@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Label } from '../components/FormsComponents/Label/Label';
-import { withKnobs, select } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
 const stories = storiesOf('Label', module);
 stories.addDecorator(withKnobs);
