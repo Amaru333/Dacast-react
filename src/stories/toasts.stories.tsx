@@ -8,7 +8,6 @@ import {Size, NotificationType } from '../components/Toast/ToastTypes';
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     showToast: (text: string, size: Size, notificationType: NotificationType) => dispatch(showToastNotification(text, size, notificationType)),
-
 });
 
 const HomeContainer = (connect<any, DispatchProps, {}>(
