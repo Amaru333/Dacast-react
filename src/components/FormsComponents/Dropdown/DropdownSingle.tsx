@@ -3,12 +3,15 @@ import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle} from './DropdownStyle';
 import { DropdownProps, dropdownIcons } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
+import { useOutsideAlerter } from '../../../utils/utils';
 
 export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) => {
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
     const [selectedItem, setSelectedItem] = React.useState<string>("Select");
+
+    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
     React.useEffect(() => {}, [selectedItem])
 

@@ -2,7 +2,6 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
 
-import { TopAppBar } from "./components/TopAppBar";
 //import TodoList from "./containers/TodoList";
 import { ApplicationState } from "./redux-flow/store";
 
@@ -18,7 +17,6 @@ interface MainProps {
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     return (
         <Provider store={store}>
-            <TopAppBar/>
         </Provider>
     );
 };

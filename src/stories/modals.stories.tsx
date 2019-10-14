@@ -5,7 +5,6 @@ import { Button } from '../components/FormsComponents/Button/Button'
 import { Input } from '../components/FormsComponents/Input/Input'
 import { Text } from '../components/Typography/Text'
 
-
 var openedModals: any = {
     "modal1": false,
     "modal2": false,

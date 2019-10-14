@@ -18,10 +18,21 @@ module.exports = ({ config }) => {
             {
                 loader: require.resolve('awesome-typescript-loader'),
                 options: {
-                    configFileName: './.storybook/tsconfig.json'
+                    configFileName: './.storybook/tsconfig.json',
+                    "ignoreDiagnostics": [7005]
                 }
             }
         ]
+    });
+    config.module.rules.push({
+        test: /\.stories\.tsx?$/,
+        loaders: [{
+            loader: require.resolve('@storybook/source-loader'),
+            options: { 
+                parser: 'typescript',
+            },
+        }],
+        enforce: 'pre',
     });
     config.resolve.extensions.push('.ts', '.tsx', '.scss', '.css', '.js');
     return config;

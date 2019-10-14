@@ -4,6 +4,7 @@ import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem } from './DropdownStyle';
 import { DropdownProps, DropdownListType , dropdownIcons} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
+import { useOutsideAlerter } from '../../../utils/utils';
 
 export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) => {
 
@@ -13,6 +14,8 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     const [selectedItem, setSelectedItem] = React.useState<string>("Select");
     const [checkedCheckboxes, setCheckedCheckboxes] = React.useState<DropdownListType>( props.list );
     const [selectAllState, setSelectAllState] = React.useState<'unchecked' | 'checked' | 'undeterminate'>('unchecked');
+
+    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
     React.useEffect(() => {
         handleTitle();
