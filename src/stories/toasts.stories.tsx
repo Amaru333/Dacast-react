@@ -20,6 +20,4 @@ storiesOf('Toasts', module)
         <React.Fragment>
             <HomeContainer />
         </React.Fragment>
-    ))
-    
-        
+    ))  
