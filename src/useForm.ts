@@ -35,13 +35,17 @@ export interface FormFieldProps {
 
     const handleSubmit = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault();
-        setErrors(validateForm(formData))
         setIsSubmitting(true);
+    }
+
+    const handleBlur = (event: React.FormEvent<HTMLElement>) => {
+        setErrors(validateForm(formData))
     }
 
     return {
         handleChange,
         handleSubmit,
+        handleBlur,
         formData,
         errors
     }
