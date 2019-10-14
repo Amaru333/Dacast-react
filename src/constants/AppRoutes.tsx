@@ -55,12 +55,30 @@ const Playlist = () => {
     return <h2 style={{margin: 'auto', width: '50%'}}>Playlist</h2>
 }
 
-const MainSettings = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>MainSettings</h2>
+const MainSettings = (props: any) => {
+    const tabsName = props.routes.map((item: any) => {
+        return item.name
+    })
+    return (
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Main settings</h2>
+            <Tab list={tabsName} orientation="vertical" contentList={[functionTest1, functionTest2, functionTest3, functionTest4, functionTest1, functionTest2, functionTest3, functionTest4, functionTest4, functionTest4, functionTest4]} />
+        </div>
+
+    )
 }
 
-const Account = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>Account</h2>
+const Account = (props: any) => {
+    const tabsName = props.routes.map((item: any) => {
+        return item.name
+    })
+    return (
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Account</h2>
+            <Tab list={tabsName} orientation="vertical" contentList={[functionTest1, functionTest2, functionTest3, functionTest4, functionTest1, functionTest2, functionTest3, functionTest4, functionTest4, functionTest4, functionTest4]} />
+        </div>
+
+    )
 }
 
 const Admin = () => {
@@ -91,12 +109,20 @@ export const AppRoutes:Array<Routes> = [
         component: LiveChannel,
         slug: [
             {
-                path: '/livechannel/tab1',
-                name: 'tab1'
+                path: '/livechannel/general',
+                name: 'General'
             },
             {
-                path: '/livechannel/tab2',
-                name: 'tab2'
+                path: '/livechannel/monetization',
+                name: 'Monetization'
+            },
+            {
+                path: '/livechannel/security',
+                name: 'Security'
+            },
+            {
+                path: '/livechannel/interactions',
+                name: 'Interactions'
             }
         ]
     },
@@ -147,12 +173,36 @@ export const AppRoutes:Array<Routes> = [
         component: MainSettings,
         slug: [
             {
-                path: '/mainsettings/tab1',
-                name: 'tab1'
+                path: '/mainsettings/analytics',
+                name: 'Analytics'
             },
             {
-                path: '/mainsettings/tab2',
-                name: 'tab2'
+                path: '/mainsettings/deliveryembed',
+                name: 'Delivery & Embed'
+            },
+            {
+                path: '/mainsettings/security',
+                name: 'Security'
+            },
+            {
+                path: '/mainsettings/monetization',
+                name: 'Monetization'
+            },
+            {
+                path: '/mainsettings/apiintegrations',
+                name: 'API & Integration'
+            },
+            {
+                path: '/mainsettings/encoding',
+                name: 'Encoding'
+            },
+            {
+                path: '/mainsettings/interations',
+                name: 'Interactions'
+            },
+            {
+                path: '/mainsettings/general',
+                name: 'General'
             }
         ]
     },
@@ -163,13 +213,49 @@ export const AppRoutes:Array<Routes> = [
         component: Account,
         slug: [
             {
-                path: '/account/tab1',
-                name: 'tab1'
+                path: '/account/summary',
+                name: 'Summary'
             },
             {
-                path: '/account/tab2',
-                name: 'tab2'
-            }
+                path: '/account/profile',
+                name: 'Profile'
+            },
+            {
+                path: '/account/company',
+                name: 'Company'
+            },
+            {
+                path: '/account/users',
+                name: 'Users'
+            },
+            {
+                path: '/account/billing',
+                name: 'Billing'
+            },
+            {
+                path: '/account/invoices',
+                name: 'Invoices'
+            },
+            {
+                path: '/account/payout',
+                name: 'Payout'
+            },
+            {
+                path: '/account/whitelabeling',
+                name: 'Whitelabeling'
+            },
+            {
+                path: '/account/encoder',
+                name: 'Encoder'
+            },
+            {
+                path: '/account/apis3keys',
+                name: 'API & S3 Keys'
+            },
+            {
+                path: '/account/webhooksettings',
+                name: 'Webhook Settings'
+            },
         ]
     },
     {
@@ -179,12 +265,8 @@ export const AppRoutes:Array<Routes> = [
         component: Admin,
         slug: [
             {
-                path: '/admin/tab1',
-                name: 'tab1'
-            },
-            {
-                path: '/admin/tab2',
-                name: 'tab2'
+                path: '/admin/bluechip',
+                name: 'Blue Chip'
             }
         ]
     },

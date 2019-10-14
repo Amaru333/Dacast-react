@@ -26,23 +26,19 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         }
     `}
 `;
-​
 export const IconStyle = styled.div`
     display: flex;
     flex-direction: row;
     margin-right: 19px;
     color: ${props => props.theme.colors["gray-1"]};
 `;
-​
 export const SectionTitle = styled(Text)`
     margin-left:16px;
     margin-bottom: 16px;
     display: inline-block;
 `;
-​
 export const SectionStyle = styled.div`
 `;
-​
 export const ContainerStyle = styled.div<MainMenuProps>`
     display: flex;
     flex-direction: column;
@@ -53,14 +49,12 @@ export const ContainerStyle = styled.div<MainMenuProps>`
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;
 `;
-​
 export const ImageStyle = styled.img`
     max-width: 100%;
     margin-bottom: 22px;
     margin-top: 22px;
     width:80%;
-`
-​
+`;
 export const BreakStyle = styled.hr`
     height: 1px;
     width: 100%;
@@ -68,8 +62,8 @@ export const BreakStyle = styled.hr`
     border: 0;
     margin-bottom: 15px;
     margin-top:0;
-`
+`;
 export const ButtonMenuStyle = styled(Button)`
     width: 90%;
     margin-bottom: 15px;
-`
+`;

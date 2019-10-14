@@ -2,9 +2,9 @@ import * as React from "react";
 import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-import {MainMenuProps, ElementMenuProps, Routes } from './NavigationTypes'
+import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle} from './NavigationStyle'
-const logo = require('../../../public/assets/logo.png');
+//import logo from '../../../public/assets/logo.png';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -15,14 +15,10 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
         </ContainerElementStyle>
     )
 }
-​
-ElementMenu.defaultProps = {active: false}
 
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
-​
     const [selectedElement, setSelectedElement] = React.useState<string>(props.routes[0].name);
     React.useEffect(() => {}, [selectedElement]);
-
     const renderMenu = () => {
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
@@ -42,11 +38,9 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             }
         })
     }
-
-​
     return (
         <ContainerStyle {...props} >
-            <ImageStyle className="mx-auto" src={logo} />
+            <ImageStyle className="mx-auto" src='' />
             <BreakStyle />
             <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >Add +</ButtonMenuStyle>
             <SectionStyle>
@@ -55,4 +49,4 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         </ContainerStyle>
     )
 }
-MainMenu.defaultProps = {}
+MainMenu.defaultProps = {};
