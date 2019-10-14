@@ -4,12 +4,18 @@ import { Input } from '../FormsComponents/Input/Input';
 import { Button } from '../FormsComponents/Button/Button';
 import { Text } from '../Typography/Text'
 import {useForm} from '../../useForm'
+import {validateForm} from '../../validateForm'
 
 import { ModalCard, ModalContent, ModalFooter } from '../Modal/ModalCard';
 
 export const SignupForm = () => {
 
-    const { handleChange, handleSubmit, formData} = useForm(submit);
+    const { handleChange, handleSubmit, formData, errors} = useForm(submit, () => {});
+
+    React.useEffect(() => {
+        console.log(errors)
+    }, [errors])
+
 
     function submit() {
         console.log(formData)

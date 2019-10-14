@@ -7,6 +7,7 @@ import { Text } from '../components/Typography/Text';
 import { Button } from '../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { SignupForm } from '../components/Forms/SignupForm';
+import { EditorFormatColorReset } from 'material-ui/svg-icons';
 
 const logo = require('../../public/assets/logo.png');
 const stories = storiesOf('Register Forms', module);
@@ -19,10 +20,10 @@ stories.add('Sign Up', () => {
             <ModalCard className="mx-auto" size="small" title="Sign Up" >
                 <ModalContent className="clearfix">
                     <div className="col col-12">
-                        <Input type="text" className="col col-6 pr1" label="First Name" placeholder="First Name" />
+                        <Input type="text" className="col col-6 pr1" label="First Name" placeholder="First Name"  />
                         <Input type="text" className="col col-6 pl1" label="Last Name" placeholder="Last Name" />
                     </div>
-                    <Input className="col col-12" type="url" label="Company Website" placeholder="Company Website" />
+                    <Input className="col col-12" type="url" label="Company Website" placeholder="Company Website"  />
                     <Input className="col col-12" type="email" label="Email Address" placeholder="Email Address" />
                     <Input className="col col-12" type="tel" label="Contact Number" placeholder="Contact Number" />
                     <Input className="col col-12" type="password" label="Password" placeholder="Password" icon="visibility_off" />

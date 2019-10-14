@@ -1,4 +1,5 @@
 import * as React from "react";
+import { validateForm }  from './validateForm';
 
 export interface FormFieldProps {
     firstName? : string
@@ -10,13 +11,20 @@ export interface FormFieldProps {
 
 }
 
- export const useForm = (callback: () => void) => {
+ export const useForm = (callback: () => void, validation: () => void) => {
     const [formData, setFormData] = React.useState<FormFieldProps>({});
-
+    const [errors, setErrors] = React.useState<FormFieldProps>({});
+    const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+     
+    React.useEffect(() => {
+        if (Object.keys(errors).length === 0 && isSubmitting) {
+            callback();
+          }
+    }, [errors])
     const handleChange = (event: React.FormEvent<HTMLInputElement>) => {
 
         const { id, value } = event.currentTarget
-        
+
         setFormData(
             {
                 ...formData,
@@ -27,12 +35,14 @@ export interface FormFieldProps {
 
     const handleSubmit = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault();
-        callback();
+        setErrors(validateForm(formData))
+        setIsSubmitting(true);
     }
 
     return {
         handleChange,
         handleSubmit,
-        formData
+        formData,
+        errors
     }
 }
