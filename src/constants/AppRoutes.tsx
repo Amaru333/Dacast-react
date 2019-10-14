@@ -31,58 +31,69 @@ const functionTest4 = () => {
 }
 
 const Dashboard = (props: any) => {
-    const tabsName = props.routes.map((item: any) => {
-        return item.name
-    })
     return (
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Dashboard</h2>
-            <Tab list={tabsName} orientation="horizontal" contentList={[functionTest1, functionTest2, functionTest3, functionTest4]} />
+            <Tab {...props}  list={props.routes} orientation="horizontal" />
         </div>
-
     )
 }
 
-const LiveChannel = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>LiveChannel</h2>
+const LiveChannel = (props: any) => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Account</h2>
+            <Tab {...props} list={props.routes} orientation="vertical" />
+        </div>
+    )
 }
 
-const Video = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>Video</h2>
+const Video = (props: any) => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Account</h2>
+            <Tab {...props} list={props.routes} orientation="vertical" />
+        </div>
+    )
 }
 
-const Playlist = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>Playlist</h2>
+const Playlist = (props: any) => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Account</h2>
+            <Tab {...props} list={props.routes} orientation="vertical" />
+        </div>
+    )
 }
 
 const MainSettings = (props: any) => {
-    const tabsName = props.routes.map((item: any) => {
-        return item.name
-    })
     return (
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Main settings</h2>
-            <Tab list={tabsName} orientation="vertical" contentList={[functionTest1, functionTest2, functionTest3, functionTest4, functionTest1, functionTest2, functionTest3, functionTest4, functionTest4, functionTest4, functionTest4]} />
+            <Tab {...props}  list={props.routes} orientation="vertical" />
         </div>
 
     )
 }
 
 const Account = (props: any) => {
-    const tabsName = props.routes.map((item: any) => {
-        return item.name
-    })
+
     return (
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Account</h2>
-            <Tab list={tabsName} orientation="vertical" contentList={[functionTest1, functionTest2, functionTest3, functionTest4, functionTest1, functionTest2, functionTest3, functionTest4, functionTest4, functionTest4, functionTest4]} />
+            <Tab {...props} list={props.routes} orientation="vertical" />
         </div>
 
     )
 }
 
-const Admin = () => {
-    return <h2 style={{margin: 'auto', width: '50%'}}>Admin</h2>
+const Admin = (props: any) => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Account</h2>
+            <Tab {...props} list={props.routes} orientation="vertical" />
+        </div>
+    )
 }
 
 export const AppRoutes:Array<Routes> = [
@@ -94,11 +105,13 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/dashboard/tab1',
-                name: 'tab1'
+                name: 'tab1',
+                component: functionTest1
             },
             {
                 path: '/dashboard/tab2',
-                name: 'tab2'
+                name: 'tab2',
+                component: functionTest2
             }
         ]
     },
@@ -110,19 +123,23 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/livechannel/general',
-                name: 'General'
+                name: 'General',
+                component: functionTest2
             },
             {
                 path: '/livechannel/monetization',
-                name: 'Monetization'
+                name: 'Monetization',
+                component: functionTest3
             },
             {
                 path: '/livechannel/security',
-                name: 'Security'
+                name: 'Security',
+                component: functionTest2
             },
             {
                 path: '/livechannel/interactions',
-                name: 'Interactions'
+                name: 'Interactions',
+                component: functionTest4
             }
         ]
     },
@@ -134,11 +151,13 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/video/tab1',
-                name: 'tab1'
+                name: 'tab1',
+                component: functionTest1
             },
             {
                 path: '/video/tab2',
-                name: 'tab2'
+                name: 'tab2',
+                component: functionTest3
             }
         ]
     },
@@ -150,11 +169,13 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/playlist/tab1',
-                name: 'tab1'
+                name: 'tab1',
+                component: functionTest4
             },
             {
                 path: '/playlist/tab2',
-                name: 'tab2'
+                name: 'tab2',
+                component: functionTest2
             }
         ]
     },
@@ -174,35 +195,43 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/mainsettings/analytics',
-                name: 'Analytics'
+                name: 'Analytics',
+                component: functionTest1
             },
             {
                 path: '/mainsettings/deliveryembed',
-                name: 'Delivery & Embed'
+                name: 'Delivery & Embed',
+                component: functionTest4
             },
             {
                 path: '/mainsettings/security',
-                name: 'Security'
+                name: 'Security',
+                component: functionTest2
             },
             {
                 path: '/mainsettings/monetization',
-                name: 'Monetization'
+                name: 'Monetization',
+                component: functionTest1
             },
             {
                 path: '/mainsettings/apiintegrations',
-                name: 'API & Integration'
+                name: 'API & Integration',
+                component: functionTest3
             },
             {
                 path: '/mainsettings/encoding',
-                name: 'Encoding'
+                name: 'Encoding',
+                component: functionTest4
             },
             {
                 path: '/mainsettings/interations',
-                name: 'Interactions'
+                name: 'Interactions',
+                component: functionTest4
             },
             {
                 path: '/mainsettings/general',
-                name: 'General'
+                name: 'General',
+                component: functionTest1
             }
         ]
     },
@@ -214,47 +243,58 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/account/summary',
-                name: 'Summary'
+                name: 'Summary',
+                component: functionTest3
             },
             {
                 path: '/account/profile',
-                name: 'Profile'
+                name: 'Profile',
+                component: functionTest2
             },
             {
                 path: '/account/company',
-                name: 'Company'
+                name: 'Company',
+                component: functionTest1
             },
             {
                 path: '/account/users',
-                name: 'Users'
+                name: 'Users',
+                component: functionTest4
             },
             {
                 path: '/account/billing',
-                name: 'Billing'
+                name: 'Billing',
+                component: functionTest2
             },
             {
                 path: '/account/invoices',
-                name: 'Invoices'
+                name: 'Invoices',
+                component: functionTest1
             },
             {
                 path: '/account/payout',
-                name: 'Payout'
+                name: 'Payout',
+                component: functionTest1
             },
             {
                 path: '/account/whitelabeling',
-                name: 'Whitelabeling'
+                name: 'Whitelabeling',
+                component: functionTest3
             },
             {
                 path: '/account/encoder',
-                name: 'Encoder'
+                name: 'Encoder',
+                component: functionTest1
             },
             {
                 path: '/account/apis3keys',
-                name: 'API & S3 Keys'
+                name: 'API & S3 Keys',
+                component: functionTest4
             },
             {
                 path: '/account/webhooksettings',
-                name: 'Webhook Settings'
+                name: 'Webhook Settings',
+                component: functionTest3
             },
         ]
     },
@@ -266,7 +306,8 @@ export const AppRoutes:Array<Routes> = [
         slug: [
             {
                 path: '/admin/bluechip',
-                name: 'Blue Chip'
+                name: 'Blue Chip',
+                component: functionTest2
             }
         ]
     },

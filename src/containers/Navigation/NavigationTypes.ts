@@ -1,5 +1,6 @@
 export interface MainMenuSpecificProps {
     routes: Array<Routes> 
+    history: any;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

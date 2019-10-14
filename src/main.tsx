@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { Router, Switch, Route} from 'react-router-dom';
 import { TopAppBar } from "./components/TopAppBar";
 import TodoList from "./containers/TodoList";
 import { ApplicationState } from "./redux-flow/store";
@@ -9,6 +9,9 @@ import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
 import { ThemeProvider } from 'styled-components';
 import { Theme } from '../src/styled/themes/dacast-theme';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 
 // Import Main styles for this application
@@ -38,8 +41,8 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router>
-                    <MainMenu routes={AppRoutes}/>
+                <Router history={history}>
+                    <MainMenu history={history} routes={AppRoutes}/>
                     <Switch>
                         {returnRouter(AppRoutes)}
                     </Switch>
