@@ -1,7 +1,7 @@
-# Dacast React Backoffice TODO LIST & Example
+# Dacast React Backoffice
 
 ## What is this
-This is a base project with basic examples for a React/Typescript frontend application
+This is a base project for the React Backoffice project
 
 ## How to install
 
