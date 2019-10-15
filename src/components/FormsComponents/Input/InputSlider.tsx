@@ -1,7 +1,7 @@
 import * as React from "react";
-import styled from 'styled-components';
-import Slider from '@material-ui/core/Slider';
+
 import { Tooltip } from '../../Tooltip/Tooltip';
+import { SliderStyle } from './InputStyle';
 
 const customTooltip = (customProps: any) => {
     return (
@@ -56,12 +56,3 @@ export const InputSlider = (props: any) => {
 
 }
 
-export const SliderStyle = styled(Slider)`
-    & .MuiSlider-rail {
-        color: ${props => props.theme.colors["violet40"]};
-        opacity: 1;
-    }
-    & .MuiSlider-thumb, .MuiSlider-track{
-        background-color: ${props => props.theme.colors["dark-violet"]}
-    }
-`

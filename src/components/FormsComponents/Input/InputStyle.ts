@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { InputProps, InputCheckboxProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
+import Slider from '@material-ui/core/Slider';
 
 export const ContainerStyle = styled.div<InputProps>`
     display: flex;
@@ -175,4 +176,13 @@ export const RadioTextStyle = styled(Text)`
     display: inline-block;
     margin-left: 8px;
     vertical-align: middle;
+`
+export const SliderStyle = styled(Slider)`
+    & .MuiSlider-rail {
+        color: ${props => props.theme.colors["violet40"]};
+        opacity: 1;
+    }
+    & .MuiSlider-thumb, .MuiSlider-track{
+        background-color: ${props => props.theme.colors["dark-violet"]}
+    }
 `
