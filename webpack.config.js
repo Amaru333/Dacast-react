@@ -1,6 +1,8 @@
 const path = require('path'),
     webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const SRC = path.resolve(__dirname, 'public/assets/');
     
 module.exports = {
     entry: {
@@ -9,11 +11,15 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].bundle.js'
+        filename: 'js/[name].bundle.js',
+        publicPath: '/'
     },
     devtool: 'source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+    },
+    devServer: {
+        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -33,6 +39,13 @@ module.exports = {
                     "css-loader", // translates CSS into CommonJS
                     "sass-loader" // compiles Sass to CSS, using Node Sass by default
                 ]
+            },
+            {
+                test: /\.(ttf|eot|svg|otf|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                include: SRC,
+                use: [{
+                    loader: 'file-loader'
+                }]
             },
         ]
     },
