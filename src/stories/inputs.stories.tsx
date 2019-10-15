@@ -18,7 +18,7 @@ storiesOf('Inputs', module)
                 <Input placeholder="Placeholder" icon="error"/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input placeholder="Placeholder" help="Help for this input"/> 
+                <Input defaultValue="With a default value" placeholder="Placeholder" help="Help for this input"/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
                 <Input placeholder="Placeholder" help="Error for this input" isError={true}/> 

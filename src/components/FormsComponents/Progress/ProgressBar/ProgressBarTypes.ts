@@ -5,7 +5,7 @@ type Size = "large" | "small";
 export interface ProgressBarSpecificProps {
     size: Size;
     color: ColorsApp;
-    startingValue: string;
+    startingValue: number;
     label?: string;
 }
 

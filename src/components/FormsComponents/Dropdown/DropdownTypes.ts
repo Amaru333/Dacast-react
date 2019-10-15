@@ -1,6 +1,4 @@
-import { List } from 'material-ui';
-
-export type DropdownListType = {[key: string]: boolean};
+export interface DropdownListType {[key: string]: boolean}
 
 export const dropdownIcons = {
     opened: "arrow_drop_up",

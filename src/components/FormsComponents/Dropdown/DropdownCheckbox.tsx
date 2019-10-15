@@ -4,6 +4,7 @@ import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem } from './DropdownStyle';
 import { DropdownProps, DropdownListType , dropdownIcons} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
+import { useOutsideAlerter } from '../../../utils/utils';
 
 export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) => {
 
@@ -14,10 +15,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     const [checkedCheckboxes, setCheckedCheckboxes] = React.useState<DropdownListType>( props.list );
     const [selectAllState, setSelectAllState] = React.useState<'unchecked' | 'checked' | 'undeterminate'>('unchecked');
 
-    React.useEffect(() => {
-        handleTitle();
-        handleSelectAllState();
-    }, [checkedCheckboxes, selectedItem])
+    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
     const handleTitle = () => {
         const numberChecked = Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name]).length;
@@ -40,16 +38,23 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
             setSelectAllState('undeterminate')
         }
     }
+    
+    React.useEffect(() => {
+        handleTitle();
+        handleSelectAllState();
+    }, [checkedCheckboxes, selectedItem])
+
+    
 
     const handleSelectAllChange = () => {
         if(selectAllState === 'unchecked' || selectAllState === 'undeterminate') { 
             setCheckedCheckboxes({
                 ...Object.keys(checkedCheckboxes).reduce((reduced, key) => ({ ...reduced, [key]: true }), {})
-              })
+            })
         } else {
             setCheckedCheckboxes({
                 ...Object.keys(checkedCheckboxes).reduce((reduced, key) => ({ ...reduced, [key]: false }), {})
-              })
+            })
         }
     }
 
@@ -76,7 +81,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                                 </DropdownItem>
                                 <BorderItem />
                             </>
-                        : null}
+                            : null}
                         <DropdownItem key={props.id + '_' + name} isSelected={false}  > 
                             <InputCheckbox 
                                 id={props.id + '_' + name} 

@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { Store } from "redux";
 import { Router, Switch, Route} from 'react-router-dom';
 import { TopAppBar } from "./components/TopAppBar";
-import TodoList from "./containers/TodoList";
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -49,6 +48,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     </Switch>
                 </Router>
             </ThemeProvider>
+
         </Provider>
     );
 };

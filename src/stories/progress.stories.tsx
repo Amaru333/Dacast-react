@@ -14,13 +14,13 @@ stories.add('Progress Bar', () => {
     return (
         <React.Fragment>
             <StorybookProgressContainerStyle>
-                <ProgressBar size="small" color="blue" startingValue="10%" label="someLabel"/> 
+                <ProgressBar size="small" color="blue" startingValue={10} label="someLabel"/> 
             </StorybookProgressContainerStyle>
             <StorybookProgressContainerStyle>
-                <ProgressBar size="large" color="red" startingValue="20%" /> 
+                <ProgressBar size="large" color="red" startingValue={20} /> 
             </StorybookProgressContainerStyle>
             <StorybookProgressContainerStyle>
-                <ProgressBar size="small" color="yellow" startingValue="90%" /> 
+                <ProgressBar size="small" color="yellow" startingValue={90} /> 
             </StorybookProgressContainerStyle>
         </React.Fragment>
     );

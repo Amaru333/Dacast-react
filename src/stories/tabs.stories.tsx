@@ -11,7 +11,6 @@ import { Router, Switch, Route} from 'react-router-dom';
 
 const history = createBrowserHistory();
 
-
 const functionTest1 = () => {
     return (
         <LoadingSpinner size="small" color="dark-violet" />

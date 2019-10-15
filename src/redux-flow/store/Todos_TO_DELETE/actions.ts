@@ -30,7 +30,7 @@ export const addTodo = (name: string): AddTodoAction => {
         payload: {
             todo: {
                 done: false,
-                id: null,
+                id: 1,
                 name,
             },
         },
