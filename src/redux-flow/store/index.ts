@@ -1,15 +1,15 @@
 import { combineReducers } from "redux";
-import { todosInitialState, TodosState, TodosReducer } from "./Todos";
+import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
 
 export interface ApplicationState {
-    todos: TodosState;
+    toasts: ToastsState;
 }
 
 export const globalDefaultState: ApplicationState = {
-    todos: todosInitialState,
+    toasts: toastsInitialState,
 };
 
 export const createRootReducer = () =>
     combineReducers({
-        todos: TodosReducer,
+        toasts: ToastReducer,
     });

@@ -17,7 +17,8 @@ export const InputRadio = (props: RadioProps) => {
         <RelativeContainer {...other}>
             <InputRadioStyle 
                 checked={props.checked} 
-                name={name} 
+                name={name}
+                id={props.label} 
                 disabled={props.disabled} 
                 type="radio" 
                 onFocus={() => setFocus(true)} 
@@ -25,10 +26,10 @@ export const InputRadio = (props: RadioProps) => {
                 onClick={() => setChecked(!checked)}
                 ref={radioButtonRef}
             />
-            <RadioLabelStyle isFocus={focus}>
+            <RadioLabelStyle htmlFor={props.label} >
                 {label ? <RadioTextStyle 
                     color={props.disabled ? "gray-4" : "gray-1"} 
-                    size={14} weight="med"                   
+                    size={14} weight="reg"                   
                 > 
                     {label} 
                 </RadioTextStyle> 

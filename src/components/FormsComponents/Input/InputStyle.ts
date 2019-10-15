@@ -120,63 +120,59 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; di
         outline: rgb(59, 153, 252) auto 5px;
     `}
 `
-
-
-
-
-export const RadioLabelStyle = styled.label<{isFocus: boolean}>`
-
-    display: flex;
-    align-items: center;
-    position: fixed;
-    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
-    background-color: ${props => props.theme.colors["gray-10"]};
-    box-sizing: border-box;
-    border-radius: 50%;
-    height:16px;
-    width: 16px;
-    margin-right: 8px;
-    
-    ${props => props.isFocus && css`
-        box-shadow: 0 0 0 3px ${props => props.theme.colors["blue60"]} ;
-    `}
-`
+export const RadioLabelStyle = styled.label``
 
 export const InputRadioStyle = styled.input<{checked: boolean | undefined; disabled: boolean | undefined}>`
-    opacity: 0;
-    z-index: 1;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 
-    ${props => (props.disabled) && css `
-        cursor: auto;
-    `}
     & + ${RadioLabelStyle} {
+        
+        &::before {
+            content: '';
+            cursor: pointer;
+            border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+            background-color: ${props => props.theme.colors["gray-10"]};
+            display: block;
+            box-sizing: border-box;
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin-top: 4px;
+            border-radius: 100%;
+            text-align: center;
+            transition: all .1s ease-out;
+        }  
+
         ${props => (props.disabled) && css `
-            opacity: 0.5;
+             cursor: auto;
+            opacity: 0.5
         `}
     }
-    &:checked + ${RadioLabelStyle} {
-        border: 1px solid ${props => props.theme.colors["violet"]} ;
-        ${props => (props.disabled) && css `
-                opacity: 0.5;
-        `}       
-        &::after {
-            content: "";
-            display: block;
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            margin-left: 3px;
-            background: ${props => props.theme.colors['violet']};
-        }   
-    } 
-`;
 
+    &:checked + ${RadioLabelStyle} {
+        &::before {
+            border: 1px solid ${props => props.theme.colors["violet"]} ;
+            background-color: ${props => props.theme.colors["violet"]};
+            box-shadow: inset 0 0 0 .15em ${props => props.theme.colors["white"]};
+        }
+    }
+
+    &:focus + ${RadioLabelStyle} {
+        &::before {
+            box-shadow: 0 0 0 3px ${props => props.theme.colors["blue60"]}, inset 0 0 0 .15em ${props => props.theme.colors["white"]
+}
+        }
+    }
+`
 export const RadioTextStyle = styled(Text)`
-position: fixed;
-display: block;
-margin-left: 24px;
+    position: relative;
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
 `

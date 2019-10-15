@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import "../scss/style.scss";
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner} from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { ProgressBar } from '../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 
 const functionTest1 = () => {
     return (

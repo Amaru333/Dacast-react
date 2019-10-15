@@ -50,7 +50,7 @@ export interface InputCheckboxSpecificProps {
     label?: string;
     disabled?: boolean;
     indeterminate?: boolean;
-    labelWeight?: labelWeight;
+    labelWeight: labelWeight;
 }
 
 export type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;

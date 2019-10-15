@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text } from '../Typography/Text';
 import { TooltipProps } from './TooltipTypes';
-import { StorybookInputContainerStyle } from './TooltipStyle';
+import { ToolTipContainerStyle } from './TooltipStyle';
 
 export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
 
@@ -28,9 +28,9 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
     }, []);
 
     return (
-        <StorybookInputContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>
+        <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>
             <Text className="noTransition" size={12} weight="reg" > { props.children } </Text>
-        </StorybookInputContainerStyle>
+        </ToolTipContainerStyle>
     )
 }
 

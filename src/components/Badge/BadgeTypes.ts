@@ -1,5 +1,5 @@
 export interface BadgeCustomProps {
-    number: string;
+    number: number;
 }
 
 export type BadgeProps = BadgeCustomProps & React.HTMLAttributes<HTMLDivElement>;
