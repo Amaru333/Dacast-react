@@ -36,9 +36,9 @@ const functionTest4 = () => {
     )
 }
 
-const returnRouter = (props:any) => {
+const returnRouter = (props: Array<Routes>) => {
     return (
-        props.map((route: any, i: number) => {
+        props.map((route: Routes, i: number) => {
             return <Route key={i}
             path={route.path}
             render={props => (

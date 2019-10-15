@@ -16,7 +16,7 @@ export type Routes =  {
     path: string,
     name: string,
     iconName?: string,
-    component?: React.FC,
+    component?: React.FC<any>,
     slug?: Array<Routes>
 }
 

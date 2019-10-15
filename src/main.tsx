@@ -16,15 +16,16 @@ const history = createBrowserHistory();
 
 // Import Main styles for this application
 import "./scss/style.scss";
+import { Routes } from './containers/Navigation/NavigationTypes';
 
 // Any additional component props go here.
 interface MainProps {
     store: Store<ApplicationState>;
 }
 
-const returnRouter = (props:any) => {
+const returnRouter = (props: Array<Routes>) => {
     return (
-        props.map((route: any, i: number) => {
+        props.map((route: Routes, i: number) => {
             return <Route key={i}
             path={route.path}
             render={props => (
