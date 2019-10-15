@@ -4,7 +4,7 @@ import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle} from './NavigationStyle'
-import logo from '../../../public/assets/logo.png';
+const logo = require('../../../public/assets/logo.png');
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 

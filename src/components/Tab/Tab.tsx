@@ -36,7 +36,7 @@ export const Tab = (props: TabProps) => {
 
     const renderTabsContent = () => {
         return (
-            props.list.map((tabContent, i) => {
+            props.list.map((tabContent: any, i) => {
                 return (
                     <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
                         <tabContent.component />
@@ -46,19 +46,6 @@ export const Tab = (props: TabProps) => {
         )
     }
 
-    const returnRouter = (props:any) => {
-        return (
-            props.map((route: any, i: number) => {
-                return <Route key={i}
-                path={route.path}
-                render={props => (
-                  // pass the sub-routes down to keep nesting
-                  <route.component {...props} routes={route.slug} />
-                )}
-              />
-            })
-        )
-    }
     return (
         <TabContainer>
             <TabHeaderContainer {...props}>
@@ -67,9 +54,6 @@ export const Tab = (props: TabProps) => {
             <TabBody>
                 {renderTabsContent()}
             </TabBody>
-            <Switch>
-                {returnRouter(props.list)}
-            </Switch>
         </TabContainer>
 
     );
