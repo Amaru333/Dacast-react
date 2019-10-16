@@ -69,7 +69,7 @@ storiesOf('Inputs', module)
     .add('Slider input', () => (
         <React.Fragment>
             <StorybookInputContainerStyle>
-                 <InputSlider id="testSlider" min={0} max={150} value={[30, 100]} valueLabelDisplay="off"/>
+                 <InputSlider id="testSlider" min={0} max={150} value={[30, 100]}/>
             </StorybookInputContainerStyle>
             
         </React.Fragment>

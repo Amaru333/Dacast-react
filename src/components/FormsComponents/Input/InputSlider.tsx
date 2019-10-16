@@ -1,16 +1,11 @@
 import * as React from "react";
-
 import { Tooltip } from '../../Tooltip/Tooltip';
-import { SliderStyle } from './InputStyle';
-
-const customTooltip = (customProps: any) => {
-    return (
-        <Tooltip target={customProps.input}>{customProps.value}</Tooltip>
-    )
-}
+import { SliderContainerStyle } from './InputStyle';
+import { SliderContainerProps } from './InputTypes';
+import Slider from '@material-ui/core/Slider';
 
 
-export const InputSlider = (props: any) => {
+export const InputSlider = (props: SliderContainerProps) => {
 
     const [value, setValue] = React.useState<number[]>(props.value);
     let sliderRef = React.useRef<any>(null);
@@ -18,7 +13,7 @@ export const InputSlider = (props: any) => {
     const [input2Id, setInput2Id] = React.useState<string>("")
     let input1 = null;
     let input2 = null;
-    const handleChange = (event: any, newValue: number | number[]) => {
+    const handleChange = (event: React.FormEvent<HTMLInputElement>, newValue: number | number[]) => {
         setValue(newValue as number[]);
       };
       React.useEffect(() => {
@@ -35,9 +30,8 @@ export const InputSlider = (props: any) => {
       }, [value])
 
     return (
-        <div style={{position:'relative'}}>
-
-            <SliderStyle ref={sliderRef} {...props} value={value} onChange={handleChange}/>
+        <SliderContainerStyle {...props} >
+            <Slider ref={sliderRef}  value={value} onChange={handleChange} />
             {
                 input1Id.length !== 0 ?
                 <Tooltip target={input1Id}>{value[0]}</Tooltip>
@@ -48,11 +42,7 @@ export const InputSlider = (props: any) => {
                 <Tooltip target={input2Id}>{value[1]}</Tooltip>
                 : null
             }
-
-        </div>
-        
-        
+        </SliderContainerStyle>       
     )
-
 }
 
