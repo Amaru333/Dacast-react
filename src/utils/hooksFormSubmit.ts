@@ -1,8 +1,8 @@
 import React from 'react';
 
 
-export type ValueInput = { [key: string] : { value:string } };
-export type ValidationsInputObject = { [key: string] : { id: string, error: boolean, errorMessage:string } };
+export interface ValueInput { [key: string]: { value: string } }
+export interface ValidationsInputObject { [key: string]: { id: string; error: boolean; errorMessage: string } }
 
 export const handleValidationProps = (id: string, data: ValidationsInputObject) => {
     return {
@@ -34,27 +34,27 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             var dataInit={};
             var dataValueInit= {};
 
-            const filtered : { [key : number]: HTMLInputElement } = Object.keys(formRef.current)
-            .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
-            .reduce((obj, key) => {
-                dataValueInit = { ...dataInit, [formRef.current![key].id]: { value:""  }  };
-                dataInit = { ...dataValueInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
-                return {
-                  ...obj,
-                  [key]: formRef.current![key]
-                };
-            }, {});
+            const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
+                .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
+                .reduce((obj, key) => {
+                    dataValueInit = { ...dataInit, [formRef.current![key].id]: { value:""  }  };
+                    dataInit = { ...dataValueInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
+                    return {
+                        ...obj,
+                        [key]: formRef.current![key]
+                    };
+                }, {});
 
             Object.entries(filtered).map(([key, element]) =>  {
                 element.addEventListener('keyup', (event) => {
-                    setDataValue( (dataValue : ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
+                    setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
                 });
             })
 
             Object.entries(filtered).map(([key, element]) =>  {
                 element.addEventListener('blur', (event) => {
                     let validity = element.checkValidity();
-                    setData( (data : ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
+                    setData( (data: ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
                 });
             })
 
@@ -72,7 +72,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
         }
         
     }, [dataValue, data, enabledSubmit])
-        return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
+    return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
 
 
 }

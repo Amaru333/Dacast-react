@@ -1,7 +1,7 @@
 import { Routes } from '../../containers/Navigation/NavigationTypes';
 
 interface TabSpecificProps {
-    list: Array<Routes>;
+    list: Routes[];
     orientation: string;
     history: any;
 }

@@ -2,7 +2,6 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
 import { Router, Switch, Route} from 'react-router-dom';
-import { TopAppBar } from "./components/TopAppBar";
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -22,16 +21,16 @@ interface MainProps {
     store: Store<ApplicationState>;
 }
 
-const returnRouter = (props: Array<Routes>) => {
+const returnRouter = (props: Routes[]) => {
     return (
         props.map((route: Routes, i: number) => {
             return <Route key={i}
-            path={route.path}
-            render={props => (
-              // pass the sub-routes down to keep nesting
-              <route.component {...props} routes={route.slug} />
-            )}
-          />
+                path={route.path}
+                render={props => (
+                    // pass the sub-routes down to keep nesting
+                    <route.component {...props} routes={route.slug} />
+                )}
+            />
         })
     )
 }

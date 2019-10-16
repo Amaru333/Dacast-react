@@ -18,7 +18,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const renderList = () => {
         let itemsList = props.list;
         return (
-            Object.keys(itemsList).map((name, key) => {
+            Object.keys(itemsList).map((name) => {
                 return (               
                     <DropdownItem 
                         key={props.id + '_' + name} 

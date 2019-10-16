@@ -28,7 +28,7 @@ export const hideToast = (toast: ToastType): Action => ({
     payload: {toast} 
 });
   
-export const showToastNotification = (text: string, size: Size, notificationType: NotificationType) => (dispatch: any, getState: any): void => {
+export const showToastNotification = (text: string, size: Size, notificationType: NotificationType) => (dispatch: any): void => {
     const toastAction = showToast(text, size, notificationType);
     dispatch(showToast(text, size, notificationType));
     setTimeout(() => dispatch(hideToast(toastAction.payload.toast)), 3500);

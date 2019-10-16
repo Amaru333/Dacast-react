@@ -96,7 +96,7 @@ const Admin = (props: any) => {
     )
 }
 
-export const AppRoutes:Array<Routes> = [
+export const AppRoutes: Routes[] = [
     {
         path: '/dashboard',
         name: 'Dashboard',

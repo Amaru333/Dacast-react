@@ -28,12 +28,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const renderMenu = () => {
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
-               return  <BreakStyle key={i} />
+                return  <BreakStyle key={i} />
             }
             else if(element.path === 'title') {
                 return <SectionTitle key={i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle>
             }
-            else {
+            else{
                 return (
                     <Link to={element.path} onClick={() => setSelectedElement(element.name)} key={i} >
                         <ElementMenu active={selectedElement === element.name} icon={element.iconName!}>
