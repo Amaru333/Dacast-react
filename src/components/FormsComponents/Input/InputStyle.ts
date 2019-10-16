@@ -183,6 +183,7 @@ export const SliderStyle = styled(Slider)`
         opacity: 1;
     }
     & .MuiSlider-thumb, .MuiSlider-track{
-        background-color: ${props => props.theme.colors["dark-violet"]}
+        background-color: ${props => props.theme.colors["dark-violet"]};
+        transition: none;
     }
 `
