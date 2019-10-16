@@ -18,6 +18,7 @@ export const TableHeaderRow = styled.tr<{}>`
     height: 52px;
     background-color: ${props => props.theme.colors["white"]};
     border: 1px solid ${props => props.theme.colors["gray-7"]};
+    padding-left: 16px;
     &:hover {
         cursor: pointer;
         background-color: ${props => props.theme.colors["violet10"]};
@@ -25,6 +26,7 @@ export const TableHeaderRow = styled.tr<{}>`
 `;
 
 export const TableHeaderCell = styled.td<{}>`
+    padding-left: 16px;
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -35,6 +37,7 @@ export const TableBodyRow = styled.tr<{}>`
     height: 48px;
     background-color: ${props => props.theme.colors["white"]};
     border: 1px solid ${props => props.theme.colors["gray-8"]};
+    padding-left: 16px;
     &:hover {
         cursor: pointer;
         background-color: ${props => props.theme.colors["violet10"]};
@@ -42,4 +45,5 @@ export const TableBodyRow = styled.tr<{}>`
 `;
 
 export const TableBodyCell = styled.td<{}>`
+    padding-left: 16px;
 `;

@@ -5,9 +5,9 @@ import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, 
 export const Table = (props: TableProps) => {
 
     const renderTableHeader = () => {
-        return props.header.map((headerCell) => {
+        return props.header.map((headerCell, i) => {
             return (
-                <TableHeaderCell className="" key={props.id+"tableHeader"+headerCell.toString()}>
+                <TableHeaderCell className="" key={props.id+"tableHeaderCell"+i.toString()}>
                     {headerCell}
                 </TableHeaderCell>
             )
@@ -19,9 +19,9 @@ export const Table = (props: TableProps) => {
             return (
                 <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
                     {
-                        bodyRow.map((bodyCell: any) => {
+                        bodyRow.map((bodyCell: any, item) => {
                             return (
-                                <TableBodyCell key={props.id + "TableBodyCell" + bodyCell.toString()} className="">
+                                <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
                                     {bodyCell}
                                 </TableBodyCell>
                             )

@@ -1,6 +1,8 @@
+import { ReactElement } from 'react';
+
 interface TableSpecificProps {
-    header: Array<any>;
-    body: Array<any>;
+    header: Array<ReactElement>;
+    body: Array<Array<ReactElement>>;
     id: string;
 }
 
