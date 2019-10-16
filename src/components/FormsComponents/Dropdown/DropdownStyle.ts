@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { DropdownProps } from './DropdownTypes';
+import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div<DropdownProps>`
     display: flex;
@@ -78,3 +79,10 @@ export const DropdownIconStyle = styled.div`
     right: 2%;
     top: 15%;
 `;
+
+export const DropdownItemText = styled(Text)`
+    position: absolute;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 4px;
+`
