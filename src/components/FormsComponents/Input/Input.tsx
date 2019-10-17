@@ -13,7 +13,7 @@ export const Input = (props: InputProps) => {
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
             <RelativeContainer>
                 <InputStyle isError={isError} {...other} />
-                {icon ? <IconStyle><Icon>{icon}</Icon></IconStyle> : null}
+                {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
             </RelativeContainer>
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
@@ -23,4 +23,4 @@ export const Input = (props: InputProps) => {
 
 }
 
-Input.defaultProps = { isError: false, disabled: false }
+Input.defaultProps = { isError: false, disabled: false, required: false }

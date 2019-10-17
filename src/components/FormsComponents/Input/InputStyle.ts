@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 import { InputProps, InputCheckboxProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
 
-export const ContainerStyle = styled.div<InputProps>`
+export const ContainerStyle = styled.div`
     display: flex;
     flex-direction: column;
     height:auto;
 `;
 
-export const HelpStyle = styled.div<InputProps>`
+export const HelpStyle = styled.div`
     margin-top: 8px;
 `;
 
@@ -16,14 +16,14 @@ export const RelativeContainer = styled(ContainerStyle)`
     position: relative;
 `;
 
-export const IconStyle = styled.div<InputProps>`
+export const IconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 12px;
     top: 8px;    
     color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
 `;
 
-export const LabelStyle = styled.label<InputProps>`
+export const LabelStyle = styled.label<{disabled: boolean}>`
     display: flex;
     height:auto;
     margin-bottom: 4px;
@@ -69,7 +69,7 @@ export const InputStyle = styled.input<InputProps>`
     }
 `;
 
-export const InputCheckboxStyle = styled.input<InputCheckboxProps>`
+export const InputCheckboxStyle = styled.input`
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;

@@ -31,8 +31,11 @@ export interface InputSpecificProps {
     icon?: string;
     help?: string;
     isError?: boolean;
-    disabled?: boolean;
-    type?: InputType;  
+    disabled: boolean;
+    type?: InputType;
+    name?: string;
+    value?: string;  
+    required: boolean;
 }
 
 export interface CheckboxSpecificProps {
@@ -46,7 +49,7 @@ export type labelWeight = "reg" | "med";
 export interface InputCheckboxSpecificProps {
     id: string;
     label?: string;
-    disabled?: boolean;
+    disabled: boolean;
     indeterminate?: boolean;
     labelWeight: labelWeight;
 }
