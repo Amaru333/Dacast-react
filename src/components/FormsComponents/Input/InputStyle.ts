@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { InputProps } from './InputTypes';
+import { InputProps, InputCheckboxProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div`
@@ -151,7 +151,7 @@ export const InputRadioStyle = styled.input<{checked: boolean | undefined; disab
 
         ${props => (props.disabled) && css `
              cursor: auto;
-            opacity: 0.5
+            opacity: 0.5;
         `}
     }
 
@@ -175,4 +175,15 @@ export const RadioTextStyle = styled(Text)`
     display: inline-block;
     margin-left: 8px;
     vertical-align: middle;
+`
+export const SliderContainerStyle = styled.div<SliderContainerProps>`
+    position: relative;
+    & .MuiSlider-rail {
+        color: ${props => props.theme.colors["violet40"]};
+        opacity: 1;
+    }
+    & .MuiSlider-thumb, .MuiSlider-track{
+        background-color: ${props => props.theme.colors["dark-violet"]};
+        transition: none;
+    }
 `

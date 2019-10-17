@@ -13,6 +13,7 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
     React.useEffect(() => {
         let target = document.getElementById(props.target);
         if(target && tooltip.current) {
+
             setTop(target.offsetTop - (tooltip.current.clientHeight + 2) );
             setLeft(target.offsetLeft + ((target.clientWidth - tooltip.current.clientWidth) / 2) );
     
@@ -25,7 +26,7 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
                 };
             }
         }
-    }, []);
+    }, [props.children]);
 
     return (
         <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>

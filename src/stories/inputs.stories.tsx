@@ -5,6 +5,7 @@ import {InputCheckbox} from '../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import "../scss/style.scss";
 import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
+import { InputSlider } from '../components/FormsComponents/Input/InputSlider';
 
 storiesOf('Inputs', module)
     .add('Text input', () => ( 
@@ -63,6 +64,15 @@ storiesOf('Inputs', module)
             <InputRadio checked disabled name="test-disabled" label="Disabled Test 3"></InputRadio>
         </React.Fragment>
             
+    ))
+
+    .add('Slider input', () => (
+        <React.Fragment>
+            <StorybookInputContainerStyle>
+                 <InputSlider id="testSlider" min={0} max={150} value={[30, 100]}/>
+            </StorybookInputContainerStyle>
+            
+        </React.Fragment>
     ));
 
 const StorybookInputContainerStyle = styled.div`

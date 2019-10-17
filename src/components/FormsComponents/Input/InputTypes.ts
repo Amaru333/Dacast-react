@@ -64,3 +64,12 @@ export interface RadioSpecificProps {
 }
 
 export type RadioProps = RadioSpecificProps & React.HTMLAttributes<HTMLInputElement>;
+
+export type SliderContainerProps = SliderSpecificProps & React.HTMLAttributes<HTMLInputElement>;
+
+export interface SliderSpecificProps {
+    min: number;
+    max: number;
+    value: number[];
+    id: string;
+}
