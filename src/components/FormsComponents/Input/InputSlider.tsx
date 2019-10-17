@@ -18,12 +18,10 @@ export const InputSlider = (props: SliderContainerProps) => {
       };
       React.useEffect(() => {
           if(sliderRef.current) {
-            console.log(sliderRef.current);
             input1 = sliderRef.current.children[3];
             input1.id = props.id +"sliderThumb1";
             input2 = sliderRef.current.children[4];
             input2.id = props.id +"sliderThumb2";
-            console.log(input1)
             setInput1Id(input1.id)
             setInput2Id(input2.id)
           }
