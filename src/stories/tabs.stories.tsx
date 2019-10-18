@@ -63,22 +63,23 @@ storiesOf('Tabs', module)
         return ( 
             <React.Fragment>
                 <Router history={history}>
-                    <StorybookTabContainerStyle>
-                        <Tab 
-                            list={routeList}
-                            history={history}
-                            orientation="horizontal"
-                            
-                        />                    
-                    </StorybookTabContainerStyle>
-                    <StorybookTabContainerStyle>
-                        <Tab 
-                            list={routeList} 
-                            orientation="vertical"
-                            history={history}
-                        />
-                    </StorybookTabContainerStyle>
-
+                    <>
+                        <StorybookTabContainerStyle>
+                            <Tab 
+                                list={routeList}
+                                history={history}
+                                orientation="horizontal"
+                                
+                            />                    
+                        </StorybookTabContainerStyle>
+                        <StorybookTabContainerStyle>
+                            <Tab 
+                                list={routeList} 
+                                orientation="vertical"
+                                history={history}
+                            />
+                        </StorybookTabContainerStyle>
+                    </>
                 </Router>
             </React.Fragment>
 

@@ -41,10 +41,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <Router history={history}>
-                    <MainMenu history={history} routes={AppRoutes}/>
-                    <Switch>
-                        {returnRouter(AppRoutes)}
-                    </Switch>
+                    <>
+                        <MainMenu history={history} routes={AppRoutes}/>
+                        <Switch>
+                            {returnRouter(AppRoutes)}
+                        </Switch>
+                    </>
                 </Router>
             </ThemeProvider>
 

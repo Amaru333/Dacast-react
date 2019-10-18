@@ -23,10 +23,12 @@ storiesOf('Navigation', module)
     .add('Navigation', () => ( 
         <React.Fragment>
             <Router>
-                <MainMenu history="" routes={AppRoutes}/>
-                <Switch>
-                    {returnRouter(AppRoutes)}
-                </Switch>
+                <>
+                    <MainMenu history="" routes={AppRoutes}/>
+                    <Switch>
+                        {returnRouter(AppRoutes)}
+                    </Switch>
+                </>
             </Router>
 
         </React.Fragment>
