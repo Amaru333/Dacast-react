@@ -79,6 +79,7 @@ export const DropdownIconStyle = styled.div`
     right: 2%;
     top: 15%;
     padding-right: 8px;
+    transition: none;
 `;
 
 export const DropdownItemText = styled(Text)`
