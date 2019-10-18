@@ -57,7 +57,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
     min-height: 32px;
-    padding: 4px 8px;
+    padding: 0 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
@@ -65,6 +65,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     ${props => props.isSelected && css `
         background-color: ${props => props.theme.colors["violet10"]};
         color: ${props => props.theme.colors["dark-violet"]};
+        transition: none;
     `}
 `;
 
@@ -76,10 +77,10 @@ export const BorderItem = styled.div<{}>`
 
 export const DropdownIconStyle = styled.div`
     position: absolute;
-    right: 2%;
-    top: 15%;
+    right: 0%;
+    top: 25%;
     padding-right: 8px;
-    transition: none;
+    
 `;
 
 export const DropdownItemText = styled(Text)`
