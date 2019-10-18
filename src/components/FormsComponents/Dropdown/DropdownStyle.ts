@@ -48,7 +48,6 @@ export const DropdownList = styled.ul<{displayDropdown: boolean}>`
     margin-block-start: 0px;
     padding-inline-start: 8px;
     padding-inline-end: 8px;
-    padding-block-start: 8px;
     padding-block-end: 8px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);

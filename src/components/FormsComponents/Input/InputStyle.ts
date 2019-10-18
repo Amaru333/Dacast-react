@@ -27,6 +27,7 @@ export const LabelStyle = styled.label<{disabled: boolean}>`
     display: flex;
     height:auto;
     margin-bottom: 4px;
+    margin-top:4px;
     align-items: center;
 `;
 
