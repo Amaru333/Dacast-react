@@ -1,12 +1,12 @@
 import * as React from "react";
-import { ButtonProps } from './ButtonTypes';
+import { ButtonProps, buttonArrayColor } from './ButtonTypes';
 import { ButtonStyle } from './ButtonStyle';
 
 
 export const Button = (props: ButtonProps) => {
 
-    return <ButtonStyle {...props}>{props.children}</ButtonStyle>;
+    return <ButtonStyle colorObject={buttonArrayColor[props.buttonColor!]} {...props}>{props.children}</ButtonStyle>;
 
 }
 
-Button.defaultProps = {typeButton: "primary", sizeButton: "large"}
+Button.defaultProps = {typeButton: "primary", sizeButton: "large", buttonColor: "blue"}
