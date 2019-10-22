@@ -22,6 +22,12 @@ export const ButtonStyle = styled.button<ButtonProps>`
     font-size: 12px
   `}
 
+  ${props => (props.sizeButton == "xs") && css`
+    height: 24px;
+    padding: 4px 8px;
+    font-size: 12px
+  `}
+
   &:hover {
    background: ${props => (props.typeButton == "tertiary") ? props.theme.colors.white : props.theme.colors.violet40 };
    cursor: pointer;   

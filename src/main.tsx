@@ -5,7 +5,7 @@ import { Router, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Theme } from '../src/styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
@@ -37,15 +37,22 @@ const returnRouter = (props: Routes[]) => {
 
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
+
+    const [isOpen, setOpen] = React.useState<boolean>(true);
+
+    React.useEffect(() => {}, [isOpen]);
+
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router history={history}>
+                <Router  history={history}>
                     <>
-                        <MainMenu history={history} routes={AppRoutes}/>
-                        <Switch>
-                            {returnRouter(AppRoutes)}
-                        </Switch>
+                        <MainMenu isOpen={isOpen} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                        <Content isOpen={isOpen}>
+                            <Switch >
+                                {returnRouter(AppRoutes)}
+                            </Switch>
+                        </Content>
                     </>
                 </Router>
             </ThemeProvider>
@@ -53,6 +60,14 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         </Provider>
     );
 };
+
+const Content = styled.div<{isOpen: boolean}>`
+    margin-left: ${props => props.isOpen? "235px" : "64px"};
+    background: rgb(245, 247, 250);
+    position: relative;
+    min-height: 940px;
+    padding: 24px;
+`
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.

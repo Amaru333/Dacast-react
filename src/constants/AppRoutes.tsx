@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import StaticDashbaord from '../components/staticDashboard';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -101,7 +102,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: Dashboard,
+        component: StaticDashbaord,
         slug: [
             {
                 path: '/dashboard/tab1',

@@ -2,11 +2,12 @@ import styled, { css } from 'styled-components';
 import { ElementMenuProps, MainMenuProps } from './NavigationTypes'
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
+import { boolean } from '@storybook/addon-knobs';
 
 export const ContainerElementStyle = styled.div<ElementMenuProps>`
     display: flex;
     flex-direction: row;
-    padding: 8px 23px;
+    padding: ${props => props.isOpen ? "8px 23px" : "8px 20px"};
     height:40px;
     box-sizing: border-box;
     cursor: pointer;
@@ -39,12 +40,13 @@ export const SectionTitle = styled(Text)`
 `;
 export const SectionStyle = styled.div`
 `;
-export const ContainerStyle = styled.div<MainMenuProps>`
+export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     display: flex;
     flex-direction: column;
     height:100%;
     position: fixed;
-    width: 235px;
+    width: ${props => props.isOpen? "235px" : "64px"};
+    box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;

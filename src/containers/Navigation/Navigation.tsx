@@ -11,7 +11,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
     return (
         <ContainerElementStyle {...props} >
             <IconStyle className="noTransition"><Icon className="noTransition">{props.icon}</Icon></IconStyle>
-            <Text size={14} weight="reg" > {props.children} </Text>
+            <Text hidden={!props.isOpen} size={14} weight="reg" > {props.children} </Text>
         </ContainerElementStyle>
     )
 }
@@ -24,19 +24,23 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         return item ? item.name : props.routes[0].name;
     };
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
+
     React.useEffect(() => {}, [selectedElement]);
+    
+
+
     const renderMenu = () => {
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
                 return  <BreakStyle key={i} />
             }
             else if(element.path === 'title') {
-                return <SectionTitle key={i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle>
+                return props.isOpen ? <SectionTitle key={i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
             }
             else{
                 return (
                     <Link to={element.path} onClick={() => setSelectedElement(element.name)} key={i} >
-                        <ElementMenu active={selectedElement === element.name} icon={element.iconName!}>
+                        <ElementMenu isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>
                     </Link>
@@ -45,13 +49,14 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         })
     }
     return (
-        <ContainerStyle {...props} >
+        <ContainerStyle isOpen={props.isOpen} {...props} >
             <ImageStyle className="mx-auto" src={logo} />
             <BreakStyle />
-            <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >Add +</ButtonMenuStyle>
+            <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
             <SectionStyle>
                 {renderMenu()}
             </SectionStyle>
+            <Icon onClick={() => props.setOpen(!props.isOpen)} className="ml-auto mt-auto mr2 mb2" >{props.isOpen? "arrow_back" : 'arrow_forward'}</Icon>
         </ContainerStyle>
     )
 }

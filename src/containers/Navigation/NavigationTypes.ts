@@ -1,6 +1,8 @@
 export interface MainMenuSpecificProps {
     routes: Routes[]; 
     history: any;
+    isOpen: boolean;
+    setOpen: Function
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -8,6 +10,7 @@ export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDiv
 export interface ElementMenuSpecificProps {
     icon: string;
     active?: boolean;
+    isOpen: boolean;
 }
 ​
 export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

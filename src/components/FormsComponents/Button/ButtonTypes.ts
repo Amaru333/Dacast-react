@@ -1,4 +1,4 @@
-type Size = "large" | "small";
+type Size = "large" | "small" | "xs";
 type Type = "primary" | "secondary" | "tertiary";
 
 export interface ButtonCustomProps {
