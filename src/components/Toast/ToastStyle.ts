@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 import { ToastProps, NotificationType } from './ToastTypes';
 
+// Weird color bug still not fixed - need to overwrite global transition
+
 export const ToastContainer = styled.div`
     position: absolute;
     margin: auto;
