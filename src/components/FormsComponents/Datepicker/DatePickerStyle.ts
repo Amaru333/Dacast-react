@@ -81,6 +81,7 @@ export const MonthContainerStyle = styled.div<{open: boolean}>`
 
 export const MonthContainer = styled.div<{}>`
     border: 1px solid ${props => props.theme.colors["gray-7"]};
+    padding: 0 12px;
 `
 
 export const MonthLabelStyle = styled.div<{}>`
