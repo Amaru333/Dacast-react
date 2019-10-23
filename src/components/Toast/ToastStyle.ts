@@ -1,12 +1,14 @@
 import styled, { css } from "styled-components";
 import { ToastProps, NotificationType } from './ToastTypes';
 
+// Weird color bug still not fixed - need to overwrite global transition
+
 export const ToastContainer = styled.div`
-    position: fixed;
+    position: absolute;
     margin: auto;
     bottom: 16px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%);
 
 `;
 
@@ -20,7 +22,6 @@ export const ToastStyle = styled.div<ToastProps>`
     box-sizing: border-box;
     border-radius: 4px;
     z-index: 9999;
-    transition: all 2s ease-in-out;
     ${props => (props.toast.size == "flexible") && css`
         width: auto;
     `}
@@ -51,9 +52,13 @@ export const IconStyle = styled.div`
     margin-right: 8px;
 `;
 
-export const ToastCloseButtonStyle = styled.button<{notificationType: NotificationType} & React.HTMLAttributes<HTMLButtonElement>>`
+export const ToastCloseButtonStyle = styled.div<{notificationType: NotificationType} & React.HTMLAttributes<HTMLDivElement>>`
   float: right;
   border: none;
   color: ${props => (props.notificationType == "warning" ? props.theme.colors["black"] : props.theme.colors["white"] )};
   background: inherit;
+
+    &:hover {
+        cursor: pointer;
+    }
   `;

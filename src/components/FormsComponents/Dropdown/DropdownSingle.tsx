@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle} from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText} from './DropdownStyle';
 import { DropdownProps, dropdownIcons } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -25,7 +25,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                         id={props.id + '_' + name} 
                         isSelected={selectedItem === name} 
                         onClick={() => setSelectedItem(name)}> 
-                        <Text size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</Text> {selectedItem === name ? <DropdownIconStyle><Icon>check</Icon></DropdownIconStyle> : null}
+                        <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
                     </DropdownItem>
                 )                
             })
