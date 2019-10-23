@@ -35,6 +35,20 @@ const functionTest4 = () => {
     )
 }
 
+const returnRouter = (props: Routes[]) => {
+    return (
+        props.map((route: Routes, i: number) => {
+            return <Route key={i}
+                path={route.path}
+                render={props => (
+                    // pass the sub-routes down to keep nesting
+                    <route.component {...props} routes={route.slug} />
+                )}
+            />
+        })
+    )
+}
+
 const routeList: Routes[] = [
     {
         name:'Route1',
@@ -78,6 +92,9 @@ storiesOf('Tabs', module)
                             history={history}
                         />
                     </StorybookTabContainerStyle>
+                    <Switch>
+                        {returnRouter(routeList)}
+                    </Switch>
                 </Router>
             </React.Fragment>
 
