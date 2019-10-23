@@ -7,31 +7,48 @@ storiesOf('Buttons', module)
     .add('Large button', () => ( 
         <React.Fragment>
             <div className="m3">
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
             </div>
             <div className="m3">
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
-                <Button onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
             </div>
-    
+            <div className="m3">
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
+            </div>
+            <div className="m3">
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="large" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+            </div>
         </React.Fragment>
 
     ))
     .add('Small button', () => ( 
         <React.Fragment>
             <div className="m3">
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  >Primary</Button>
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  >Secondary</Button>
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"   >Tertiary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  >Secondary</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"   >Tertiary</Button>
             </div>
             <div className="m3">
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
-                <Button onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+                <Button buttonColor='blue' onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+            </div><div className="m3">
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  >Secondary</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"   >Tertiary</Button>
             </div>
-    
+            <div className="m3">
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="primary" className="mr1"  disabled  >Primary disabled</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="secondary" className="mr1"  disabled >Secondary disabled</Button>
+                <Button buttonColor='red' onClick={action("button-click")}  sizeButton="small" typeButton="tertiary" className="mr1"  disabled >Tertiary disabled</Button>
+            </div>
         </React.Fragment>
     ));
