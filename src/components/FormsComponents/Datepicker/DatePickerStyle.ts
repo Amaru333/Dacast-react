@@ -104,10 +104,9 @@ export const DaysContainer = styled.div<{}>`
     justify-content: center;
 `
 
-export const DayWrapper = styled.div<{isWithinHoverRange: boolean, isSelected: boolean,isSelectedStartOrEnd: boolean, isLineBeginning: boolean, isLineEnd: boolean, isMonthFirstDay: boolean, isMonthLastDay: boolean}>`
+export const DayWrapper = styled.div<{isWithinHoverRange: boolean, isSelected: boolean,isSelectedStartOrEnd: boolean, isLineBeginning: boolean, isLineEnd: boolean, isMonthFirstDay: boolean, isMonthLastDay: boolean,  isFirstDay: boolean, isLastDay: boolean}>`
     ${props => (props.isWithinHoverRange || props.isSelected) && css`
         background-color:${props => props.theme.colors["violet20"]};
-        
     `}
     ${props => (props.isWithinHoverRange || props.isSelected) && (props.isLineBeginning || props.isMonthFirstDay) && css`
         border-bottom-left-radius: 32px;
@@ -117,10 +116,14 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean, isSelected: b
         border-bottom-right-radius: 32px;
         border-top-right-radius: 32px;
     `}
-    ${props => props.isSelectedStartOrEnd && css`
-        background-color:${props => props.theme.colors["white"]};;
+    ${props => props.isFirstDay && css`
+        background: linear-gradient(90deg, ${props => props.theme.colors["white"]} 50%, ${props => props.theme.colors["violet20"]} 50%);
+    `}
+    ${props => props.isLastDay && css`
+        background: linear-gradient(90deg, ${props => props.theme.colors["violet20"]} 50%, ${props => props.theme.colors["white"]} 50%);
     `}
     margin: 5px 0;
+    padding: 0 3px;
 `
 
 export const DayStyle = styled.button<{isWithinHoverRange: boolean, isSelected: boolean, isSelectedStartOrEnd: boolean,  isToday: boolean}>`

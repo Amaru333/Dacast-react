@@ -1,3 +1,5 @@
+import { Data } from 'popper.js';
+
 interface DatePickerContext {
     focusedDate: any,
     isDateFocused: (date: any) => boolean,
@@ -8,6 +10,8 @@ interface DatePickerContext {
     onDateFocus: (date: Date) => void,
     onDateHover: (date: Date) => void,
     onDateSelect: (date: Date) => void,
+    startDateStyle?: any,
+    endDateStyle?: any
 }
 
 export type DatePickerContextValue = DatePickerContext
