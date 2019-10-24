@@ -11,6 +11,29 @@ const getInitials = (name: string) => {
         return initials;
 }
 
+var colors = [
+    "#D14642",
+    "#DE8536",
+    "#FFB75D",
+    "#1E874B",
+    "#2899F6",
+    "#7048E8",
+    "#FC427B"
+  ];
+
+  const getColor = (name: string) => {
+    var hash = 0;
+    
+    if (name.length === 0) return hash;
+    for (var i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        hash = hash & hash;
+    }
+    console.log(hash % colors.length)
+    return Math.abs(hash % colors.length);
+
+}
+
 export const Avatar = (props: AvatarProps) => {
 
     return (
@@ -22,8 +45,8 @@ export const Avatar = (props: AvatarProps) => {
     )
 }
 
-export const AvatarStyle = styled.div`
-background-color: ${props => props.theme.colors["red"]};
+export const AvatarStyle = styled.div<AvatarProps>`
+background-color: ${props => colors[getColor(props.name)]};
 width: 40px;
 height: 40px;
 border-radius: 50%;
