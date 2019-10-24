@@ -45,11 +45,18 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     flex-direction: column;
     height:100%;
     position: fixed;
-    width: ${props => props.isOpen? "235px" : "64px"};
+    width: ${props => props.isMobile ? "235px" : props.navWidth};
     box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;
+    z-index: 999;
+    
+    ${props => props.isMobile && css`
+        margin-top: 57px;
+        transform: translate( ${props.isOpen ? 0: "-100%"} );
+        transition: transform .2s linear ;
+    `}
 `;
 export const ImageStyle = styled.img`
     max-width: 100%;
@@ -57,6 +64,21 @@ export const ImageStyle = styled.img`
     margin-top: 22px;
     width:80%;
 `;
+
+export const OverlayMobileStyle = styled.div<{ opened: boolean }>`
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props => props.theme.colors.overlay70};
+    ${props => props.opened && css`
+        display: block;
+    `}
+    z-index: 998;
+`;
+
 export const BreakStyle = styled.hr`
     height: 1px;
     width: 100%;
@@ -68,4 +90,19 @@ export const BreakStyle = styled.hr`
 export const ButtonMenuStyle = styled(Button)`
     width: 90%;
     margin-bottom: 15px;
+`;
+
+export const BurgerStyle = styled.div`
+  background: transparent;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height:100%;
+  width:67px;
+  margin-right: auto;
+  display:flex;
+  &:focus {
+    outline: none;
+  }
 `;

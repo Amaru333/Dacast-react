@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import StaticDashbaord from '../components/staticDashboard';
+import StaticDashbaord from '../components/StaticDashboard';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 

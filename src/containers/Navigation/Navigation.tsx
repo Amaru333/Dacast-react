@@ -3,15 +3,17 @@ import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
-import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle} from './NavigationStyle'
+import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle} from './NavigationStyle'
 const logo = require('../../../public/assets/logo.png');
+const logoSmall = require('../../../public/assets/logo_small.png');
+
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
     return (
         <ContainerElementStyle {...props} >
             <IconStyle className="noTransition"><Icon className="noTransition">{props.icon}</Icon></IconStyle>
-            <Text hidden={!props.isOpen} size={14} weight="reg" > {props.children} </Text>
+            <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
         </ContainerElementStyle>
     )
 }
@@ -25,10 +27,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     };
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
 
-    React.useEffect(() => {}, [selectedElement]);
-    
-
-
     const renderMenu = () => {
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
@@ -40,7 +38,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             else{
                 return (
                     <Link to={element.path} onClick={() => setSelectedElement(element.name)} key={i} >
-                        <ElementMenu isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
+                        <ElementMenu isMobile={props.isMobile} isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>
                     </Link>
@@ -49,8 +47,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         })
     }
     return (
+        <>
+        {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
         <ContainerStyle isOpen={props.isOpen} {...props} >
-            <ImageStyle className="mx-auto" src={logo} />
+            <ImageStyle className="mx-auto" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
             <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
             <SectionStyle>
@@ -58,6 +58,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             </SectionStyle>
             <Icon onClick={() => props.setOpen(!props.isOpen)} className="ml-auto mt-auto mr2 mb2" >{props.isOpen? "arrow_back" : 'arrow_forward'}</Icon>
         </ContainerStyle>
+        </>
     )
 }
 MainMenu.defaultProps = {};

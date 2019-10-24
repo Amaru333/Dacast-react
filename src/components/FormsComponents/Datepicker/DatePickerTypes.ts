@@ -1,13 +1,13 @@
 interface DatePickerContext {
-    focusedDate: any,
-    isDateFocused: (date: any) => boolean,
-    isDateSelected: (date: any) => boolean,
-    isDateHovered: (date: any) => boolean,
-    isDateBlocked: (date: any) => boolean,
-    isFirstOrLastSelectedDate: (date: any) => boolean,
-    onDateFocus: (date: Date) => void,
-    onDateHover: (date: Date) => void,
-    onDateSelect: (date: Date) => void,
+    focusedDate: any;
+    isDateFocused: (date: any) => boolean;
+    isDateSelected: (date: any) => boolean;
+    isDateHovered: (date: any) => boolean;
+    isDateBlocked: (date: any) => boolean;
+    isFirstOrLastSelectedDate: (date: any) => boolean;
+    onDateFocus: (date: Date) => void;
+    onDateHover: (date: Date) => void;
+    onDateSelect: (date: Date) => void;
 }
 
 export type DatePickerContextValue = DatePickerContext
@@ -28,6 +28,6 @@ export interface DayType {
     key: string;
     isToday: boolean;
     isMonthLastDay: boolean;
-  }
+}
 
 export type DayProps = DayType & React.HTMLAttributes<HTMLButtonElement>;

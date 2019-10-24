@@ -103,7 +103,7 @@ export const DaysContainer = styled.div<{}>`
     justify-content: center;
 `
 
-export const DayWrapper = styled.div<{isWithinHoverRange: boolean, isSelected: boolean,isSelectedStartOrEnd: boolean, isLineBeginning: boolean, isLineEnd: boolean, isMonthFirstDay: boolean, isMonthLastDay: boolean}>`
+export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: boolean;isSelectedStartOrEnd: boolean; isLineBeginning: boolean; isLineEnd: boolean; isMonthFirstDay: boolean; isMonthLastDay: boolean}>`
     ${props => (props.isWithinHoverRange || props.isSelected) && css`
         background-color:${props => props.theme.colors["violet20"]};
         
@@ -122,7 +122,7 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean, isSelected: b
     margin: 5px 0;
 `
 
-export const DayStyle = styled.button<{isWithinHoverRange: boolean, isSelected: boolean, isSelectedStartOrEnd: boolean,  isToday: boolean}>`
+export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: boolean; isSelectedStartOrEnd: boolean;  isToday: boolean}>`
     width: 32px;
     height: 32px;
     border: none;
