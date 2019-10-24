@@ -1,14 +1,22 @@
 import * as React from "react";
 import { Text } from "../Typography/Text";
 import styled, { css } from 'styled-components';
-// import { AvatarProps } from './AvatarTypes';
+import { AvatarProps } from './AvatarTypes';
 
-export const Avatar = () => {
+const getInitials = (name: string) => {
+    var names = name.split(' '),
+        initials = names[0].substring(0, 1).toUpperCase();
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    
+        return initials;
+}
+
+export const Avatar = (props: AvatarProps) => {
 
     return (
-        <AvatarStyle>
+        <AvatarStyle {...props}>
             {
-                <TextStyle color="white" size={16} weight="med">JN</TextStyle>
+                <TextStyle color="white" size={16} weight="med">{getInitials(props.name)}</TextStyle>
             }
         </AvatarStyle>
     )

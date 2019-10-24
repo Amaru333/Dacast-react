@@ -5,6 +5,7 @@ import { Avatar } from '../components/Avatar/Avatar';
 storiesOf('Avatars', module)
     .add('Avatars', () => ( 
         <React.Fragment>
-            <Avatar/>
+            <Avatar name="Jake Napper"></Avatar><br/>
+            <Avatar name="Steve Jobs"></Avatar>
         </React.Fragment>
     ))
