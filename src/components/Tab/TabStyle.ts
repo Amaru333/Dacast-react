@@ -10,8 +10,11 @@ export const TabHeaderContainer = styled.div<TabProps>`
     flex-direction: row;
     ${props => props.orientation == "vertical" && css`
         flex-direction: column;
+        width: 173px;
+        margin-right: 24px;
     `}
     border: 1px solid ${props => props.theme.colors["gray-7"]};
+    background-color: ${props => props.theme.colors["white"]};
 `;
 
 

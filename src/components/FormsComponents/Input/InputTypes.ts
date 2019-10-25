@@ -36,6 +36,7 @@ export interface InputSpecificProps {
     name?: string;
     value?: string;  
     required: boolean;
+    ref?: React.RefObject<HTMLInputElement>
 }
 
 export interface CheckboxSpecificProps {

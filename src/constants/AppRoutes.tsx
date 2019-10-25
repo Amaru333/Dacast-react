@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { StaticCompany } from '../containers/Account/StaticCompany';
+import { Theme } from '../styled/themes/dacast-theme';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -79,8 +81,7 @@ const MainSettings = (props: any) => {
 const Account = (props: any) => {
 
     return (
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
+        <div style={{paddingTop: '50px', marginLeft: 'auto', width: '80%', height:'100vh', backgroundColor:'#F5F7FA'}}>
             <Tab {...props} list={props.routes} orientation="vertical" />
         </div>
 
@@ -254,7 +255,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/company',
                 name: 'Company',
-                component: functionTest1
+                component: StaticCompany
             },
             {
                 path: '/account/users',
