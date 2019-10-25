@@ -2,6 +2,21 @@
     width:100%;
 }
 
+img {
+    max-width: 100%;
+}
+
+.mt-auto {
+    margin-top: auto;
+} 
+
+.dashboardCard {
+    min-height:168px;
+}
+
+body {
+    margin: 0px;
+}
 .dflex {
     display: flex
 }
@@ -40,4 +55,14 @@ a {
 
 .noTransition {
     transition: none !important;
+}
+
+.navigation {
+    a:hover {
+        color: initial;
+        text-decoration: none;
+    }
+    a:active {
+        color: initial;
+    }
 }

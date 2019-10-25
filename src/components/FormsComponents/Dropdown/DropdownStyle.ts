@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { DropdownProps } from './DropdownTypes';
+import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div<DropdownProps>`
     display: flex;
@@ -45,9 +46,9 @@ export const DropdownList = styled.ul<{displayDropdown: boolean}>`
         display: block;
     `}
     margin-block-start: 0px;
-    padding-inline-start: 10px;
-    padding-inline-end: 10px;
-    padding-block-end: 10px;
+    padding-inline-start: 8px;
+    padding-inline-end: 8px;
+    padding-block-end: 8px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
 `;
@@ -56,7 +57,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
     min-height: 32px;
-    padding: 4px 8px;
+    padding: 0 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
@@ -64,17 +65,27 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     ${props => props.isSelected && css `
         background-color: ${props => props.theme.colors["violet10"]};
         color: ${props => props.theme.colors["dark-violet"]};
+        transition: none;
     `}
 `;
 
 export const BorderItem = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    width: 112%;
-    margin-left: -6%;
+    width: 110%;
+    margin-left: -5%;
 `;
 
 export const DropdownIconStyle = styled.div`
     position: absolute;
-    right: 2%;
-    top: 15%;
+    right: 0%;
+    top: 25%;
+    padding-right: 8px;
+    
 `;
+
+export const DropdownItemText = styled(Text)`
+    position: absolute;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 4px;
+`

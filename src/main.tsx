@@ -5,16 +5,23 @@ import { Router, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Theme } from '../src/styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 
+import {
+    BrowserView,
+    MobileView,
+    isBrowser,
+    isMobile
+} from "react-device-detect";
 
 // Import Main styles for this application
 import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
+import { Header } from './components/Header/Header';
 
 // Any additional component props go here.
 interface MainProps {
@@ -37,15 +44,50 @@ const returnRouter = (props: Routes[]) => {
 
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
+
+    const [isOpen, setOpen] = React.useState<boolean>(isMobile ? false : window.innerWidth > 768);
+    
+    window.addEventListener('resize', (event) => {
+        if(window.innerWidth < 768 ) {
+            setOpen(false);
+        } else {
+            setOpen(true);
+        }
+    }, true);
+
+    const navBarWidth = "235px";
+    const reduceNavBarWidth = "64px";
+
+    const [currentNavWidth, setCurrentNavWidth] = React.useState<string>(isOpen? navBarWidth : isMobile ? "0px" : reduceNavBarWidth);
+
+    const calculateNavBarWidth = () => {
+        if (isMobile) {
+            var width = isOpen ? navBarWidth : "0px";
+        } else {
+            var width = isOpen ? navBarWidth : reduceNavBarWidth;
+        }
+        setCurrentNavWidth(width);
+    }
+
+    React.useEffect(() => {
+        calculateNavBarWidth();
+        
+    }, [isOpen]);
+
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router history={history}>
+                <Router  history={history}>
                     <>
-                        <MainMenu history={history} routes={AppRoutes}/>
-                        <Switch>
-                            {returnRouter(AppRoutes)}
-                        </Switch>
+                        <MainMenu navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                        <FullContent isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
+                            <Content isOpen={isOpen}>
+                                <Switch>
+                                    {returnRouter(AppRoutes)}
+                                </Switch>
+                            </Content>
+                        </FullContent>   
                     </>
                 </Router>
             </ThemeProvider>
@@ -53,6 +95,21 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         </Provider>
     );
 };
+
+const Content = styled.div<{isOpen: boolean}>`
+    position: relative;
+    min-height: 940px;
+    padding: 24px;
+    padding-top: 81px;
+`
+
+const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean}>`
+    margin-left: ${props => props.isMobile ? 0 : props.navBarWidth};
+    background: rgb(245, 247, 250);
+    position: relative;
+    padding: 0;
+    width: ${props => props.isMobile ? "100%" : "calc(100% - "+props.navBarWidth+")" };
+`
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.

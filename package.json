@@ -14,7 +14,7 @@
     "build-storybook": "build-storybook -c .storybook -o dist/storybook/",
     "clean": "rm -rf dist; rm -rf node_modules; npm install;",
     "deploy-prod": "npm run clean; npm run build; aws s3 sync dist/ s3://dc-test-qb-react-app --acl public-read --delete",
-    "deploy-preprod": "rm -rf /dist; npm run build-preprod; npm run build-storybook; aws s3 sync dist/ s3://dc-test-qb-react-app --acl public-read --delete"
+    "deploy-preprod": "rm -rf /dist; npm run build-preprod; aws s3 sync dist/ s3://dc-test-qb-react-app --acl public-read --delete"
   },
   "keywords": [],
   "author": "",
@@ -84,6 +84,7 @@
     "@types/storybook__react": "^4.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-device-detect": "^1.9.10",
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.7",
     "react-redux": "^6.0.1",

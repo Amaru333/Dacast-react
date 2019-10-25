@@ -3,7 +3,7 @@ import { ButtonProps } from './ButtonTypes';
 
 export const ButtonStyle = styled.button<ButtonProps>`
   width: auto;
-  height: 40px;
+  min-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
   border: ${props => (props.typeButton == "secondary") ? `1px solid ${props.theme.colors[props.colorObject!.color]}` : "none"};
@@ -16,8 +16,14 @@ export const ButtonStyle = styled.button<ButtonProps>`
   color: ${props => (props.typeButton == "primary") ? props.theme.colors.white : props.theme.colors[props.colorObject!.color] };
 
   ${props => (props.sizeButton == "small") && css`
-    height: 32px;
+    min-height: 32px;
     padding: 8px 12px;
+    font-size: 12px
+  `}
+
+  ${props => (props.sizeButton == "xs") && css`
+    min-height: 24px;
+    padding: 4px 8px;
     font-size: 12px
   `}
 

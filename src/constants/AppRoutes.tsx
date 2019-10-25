@@ -4,6 +4,7 @@ import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { StaticCompany } from '../containers/Account/StaticCompany';
 import { Theme } from '../styled/themes/dacast-theme';
+import StaticDashbaord from '../components/StaticDashboard';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -102,7 +103,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: Dashboard,
+        component: StaticDashbaord,
         slug: [
             {
                 path: '/dashboard/tab1',
