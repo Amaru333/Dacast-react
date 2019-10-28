@@ -6,19 +6,25 @@ export const ContainerStyle = styled.div<DropdownProps>`
     display: flex;
     flex-direction: column;
     height:auto;
+    ${props => props.isNavigation && css`
+        position: relative;
+    `}
 `;
 
 export const DropdownLabel = styled.div`
     display: flex;
 `;
 
-export const TitleContainer = styled.div<{isOpened: boolean}>`
+export const TitleContainer = styled.div<{isOpened: boolean, isNavigation: boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;
     height: auto;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.theme.colors["gray-10"]};
+    ${props => props.isNavigation && css`
+        background-color: ${props.theme.colors.white};
+    `}
     &:hover {
         cursor: pointer;
     }
@@ -30,7 +36,7 @@ export const TitleContainer = styled.div<{isOpened: boolean}>`
     `}
 `;
 
-export const Title = styled.div`
+export const Title = styled.div<{ref: any}>`
     padding: 8px 44px 8px 12px;
 `;
 
@@ -40,7 +46,7 @@ export const IconStyle = styled.div`
     top: 17%;
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean, isNavigation: boolean}>`
     display: none;
     ${props => (props.displayDropdown) && css `
         display: block;
@@ -51,6 +57,13 @@ export const DropdownList = styled.ul<{displayDropdown: boolean}>`
     padding-block-end: 8px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
+    ${props => props.isNavigation && css`
+        position: absolute;
+        top: 42px;
+        width: 97.5%;
+        z-index: 99;
+        background-color: ${props.theme.colors.white};
+    `}
 `;
 
 export const DropdownItem = styled.li<{isSelected: boolean}>`

@@ -6,7 +6,7 @@ declare module "*.png" {
 }
 declare module 'googlemaps'{
     interface Window {
-      google: typeof google;
+        google: typeof google;
     }
-  }
+}
   

@@ -4,7 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle } from './InputStyle';
 
-export const Input = React.forwardRef((props: InputProps, ref?:React.RefObject<HTMLInputElement>) => {
+export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
 
     var { label, icon, help, isError, className, ...other } = props;
 
@@ -24,3 +24,4 @@ export const Input = React.forwardRef((props: InputProps, ref?:React.RefObject<H
 })
 
 Input.defaultProps = { isError: false, disabled: false, required: false }
+Input.displayName = 'Input';

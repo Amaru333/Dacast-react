@@ -82,7 +82,7 @@ const MainSettings = (props: any) => {
 const Account = (props: any) => {
 
     return (
-        <div style={{paddingTop: '50px', marginLeft: 'auto', width: '80%', height:'100vh', backgroundColor:'#F5F7FA'}}>
+        <div>
             <Tab {...props} list={props.routes} orientation="vertical" />
         </div>
 

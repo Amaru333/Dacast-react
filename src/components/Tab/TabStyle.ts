@@ -2,19 +2,34 @@ import styled, { css } from "styled-components";
 import {TabProps} from './TabTypes';
 
 
-export const TabContainer = styled.div<{}>`
+export const TabContainer = styled.div<{mobile: boolean}>`
     display: flex;
+    ${props => props.mobile && css`
+        flex-direction: column;
+    `}
 `;
-export const TabHeaderContainer = styled.div<TabProps>`
+export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
     display: flex;
     flex-direction: row;
+    background-color: ${props => props.theme.colors["white"]};
     ${props => props.orientation == "vertical" && css`
         flex-direction: column;
         width: 173px;
         margin-right: 24px;
+        height: fit-content;
     `}
-    border: 1px solid ${props => props.theme.colors["gray-7"]};
-    background-color: ${props => props.theme.colors["white"]};
+
+    ${props => !props.mobile && css `
+        border: 1px solid ${props => props.theme.colors["gray-7"]};
+        
+    `}
+
+    ${props => props.mobile && css `
+        border: none;
+        width: 100%;
+        margin: auto;
+        margin-bottom: 24px;
+    `} 
 `;
 
 

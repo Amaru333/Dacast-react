@@ -12,7 +12,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
   font-weight: 500;
   font-size: 16px;
   text-align: center;
-  background: ${props => (props.typeButton == "primary") ?  props.theme.colors[props.colorObject!.color] : props.theme.colors.white};
+  background: ${props => (props.typeButton == "primary") ?  props.theme.colors[props.colorObject!.color] : (props.typeButton == 'tertiary') ? 'unset' : props.theme.colors.white};
   color: ${props => (props.typeButton == "primary") ? props.theme.colors.white : props.theme.colors[props.colorObject!.color] };
 
   ${props => (props.sizeButton == "small") && css`
