@@ -33,6 +33,13 @@ export const StaticCompany = (props: {}) => {
         })
     }
 
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
     const handleDrop = (file: any) => {
         if(file.length > 0 && file[0].type.match(/image.*/)) {
             const reader = new FileReader();
@@ -45,6 +52,11 @@ export const StaticCompany = (props: {}) => {
         else{
             console.log("wrong file type!")
         }
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setfileUploaded(null);
     }
 
     const handleCancel = () => {
@@ -109,11 +121,14 @@ export const StaticCompany = (props: {}) => {
 
                 <DragAndDrop className="m1" handleDrop={handleDrop}>
                     { fileUploaded ? 
+                        <>
                         <ImageStyle src={fileUploaded}></ImageStyle>
+                        <Button typeButton='tertiary' style={{float:'right'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
+                        </>
                     :
                         <>
                         <IconStyle><Icon>cloud_upload</Icon></IconStyle>
-                        <TextStyle className='center'><Text size={12} weight='reg' color='gray-1'>Drag and drop or browse files to upload</Text></TextStyle>
+                        <TextStyle className='center'><Text size={12} weight='reg' color='gray-1'>Drag and drop or <label htmlFor="browseButton"><a><input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />browse</a></label> files to upload</Text></TextStyle>
                         </>
                     } 
                 </DragAndDrop>
