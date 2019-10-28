@@ -28,19 +28,20 @@ export const Avatar = (props: AvatarProps) => {
     return (
         <AvatarStyle {...props}>
             
-            <TextStyle color="white" size={20} weight="med">{getInitials(props.name)}</TextStyle>
+            <TextStyle color="white" size={props.size === "small" ? 12 : 20} weight="med">{getInitials(props.name)}</TextStyle>
             
         </AvatarStyle>
     )
 }
 
+Avatar.defaultProps = {size: "small"}
+
 export const AvatarStyle = styled.div<AvatarProps>`
     background-color: ${props => props.theme.colors[AvatarColorsArray[getColor(props.name)]]};
-    width: 40px;
-    height: 40px;
+    width: ${props => props.size === "small" ? "24px" : "40px"};
+    height: ${props => props.size === "small" ? "24px" : "40px"};
     border-radius: 50%;
     text-align: center;
-    position: relative;
     display: table;
 `
 
