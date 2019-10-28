@@ -11,7 +11,8 @@ interface DatePickerContext {
     onDateHover: (date: Date) => void,
     onDateSelect: (date: Date) => void,
     startDateStyle?: any,
-    endDateStyle?: any
+    endDateStyle?: any,
+    isSingle?: boolean;
 }
 
 export type DatePickerContextValue = DatePickerContext

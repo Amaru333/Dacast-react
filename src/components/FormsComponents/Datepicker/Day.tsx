@@ -18,7 +18,8 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
     onDateFocus,
     onDateHover,
     startDateStyle,
-    endDateStyle
+    endDateStyle,
+    isSingle
   } = useContext(DatepickerContext);
   const {
     isSelected,
@@ -56,6 +57,7 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
         isMonthFirstDay={dayLabel === '01'}
         isFirstDay={startDateStyle === date}
         isLastDay={endDateStyle === date}
+        isSingle={isSingle!}
         >
             <DayStyle
                 onClick={onClick}
@@ -67,7 +69,6 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
                 type="button"
                 ref={dayRef}
                 isToday={isToday}
-
                 >
                 {dayLabel}
             </DayStyle>
