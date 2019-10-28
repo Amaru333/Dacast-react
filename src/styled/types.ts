@@ -43,12 +43,23 @@ export const ColorsAppArray: ColorsApp[] = [
     'violet40',
     'violet20',
     'violet10',
+    'pink',
     'purple',
     'blue-2',
     'orange',
     'overlay70',
     'overlay40',
     'overlay20'
+]
+
+export const AvatarColorsArray: ColorsApp[] = [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue-2",
+    "purple",
+    "pink"
 ]
 
 export type ColorsApp =
@@ -96,6 +107,7 @@ export type ColorsApp =
     'violet40' |
     'violet20' |
     'violet10' |
+    'pink' |
     'purple' |
     'blue-2' |
     'orange'  |

@@ -47,6 +47,7 @@ const Theme: DefaultTheme = {
         'violet40': '#B6C2F8',
         'violet20': '#DBE1FC',
         'violet10': '#EDF0FE',
+        'pink': '#FC427B',
         'purple': '#7048E8',
         'blue-2': '#2899F6',
         'orange': '#DE8536',
