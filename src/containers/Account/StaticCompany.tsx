@@ -138,63 +138,63 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="text" 
                         className="md-col md-col-6 p1" 
-                        id="AccountName" 
+                        id="accountName" 
                         label="Account Name" 
                         placeholder="Account Name" 
                         required
-                        {...handleValidationProps('AccountName', validations)}
+                        {...handleValidationProps('accountName', validations)}
                     />
                     <Input 
                     disabled={false} 
                     type="text" 
                     className="md-col md-col-6 p1" 
-                    id="BusinessName" 
+                    id="businessName" 
                     label="Business Name" 
                     placeholder="Business Name" 
                     required
-                    {...handleValidationProps('BusinessName', validations)} 
+                    {...handleValidationProps('businessName', validations)} 
 
                     />
                     <Input 
                         disabled={false} 
                         type="tel" 
                         className="md-col md-col-6 p1" 
-                        id="PhoneNumber" 
+                        id="phoneNumber" 
                         label="Phone Number" 
                         placeholder="(00) 0000 0000 00" 
                         required
-                        {...handleValidationProps('PhoneNumber', validations)}
+                        {...handleValidationProps('phoneNumber', validations)}
                     />
                     <Input 
                         disabled={false} 
                         type="email" 
                         className="md-col md-col-6 p1" 
-                        id="EmailAddress" 
+                        id="email" 
                         label="Email Adress" 
                         placeholder="Email Adress" 
                         required
-                        {...handleValidationProps('EmailAdress', validations)}
+                        {...handleValidationProps('email', validations)}
 
                     />
                     <Input 
                         disabled={false} 
                         type="text" 
                         className="md-col md-col-6 p1" 
-                        id="CompanyWebsite"
+                        id="companyWebsite"
                         label="Company Website" 
                         placeholder="Company Website" 
                         required
-                        {...handleValidationProps('CompanyWebsite', validations)}
+                        {...handleValidationProps('companyWebsite', validations)}
                     />
                     <Input 
                         disabled={false} 
                         type="text" 
                         className="md-col md-col-6 p1" 
-                        id="VATNumber" 
+                        id="vatNumber" 
                         label="VAT Number" 
                         placeholder="VAT Number" 
                         required
-                        {...handleValidationProps('VATNumber', validations)}
+                        {...handleValidationProps('vatNumber', validations)}
 
                     />
                     <BorderStyle className="p1" />
@@ -205,11 +205,11 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="text" 
                         className="sm-col sm-col-6 p1" 
-                        id="Address1" 
+                        id="address1" 
                         label="Address line 1" 
                         placeholder="Address line 1" 
                         required
-                        {...handleValidationProps('Address1', validations)}
+                        {...handleValidationProps('address1', validations)}
                         
                     />
 
@@ -217,11 +217,11 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="text" 
                         className="sm-col sm-col-6 p1" 
-                        id="Address2" 
+                        id="address2" 
                         label="Address line 2" 
                         placeholder="Address line 2" 
                         required
-                        {...handleValidationProps('Address2', validations)}
+                        {...handleValidationProps('address2', validations)}
 
                     />
                     <Input 
@@ -240,11 +240,11 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="text" 
                         className="sm-col sm-col-3 p1" 
-                        id="Town" 
+                        id="city" 
                         label="Town" 
                         placeholder="Town" 
                         required
-                        {...handleValidationProps('Town', validations)}
+                        {...handleValidationProps('city', validations)}
                     />
 
                     <Input  
@@ -262,11 +262,11 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="text" 
                         className="sm-col sm-col-3 p1" 
-                        id="Country" 
+                        id="country" 
                         label="Country" 
                         placeholder="Country" 
                         required
-                        {...handleValidationProps('Country', validations)}
+                        {...handleValidationProps('country', validations)}
 
                     />                
                 </Card>
