@@ -5,20 +5,7 @@ import { TabProps } from './TabTypes';
 import { TabContainer, TabHeaderContainer, TabStyle, TabBody, TabContentStyle } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
-
-function useMedia(query: string) {
-    const [matches, setMatches] = React.useState(window.matchMedia(query).matches);
-  
-    React.useEffect(() => {
-        const media = window.matchMedia(query);
-        if (media.matches !== matches) setMatches(media.matches);
-        const listener = () => setMatches(media.matches);
-        media.addListener(listener);
-        return () => media.removeListener(listener);
-    }, [matches, query]);
-  
-    return matches;
-}
+import { useMedia } from '../../utils/utils';
 
 export const Tab = (props: TabProps) => {
 
@@ -31,10 +18,10 @@ export const Tab = (props: TabProps) => {
         return item ? item.name : props.list[0].name;
     };
 
-    let dropdownRef = React.useRef(null)
+    let dropdownRef = React.useRef<HTMLDivElement>(null)
     const [selectedTab, setSelectedTab] = React.useState<string>(firstSelectedItem());
     React.useEffect(()=> {
-        if(mobile && dropdownRef) {
+        if(mobile && dropdownRef.current !== null) {
             setSelectedTab(dropdownRef.current.innerText)
         }})
 

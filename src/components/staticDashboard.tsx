@@ -64,7 +64,7 @@ export const Dashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
                 <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Monthly Custom Plan </Text>
-                        <IconGray1 className="ml-auto">settings</IconGray1>
+                        <IconGray1 className="ml-auto"><Icon>settings</Icon></IconGray1>
                     </WidgetHeader>
                     <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due 09/17/2019</Text><br />
                     <Text size={32} weight="reg" color="gray-1">$612</Text>
@@ -73,7 +73,7 @@ export const Dashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
                     <SupportCard className="dashboardCard">
                         <WidgetHeader className="flex">
                             <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
-                            <CloseCross className="ml-auto">close</CloseCross>
+                            <CloseCross className="ml-auto"><Icon>close</Icon></CloseCross>
                         </WidgetHeader>
                         <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
                         <Button sizeButton="xs" typeButton="secondary">Chat now</Button>
@@ -89,7 +89,7 @@ const DashboardLive = (props: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
             <div className="flex items-baseline mb1">
-                <IconGray1 className="mr1 self-center">videocam</IconGray1>
+                <IconGray1 className="mr1 self-center"><Icon>videocam</Icon></IconGray1>
                 <Text size={24} weight="reg" className="mt0 inline-block">
                     Live Channels
                 </Text>
@@ -179,7 +179,7 @@ const DashboardPaywall = (props: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
             <div className="flex items-baseline mb1">
-                <IconGray1 className="mr1 self-center">attach_money</IconGray1>
+                <IconGray1 className="mr1 self-center"><Icon>attach_money</Icon></IconGray1>
                 <Text size={24} weight="reg" className="mt0 inline-block">
                     Paywall
                 </Text>
@@ -198,7 +198,7 @@ const DashboardPaywall = (props: React.HTMLAttributes<HTMLDivElement>) => {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
-                        <IconGray1 className="ml-auto">error_outline</IconGray1>
+                        <IconGray1 className="ml-auto"><Icon>error_outline</Icon></IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">$400</Text>
@@ -223,7 +223,7 @@ const DashboardVod = (props: React.HTMLAttributes<HTMLDivElement>) => {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
-                        <IconGray1 className="ml-auto">error_outline</IconGray1>
+                        <IconGray1 className="ml-auto"><Icon>error_outline</Icon></IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1"> 3,567</Text>
@@ -233,7 +233,7 @@ const DashboardVod = (props: React.HTMLAttributes<HTMLDivElement>) => {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
-                        <IconGray1 className="ml-auto">error_outline</IconGray1>
+                        <IconGray1 className="ml-auto"><Icon>error_outline</Icon></IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">76,625</Text>
@@ -316,11 +316,11 @@ const StaticDashbaord = (props: {}) => {
     );
 };
 
-const CloseCross = styled(Icon)`
+const CloseCross = styled.div<{}>`
     color: ${props => props.theme.colors['gray-3']};
 `;
 
-const IconGray1 = styled(Icon) <IconProps>`
+const IconGray1 = styled.div<{}>`
     color: ${props => props.theme.colors['gray-1']};
 `;
 

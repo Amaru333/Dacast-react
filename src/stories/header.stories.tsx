@@ -7,7 +7,7 @@ storiesOf('Header', module)
     .add('Header', () => ( 
         <Container>
             <Sidebar></Sidebar>
-            <Header></Header>
+            <Header isMobile={false} isOpen={false} setOpen={() => {}}></Header>
         </Container>
     ))
 

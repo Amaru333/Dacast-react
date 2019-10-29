@@ -10,7 +10,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.isNavigation ? props.defaultValue.toString() : "Select");
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.isNavigation && props.defaultValue ? props.defaultValue.toString() : "Select");
 
     useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
