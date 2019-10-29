@@ -41,7 +41,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
         if(props.account.isFetching) {
             props.showToast('data is fetching...', 'flexible', 'information');
         }
-        else if(!props.account.isFetching && props.account.data){
+        else if(!props.account.isFetching && props.account.data.length > 0){
             props.showToast('data fetched!', 'flexible', 'success');
 
         }
