@@ -12,9 +12,6 @@ import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
 import {
-    BrowserView,
-    MobileView,
-    isBrowser,
     isMobile
 } from "react-device-detect";
 
@@ -22,6 +19,8 @@ import {
 import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
+import { Profile } from './components/Dashboard';
+import { responsiveMenu } from './utils/hooksReponsiveNav';
 
 // Any additional component props go here.
 interface MainProps {
@@ -45,34 +44,7 @@ const returnRouter = (props: Routes[]) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
-    const [isOpen, setOpen] = React.useState<boolean>(isMobile ? false : window.innerWidth > 768);
-    
-    window.addEventListener('resize', (event) => {
-        if(window.innerWidth < 768 ) {
-            setOpen(false);
-        } else {
-            setOpen(true);
-        }
-    }, true);
-
-    const navBarWidth = "235px";
-    const reduceNavBarWidth = "64px";
-
-    const [currentNavWidth, setCurrentNavWidth] = React.useState<string>(isOpen? navBarWidth : isMobile ? "0px" : reduceNavBarWidth);
-
-    const calculateNavBarWidth = () => {
-        if (isMobile) {
-            var width = isOpen ? navBarWidth : "0px";
-        } else {
-            var width = isOpen ? navBarWidth : reduceNavBarWidth;
-        }
-        setCurrentNavWidth(width);
-    }
-
-    React.useEffect(() => {
-        calculateNavBarWidth();
-        
-    }, [isOpen]);
+    const {currentNavWidth, isOpen, setOpen} = responsiveMenu();
 
     return (
         <Provider store={store}>

@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import { ButtonProps } from './ButtonTypes';
 
 export const ButtonStyle = styled.button<ButtonProps>`
-  width: auto;
   min-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import StaticDashbaord from '../components/StaticDashboard';
+import Dashboard from '../components/Dashboard';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -31,12 +31,9 @@ const functionTest4 = () => {
     )
 }
 
-const Dashboard = (props: any) => {
+const DashboardRender = (props: any) => {
     return (
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Dashboard</h2>
-            <Tab {...props}  list={props.routes} orientation="horizontal" />
-        </div>
+        <Dashboard/>
     )
 }
 
@@ -102,7 +99,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: StaticDashbaord,
+        component: DashboardRender,
         slug: [
             {
                 path: '/dashboard/tab1',
