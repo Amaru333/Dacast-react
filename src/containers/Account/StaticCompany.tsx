@@ -270,7 +270,7 @@ export const StaticCompany = (props: {}) => {
 
                     />                
                 </Card>
-                <Button type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                <Button disabled={!enabledSubmit} type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='button' className="m2" typeButton='tertiary' buttonColor='blue'>Cancel</Button>
             </form>
         </div>
