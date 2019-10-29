@@ -7,11 +7,19 @@ import { Card } from '../../components/Card/Card';
 import Icon from '@material-ui/core/Icon';
 import { DragAndDrop } from '../../components/DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, ValidationsInputObject, handleValidationProps } from '../../utils/hooksFormSubmit';
+import { connect } from 'react-redux';
+import * as actions from '../../redux-flow/store/Account/actions';
+import { ApplicationState } from "../../redux-flow/store";
+import { AccountProps, StateProps, DispatchProps } from '../../redux-flow/store/Account/types';
+import { ToastStateProps, DispatchToastProps } from '../../components/Toast/Toasts';
+import { ToastType, NotificationType, Size } from '../../components/Toast/ToastTypes';
+import { hideToast, showToastNotification } from '../../redux-flow/store/toasts/actions';
+import Toasts from '../Toasts';
 
 
 const GOOGLE_MAP_API_KEY = 'AIzaSyDfJamOAtXvTRvY8tRwyt5DI2mF8l4LSyk'
 
-export const StaticCompany = (props: {}) => {
+export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
@@ -20,7 +28,24 @@ export const StaticCompany = (props: {}) => {
         event.preventDefault();
     }
 
-    React.useEffect(() => {}, [])
+    React.useEffect( () => {
+        const fetchData = async () => {
+            await props.getCompanyPageDetails();
+        }
+        fetchData()
+        console.log(props.account)
+    }, [])
+
+
+    React.useEffect(() => {
+        if(props.account.isFetching) {
+            props.showToast('data is fetching...', 'flexible', 'information');
+        }
+        else if(!props.account.isFetching && props.account.data){
+            props.showToast('data fetched!', 'flexible', 'success');
+
+        }
+    }, [props.account])
 
 
     /**  Drag and drop or browse file  */
@@ -275,10 +300,27 @@ export const StaticCompany = (props: {}) => {
                 <Button disabled={!enabledSubmit} type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='button' className="m2" typeButton='tertiary' buttonColor='blue'>Cancel</Button>
             </form>
+            <Toasts />
         </div>
     )
 
 }
+
+const mapStateToProps = (state: ApplicationState): (StateProps & ToastStateProps) => ({
+    account: state.account,
+    toasts: state.toasts.data,
+});
+
+const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps) => ({
+    getCompanyPageDetails: () => dispatch(actions.getCompanyPageDetails()),
+    hideToast: (toast: ToastType) => dispatch(hideToast(toast)),
+    showToast: (text: string, size: Size, notificationType: NotificationType) => dispatch(showToastNotification(text, size, notificationType)),
+});
+
+export default connect<StateProps, DispatchProps, {}>(
+    mapStateToProps,
+    mapDispatchToProps
+)(StaticCompany); 
 
 const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};

@@ -22,6 +22,6 @@ export interface Routes {
     path: string;
     name: string;
     iconName?: string;
-    component?: React.FC<any>;
+    component?: any;
     slug?: Routes[];
 }
