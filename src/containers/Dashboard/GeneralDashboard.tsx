@@ -5,7 +5,7 @@ import { Text } from '../../components/Typography/Text';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../components/FormsComponents/Button/Button';
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: 1 | 2 | 3 | 4 | 5 | 6 }) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: number }) => {
     return (
         <section className="col col-12">
             <div className="flex items-baseline mb1">

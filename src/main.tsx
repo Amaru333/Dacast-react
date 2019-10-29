@@ -80,6 +80,7 @@ const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: 
     background: rgb(245, 247, 250);
     position: relative;
     padding: 0;
+    min-width: 240px;
     width: ${props => props.isMobile ? "100%" : "calc(100% - "+props.navBarWidth+")" };
 `
 

@@ -5,6 +5,7 @@ import { DropdownProps, dropdownIcons } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
+import { callbackify } from 'util';
 
 export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: DropdownProps, ref) => {
 
@@ -16,6 +17,13 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
 
     React.useEffect(() => {}, [selectedItem])
 
+    const handleClick = (name: string) => {
+        setSelectedItem(name);
+        if(props.callback && name !== "Select"){
+            props.callback(name);
+        }
+    }
+
     const renderList = () => {
         let itemsList = props.list;
         return (
@@ -26,7 +34,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                             <DropdownItem                            
                                 id={props.id + '_' + name} 
                                 isSelected={selectedItem === name} 
-                                onClick={() => setSelectedItem(name)}> 
+                                onClick={() => handleClick(name)}> 
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
                             </DropdownItem>
                         </Link>               
@@ -35,7 +43,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                             key={props.id + '_' + name} 
                             id={props.id + '_' + name} 
                             isSelected={selectedItem === name} 
-                            onClick={() => setSelectedItem(name)}> 
+                            onClick={() => handleClick(name)}> 
                             <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
                         </DropdownItem>
                 )                
@@ -46,7 +54,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
     return (
         <ContainerStyle  {...props} >
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
-            <TitleContainer {...props} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <TitleContainer isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title ref={ref} ><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>

@@ -3,13 +3,13 @@ import { Text } from '../../components/Typography/Text';
 import { IconGray1, WidgetHeader, TableListStyle, classContainer, classItemHalfWidthContainer, classItemFullWidth, classItemFullWidthContainer } from './DashboardStyles';
 import { WidgetElement } from '../../components/Dashboard';
 
-export const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: boolean}) => {
+const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: boolean; rightSide: boolean}) => {
 
-    var classTopContainer = "col "+(props.fullWidth?"lg-col-12" : "lg-col-6")+" sm-col-12 "+(props.fullWidth?"" : "pl2 right");
+    var classTopContainer = (props.rightSide ? "right border-box " : "col ")+(props.fullWidth?"lg-col-12" : "lg-col-6")+" sm-col-12 "+(props.fullWidth?"" : "pl2 right");
 
     var itemClass = props.fullWidth ? classItemFullWidthContainer : classItemHalfWidthContainer;
     return (
-        <section className={classTopContainer}>
+        <section {...props} className={classTopContainer}>
             <div className="flex items-baseline mb1">
                 <IconGray1 className="mr1 self-center">play_arrow</IconGray1>
                 <Text size={24} weight="reg" className="mt0 inline-block">
@@ -97,3 +97,6 @@ export const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {full
         </section>
     )
 }
+
+VodDashboard.defaultProps = {rightSide: false};
+export {VodDashboard};

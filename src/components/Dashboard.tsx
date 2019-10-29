@@ -7,8 +7,6 @@ import { GeneralDashboard } from '../containers/Dashboard/GeneralDashboard';
 import { TrialAdditionalDashboard } from '../containers/Dashboard/TrialAdditionalDashboard';
 import { DropdownSingle } from './FormsComponents/Dropdown/DropdownSingle';
 
-export type Profile = 1 | 2 | 3 | 4 | 5 | 6;
-
 export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <div className={props.className}>
@@ -19,28 +17,31 @@ export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement>) => {
     )
 }
 
-const Dashboard = (props: {profile: Profile}) => {
+const Dashboard = (props: {}) => {
+
+    const [profile, setProfile] = React.useState<number>(1);
+    React.useEffect(() => {}, [profile])
 
     const renderDashboard = () => {
-        switch(props.profile) {
+        switch(profile) {
             case 1:
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile} />
+                        <GeneralDashboard profile={profile} />
                         <TrialAdditionalDashboard />
                     </>
                 )
             case 2: 
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile}/>
+                        <GeneralDashboard profile={profile}/>
                         {/** Add end free trial stuff */}
                     </>
                 )
             case 3: 
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile}/>
+                        <GeneralDashboard profile={profile}/>
                         <LiveDashboard/>
                         <VodDashboard fullWidth={false} />
                     </>
@@ -48,16 +49,16 @@ const Dashboard = (props: {profile: Profile}) => {
             case 4: 
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile}/>
+                        <GeneralDashboard profile={profile}/>
                         <LiveDashboard/>
-                        <VodDashboard  fullWidth={false} />
+                        <VodDashboard rightSide={true} fullWidth={false} />
                         <PaywallDashboard rightSide={false} />
                     </>
                 )
             case 5: 
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile}/>
+                        <GeneralDashboard profile={profile}/>
                         <LiveDashboard/>
                         <PaywallDashboard rightSide={true}/>
                     </>
@@ -65,13 +66,14 @@ const Dashboard = (props: {profile: Profile}) => {
             case 6: 
                 return (
                     <>
-                        <GeneralDashboard profile={props.profile}/>
+                        <GeneralDashboard profile={profile}/>
                         <VodDashboard fullWidth={true} />
                         <PaywallDashboard rightSide={false}/>
                     </>
                 )
         }
     }
+
 
     var profileList = {
         "Free acount": false,
@@ -80,9 +82,16 @@ const Dashboard = (props: {profile: Profile}) => {
         "Live+Paywall": false,
         "VoD+Paywall": false,
     }
+    var profileValue: {[key: string]: number} = {
+        "Free acount": 1,
+        "Live+Vod": 3,
+        "Live+VoD+Paywall": 4,
+        "Live+Paywall": 5,
+        "VoD+Paywall": 6,
+    }
     return (
         <>
-            <DropdownSingle list={profileList} id="pickProfile" dropdownTitle="Pick a profile" />
+            <DropdownSingle className="ml-auto mr-auto col-5" callback={(value: string) => setProfile(profileValue[value])} list={profileList} id="pickProfile" dropdownTitle="Pick a profile" />
             {renderDashboard()}
             <div className="clearfix"></div>
         </>

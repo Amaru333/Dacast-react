@@ -9,7 +9,7 @@ import { Button } from '../../components/FormsComponents/Button/Button';
 const faqIcon = require('../../../public/assets/support-faq.png');
 const supportIcon = require('../../../public/assets/support-widget.png');
 
-type ItemTodo = { isChecked: boolean, name: string, href: string };
+interface ItemTodo { isChecked: boolean; name: string; href: string }
 
 
 export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
@@ -102,14 +102,14 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     <Button className="col-12" sizeButton="large" typeButton='secondary'> Create a Live Stream </Button>
                 </div>
                 <WidgetElement className={classItemFullWidthContainer}>
-                        <WidgetHeader className="flex">
-                            <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
-                        </WidgetHeader>
-                        <div className="justify-between flex row items-center ">
-                            <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
-                            <img src={faqIcon} />
-                        </div>
-                        <Button sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
+                    <WidgetHeader className="flex">
+                        <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
+                    </WidgetHeader>
+                    <div className="justify-between flex row items-center ">
+                        <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
+                        <img src={faqIcon} />
+                    </div>
+                    <Button sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
                 </WidgetElement>
                 <div className={classItemFullWidthContainer}>
                     <SupportCard className="dashboardCard">
@@ -132,10 +132,10 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
 const TodoList = (props: { items: ItemTodo[] }) => {
 
     const renderList = () => {
-        return props.items.map(value => {
+        return props.items.map((value, key) => {
             return (
-                <ListItem checked={value.isChecked} >
-                    <a target="_blank" href={value.href} >
+                <ListItem key={key+"_"+value} checked={value.isChecked} >
+                    <a target="_blank" rel="noopener noreferrer" href={value.href} >
                         <IconStyle checked={value.isChecked}> <Icon>check</Icon> </IconStyle>
                         <Text color={value.isChecked ? "gray-6" : "gray-1"} size={14} weight="reg" >{value.name}</Text>
                     </a>
