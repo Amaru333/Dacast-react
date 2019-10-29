@@ -37,26 +37,26 @@ export const SignupFormExemple = (props: { action: Function }) => {
             <form onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                 <ModalContent className="clearfix">
                     <div className="col col-12">
-                        <Input type="text" className="col col-6 pr1" id="firstName" label="First Name" placeholder="First Name" required
+                        <Input disabled={false} type="text" className="col col-6 pr1" id="firstName" label="First Name" placeholder="First Name" required
                             {...handleValidationProps('firstName', validations)}
                         />
-                        <Input type="text" className="col col-6 pl1" id="lastName" label="Last Name" placeholder="Last Name" required
+                        <Input disabled={false} type="text" className="col col-6 pl1" id="lastName" label="Last Name" placeholder="Last Name" required
                             {...handleValidationProps('lastName', validations)}
 
                         />
                     </div>
-                    <Input className="col col-12" id="companyWebsite" label="Company Website" placeholder="Company Website" required
+                    <Input disabled={false} className="col col-12" id="companyWebsite" label="Company Website" placeholder="Company Website" required
                         {...handleValidationProps('companyWebsite', validations)}
                     />
 
-                    <Input className="col col-12" type="email" id="email" label="Email Address" placeholder="Email Address" required
+                    <Input disabled={false} className="col col-12" type="email" id="email" label="Email Address" placeholder="Email Address" required
                         {...handleValidationProps('email', validations)}
                     />
-                    <Input className="col col-12" type="tel" id="contactNumber" label="Contact Number" placeholder="Contact Number" required
+                    <Input disabled={false} className="col col-12" type="tel" id="contactNumber" label="Contact Number" placeholder="Contact Number" required
                         {...handleValidationProps('contactNumber', validations)}
 
                     />
-                    <Input className="col col-12" type="password" id="password" label="Password" placeholder="Password" icon="visibility_off" required
+                    <Input disabled={false} className="col col-12" type="password" id="password" label="Password" placeholder="Password" icon="visibility_off" required
                         {...handleValidationProps('password', validations)}
 
                     />

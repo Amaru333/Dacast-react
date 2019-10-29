@@ -9,6 +9,8 @@ interface DropdownCustomProps {
     id: string;
     dropdownTitle: string;
     list: DropdownListType;
+    isNavigation?: boolean;
+    ref?: any;
 }
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
