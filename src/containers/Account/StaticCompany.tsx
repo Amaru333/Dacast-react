@@ -20,6 +20,8 @@ export const StaticCompany = (props: {}) => {
         event.preventDefault();
     }
 
+    React.useEffect(() => {}, [])
+
 
     /**  Drag and drop or browse file  */
     const [fileUploaded, setfileUploaded] = React.useState(null);
@@ -161,11 +163,11 @@ export const StaticCompany = (props: {}) => {
                         disabled={false} 
                         type="tel" 
                         className="md-col md-col-6 p1" 
-                        id="phoneNumber" 
+                        id="contactNumber" 
                         label="Phone Number" 
                         placeholder="(00) 0000 0000 00" 
                         required
-                        {...handleValidationProps('phoneNumber', validations)}
+                        {...handleValidationProps('contactNumber', validations)}
                     />
                     <Input 
                         disabled={false} 

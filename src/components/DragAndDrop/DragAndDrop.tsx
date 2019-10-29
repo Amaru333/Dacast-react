@@ -36,18 +36,21 @@ export const DragAndDrop = (props: any) => {
     }
 
     React.useEffect(() => {
-
-        dropRef.current.addEventListener('dragenter', handleDragIn)
-        dropRef.current.addEventListener('dragleave', handleDragOut)
-        dropRef.current.addEventListener('dragover', handleDrag)
-        dropRef.current.addEventListener('drop', handleDrop)
-
-        return () => {
-            dropRef.current.removeEventListener('dragenter', handleDragIn)
-            dropRef.current.removeEventListener('dragleave', handleDragOut)
-            dropRef.current.removeEventListener('dragover', handleDrag)
-            dropRef.current.removeEventListener('drop', handleDrop)
+        if(dropRef.current !== null) {
+            dropRef.current.addEventListener('dragenter', handleDragIn)
+            dropRef.current.addEventListener('dragleave', handleDragOut)
+            dropRef.current.addEventListener('dragover', handleDrag)
+            dropRef.current.addEventListener('drop', handleDrop)
+    
+            return () => {
+                dropRef.current!.removeEventListener('dragenter', handleDragIn)
+                dropRef.current!.removeEventListener('dragleave', handleDragOut)
+                dropRef.current!.removeEventListener('dragover', handleDrag)
+                dropRef.current!.removeEventListener('drop', handleDrop)
+            }
         }
+        return;
+
     }, [])
 
     return (
