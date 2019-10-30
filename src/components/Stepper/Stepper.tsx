@@ -7,7 +7,7 @@ import { StepperContainerStyle, StepperContentStyle } from './StepperStyles';
 
 export const CustomStepper = (props: StepperProps) => {
 
-    const stepIndex = 3;
+    const [stepIndex, setStepIndex] = React.useState<number>(0)
 
     const steps: string[] = props.steps
 
