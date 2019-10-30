@@ -71,6 +71,12 @@ const Dashboard = (props: {}) => {
                         <PaywallDashboard rightSide={false}/>
                     </>
                 )
+            default:
+                return (
+                    <>
+                       Error
+                    </>
+                )
         }
     }
 

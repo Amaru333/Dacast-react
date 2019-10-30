@@ -19,7 +19,6 @@ import {
 import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
-import { Profile } from './components/Dashboard';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 
 // Any additional component props go here.
