@@ -28,7 +28,6 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
     }
-
     /** Fetching data using redux and services */
     React.useEffect( () => {
         const fetchData = async () => {
@@ -45,9 +44,6 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
         }
         else if(!props.account.isFetching && props.account.data.length > 0){
             props.showToast('data fetched!', 'flexible', 'success');
-            console.log(props.account.data[0].companyPage)
-            value = props.account.data[0].companyPage;
-            console.log(value)
         }
     }, [props.account])
 
@@ -162,6 +158,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.accountName : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="accountName" 
@@ -171,7 +168,8 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                         {...handleValidationProps('accountName', validations)}
                     />
                     <Input 
-                        disabled={false} 
+                        disabled={false}
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.businessName : null} 
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="businessName" 
@@ -183,6 +181,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.contactNumber : null}
                         type="tel" 
                         className="md-col md-col-6 p1" 
                         id="contactNumber" 
@@ -193,6 +192,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.email : null}
                         type="email" 
                         className="md-col md-col-6 p1" 
                         id="email" 
@@ -204,6 +204,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.companyWebsite : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="companyWebsite"
@@ -214,6 +215,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.vatNumber : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="vatNumber" 
@@ -229,6 +231,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address1 : null}
                         type="text" 
                         className="sm-col sm-col-6 p1" 
                         id="address1" 
@@ -241,6 +244,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
                     <Input  
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address2 : null}
                         type="text" 
                         className="sm-col sm-col-6 p1" 
                         id="address2" 
@@ -252,6 +256,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.state : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="state" 
@@ -264,6 +269,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.city : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="city" 
@@ -275,6 +281,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
                     <Input  
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.zipCode : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="zipCode" 
@@ -286,6 +293,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.country: null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="country" 
