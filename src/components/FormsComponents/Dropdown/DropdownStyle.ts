@@ -15,7 +15,7 @@ export const DropdownLabel = styled.div`
     display: flex;
 `;
 
-export const TitleContainer = styled.div<{isOpened: boolean, isNavigation: boolean | undefined}>`
+export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined}>`
     display: flex;
     flex-direction: row;
     position: relative;
@@ -46,7 +46,7 @@ export const IconStyle = styled.div`
     top: 17%;
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean, isNavigation: boolean | undefined}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     ${props => (props.displayDropdown) && css `
         display: block;

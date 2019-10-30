@@ -33,11 +33,11 @@ const GetCompanyPageDetailsError = (error: any): Action => ({
 export const getCompanyPageDetails = () => (dispatch: any): void => {
     dispatch(GetCompanyPageDetailsRequest());
     AccountServices.getCompanyPageDetailsService()
-    .then( (data : any) => {
-        dispatch(GetCompanyPageDetailsSuccess(data))
-    }).catch( (error : any) => {
-        dispatch(GetCompanyPageDetailsError(error))
-    })
+        .then( (data: any) => {
+            dispatch(GetCompanyPageDetailsSuccess(data))
+        }).catch( (error: any) => {
+            dispatch(GetCompanyPageDetailsError(error))
+        })
 }
 
 

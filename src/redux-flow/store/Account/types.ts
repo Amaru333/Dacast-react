@@ -5,7 +5,7 @@ export enum ActionTypes {
 }
 
 export interface AccountState {
-    readonly data: Object[];
+    readonly data: Record<string, any>[];
 }
 
 export const accountInitialState: AccountState = {
@@ -13,7 +13,7 @@ export const accountInitialState: AccountState = {
 };
 
 export interface StateProps {
-    account: Object[];
+    account: Record<string, any>[];
 }
 
 export interface DispatchProps {
