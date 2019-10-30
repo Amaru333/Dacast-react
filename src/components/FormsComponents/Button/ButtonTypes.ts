@@ -1,7 +1,7 @@
 import { ColorsApp } from '../../../styled/types';
 
-type Size = "large" | "small";
-type Type = "primary" | "secondary" | "tertiary";
+export type Size = "large" | "small";
+export type Type = "primary" | "secondary" | "tertiary";
 
 type Color = 'red' | 'blue' | 'green';
 

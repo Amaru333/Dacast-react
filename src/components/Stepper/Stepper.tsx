@@ -53,13 +53,13 @@ export const CustomStepper = (props: StepperProps) => {
               {renderStepperContent(stepIndex)}
             </StepperContentStyle>
             <StepperFooterStyle>
-              <Button typeButton="primary" onClick={nextStep}>
-                {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : "Next"}
+              <Button {...props.nextButtonProps} onClick={nextStep}>
+                {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : props.nextButtonProps.buttonText}
               </Button>
               {(stepIndex !== 0) &&
-                <Button typeButton="secondary" onClick={previousStep}>Back</Button>
+                <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
               }
-              <Button typeButton="tertiary">Cancel</Button>
+              <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
             </StepperFooterStyle>
         </StepperContainerStyle>
         
