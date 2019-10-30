@@ -3,22 +3,40 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import { StepperProps } from './StepperTypes';
+import { StepperContainerStyle, StepperContentStyle } from './StepperStyles';
 
 export const CustomStepper = (props: StepperProps) => {
 
+    const stepIndex = 3;
+
     const steps: string[] = props.steps
 
+    const renderStepperContent = (stepIndex: number) => {
+      console.log(props.stepList)
+      return (
+        
+        props.stepList[stepIndex]()
+      
+        )
+    };
+
     return (
-        <Stepper {...props} alternativeLabel>
-            {steps.map((label, index) => {
-          const stepProps: { completed?: boolean } = {};
-          const labelProps: { optional?: React.ReactNode } = {};
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-        </Stepper>
+
+        <StepperContainerStyle>
+          <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+              {steps.map((label, index) => {
+            
+            return (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            );
+          })}
+          </Stepper>
+          <StepperContentStyle>
+            {renderStepperContent(stepIndex)}
+          </StepperContentStyle>
+        </StepperContainerStyle>
+        
     )
 }
