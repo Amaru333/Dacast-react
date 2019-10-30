@@ -6,7 +6,7 @@ import { Button } from '../../components/FormsComponents/Button/Button';
 import { Card } from '../../components/Card/Card';
 import Icon from '@material-ui/core/Icon';
 import { DragAndDrop } from '../../components/DragAndDrop/DragAndDrop';
-import { formSubmit, ValueInput, ValidationsInputObject, handleValidationProps } from '../../utils/hooksFormSubmit';
+import { formSubmit, ValueInput, handleValidationProps } from '../../utils/hooksFormSubmit';
 import { connect } from 'react-redux';
 import * as actions from '../../redux-flow/store/Account/actions';
 import { ApplicationState } from "../../redux-flow/store";
@@ -15,6 +15,7 @@ import { ToastStateProps, DispatchToastProps } from '../../components/Toast/Toas
 import { ToastType, NotificationType, Size } from '../../components/Toast/ToastTypes';
 import { hideToast, showToastNotification } from '../../redux-flow/store/toasts/actions';
 import Toasts from '../Toasts';
+import { string } from 'prop-types';
 
 
 const GOOGLE_MAP_API_KEY = 'AIzaSyDfJamOAtXvTRvY8tRwyt5DI2mF8l4LSyk'
@@ -23,27 +24,30 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
-    const {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
     }
 
+    /** Fetching data using redux and services */
     React.useEffect( () => {
         const fetchData = async () => {
             await props.getCompanyPageDetails();
         }
         fetchData()
-        console.log(props.account)
+
     }, [])
 
-
+    /** Calling toasts depending on services results */
     React.useEffect(() => {
         if(props.account.isFetching) {
             props.showToast('data is fetching...', 'flexible', 'information');
         }
         else if(!props.account.isFetching && props.account.data.length > 0){
             props.showToast('data fetched!', 'flexible', 'success');
-
+            console.log(props.account.data[0].companyPage)
+            value = props.account.data[0].companyPage;
+            console.log(value)
         }
     }, [props.account])
 
@@ -77,17 +81,12 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
         setfileUploaded(null);
     }
 
-
-
     /**  Action buttons */
 
     const handleCancel = () => {
 
     }
 
-    const handleSave = () => {
-
-    }
 
     // function initAutocomplete() {
     // autocomplete = new google.maps.places.Autocomplete(
@@ -317,7 +316,7 @@ const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps)
     showToast: (text: string, size: Size, notificationType: NotificationType) => dispatch(showToastNotification(text, size, notificationType)),
 });
 
-export default connect<StateProps, DispatchProps, {}>(
+export default connect<(StateProps & ToastStateProps), (DispatchProps & DispatchToastProps), {}>(
     mapStateToProps,
     mapDispatchToProps
 )(StaticCompany); 

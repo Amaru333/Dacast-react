@@ -16,7 +16,6 @@ export const reducer = (state = accountInitialState, action: Action): any => {
                 data: [...state.data, {companyPage:action.payload.data}]
             }
         case ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR:
-            debugger;
             return {
                 ...state,
                 isFetching: false,

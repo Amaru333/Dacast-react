@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const urlBase = 'https://api.dacast.com/v2/channel?apikey=96941_ddf4b2c299bb1d3ebf01';
+const urlBase = 'http://www.mocky.io/v2/5db9a87630000074cc5ee51e';
 
 const getCompanyPageDetailsService = () => {
     return axios.get(urlBase);
