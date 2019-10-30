@@ -5,7 +5,10 @@ import { Text } from '../components/Typography/Text'
 
 const exampleStep1 = () => {
     return (
-       <Text size={20} weight="reg">This is step 1</Text> 
+        
+            <Text size={20} weight="reg">This is step 1</Text>
+        
+       
     )
 }
 

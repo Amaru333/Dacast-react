@@ -10,3 +10,5 @@ export const StepperContentStyle = styled.div`
 
 export const StepStyle = styled.div`
 `
+export const StepperFooterStyle = styled.div`
+`
