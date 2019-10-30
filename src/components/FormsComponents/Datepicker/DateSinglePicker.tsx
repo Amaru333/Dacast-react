@@ -73,7 +73,8 @@ export const  DateSinglePicker = () => {
                     isFirstOrLastSelectedDate,
                     onDateSelect,
                     onDateFocus,
-                    onDateHover
+                    onDateHover,
+                    isSingle: state.endDate === state.startDate
                 }}
             >
                     

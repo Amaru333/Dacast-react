@@ -74,7 +74,9 @@ export const  Datepicker = () => {
                     isFirstOrLastSelectedDate,
                     onDateSelect,
                     onDateFocus,
-                    onDateHover
+                    onDateHover,
+                    startDateStyle: state.startDate,
+                    endDateStyle: state.endDate
                 }}
             >
                     

@@ -12,6 +12,8 @@ const datepickerContextDefaultValue: DatePickerContextValue = {
     onDateFocus: (date: Date) => {},
     onDateHover: (date: Date) => {},
     onDateSelect: (date: Date) => {},
-};
+    startDateStyle:  null,
+    endDateStyle: null,
+  };
 
 export default React.createContext(datepickerContextDefaultValue);

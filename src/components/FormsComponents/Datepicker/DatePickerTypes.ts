@@ -1,13 +1,18 @@
+import { Data } from 'popper.js';
+
 interface DatePickerContext {
-    focusedDate: any;
-    isDateFocused: (date: any) => boolean;
-    isDateSelected: (date: any) => boolean;
-    isDateHovered: (date: any) => boolean;
-    isDateBlocked: (date: any) => boolean;
-    isFirstOrLastSelectedDate: (date: any) => boolean;
-    onDateFocus: (date: Date) => void;
-    onDateHover: (date: Date) => void;
-    onDateSelect: (date: Date) => void;
+    focusedDate: any,
+    isDateFocused: (date: any) => boolean,
+    isDateSelected: (date: any) => boolean,
+    isDateHovered: (date: any) => boolean,
+    isDateBlocked: (date: any) => boolean,
+    isFirstOrLastSelectedDate: (date: any) => boolean,
+    onDateFocus: (date: Date) => void,
+    onDateHover: (date: Date) => void,
+    onDateSelect: (date: Date) => void,
+    startDateStyle?: any,
+    endDateStyle?: any,
+    isSingle?: boolean;
 }
 
 export type DatePickerContextValue = DatePickerContext
