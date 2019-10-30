@@ -5,10 +5,7 @@ import { Text } from '../components/Typography/Text'
 
 const exampleStep1 = () => {
     return (
-        
-            <Text size={20} weight="reg">This is step 1</Text>
-        
-       
+        <Text size={20} weight="reg">This is step 1</Text>
     )
 }
 
@@ -35,6 +32,6 @@ const stepList = [exampleStep1, exampleStep2, exampleStep3, exampleStep4]
 storiesOf('Stepper', module)
     .add('Stepper', () => ( 
         <React.Fragment>
-           <CustomStepper stepList={stepList} steps={["Step 1", "Step 2", "Step 3"]}/>
+           <CustomStepper stepList={stepList} stepTitles={["Step 1", "Step 2", "Step 3"]} lastStepButton="Purchase"/>
         </React.Fragment>
     ))

@@ -10,14 +10,11 @@ export const CustomStepper = (props: StepperProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
 
-    const steps: string[] = props.steps
+    const steps: string[] = props.stepTitles
 
     const renderStepperContent = (stepIndex: number) => {
-      return (
-        
+      return ( 
         props.stepList[stepIndex]()
-        
-      
         )
     };
 
@@ -34,9 +31,6 @@ export const CustomStepper = (props: StepperProps) => {
       if(stepIndex > 0) {
         setStepIndex( stepIndex - 1);
       }
-      else {
-
-      }
     }
 
     const finalStep = () => {
@@ -46,29 +40,27 @@ export const CustomStepper = (props: StepperProps) => {
     return (
 
         <StepperContainerStyle>
-          <Stepper activeStep={stepIndex} {...props} alternativeLabel>
-              {steps.map((label, index) => {
-            
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-          </Stepper>
-          <StepperContentStyle>
-            {renderStepperContent(stepIndex)}
-          </StepperContentStyle>
-          <StepperFooterStyle>
-            <Button onClick={nextStep}>
-              Next
-            </Button>
-            {(stepIndex !== 0) &&
-              <Button onClick={previousStep}>Back</Button>
-            }
-            
-            <Button>Cancel</Button>
-          </StepperFooterStyle>
+            <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                {steps.map((label) => {
+              return (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              );
+            })}
+            </Stepper>
+            <StepperContentStyle>
+              {renderStepperContent(stepIndex)}
+            </StepperContentStyle>
+            <StepperFooterStyle>
+              <Button typeButton="primary" onClick={nextStep}>
+                {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : "Next"}
+              </Button>
+              {(stepIndex !== 0) &&
+                <Button typeButton="secondary" onClick={previousStep}>Back</Button>
+              }
+              <Button typeButton="tertiary">Cancel</Button>
+            </StepperFooterStyle>
         </StepperContainerStyle>
         
     )
