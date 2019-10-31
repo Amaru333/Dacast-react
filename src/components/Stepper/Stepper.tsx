@@ -2,8 +2,9 @@ import React from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
-import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle } from './StepperStyles';
+import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 
 export const CustomStepper = (props: StepperProps) => {
@@ -40,15 +41,20 @@ export const CustomStepper = (props: StepperProps) => {
     return (
 
         <StepperContainerStyle>
-            <Stepper activeStep={stepIndex} {...props} alternativeLabel>
-                {steps.map((label) => {
-              return (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              );
-            })}
-            </Stepper>
+            <StepperHeaderStyle>
+                <Text size={24} weight="reg">{props.stepperHeader}</Text>
+            </StepperHeaderStyle>
+            <StepperStyle>
+              <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                  {steps.map((label) => {
+                return (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+              </Stepper>
+            </StepperStyle>
             <StepperContentStyle>
               {renderStepperContent(stepIndex)}
             </StepperContentStyle>

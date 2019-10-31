@@ -7,6 +7,7 @@ interface StepperButtonType {
 }
 
 export interface StepperSpecificProps {
+    stepperHeader: string
     stepTitles: string[]
     stepList: (() => JSX.Element)[]
     lastStepButton: string
