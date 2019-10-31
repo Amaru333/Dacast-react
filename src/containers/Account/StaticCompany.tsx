@@ -27,6 +27,8 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
     let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
+        props.saveCompanyPageDetails(value)
+
     }
     /** Fetching data using redux and services */
     React.useEffect( () => {
@@ -44,6 +46,10 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
         }
         else if(!props.account.isFetching && props.account.data.length > 0){
             props.showToast('data fetched!', 'flexible', 'success');
+        }
+
+        if(props.account.isSaved) {
+            props.showToast('data saved!', 'flexible', 'success');
         }
     }, [props.account])
 
@@ -320,6 +326,7 @@ const mapStateToProps = (state: ApplicationState): (StateProps & ToastStateProps
 
 const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps) => ({
     getCompanyPageDetails: () => dispatch(actions.getCompanyPageDetails()),
+    saveCompanyPageDetails: (data: any) => dispatch(actions.saveCompanyPageDetails(data)),
     hideToast: (toast: ToastType) => dispatch(hideToast(toast)),
     showToast: (text: string, size: Size, notificationType: NotificationType) => dispatch(showToastNotification(text, size, notificationType)),
 });

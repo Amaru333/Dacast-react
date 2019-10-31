@@ -1,7 +1,10 @@
 export enum ActionTypes {
     GET_COMPANY_PAGE_DETAILS_REQUEST = "@@account/GET_COMPANY_PAGE_DETAILS_REQUEST",
     GET_COMPANY_PAGE_DETAILS_SUCCESS = "@@account/GET_COMPANY_PAGE_DETAILS_SUCCESS",
-    GET_COMPANY_PAGE_DETAILS_ERROR = "@@account/GET_COMPANY_PAGE_DETAILS_ERROR"
+    GET_COMPANY_PAGE_DETAILS_ERROR = "@@account/GET_COMPANY_PAGE_DETAILS_ERROR",
+    SAVE_COMPANY_PAGE_DETAILS_REQUEST = "@@account/SAVE_COMPANY_PAGE_DETAILS_REQUEST",
+    SAVE_COMPANY_PAGE_DETAILS_SUCCESS = "@@account/SAVE_COMPANY_PAGE_DETAILS_SUCCESS",
+    SAVE_COMPANY_PAGE_DETAILS_ERROR = "@@account/SAVE_COMPANY_PAGE_DETAILS_ERROR"
 }
 
 export interface AccountState {
@@ -18,6 +21,7 @@ export interface StateProps {
 
 export interface DispatchProps {
     getCompanyPageDetails: () => void;
+    saveCompanyPageDetails: (data: any) => void;
 } 
 
 export type AccountProps = StateProps & DispatchProps;

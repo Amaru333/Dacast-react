@@ -6,7 +6,13 @@ const getCompanyPageDetailsService = () => {
     return axios.get(urlBase);
 }
 
+const saveCompanyPageDetailsService = (data: any) => {
+    debugger;
+    return axios.put(urlBase, {...data})
+}
+
 
 export const AccountServices = {
-    getCompanyPageDetailsService
+    getCompanyPageDetailsService,
+    saveCompanyPageDetailsService
 } 
