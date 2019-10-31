@@ -3,7 +3,7 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../components/Dashboard';
-import { StaticCompany } from '../containers/Account/StaticCompany';
+import StaticCompany from '../containers/Account/StaticCompany';
 import { Theme } from '../styled/themes/dacast-theme';
 
 /** TO DO: Remove the functional components and import the real one when they're built */

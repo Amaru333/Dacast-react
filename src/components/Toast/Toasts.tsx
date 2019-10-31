@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { Toast } from './Toast';
-import { ToastType } from './ToastTypes';
+import { ToastType, Size, NotificationType } from './ToastTypes';
 import { ToastContainer } from './ToastStyle'
 
-type ToastsProps = StateProps & DispatchProps;
+type ToastsProps = ToastStateProps & DispatchToastProps;
 
-export interface StateProps {
+export interface ToastStateProps {
     toasts: ToastType[];
 }
 
-export interface DispatchProps {
+export interface DispatchToastProps {
     hideToast: (toast: ToastType) => void;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 export const ToastsComponent = ({ toasts, hideToast }: ToastsProps) => {

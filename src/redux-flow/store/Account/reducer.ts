@@ -16,10 +16,25 @@ export const reducer = (state = accountInitialState, action: Action): any => {
                 data: [...state.data, {companyPage:action.payload.data}]
             }
         case ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR:
-            debugger;
             return {
                 ...state,
                 isFetching: false,
+                data:[...state.data, {companyPage:action.payload}]
+            }
+        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST:
+            return {
+                ...state,
+                isSaved: false
+            }
+        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS:
+            return {
+                ...state,
+                isSaved: true
+            }
+        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_ERROR:
+            return {
+                ...state,
+                isSaved: false,
                 data:[...state.data, {companyPage:action.payload}]
             }
         default:

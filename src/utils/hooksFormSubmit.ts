@@ -16,7 +16,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     const [dataValue, setDataValue] = React.useState<ValueInput>({})
     const [enabledSubmit, setEnabledSubmit] = React.useState<boolean>(false)
     const [data, setData] = React.useState<ValidationsInputObject>({})
-    
+
     const returnErrorMEssage = ( validity: boolean, element: HTMLInputElement ) => {
         //Customize this with a constant file for each type / pattern associate to an error message
         if(validity) {

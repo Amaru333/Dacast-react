@@ -6,21 +6,51 @@ import { Button } from '../../components/FormsComponents/Button/Button';
 import { Card } from '../../components/Card/Card';
 import Icon from '@material-ui/core/Icon';
 import { DragAndDrop } from '../../components/DragAndDrop/DragAndDrop';
-import { formSubmit, ValueInput, ValidationsInputObject, handleValidationProps } from '../../utils/hooksFormSubmit';
+import { formSubmit, ValueInput, handleValidationProps } from '../../utils/hooksFormSubmit';
+import { connect } from 'react-redux';
+import * as actions from '../../redux-flow/store/Account/actions';
+import { ApplicationState } from "../../redux-flow/store";
+import { AccountProps, StateProps, DispatchProps } from '../../redux-flow/store/Account/types';
+import { ToastStateProps, DispatchToastProps } from '../../components/Toast/Toasts';
+import { ToastType, NotificationType, Size } from '../../components/Toast/ToastTypes';
+import { hideToast, showToastNotification } from '../../redux-flow/store/toasts/actions';
+import Toasts from '../Toasts';
 
 
 const GOOGLE_MAP_API_KEY = 'AIzaSyDfJamOAtXvTRvY8tRwyt5DI2mF8l4LSyk'
 
-export const StaticCompany = (props: {}) => {
+export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
-    const {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
-    }
+        props.saveCompanyPageDetails(data)
 
-    React.useEffect(() => {}, [])
+    }
+    /** Fetching data using redux and services */
+    React.useEffect( () => {
+        const fetchData = async () => {
+            await props.getCompanyPageDetails();
+        }
+        fetchData()
+
+    }, [])
+
+    /** Calling toasts depending on services results */
+    React.useEffect(() => {
+        if(props.account.isFetching) {
+            props.showToast('data is fetching...', 'flexible', 'information');
+        }
+        else if(!props.account.isFetching && props.account.data.length > 0){
+            props.showToast('data fetched!', 'flexible', 'success');
+        }
+
+        if(props.account.isSaved) {
+            props.showToast('data saved!', 'flexible', 'success');
+        }
+    }, [props.account])
 
 
     /**  Drag and drop or browse file  */
@@ -54,17 +84,12 @@ export const StaticCompany = (props: {}) => {
         setfileUploaded(null);
     }
 
-
-
     /**  Action buttons */
 
     const handleCancel = () => {
 
     }
 
-    const handleSave = () => {
-
-    }
 
     // function initAutocomplete() {
     // autocomplete = new google.maps.places.Autocomplete(
@@ -140,6 +165,7 @@ export const StaticCompany = (props: {}) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.accountName : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="accountName" 
@@ -149,7 +175,8 @@ export const StaticCompany = (props: {}) => {
                         {...handleValidationProps('accountName', validations)}
                     />
                     <Input 
-                        disabled={false} 
+                        disabled={false}
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.businessName : null} 
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="businessName" 
@@ -161,6 +188,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.contactNumber : null}
                         type="tel" 
                         className="md-col md-col-6 p1" 
                         id="contactNumber" 
@@ -171,6 +199,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.email : null}
                         type="email" 
                         className="md-col md-col-6 p1" 
                         id="email" 
@@ -182,6 +211,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.companyWebsite : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="companyWebsite"
@@ -192,6 +222,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.vatNumber : null}
                         type="text" 
                         className="md-col md-col-6 p1" 
                         id="vatNumber" 
@@ -207,6 +238,7 @@ export const StaticCompany = (props: {}) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address1 : null}
                         type="text" 
                         className="sm-col sm-col-6 p1" 
                         id="address1" 
@@ -219,6 +251,7 @@ export const StaticCompany = (props: {}) => {
 
                     <Input  
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address2 : null}
                         type="text" 
                         className="sm-col sm-col-6 p1" 
                         id="address2" 
@@ -230,6 +263,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.state : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="state" 
@@ -242,6 +276,7 @@ export const StaticCompany = (props: {}) => {
 
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.city : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="city" 
@@ -253,6 +288,7 @@ export const StaticCompany = (props: {}) => {
 
                     <Input  
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.zipCode : null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="zipCode" 
@@ -264,6 +300,7 @@ export const StaticCompany = (props: {}) => {
                     />
                     <Input 
                         disabled={false} 
+                        defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.country: null}
                         type="text" 
                         className="sm-col sm-col-3 p1" 
                         id="country" 
@@ -277,10 +314,28 @@ export const StaticCompany = (props: {}) => {
                 <Button disabled={!enabledSubmit} type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='button' className="m2" typeButton='tertiary' buttonColor='blue'>Cancel</Button>
             </form>
+            <Toasts />
         </div>
     )
 
 }
+
+const mapStateToProps = (state: ApplicationState): (StateProps & ToastStateProps) => ({
+    account: state.account,
+    toasts: state.toasts.data,
+});
+
+const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps) => ({
+    getCompanyPageDetails: () => dispatch(actions.getCompanyPageDetails()),
+    saveCompanyPageDetails: (data: any) => dispatch(actions.saveCompanyPageDetails(data)),
+    hideToast: (toast: ToastType) => dispatch(hideToast(toast)),
+    showToast: (text: string, size: Size, notificationType: NotificationType) => dispatch(showToastNotification(text, size, notificationType)),
+});
+
+export default connect<(StateProps & ToastStateProps), (DispatchProps & DispatchToastProps), {}>(
+    mapStateToProps,
+    mapDispatchToProps
+)(StaticCompany); 
 
 const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
