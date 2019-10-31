@@ -72,11 +72,11 @@ export const getCompanyPageDetails = () => (dispatch: any): void => {
 export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: any): void => {
     dispatch(SaveCompanyPageDetailsRequest(data));
     AccountServices.saveCompanyPageDetailsService(data)
-    .then( data => {
-        dispatch(SaveCompanyPageDetailsSuccess(data))
-    }).catch(error => {
-        dispatch(SaveCompanyPageDetailsError(error))
-    })
+        .then( data => {
+            dispatch(SaveCompanyPageDetailsSuccess(data))
+        }).catch(error => {
+            dispatch(SaveCompanyPageDetailsError(error))
+        })
 }
 
 

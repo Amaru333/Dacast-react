@@ -334,7 +334,7 @@ const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps)
 
 export default connect<(StateProps & ToastStateProps), (DispatchProps & DispatchToastProps), {}>(
     mapStateToProps,
-    mapDispatchToProps
+mapDispatchToProps
 )(StaticCompany); 
 
 const BorderStyle = styled.div<{}>`
