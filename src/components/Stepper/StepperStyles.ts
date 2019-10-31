@@ -7,6 +7,7 @@ export const StepperContainerStyle = styled.div`
     display: flex;
     flex-direction: column;
     padding: 24px;
+    padding-bottom: 106px;
     width: 600px;
     height: auto;
     min-height: 472px;
@@ -56,6 +57,7 @@ export const StepStyle = styled.div`
 `
 export const StepperFooterStyle = styled.div`
 bottom: 0;
+position: absolute;
 margin-bottom: 24px;
 margin-top: 42px;
     & > * { 
