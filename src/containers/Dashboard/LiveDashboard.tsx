@@ -2,9 +2,21 @@ import React from 'react'
 import { Text } from '../../components/Typography/Text';
 import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle } from "./DashboardStyles"
 import { WidgetElement } from "../../components/Dashboard";
+import { numberFormatter } from '../../utils/utils';
 
+type LiveDashboardProps = {
+    activeChannels: number;
+    totalChannels: number;
+    liveViewers: number;
+    topChannels: { name: string; viewers: number; }[];
+}
 
-export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
+export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: LiveDashboardProps }) => {
+
+    var totalChannels = numberFormatter(props.profile.totalChannels, 'comma');
+    var activeChannels = numberFormatter(props.profile.activeChannels, 'comma');
+    var liveViewers = numberFormatter(props.profile.liveViewers, 'comma');
+
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
             <div className="flex items-baseline mb1">
@@ -20,7 +32,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
                         <Text size={16} weight="med" color="gray-3"> Active Channels </Text>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1"> 279<Text size={20} weight="reg" color="gray-4" >/500</Text></Text>
+                        <Text size={48} weight="reg" color="gray-1"> {activeChannels}<Text size={20} weight="reg" color="gray-4" >/{totalChannels}</Text></Text>
                     </div>
                 </WidgetElement>
 
@@ -29,7 +41,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
                         <Text size={16} weight="med" color="gray-3"> Live Viewers </Text>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">301</Text>
+                        <Text size={48} weight="reg" color="gray-1">{liveViewers}</Text>
                     </div>
                 </WidgetElement>
 
@@ -47,26 +59,17 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >1</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Karmen likes Hello Kitty</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >5,023</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >2</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Lorem ipsum dolor sit amet.</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >4,023</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >3</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Neque porro quisquam est qui</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >3,953</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >4</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >in voluptate velit esse cillum dolore</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >1,343</Text></td>
-                                </tr>
+                                {
+                                    props.profile.topChannels.map((value, key) => {
+                                        return (
+                                            <tr>
+                                                <td className="col-2"><Text size={14} weight="reg" >{key + 1}</Text></td>
+                                                <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
+                                                <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
                             </tbody>
 
                         </TableListStyle>

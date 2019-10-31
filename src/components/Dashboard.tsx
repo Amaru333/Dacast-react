@@ -19,62 +19,110 @@ export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
 const Dashboard = (props: {}) => {
 
-    const [profile, setProfile] = React.useState<number>(1);
-    React.useEffect(() => {}, [profile])
+    const [profile, setProfile] = React.useState<number>(4);
+    React.useEffect(() => { }, [profile])
+
+    var trialDashboardProps = {
+        bandwidth: {
+            limit: 5000,
+            consumed: 4500
+        },
+        storage: {
+            limit: 1000,
+            consumed: 500
+        },
+        encoding: {
+            limit: 50000,
+            consumed: 35000
+        },
+        overage: {
+            enabled: true,
+            value: 5
+        },
+        plan: {
+            libelle: "Enterprise",
+            price: 390,
+            nextBill: "2019-02-04",
+            isTrial: false,
+            daysLeft: 0
+        }
+    }
+
+    const vodDashboardProps = {
+        totalVideos: 3567,
+        videoPlays: 48790,
+        impressions: 76625,
+        topVideos: [
+            { name: "Video 1", viewers: 29384 },
+            { name: "Video 2", viewers: 28384 },
+            { name: "Video 3", viewers: 18384 },
+            { name: "Video 4", viewers: 10927 },
+        ]
+    }
+
+    const pwaywallDashboardProps = {
+        balance: 543,
+        revenue: 545 
+    }
+
+    const liveDashboardProps = {
+        activeChannels: 276,
+        totalChannels: 456,
+        liveViewers: 2389,
+        topChannels: [
+            { name: "Channel 1", viewers: 29384 },
+            { name: "Channel 2", viewers: 28384 },
+            { name: "Channel 3", viewers: 18384 },
+            { name: "Channel 4", viewers: 10927 },
+        ]
+    }
 
     const renderDashboard = () => {
-        switch(profile) {
+        switch (profile) {
             case 1:
                 return (
                     <>
-                        <GeneralDashboard profile={profile} />
+                        <GeneralDashboard profile={trialDashboardProps} />
                         <TrialAdditionalDashboard />
                     </>
                 )
-            case 2: 
+            case 3:
                 return (
                     <>
-                        <GeneralDashboard profile={profile}/>
-                        {/** Add end free trial stuff */}
+                        <GeneralDashboard profile={trialDashboardProps} />
+                        <LiveDashboard profile={liveDashboardProps}/>
+                        <VodDashboard profile={vodDashboardProps} fullWidth={false} />
                     </>
                 )
-            case 3: 
+            case 4:
                 return (
                     <>
-                        <GeneralDashboard profile={profile}/>
-                        <LiveDashboard/>
-                        <VodDashboard fullWidth={false} />
+                        <GeneralDashboard profile={trialDashboardProps} />
+                        <LiveDashboard profile={liveDashboardProps}/>
+                        <VodDashboard profile={vodDashboardProps} rightSide={true} fullWidth={false} />
+                        <PaywallDashboard profile={pwaywallDashboardProps} rightSide={false} />
                     </>
                 )
-            case 4: 
+            case 5:
                 return (
                     <>
-                        <GeneralDashboard profile={profile}/>
-                        <LiveDashboard/>
-                        <VodDashboard rightSide={true} fullWidth={false} />
-                        <PaywallDashboard rightSide={false} />
+                        <GeneralDashboard profile={trialDashboardProps} />
+                        <LiveDashboard profile={liveDashboardProps}/>
+                        <PaywallDashboard profile={pwaywallDashboardProps} rightSide={true} />
                     </>
                 )
-            case 5: 
+            case 6:
                 return (
                     <>
-                        <GeneralDashboard profile={profile}/>
-                        <LiveDashboard/>
-                        <PaywallDashboard rightSide={true}/>
-                    </>
-                )
-            case 6: 
-                return (
-                    <>
-                        <GeneralDashboard profile={profile}/>
-                        <VodDashboard fullWidth={true} />
-                        <PaywallDashboard rightSide={false}/>
+                        <GeneralDashboard profile={trialDashboardProps} />
+                        <VodDashboard profile={vodDashboardProps} fullWidth={true} />
+                        <PaywallDashboard profile={pwaywallDashboardProps} rightSide={false} />
                     </>
                 )
             default:
                 return (
                     <>
-                       Error
+                        Error
                     </>
                 )
         }
@@ -88,7 +136,7 @@ const Dashboard = (props: {}) => {
         "Live+Paywall": false,
         "VoD+Paywall": false,
     }
-    var profileValue: {[key: string]: number} = {
+    var profileValue: { [key: string]: number } = {
         "Free acount": 1,
         "Live+Vod": 3,
         "Live+VoD+Paywall": 4,
@@ -97,13 +145,11 @@ const Dashboard = (props: {}) => {
     }
     return (
         <>
-            <DropdownSingle className="ml-auto mr-auto col-5" callback={(value: string) => setProfile(profileValue[value])} list={profileList} id="pickProfile" dropdownTitle="Pick a profile" />
+            <DropdownSingle defaultValue="Live+VoD+Paywall" className="ml-auto mr-auto col-5" callback={(value: string) => setProfile(profileValue[value])} list={profileList} id="pickProfile" dropdownTitle="Pick a profile" />
             {renderDashboard()}
             <div className="clearfix"></div>
         </>
     )
 };
-
-Dashboard.defaultProps = { profile: 1 }
 
 export default Dashboard;

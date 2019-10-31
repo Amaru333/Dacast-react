@@ -2,12 +2,25 @@ import * as React from 'react';
 import { Text } from '../../components/Typography/Text';
 import { IconGray1, WidgetHeader, TableListStyle, classContainer, classItemHalfWidthContainer, classItemFullWidth, classItemFullWidthContainer } from './DashboardStyles';
 import { WidgetElement } from '../../components/Dashboard';
+import { numberFormatter, getPercentage } from '../../utils/utils';
 
-const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: boolean; rightSide: boolean}) => {
+type VodDashboardProps = {
+    totalVideos: number;
+    videoPlays: number;
+    impressions: number;
+    topVideos: { name: string; viewers: number; }[];
+}
 
-    var classTopContainer = (props.rightSide ? "right border-box " : "col ")+(props.fullWidth?"lg-col-12" : "lg-col-6")+" sm-col-12 "+(props.fullWidth?"" : "pl2 right");
+const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: VodDashboardProps }) => {
 
+    var classTopContainer = (props.rightSide ? "right border-box " : "col ") + (props.fullWidth ? "lg-col-12" : "lg-col-6") + " sm-col-12 " + (props.fullWidth ? "" : "pl2 right");
     var itemClass = props.fullWidth ? classItemFullWidthContainer : classItemHalfWidthContainer;
+
+    var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
+    var videoPlays = numberFormatter(props.profile.videoPlays, 'comma');
+    var impressions = numberFormatter(props.profile.impressions, 'comma');
+    var rateVsImpressions = getPercentage(props.profile.videoPlays, props.profile.impressions);
+
     return (
         <section {...props} className={classTopContainer}>
             <div className="flex items-baseline mb1">
@@ -24,7 +37,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
                         <IconGray1 className="ml-auto">error_outline</IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1"> 3,567</Text>
+                        <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
                     </div>
                 </WidgetElement>
 
@@ -34,7 +47,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
                         <IconGray1 className="ml-auto">error_outline</IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">76,625</Text>
+                        <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
                     </div>
                 </WidgetElement>
 
@@ -43,7 +56,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">48,790</Text>
+                        <Text size={48} weight="reg" color="gray-1">{videoPlays}</Text>
                     </div>
                 </WidgetElement>
 
@@ -52,7 +65,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">76,625</Text>
+                        <Text size={48} weight="reg" color="gray-1">{rateVsImpressions}%</Text>
                     </div>
                 </WidgetElement>
                 <WidgetElement className={classItemFullWidth}>
@@ -69,26 +82,17 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >1</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Karmen likes Hello Kitty</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >5,023</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >2</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Lorem ipsum dolor sit amet.</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >4,023</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >3</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >Neque porro quisquam est qui</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >3,953</Text></td>
-                                </tr>
-                                <tr>
-                                    <td className="col-2"><Text size={14} weight="reg" >4</Text></td>
-                                    <td className="col-7"><Text size={14} weight="reg" >in voluptate velit esse cillum dolore</Text></td>
-                                    <td className="col-3"><Text size={14} weight="reg" >1,343</Text></td>
-                                </tr>
+                                {
+                                    props.profile.topVideos.map((value, key) => {
+                                        return (
+                                            <tr>
+                                                <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>
+                                                <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
+                                                <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
                             </tbody>
                         </TableListStyle>
                     </div>
@@ -98,5 +102,5 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {fullWidth: 
     )
 }
 
-VodDashboard.defaultProps = {rightSide: false};
-export {VodDashboard};
+VodDashboard.defaultProps = { rightSide: false };
+export { VodDashboard };

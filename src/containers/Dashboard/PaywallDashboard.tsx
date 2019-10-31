@@ -2,9 +2,19 @@ import React from 'react'
 import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader } from './DashboardStyles'
 import { WidgetElement } from '../../components/Dashboard'
 import { Text } from '../../components/Typography/Text';
+import { numberFormatter } from '../../utils/utils';
 
-export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean}) => {
+type PaywallDashboardProps = {
+    balance: number;
+    revenue: number
+}
+
+export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean, profile: PaywallDashboardProps }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
+    var balance = numberFormatter(props.profile.balance, 'comma');
+    var revenue = numberFormatter(props.profile.revenue, 'comma');
+
+
     return (
         <section className={classTopContainer}>
             <div className="flex items-baseline mb1">
@@ -20,7 +30,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">$3,567</Text>
+                        <Text size={48} weight="reg" color="gray-1">${balance}</Text>
                     </div>
                 </WidgetElement>
 
@@ -30,7 +40,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <IconGray1 className="ml-auto">error_outline</IconGray1>
                     </WidgetHeader>
                     <div className="flex justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">$400</Text>
+                        <Text size={48} weight="reg" color="gray-1">${revenue}</Text>
                     </div>
                 </WidgetElement>
             </div>
