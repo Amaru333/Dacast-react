@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconGray1, classContainer, WidgetHeader, classItemFullWidthContainer, SupportCard, CloseCross } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemFullWidthContainer } from './DashboardStyles'
 import { WidgetElement } from '../../components/Dashboard'
 import { Text } from '../../components/Typography/Text';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -8,7 +8,7 @@ import { numberFormatter, getPercentage } from '../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Label } from '../../components/FormsComponents/Label/Label';
 
-type PlanType = {
+interface PlanType {
     libelle: string;
     price: number;
     /** Change to Date maybe later or number for timestamp */
@@ -17,24 +17,24 @@ type PlanType = {
     daysLeft?: number;
 }
 
-type GeneralDashboardProps = {
+interface GeneralDashboardProps {
     bandwidth: {
         limit: number;
         consumed: number;
-    }, 
+    }; 
     storage: {
         limit: number;
         consumed: number;
-    }, 
+    }; 
     encoding: {
         limit: number;
         consumed: number;
-    }, 
+    }; 
     overage: {
         enabled: boolean;
         value: number;
-    }
-    plan: PlanType 
+    };
+    plan: PlanType; 
 }
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {profile: GeneralDashboardProps}) => {
@@ -140,11 +140,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 }
 
-const ProgressBarDashboard = (props: { percentage: number, widget: 'bandwidth' | 'storage' | 'encoding', overage?: {enabled: boolean, value: number} }) => {
+const ProgressBarDashboard = (props: { percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; value: number} }) => {
 
-    const handleProgressBar = () => {
+    const handleProgressBar = (percentage: number) => {
         return (
-            <ProgressBar className="mb1" size="large" color={ props.percentage<= 25 ? 'red' : 'violet' } startingValue={props.percentage} />
+            <ProgressBar className="mb1" size="large" color={ percentage<= 25 ? 'red' : 'violet' } startingValue={percentage} />
         )
     }
     const handleInfos = () => {
@@ -173,7 +173,7 @@ const ProgressBarDashboard = (props: { percentage: number, widget: 'bandwidth' |
 
     return( 
         <>
-            {handleProgressBar()}
+            {handleProgressBar(props.percentage)}
             {handleInfos()}
         </>
     )

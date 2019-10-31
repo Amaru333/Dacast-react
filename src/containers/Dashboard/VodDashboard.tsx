@@ -4,11 +4,11 @@ import { IconGray1, WidgetHeader, TableListStyle, classContainer, classItemHalfW
 import { WidgetElement } from '../../components/Dashboard';
 import { numberFormatter, getPercentage } from '../../utils/utils';
 
-type VodDashboardProps = {
+interface VodDashboardProps {
     totalVideos: number;
     videoPlays: number;
     impressions: number;
-    topVideos: { name: string; viewers: number; }[];
+    topVideos: { name: string; viewers: number }[];
 }
 
 const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: VodDashboardProps }) => {
@@ -85,7 +85,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                                 {
                                     props.profile.topVideos.map((value, key) => {
                                         return (
-                                            <tr>
+                                            <tr key={value.viewers+"-"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>
                                                 <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
                                                 <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>

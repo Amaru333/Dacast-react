@@ -4,11 +4,11 @@ import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader, c
 import { WidgetElement } from "../../components/Dashboard";
 import { numberFormatter } from '../../utils/utils';
 
-type LiveDashboardProps = {
+interface LiveDashboardProps {
     activeChannels: number;
     totalChannels: number;
     liveViewers: number;
-    topChannels: { name: string; viewers: number; }[];
+    topChannels: { name: string; viewers: number }[];
 }
 
 export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: LiveDashboardProps }) => {
@@ -62,7 +62,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                                 {
                                     props.profile.topChannels.map((value, key) => {
                                         return (
-                                            <tr>
+                                            <tr key={value.viewers+"_"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key + 1}</Text></td>
                                                 <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
                                                 <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>

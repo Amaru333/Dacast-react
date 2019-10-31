@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 var numeral = require('numeral');
 
 
-export function numberFormatter(num: number, format: 'k' | 'comma') : string {
+export function numberFormatter(num: number, format: 'k' | 'comma'): string {
     var formatNumeral = ''
     switch(format) {
         case 'k' :
@@ -15,7 +15,7 @@ export function numberFormatter(num: number, format: 'k' | 'comma') : string {
     return numeral(num).format(formatNumeral);
 }
 
-export function getPercentage(num: number, max: number) : number {
+export function getPercentage(num: number, max: number): number {
     return Math.round((num * 100) / max);
 }
 

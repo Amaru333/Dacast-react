@@ -62,7 +62,7 @@ const Dashboard = (props: {}) => {
 
     const pwaywallDashboardProps = {
         balance: 543,
-        revenue: 545 
+        revenue: 2356 
     }
 
     const liveDashboardProps = {
