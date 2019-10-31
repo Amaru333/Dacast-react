@@ -1,3 +1,5 @@
+import { ValueInput } from '../../../utils/hooksFormSubmit';
+
 export enum ActionTypes {
     GET_COMPANY_PAGE_DETAILS_REQUEST = "@@account/GET_COMPANY_PAGE_DETAILS_REQUEST",
     GET_COMPANY_PAGE_DETAILS_SUCCESS = "@@account/GET_COMPANY_PAGE_DETAILS_SUCCESS",
@@ -21,7 +23,7 @@ export interface StateProps {
 
 export interface DispatchProps {
     getCompanyPageDetails: () => void;
-    saveCompanyPageDetails: (data: any) => void;
+    saveCompanyPageDetails: (data: ValueInput) => void;
 } 
 
 export type AccountProps = StateProps & DispatchProps;

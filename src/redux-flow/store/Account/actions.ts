@@ -1,5 +1,6 @@
 import { ActionTypes } from './types';
 import { AccountServices } from './services';
+import { ValueInput } from '../../../utils/hooksFormSubmit';
 
 export interface GetCompanyPageDetailsRequest {
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST;
@@ -16,7 +17,7 @@ export interface GetCompanyPageDetailsError {
 
 export interface SaveCompanyPageDetailsRequest {
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST;
-    payload: {data: any};
+    payload: {data: ValueInput};
 }
 export interface SaveCompanyPageDetailsSuccess {
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS;
@@ -42,9 +43,9 @@ const GetCompanyPageDetailsError = (error: any): Action => ({
     payload: error
 });
 
-const SaveCompanyPageDetailsRequest = (data: any): Action => ({
+const SaveCompanyPageDetailsRequest = (data: ValueInput): Action => ({
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST,
-    payload: {...data}
+    payload: {data:{...data}}
 });
 
 const SaveCompanyPageDetailsSuccess = (data: any): Action => ({
@@ -68,7 +69,7 @@ export const getCompanyPageDetails = () => (dispatch: any): void => {
     })
 }
 
-export const saveCompanyPageDetails = (data: any) => (dispatch: any): void => {
+export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: any): void => {
     dispatch(SaveCompanyPageDetailsRequest(data));
     AccountServices.saveCompanyPageDetailsService(data)
     .then( data => {

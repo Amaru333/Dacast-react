@@ -1,14 +1,14 @@
 import axios from 'axios'
+import { ValueInput } from '../../../utils/hooksFormSubmit';
 
-const urlBase = 'http://www.mocky.io/v2/5db9a87630000074cc5ee51e';
+const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
 const getCompanyPageDetailsService = () => {
-    return axios.get(urlBase);
+    return axios.get(urlBase + 'getCompanyPageDetails');
 }
 
-const saveCompanyPageDetailsService = (data: any) => {
-    debugger;
-    return axios.put(urlBase, {...data})
+const saveCompanyPageDetailsService = (data: ValueInput) => {
+    return axios.post(urlBase + 'saveCompanyPageDetails', {...data})
 }
 
 

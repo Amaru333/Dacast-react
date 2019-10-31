@@ -15,7 +15,6 @@ import { ToastStateProps, DispatchToastProps } from '../../components/Toast/Toas
 import { ToastType, NotificationType, Size } from '../../components/Toast/ToastTypes';
 import { hideToast, showToastNotification } from '../../redux-flow/store/toasts/actions';
 import Toasts from '../Toasts';
-import { string } from 'prop-types';
 
 
 const GOOGLE_MAP_API_KEY = 'AIzaSyDfJamOAtXvTRvY8tRwyt5DI2mF8l4LSyk'
@@ -27,7 +26,7 @@ export const StaticCompany = (props: AccountProps & DispatchToastProps) => {
     let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
-        props.saveCompanyPageDetails(value)
+        props.saveCompanyPageDetails(data)
 
     }
     /** Fetching data using redux and services */
