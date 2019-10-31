@@ -5,16 +5,21 @@ import { Router, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { Theme } from '../src/styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 
+import {
+    isMobile
+} from "react-device-detect";
 
 // Import Main styles for this application
 import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
+import { Header } from './components/Header/Header';
+import { responsiveMenu } from './utils/hooksReponsiveNav';
 
 // Any additional component props go here.
 interface MainProps {
@@ -37,15 +42,23 @@ const returnRouter = (props: Routes[]) => {
 
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
+
+    const {currentNavWidth, isOpen, setOpen} = responsiveMenu();
+
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router history={history}>
+                <Router  history={history}>
                     <>
-                        <MainMenu history={history} routes={AppRoutes}/>
-                        <Switch>
-                            {returnRouter(AppRoutes)}
-                        </Switch>
+                        <MainMenu navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                        <FullContent isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
+                            <Content isOpen={isOpen}>
+                                <Switch>
+                                    {returnRouter(AppRoutes)}
+                                </Switch>
+                            </Content>
+                        </FullContent>   
                     </>
                 </Router>
             </ThemeProvider>
@@ -53,6 +66,22 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         </Provider>
     );
 };
+
+const Content = styled.div<{isOpen: boolean}>`
+    position: relative;
+    min-height: 940px;
+    padding: 24px;
+    padding-top: 81px;
+`
+
+const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean}>`
+    margin-left: ${props => props.isMobile ? 0 : props.navBarWidth};
+    background: rgb(245, 247, 250);
+    position: relative;
+    padding: 0;
+    min-width: 240px;
+    width: ${props => props.isMobile ? "100%" : "calc(100% - "+props.navBarWidth+")" };
+`
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.

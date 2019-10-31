@@ -19,7 +19,7 @@ module.exports = ({ config }) => {
                 loader: require.resolve('awesome-typescript-loader'),
                 options: {
                     configFileName: './.storybook/tsconfig.json',
-                    "ignoreDiagnostics": [7005]
+                    "ignoreDiagnostics": [7005, 2740, 2345, 2531]
                 }
             }
         ]
