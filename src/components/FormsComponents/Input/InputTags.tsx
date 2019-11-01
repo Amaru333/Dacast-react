@@ -9,6 +9,12 @@ export const InputTags = (props: InputProps) => {
     const [tags, setTags] = React.useState<string[]>([])
     const inputRef = React.useRef<HTMLInputElement>(null);
 
+    const removeTag = (i: any) => {
+        const newTags = [ ...tags ];
+        newTags.splice(i, 1);
+        setTags(newTags);
+      }
+
     const inputKeyDown = (e: any) => {
         const val = e.target.value;
         if (e.key === 'Enter' && val) {
@@ -19,15 +25,12 @@ export const InputTags = (props: InputProps) => {
               }
            setTags([...tags, val]);
            inputRef.current.value = "";
-           console.log(tags)
-        }
+        } else if (e.key === 'Backspace' && !val) {
+            removeTag(tags.length - 1);
+          }
     }
 
-    const removeTag = (i: any) => {
-        const newTags = [ ...tags ];
-        newTags.splice(i, 1);
-        setTags(newTags);
-      }
+    
 
     var { label, icon, help, isError, className, ...other } = props;
 
