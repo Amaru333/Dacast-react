@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
-import { accountInitialState, AccountState, AccountReducer } from './Account'
+import { toastsInitialState, ToastsState, ToastReducer, ToastAction } from './toasts'
+import { accountInitialState, AccountState, AccountReducer, AccountAction } from './Account'
 export interface ApplicationState {
     toasts: ToastsState;
-    account: any;
+    account: AccountState;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -15,4 +15,4 @@ export const createRootReducer = () =>
     combineReducers({
         toasts: ToastReducer,
         account: AccountReducer
-    });
+    },);

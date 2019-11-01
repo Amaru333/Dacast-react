@@ -28,38 +28,38 @@ export interface SaveCompanyPageDetailsError {
     payload: {error: any};
 }
 
-const GetCompanyPageDetailsRequest = (): Action => ({
+const GetCompanyPageDetailsRequest = (): AccountAction => ({
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST,
     payload: {}
 });
 
-const GetCompanyPageDetailsSuccess = (data: any): Action => ({
+const GetCompanyPageDetailsSuccess = (data: any): AccountAction => ({
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS_SUCCESS,
     payload: {...data}
 });
 
-const GetCompanyPageDetailsError = (error: any): Action => ({
+const GetCompanyPageDetailsError = (error: any): AccountAction => ({
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR,
     payload: error
 });
 
-const SaveCompanyPageDetailsRequest = (data: ValueInput): Action => ({
+const SaveCompanyPageDetailsRequest = (data: ValueInput): AccountAction => ({
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST,
     payload: {data:{...data}}
 });
 
-const SaveCompanyPageDetailsSuccess = (data: any): Action => ({
+const SaveCompanyPageDetailsSuccess = (data: any): AccountAction => ({
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS,
     payload: {...data}
 });
 
-const SaveCompanyPageDetailsError = (error: any): Action => ({
+const SaveCompanyPageDetailsError = (error: any): AccountAction => ({
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_ERROR,
     payload: error
 });
 
 
-export const getCompanyPageDetails = () => (dispatch: any): void => {
+export const getCompanyPageDetails = () => (dispatch: React.Dispatch<AccountAction>): void => {
     dispatch(GetCompanyPageDetailsRequest());
     AccountServices.getCompanyPageDetailsService()
         .then( (data: any) => {
@@ -69,7 +69,7 @@ export const getCompanyPageDetails = () => (dispatch: any): void => {
         })
 }
 
-export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: any): void => {
+export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: React.Dispatch<AccountAction>): void => {
     dispatch(SaveCompanyPageDetailsRequest(data));
     AccountServices.saveCompanyPageDetailsService(data)
         .then( data => {
@@ -81,4 +81,4 @@ export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: any): voi
 
 
 
-export type Action = GetCompanyPageDetailsRequest | GetCompanyPageDetailsSuccess | GetCompanyPageDetailsError | SaveCompanyPageDetailsRequest | SaveCompanyPageDetailsSuccess | SaveCompanyPageDetailsError 
+export type AccountAction = GetCompanyPageDetailsRequest | GetCompanyPageDetailsSuccess | GetCompanyPageDetailsError | SaveCompanyPageDetailsRequest | SaveCompanyPageDetailsSuccess | SaveCompanyPageDetailsError 

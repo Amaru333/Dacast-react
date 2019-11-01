@@ -11,14 +11,18 @@ export enum ActionTypes {
 
 export interface AccountState {
     readonly data: any;
+    readonly isFetching: boolean;
+    readonly isSaved: boolean
 }
 
 export const accountInitialState: AccountState = {
     data: [],
+    isFetching: false,
+    isSaved: false
 };
 
 export interface StateProps {
-    account: any;
+    account: AccountState;
 }
 
 export interface DispatchProps {

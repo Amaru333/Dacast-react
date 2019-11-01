@@ -1,8 +1,8 @@
-import { Action } from "./actions";
+import { AccountAction } from "./actions";
 import { ActionTypes, accountInitialState, AccountState } from './types';
 
 
-export const reducer = (state = accountInitialState, action: Action): any => {
+export const reducer = (state = accountInitialState, action: AccountAction): AccountState => {
     switch (action.type) {
         case ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST:
             return {

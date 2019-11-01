@@ -1,9 +1,9 @@
-import { Action } from "./actions";
+import { ToastAction } from "./actions";
 import { ToastType } from '../../../components/Toast/ToastTypes';
 import { ActionTypes, toastsInitialState, ToastsState } from './types';
   
   
-export const reducer = (state= toastsInitialState, action: Action): ToastsState => {
+export const reducer = (state= toastsInitialState, action: ToastAction): ToastsState => {
     switch (action.type) {
         case ActionTypes.HIDE_TOAST:
             return {

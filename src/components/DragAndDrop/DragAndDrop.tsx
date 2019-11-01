@@ -1,31 +1,31 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 
-export const DragAndDrop = (props: any) => {
+export const DragAndDrop = (props: {hasError: boolean, handleDrop: Function} & React.HTMLAttributes<HTMLDivElement>) => {
 
     let dropRef= React.useRef<HTMLDivElement>(null);
 
     const [isDragging, setIsDragging] = React.useState<boolean>(false)
 
 
-    const handleDrag = (e: any) => {
+    const handleDrag = (e: DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
     }
-    const handleDragIn = (e: any) => {
+    const handleDragIn = (e: DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
         if(e.dataTransfer.items && e.dataTransfer.items.length > 0) {
             setIsDragging(true);
         }
     }
-    const handleDragOut = (e: any) => {
+    const handleDragOut = (e: DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
         setIsDragging(false);
     }
-    const handleDrop = (e: any) => {
+    const handleDrop = (e: DragEvent) => {
         e.preventDefault()
         e.stopPropagation()
         setIsDragging(false);
@@ -54,7 +54,7 @@ export const DragAndDrop = (props: any) => {
     }, [])
 
     return (
-        <DnDContainer ref={dropRef}>
+        <DnDContainer hasError={props.hasError} ref={dropRef}>
             {isDragging &&
           <div 
               style={{
@@ -88,9 +88,12 @@ export const DragAndDrop = (props: any) => {
     )
 }
 
-const DnDContainer = styled.div<{}>`
+const DnDContainer = styled.div<{hasError: boolean}>`
     width: 49%;
     position: relative;
     height: 96px;
     border: 1px dashed ${props => props.theme.colors['gray-7']};
+    ${props => props.hasError && css `
+        border: 1px dashed ${props.theme.colors['red']};
+    `}
 `
