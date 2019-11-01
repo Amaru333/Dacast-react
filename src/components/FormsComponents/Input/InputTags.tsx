@@ -7,15 +7,16 @@ import Icon from '@material-ui/core/Icon';
 export const InputTags = (props: InputProps) => {
 
     const [tags, setTags] = React.useState<string[]>([])
-
+    const inputRef = React.useRef<HTMLInputElement>(null);
     const inputKeyDown = (e: any) => {
         const val = e.target.value;
         if (e.key === 'Enter' && val) {
-           setTags([...tags, val])
+           setTags([...tags, val]);
+           inputRef.current.value = "";
            console.log(tags)
         }
     }
-    
+
     var { label, icon, help, isError, className, ...other } = props;
 
     return (
@@ -26,7 +27,7 @@ export const InputTags = (props: InputProps) => {
                     <ul>
                         <li>Tag<button>X</button></li>
                     </ul>
-                    <InputStyle isError={isError} onKeyDown={inputKeyDown} {...other} />
+                    <InputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
                     {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
                 </TagsContainer>
             </RelativeContainer>
