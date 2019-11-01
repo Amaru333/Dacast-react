@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import "../scss/style.scss";
 import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
 import { InputSlider } from '../components/FormsComponents/Input/InputSlider';
+import { InputTags } from '../components/FormsComponents/Input/InputTags';
 
 storiesOf('Inputs', module)
     .add('Text input', () => ( 
@@ -71,7 +72,14 @@ storiesOf('Inputs', module)
             <StorybookInputContainerStyle>
                  <InputSlider id="testSlider" min={0} max={150} value={[30, 100]}/>
             </StorybookInputContainerStyle>
-            
+        </React.Fragment>
+    ))
+
+    .add('Tags input', () => (
+        <React.Fragment>
+            <StorybookInputContainerStyle>
+                 <InputTags/>
+            </StorybookInputContainerStyle>  
         </React.Fragment>
     ));
 

@@ -188,3 +188,6 @@ export const SliderContainerStyle = styled.div<SliderContainerProps>`
         transition: none;
     }
 `
+export const TagsContainer = styled.div`
+border: 1px black solid;
+`
