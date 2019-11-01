@@ -8,14 +8,26 @@ export const InputTags = (props: InputProps) => {
 
     const [tags, setTags] = React.useState<string[]>([])
     const inputRef = React.useRef<HTMLInputElement>(null);
+
     const inputKeyDown = (e: any) => {
         const val = e.target.value;
         if (e.key === 'Enter' && val) {
+            if (tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
+                inputRef.current.value = "";
+                return;
+                //maybe add duplicate tag message?
+              }
            setTags([...tags, val]);
            inputRef.current.value = "";
            console.log(tags)
         }
     }
+
+    const removeTag = (i: any) => {
+        const newTags = [ ...tags ];
+        newTags.splice(i, 1);
+        setTags(newTags);
+      }
 
     var { label, icon, help, isError, className, ...other } = props;
 
@@ -25,7 +37,12 @@ export const InputTags = (props: InputProps) => {
             <RelativeContainer>
                 <TagsContainer>
                     <ul>
-                        <li>Tag<button>X</button></li>
+                    { tags.map((tag, i) => (
+                        <li key={tag}>
+                            {tag}
+                            <button onClick={() => removeTag(i)} type="button">X</button>
+                        </li>
+                    ))}
                     </ul>
                     <InputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
                     {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
