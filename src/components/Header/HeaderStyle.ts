@@ -2,13 +2,17 @@ import styled from 'styled-components';
 
 export const HeaderStyle = styled.div`
     border-bottom: 1px solid #D1DBE8;
-    height: 56px;
     background-color: ${props => props.theme.colors["white"]};
-    width: 100%;
+    width: inherit;
+    position: fixed;
+    transition: none;
+    z-index:999;
+    height: 57px;
+    display: flex;
+    justify-content: flex-end;
 `
 export const IconContainerStyle = styled.div`
     display: flex;
-    float: right;
     background-color: ${props => props.theme.colors["white"]};
     height: 56px;
     width: 100px;

@@ -4,7 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle } from './InputStyle';
 
-export const Input = (props: InputProps) => {
+export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
 
     var { label, icon, help, isError, className, ...other } = props;
 
@@ -12,7 +12,7 @@ export const Input = (props: InputProps) => {
         <ContainerStyle className={className} >
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
             <RelativeContainer>
-                <InputStyle isError={isError} {...other} />
+                <InputStyle ref={ref} isError={isError} {...other} />
                 {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
             </RelativeContainer>
             {help ? <HelpStyle>
@@ -21,6 +21,7 @@ export const Input = (props: InputProps) => {
         </ContainerStyle>
     );
 
-}
+})
 
 Input.defaultProps = { isError: false, disabled: false, required: false }
+Input.displayName = 'Input';

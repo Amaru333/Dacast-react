@@ -20,6 +20,7 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
     ${props => props.opened && css`
         display: block;
     `}
+    z-index: 9998;
 `;
 
 

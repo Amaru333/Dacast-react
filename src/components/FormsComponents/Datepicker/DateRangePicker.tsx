@@ -8,27 +8,18 @@ import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 
 const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
-return (
-    <NavButtonStyle
-    type="button"
-    onClick={props.onClick}
-    >
-    {props.children}
-    </NavButtonStyle>
-);
+    return (
+        <NavButtonStyle
+            type="button"
+            onClick={props.onClick}
+        >
+            {props.children}
+        </NavButtonStyle>
+    );
 }
 
 
 export const  Datepicker = () => {
-    const handleDateChange = (data: UseDatepickerProps) => {
-        if (!data.focusedInput) {
-          setState({ ...data, focusedInput: START_DATE });
-        } else {
-          setState(data);
-        }
-      }
-
-
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -41,6 +32,14 @@ export const  Datepicker = () => {
         endDate: null,
         focusedInput: START_DATE
     });
+
+    const handleDateChange = (data: UseDatepickerProps) => {
+        if (!data.focusedInput) {
+            setState({ ...data, focusedInput: START_DATE });
+        } else {
+            setState(data);
+        }
+    }
 
     const {
         firstDayOfWeek,
@@ -75,7 +74,9 @@ export const  Datepicker = () => {
                     isFirstOrLastSelectedDate,
                     onDateSelect,
                     onDateFocus,
-                    onDateHover
+                    onDateHover,
+                    startDateStyle: state.startDate,
+                    endDateStyle: state.endDate
                 }}
             >
                     
@@ -106,12 +107,12 @@ export const  Datepicker = () => {
                     </NavButtonRightStyle>
                     {activeMonths.map(month => (
                         
-                    <Month
-                        key={`${month.year}-${month.month}`}
-                        year={month.year}
-                        month={month.month}
-                        firstDayOfWeek={firstDayOfWeek}
-                    />
+                        <Month
+                            key={`${month.year}-${month.month}`}
+                            year={month.year}
+                            month={month.month}
+                            firstDayOfWeek={firstDayOfWeek}
+                        />
                     ))}
                 </MonthContainerStyle>
             </DatepickerContext.Provider>

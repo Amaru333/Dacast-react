@@ -6,52 +6,58 @@ import React from 'react';
 import { DayStyle, DayWrapper } from './DatePickerStyle';
 
 function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
-  const dayRef = useRef(null);
-  const {
-    focusedDate,
-    isDateFocused,
-    isDateSelected,
-    isDateHovered,
-    isDateBlocked,
-    isFirstOrLastSelectedDate,
-    onDateSelect,
-    onDateFocus,
-    onDateHover
-  } = useContext(DatepickerContext);
-  const {
-    isSelected,
-    isSelectedStartOrEnd,
-    isWithinHoverRange,
-    disabledDate,
-    onClick,
-    onKeyDown,
-    onMouseEnter,
-    tabIndex
-  } = useDay({
-    date,
-    focusedDate,
-    isDateFocused,
-    isDateSelected,
-    isDateHovered,
-    isDateBlocked,
-    isFirstOrLastSelectedDate,
-    onDateFocus,
-    onDateSelect,
-    onDateHover,
-    dayRef
-  });
-  if (!dayLabel) {
-    return <div></div>;
-  }
-  return (
-      <DayWrapper 
-        isWithinHoverRange={isWithinHoverRange} 
-        isSelected={isSelected} 
-        isSelectedStartOrEnd={isSelectedStartOrEnd}
-        isLineBeginning={date.toString().includes("Mon")}
-        isLineEnd={date.toString().includes("Sun")}
-        isMonthLastDay={isMonthLastDay}
-        isMonthFirstDay={dayLabel === '01'}
+    const dayRef = useRef(null);
+    const {
+        focusedDate,
+        isDateFocused,
+        isDateSelected,
+        isDateHovered,
+        isDateBlocked,
+        isFirstOrLastSelectedDate,
+        onDateSelect,
+        onDateFocus,
+        onDateHover,
+        startDateStyle,
+        endDateStyle,
+        isSingle
+    } = useContext(DatepickerContext);
+    const {
+        isSelected,
+        isSelectedStartOrEnd,
+        isWithinHoverRange,
+        disabledDate,
+        onClick,
+        onKeyDown,
+        onMouseEnter,
+        tabIndex
+    } = useDay({
+        date,
+        focusedDate,
+        isDateFocused,
+        isDateSelected,
+        isDateHovered,
+        isDateBlocked,
+        isFirstOrLastSelectedDate,
+        onDateFocus,
+        onDateSelect,
+        onDateHover,
+        dayRef
+    });
+    if (!dayLabel) {
+        return <div></div>;
+    }
+    return (
+        <DayWrapper 
+            isWithinHoverRange={isWithinHoverRange} 
+            isSelected={isSelected} 
+            isSelectedStartOrEnd={isSelectedStartOrEnd}
+            isLineBeginning={date.toString().includes("Mon")}
+            isLineEnd={date.toString().includes("Sun")}
+            isMonthLastDay={isMonthLastDay}
+            isMonthFirstDay={dayLabel === '01'}
+            isFirstDay={startDateStyle === date}
+            isLastDay={endDateStyle === date}
+            isSingle={isSingle!}
         >
             <DayStyle
                 onClick={onClick}
@@ -63,13 +69,12 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
                 type="button"
                 ref={dayRef}
                 isToday={isToday}
-
-                >
+            >
                 {dayLabel}
             </DayStyle>
-      </DayWrapper>
+        </DayWrapper>
 
 
-  );
+    );
 }
 export default Day;
