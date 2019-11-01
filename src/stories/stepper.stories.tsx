@@ -61,6 +61,10 @@ const exampleStep4 = () => {
     )
 }
 
+const submitForm = () => {
+    console.log("submitted!")
+  }
+
 const stepList = [exampleStep1, exampleStep2, exampleStep3, exampleStep4]
 
 storiesOf('Stepper', module)
@@ -73,7 +77,8 @@ storiesOf('Stepper', module)
            backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
            cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}} 
            stepTitles={["Step 1", "Step 2", "Step 3"]} 
-           lastStepButton="Purchase"/>
+           lastStepButton="Purchase"
+           finalFunction={submitForm}/>
         </ScrollableContainer>
     ))
 

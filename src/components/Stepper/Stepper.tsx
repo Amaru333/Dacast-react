@@ -24,7 +24,7 @@ export const CustomStepper = (props: StepperProps) => {
         setStepIndex(stepIndex + 1)
       }
       else {
-        finalStep()
+        props.finalFunction()
       }
     }
 
@@ -32,10 +32,6 @@ export const CustomStepper = (props: StepperProps) => {
       if(stepIndex > 0) {
         setStepIndex( stepIndex - 1);
       }
-    }
-
-    const finalStep = () => {
-      console.log("submitted!")
     }
 
     return (
