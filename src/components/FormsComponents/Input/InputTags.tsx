@@ -22,7 +22,6 @@ export const InputTags = (props: InputProps) => {
             if (tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
                 inputRef.current.value = "";
                 return;
-                //maybe add duplicate tag message?
               }
            setTags([...tags, val]);
            inputRef.current.value = "";
@@ -40,28 +39,28 @@ export const InputTags = (props: InputProps) => {
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
                 <TagsContainer>
                     <TagsWrapper>
-                    <TagListStyle>
-                    { tags.map((tag, i) => (
-                        <TagStyle id={tag} key={tag}>
-                            <Text size={14} weight="reg">
-                                <TagTextStyle>{tag}</TagTextStyle>
-                            
-                            </Text>
-                            <Tooltip target={tag}>
-                            <TagsTooltipStyle>{tag}</TagsTooltipStyle>
-                            </Tooltip>
-                            
-                            <TagButtonStyle 
-                                onClick={() => removeTag(i)} type="button">X
-                            </TagButtonStyle>
-                        </TagStyle>
-                    ))}
-                    <li>
-                    <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
-                    </li>
-                    </TagListStyle>
+                        <TagListStyle>
+                        { tags.map((tag, i) => (
+                            <TagStyle id={tag} key={tag}>
+                                <Text size={14} weight="reg">
+                                    <TagTextStyle>{tag}</TagTextStyle>
+                                </Text>
+                                <Tooltip target={tag}>
+                                <TagsTooltipStyle>{tag}</TagsTooltipStyle>
+                                </Tooltip>
+                                <TagButtonStyle 
+                                    onClick={() => removeTag(i)} type="button">X
+                                </TagButtonStyle>
+                            </TagStyle>
+                        ))}
+                            <li>
+                                <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                            </li>
+                        </TagListStyle>
                     </TagsWrapper>
-                    {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
+                    {icon ? <IconStyle disabled={props.disabled}>
+                        <Icon>{icon}</Icon>
+                    </IconStyle> : null}
                 </TagsContainer>
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>

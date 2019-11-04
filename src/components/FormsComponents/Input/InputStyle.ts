@@ -189,13 +189,13 @@ export const SliderContainerStyle = styled.div<SliderContainerProps>`
     }
 `
 export const TagsContainer = styled.div`
-border: 1px solid ${props => props.theme.colors["gray-7"]} ;
-display: flex;
-align-items: center;
-flex-wrap: wrap;
-width: 352px;
-min-height: 40px;
-background-color: ${props => props.theme.colors["gray-10"]};
+    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 352px;
+    min-height: 40px;
+    background-color: ${props => props.theme.colors["gray-10"]};
 `
 
 export const TagsInputStyle = styled(InputStyle)`
@@ -210,12 +210,12 @@ export const TagsInputStyle = styled(InputStyle)`
     }
 `
 export const TagListStyle = styled.ul`
-padding: 0;
-list-style: none;
-margin: 0;
-display: inline-flex;
-flex-wrap: wrap;
-align-items: center;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
 `
 
 export const TagStyle = styled.li`
@@ -230,22 +230,24 @@ export const TagStyle = styled.li`
 `
 
 export const TagTextStyle = styled.p`
-max-width: 298px;
-overflow: hidden;
-text-overflow: ellipsis;
-margin: 2px 8px;
-line-height: 16px;
-white-space: nowrap;
+    max-width: 298px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 2px 8px;
+    line-height: 16px;
+    white-space: nowrap;
 `
+
 export const TagButtonStyle = styled.button`
-border: none;
-background-color: ${props => props.theme.colors["violet20"]};
+    border: none;
+    background-color: ${props => props.theme.colors["violet20"]};
 `
+
 export const TagsWrapper = styled.div`
     margin: 4px;
 `
 export const TagsTooltipStyle = styled.p`
-word-wrap: break-word;
-margin: 0;
-transition: none;
+    word-wrap: break-word;
+    margin: 0;
+    transition: none;
 `
