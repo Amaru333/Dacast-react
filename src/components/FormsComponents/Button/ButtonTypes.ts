@@ -1,7 +1,9 @@
 import { ColorsApp } from '../../../styled/types';
 
-type Type = "primary" | "secondary" | "tertiary";
-type Size = "large" | "small" | "xs";
+export type Size = "large" | "small";
+export type Type = "primary" | "secondary" | "tertiary";
+
+
 type Color = 'red' | 'blue' | 'green';
 
 export interface ButtonCustomProps {
