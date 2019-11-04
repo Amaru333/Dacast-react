@@ -1,8 +1,9 @@
 import * as React from "react";
-import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper } from './InputStyle';
+import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper, TagsTooltipStyle } from './InputStyle';
 import { Text } from '../../Typography/Text';
 import { InputProps } from './InputTypes';
 import Icon from '@material-ui/core/Icon';
+import { Tooltip } from '../../Tooltip/Tooltip';
 
 export const InputTags = (props: InputProps) => {
 
@@ -41,11 +42,14 @@ export const InputTags = (props: InputProps) => {
                     <TagsWrapper>
                     <TagListStyle>
                     { tags.map((tag, i) => (
-                        <TagStyle key={tag}>
+                        <TagStyle id={tag} key={tag}>
                             <Text size={14} weight="reg">
                                 <TagTextStyle>{tag}</TagTextStyle>
                             
                             </Text>
+                            <Tooltip target={tag}>
+                            <TagsTooltipStyle>{tag}</TagsTooltipStyle>
+                            </Tooltip>
                             
                             <TagButtonStyle 
                                 onClick={() => removeTag(i)} type="button">X

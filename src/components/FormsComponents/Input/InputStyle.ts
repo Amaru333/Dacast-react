@@ -220,16 +220,15 @@ export const TagStyle = styled.li`
     background-color: ${props => props.theme.colors["violet20"]};
     height: 20px;
     border-radius: 4px;
-    
     flex-wrap: wrap;
     display: flex;
     align-items: center;
     margin: 4px;
-    max-width: 295px;
+    max-width: 335px;
 `
 
 export const TagTextStyle = styled.p`
-max-width: 258px;
+max-width: 298px;
 overflow: hidden;
 text-overflow: ellipsis;
 margin: 2px 8px;
@@ -241,5 +240,10 @@ border: none;
 background-color: ${props => props.theme.colors["violet20"]};
 `
 export const TagsWrapper = styled.div`
-    margin: 4px
+    margin: 4px;
+`
+export const TagsTooltipStyle = styled.p`
+word-wrap: break-word;
+margin: 0;
+transition: none;
 `
