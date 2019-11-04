@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, IconStyle, HelpStyle, TagsContainer } from './InputStyle';
+import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper } from './InputStyle';
 import { Text } from '../../Typography/Text';
 import { InputProps } from './InputTypes';
 import Icon from '@material-ui/core/Icon';
@@ -37,20 +37,28 @@ export const InputTags = (props: InputProps) => {
     return (
         <ContainerStyle className={className} >
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
-            <RelativeContainer>
                 <TagsContainer>
-                    <ul>
+                    <TagsWrapper>
+                    <TagListStyle>
                     { tags.map((tag, i) => (
-                        <li key={tag}>
-                            {tag}
-                            <button onClick={() => removeTag(i)} type="button">X</button>
-                        </li>
+                        <TagStyle key={tag}>
+                            <Text size={14} weight="reg">
+                                <TagTextStyle>{tag}</TagTextStyle>
+                            
+                            </Text>
+                            
+                            <TagButtonStyle 
+                                onClick={() => removeTag(i)} type="button">X
+                            </TagButtonStyle>
+                        </TagStyle>
                     ))}
-                    </ul>
-                    <InputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                    <li>
+                    <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                    </li>
+                    </TagListStyle>
+                    </TagsWrapper>
                     {icon ? <IconStyle disabled={props.disabled}><Icon>{icon}</Icon></IconStyle> : null}
                 </TagsContainer>
-            </RelativeContainer>
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

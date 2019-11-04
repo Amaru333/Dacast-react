@@ -78,7 +78,7 @@ storiesOf('Inputs', module)
     .add('Tags input', () => (
         <React.Fragment>
             <StorybookInputContainerStyle>
-                 <InputTags/>
+                 <InputTags label="test"/>
             </StorybookInputContainerStyle>  
         </React.Fragment>
     ));
