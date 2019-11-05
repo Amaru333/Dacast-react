@@ -14,7 +14,7 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
     background-color: ${props => props.theme.colors["white"]};
     ${props => props.orientation == "vertical" && css`
         flex-direction: column;
-        width: 173px;
+        min-width: 174px;
         margin-right: 24px;
         height: fit-content;
     `}
@@ -40,6 +40,10 @@ export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
     justify-content: center;
     align-items: center;
     min-width: 84px;
+    ${props => props.orientation == 'vertical' && css `
+        padding-left: 20px;
+        align-items: unset;
+    `}
     ${props => props.selected && css`
         background-color: ${props => props.theme.colors["violet20"]} !important;
         color: ${props => props.theme.colors["dark-violet"]};

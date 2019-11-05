@@ -1,20 +1,26 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText} from './DropdownStyle';
-import { DropdownProps, dropdownIcons } from './DropdownTypes';
+import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
-import { callbackify } from 'util';
+import { Input } from '../Input/Input';
 
 export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: DropdownProps, ref) => {
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.defaultValue ? props.defaultValue.toString() : "Select");
+    const [selectedItem, setSelectedItem] = React.useState<string>('Select');
+    const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list)
 
     useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
+    React.useEffect(() => {
+        if(selectedItem === 'Select') {
+            setSelectedItem(props.defaultValue ? props.defaultValue.toString() : "Select")
+        } 
+    }, [props.defaultValue])
     React.useEffect(() => {}, [selectedItem])
 
     const handleClick = (name: string) => {
@@ -24,10 +30,22 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
         }
     }
 
+    const filterList = (filterString: string) => {
+        const test = Object.keys(props.list).reduce(
+            (reduced: DropdownListType, item: string) => {
+                if(item.toLowerCase().includes(filterString.toLowerCase())){
+                    return {...reduced, [item]: false}
+                } 
+                else{
+                    return {...reduced}
+                }
+            }, {})
+        setItemsList(test);
+    }
+
     const renderList = () => {
-        let itemsList = props.list;
         return (
-            Object.keys(itemsList).map((name) => {
+            Object.keys(itemsList).map((name, key) => {
                 return (
                     props.isNavigation ? 
                         <Link to={name} key={props.id + '_' + name} >
@@ -39,6 +57,20 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                             </DropdownItem>
                         </Link>               
                         : 
+                        props.hasSearch  && key === 0 ?
+                            <DropdownItem 
+                                key={props.id + '_search'} 
+                                id={props.id + '_search'} 
+                                isSelected={false} 
+                            > 
+                            <Input
+                                required={false}
+                                placeholder='search'
+                                disabled={false}
+                                onChange={event => filterList(event.currentTarget.value)}
+                            />
+                            </DropdownItem>
+                        :
                         <DropdownItem 
                             key={props.id + '_' + name} 
                             id={props.id + '_' + name} 

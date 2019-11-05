@@ -12,6 +12,7 @@ interface DropdownCustomProps {
     isNavigation?: boolean;
     ref?: any;
     callback?: Function;
+    hasSearch?: boolean;
 }
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;

@@ -2,11 +2,11 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 
 
-export const DragAndDrop = (props: {hasError: boolean, handleDrop: Function} & React.HTMLAttributes<HTMLDivElement>) => {
+export const DragAndDrop = (props: {hasError: boolean; handleDrop: Function} & React.HTMLAttributes<HTMLDivElement>) => {
 
     let dropRef= React.useRef<HTMLDivElement>(null);
 
-    const [isDragging, setIsDragging] = React.useState<boolean>(false)
+    const [isDragging, setIsDragging] = React.useState<boolean>(false);
 
 
     const handleDrag = (e: DragEvent) => {
@@ -54,7 +54,7 @@ export const DragAndDrop = (props: {hasError: boolean, handleDrop: Function} & R
     }, [])
 
     return (
-        <DnDContainer hasError={props.hasError} ref={dropRef}>
+        <DnDContainer hasError={props.hasError} className={props.className} ref={dropRef}>
             {isDragging &&
           <div 
               style={{
@@ -89,7 +89,10 @@ export const DragAndDrop = (props: {hasError: boolean, handleDrop: Function} & R
 }
 
 const DnDContainer = styled.div<{hasError: boolean}>`
-    width: 49%;
+    width: 96%;
+    @media (min-width: 52em) {
+        width: 49%;
+    }
     position: relative;
     height: 96px;
     border: 1px dashed ${props => props.theme.colors['gray-7']};

@@ -12,7 +12,7 @@ export enum ActionTypes {
 export interface AccountState {
     readonly data: any;
     readonly isFetching: boolean;
-    readonly isSaved: boolean
+    readonly isSaved: boolean;
 }
 
 export const accountInitialState: AccountState = {
@@ -26,7 +26,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-    getCompanyPageDetails: () => void;
+     getCompanyPageDetails: () => void;
     saveCompanyPageDetails: (data: ValueInput) => void;
 } 
 
