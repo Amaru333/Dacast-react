@@ -63,21 +63,21 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                                 id={props.id + '_search'} 
                                 isSelected={false} 
                             > 
-                            <Input
-                                required={false}
-                                placeholder='search'
-                                disabled={false}
-                                onChange={event => filterList(event.currentTarget.value)}
-                            />
+                                <Input
+                                    required={false}
+                                    placeholder='search'
+                                    disabled={false}
+                                    onChange={event => filterList(event.currentTarget.value)}
+                                />
                             </DropdownItem>
-                        :
-                        <DropdownItem 
-                            key={props.id + '_' + name} 
-                            id={props.id + '_' + name} 
-                            isSelected={selectedItem === name} 
-                            onClick={() => handleClick(name)}> 
-                            <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
-                        </DropdownItem>
+                            :
+                            <DropdownItem 
+                                key={props.id + '_' + name} 
+                                id={props.id + '_' + name} 
+                                isSelected={selectedItem === name} 
+                                onClick={() => handleClick(name)}> 
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
+                            </DropdownItem>
                 )                
             })
         )

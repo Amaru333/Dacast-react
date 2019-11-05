@@ -29,7 +29,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     }
     
     React.useEffect(() => {
-        if(formRef.current && Object.entries(dataValue).every((key, element) => {return dataValue[element] ? dataValue[element].value.length === 0 : true}))  {
+        if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0)  {
 
             var dataInit={};
             var dataValueInit= {};

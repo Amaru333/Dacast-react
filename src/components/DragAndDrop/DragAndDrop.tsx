@@ -94,7 +94,7 @@ const DnDContainer = styled.div<{hasError: boolean}>`
         width: 49%;
     }
     position: relative;
-    height: 96px;
+    height: 176px;
     border: 1px dashed ${props => props.theme.colors['gray-7']};
     ${props => props.hasError && css `
         border: 1px dashed ${props.theme.colors['red']};

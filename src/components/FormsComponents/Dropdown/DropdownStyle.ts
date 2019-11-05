@@ -39,6 +39,9 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
 export const Title = styled.div<{ref: any}>`
     padding: 8px 44px 8px 12px;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
 `;
 
 export const IconStyle = styled.div`

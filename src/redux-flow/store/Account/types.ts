@@ -26,7 +26,7 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-     getCompanyPageDetails: () => void;
+    getCompanyPageDetails: () => void;
     saveCompanyPageDetails: (data: ValueInput) => void;
 } 
 
