@@ -72,6 +72,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 const Content = styled.div<{isOpen: boolean}>`
     position: relative;
     height: auto;
+    min-height: 100vh;
     padding: 24px;
     padding-top: 81px;
 `

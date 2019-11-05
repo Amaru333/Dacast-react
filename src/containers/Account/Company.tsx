@@ -8,54 +8,58 @@ import Icon from '@material-ui/core/Icon';
 import { DragAndDrop } from '../../components/DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../utils/hooksFormSubmit';
 import { connect } from 'react-redux';
-import * as actions from '../../redux-flow/store/Account/actions';
 import { ApplicationState } from "../../redux-flow/store";
-import { AccountProps, StateProps, DispatchProps } from '../../redux-flow/store/Account/types';
-import { ToastStateProps, DispatchToastProps } from '../../components/Toast/Toasts';
-import { hideToast, showToastNotification } from '../../redux-flow/store/toasts/actions';
+import { CompanyPageInfos, AccountInfos } from '../../redux-flow/store/Account/types';
 import Toasts from '../Toasts';
-import { bindActionCreators } from 'redux';
 import { DropdownSingle } from '../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ThunkDispatch } from 'redux-thunk';
+import { AccountAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction } from '../../redux-flow/store/Account/actions';
+import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 const {getNames} = require('country-list')
 
-export const Company = (props: AccountProps & DispatchToastProps) => {
+interface AccountComponentProps {
+    AccountDetails: {
+        companyPage: {
+            accountName: string;
+            businessName: string;
+            contactNumber: string;
+            emailAddress: string;
+            companyWebsite: string;
+            vatNumber: string;
+            addressLine1: string;
+            addressLine2: string;
+            state: string;
+            town: string;
+            zipCode: string;
+            country: string;
+        };
+    };
+    getCompanyPageDetails: Function;
+    saveCompanyPageDetails: Function;
+}
+const Company = (props: AccountComponentProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
     let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
-        console.log(value);
-        console.log(validations)
-        debugger;
-        props.saveCompanyPageDetails(data)
+        //props.saveCompanyPageDetails(data)
 
     }
 
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
     /** Fetching data using redux and services */
     React.useEffect( () => {
-        const fetchData = async () => {
-            await props.getCompanyPageDetails();
+        if(!props.AccountDetails) {
+            props.getCompanyPageDetails();
+            setIsLoading(true);
         }
-        fetchData()
-    }, [])
+    }, [isLoading])
 
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
     /** Calling toasts depending on services results */
-    React.useEffect(() => {
-        if(props.account.isFetching) {
-            props.showToast('data is fetching...', 'flexible', 'information');
-        }
-        else if(!props.account.isFetching && !props.account.isSaved && props.account.data.length > 0){
-            props.showToast('data fetched!', 'flexible', 'success');
-            setDefaultCountryValue(getNames().filter((item: string) => {return props.account.data.length > 0 ?  item.includes(props.account.data[0].companyPage.country) : false})[0])
-        }
-
-        if(props.account.isSaved) {
-            props.showToast('data saved!', 'flexible', 'success');
-        }
-    }, [props.account])
 
 
     /**  Drag and drop or browse file  */
@@ -105,214 +109,230 @@ export const Company = (props: AccountProps & DispatchToastProps) => {
 
     const handleDiscard = () => {
         Object.keys(value).forEach((key) => {value[key].value = ''});
-        debugger;
+    }
+    
+    const renderCompanyPage = () => {
+        if(defaultCountryValue.length === 0) {
+            setDefaultCountryValue(getNames().filter((item: string) => {return props.AccountDetails.companyPage ?  item.includes(props.AccountDetails.companyPage.country) : false})[0])
+        }
+        console.log(props.AccountDetails);
+        return (
+            <CompanyPageContainer>
+                <Card className='clearfix p2'>
+                    <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
+                    <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
+
+                    <DragAndDrop hasError={errorMessage.length > 0} className="mx1" handleDrop={handleDrop}>
+                        { fileUploaded ? 
+                            <>
+                            <ImageStyle src={fileUploaded}></ImageStyle>
+                            <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'12px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
+                            </>
+                            :
+                            <>
+                            <IconStyle><BigIcon>cloud_upload</BigIcon></IconStyle>
+                            <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                            <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                            <ButtonStyle className='my1'>
+                                <Button sizeButton='small' typeButton='secondary' buttonColor='blue'>    
+                                    <label htmlFor='browseButton'>
+                                        <LinkStyle>
+                                            <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                                            Browse Files
+                                        </LinkStyle>
+                                    </label>
+                                </Button>
+                            </ButtonStyle>
+                            </>
+                        } 
+                    </DragAndDrop>
+                    {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
+                    <div className="m1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
+                    <BorderStyle className="p1 mx1" />
+                    <form onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
+                        <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
+                        <div className="md-col md-col-12">
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.accountName : null}
+                                type="text" 
+                                className="md-col md-col-6 p1" 
+                                id="accountName" 
+                                label="Account Name" 
+                                placeholder="Account Name" 
+                                required
+                                {...handleValidationProps('accountName', validations)}
+                            />
+                            <Input 
+                                disabled={false}
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.businessName : null} 
+                                type="text" 
+                                className="md-col md-col-6 p1" 
+                                id="businessName" 
+                                label="Business Name" 
+                                placeholder="Business Name" 
+                                required
+                                {...handleValidationProps('businessName', validations)} 
+                            />
+                        </div>
+                        <div className="md-col md-col-12" >
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.contactNumber : null}
+                                type="tel" 
+                                className="md-col md-col-6 p1" 
+                                id="contactNumber" 
+                                label="Phone Number" 
+                                placeholder="(00) 0000 0000 00" 
+                                required
+                                {...handleValidationProps('contactNumber', validations)}
+                            />
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.emailAddress : null}
+                                type="email" 
+                                className="md-col md-col-6 p1" 
+                                id="emailAddress" 
+                                label="Email Address" 
+                                placeholder="Email Address" 
+                                required
+                                {...handleValidationProps('emailAddress', validations)}
+                            />
+                        </div>
+
+                        <div className="md-col md-col-12">
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.companyWebsite : null}
+                                type="text" 
+                                className="md-col md-col-6 p1" 
+                                id="companyWebsite"
+                                label="Company Website" 
+                                placeholder="Company Website" 
+                                required
+                                {...handleValidationProps('companyWebsite', validations)}
+                            />
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.vatNumber : null}
+                                type="text" 
+                                className="md-col md-col-6 p1" 
+                                id="vatNumber" 
+                                label="VAT Number" 
+                                placeholder="VAT Number" 
+                                required
+                                {...handleValidationProps('vatNumber', validations)}
+                            />
+                        </div>
+
+                        <BorderStyle className="p1 mx1" />
+
+                        <TextStyle className="px1 py2" ><Text size={20} weight='med'>Address</Text></TextStyle>
+                        <div className="md-col md-col-12">
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.addressLine1 : null}
+                                type="text" 
+                                className="sm-col sm-col-6 p1" 
+                                id="addressLine1" 
+                                label="Address line 1" 
+                                placeholder="Address line 1" 
+                                required
+                                {...handleValidationProps('addressLine1', validations)}                      
+                            />
+
+                            <Input  
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.addressLine2 : null}
+                                type="text" 
+                                className="sm-col sm-col-6 p1" 
+                                id="addressLine2" 
+                                label="Address line 2" 
+                                placeholder="Address line 2" 
+                                required
+                                {...handleValidationProps('addressLine2', validations)}
+                            />
+                        </div>
+                        <div className="md-col md-col-12">
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.state : null}
+                                type="text" 
+                                className="sm-col sm-col-3 p1" 
+                                id="state" 
+                                label="State (optional)" 
+                                placeholder="State" 
+                                required={false}
+                                {...handleValidationProps('state', validations)}
+                            />
+
+                            <Input 
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.town : null}
+                                type="text" 
+                                className="sm-col sm-col-3 p1" 
+                                id="town" 
+                                label="Town" 
+                                placeholder="Town" 
+                                required
+                                {...handleValidationProps('town', validations)}
+                            />
+
+                            <Input  
+                                disabled={false} 
+                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.zipCode : null}
+                                type="text" 
+                                className="sm-col sm-col-3 p1" 
+                                id="zipCode" 
+                                label="Zip/Post Code" 
+                                placeholder="Zip/Post Code" 
+                                required
+                                {...handleValidationProps('zipCode', validations)}
+                            
+                            />
+                            <DropdownSingle hasSearch defaultValue={defaultCountryValue} className="sm-col sm-col-3 p1 my1" id='country' dropdownTitle='Country' list={getNames().reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{})} />
+
+                        </div>
+                        <ButtonsArea>
+                            <Button disabled={!enabledSubmit} type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                            <Button type='button' onClick={handleDiscard} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        </ButtonsArea>
+                    </form>
+                </Card>
+                <Toasts />
+            </CompanyPageContainer>
+        )
     }
 
     return (
-        <CompanyPageContainer>
-            <Card className='clearfix p2'>
-                <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
-                <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
-
-                <DragAndDrop hasError={errorMessage.length > 0} className="mx1" handleDrop={handleDrop}>
-                    { fileUploaded ? 
-                        <>
-                        <ImageStyle src={fileUploaded}></ImageStyle>
-                        <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'12px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                        </>
-                        :
-                        <>
-                        <IconStyle><BigIcon>cloud_upload</BigIcon></IconStyle>
-                        <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
-                        <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
-                        <ButtonStyle className='my1'>
-                            <Button sizeButton='small' typeButton='secondary' buttonColor='blue'>    
-                                <label htmlFor='browseButton'>
-                                    <LinkStyle>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
-                                        Browse Files
-                                    </LinkStyle>
-                                </label>
-                            </Button>
-                        </ButtonStyle>
-                        </>
-                    } 
-                </DragAndDrop>
-                {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
-                <div className="m1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
-                <BorderStyle className="p1 mx1" />
-                <form onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
-                    <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
-                    <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.accountName : null}
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="accountName" 
-                            label="Account Name" 
-                            placeholder="Account Name" 
-                            required
-                            {...handleValidationProps('accountName', validations)}
-                        />
-                        <Input 
-                            disabled={false}
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.businessName : null} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="businessName" 
-                            label="Business Name" 
-                            placeholder="Business Name" 
-                            required
-                            {...handleValidationProps('businessName', validations)} 
-                        />
-                    </div>
-                    <div className="md-col md-col-12" >
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.contactNumber : null}
-                            type="tel" 
-                            className="md-col md-col-6 p1" 
-                            id="contactNumber" 
-                            label="Phone Number" 
-                            placeholder="(00) 0000 0000 00" 
-                            required
-                            {...handleValidationProps('contactNumber', validations)}
-                        />
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.email : null}
-                            type="email" 
-                            className="md-col md-col-6 p1" 
-                            id="email" 
-                            label="Email Address" 
-                            placeholder="Email Address" 
-                            required
-                            {...handleValidationProps('email', validations)}
-                        />
-                    </div>
-
-                    <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.companyWebsite : null}
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="companyWebsite"
-                            label="Company Website" 
-                            placeholder="Company Website" 
-                            required
-                            {...handleValidationProps('companyWebsite', validations)}
-                        />
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.vatNumber : null}
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="vatNumber" 
-                            label="VAT Number" 
-                            placeholder="VAT Number" 
-                            required
-                            {...handleValidationProps('vatNumber', validations)}
-                        />
-                    </div>
-
-                    <BorderStyle className="p1 mx1" />
-
-                    <TextStyle className="px1 py2" ><Text size={20} weight='med'>Address</Text></TextStyle>
-                    <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address1 : null}
-                            type="text" 
-                            className="sm-col sm-col-6 p1" 
-                            id="address1" 
-                            label="Address line 1" 
-                            placeholder="Address line 1" 
-                            required
-                            {...handleValidationProps('address1', validations)}                      
-                        />
-
-                        <Input  
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.address2 : null}
-                            type="text" 
-                            className="sm-col sm-col-6 p1" 
-                            id="address2" 
-                            label="Address line 2" 
-                            placeholder="Address line 2" 
-                            required
-                            {...handleValidationProps('address2', validations)}
-                        />
-                    </div>
-                    <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.state : null}
-                            type="text" 
-                            className="sm-col sm-col-3 p1" 
-                            id="state" 
-                            label="State (optional)" 
-                            placeholder="State" 
-                            required={false}
-                            {...handleValidationProps('state', validations)}
-                        />
-
-                        <Input 
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.city : null}
-                            type="text" 
-                            className="sm-col sm-col-3 p1" 
-                            id="city" 
-                            label="Town" 
-                            placeholder="Town" 
-                            required
-                            {...handleValidationProps('city', validations)}
-                        />
-
-                        <Input  
-                            disabled={false} 
-                            defaultValue={props.account.data.length > 0 ? props.account.data[0].companyPage.zipCode : null}
-                            type="text" 
-                            className="sm-col sm-col-3 p1" 
-                            id="zipCode" 
-                            label="Zip/Post Code" 
-                            placeholder="Zip/Post Code" 
-                            required
-                            {...handleValidationProps('zipCode', validations)}
-                        
-                        />
-                        <DropdownSingle hasSearch defaultValue={defaultCountryValue} className="sm-col sm-col-3 p1 my1" id='Country' dropdownTitle='Country' list={getNames().reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{})} />
-
-                    </div>
-                    <ButtonsArea>
-                        <Button disabled={!enabledSubmit} type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='button' onClick={handleDiscard} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-                    </ButtonsArea>
-                </form>
-            </Card>
-            <Toasts />
-        </CompanyPageContainer>
+        props.AccountDetails ? 
+            renderCompanyPage()
+            : 
+            <LoadingSpinner size='large' color='dark-violet' />
     )
 
 }
 
-const mapStateToProps = (state: ApplicationState): (StateProps & ToastStateProps) => ({
-    account: state.account,
-    toasts: state.toasts.data,
-});
 
-const mapDispatchToProps = (dispatch: any): (DispatchProps & DispatchToastProps) => bindActionCreators({
-    getCompanyPageDetails: actions.getCompanyPageDetails,
-    saveCompanyPageDetails: actions.saveCompanyPageDetails,
-    hideToast: hideToast,
-    showToast: showToastNotification,
-}, dispatch);
+export function mapStateToProps( state: ApplicationState) {
+    return {
+        AccountDetails: state.account.data
+    };
+}
 
-export default connect<(StateProps & ToastStateProps), (DispatchProps & DispatchToastProps), {}>(
-    mapStateToProps,
-mapDispatchToProps
-)(Company); 
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, AccountAction>) {
+    return {
+        getCompanyPageDetails: () => {
+            dispatch(getCompanyPageDetailsAction());
+        },
+        saveCompanyPageDetails: (data: CompanyPageInfos) => {
+            dispatch(saveCompanyPageDetailsAction(data));
+        },
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Company); 
 
 const CompanyPageContainer = styled.div<{}>`
     position: relative;

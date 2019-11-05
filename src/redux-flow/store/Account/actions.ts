@@ -1,84 +1,42 @@
-import { ActionTypes } from './types';
+import { ActionTypes, CompanyPageInfos } from './types';
 import { AccountServices } from './services';
-import { ValueInput } from '../../../utils/hooksFormSubmit';
+import { showToastNotification } from '../toasts/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { ApplicationState } from '..';
 
-export interface GetCompanyPageDetailsRequest {
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST;
-    payload: {};
-}
-export interface GetCompanyPageDetailsSuccess {
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_SUCCESS;
-    payload: {data: any};
-}
-export interface GetCompanyPageDetailsError {
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR;
-    payload: {error: any};
+export interface GetCompanyPageDetails {
+    type: ActionTypes.GET_COMPANY_PAGE_DETAILS;
+    payload: CompanyPageInfos;
 }
 
-export interface SaveCompanyPageDetailsRequest {
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST;
-    payload: {data: ValueInput};
-}
-export interface SaveCompanyPageDetailsSuccess {
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS;
-    payload: {data: any};
-}
-export interface SaveCompanyPageDetailsError {
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_ERROR;
-    payload: {error: any};
+export interface SaveCompanyPageDetails {
+    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS;
+    payload: CompanyPageInfos;
 }
 
-const GetCompanyPageDetailsRequest = (): AccountAction => ({
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST,
-    payload: {}
-});
 
-const GetCompanyPageDetailsSuccess = (data: any): AccountAction => ({
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_SUCCESS,
-    payload: {...data}
-});
-
-const GetCompanyPageDetailsError = (error: any): AccountAction => ({
-    type: ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR,
-    payload: error
-});
-
-const SaveCompanyPageDetailsRequest = (data: ValueInput): AccountAction => ({
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST,
-    payload: {data:{...data}}
-});
-
-const SaveCompanyPageDetailsSuccess = (data: any): AccountAction => ({
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS,
-    payload: {...data}
-});
-
-const SaveCompanyPageDetailsError = (error: any): AccountAction => ({
-    type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS_ERROR,
-    payload: error
-});
-
-
-export const getCompanyPageDetails = () => (dispatch: React.Dispatch<AccountAction>): void => {
-    dispatch(GetCompanyPageDetailsRequest());
-    AccountServices.getCompanyPageDetailsService()
-        .then( (data: any) => {
-            dispatch(GetCompanyPageDetailsSuccess(data))
-        }).catch( (error: any) => {
-            dispatch(GetCompanyPageDetailsError(error))
-        })
+export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
+        await AccountServices.getCompanyPageDetailsService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
 }
 
-export const saveCompanyPageDetails = (data: ValueInput) => (dispatch: React.Dispatch<AccountAction>): void => {
-    dispatch(SaveCompanyPageDetailsRequest(data));
-    AccountServices.saveCompanyPageDetailsService(data)
-        .then( data => {
-            dispatch(SaveCompanyPageDetailsSuccess(data))
-        }).catch(error => {
-            dispatch(SaveCompanyPageDetailsError(error))
-        })
+export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
+        await AccountServices.saveCompanyPageDetailsService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
 }
 
 
 
-export type AccountAction = GetCompanyPageDetailsRequest | GetCompanyPageDetailsSuccess | GetCompanyPageDetailsError | SaveCompanyPageDetailsRequest | SaveCompanyPageDetailsSuccess | SaveCompanyPageDetailsError 
+export type AccountAction = GetCompanyPageDetails | SaveCompanyPageDetails

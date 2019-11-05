@@ -4,20 +4,20 @@ import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 
 export interface ApplicationState {
-	dashboard: DashboardState;
+    dashboard: DashboardState;
     toasts: ToastsState;
     account: AccountState;
 }
 
 export const globalDefaultState: ApplicationState = {
-	dashboard: dashboardInitialState,
+    dashboard: dashboardInitialState,
     toasts: toastsInitialState,
     account:accountInitialState
 };
 
 export const createRootReducer = () =>
     combineReducers({
-		dashboard: DashboardReducer,
+        dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer
     },);

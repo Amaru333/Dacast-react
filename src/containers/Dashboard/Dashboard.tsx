@@ -12,16 +12,16 @@ import { connect } from "react-redux";
 
 export interface DashboardProps {
     infos: DashboardInfos;
-    getDashboardDetails: Function
+    getDashboardDetails: Function;
 }
 
 const Dashboard = (props: DashboardProps) => {
 
     const [profile, setProfile] = React.useState<number>(4);
     React.useEffect(() => {
-       if(!props.infos) {
-           props.getDashboardDetails();
-       }
+        if(!props.infos) {
+            props.getDashboardDetails();
+        }
     }, [profile])
 
     const renderDashboard = () => {
@@ -79,7 +79,7 @@ const Dashboard = (props: DashboardProps) => {
                     {renderDashboard()}
                     <div className="clearfix"></div>
                 </> :
-                <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
+                    <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
             }
         </>
     )

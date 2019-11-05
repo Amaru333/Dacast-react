@@ -4,38 +4,14 @@ import { ActionTypes, accountInitialState, AccountState } from './types';
 
 export const reducer = (state = accountInitialState, action: AccountAction): AccountState => {
     switch (action.type) {
-        case ActionTypes.GET_COMPANY_PAGE_DETAILS_REQUEST:
+        case ActionTypes.GET_COMPANY_PAGE_DETAILS:
             return {
                 ...state,
-                isFetching: true
+                data: {...state, companyPage:{...action.payload}}
             }
-        case ActionTypes.GET_COMPANY_PAGE_DETAILS_SUCCESS:
+        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS:
             return {
                 ...state,
-                isFetching: false,
-                data: [...state.data, {companyPage:action.payload.data}]
-            }
-        case ActionTypes.GET_COMPANY_PAGE_DETAILS_ERROR:
-            return {
-                ...state,
-                isFetching: false,
-                data:[...state.data, {companyPage:action.payload}]
-            }
-        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_REQUEST:
-            return {
-                ...state,
-                isSaved: false
-            }
-        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_SUCCESS:
-            return {
-                ...state,
-                isSaved: true
-            }
-        case ActionTypes.SAVE_COMPANY_PAGE_DETAILS_ERROR:
-            return {
-                ...state,
-                isSaved: false,
-                data:[...state.data, {companyPage:action.payload}]
             }
         default:
             return state;

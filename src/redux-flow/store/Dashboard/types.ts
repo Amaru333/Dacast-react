@@ -3,61 +3,61 @@ export enum ActionTypes {
 }
 
 export interface DashboardInfos {
-    isVod: false | DashboardVod,
-    isTrial: false | DashboardTrial,
-    isPayingPlan: false | DashboardPayingPlan,
-    isPaywall: false | DashboardPaywall,
-    isLive: false | DashboardLive,
-    generalInfos: DashboardGeneral
+    isVod: false | DashboardVod;
+    isTrial: false | DashboardTrial;
+    isPayingPlan: false | DashboardPayingPlan;
+    isPaywall: false | DashboardPaywall;
+    isLive: false | DashboardLive;
+    generalInfos: DashboardGeneral;
 }
 
 export interface DashboardTrial {
-    daysLeft: number 
+    daysLeft: number; 
 }
 export interface DashboardPayingPlan {
-    displayName: string,
-    price: number,
-    nextBill: number,
-    lastBill: number
+    displayName: string;
+    price: number;
+    nextBill: number;
+    lastBill: number;
 }
 export interface DashboardGeneral {
     bandwidth: {
-        limit: number,
-        consumed: number
-    },
+        limit: number;
+        consumed: number;
+    };
     storage: {
-        limit: number,
-        consumed: number
-    },
+        limit: number;
+        consumed: number;
+    };
     encoding: {
-        limit: number,
-        consumed: number
-    },
+        limit: number;
+        consumed: number;
+    };
     overage: {
-        enabled: boolean,
-        value: number
-    },
+        enabled: boolean;
+        value: number;
+    };
 }
 
-type TopContent = { name: string, viewers: number };
+interface TopContent { name: string; viewers: number }
 
 export interface DashboardVod {
-    totalVideos: number,
-    videoPlays: number,
-    impressions: number,
-    topVideos: TopContent[]
+    totalVideos: number;
+    videoPlays: number;
+    impressions: number;
+    topVideos: TopContent[];
 }
 
 export interface DashboardLive {
-    activeChannels: number,
-    totalChannels: number,
-    liveViewers: number,
-    topChannels: TopContent[]
+    activeChannels: number;
+    totalChannels: number;
+    liveViewers: number;
+    topChannels: TopContent[];
 }
 
 export interface DashboardPaywall {
-    balance: number,
-    revenue: number
+    balance: number;
+    revenue: number;
 }
 
 export const dashboardInitialState: DashboardState = {
