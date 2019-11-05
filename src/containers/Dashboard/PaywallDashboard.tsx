@@ -1,6 +1,6 @@
 import React from 'react'
 import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader } from './DashboardStyles'
-import { WidgetElement } from '../../components/Dashboard'
+import { WidgetElement } from './WidgetElement'
 import { Text } from '../../components/Typography/Text';
 import { numberFormatter } from '../../utils/utils';
 
@@ -29,7 +29,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
                     </WidgetHeader>
-                    <div className="flex justify-center items-center mb1">
+                    <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${balance}</Text>
                     </div>
                 </WidgetElement>
@@ -39,7 +39,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
                         <IconGray1 className="ml-auto">error_outline</IconGray1>
                     </WidgetHeader>
-                    <div className="flex justify-center items-center mb1">
+                    <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${revenue}</Text>
                     </div>
                 </WidgetElement>

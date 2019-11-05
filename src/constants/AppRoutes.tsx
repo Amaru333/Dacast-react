@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import Dashboard from '../components/Dashboard';
+import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
 

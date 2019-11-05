@@ -9,7 +9,7 @@ export const ToastContainer = styled.div`
     bottom: 16px;
     left: 50%;
     transform: translate(-50%);
-
+    z-index:9999;
 `;
 
 export const ToastStyle = styled.div<ToastProps>`

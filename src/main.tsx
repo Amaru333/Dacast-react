@@ -20,6 +20,7 @@ import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
+import Toasts from './containers/Toasts';
 
 // Any additional component props go here.
 interface MainProps {
@@ -50,6 +51,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             <ThemeProvider theme={Theme}>
                 <Router  history={history}>
                     <>
+                        <Toasts />
                         <MainMenu navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
                         <FullContent isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                             <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
-
+import { DateTime } from 'luxon';
 
 export function numberFormatter(num: number, format: 'k' | 'comma'): string {
     var formatNumeral = ''
@@ -13,6 +13,10 @@ export function numberFormatter(num: number, format: 'k' | 'comma'): string {
             break;
     }
     return numeral(num).format(formatNumeral);
+}
+
+export function tsToLocaleDate(ts: number): string {
+    return DateTime.fromSeconds(ts).toLocaleString();
 }
 
 export function getPercentage(num: number, max: number): number {
