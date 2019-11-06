@@ -10,7 +10,6 @@ import { formSubmit, ValueInput, handleValidationProps } from '../../utils/hooks
 import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { CompanyPageInfos, AccountInfos } from '../../redux-flow/store/Account/types';
-import Toasts from '../Toasts';
 import { DropdownSingle } from '../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ThunkDispatch } from 'redux-thunk';
@@ -19,44 +18,26 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 const {getNames} = require('country-list')
 
 interface AccountComponentProps {
-    AccountDetails: {
-        companyPage: {
-            accountName: string;
-            businessName: string;
-            contactNumber: string;
-            emailAddress: string;
-            companyWebsite: string;
-            vatNumber: string;
-            addressLine1: string;
-            addressLine2: string;
-            state: string;
-            town: string;
-            zipCode: string;
-            country: string;
-        };
-    };
+    AccountDetails: AccountInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
 }
-const Company = (props: AccountComponentProps) => {
+export const Company = (props: AccountComponentProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
     let {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {AccountDetails} = props;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
         //props.saveCompanyPageDetails(data)
 
     }
 
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
     /** Fetching data using redux and services */
     React.useEffect( () => {
-        if(!props.AccountDetails) {
-            props.getCompanyPageDetails();
-            setIsLoading(true);
-        }
-    }, [isLoading])
+        props.getCompanyPageDetails();
+    }, [])
 
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
     /** Calling toasts depending on services results */
@@ -110,12 +91,11 @@ const Company = (props: AccountComponentProps) => {
     const handleDiscard = () => {
         Object.keys(value).forEach((key) => {value[key].value = ''});
     }
-    
+
     const renderCompanyPage = () => {
         if(defaultCountryValue.length === 0) {
-            setDefaultCountryValue(getNames().filter((item: string) => {return props.AccountDetails.companyPage ?  item.includes(props.AccountDetails.companyPage.country) : false})[0])
+            setDefaultCountryValue(getNames().filter((item: string) => {return AccountDetails.companyPage ?  item.includes(AccountDetails.companyPage.country) : false})[0])
         }
-        console.log(props.AccountDetails);
         return (
             <CompanyPageContainer>
                 <Card className='clearfix p2'>
@@ -154,7 +134,7 @@ const Company = (props: AccountComponentProps) => {
                         <div className="md-col md-col-12">
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.accountName : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.accountName : null}
                                 type="text" 
                                 className="md-col md-col-6 p1" 
                                 id="accountName" 
@@ -165,7 +145,7 @@ const Company = (props: AccountComponentProps) => {
                             />
                             <Input 
                                 disabled={false}
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.businessName : null} 
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.businessName : null} 
                                 type="text" 
                                 className="md-col md-col-6 p1" 
                                 id="businessName" 
@@ -178,7 +158,7 @@ const Company = (props: AccountComponentProps) => {
                         <div className="md-col md-col-12" >
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.contactNumber : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.contactNumber : null}
                                 type="tel" 
                                 className="md-col md-col-6 p1" 
                                 id="contactNumber" 
@@ -189,7 +169,7 @@ const Company = (props: AccountComponentProps) => {
                             />
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.emailAddress : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.emailAddress : null}
                                 type="email" 
                                 className="md-col md-col-6 p1" 
                                 id="emailAddress" 
@@ -203,7 +183,7 @@ const Company = (props: AccountComponentProps) => {
                         <div className="md-col md-col-12">
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.companyWebsite : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.companyWebsite : null}
                                 type="text" 
                                 className="md-col md-col-6 p1" 
                                 id="companyWebsite"
@@ -214,7 +194,7 @@ const Company = (props: AccountComponentProps) => {
                             />
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.vatNumber : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.vatNumber : null}
                                 type="text" 
                                 className="md-col md-col-6 p1" 
                                 id="vatNumber" 
@@ -231,7 +211,7 @@ const Company = (props: AccountComponentProps) => {
                         <div className="md-col md-col-12">
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.addressLine1 : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.addressLine1 : null}
                                 type="text" 
                                 className="sm-col sm-col-6 p1" 
                                 id="addressLine1" 
@@ -243,7 +223,7 @@ const Company = (props: AccountComponentProps) => {
 
                             <Input  
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.addressLine2 : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.addressLine2 : null}
                                 type="text" 
                                 className="sm-col sm-col-6 p1" 
                                 id="addressLine2" 
@@ -256,7 +236,7 @@ const Company = (props: AccountComponentProps) => {
                         <div className="md-col md-col-12">
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.state : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.state : null}
                                 type="text" 
                                 className="sm-col sm-col-3 p1" 
                                 id="state" 
@@ -268,7 +248,7 @@ const Company = (props: AccountComponentProps) => {
 
                             <Input 
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.town : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.town : null}
                                 type="text" 
                                 className="sm-col sm-col-3 p1" 
                                 id="town" 
@@ -280,7 +260,7 @@ const Company = (props: AccountComponentProps) => {
 
                             <Input  
                                 disabled={false} 
-                                defaultValue={props.AccountDetails.companyPage ? props.AccountDetails.companyPage.zipCode : null}
+                                defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.zipCode : null}
                                 type="text" 
                                 className="sm-col sm-col-3 p1" 
                                 id="zipCode" 
@@ -299,7 +279,6 @@ const Company = (props: AccountComponentProps) => {
                         </ButtonsArea>
                     </form>
                 </Card>
-                <Toasts />
             </CompanyPageContainer>
         )
     }
