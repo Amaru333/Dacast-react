@@ -1,29 +1,35 @@
-import { ValueInput } from '../../../utils/hooksFormSubmit';
-
 export enum ActionTypes {
-    GET_COMPANY_PAGE_DETAILS_REQUEST = "@@account/GET_COMPANY_PAGE_DETAILS_REQUEST",
-    GET_COMPANY_PAGE_DETAILS_SUCCESS = "@@account/GET_COMPANY_PAGE_DETAILS_SUCCESS",
-    GET_COMPANY_PAGE_DETAILS_ERROR = "@@account/GET_COMPANY_PAGE_DETAILS_ERROR",
-    SAVE_COMPANY_PAGE_DETAILS_REQUEST = "@@account/SAVE_COMPANY_PAGE_DETAILS_REQUEST",
-    SAVE_COMPANY_PAGE_DETAILS_SUCCESS = "@@account/SAVE_COMPANY_PAGE_DETAILS_SUCCESS",
-    SAVE_COMPANY_PAGE_DETAILS_ERROR = "@@account/SAVE_COMPANY_PAGE_DETAILS_ERROR"
+    GET_COMPANY_PAGE_DETAILS = "@@account/GET_COMPANY_PAGE_DETAILS",
+    SAVE_COMPANY_PAGE_DETAILS = "@@account/SAVE_COMPANY_PAGE_DETAILS"
+}
+
+export interface AccountInfos {
+    companyPage: CompanyPageInfos;
+}
+
+export interface CompanyPageInfos {
+    accountName: string;
+    businessName: string;
+    contactNumber: string;
+    emailAddress: string;
+    companyWebsite: string;
+    vatNumber: string;
+    addressLine1: string;
+    addressLine2: string;
+    state: string;
+    town: string;
+    zipCode: string;
+    country: string;
 }
 
 export interface AccountState {
-    readonly data: any;
+    readonly data: AccountInfos | false;
 }
 
 export const accountInitialState: AccountState = {
-    data: [],
+    data: false,
 };
 
 export interface StateProps {
-    account: any;
+    account: AccountState;
 }
-
-export interface DispatchProps {
-    getCompanyPageDetails: () => void;
-    saveCompanyPageDetails: (data: ValueInput) => void;
-} 
-
-export type AccountProps = StateProps & DispatchProps;

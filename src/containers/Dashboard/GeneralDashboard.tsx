@@ -1,12 +1,13 @@
 import React from 'react'
 import { classContainer, WidgetHeader, classItemFullWidthContainer } from './DashboardStyles'
-import { WidgetElement } from '../../components/Dashboard'
+import { WidgetElement } from './WidgetElement'
 import { Text } from '../../components/Typography/Text';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage } from '../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate } from '../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Label } from '../../components/FormsComponents/Label/Label';
+import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
 
 interface PlanType {
     libelle: string;
@@ -17,27 +18,7 @@ interface PlanType {
     daysLeft?: number;
 }
 
-interface GeneralDashboardProps {
-    bandwidth: {
-        limit: number;
-        consumed: number;
-    }; 
-    storage: {
-        limit: number;
-        consumed: number;
-    }; 
-    encoding: {
-        limit: number;
-        consumed: number;
-    }; 
-    overage: {
-        enabled: boolean;
-        value: number;
-    };
-    plan: PlanType; 
-}
-
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {profile: GeneralDashboardProps}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: DashboardPayingPlan | DashboardTrial; profile: DashboardGeneral}) => {
 
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
@@ -67,17 +48,22 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
     }
 
+    const handleBillingPeriod = () => {
+        if( (props.plan as DashboardPayingPlan).nextBill ) {
+            return <Text className="ml-auto" size={14} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
+        }
+    }
+
     return (
         <section className="col col-12">
             <div className="flex items-baseline mb1">
                 <Text size={24} weight="reg" className="mt0 mb3 inline-block">
                     Dashboard
                 </Text>
-                <Text className="ml-auto" size={14} weight="reg" color="gray-2" ><b>For Billing Period</b> 06/30/2019-07/29/2019</Text>
+                {handleBillingPeriod()}
             </div>
 
             <div className={classContainer}>
-
                 <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
@@ -113,27 +99,26 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 </WidgetElement>
 
                 {
-                    props.profile.plan.isTrial  ?
+                    (props.plan as DashboardTrial).daysLeft  ?
                         <WidgetElement className={classItemFullWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" >Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.profile.plan.daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :
                         <WidgetElement className={classItemFullWidthContainer}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> {props.profile.plan.libelle} </Text>
+                                <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
                                 <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => alert('Go to purchase page')}>Buy More</Button>
                             </WidgetHeader>
-                            <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {props.profile.plan.nextBill}</Text><br />
-                            <Text size={32} weight="reg" color="gray-1">${props.profile.plan.price}</Text>
+                            <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
+                            <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
                         </WidgetElement>
                 }
-
             </div>
         </section>
     )

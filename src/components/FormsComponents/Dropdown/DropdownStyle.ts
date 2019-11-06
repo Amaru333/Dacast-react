@@ -38,6 +38,10 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
 
 export const Title = styled.div<{ref: any}>`
     padding: 8px 44px 8px 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
 `;
 
 export const IconStyle = styled.div`
@@ -55,6 +59,8 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     padding-inline-start: 8px;
     padding-inline-end: 8px;
     padding-block-end: 8px;
+    max-height: 200px;
+    overflow: scroll;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
     ${props => props.isNavigation && css`
@@ -70,6 +76,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
     min-height: 32px;
+    height: 100%;
     padding: 0 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
@@ -98,7 +105,8 @@ export const DropdownIconStyle = styled.div`
 
 export const DropdownItemText = styled(Text)`
     position: absolute;
-    display: inline-block;
-    vertical-align: middle;
+    display: contents;
+    width: 80%;
+    min-height: 100%;
     padding-top: 4px;
 `

@@ -11,7 +11,7 @@ const logoSmall = require('../../../public/assets/logo_small.png');
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
     return (
-        <ContainerElementStyle {...props} >
+        <ContainerElementStyle className='my1' {...props} >
             <IconStyle className="noTransition"><Icon className="noTransition">{props.icon}</Icon></IconStyle>
             <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
         </ContainerElementStyle>

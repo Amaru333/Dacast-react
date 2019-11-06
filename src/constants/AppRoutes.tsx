@@ -2,8 +2,8 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import Dashboard from '../components/Dashboard';
-import StaticCompany from '../containers/Account/StaticCompany';
+import Dashboard from '../containers/Dashboard/Dashboard';
+import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -97,6 +97,19 @@ const Admin = (props: any) => {
 
 export const AppRoutes: Routes[] = [
     {
+        path: '/admin',
+        name: 'Admin',
+        iconName: 'vpn_key',
+        component: Admin,
+        slug: [
+            {
+                path: '/admin/bluechip',
+                name: 'Blue Chip',
+                component: functionTest2
+            }
+        ]
+    },
+    {
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
@@ -115,64 +128,100 @@ export const AppRoutes: Routes[] = [
         ]
     },
     {
-        path: '/livechannel',
-        name: 'Live Channel',
+        path: '/channels',
+        name: 'Channels',
         iconName: 'videocam',
         component: LiveChannel,
         slug: [
             {
-                path: '/livechannel/general',
+                path: '/channels/general',
                 name: 'General',
                 component: functionTest2
             },
             {
-                path: '/livechannel/monetization',
+                path: '/channels/monetization',
                 name: 'Monetization',
                 component: functionTest3
             },
             {
-                path: '/livechannel/security',
+                path: '/channels/security',
                 name: 'Security',
                 component: functionTest2
             },
             {
-                path: '/livechannel/interactions',
+                path: '/channels/interactions',
                 name: 'Interactions',
                 component: functionTest4
             }
         ]
     },
     {
-        path: '/video',
-        name: 'Video',
+        path: '/videos',
+        name: 'Videos',
         iconName: 'play_arrow',
         component: Video,
         slug: [
             {
-                path: '/video/tab1',
+                path: '/videos/tab1',
                 name: 'tab1',
                 component: functionTest1
             },
             {
-                path: '/video/tab2',
+                path: '/videos/tab2',
                 name: 'tab2',
                 component: functionTest3
             }
         ]
     },
     {
-        path: '/playlist',
-        name: 'playlist',
+        path: '/folders',
+        name: 'Folders',
+        iconName: 'folder_open',
+        component: Video,
+        slug: [
+            {
+                path: '/folders/tab1',
+                name: 'tab1',
+                component: functionTest1
+            },
+            {
+                path: '/folders/tab2',
+                name: 'tab2',
+                component: functionTest3
+            }
+        ]
+    },
+    {
+        path: '/playlists',
+        name: 'Playlists',
         iconName: 'playlist_play',
         component: Playlist,
         slug: [
             {
-                path: '/playlist/tab1',
+                path: '/playlists/tab1',
                 name: 'tab1',
                 component: functionTest4
             },
             {
-                path: '/playlist/tab2',
+                path: '/playlists/tab2',
+                name: 'tab2',
+                component: functionTest2
+            }
+        ]
+    },
+    {
+        path: '/monetization',
+        name: 'Monetization',
+        iconName: 'attach_money',
+        component: Playlist,
+        slug: [
+            {
+                path: '/monetization/tab1',
+                name: 'tab1',
+                component: functionTest4
+            },
+            {
+                path: '/monetization/tab2',
                 name: 'tab2',
                 component: functionTest2
             }
@@ -181,10 +230,6 @@ export const AppRoutes: Routes[] = [
     {
         path: 'break',
         name: 'break'
-    },
-    {
-        path: 'title',
-        name: 'Settings'
     },
     {
         path: '/mainsettings',
@@ -253,7 +298,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/company',
                 name: 'Company',
-                component: StaticCompany
+                component: Company
             },
             {
                 path: '/account/users',
@@ -295,19 +340,6 @@ export const AppRoutes: Routes[] = [
                 name: 'Webhook Settings',
                 component: functionTest3
             },
-        ]
-    },
-    {
-        path: '/admin',
-        name: 'Admin',
-        iconName: 'vpn_key',
-        component: Admin,
-        slug: [
-            {
-                path: '/admin/bluechip',
-                name: 'Blue Chip',
-                component: functionTest2
-            }
         ]
     },
 ];

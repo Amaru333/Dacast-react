@@ -29,7 +29,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     }
     
     React.useEffect(() => {
-        if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0) {
+        if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0)  {
 
             var dataInit={};
             var dataValueInit= {};
@@ -37,8 +37,8 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
                 .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
                 .reduce((obj, key) => {
-                    dataValueInit = { ...dataInit, [formRef.current![key].id]: { value:""  }  };
-                    dataInit = { ...dataValueInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
+                    dataValueInit = { ...dataValueInit, [formRef.current![key].id]: { value: formRef.current![key].defaultValue }  };
+                    dataInit = { ...dataInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
                     return {
                         ...obj,
                         [key]: formRef.current![key]

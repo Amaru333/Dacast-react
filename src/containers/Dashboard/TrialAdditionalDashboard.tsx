@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '../../components/Typography/Text';
 import { ListItem, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle, classItemFullWidthContainer, SupportCard, CloseCross, IconStyle, ListStyle } from "./DashboardStyles"
-import { WidgetElement } from "../../components/Dashboard";
+import { WidgetElement } from "./WidgetElement";
 import { Icon } from '@material-ui/core';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Card } from '../../components/Card/Card';
