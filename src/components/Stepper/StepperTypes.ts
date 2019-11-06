@@ -7,14 +7,14 @@ interface StepperButtonType {
 }
 
 export interface StepperSpecificProps {
-    stepperHeader: string
-    stepTitles: string[]
-    stepList: (() => JSX.Element)[]
-    lastStepButton: string
-    nextButtonProps: StepperButtonType
-    backButtonProps: StepperButtonType
-    cancelButtonProps: StepperButtonType
-    finalFunction: (() => void)
+    stepperHeader: string;
+    stepTitles: string[];
+    stepList: (() => JSX.Element)[];
+    lastStepButton: string;
+    nextButtonProps: StepperButtonType;
+    backButtonProps: StepperButtonType;
+    cancelButtonProps: StepperButtonType;
+    finalFunction: (() => void);
 }
 
 export type StepperProps = StepperSpecificProps & React.HTMLAttributes<HTMLDivElement>

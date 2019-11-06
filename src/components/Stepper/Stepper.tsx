@@ -14,24 +14,24 @@ export const CustomStepper = (props: StepperProps) => {
     const steps: string[] = props.stepTitles
 
     const renderStepperContent = (stepIndex: number) => {
-      return ( 
-        props.stepList[stepIndex]()
+        return ( 
+            props.stepList[stepIndex]()
         )
     };
 
     const nextStep = () => {
-      if(stepIndex < props.stepList.length - 1) {
-        setStepIndex(stepIndex + 1)
-      }
-      else {
-        props.finalFunction()
-      }
+        if(stepIndex < props.stepList.length - 1) {
+            setStepIndex(stepIndex + 1)
+        }
+        else {
+            props.finalFunction()
+        }
     }
 
     const previousStep = () => {
-      if(stepIndex > 0) {
-        setStepIndex( stepIndex - 1);
-      }
+        if(stepIndex > 0) {
+            setStepIndex( stepIndex - 1);
+        }
     }
 
     return (
@@ -41,27 +41,27 @@ export const CustomStepper = (props: StepperProps) => {
                 <Text size={24} weight="reg">{props.stepperHeader}</Text>
             </StepperHeaderStyle>
             <StepperStyle>
-              <Stepper activeStep={stepIndex} {...props} alternativeLabel>
-                  {steps.map((label) => {
-                return (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                );
-              })}
-              </Stepper>
+                <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                    {steps.map((label) => {
+                        return (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        );
+                    })}
+                </Stepper>
             </StepperStyle>
             <StepperContentStyle>
-              {renderStepperContent(stepIndex)}
+                {renderStepperContent(stepIndex)}
             </StepperContentStyle>
             <StepperFooterStyle>
-              <Button {...props.nextButtonProps} onClick={nextStep}>
-                {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : props.nextButtonProps.buttonText}
-              </Button>
-              {(stepIndex !== 0) &&
+                <Button {...props.nextButtonProps} onClick={nextStep}>
+                    {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                </Button>
+                {(stepIndex !== 0) &&
                 <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
-              }
-              <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                }
+                <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
             </StepperFooterStyle>
         </StepperContainerStyle>
         
