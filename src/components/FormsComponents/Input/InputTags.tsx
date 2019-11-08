@@ -1,13 +1,13 @@
 import * as React from "react";
 import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper, TagsTooltipStyle } from './InputStyle';
 import { Text } from '../../Typography/Text';
-import { InputProps } from './InputTypes';
+import { TagProps } from './InputTypes';
 import Icon from '@material-ui/core/Icon';
 import { Tooltip } from '../../Tooltip/Tooltip';
 
-export const InputTags = (props: InputProps) => {
+export const InputTags = (props: TagProps) => {
 
-    const [tags, setTags] = React.useState<string[]>([])
+    const [tags, setTags] = React.useState<string[]>(props.defaultTags)
     const inputRef = React.useRef<HTMLInputElement>(null);
 
     const removeTag = (i: any) => {
@@ -69,4 +69,4 @@ export const InputTags = (props: InputProps) => {
     )
 }
 
-InputTags.defaultProps = { isError: false, disabled: false, required: false }
+InputTags.defaultProps = { isError: false, disabled: false, required: false, defaultTags: [] }

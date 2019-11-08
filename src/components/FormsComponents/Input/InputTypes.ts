@@ -73,3 +73,9 @@ export interface SliderSpecificProps {
     value: number[];
     id: string;
 }
+
+export interface TagSpecificProps {
+    defaultTags?: string[];
+}
+
+export type TagProps = TagSpecificProps & InputProps;

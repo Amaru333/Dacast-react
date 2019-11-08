@@ -79,12 +79,15 @@ storiesOf('Inputs', module)
         <React.Fragment>
             <StorybookInputContainerStyle>
                  <InputTags placeholder="Type URL..." label="test"/>
-            </StorybookInputContainerStyle>  
+            </StorybookInputContainerStyle>
+            <br/>
+            <StorybookInputContainerStyle>
+                 <InputTags defaultTags={["www.google.com", "www.someothereallylongdomainname.org"]} placeholder="Type URL..." label="test with default tags"/>
+            </StorybookInputContainerStyle>    
         </React.Fragment>
     ));
 
 const StorybookInputContainerStyle = styled.div`
     width: 200px;
-    float: left;
     margin: 20px;
 `;
