@@ -10,14 +10,14 @@ export const InputTags = (props: TagProps) => {
     const [tags, setTags] = React.useState<string[]>(props.defaultTags)
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const removeTag = (i: any) => {
+    const removeTag = (i: number) => {
         const newTags = [ ...tags ];
         newTags.splice(i, 1);
         setTags(newTags);
       }
 
-    const inputKeyDown = (e: any) => {
-        const val = e.target.value;
+    const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const val = e.currentTarget.value;
         if (e.key === 'Enter' && val) {
             if (tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
                 inputRef.current.value = "";
