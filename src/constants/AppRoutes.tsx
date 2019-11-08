@@ -5,7 +5,7 @@ import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSp
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
-import { DeliveryAndEmbed } from '../containers/DeliveryAndEmbed';
+import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 

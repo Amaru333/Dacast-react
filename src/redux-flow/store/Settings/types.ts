@@ -3,19 +3,23 @@
 //
 // `@@context/ACTION_TYPE` is the convention
 export enum ActionTypes {
-    CAPITAL_LETTER_ACTION_NAME = "@@{context}/CAPITAL_LETTER_ACTION_NAME",
+    GET_DELIVERY_AND_EMBED_OPTIONS = "@@{context}/GET_DELIVERY_AND_EMBED_OPTIONS",
 }
 
 // Type-safe initialState!
-export const deliveryAndEmbedInitialState: DeliveryAndEmbedState = {
-    data: [],
+export const settingsInitialState: SettingsState = {
+    data: false,
+};
+
+export type DeliveryAndEmbedOptionType = {
+    data: { [key:string]:  { value: string } }
 };
 
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
-export interface DeliveryAndEmbedState {
+export interface SettingsState {
     // readonly loading: boolean
     // readonly errors?: string
-    readonly data: any;
+    readonly data: DeliveryAndEmbedOptionType | false;
 }
 

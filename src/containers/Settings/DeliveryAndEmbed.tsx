@@ -1,18 +1,32 @@
 import * as React from 'react'
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
-import { Text } from '../components/Typography/Text';
-import { ApplicationState } from "../redux-flow/store";
-import { Action } from "../redux-flow/store/DeliveryAndEmbed";
-import { Card } from '../components/Card/Card';
-import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
+import { Text } from '../../components/Typography/Text';
+import { ApplicationState } from "../../redux-flow/store";
+import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings";
+import { Card } from '../../components/Card/Card';
+import { InputRadio } from '../../components/FormsComponents/Input/InputRadio';
 import styled from 'styled-components';
-import { Input } from '../components/FormsComponents/Input/Input';
-import { Button } from '../components/FormsComponents/Button/Button';
+import { Input } from '../../components/FormsComponents/Input/Input';
+import { Button } from '../../components/FormsComponents/Button/Button';
 
-export const DeliveryAndEmbed = () => {
+interface DeliveryAndEmbedComponentProps {
+    deliveryAndEmbedOption: DeliveryAndEmbedOptionType;
+    getDeliveryAndEmbedOptions: Function;
+}
+
+
+
+const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
+
+    React.useEffect(() => {
+        props.getDeliveryAndEmbedOptions();
+     }, [])
+
+     
     return (
         <React.Fragment>
+        <form action="">
         <Card>
             <header><Text size={20} weight="med">Delivery and Embed</Text></header>
             <br/>
@@ -124,11 +138,14 @@ export const DeliveryAndEmbed = () => {
                 <WidthInput  label="Fixed Width" help="How wide your embeds will be" />
             </div>
             <br/>
-            <div>
+            
+        </Card>
+        <ButtonContainer>
             <ButtonStyle typeButton="primary">Save</ButtonStyle>
             <ButtonStyle typeButton="secondary">Cancel</ButtonStyle>
-        </div>
-        </Card>
+        </ButtonContainer>
+        </form>
+       
         
         
         </React.Fragment>
@@ -138,13 +155,15 @@ export const DeliveryAndEmbed = () => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        //Return from global state to component props
+        deliveryAndEmbedOption: state.settings.data
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        //Return from dispatch function to component props
+        getDeliveryAndEmbedOptions: () => {
+            dispatch(getDeliveryAndEmbedOptionsAction());
+        }
     };
 }
 
@@ -164,6 +183,11 @@ width: 25%;
 min-width: 200px;
 `
 
+const ButtonContainer = styled.div`
+margin-top: 24px;
+`
+
 const ButtonStyle = styled(Button)`
 margin-right: 16px;
+margin-bottom: 63px;
 `
