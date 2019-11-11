@@ -3,7 +3,6 @@ import { Action } from "./actions";
 import { settingsInitialState, SettingsState, ActionTypes } from "./types";
 
 const reducer: Reducer= (state = settingsInitialState, action: Action): SettingsState => {
-    console.log(state)
     switch (action.type) {
         case ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS :
             return {
