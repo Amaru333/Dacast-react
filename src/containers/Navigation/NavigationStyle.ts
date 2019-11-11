@@ -60,7 +60,6 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;
     z-index: 999;
-    
     ${props => props.isMobile && css`
         margin-top: 57px;
         transform: translate( ${props.isOpen ? 0: "-100%"} );
@@ -139,7 +138,7 @@ export const SubMenuElement = styled.li<{selected:boolean}>`
     align-items: unset;
     ${props => props.selected && css`
         background-color: ${props => props.theme.colors["violet20"]} !important;
-        color: ${props => props.theme.colors["dark-violet"]};
+        color: ${props => props.theme.colors["dark-violet"]} !important;
         border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
     `}
     &:hover {
@@ -149,4 +148,11 @@ export const SubMenuElement = styled.li<{selected:boolean}>`
             font-weight: 500 !important;
         }
     }
+`
+
+export const TextStyle = styled(Text) <{selected: boolean}>`
+    ${props => props.selected && css`
+        color: ${props.theme.colors['dark-violet']}
+    `}
+
 `

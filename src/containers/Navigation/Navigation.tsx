@@ -3,7 +3,7 @@ import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
-import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle} from './NavigationStyle'
+import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle, TextStyle} from './NavigationStyle'
 const logo = require('../../../public/assets/logo.png');
 const logoSmall = require('../../../public/assets/logo_small.png');
 
@@ -58,7 +58,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             return (
                                 <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {setSelectedElement(element.name), setSelectedSubElement(subMenuElement.name)}}  >
                                 <SubMenuElement selected={selectedSubElement === subMenuElement.name}>
-                                    {subMenuElement.name}
+                                    <TextStyle selected={selectedSubElement === subMenuElement.name} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                 </SubMenuElement>
                                 </Link>
                             )
