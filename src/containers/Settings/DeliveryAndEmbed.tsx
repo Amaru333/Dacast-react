@@ -18,7 +18,7 @@ interface DeliveryAndEmbedComponentProps {
 const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
     const [inputOptions, setInputOptions] = React.useState({});
-
+    let inputRef = React.useRef<HTMLInputElement>(null)
     React.useEffect(() => {
         props.getDeliveryAndEmbedOptions();
      }, [])
@@ -26,6 +26,15 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
         console.log(inputOptions)  
+    }
+
+    const checkInputError = () => {
+        if(inputOptions['embed-size'] === 'fixed') {
+            if(inputRef.current!.value.length === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
      return (
@@ -151,7 +160,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                                 Videos will default to a fixed width.
                             </Text>
                         </RadioText>
-                        <WidthInput required={false} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} disabled={inputOptions['embed-size'] === "fixed" ? false : true} id="width" label="Fixed Width" type="number" help="How wide your embeds will be"/>
+                        <WidthInput ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} disabled={inputOptions['embed-size'] === "fixed" ? false : true} id="width" label="Fixed Width" type="number" help="How wide your embeds will be" />
                     </div>
                     <br/>
                 </Card>
