@@ -89,12 +89,8 @@ export const DragAndDrop = (props: {hasError: boolean; handleDrop: Function} & R
 }
 
 const DnDContainer = styled.div<{hasError: boolean}>`
-    width: 96%;
-    @media (min-width: 52em) {
-        width: 49%;
-    }
     position: relative;
-    height: 176px;
+    height: fit-content;
     border: 1px dashed ${props => props.theme.colors['gray-7']};
     ${props => props.hasError && css `
         border: 1px dashed ${props.theme.colors['red']};

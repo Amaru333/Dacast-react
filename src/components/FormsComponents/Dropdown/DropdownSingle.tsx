@@ -6,6 +6,7 @@ import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
+import { Theme } from '../../../styled/themes/dacast-theme';
 
 export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: DropdownProps, ref) => {
 
@@ -37,7 +38,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                     return {...reduced, [item]: false}
                 } 
                 else{
-                    return {...reduced}
+                    return {...reduced, ["No option matching your selection"]: false}
                 }
             }, {})
         setItemsList(test);
@@ -59,11 +60,13 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                         : 
                         props.hasSearch  && key === 0 ?
                             <DropdownItem 
+                                style={{zIndex:999, position:'sticky', top:0}}
                                 key={props.id + '_search'} 
                                 id={props.id + '_search'} 
                                 isSelected={false} 
                             > 
                                 <Input
+                                    style={{border: 'none', borderBottom:`1px solid ${Theme.colors["gray-7"]}`, backgroundColor:'white'}}
                                     required={false}
                                     placeholder='search'
                                     disabled={false}

@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { ElementMenuProps, MainMenuProps } from './NavigationTypes'
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
-import { boolean } from '@storybook/addon-knobs';
 
 export const ContainerElementStyle = styled.div<ElementMenuProps>`
     display: flex;
@@ -33,6 +32,16 @@ export const IconStyle = styled.div`
     margin-right: 19px;
     color: ${props => props.theme.colors["gray-1"]};
 `;
+export const ArrowIconStyle = styled.div<{hidden: boolean}>`
+    display: flex;
+    ${props => props.hidden && css`
+        display: none;
+    `}
+    flex-direction: row;
+    position: absolute;
+    right: 22px;
+    color: ${props => props.theme.colors["gray-7"]};
+`
 export const SectionTitle = styled(Text)`
     margin-left:16px;
     margin-bottom: 16px;
@@ -106,3 +115,38 @@ export const BurgerStyle = styled.div`
     outline: none;
   }
 `;
+
+export const SubMenu = styled.ul<{isOpen: boolean}>`
+    display: none;
+    margin-block-start: 0px;
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
+    padding-block-end: 0px;
+    ${props => props.isOpen && css`
+        display: flex;
+        flex-direction: column;
+    `}
+`
+
+export const SubMenuElement = styled.li<{selected:boolean}>`
+    display: flex;
+    flex-flow: column;
+    height: 40px;
+    justify-content: center;
+    min-width: 84px;
+    padding-left: 73px;
+    color: ${props => props.theme.colors["black"]};
+    align-items: unset;
+    ${props => props.selected && css`
+        background-color: ${props => props.theme.colors["violet20"]} !important;
+        color: ${props => props.theme.colors["dark-violet"]};
+        border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+    `}
+    &:hover {
+        cursor: pointer;
+        background-color: ${props => props.theme.colors["gray-10"]};
+        span {
+            font-weight: 500 !important;
+        }
+    }
+`

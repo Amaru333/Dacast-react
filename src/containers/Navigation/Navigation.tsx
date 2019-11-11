@@ -3,7 +3,7 @@ import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
-import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle} from './NavigationStyle'
+import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle} from './NavigationStyle'
 const logo = require('../../../public/assets/logo.png');
 const logoSmall = require('../../../public/assets/logo_small.png');
 
@@ -14,11 +14,13 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
         <ContainerElementStyle className='my1' {...props} >
             <IconStyle className="noTransition"><Icon className="noTransition">{props.icon}</Icon></IconStyle>
             <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
+            <ArrowIconStyle hidden={!props.isOpen && !props.isMobile}><Icon className="noTransition">{props.arrowIcon}</Icon></ArrowIconStyle>
         </ContainerElementStyle>
     )
 }
 
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
+
     const firstSelectedItem = () => {
         let item = props.routes.find((element) => {
             return props.history.location.pathname.includes(element.path)
@@ -26,18 +28,52 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         return item ? item.name : props.routes[0].name;
     };
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
+    const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem());
 
     const renderMenu = () => {
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
-                return  <BreakStyle key={i} />
+                return  <BreakStyle key={'breakSection'+i} />
             }
             else if(element.path === 'title') {
-                return props.isOpen ? <SectionTitle key={i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
+                return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
             }
+            else if(element.slug) {
+                return (
+                    <div key={'superkey'+i}>
+                    <ElementMenu 
+                        isMobile={props.isMobile} 
+                        onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} 
+                        key={'MenuElementwithSubsections'+i} 
+                        isOpen={props.isOpen} 
+                        active={selectedElement === element.name} 
+                        icon={element.iconName!}
+                        arrowIcon={selectedElement === element.name ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                        >
+                        {element.name} 
+                    </ElementMenu>
+
+                    <SubMenu isOpen={element.name === selectedElement && props.isOpen}>
+                        {element.slug.map((subMenuElement, index) => {
+                            return (
+                                <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {setSelectedElement(element.name), setSelectedSubElement(subMenuElement.name)}}  >
+                                <SubMenuElement selected={selectedSubElement === subMenuElement.name}>
+                                    {subMenuElement.name}
+                                </SubMenuElement>
+                                </Link>
+                            )
+                        })
+
+                        }
+
+                    </SubMenu>
+                     </div>
+                )
+            }
+            
             else{
                 return (
-                    <Link to={element.path} onClick={() => setSelectedElement(element.name)} key={i} >
+                    <Link to={element.path} onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} key={'MenuElement'+i} >
                         <ElementMenu isMobile={props.isMobile} isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>
