@@ -14,6 +14,7 @@ export interface ElementMenuSpecificProps {
     active?: boolean;
     isOpen: boolean;
     isMobile: boolean;
+    arrowIcon?: string;
 }
 ​
 export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -22,6 +23,7 @@ export interface Routes {
     path: string;
     name: string;
     iconName?: string;
+    arrowIcon?: string;
     component?: any;
     slug?: Routes[];
 }

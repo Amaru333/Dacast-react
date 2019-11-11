@@ -30,13 +30,23 @@ interface MainProps {
 const returnRouter = (props: Routes[]) => {
     return (
         props.map((route: Routes, i: number) => {
-            return <Route key={i}
+            return !route.slug ? <Route key={i}
                 path={route.path}
                 render={props => (
                     // pass the sub-routes down to keep nesting
                     <route.component {...props} routes={route.slug} />
                 )}
             />
+            : route.slug.map((subroute, index) => {
+                return <Route key={'subroute'+index}
+                path={subroute.path}
+                render={props => (
+                    // pass the sub-routes down to keep nesting
+                    <subroute.component {...props} />
+                )}
+            />
+            })
+
         })
     )
 }

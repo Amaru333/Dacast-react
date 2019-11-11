@@ -13,6 +13,7 @@ export interface ButtonCustomProps {
     type?: 'submit' | 'reset' | 'button';
     buttonColor?: Color;
     colorObject?: ColorObject;
+    form?: string;
 }
 
 export interface ColorObject {hoverColor: ColorsApp; color: ColorsApp; focusColor: ColorsApp; disabledColor: ColorsApp; disabledTextColor: ColorsApp}

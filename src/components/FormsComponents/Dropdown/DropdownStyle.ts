@@ -1,14 +1,12 @@
 import styled, { css } from 'styled-components';
 import { DropdownProps } from './DropdownTypes';
-import { Text } from "../../Typography/Text"
+import { Text } from "../../Typography/Text";
+import { Input } from '../Input/Input';
 
 export const ContainerStyle = styled.div<DropdownProps>`
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
     height:auto;
-    ${props => props.isNavigation && css`
-        position: relative;
-    `}
+    position: relative;
 `;
 
 export const DropdownLabel = styled.div`
@@ -52,6 +50,8 @@ export const IconStyle = styled.div`
 
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
+    position: absolute;
+    background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
     `}
@@ -64,11 +64,9 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
     ${props => props.isNavigation && css`
-        position: absolute;
         top: 42px;
         width: 97.5%;
         z-index: 99;
-        background-color: ${props.theme.colors.white};
     `}
 `;
 
