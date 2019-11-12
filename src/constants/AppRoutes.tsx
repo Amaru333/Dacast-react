@@ -329,5 +329,5 @@ export const AppRoutes: Routes[] = [
                 component: functionTest3
             },
         ]
-    },
+    }
 ];

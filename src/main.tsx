@@ -21,6 +21,7 @@ import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Toasts';
+import { NotFound } from './containers/404page';
 
 // Any additional component props go here.
 interface MainProps {
@@ -68,6 +69,9 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                             <Content isOpen={isOpen}>
                                 <Switch>
                                     {returnRouter(AppRoutes)}
+                                    <Route path='*'>
+                                        <NotFound />
+                                    </Route>
                                 </Switch>
                             </Content>
                         </FullContent>   
