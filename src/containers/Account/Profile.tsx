@@ -12,6 +12,7 @@ import { Modal, ModalContent, ModalFooter } from '../../components/Modal/Modal';
 export const Profile = () => {
 
     let formRef = React.useRef<HTMLFormElement>(null);
+    
     let {value, validations, enabledSubmit} = formSubmit(formRef);
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
 
@@ -19,7 +20,7 @@ export const Profile = () => {
 
     }
 
-    React.useEffect(() => {console.log(passwordModalToggle)}, [passwordModalToggle])
+    React.useEffect(() => {console.log({...document.getElementById('Marketing')})}, )
     return (
         <div>
             <Card>
@@ -37,7 +38,7 @@ export const Profile = () => {
                                 required
                                 {...handleValidationProps('firstName', validations)}
                             />
-                            <div className="md-col md-col-6 p1">
+                            <AvatarInputContainer className="md-col md-col-6 p1">
                             <Input 
                                 disabled={false}
                                 defaultValue={''} 
@@ -49,8 +50,8 @@ export const Profile = () => {
                                 required
                                 {...handleValidationProps('lastName', validations)} 
                             />
-                            <Avatar className="md-col md-col-2"  size='large' name='JL' /> 
-                            </div>
+                            <Avatar className="md-col md-col-2 mx1"  size='large' name='JL' /> 
+                            </AvatarInputContainer>
 
                         </div>
                         <div className="md-col md-col-12" >
@@ -132,7 +133,7 @@ export const Profile = () => {
 
                         <Toggle label='Marketing' />
                         <p className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></p>
-                        <Toggle label='Low Data' />
+                        <Toggle id="Marketing" label='Low Data' />
                         <p className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></p>
 
                         <Toggle label='Upload' />
@@ -160,4 +161,10 @@ const TextStyle = styled.span<{}>`
 const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
+`
+
+const AvatarInputContainer = styled.div<{}>`
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap-reverse;
 `
