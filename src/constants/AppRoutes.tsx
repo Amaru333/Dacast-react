@@ -5,6 +5,7 @@ import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSp
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
+import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -38,6 +39,13 @@ const DashboardRender = (props: any) => {
         <Dashboard/>
     )
 }
+
+const ApiIntegrationRender = (props: any) => {
+    return (
+        <ApiIntegration/>
+    )
+}
+
 
 const LiveChannel = (props: any) => {
     return (        
@@ -248,7 +256,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/apiintegrations',
                 name: 'API & Integration',
-                component: functionTest3
+                component: ApiIntegrationRender
             },
             {
                 path: '/mainsettings/encoding',
