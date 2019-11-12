@@ -114,18 +114,6 @@ export const AppRoutes: Routes[] = [
         name: 'Dashboard',
         iconName: 'dashboard',
         component: DashboardRender,
-        slug: [
-            {
-                path: '/dashboard/tab1',
-                name: 'tab1',
-                component: functionTest1
-            },
-            {
-                path: '/dashboard/tab2',
-                name: 'tab2',
-                component: functionTest2
-            }
-        ]
     },
     {
         path: '/channels',

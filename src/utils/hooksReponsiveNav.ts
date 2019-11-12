@@ -6,11 +6,11 @@ export const responsiveMenu = () => {
     const navBarWidth = "235px";
     const reduceNavBarWidth = "64px";
 
-    const [isOpen, setOpen] = React.useState<boolean>(isMobile ? false : window.innerWidth > 768);
+    const [isOpen, setOpen] = React.useState<boolean>(isMobile ? false : window.innerWidth > 1024);
     const [currentNavWidth, setCurrentNavWidth] = React.useState<string>(isOpen? navBarWidth : isMobile ? "0px" : reduceNavBarWidth);
 
     window.addEventListener('resize', (event) => {
-        if(window.innerWidth < 768 ) {
+        if(window.innerWidth < 1024 ) {
             setOpen(false);
         } else {
             setOpen(true);

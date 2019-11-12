@@ -27,6 +27,7 @@ export type InputType =
 
 export interface InputSpecificProps {
     label?: string;
+    indicationLabel?: string;
     icon?: string;
     help?: string;
     isError?: boolean;
@@ -74,3 +75,9 @@ export interface SliderSpecificProps {
     value: number[];
     id: string;
 }
+
+export interface TagSpecificProps {
+    defaultTags?: string[];
+}
+
+export type TagProps = TagSpecificProps & InputProps;

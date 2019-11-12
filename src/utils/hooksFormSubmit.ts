@@ -57,7 +57,6 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
                     setData( (data: ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
                 });
             })
-
             setData(dataInit);
             setDataValue(dataValueInit);
         }
@@ -73,6 +72,5 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
         
     }, [dataValue, data, enabledSubmit])
     return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
-
 
 }
