@@ -6,9 +6,10 @@ import { ApplicationState } from "../../redux-flow/store";
 import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings";
 import { Card } from '../../components/Card/Card';
 import { InputRadio } from '../../components/FormsComponents/Input/InputRadio';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Input } from '../../components/FormsComponents/Input/Input';
 import { Button } from '../../components/FormsComponents/Button/Button';
+import { InputProps } from '../../components/FormsComponents/Input/InputTypes';
 
 interface DeliveryAndEmbedComponentProps {
     deliveryAndEmbedOption: DeliveryAndEmbedOptionType;
@@ -160,7 +161,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                                 Videos will default to a fixed width.
                             </Text>
                         </RadioText>
-                        <WidthInput ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} disabled={inputOptions['embed-size'] === "fixed" ? false : true} id="width" label="Fixed Width" type="number" help="How wide your embeds will be" />
+                        <WidthInput  isDisplayed={inputOptions['embed-size'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} id="width" label="Fixed Width" type="number" help="How wide your embeds will be" />
                     </div>
                     <br/>
                 </Card>
@@ -199,9 +200,13 @@ const Divider = styled.div`
     margin: 32px 24px 24px 24px;
 `
 
-const WidthInput = styled(Input)`
+const WidthInput = styled(Input)<{isDisplayed: boolean} & InputProps>`
 width: 25%;
 min-width: 200px;
+margin-left: 24px;
+${props => !props.isDisplayed && css`
+    display: none;
+`}
 `
 
 const ButtonContainer = styled.div`
