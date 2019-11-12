@@ -27,6 +27,7 @@ export type InputType =
 
 export interface InputSpecificProps {
     label?: string;
+    indicationLabel?: string;
     icon?: string;
     help?: string;
     isError?: boolean;

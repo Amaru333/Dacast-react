@@ -15,7 +15,7 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
     ${props => props.orientation == "vertical" && css`
         flex-direction: column;
         min-width: 174px;
-        padding: 24px 0;
+        padding: 16px 0;
         margin-right: 24px;
         height: fit-content;
     `}

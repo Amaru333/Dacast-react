@@ -1,6 +1,8 @@
 export enum ActionTypes {
     GET_COMPANY_PAGE_DETAILS = "@@account/GET_COMPANY_PAGE_DETAILS",
-    SAVE_COMPANY_PAGE_DETAILS = "@@account/SAVE_COMPANY_PAGE_DETAILS"
+    SAVE_COMPANY_PAGE_DETAILS = "@@account/SAVE_COMPANY_PAGE_DETAILS",
+    GET_UPLOAD_LOGO_URL = "@@account/GET_UPLOAD_LOGO_URL",
+    UPLOAD_COMPANY_LOGO = "@@account/UPLOAD_COMPANY_LOGO"
 }
 
 export interface AccountInfos {
@@ -20,6 +22,8 @@ export interface CompanyPageInfos {
     town: string;
     zipCode: string;
     country: string;
+    logoUrl?: string;
+    uploadLogoUrl?: string;
 }
 
 export interface AccountState {

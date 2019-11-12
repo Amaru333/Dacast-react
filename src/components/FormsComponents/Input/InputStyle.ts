@@ -31,6 +31,11 @@ export const LabelStyle = styled.label<{disabled: boolean}>`
     align-items: center;
 `;
 
+export const IndicationLabelStyle = styled.label<{}>`
+    padding-left: 4px;
+    padding-bottom: 4px;
+`
+
 export const InputStyle = styled.input<InputProps>`
     display: flex;
     border: 1px solid ${props => props.theme.colors["gray-7"]} ;

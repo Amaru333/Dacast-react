@@ -11,8 +11,18 @@ const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
     return axios.post(urlBase + 'saveCompanyPageDetails', {...data})
 }
 
+const getUploadLogoUrlService = () => {
+    return axios.get(urlBase + 'getUploadLogoUrl');
+}
+
+const uploadCompanyLogoService = (data: File, uploadUrl: string) => {
+    return axios.post(uploadUrl, data)
+}
+
 
 export const AccountServices = {
     getCompanyPageDetailsService,
-    saveCompanyPageDetailsService
+    saveCompanyPageDetailsService,
+    getUploadLogoUrlService,
+    uploadCompanyLogoService
 } 
