@@ -45,7 +45,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         isMobile={props.isMobile} 
                         onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} 
                         key={'MenuElementwithSubsections'+i} 
-                        isOpen={props.isOpen} 
+                        isOpen={props.isOpen}
+                        hasSlugs={true} 
                         active={selectedElement === element.name} 
                         icon={element.iconName!}
                         arrowIcon={selectedElement === element.name ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
@@ -74,7 +75,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             else{
                 return (
                     <Link to={element.path} onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} key={'MenuElement'+i} >
-                        <ElementMenu isMobile={props.isMobile} isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
+                        <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>
                     </Link>
@@ -97,4 +98,3 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         </>
     )
 }
-MainMenu.defaultProps = {};

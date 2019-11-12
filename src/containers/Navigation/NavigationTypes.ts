@@ -15,6 +15,7 @@ export interface ElementMenuSpecificProps {
     isOpen: boolean;
     isMobile: boolean;
     arrowIcon?: string;
+    hasSlugs?: boolean;
 }
 ​
 export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
