@@ -5,6 +5,8 @@ export interface MainMenuSpecificProps {
     setOpen: Function;
     isMobile: boolean;
     navWidth: string;
+    menuLocked: boolean;
+    setMenuLocked: Function;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -15,6 +17,7 @@ export interface ElementMenuSpecificProps {
     isOpen: boolean;
     isMobile: boolean;
     arrowIcon?: string;
+    hasSlugs?: boolean;
 }
 ​
 export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
