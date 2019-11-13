@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export interface ValueInput { [key: string]: { value: string } }
+export interface ValueInput { [key: string]: { value: string | boolean } }
 export interface ValidationsInputObject { [key: string]: { id: string; error: boolean; errorMessage: string } }
 
 export const handleValidationProps = (id: string, data: ValidationsInputObject) => {
@@ -27,6 +27,28 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             return "Input is invalid."
         }
     }
+
+    const InputValueHandler = (inputType: string, element: HTMLInputElement) => {
+        switch(inputType) {
+            case 'email': 
+            case 'tel':
+            case 'text':
+                element.addEventListener('keyup', (event) => {
+    
+                    setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
+                });
+                break;
+            case 'checkbox':
+                element.addEventListener('change', (event) => {
+    
+                    setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.checked} } } );
+                });
+                
+                break;
+            default:
+                break;
+        }
+    }
     
     React.useEffect(() => {
         if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0)  {
@@ -46,9 +68,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
                 }, {});
 
             Object.entries(filtered).map(([key, element]) =>  {
-                element.addEventListener('keyup', (event) => {
-                    setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
-                });
+                InputValueHandler(element.type, element)
             })
 
             Object.entries(filtered).map(([key, element]) =>  {
@@ -74,3 +94,4 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
 
 }
+

@@ -37,15 +37,15 @@ const returnRouter = (props: Routes[]) => {
                     <route.component {...props} routes={route.slug} />
                 )}
             />
-            : route.slug.map((subroute, index) => {
-                return <Route key={'subroute'+index}
-                path={subroute.path}
-                render={props => (
-                    // pass the sub-routes down to keep nesting
-                    <subroute.component {...props} />
-                )}
-            />
-            })
+                : route.slug.map((subroute, index) => {
+                    return <Route key={'subroute'+index}
+                        path={subroute.path}
+                        render={props => (
+                            // pass the sub-routes down to keep nesting
+                            <subroute.component {...props} />
+                        )}
+                    />
+                })
 
         })
     )
