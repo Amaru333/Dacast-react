@@ -15,11 +15,16 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
                 data: {...state, companyPage:{...action.payload}}
             }
         case ActionTypes.GET_UPLOAD_LOGO_URL:
-            const companyPage = state.data ? {...state.data.companyPage, uploadLogoUrl:action.payload} : null;
+            if(state.data){
+                const companyPage = {...state.data.companyPage!, uploadLogoUrl:action.payload};          
             return {
                 ...state,
                 data: {...state.data, companyPage: companyPage}
             }
+        }
+        return {
+            ...state,
+        }
         case ActionTypes.UPLOAD_COMPANY_LOGO:
             return {
                 ...state,
@@ -35,12 +40,14 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
                 data: {...state, profilePage:{...action.payload}}
             }
         case ActionTypes.SAVE_PROFILE_PASSWORD:
-            const profilePage = state.data ? {...state.data.profilePage, lastChangedPassword: Date.now().toLocaleString()} : null;
-
-            return {
-                ...state,
-                data: {...state.data, profilePage:profilePage}
+            if(state.data) {
+                const profilePage = {...state.data.profilePage!, lastChangedPassword: Date.now().toLocaleString()};
+                return {
+                    ...state,
+                    data: {...state.data, profilePage:profilePage}
+                }
             }
+            return {...state}
         default:
             return state;
     }
