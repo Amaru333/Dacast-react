@@ -25,22 +25,22 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
                 ...state,
             }
         case ActionTypes.GET_PROFILE_PAGE_DETAILS:
-                return {
-                    ...state,
-                    data: {...state.data, profilePage:{...action.payload}}
-                }
+            return {
+                ...state,
+                data: {...state.data, profilePage:{...action.payload}}
+            }
         case ActionTypes.SAVE_PROFILE_PAGE_DETAILS:
             return {
                 ...state,
                 data: {...state, profilePage:{...action.payload}}
             }
         case ActionTypes.SAVE_PROFILE_PASSWORD:
-                const profilePage = state.data ? {...state.data.profilePage, lastChangedPassword: Date.now().toLocaleString()} : null;
+            const profilePage = state.data ? {...state.data.profilePage, lastChangedPassword: Date.now().toLocaleString()} : null;
 
-                return {
-                    ...state,
-                    data: {...state.data, profilePage:profilePage}
-                }
+            return {
+                ...state,
+                data: {...state.data, profilePage:profilePage}
+            }
         default:
             return state;
     }

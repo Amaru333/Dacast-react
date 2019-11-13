@@ -22,9 +22,9 @@ const Profile = (props: ProfileComponentProps) => {
 
     return (
         typeof props.AccountDetails.profilePage !== 'undefined' ? 
-        <ProfilePage ProfilePageDetails={props.AccountDetails.profilePage} {...props} />
-        : 
-        <LoadingSpinner size='large' color='dark-violet' />
+            <ProfilePage ProfilePageDetails={props.AccountDetails.profilePage} {...props} />
+            : 
+            <LoadingSpinner size='large' color='dark-violet' />
     )
 }
 
