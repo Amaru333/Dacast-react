@@ -37,7 +37,7 @@ export const ModalContainerStyle = styled.div<ModalProps>`
     ${props => props.opened && css`
         display: block;
     `};
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
