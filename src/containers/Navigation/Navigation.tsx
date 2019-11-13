@@ -7,7 +7,6 @@ import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle
 const logo = require('../../../public/assets/logo.png');
 const logoSmall = require('../../../public/assets/logo_small.png');
 
-
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
     return (
@@ -29,8 +28,21 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     };
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
     const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem());
+    const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
+
+    const handleMenuToggle = (menuName: string) => {
+        if(menuName === selectedElement) {
+            setToggleSubMenu(!toggleSubMenu)
+        }
+        else {
+            setToggleSubMenu(false)
+        }
+        setSelectedElement(menuName); 
+        setSelectedSubElement('')
+    }
 
     const renderMenu = () => {
+
         return props.routes.map((element, i) => {
             if(element.path === 'break') {
                 return  <BreakStyle key={'breakSection'+i} />
@@ -43,18 +55,18 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <div key={'superkey'+i}>
                     <ElementMenu 
                         isMobile={props.isMobile} 
-                        onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} 
+                        onClick={() => handleMenuToggle(element.name)} 
                         key={'MenuElementwithSubsections'+i} 
                         isOpen={props.isOpen}
                         hasSlugs={true} 
                         active={selectedElement === element.name} 
                         icon={element.iconName!}
-                        arrowIcon={selectedElement === element.name ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                        arrowIcon={selectedElement === element.name && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                         >
                         {element.name} 
                     </ElementMenu>
 
-                    <SubMenu isOpen={element.name === selectedElement && props.isOpen}>
+                    <SubMenu isOpen={element.name === selectedElement && props.isOpen && !toggleSubMenu}>
                         {element.slug.map((subMenuElement, index) => {
                             return (
                                 <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {setSelectedElement(element.name), setSelectedSubElement(subMenuElement.name)}}  >
@@ -86,14 +98,14 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     return (
         <>
         {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
-        <ContainerStyle isOpen={props.isOpen} {...props} >
+        <ContainerStyle isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
             <ImageStyle className="mx-auto" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
             <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
             <SectionStyle>
                 {renderMenu()}
             </SectionStyle>
-            <Icon onClick={() => props.setOpen(!props.isOpen)} className="ml-auto mt-auto mr2 mb2" >{props.isOpen? "arrow_back" : 'arrow_forward'}</Icon>
+            <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
         </ContainerStyle>
         </>
     )

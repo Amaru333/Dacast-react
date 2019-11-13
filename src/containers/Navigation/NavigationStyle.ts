@@ -22,11 +22,11 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         color: ${props => props.theme.colors["dark-violet"]};
 
         ${!props.hasSlugs && css`
-          border-left: 4px solid ${props => props.theme.colors["dark-violet"]}
+          border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
         `}
 
         ${!props.isOpen && css`
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]} 
+        border-left: 4px solid ${props => props.theme.colors["dark-violet"]} ;
         `}
         
         span{
