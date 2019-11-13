@@ -136,7 +136,7 @@ export const SubMenu = styled.ul<{isOpen: boolean}>`
     `}
 `
 
-export const SubMenuElement = styled.li<{selected:boolean}>`
+export const SubMenuElement = styled.li<{selected: boolean}>`
     display: flex;
     flex-flow: column;
     height: 40px;

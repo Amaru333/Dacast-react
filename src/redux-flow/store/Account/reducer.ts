@@ -7,7 +7,7 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
         case ActionTypes.GET_COMPANY_PAGE_DETAILS:
             return {
                 ...state,
-                data: {...state, companyPage:{...action.payload}}
+                data: {...state.data, companyPage:{...action.payload}}
             }
         case ActionTypes.SAVE_COMPANY_PAGE_DETAILS:
             return {
@@ -23,6 +23,23 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
         case ActionTypes.UPLOAD_COMPANY_LOGO:
             return {
                 ...state,
+            }
+        case ActionTypes.GET_PROFILE_PAGE_DETAILS:
+            return {
+                ...state,
+                data: {...state.data, profilePage:{...action.payload}}
+            }
+        case ActionTypes.SAVE_PROFILE_PAGE_DETAILS:
+            return {
+                ...state,
+                data: {...state, profilePage:{...action.payload}}
+            }
+        case ActionTypes.SAVE_PROFILE_PASSWORD:
+            const profilePage = state.data ? {...state.data.profilePage, lastChangedPassword: Date.now().toLocaleString()} : null;
+
+            return {
+                ...state,
+                data: {...state.data, profilePage:profilePage}
             }
         default:
             return state;

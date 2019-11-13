@@ -14,7 +14,7 @@ export const InputTags = (props: TagProps) => {
         const newTags = [ ...tags ];
         newTags.splice(i, 1);
         setTags(newTags);
-      }
+    }
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const val = e.currentTarget.value;
@@ -22,12 +22,12 @@ export const InputTags = (props: TagProps) => {
             if (tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
                 inputRef.current.value = "";
                 return;
-              }
-           setTags([...tags, val]);
-           inputRef.current.value = "";
+            }
+            setTags([...tags, val]);
+            inputRef.current.value = "";
         } else if (e.key === 'Backspace' && !val) {
             removeTag(tags.length - 1);
-          }
+        }
     }
 
     
@@ -37,31 +37,31 @@ export const InputTags = (props: TagProps) => {
     return (
         <ContainerStyle className={className} >
             {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
-                <TagsContainer>
-                    <TagsWrapper>
-                        <TagListStyle>
+            <TagsContainer>
+                <TagsWrapper>
+                    <TagListStyle>
                         { tags.map((tag, i) => (
                             <TagStyle id={tag} key={tag}>
                                 <Text size={14} weight="reg">
                                     <TagTextStyle>{tag}</TagTextStyle>
                                 </Text>
                                 <Tooltip target={tag}>
-                                <TagsTooltipStyle>{tag}</TagsTooltipStyle>
+                                    <TagsTooltipStyle>{tag}</TagsTooltipStyle>
                                 </Tooltip>
                                 <TagButtonStyle 
                                     onClick={() => removeTag(i)} type="button">X
                                 </TagButtonStyle>
                             </TagStyle>
                         ))}
-                            <li>
-                                <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
-                            </li>
-                        </TagListStyle>
-                    </TagsWrapper>
-                    {icon ? <IconStyle disabled={props.disabled}>
-                        <Icon>{icon}</Icon>
-                    </IconStyle> : null}
-                </TagsContainer>
+                        <li>
+                            <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                        </li>
+                    </TagListStyle>
+                </TagsWrapper>
+                {icon ? <IconStyle disabled={props.disabled}>
+                    <Icon>{icon}</Icon>
+                </IconStyle> : null}
+            </TagsContainer>
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

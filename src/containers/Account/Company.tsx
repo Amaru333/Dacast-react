@@ -7,23 +7,26 @@ import { AccountAction, getCompanyPageDetailsAction, saveCompanyPageDetailsActio
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../components/Pages/Account/Company';
 
-interface AccountComponentProps {
+interface CompanyContainerProps {
     AccountDetails: AccountInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
     getUploadLogoUrl: Function;
     uploadCompanyLogo: Function;
 }
-const Company = (props: AccountComponentProps) => {
+const Company = (props: CompanyContainerProps) => {
 
     /** Fetching data using redux and services */
     React.useEffect( () => {
-        props.getCompanyPageDetails();
+        if(typeof props.AccountDetails.companyPage === 'undefined') {
+            props.getCompanyPageDetails();
+        }
+
     }, [])
 
     return (
-        props.AccountDetails ? 
-            <CompanyPage {...props} />
+        typeof props.AccountDetails.companyPage !== 'undefined' ? 
+            <CompanyPage CompanyPageDetails={props.AccountDetails.companyPage} {...props} />
             : 
             <LoadingSpinner size='large' color='dark-violet' />
     )
