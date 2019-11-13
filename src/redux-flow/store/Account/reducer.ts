@@ -17,14 +17,14 @@ export const reducer = (state = accountInitialState, action: AccountAction): Acc
         case ActionTypes.GET_UPLOAD_LOGO_URL:
             if(state.data){
                 const companyPage = {...state.data.companyPage!, uploadLogoUrl:action.payload};          
+                return {
+                    ...state,
+                    data: {...state.data, companyPage: companyPage}
+                }
+            }
             return {
                 ...state,
-                data: {...state.data, companyPage: companyPage}
             }
-        }
-        return {
-            ...state,
-        }
         case ActionTypes.UPLOAD_COMPANY_LOGO:
             return {
                 ...state,
