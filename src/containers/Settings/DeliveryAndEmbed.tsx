@@ -26,7 +26,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
-        console.log(inputOptions)  
+        console.log(props.deliveryAndEmbedOption["delivery"] === "secure-delivery")  
     }
 
     const checkInputError = () => {
@@ -51,13 +51,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                     </div>
                     <br/>
                     <div>
-                        <InputRadio name="delivery" value="compatible-delivery" label="Compatible Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "compatible-delivery"})} />
+                        <InputRadio name="delivery" value="compatible-delivery" label="Compatible Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "compatible-delivery"})} defaultChecked={props.deliveryAndEmbedOption["delivery"] === "compatible-delivery"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 HTML5 Player via HLS (HTTP Streaming). Defaults to Flash player where necessary. Prioritizes playback compatibility over security. Ideal for ad-serving.
                             </Text>
                         </RadioText>
-                        <InputRadio name="delivery" value="secure-delivery" label="Secure Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "secure-delivery"})} />
+                        <InputRadio name="delivery" value="secure-delivery" label="Secure Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "secure-delivery"})} defaultChecked={props.deliveryAndEmbedOption["delivery"] === "secure-delivery"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 HTML5 Player with AES Encryption. The most secure option, all videos will play with encryption. Videos can only be delivered via the Dacast player using our iframe embed.
