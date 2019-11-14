@@ -10,6 +10,7 @@ import styled, { css } from 'styled-components';
 import { Input } from '../../components/FormsComponents/Input/Input';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { InputProps } from '../../components/FormsComponents/Input/InputTypes';
+import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface DeliveryAndEmbedComponentProps {
     deliveryAndEmbedOption: DeliveryAndEmbedOptionType;
@@ -26,7 +27,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
-        console.log(props.deliveryAndEmbedOption["delivery"] === "secure-delivery")  
+        console.log(props.deliveryAndEmbedOption['delivery'])  
     }
 
     const checkInputError = () => {
@@ -39,6 +40,9 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
     }
 
      return (
+         !props.deliveryAndEmbedOption ? 
+         <LoadingSpinner size='large' color='blue80' />
+         :
         <React.Fragment>
             <form>
                 <Card>

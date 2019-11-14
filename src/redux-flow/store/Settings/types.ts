@@ -12,7 +12,7 @@ export const settingsInitialState: SettingsState = {
 };
 
 export type DeliveryAndEmbedOptionType = {
-    data: { [key:string]:  { value: string } }
+    [key:string]:  string 
 };
 
 // Declare state types with `readonly` modifier to get compile time immutability.
