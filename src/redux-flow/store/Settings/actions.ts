@@ -9,12 +9,28 @@ export interface getDeliveryAndEmbedOptions {
     payload: DeliveryAndEmbedOptionType;
 }
 
+export interface saveDeliveryAndEmbedOptions {
+    type: ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS;
+    payload: DeliveryAndEmbedOptionType;
+}
+
 //Exemple of Async Action
 export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>, {}, getDeliveryAndEmbedOptions> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, getDeliveryAndEmbedOptions> ) => {
         await SettingsServices.getDeliveryAndEmbedOptionsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const saveDeliveryAndEmbedOptionsAction = (data: DeliveryAndEmbedOptionType): ThunkDispatch<Promise<void>, {}, saveDeliveryAndEmbedOptions> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, saveDeliveryAndEmbedOptions> ) => {
+        await SettingsServices.saveDeliveryAndEmbedOptionsService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -29,4 +45,4 @@ export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>,
 //     };
 // };
 
-export type Action = getDeliveryAndEmbedOptions;
+export type Action = getDeliveryAndEmbedOptions | saveDeliveryAndEmbedOptions;

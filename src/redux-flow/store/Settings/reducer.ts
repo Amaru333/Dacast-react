@@ -9,6 +9,12 @@ const reducer: Reducer= (state = settingsInitialState, action: Action): Settings
                 ...state,
                 data: action.payload,
             }
+            case ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS:
+                console.log(state)
+                    return {
+                        ...state,
+                        data: action.payload
+                    }
         default:
             return state;
     }

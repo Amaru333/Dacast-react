@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Text } from '../../components/Typography/Text';
 import { ApplicationState } from "../../redux-flow/store";
-import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings";
+import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction, saveDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings";
 import { Card } from '../../components/Card/Card';
 import { InputRadio } from '../../components/FormsComponents/Input/InputRadio';
 import styled, { css } from 'styled-components';
@@ -15,6 +15,7 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 interface DeliveryAndEmbedComponentProps {
     deliveryAndEmbedOption: DeliveryAndEmbedOptionType;
     getDeliveryAndEmbedOptions: Function;
+    saveDeliveryAndEmbedOptions: Function;
 }
 
 const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
@@ -27,7 +28,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
-        console.log(props.deliveryAndEmbedOption['delivery'])  
+        props.saveDeliveryAndEmbedOptions(inputOptions)
     }
 
     const checkInputError = () => {
@@ -78,13 +79,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                     </div>
                     <br/>
                     <div>
-                        <InputRadio name="region-settings" value="standard-pops" label="Standard PoPs" onChange={() => setInputOptions({...inputOptions, ["region-settings"]: "standard-pops"})} />
+                        <InputRadio name="region-settings" value="standard-pops" label="Standard PoPs" onChange={() => setInputOptions({...inputOptions, ["region-settings"]: "standard-pops"})} defaultChecked={props.deliveryAndEmbedOption["region-settings"] === "standard-pops"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 High speed CDN with servers located across 6 different continents. Your video content streams from the the server closest to the viewer.
                             </Text>
                         </RadioText>
-                        <InputRadio name="region-settings" value="premium-pops" label="Premium PoPs" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "premium-pops"})} />
+                        <InputRadio name="region-settings" value="premium-pops" label="Premium PoPs" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "premium-pops"})} defaultChecked={props.deliveryAndEmbedOption["region-settings"] === "premium-pops"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Everything that is included with Standard PoPs PLUS Beijing & Shanghai servers for viewers in China. Video will be streamed via HTTP progressive delivery.
@@ -101,13 +102,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                     </div>
                     <br/>
                     <div>
-                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "iframe"})} />
+                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "iframe"})} defaultChecked={props.deliveryAndEmbedOption["embed-settings"] === "iframe"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 The embed code includes all vzaar features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "html5-video"})} />
+                        <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "html5-video"})} defaultChecked={props.deliveryAndEmbedOption["embed-settings"] === "html5-video"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 The most lightweight way to embed your video. Does not include all vzaar features & will not count video views. Only use if your CMS does not accept iframes or if you are an eBay user.
@@ -124,19 +125,19 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                     </div>
                     <br/>
                     <div>
-                        <InputRadio name="embed-protocol" value="https" label="HTTPS (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "https"})} />
+                        <InputRadio name="embed-protocol" value="https" label="HTTPS (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "https"})} defaultChecked={props.deliveryAndEmbedOption["embed-protocol"] === "https"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Always use HTTP over SSL — this is the most secure setting and is what we'd most recommend.ally update whenever you change your settings.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-protocol" value="relative" label="Relative" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "relative"})} />
+                        <InputRadio name="embed-protocol" value="relative" label="Relative" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "relative"})} defaultChecked={props.deliveryAndEmbedOption["embed-protocol"] === "relative"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Embeds will be protocol-relative and will use the same protocol as the page on which they're embedded.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-protocol" value="http" label="HTTP" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "http"})} />
+                        <InputRadio name="embed-protocol" value="http" label="HTTP" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "http"})} defaultChecked={props.deliveryAndEmbedOption["embed-protocol"] === "HTTP"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 If for any reason you need your embeds to always use plain HTTP then use this option, although we recommend against it.
@@ -153,13 +154,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                     </div>
                     <br/>
                     <div>
-                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "responsive"})} />
+                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "responsive"})} defaultChecked={props.deliveryAndEmbedOption["embed-size"] === "responsive"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Your embed codes will default to responding to the size of their container.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-size" value="fixed" label="Fixed" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "fixed"})} />
+                        <InputRadio name="embed-size" value="fixed" label="Fixed" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "fixed"})} defaultChecked={props.deliveryAndEmbedOption["embed-size"] === "fixed"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Videos will default to a fixed width.
@@ -189,6 +190,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getDeliveryAndEmbedOptions: () => {
             dispatch(getDeliveryAndEmbedOptionsAction());
+        },
+        saveDeliveryAndEmbedOptions: (data: DeliveryAndEmbedOptionType) => {
+            dispatch(saveDeliveryAndEmbedOptionsAction(data))
         }
     };
 }
