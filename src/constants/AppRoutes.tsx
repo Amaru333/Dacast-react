@@ -6,6 +6,7 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
+import Profile from '../containers/Account/Profile';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -289,7 +290,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/profile',
                 name: 'Profile',
-                component: functionTest2
+                component: Profile
             },
             {
                 path: '/account/company',

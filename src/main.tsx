@@ -37,15 +37,15 @@ const returnRouter = (props: Routes[]) => {
                     <route.component {...props} routes={route.slug} />
                 )}
             />
-            : route.slug.map((subroute, index) => {
-                return <Route key={'subroute'+index}
-                path={subroute.path}
-                render={props => (
-                    // pass the sub-routes down to keep nesting
-                    <subroute.component {...props} />
-                )}
-            />
-            })
+                : route.slug.map((subroute, index) => {
+                    return <Route key={'subroute'+index}
+                        path={subroute.path}
+                        render={props => (
+                            // pass the sub-routes down to keep nesting
+                            <subroute.component {...props} />
+                        )}
+                    />
+                })
 
         })
     )
@@ -54,7 +54,19 @@ const returnRouter = (props: Routes[]) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
-    const {currentNavWidth, isOpen, setOpen} = responsiveMenu();
+    const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
+
+    const menuHoverOpen = () => {
+        if (!isOpen && !menuLocked) {
+            setOpen(true)
+        }
+    };
+
+    const menuHoverClose = () => {
+        if (isOpen && !menuLocked) {
+            setOpen(false)
+        }
+    };
 
     return (
         <Provider store={store}>
@@ -62,7 +74,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 <Router  history={history}>
                     <>
                         <Toasts />
-                        <MainMenu navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                        <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
                         <FullContent isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                             <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
                             <Content isOpen={isOpen}>

@@ -8,27 +8,40 @@ import { Card } from '../../Card/Card';
 import { DragAndDrop } from '../../DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea} from './CompanyStyle';
-import { AccountInfos } from '../../../redux-flow/store/Account/types';
+import { CompanyPageInfos } from '../../../redux-flow/store/Account/types';
 const {getNames} = require('country-list')
 
-interface AccountComponentProps {
-    AccountDetails: AccountInfos;
+interface CompanyComponentProps {
+    CompanyPageDetails: CompanyPageInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
     getUploadLogoUrl: Function;
     uploadCompanyLogo: Function;
 }
 
-export const CompanyPage = (props: AccountComponentProps) => {
+export const CompanyPage = (props: CompanyComponentProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
     let {value, validations, enabledSubmit} = formSubmit(formRef);
 
-    let {AccountDetails} = props;
+    let {CompanyPageDetails} = props;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
-        //props.saveCompanyPageDetails(data)
+        props.saveCompanyPageDetails({
+            accountName: value['accountName'].value,
+            businessName: value['businessName'].value,
+            contactNumber: value['contactNumber'].value,
+            emailAddress: value['emailAddress'].value,
+            companyWebsite: value['companyWebsite'].value,
+            vatNumber: value['vatNumber'].value,
+            addressLine1: value['addressLine1'].value,
+            addressLine2: value['addressLine2'].value,
+            state: value['state'].value,
+            town: value['town'].value,
+            zipCode: value['zipCode'].value,
+            country: ""
+        })
 
     }
 
@@ -38,8 +51,8 @@ export const CompanyPage = (props: AccountComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
-        setDefaultCountryValue(getNames().filter((item: string) => {return AccountDetails.companyPage ?  item.includes(AccountDetails.companyPage.country) : false})[0])
-        setUploadedFileUrl(AccountDetails.companyPage.logoUrl)
+        setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
+        setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
     /**  Drag and drop or browse file  */
@@ -64,7 +77,6 @@ export const CompanyPage = (props: AccountComponentProps) => {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
                 }
             }
-            debugger;
             reader.readAsDataURL(file[0])
         }
         else{
@@ -87,8 +99,8 @@ export const CompanyPage = (props: AccountComponentProps) => {
     const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         await props.getUploadLogoUrl();
-        if(props.AccountDetails.companyPage.uploadLogoUrl) {
-            props.uploadCompanyLogo(logoFile, props.AccountDetails.companyPage.uploadLogoUrl);
+        if(props.CompanyPageDetails.uploadLogoUrl) {
+            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
         }
     }
 
@@ -129,12 +141,12 @@ export const CompanyPage = (props: AccountComponentProps) => {
                 {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
                 <div className="m1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
                 <BorderStyle className="p1 mx1" />
-                <form id='form1' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
+                <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.accountName : null}
+                            defaultValue={CompanyPageDetails.accountName}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="accountName" 
@@ -145,7 +157,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                         />
                         <Input 
                             disabled={false}
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.businessName : null} 
+                            defaultValue={CompanyPageDetails.businessName} 
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="businessName" 
@@ -158,7 +170,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                     <div className="md-col md-col-12" >
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.contactNumber : null}
+                            defaultValue={CompanyPageDetails.contactNumber}
                             type="tel" 
                             className="md-col md-col-6 p1" 
                             id="contactNumber" 
@@ -169,7 +181,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                         />
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.emailAddress : null}
+                            defaultValue={CompanyPageDetails.emailAddress}
                             type="email" 
                             className="md-col md-col-6 p1" 
                             id="emailAddress" 
@@ -183,7 +195,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.companyWebsite : null}
+                            defaultValue={CompanyPageDetails.companyWebsite}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="companyWebsite"
@@ -194,7 +206,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                         />
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.vatNumber : null}
+                            defaultValue={CompanyPageDetails.vatNumber}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="vatNumber" 
@@ -211,7 +223,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.addressLine1 : null}
+                            defaultValue={CompanyPageDetails.addressLine1}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine1" 
@@ -223,7 +235,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
 
                         <Input  
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.addressLine2 : null}
+                            defaultValue={CompanyPageDetails.addressLine2}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine2" 
@@ -236,7 +248,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.state : null}
+                            defaultValue={CompanyPageDetails.state}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
@@ -249,7 +261,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
 
                         <Input 
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.town : null}
+                            defaultValue={CompanyPageDetails.town}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
@@ -261,7 +273,7 @@ export const CompanyPage = (props: AccountComponentProps) => {
 
                         <Input  
                             disabled={false} 
-                            defaultValue={AccountDetails.companyPage ? AccountDetails.companyPage.zipCode : null}
+                            defaultValue={CompanyPageDetails.zipCode}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
@@ -278,8 +290,8 @@ export const CompanyPage = (props: AccountComponentProps) => {
                 </form>
             </Card>
             <ButtonsArea>
-                <Button disabled={!enabledSubmit} type='submit' form='form1' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button type='reset' form='form1' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
             </ButtonsArea>
         </CompanyPageContainer>
     )

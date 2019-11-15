@@ -34,6 +34,7 @@ export const LabelTextStyle = styled(Text)`
 position: absolute;
 display: block;
 margin-left: 44px;
+width: max-content;
 `
 
 export const ToggleStyle = styled.input`

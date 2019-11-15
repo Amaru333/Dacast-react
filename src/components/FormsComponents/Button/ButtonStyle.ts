@@ -27,12 +27,12 @@ export const ButtonStyle = styled.button<ButtonProps>`
   `}
 
   &:hover {
-   background: ${props => (props.typeButton == "tertiary") ? props.theme.colors.white : props.theme.colors[props.colorObject!.hoverColor] };
+   background: ${props => (props.typeButton == "primary") ? props.theme.colors[props.colorObject!.primaryHoverColor] : props.theme.colors[props.colorObject!.hoverColor] };
    cursor: pointer;   
   };
 
   &:focus {
-    background: ${props => (props.typeButton == "tertiary") ? props.theme.colors.white : props.theme.colors[props.colorObject!.focusColor] };
+    background: ${props => (props.typeButton == "primary") ? props.theme.colors[props.colorObject!.primaryFocusColor] : props.theme.colors[props.colorObject!.focusColor] };
   };
 
   &:disabled {

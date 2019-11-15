@@ -27,11 +27,17 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
 export const ModalContainerStyle = styled.div<ModalProps>`
     box-sizing: border-box;
     padding: 24px;
-    width: ${props => (props.size === "small" ? "400px" : "600px")};
+    width: 600px;
+    ${props => props.size === "small" && css`
+        width: 400px;
+    `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
-    display: ${props => (props.opened ? "block" : "none")};
-    position: absolute;
+    display: none;
+    ${props => props.opened && css`
+        display: block;
+    `};
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -69,7 +75,10 @@ export const ModalFooterStyle = styled.div`
 export const ModalCardContainerStyle = styled.div<ModalCardProps>`
     box-sizing: border-box;
     padding: 24px;
-    width: ${props => (props.size === "small" ? "400px" : "600px")};
+    width: 600px;
+    ${props => props.size === "small" && css`
+        width: 400px;
+    `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
     position:relative;
