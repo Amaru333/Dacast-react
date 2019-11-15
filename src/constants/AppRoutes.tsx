@@ -4,7 +4,7 @@ import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
-import { Theme } from '../styled/themes/dacast-theme';
+import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -69,8 +69,7 @@ const Playlist = (props: any) => {
 
 const MainSettings = (props: any) => {
     return (
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Main settings</h2>
+        <div>
             <Tab {...props}  list={props.routes} orientation="vertical" />
         </div>
 
@@ -234,7 +233,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/deliveryembed',
                 name: 'Delivery & Embed',
-                component: functionTest4
+                component: DeliveryAndEmbed
             },
             {
                 path: '/mainsettings/security',
