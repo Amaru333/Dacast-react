@@ -109,3 +109,19 @@ export const DropdownItemText = styled(Text)`
     min-height: 100%;
     padding-top: 4px;
 `
+
+export const ContinentContainer = styled.div<{}>`
+    display: flex;
+`
+
+export const ButtonIconStyle = styled.span<{}>`
+    color: ${props => props.theme.colors['gray-3']};
+    width: 8px;
+    display: contents;
+`
+
+export const CountryContainer = styled.div<{isDisplayed: boolean}>`
+    ${props => props.isDisplayed && css`
+        display: none;
+    `}
+`
