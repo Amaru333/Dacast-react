@@ -3,26 +3,26 @@ export enum ActionTypes {
 }
 
 export interface ApiIntegrationPageInfos {
-    apiKeys: apiKeyItem[];
-    encoderKeys: encoderKeyItem[];
-    webHook: webHookItem[];
+    apiKeys: ApiKeyItem[];
+    encoderKeys: EncoderKeyItem[];
+    webHook: WebHookItem[];
 }
 
-export interface encoderKeyItem {
+export interface EncoderKeyItem {
+    encoder: string;
+    authToken: string;
+    created: number;
+}
+
+export interface ApiKeyItem {
     label: string;
     clientId: string;
     authToken: string;
     type: 'rw' | 'ro';
+    created: number;
 }
 
-export interface apiKeyItem {
-    label: string;
-    clientId: string;
-    authToken: string;
-    type: 'rw' | 'ro';
-}
-
-export interface webHookItem {
+export interface WebHookItem {
     enable: boolean;
     url: string;
     method: 'GET' | 'POST';

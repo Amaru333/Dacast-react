@@ -17,25 +17,25 @@ export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {},
                 label: "My Api Key",
                 clientId: "client_id",
                 authToken: "auth_token_12234556",
-                type: "rw"
+                type: "rw",
+                created: 1573567252
             },{
                 label: "My Api Key 2",
                 clientId: "client_id_2",
                 authToken: "auth_token_12234556",
-                type: "ro"
+                type: "ro",
+                created: 1573567252
             }
         ],
         encoderKeys: [
             {
-                label: "My Encoder Key",
-                clientId: "client_id",
+                encoder: "OBS",
                 authToken: "auth_token_12234556",
-                type: "rw"
+                created: 1573567252
             },{
-                label: "My Encoder Key 2",
-                clientId: "client_id_2",
+                encoder: "Zycast",
                 authToken: "auth_token_12234556",
-                type: "ro"
+                created: 1573567252
             }
         ],
         webHook: [{

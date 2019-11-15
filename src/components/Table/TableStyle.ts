@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import {TableProps} from './TableTypes';
 
 export const TableContainer = styled.table<TableProps>`
-    width: 90%;
     height: auto;
     margin: auto;
     border-color: ${props => props.theme.colors["gray-7"]};
@@ -16,13 +15,9 @@ export const TableHeaderContainer = styled.thead<{}>`
 export const TableHeaderRow = styled.tr<{}>`
     width: auto;
     height: 52px;
-    background-color: ${props => props.theme.colors["white"]};
-    border: 1px solid ${props => props.theme.colors["gray-7"]};
+    background-color: ${props => props.theme.colors["gray-10"]};
+    border: 1px solid ${props => props.theme.colors["gray-8"]};
     padding-left: 16px;
-    &:hover {
-        cursor: pointer;
-        background-color: ${props => props.theme.colors["violet10"]};
-    }
 `;
 
 export const TableHeaderCell = styled.td<{}>`

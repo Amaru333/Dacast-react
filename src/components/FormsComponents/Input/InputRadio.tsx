@@ -10,7 +10,7 @@ export const InputRadio = (props: RadioProps) => {
     let radioButtonRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {}, [focus, checked]);
 
-    let {label, name, ...other} = props
+    let {label, name, value, ...other} = props
 
     return (
 
@@ -20,11 +20,13 @@ export const InputRadio = (props: RadioProps) => {
                 name={name}
                 id={props.label} 
                 disabled={props.disabled} 
+                value={props.value}
                 type="radio" 
                 onFocus={() => setFocus(true)} 
                 onBlur={() => setFocus(false) } 
                 onClick={() => setChecked(!checked)}
                 ref={radioButtonRef}
+                defaultChecked={props.defaultChecked}
             />
             <RadioLabelStyle htmlFor={props.label} >
                 {label ? <RadioTextStyle 
