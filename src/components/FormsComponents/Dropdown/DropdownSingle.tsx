@@ -6,7 +6,6 @@ import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
-import { Theme } from '../../../styled/themes/dacast-theme';
 
 export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: DropdownProps, ref) => {
 

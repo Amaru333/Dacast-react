@@ -29,17 +29,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
         props.saveCompanyPageDetails({
-            accountName: value['accountName'].value,
-            businessName: value['businessName'].value,
-            contactNumber: value['contactNumber'].value,
-            emailAddress: value['emailAddress'].value,
-            companyWebsite: value['companyWebsite'].value,
-            vatNumber: value['vatNumber'].value,
-            addressLine1: value['addressLine1'].value,
-            addressLine2: value['addressLine2'].value,
-            state: value['state'].value,
-            town: value['town'].value,
-            zipCode: value['zipCode'].value,
+            accountName: data['accountName'].value,
+            businessName: data['businessName'].value,
+            contactNumber: data['contactNumber'].value,
+            emailAddress: data['emailAddress'].value,
+            companyWebsite: data['companyWebsite'].value,
+            vatNumber: data['vatNumber'].value,
+            addressLine1: data['addressLine1'].value,
+            addressLine2: data['addressLine2'].value,
+            state: data['state'].value,
+            town: data['town'].value,
+            zipCode: data['zipCode'].value,
             country: ""
         })
 
