@@ -11,7 +11,7 @@ export interface GetSettingsIntegrationDetails {
 }
 
 export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {}, GetSettingsIntegrationDetails> => {
-    var fakeData : ApiIntegrationPageInfos  = {
+    var fakeData: ApiIntegrationPageInfos  = {
         apiKeys: [
             {
                 label: "My Api Key",

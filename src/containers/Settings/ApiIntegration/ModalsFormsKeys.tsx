@@ -5,7 +5,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
 
-const ApiKeysForm = (props: {item?: ApiKeyItem, toggle: Function}) => {
+const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
     
     return (
         <form>
@@ -23,7 +23,7 @@ const ApiKeysForm = (props: {item?: ApiKeyItem, toggle: Function}) => {
 
 }
 
-const EncoderKeysForm = (props: {item?: EncoderKeyItem, toggle: Function}) => {
+const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
     
     return (
         <form>

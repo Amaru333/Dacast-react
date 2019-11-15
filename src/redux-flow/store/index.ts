@@ -6,14 +6,14 @@ import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { ApiIntegrationReducer } from './Settings/ApiIntegration';
 
 export interface ApplicationState {
-	settings: SettingsState;
+    settings: SettingsState;
     dashboard: DashboardState;
     toasts: ToastsState;
     account: AccountState;
 }
 
 export const globalDefaultState: ApplicationState = {
-	settings: SettingsInitialState,
+    settings: SettingsInitialState,
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
     account:accountInitialState
@@ -21,7 +21,7 @@ export const globalDefaultState: ApplicationState = {
 
 export const createRootReducer = () =>
     combineReducers({
-		settings: ApiIntegrationReducer,
+        settings: ApiIntegrationReducer,
         dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer

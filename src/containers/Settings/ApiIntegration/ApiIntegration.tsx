@@ -52,12 +52,12 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
         if(props.infos) {
             return props.infos.apiKeys.map((value, key) => {
                 return [
-                    <Text size={14}  weight="reg" color="gray-1">{value.label}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{value.clientId}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write' }</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
+                    <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.label}</Text>,
+                    <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.clientId}</Text>,
+                    <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
+                    <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write' }</Text>,
+                    <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
+                    <IconContainer key={key+value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -65,12 +65,12 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 
     const apiKeyHeaderElement= () => {
         return[
-            <Text size={14}  weight="med" color="gray-1">Name</Text>,
-            <Text size={14}  weight="med" color="gray-1">ID</Text>,
-            <Text size={14}  weight="med" color="gray-1">Token</Text>,
-            <Text size={14}  weight="med" color="gray-1">Type</Text>,
-            <Text size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+            <Text key="nameArrayApiKeys" size={14}  weight="med" color="gray-1">Name</Text>,
+            <Text key="idArrayApiKeys" size={14}  weight="med" color="gray-1">ID</Text>,
+            <Text key="tokenArrayApiKeys" size={14}  weight="med" color="gray-1">Token</Text>,
+            <Text key="typeArrayApiKeys" size={14}  weight="med" color="gray-1">Type</Text>,
+            <Text key="createdArrayApiKeys" size={14}  weight="med" color="gray-1">Created</Text>,
+            <Button key="actionArrayApiKeys" className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
         ]
     }
 
@@ -78,10 +78,10 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
         if(props.infos) {
             return props.infos.encoderKeys.map((value, key) => {
                 return [
-                    <Text size={14}  weight="reg" color="gray-1">{value.encoder}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
+                    <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.encoder}</Text>,
+                    <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
+                    <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
+                    <IconContainer key={key+value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -89,9 +89,9 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 
     const webHooksHeaderElement= () => {
         return[
-            <Text size={14}  weight="med" color="gray-1">Url</Text>,
-            <Text size={14}  weight="med" color="gray-1">Method</Text>,
-            <Button className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue">New Webhook</Button>
+            <Text key="urlTableWebHooks" size={14}  weight="med" color="gray-1">Url</Text>,
+            <Text key="methodTableWebHooks" size={14}  weight="med" color="gray-1">Method</Text>,
+            <Button key="actionTableWebHooks" className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue">New Webhook</Button>
         ]
     }
 
@@ -99,9 +99,9 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
         if(props.infos) {
             return props.infos.webHook.map((value, key) => {
                 return [
-                    <Text size={14}  weight="reg" color="gray-1">{value.url}</Text>,
-                    <Text size={14}  weight="reg" color="gray-1">{value.method}</Text>,
-                    <IconContainer><Icon>delete</Icon><Icon>edit</Icon> </IconContainer>
+                    <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.url}</Text>,
+                    <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.method}</Text>,
+                    <IconContainer key={key+value.url}><Icon>delete</Icon><Icon>edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -109,10 +109,10 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 
     const encoderKeyHeaderElement= () => {
         return[
-            <Text size={14}  weight="med" color="gray-1">Encoder</Text>,
-            <Text size={14}  weight="med" color="gray-1">Key</Text>,
-            <Text size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button className="right mr2" onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="small" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+            <Text key="encoderTable" size={14}  weight="med" color="gray-1">Encoder</Text>,
+            <Text key="keyTable" size={14}  weight="med" color="gray-1">Key</Text>,
+            <Text key="createdTable" size={14}  weight="med" color="gray-1">Created</Text>,
+            <Button key="actionTable" className="right mr2" onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="small" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
         ]
     }
     

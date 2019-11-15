@@ -4,5 +4,5 @@ import { ApiIntegrationReducer } from './ApiIntegration';
 export * from "./types";
 
 export const SettingsReducer = {
-	apiIntegration:ApiIntegrationReducer
+    apiIntegration:ApiIntegrationReducer
 };
