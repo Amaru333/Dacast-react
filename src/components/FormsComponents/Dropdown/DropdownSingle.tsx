@@ -66,7 +66,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                                 isSelected={false} 
                             > 
                                 <Input
-                                    style={{border: 'none', borderBottom:`1px solid ${Theme.colors["gray-7"]}`, backgroundColor:'white'}}
+                                    style={{border: 'none', borderBottom:'1px solid #C8D1E0', backgroundColor:'white'}}
                                     required={false}
                                     placeholder='search'
                                     disabled={false}

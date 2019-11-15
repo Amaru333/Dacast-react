@@ -10,6 +10,7 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
     height:40px;
     box-sizing: border-box;
     cursor: pointer;
+    
     &:hover {
         background: ${props => props.theme.colors["gray-10"]};
         span {
@@ -19,7 +20,15 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
     ${props => props.active && css`
         background: ${props => props.theme.colors["violet20"]} !important;
         color: ${props => props.theme.colors["dark-violet"]};
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+
+        ${!props.hasSlugs && css`
+          border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+        `}
+
+        ${!props.isOpen && css`
+        border-left: 4px solid ${props => props.theme.colors["dark-violet"]} ;
+        `}
+        
         span{
             color: ${props => props.theme.colors["dark-violet"]};
             font-weight: 500;
@@ -152,7 +161,8 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
 
 export const TextStyle = styled(Text) <{selected: boolean}>`
     ${props => props.selected && css`
-        color: ${props.theme.colors['dark-violet']}
+        color: ${props.theme.colors['dark-violet']};
+        margin-left: -4px;
     `}
 
 `

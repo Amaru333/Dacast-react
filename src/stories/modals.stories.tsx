@@ -32,8 +32,8 @@ storiesOf('Modals', module)
             <Button className="m2" onClick={() => toggleModal("modal2")} sizeButton="large" typeButton="primary" > Open small modal </Button>
             <Modal toggle={() => toggleModal("modal2")} opened={openedModals['modal2']} size="small" title="Modal With Inputs">
                 <ModalContent>
-                    <Input label="Test 1"></Input>
-                    <Input label="Test 2"></Input>
+                    <Input disabled={false} required={false} label="Test 1"></Input>
+                    <Input disabled={false} required={false} label="Test 2"></Input>
 
 
                 </ModalContent>
@@ -47,8 +47,8 @@ storiesOf('Modals', module)
             <Button className="m2" onClick={() => toggleModal("modal3")} sizeButton="large" typeButton="primary" > Open large modal </Button>
             <Modal toggle={() => toggleModal("modal3")} opened={openedModals['modal3']} title="Modal With Inputs">
                 <ModalContent>
-                    <Input label="Test 1"></Input>
-                    <Input label="Test 2"></Input>
+                    <Input disabled={false} required={false} label="Test 1"></Input>
+                    <Input disabled={false} required={false} label="Test 2"></Input>
 
                 </ModalContent>
                 <ModalFooter>

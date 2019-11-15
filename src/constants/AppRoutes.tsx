@@ -4,8 +4,8 @@ import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
-import { Theme } from '../styled/themes/dacast-theme';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
+import Profile from '../containers/Account/Profile';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -281,7 +281,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/profile',
                 name: 'Profile',
-                component: functionTest2
+                component: Profile
             },
             {
                 path: '/account/company',

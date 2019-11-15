@@ -4,7 +4,7 @@ import { Text } from "../../Typography/Text";
 import { Input } from '../Input/Input';
 
 export const ContainerStyle = styled.div<DropdownProps>`
-    display: inline-block;
+    display: block;
     height:auto;
     position: relative;
 `;
@@ -51,6 +51,7 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
+    width: 94%;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
