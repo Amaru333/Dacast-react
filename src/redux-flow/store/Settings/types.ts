@@ -12,9 +12,9 @@ export const settingsInitialState: SettingsState = {
     data: false,
 };
 
-export type DeliveryAndEmbedOptionType = {
-    [key:string]:  string 
-};
+export interface DeliveryAndEmbedOptionType {
+    [key: string]:  string; 
+}
 
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability

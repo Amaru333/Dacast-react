@@ -7,14 +7,14 @@ import { settingsInitialState, SettingsState } from './Settings/types';
 import { SettingsReducer } from './Settings/reducer';
 
 export interface ApplicationState {
-	settings:SettingsState;
+    settings: SettingsState;
     dashboard: DashboardState;
     toasts: ToastsState;
     account: AccountState;
 }
 
 export const globalDefaultState: ApplicationState = {
-	settings: settingsInitialState,
+    settings: settingsInitialState,
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
     account:accountInitialState
@@ -22,7 +22,7 @@ export const globalDefaultState: ApplicationState = {
 
 export const createRootReducer = () =>
     combineReducers({
-		settings:SettingsReducer,
+        settings:SettingsReducer,
         dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer

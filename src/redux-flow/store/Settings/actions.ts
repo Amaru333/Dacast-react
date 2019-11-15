@@ -4,19 +4,19 @@ import { ApplicationState } from "..";
 import { SettingsServices } from './services';
 import { showToastNotification } from '../toasts';
 
-export interface getDeliveryAndEmbedOptions {
+export interface GetDeliveryAndEmbedOptions {
     type: ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS;
     payload: DeliveryAndEmbedOptionType;
 }
 
-export interface saveDeliveryAndEmbedOptions {
+export interface SaveDeliveryAndEmbedOptions {
     type: ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS;
     payload: DeliveryAndEmbedOptionType;
 }
 
 //Exemple of Async Action
-export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>, {}, getDeliveryAndEmbedOptions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, getDeliveryAndEmbedOptions> ) => {
+export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>, {}, GetDeliveryAndEmbedOptions> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDeliveryAndEmbedOptions> ) => {
         await SettingsServices.getDeliveryAndEmbedOptionsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
@@ -26,8 +26,8 @@ export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>,
     };
 }
 
-export const saveDeliveryAndEmbedOptionsAction = (data: DeliveryAndEmbedOptionType): ThunkDispatch<Promise<void>, {}, saveDeliveryAndEmbedOptions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, saveDeliveryAndEmbedOptions> ) => {
+export const saveDeliveryAndEmbedOptionsAction = (data: DeliveryAndEmbedOptionType): ThunkDispatch<Promise<void>, {}, SaveDeliveryAndEmbedOptions> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveDeliveryAndEmbedOptions> ) => {
         await SettingsServices.saveDeliveryAndEmbedOptionsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
@@ -45,4 +45,4 @@ export const saveDeliveryAndEmbedOptionsAction = (data: DeliveryAndEmbedOptionTy
 //     };
 // };
 
-export type Action = getDeliveryAndEmbedOptions | saveDeliveryAndEmbedOptions;
+export type Action = GetDeliveryAndEmbedOptions | SaveDeliveryAndEmbedOptions;
