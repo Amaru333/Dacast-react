@@ -1,4 +1,4 @@
-import { ApiKeyItem, EncoderKeyItem } from '../../../redux-flow/store/Settings/ApiIntegration';
+import { ApiKeyItem, EncoderKeyItem, WebHookItem } from '../../../redux-flow/store/Settings/ApiIntegration';
 import * as React from 'react';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
@@ -16,24 +16,43 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
                 <InputRadio defaultChecked={props.item && props.item.type == 'ro'} className="col col-6" value="ro" name="type" label="Read-Only"></InputRadio>
                 <div className="clearfix"></div>
             </div>
-            <Button sizeButton="small" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
+            <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
             <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
 
 }
+
+const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
+    
+    return (
+        <form>
+            <Input defaultValue={ props.item? props.item.url : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="Url" placeholder="Url"  />
+            <Text size={14} weight="med" className='inline-block mb1' >Method</Text>
+            <div className="mb3">
+                <InputRadio defaultChecked={props.item && props.item.method == 'GET'} className="col col-6" value="GET" name="type" label="GET"></InputRadio>
+                <InputRadio defaultChecked={props.item && props.item.method == 'POST'} className="col col-6" value="POST" name="type" label="POST"></InputRadio>
+                <div className="clearfix"></div>
+            </div>
+            <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Submit"}</Button>
+            <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+        </form>
+    )
+
+}
+
 
 const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
     
     return (
         <form>
             <Input defaultValue={ props.item? props.item.encoder : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="Name" placeholder="Name"  />
-            <Button sizeButton="small" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
+            <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
             <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
 
 }
 
-export {ApiKeysForm, EncoderKeysForm} ;
+export {ApiKeysForm, EncoderKeysForm, WebHooksForm} ;
 

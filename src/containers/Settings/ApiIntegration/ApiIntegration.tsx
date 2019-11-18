@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 
 import { ApplicationState } from "../../../redux-flow/store";
-import { Action, getSettingsIntegrationAction, ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem } from "../../../redux-flow/store/Settings/ApiIntegration";
+import { Action, getSettingsIntegrationAction, ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem, WebHookItem } from "../../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 import { Modal } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
@@ -14,7 +14,7 @@ import { tsToLocaleDate } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 import styled, { css } from "styled-components";
-import { ApiKeysForm, EncoderKeysForm } from './ModalsFormsKeys';
+import { ApiKeysForm, EncoderKeysForm, WebHooksForm } from './ModalsFormsKeys';
 
 export interface ApiIntegrationProps {
     infos: false | ApiIntegrationPageInfos;
@@ -33,6 +33,11 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
     const [putEncoderKeyModalOpened, setPutEncoderKeyModalOpened] = React.useState<boolean>(false);
     const [selectedEditEncoderKey, setSelectedEditEncoderKey] = React.useState<EncoderKeyItem | false>(false);
 
+    //** WebHooks Keys states */
+    const [postWebHooksModalOpened, setPostWebHooksModalOpened] = React.useState<boolean>(false);
+    const [putWebHooksModalOpened, setPutWebHooksModalOpened] = React.useState<boolean>(false);
+    const [selectedEditWebHooks, setSelectedEditWebHooks] = React.useState<WebHookItem | false>(false);
+
     React.useEffect(() => {
         if(!props.infos) {
             props.getSettingsIntegrationAction();
@@ -46,6 +51,11 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
     const editEncoderKeyItem = (item: EncoderKeyItem) => {
         setSelectedEditEncoderKey(item);
         setPutEncoderKeyModalOpened(true);
+    }
+
+    const editWebHookItem = (item: WebHookItem) => {
+        setSelectedEditWebHooks(item);
+        setPutWebHooksModalOpened(true);
     }
     
     const apiKeyBodyElement= () => {
@@ -70,7 +80,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <Text key="tokenArrayApiKeys" size={14}  weight="med" color="gray-1">Token</Text>,
             <Text key="typeArrayApiKeys" size={14}  weight="med" color="gray-1">Type</Text>,
             <Text key="createdArrayApiKeys" size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button key="actionArrayApiKeys" className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+            <Button key="actionArrayApiKeys" className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
         ]
     }
 
@@ -91,7 +101,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
         return[
             <Text key="urlTableWebHooks" size={14}  weight="med" color="gray-1">Url</Text>,
             <Text key="methodTableWebHooks" size={14}  weight="med" color="gray-1">Method</Text>,
-            <Button key="actionTableWebHooks" className="right mr2" sizeButton="small" typeButton="secondary" buttonColor="blue">New Webhook</Button>
+            <Button key="actionTableWebHooks" onClick={() => setPostWebHooksModalOpened(true)} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
         ]
     }
 
@@ -101,7 +111,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                 return [
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.url}</Text>,
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.method}</Text>,
-                    <IconContainer key={key+value.url}><Icon>delete</Icon><Icon>edit</Icon> </IconContainer>
+                    <IconContainer key={key+value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -112,7 +122,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <Text key="encoderTable" size={14}  weight="med" color="gray-1">Encoder</Text>,
             <Text key="keyTable" size={14}  weight="med" color="gray-1">Key</Text>,
             <Text key="createdTable" size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button key="actionTable" className="right mr2" onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="small" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+            <Button key="actionTable" className="right mr2" onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
         ]
     }
     
@@ -133,25 +143,33 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                     <Text className="mb3 inline-block" size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
                     <Table className="col-12" id="apiKeysTable" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
                 </Card>
-                <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="large" opened={postApiKeyModalOpened} > 
+                <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} > 
                     <ApiKeysForm  toggle={setPostApiKeyModalOpened}/>
                 </Modal>
                 {selectedEditApiKey ? 
-                    <Modal title="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="large" opened={putApiKeyModalOpened} > 
+                    <Modal title="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} > 
                         <ApiKeysForm item={selectedEditApiKey}  toggle={setPutApiKeyModalOpened}/>
                     </Modal> :
                     null
                 }
-                <Modal title="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="large" opened={postEncoderKeyModalOpened} > 
-                    <ApiKeysForm  toggle={setPostEncoderKeyModalOpened}/>
+                <Modal title="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} > 
+                    <EncoderKeysForm  toggle={setPostEncoderKeyModalOpened}/>
                 </Modal>
                 {selectedEditEncoderKey ? 
-                    <Modal title="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="large" opened={putEncoderKeyModalOpened} > 
+                    <Modal title="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} > 
                         <EncoderKeysForm item={selectedEditEncoderKey}  toggle={setPutEncoderKeyModalOpened}/>
                     </Modal> :
                     null
                 }
-                
+                <Modal title="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} > 
+                    <WebHooksForm  toggle={setPostWebHooksModalOpened}/>
+                </Modal>
+                {selectedEditWebHooks ?
+                    <Modal title="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} > 
+                        <WebHooksForm item={selectedEditWebHooks}  toggle={setPutWebHooksModalOpened}/>
+                    </Modal> :
+                    null
+                }
             </>
         )
     } else {
