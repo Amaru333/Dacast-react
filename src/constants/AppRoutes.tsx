@@ -6,6 +6,7 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
+import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -253,7 +254,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/encoding',
                 name: 'Encoding',
-                component: functionTest4
+                component: EncodingRecipes
             },
             {
                 path: '/mainsettings/interations',
