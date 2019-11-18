@@ -67,7 +67,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write' }</Text>,
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer key={key+value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key+value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -91,7 +91,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.encoder}</Text>,
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer key={key+value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key+value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -111,7 +111,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                 return [
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.url}</Text>,
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.method}</Text>,
-                    <IconContainer key={key+value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key+value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -189,6 +189,7 @@ export const HrStyle = styled.hr<{}>`
 
 export const IconContainer = styled.div`
     float:right;
+    display:none;
     .material-icons{
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};

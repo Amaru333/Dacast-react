@@ -36,6 +36,11 @@ export const TableBodyRow = styled.tr<{}>`
     &:hover {
         cursor: pointer;
         background-color: ${props => props.theme.colors["violet10"]};
+        td {
+            .iconAction {
+                display: block;
+            }
+        }
     }
 `;
 
