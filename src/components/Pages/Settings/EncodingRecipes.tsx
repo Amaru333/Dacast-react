@@ -5,6 +5,7 @@ import { Button } from '../../FormsComponents/Button/Button';
 import { Table } from '../../Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
+import { CustomStepper } from '../../Stepper/Stepper';
 
 
 
@@ -27,9 +28,27 @@ const recipesHeaderElement = () => {
     return[
         <Text size={14} weight="med">Name</Text>,
         <Text size={14} weight="med">Default</Text>,
-        <Button className="right mr2" typeButton="secondary" sizeButton="xs">Create Recipe</Button>
+        <Button className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => console.log("clicky")}>Create Recipe</Button>
     ]
 }
+
+const settingsStep = () => {
+    return (
+        <Text size={14} weight="reg">Settings step content</Text>
+    )
+}
+
+const presetStep = () => {
+    return (
+        <Text size={14} weight="reg">Presets step content</Text>
+    )
+}
+
+const submitRecipe = () => {
+    console.log("recipe created")
+}
+
+const stepList = [settingsStep, presetStep]
 
 const EncodingRecipes = () => {
     return(
@@ -40,6 +59,15 @@ const EncodingRecipes = () => {
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
             <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement()} body={recipesBodyElement()}></Table>
+            <CustomStepper
+            stepperHeader="Create Recipes"
+            stepList={stepList}
+            nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+            backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+            cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+            stepTitles={["Settings", "Presets"]}
+            lastStepButton="Create"
+            finalFunction={submitRecipe}/>
         </Card>
     )
 }
