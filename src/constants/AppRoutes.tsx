@@ -5,6 +5,7 @@ import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSp
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
+import { Theme } from '../styled/themes/dacast-theme';
 import Profile from '../containers/Account/Profile';
 import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes';
 
@@ -249,7 +250,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/apiintegrations',
                 name: 'API & Integration',
-                component: functionTest3
+                component: functionTest1
             },
             {
                 path: '/mainsettings/encoding',
