@@ -8,7 +8,7 @@ export interface ApiIntegrationPageInfos {
     webHook: WebHookItem[];
 }
 
-export const defaultStateApiIntegration : ApiIntegrationPageInfos = {
+export const defaultStateApiIntegration: ApiIntegrationPageInfos = {
     apiKeys: [],
     encoderKeys: [],
     webHook: []
