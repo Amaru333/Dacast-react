@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 import { StepperProps } from './StepperTypes';
-import Stepper from '@material-ui/core/Stepper';
+import { ModalProps } from '../Modal/ModalTypes';
 
-export const StepperContainerStyle = styled.div`
+export const StepperContainerStyle = styled.div<ModalProps>`
     box-sizing: border-box;
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 24px;
     padding-bottom: 106px;
@@ -20,6 +20,10 @@ export const StepperContainerStyle = styled.div`
     transform: translate(-50%, -50%);
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;
+
+    ${props => props.opened && css`
+        display: flex;
+    `}
 `
 export const StepperStyle = styled.div`
     

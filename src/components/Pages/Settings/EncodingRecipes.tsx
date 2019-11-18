@@ -6,10 +6,12 @@ import { Table } from '../../Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
 import { CustomStepper } from '../../Stepper/Stepper';
-
-
+import { getThemeProps } from '@material-ui/styles';
 
 const recipesBodyElement = () => {
+
+    
+
     return [[
         <Text size={14} weight="reg">Default recipe</Text>,
         <Icon>check</Icon>,
@@ -24,11 +26,11 @@ const recipesBodyElement = () => {
 
 }
 
-const recipesHeaderElement = () => {
+const recipesHeaderElement = (FunctionRecipe: Function) => {
     return[
         <Text size={14} weight="med">Name</Text>,
         <Text size={14} weight="med">Default</Text>,
-        <Button className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => console.log("clicky")}>Create Recipe</Button>
+        <Button className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => FunctionRecipe(true)}>Create Recipe</Button>
     ]
 }
 
@@ -51,6 +53,11 @@ const submitRecipe = () => {
 const stepList = [settingsStep, presetStep]
 
 const EncodingRecipes = () => {
+
+    const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
+
+    function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
+
     return(
         <Card className="col-12 clearfix p50">
             <HeaderStyle>
@@ -58,8 +65,9 @@ const EncodingRecipes = () => {
                 <Icon style={{marginLeft: "10px"}}>info</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement()} body={recipesBodyElement()}></Table>
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement()}></Table>
             <CustomStepper
+            opened={createRecipeStepperOpen}
             stepperHeader="Create Recipes"
             stepList={stepList}
             nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 

@@ -14,7 +14,8 @@ export interface StepperSpecificProps {
     nextButtonProps: StepperButtonType;
     backButtonProps: StepperButtonType;
     cancelButtonProps: StepperButtonType;
-    finalFunction: (() => void);
+    finalFunction: Function;
+    opened: boolean
 }
 
 export type StepperProps = StepperSpecificProps & React.HTMLAttributes<HTMLDivElement>

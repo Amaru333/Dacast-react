@@ -6,6 +6,7 @@ import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
 import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
+import { OverlayStyle } from '../Modal/ModalStyle';
 
 export const CustomStepper = (props: StepperProps) => {
 
@@ -35,8 +36,8 @@ export const CustomStepper = (props: StepperProps) => {
     }
 
     return (
-
-        <StepperContainerStyle>
+        <React.Fragment>
+        <StepperContainerStyle opened={props.opened}>
             <StepperHeaderStyle>
                 <Text size={24} weight="reg">{props.stepperHeader}</Text>
             </StepperHeaderStyle>
@@ -56,7 +57,7 @@ export const CustomStepper = (props: StepperProps) => {
             </StepperContentStyle>
             <StepperFooterStyle>
                 <Button {...props.nextButtonProps} onClick={nextStep}>
-                    {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                    {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
                 </Button>
                 {(stepIndex !== 0) &&
                 <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
@@ -64,6 +65,7 @@ export const CustomStepper = (props: StepperProps) => {
                 <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
             </StepperFooterStyle>
         </StepperContainerStyle>
-        
+        <OverlayStyle opened={props.opened}/>
+        </React.Fragment>
     )
 }
