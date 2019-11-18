@@ -12,6 +12,6 @@ export const SettingsInitialState: SettingsState = {
 export interface SettingsState {
     readonly data: {
         apiIntegration: false | ApiIntegrationPageInfos;
-        deliveryAndEmbed: false | DeliveryAndEmbedOptionType
+        deliveryAndEmbed: false | DeliveryAndEmbedOptionType;
     };
 }
