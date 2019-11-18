@@ -1,26 +1,20 @@
-// Use `enum`s for better autocompletion of action type names. These will
-// be compiled away leaving only the final value in your compiled code.
-//
-// `@@context/ACTION_TYPE` is the convention
-export enum ActionTypes {
-    GET_DELIVERY_AND_EMBED_OPTIONS = "@@settings/GET_DELIVERY_AND_EMBED_OPTIONS",
-    SAVE_DELIVERY_AND_EMBED_OPTIONS = "@@settings/SAVE_DELIVERY_AND_EMBED_OPTIONS"
-}
+import { ApiIntegrationPageInfos, ApiIntegrationReducer } from './ApiIntegration';
+import { DeliveryAndEmbedOptionType, DeliveryAndEmbedReducer } from './DeliveryAndEmbed';
+import { combineReducers, Reducer } from 'redux';
 
-// Type-safe initialState!
-export const settingsInitialState: SettingsState = {
-    data: false,
+
+export const SettingsInitialState: SettingsState = {
+    apiIntegration: false,
+    deliveryAndEmbed: false
 };
 
-export interface DeliveryAndEmbedOptionType {
-    [key: string]:  string; 
+
+export interface  SettingsState {
+    apiIntegration: false | ApiIntegrationPageInfos;
+    deliveryAndEmbed: false | DeliveryAndEmbedOptionType;
 }
 
-// Declare state types with `readonly` modifier to get compile time immutability.
-// https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
-export interface SettingsState {
-    // readonly loading: boolean
-    // readonly errors?: string
-    readonly data: DeliveryAndEmbedOptionType | false;
-}
-
+export const SettingsReducer: Reducer<SettingsState> = combineReducers({
+    apiIntegration: ApiIntegrationReducer, 
+    deliveryAndEmbed: DeliveryAndEmbedReducer
+})

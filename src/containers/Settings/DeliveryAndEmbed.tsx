@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Text } from '../../components/Typography/Text';
 import { ApplicationState } from "../../redux-flow/store";
-import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction, saveDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings";
+import { Action, DeliveryAndEmbedOptionType, getDeliveryAndEmbedOptionsAction, saveDeliveryAndEmbedOptionsAction } from "../../redux-flow/store/Settings/DeliveryAndEmbed";
 import { Card } from '../../components/Card/Card';
 import { InputRadio } from '../../components/FormsComponents/Input/InputRadio';
 import styled, { css } from 'styled-components';
@@ -182,7 +182,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        deliveryAndEmbedOption: state.settings.data
+        deliveryAndEmbedOption: state.settings.deliveryAndEmbed
     };
 }
 

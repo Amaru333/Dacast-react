@@ -4,6 +4,8 @@ import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
+import { Theme } from '../styled/themes/dacast-theme';
+import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
 
@@ -39,6 +41,13 @@ const DashboardRender = (props: any) => {
         <Dashboard/>
     )
 }
+
+const ApiIntegrationRender = (props: any) => {
+    return (
+        <ApiIntegration/>
+    )
+}
+
 
 const LiveChannel = (props: any) => {
     return (        
@@ -248,7 +257,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/apiintegrations',
                 name: 'API & Integration',
-                component: functionTest3
+                component: ApiIntegrationRender
             },
             {
                 path: '/mainsettings/encoding',
