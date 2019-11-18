@@ -198,7 +198,7 @@ export const IconContainer = styled.div`
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        infos: state.settings.data.apiIntegration
+        infos: state.settings.apiIntegration
     };
 }
 

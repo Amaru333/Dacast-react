@@ -1,12 +1,12 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { SettingsInitialState, SettingsState } from "../types";
-import { ActionTypes } from './types';
+import { ActionTypes, ApiIntegrationPageInfos, defaultStateApiIntegration } from './types';
 
-const reducer: Reducer<SettingsState> = (state = SettingsInitialState, action: Action) => {
+const reducer: Reducer<ApiIntegrationPageInfos> = (state = defaultStateApiIntegration, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS:
-            return {data: { ...state.data, apiIntegration:{...action.payload} }};
+            return {...action.payload};
         default:
             return state;
     }

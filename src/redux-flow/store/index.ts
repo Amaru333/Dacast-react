@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import {  SettingsState, SettingsInitialState} from "./Settings";
+import {  SettingsState, SettingsInitialState, SettingsReducer} from "./Settings";
 import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dashboard";
 import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
@@ -22,7 +22,7 @@ export const globalDefaultState: ApplicationState = {
 
 export const createRootReducer = () =>
     combineReducers({
-        settings: combineReducers({ApiIntegrationReducer, DeliveryAndEmbedReducer}),
+        settings: SettingsReducer,
         dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer

@@ -182,7 +182,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        deliveryAndEmbedOption: state.settings.data
+        deliveryAndEmbedOption: state.settings.deliveryAndEmbed
     };
 }
 

@@ -8,6 +8,12 @@ export interface ApiIntegrationPageInfos {
     webHook: WebHookItem[];
 }
 
+export const defaultStateApiIntegration : ApiIntegrationPageInfos = {
+    apiKeys: [],
+    encoderKeys: [],
+    webHook: []
+}
+
 export interface EncoderKeyItem {
     encoder: string;
     authToken: string;
