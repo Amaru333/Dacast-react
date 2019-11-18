@@ -58,9 +58,9 @@ export interface InputCheckboxSpecificProps {
 export type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;
 
 export interface RadioSpecificProps {
-    name?: string;
+    name: string;
     checked?: boolean;
-    label?: string;
+    label: string;
     disabled?: boolean;
     value?: string;
 }

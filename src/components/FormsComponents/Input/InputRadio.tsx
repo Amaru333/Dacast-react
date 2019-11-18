@@ -16,7 +16,8 @@ export const InputRadio = (props: RadioProps) => {
 
         <RelativeContainer {...other}>
             <InputRadioStyle 
-                checked={props.checked} 
+                checked={props.checked}
+                defaultChecked={props.defaultChecked}
                 name={name}
                 id={props.label} 
                 disabled={props.disabled} 
