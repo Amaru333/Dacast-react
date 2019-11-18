@@ -20,7 +20,7 @@ interface DropdownCustomProps {
 
 export interface ContinentListType {
     [key: string]: {
-        countries: DropdownListType,
+        countries: {[key: string]: {isChecked: boolean, isFiltered: boolean}},
         checked: CheckboxStatus
     }
 }
