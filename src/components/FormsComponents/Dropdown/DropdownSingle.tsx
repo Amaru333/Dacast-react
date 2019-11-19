@@ -89,6 +89,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                             <DropdownItem 
                                 key={props.id + '_' + name} 
                                 id={props.id + '_' + name} 
+                                className={key === 1 ? 'mt1' : ''}
                                 isSelected={selectedItem === name} 
                                 onClick={() => handleClick(name)}> 
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
