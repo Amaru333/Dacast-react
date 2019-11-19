@@ -62,7 +62,7 @@ export const CustomStepper = (props: StepperProps) => {
                 {(stepIndex !== 0) &&
                 <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
                 }
-                <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                <Button onClick={(event) => {event.preventDefault();props.functionCancel(false)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
             </StepperFooterStyle>
         </StepperContainerStyle>
         <OverlayStyle opened={props.opened}/>

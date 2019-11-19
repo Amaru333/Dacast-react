@@ -71,6 +71,7 @@ storiesOf('Stepper', module)
     .add('Stepper', () => ( 
         <ScrollableContainer>
            <CustomStepper 
+           opened={true}
            stepperHeader="Test"
            stepList={stepList} 
            nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 

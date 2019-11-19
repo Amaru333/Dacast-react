@@ -6,7 +6,6 @@ import { Table } from '../../Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
 import { CustomStepper } from '../../Stepper/Stepper';
-import { getThemeProps } from '@material-ui/styles';
 
 const recipesBodyElement = () => {
 
@@ -22,8 +21,7 @@ const recipesBodyElement = () => {
         <></>,
         <></>
     ],
-]
-
+    ]
 }
 
 const recipesHeaderElement = (FunctionRecipe: Function) => {
@@ -75,6 +73,7 @@ const EncodingRecipes = () => {
             cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
+            functionCancel={FunctionRecipe}
             finalFunction={submitRecipe}/>
         </Card>
     )

@@ -1,4 +1,4 @@
-import { Type, Size } from '../FormsComponents/Button/ButtonTypes';
+import { Type, Size, ButtonProps } from '../FormsComponents/Button/ButtonTypes';
 
 interface StepperButtonType {
     typeButton?: Type;
@@ -15,7 +15,8 @@ export interface StepperSpecificProps {
     backButtonProps: StepperButtonType;
     cancelButtonProps: StepperButtonType;
     finalFunction: Function;
-    opened: boolean
+    opened: boolean;
+    functionCancel?: Function;
 }
 
 export type StepperProps = StepperSpecificProps & React.HTMLAttributes<HTMLDivElement>
