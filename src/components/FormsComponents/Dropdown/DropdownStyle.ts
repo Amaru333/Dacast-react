@@ -51,8 +51,8 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    width: 95%;
-    box-sizing: border-box;
+    right: .5rem;
+    left: .5rem;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
