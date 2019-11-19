@@ -57,12 +57,12 @@ storiesOf('Inputs', module)
 
     .add('Radio button input', () => (
         <React.Fragment>
-            <InputRadio name="test" label="Test"></InputRadio>
-            <InputRadio name="test" label="Test 2"></InputRadio>
-            <InputRadio name="test" label="Test 3"></InputRadio>
-            <InputRadio disabled name="test-disabled" label="Disabled Test"></InputRadio>
-            <InputRadio  disabled name="test-disabled" label="Disabled Test 2"></InputRadio>
-            <InputRadio checked disabled name="test-disabled" label="Disabled Test 3"></InputRadio>
+            <InputRadio name="test" value="test" label="Test"></InputRadio>
+            <InputRadio name="test" value="test2" label="Test 2"></InputRadio>
+            <InputRadio name="test" value="test3" label="Test 3"></InputRadio>
+            <InputRadio disabled name="test-disabled" value="test" label="Disabled Test"></InputRadio>
+            <InputRadio  disabled name="test-disabled" value="test2" label="Disabled Test 2"></InputRadio>
+            <InputRadio checked disabled name="test-disabled" value="test3" label="Disabled Test 3"></InputRadio>
         </React.Fragment>
             
     ))

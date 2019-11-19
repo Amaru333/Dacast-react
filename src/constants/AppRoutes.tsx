@@ -5,6 +5,8 @@ import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSp
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import { Theme } from '../styled/themes/dacast-theme';
+import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
+import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -40,6 +42,13 @@ const DashboardRender = (props: any) => {
     )
 }
 
+const ApiIntegrationRender = (props: any) => {
+    return (
+        <ApiIntegration/>
+    )
+}
+
+
 const LiveChannel = (props: any) => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
@@ -69,8 +78,7 @@ const Playlist = (props: any) => {
 
 const MainSettings = (props: any) => {
     return (
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Main settings</h2>
+        <div>
             <Tab {...props}  list={props.routes} orientation="vertical" />
         </div>
 
@@ -234,7 +242,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/deliveryembed',
                 name: 'Delivery & Embed',
-                component: functionTest4
+                component: DeliveryAndEmbed
             },
             {
                 path: '/mainsettings/security',
@@ -249,7 +257,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/apiintegrations',
                 name: 'API & Integration',
-                component: functionTest3
+                component: ApiIntegrationRender
             },
             {
                 path: '/mainsettings/encoding',
