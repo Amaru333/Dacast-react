@@ -51,14 +51,14 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    width: 94%;
+    width: 99%;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
     `}
     margin-block-start: 0px;
-    padding-inline-start: 8px;
-    padding-inline-end: 8px;
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
     padding-block-end: 8px;
     max-height: 200px;
     overflow: scroll;
@@ -108,4 +108,51 @@ export const DropdownItemText = styled(Text)`
     width: 80%;
     min-height: 100%;
     padding-top: 4px;
+`
+
+export const ContinentContainer = styled.div<{isDisplayed: boolean}>`
+    display: flex;
+    ${props => props.isDisplayed && css`
+        display: none;
+    `}
+`
+
+export const ButtonIconStyle = styled.div<{}>`
+    color: ${props => props.theme.colors['gray-3']};
+    width: 8px;
+    margin-top: 4px;
+    display: table;
+
+`
+
+export const CountryContainer = styled.div<{isDisplayed: boolean}>`
+    ${props => props.isDisplayed && css`
+        display: none;
+    `}
+`
+
+export const SearchItem = styled.div`
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    display: flex;
+    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
+`
+
+export const SearchIconStyle = styled.div`
+    padding-top: 8px;
+    padding-left: 8px;
+    width: 24px;
+    background-color: ${props => props.theme.colors['white']};
+`
+
+export const CloseIconButton = styled.div`
+    display: flex;
+    color: ${props => props.theme.colors['gray-3']};
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 8px;
+    right: 25px;
+    cursor: pointer;
 `
