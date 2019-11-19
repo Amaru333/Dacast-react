@@ -61,30 +61,30 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                         </Link>               
                         : 
                         props.hasSearch  && key === 0 ?
-                        <SearchItem 
-                        key={props.id + '_search'} 
-                        id={props.id + '_search'} 
-                    > 
-                        <SearchIconStyle>
-                            <Icon>search</Icon>
-                        </SearchIconStyle>
+                            <SearchItem 
+                                key={props.id + '_search'} 
+                                id={props.id + '_search'} 
+                            > 
+                                <SearchIconStyle>
+                                    <Icon>search</Icon>
+                                </SearchIconStyle>
 
-                        <Input
-                            style={{border: 'none', backgroundColor:'white'}}
-                            required={false}
-                            placeholder='Search'
-                            disabled={false}
-                            className="col-12"
-                            value={filteringList}
-                            onChange={event => setFilteringList(event.currentTarget.value)}
-                        />
-                        {
-                            filteringList.length > 0 ?
-                                <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
-                            : 
-                            null
-                        }
-                    </SearchItem>
+                                <Input
+                                    style={{border: 'none', backgroundColor:'white'}}
+                                    required={false}
+                                    placeholder='Search'
+                                    disabled={false}
+                                    className="col-12"
+                                    value={filteringList}
+                                    onChange={event => setFilteringList(event.currentTarget.value)}
+                                />
+                                {
+                                    filteringList.length > 0 ?
+                                        <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
+                                        : 
+                                        null
+                                }
+                            </SearchItem>
                             :
                             <DropdownItem 
                                 key={props.id + '_' + name} 

@@ -24,10 +24,10 @@ export const Modal = (props: ModalProps) => {
                     </Text>
                     {
                         hasClose ? 
-                        <ModalCloseButtonStyle onClick={() => props.toggle()}>
-                        <Icon>close</Icon>
-                    </ModalCloseButtonStyle>
-                    : null
+                            <ModalCloseButtonStyle onClick={() => props.toggle()}>
+                                <Icon>close</Icon>
+                            </ModalCloseButtonStyle>
+                            : null
                     }
                 </ModalTitleStyle>
                 {props.children}
