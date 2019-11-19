@@ -110,7 +110,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             <Card className='clearfix p2'>
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
-                <div className="lg-col lg-col-12">
+                <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>

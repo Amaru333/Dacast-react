@@ -74,7 +74,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                 required
                                 {...handleValidationProps('lastName', validations)} 
                             />
-                            <Avatar className="col col-1 ml1 mt3"  size='large' name='JL' /> 
+                            <Avatar className="col col-1 ml1 mt3"  size='large' name={value['firstName'] ? value['firstName'].value.toString() + ' ' + value['lastName'].value.toString() : props.ProfilePageDetails.firstName + ' ' + props.ProfilePageDetails.lastName} /> 
                         </AvatarInputContainer>
 
                     </div>
@@ -127,18 +127,18 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 
                     <Toggle id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
                     <Toggle id="lowDataToggle" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></ToggleTextInfo>
 
                     <Toggle id="uploadToggle" label='Upload' defaultChecked={props.ProfilePageDetails.upload} {...handleValidationProps('uploadToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when an upoload has been completed from anyone in your account.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>An email will be sent when an upoload has been completed from anyone in your account.</Text></ToggleTextInfo>
 
                     <Toggle id="weeklyAnalyticsToggle" label='Weekly Analytics' defaultChecked={props.ProfilePageDetails.weeklyAnalytics} {...handleValidationProps('weeklyAnalyticsToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>A weekly email will be sent to you to update you on analytics.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>A weekly email will be sent to you to update you on analytics.</Text></ToggleTextInfo>
 
                     <Toggle id="apiPingbackNotificationsToggle" label='API Pingback Notifications' defaultChecked={props.ProfilePageDetails.apiPingbackNotifications} {...handleValidationProps('apiPingbackNotificationsToggle', validations)} />
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Send a pingback to notify me if my encoding has completed or failed.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>Send a pingback to notify me if my encoding has completed or failed.</Text></ToggleTextInfo>
                 </form>
 
             </Card>
@@ -146,13 +146,13 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 <Button disabled={!enabledSubmit} form='profilePageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
+            <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
                 <ModalContent>
                     <Input 
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="currentPassword" 
                         label="Current Password" 
                         placeholder="Current Password" 
@@ -162,7 +162,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="newPassword" 
                         label="New Password" 
                         placeholder="New Password" 
@@ -173,7 +173,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="confirmPassword" 
                         label="Confirm Password" 
                         placeholder="Confirm Password" 

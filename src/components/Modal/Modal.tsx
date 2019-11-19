@@ -7,14 +7,14 @@ import { useOutsideAlerter } from '../../utils/utils';
 
 export const Modal = (props: ModalProps) => {
 
-    var { icon, ...other } = props;
+    var { icon, hasClose,  ...other } = props;
 
     let modalRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(modalRef, () => props.toggle());
 
     return (
         <React.Fragment>
-            <ModalContainerStyle ref={modalRef} {...other}>
+            <ModalContainerStyle ref={modalRef} hasClose={hasClose} {...other}>
                 <ModalTitleStyle>
                     {icon ? (
                         <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>
@@ -22,9 +22,13 @@ export const Modal = (props: ModalProps) => {
                     <Text color="gray-1" size={24} weight="med">
                         {props.title}
                     </Text>
-                    <ModalCloseButtonStyle onClick={() => props.toggle()}>
+                    {
+                        hasClose ? 
+                        <ModalCloseButtonStyle onClick={() => props.toggle()}>
                         <Icon>close</Icon>
                     </ModalCloseButtonStyle>
+                    : null
+                    }
                 </ModalTitleStyle>
                 {props.children}
             </ModalContainerStyle>
@@ -34,7 +38,7 @@ export const Modal = (props: ModalProps) => {
 
 }
 
-Modal.defaultProps = { size: "large", opened: false};
+Modal.defaultProps = { size: "large", opened: false, hasClose: true};
 
 
 export const ModalContent = (props: React.HTMLAttributes<HTMLDivElement>) => {

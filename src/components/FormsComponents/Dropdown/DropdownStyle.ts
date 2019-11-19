@@ -17,7 +17,7 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
     display: flex;
     flex-direction: row;
     position: relative;
-    height: auto;
+    height: 38px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.theme.colors["gray-10"]};
     ${props => props.isNavigation && css`
@@ -51,7 +51,7 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    width: 99%;
+    width: 95%;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;

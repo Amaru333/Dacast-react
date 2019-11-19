@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText} from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton} from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -12,7 +12,8 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
     const [selectedItem, setSelectedItem] = React.useState<string>('Select');
-    const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list)
+    const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list);
+    const [filteringList, setFilteringList] = React.useState<string>('');
 
     useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
@@ -43,6 +44,8 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
         setItemsList(test);
     }
 
+    React.useEffect(() => filterList(filteringList), [filteringList])
+
     const renderList = () => {
         return (
             Object.keys(itemsList).map((name, key) => {
@@ -58,20 +61,29 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                         </Link>               
                         : 
                         props.hasSearch  && key === 0 ?
-                            <DropdownItem 
-                                style={{zIndex:999, position:'sticky', top:0}}
-                                key={props.id + '_search'} 
-                                id={props.id + '_search'} 
-                                isSelected={false} 
-                            > 
-                                <Input
-                                    style={{border: 'none', borderBottom:'1px solid #C8D1E0', backgroundColor:'white'}}
-                                    required={false}
-                                    placeholder='search'
-                                    disabled={false}
-                                    onChange={event => filterList(event.currentTarget.value)}
-                                />
-                            </DropdownItem>
+                        <SearchItem 
+                        key={props.id + '_search'} 
+                        id={props.id + '_search'} 
+                    > 
+                        <SearchIconStyle>
+                            <Icon>search</Icon>
+                        </SearchIconStyle>
+
+                        <Input
+                            style={{border: 'none', backgroundColor:'white'}}
+                            required={false}
+                            placeholder='Search'
+                            disabled={false}
+                            value={filteringList}
+                            onChange={event => setFilteringList(event.currentTarget.value)}
+                        />
+                        {
+                            filteringList.length > 0 ?
+                                <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
+                            : 
+                            null
+                        }
+                    </SearchItem>
                             :
                             <DropdownItem 
                                 key={props.id + '_' + name} 
