@@ -74,6 +74,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
                             required={false}
                             placeholder='Search'
                             disabled={false}
+                            className="col-12"
                             value={filteringList}
                             onChange={event => setFilteringList(event.currentTarget.value)}
                         />

@@ -52,6 +52,7 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     display: none;
     position: absolute;
     width: 95%;
+    box-sizing: border-box;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
