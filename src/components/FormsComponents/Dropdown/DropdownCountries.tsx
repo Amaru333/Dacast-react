@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle } from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton } from './DropdownStyle';
 import { DropdownProps , dropdownIcons, ContinentListType} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -87,13 +87,13 @@ export const DropdownCountries: React.FC<DropdownProps> = (props: DropdownProps)
     }
 
     const handleSelectAllState = () => {
-        var checkedItems = Object.keys(checkedContinents).filter(name => checkedContinents[name].checked !== 'unchecked').length;
-        if(checkedItems === 0) {
+        if(Object.keys(checkedContinents).filter(continent => checkedContinents[continent].checked === 'unchecked').length === Object.keys(checkedContinents).length) {
             setSelectAllState('unchecked')
-        } else if(checkedItems === Object.keys(checkedContinents).length) {
+        } else if(Object.keys(checkedContinents).filter(continent => checkedContinents[continent].checked === 'checked').length === Object.keys(checkedContinents).length) {
             setSelectAllState('checked')
-        } else {
-            setSelectAllState('undeterminate')
+        }
+        else {
+            setSelectAllState('undeterminate')  
         }
     }
 
@@ -132,7 +132,7 @@ export const DropdownCountries: React.FC<DropdownProps> = (props: DropdownProps)
     }
 
     const filterList = (filteringString: string) => {
-        setFilteringList(filteringString);
+
         let continents = checkedContinents
         Object.keys(continents).forEach((continent) => {
             continents[continent] = {
@@ -158,6 +158,8 @@ export const DropdownCountries: React.FC<DropdownProps> = (props: DropdownProps)
         setCheckedContinents({...continents})
 
     }
+
+    React.useEffect(() => filterList(filteringList), [filteringList])
 
 
     const handleContinentCheckboxChange = (continent: string) => {
@@ -226,11 +228,12 @@ export const DropdownCountries: React.FC<DropdownProps> = (props: DropdownProps)
                                     required={false}
                                     placeholder='Search'
                                     disabled={false}
-                                    onChange={event => filterList(event.currentTarget.value)}
+                                    value={filteringList}
+                                    onChange={event => setFilteringList(event.currentTarget.value)}
                                 />
                                 {
                                     filteringList.length > 0 ?
-                                        <Icon>close</Icon>
+                                        <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
                                     : 
                                     null
                                 }

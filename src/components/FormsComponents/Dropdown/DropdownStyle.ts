@@ -145,3 +145,14 @@ export const SearchIconStyle = styled.div`
     width: 24px;
     background-color: ${props => props.theme.colors['white']};
 `
+
+export const CloseIconButton = styled.div`
+    display: flex;
+    color: ${props => props.theme.colors['gray-3']};
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 8px;
+    right: 25px;
+    cursor: pointer;
+`
