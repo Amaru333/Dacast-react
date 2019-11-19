@@ -127,18 +127,18 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 
                     <Toggle id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
                     <Toggle id="lowDataToggle" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></ToggleTextInfo>
 
                     <Toggle id="uploadToggle" label='Upload' defaultChecked={props.ProfilePageDetails.upload} {...handleValidationProps('uploadToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>An email will be sent when an upoload has been completed from anyone in your account.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when an upoload has been completed from anyone in your account.</Text></ToggleTextInfo>
 
                     <Toggle id="weeklyAnalyticsToggle" label='Weekly Analytics' defaultChecked={props.ProfilePageDetails.weeklyAnalytics} {...handleValidationProps('weeklyAnalyticsToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>A weekly email will be sent to you to update you on analytics.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>A weekly email will be sent to you to update you on analytics.</Text></ToggleTextInfo>
 
                     <Toggle id="apiPingbackNotificationsToggle" label='API Pingback Notifications' defaultChecked={props.ProfilePageDetails.apiPingbackNotifications} {...handleValidationProps('apiPingbackNotificationsToggle', validations)} />
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>Send a pingback to notify me if my encoding has completed or failed.</Text></ToggleTextInfo>
+                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Send a pingback to notify me if my encoding has completed or failed.</Text></ToggleTextInfo>
                 </form>
 
             </Card>

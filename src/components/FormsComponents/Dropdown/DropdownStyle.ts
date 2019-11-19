@@ -44,7 +44,7 @@ export const Title = styled.div<{ref: any}>`
 
 export const IconStyle = styled.div`
     position: absolute;
-    right: 8%;
+    right: 19px;
     top: 17%;
 `;
 
@@ -78,6 +78,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     min-height: 32px;
     height: 100%;
     padding: 0 8px;
+    padding-top: 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
