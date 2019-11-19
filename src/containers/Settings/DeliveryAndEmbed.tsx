@@ -51,7 +51,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                         <br/>
                         <div>
                             <Text size={14} weight="reg">
-                        Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.
+                            Dacast gives you complete control over the delivery method of your videos. Choose settings that are right for the type of content you have.
                             </Text>
                         </div>
                         <br/>
@@ -59,13 +59,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                             <InputRadio name="delivery" value="compatible-delivery" label="Compatible Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "compatible-delivery"})} defaultChecked={props.deliveryAndEmbedOption["delivery"] === "compatible-delivery"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                HTML5 Player via HLS (HTTP Streaming). Defaults to Flash player where necessary. Prioritizes playback compatibility over security. Ideal for ad-serving.
+                                HTML5 player with HLS (HTTP Streaming) prioritizing playback compatibility over security. Ideal for serving content with advertising.
                                 </Text>
                             </RadioText>
                             <InputRadio name="delivery" value="secure-delivery" label="Secure Delivery" onChange={() => setInputOptions({...inputOptions, ["delivery"]: "secure-delivery"})} defaultChecked={props.deliveryAndEmbedOption["delivery"] === "secure-delivery"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                HTML5 Player with AES Encryption. The most secure option, all videos will play with encryption. Videos can only be delivered via the Dacast player using our iframe embed.
+                                HTML5 player with AES Encryption, prioritizing security over compatibility. Requires iframe embeds and is ideal for high-value content.
                                 </Text>
                             </RadioText>
                         </div>
@@ -105,13 +105,13 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                             <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "iframe"})} defaultChecked={props.deliveryAndEmbedOption["embed-settings"] === "iframe"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                The embed code includes all vzaar features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
+                                TThe embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                                 </Text>
                             </RadioText>
                             <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "html5-video"})} defaultChecked={props.deliveryAndEmbedOption["embed-settings"] === "html5-video"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                The most lightweight way to embed your video. Does not include all vzaar features & will not count video views. Only use if your CMS does not accept iframes or if you are an eBay user.
+                                The most lightweight way to embed your video. Does not include all Dacast features & will not count video views. Only use if your CMS does not accept iframes.
                                 </Text>
                             </RadioText>
                         </div>
@@ -128,7 +128,7 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                             <InputRadio name="embed-protocol" value="https" label="HTTPS (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "https"})} defaultChecked={props.deliveryAndEmbedOption["embed-protocol"] === "https"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                Always use HTTP over SSL — this is the most secure setting and is what we'd most recommend.ally update whenever you change your settings.
+                                Always use HTTP over SSL — this is the most secure setting and is what we'd most recommend.
                                 </Text>
                             </RadioText>
                             <InputRadio name="embed-protocol" value="relative" label="Relative" onChange={() => setInputOptions({...inputOptions, ["embed-protocol"]: "relative"})} defaultChecked={props.deliveryAndEmbedOption["embed-protocol"] === "relative"} />
@@ -157,16 +157,16 @@ const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
                             <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "responsive"})} defaultChecked={props.deliveryAndEmbedOption["embed-size"] === "responsive"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                Your embed codes will default to responding to the size of their container.
+                                Your videos will automatically resize to fit their container.
                                 </Text>
                             </RadioText>
                             <InputRadio name="embed-size" value="fixed" label="Fixed" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "fixed"})} defaultChecked={props.deliveryAndEmbedOption["embed-size"] === "fixed"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                Videos will default to a fixed width.
+                                Videos will default to a fixed width with their height determined automatically based on aspect ratio.
                                 </Text>
                             </RadioText>
-                            <WidthInput  isDisplayed={inputOptions['embed-size'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} id="width" label="Fixed Width" type="number" help="How wide your embeds will be" />
+                            <WidthInput  isDisplayed={inputOptions['embed-size'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({...inputOptions, ["embed-width"]: event.currentTarget.value})} defaultValue="640" id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
                         </div>
                         <br/>
                     </Card>
