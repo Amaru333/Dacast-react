@@ -1,3 +1,6 @@
+import { DropdownList } from './DropdownStyle';
+
+type CheckboxStatus = 'unchecked' | 'checked' | 'undeterminate'
 export interface DropdownListType {[key: string]: boolean}
 
 export const dropdownIcons = {
@@ -15,5 +18,18 @@ interface DropdownCustomProps {
     hasSearch?: boolean;
 }
 
+export interface ContinentListType {
+    [key: string]: {
+        countries: {[key: string]: {isChecked: boolean; isFiltered: boolean}};
+        checked: CheckboxStatus;
+    };
+}
+
+interface DropdownCountriesSpecificProps {
+    list: ContinentListType;
+}
+
+
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
+
 

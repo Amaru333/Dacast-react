@@ -7,6 +7,7 @@ interface ModalCustomProps {
     title: string;
     icon?: { name: string; color: ColorsApp };
     opened: boolean;
+    hasClose: boolean;
     toggle: () => void;
 }
 
