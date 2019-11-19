@@ -31,11 +31,11 @@ export interface InputSpecificProps {
     icon?: string;
     help?: string;
     isError?: boolean;
-    disabled: boolean;
+    disabled?: boolean;
     type?: InputType;
     name?: string;
     value?: string;  
-    required: boolean;
+    required?: boolean;
     ref?: React.RefObject<HTMLInputElement>;
 }
 
