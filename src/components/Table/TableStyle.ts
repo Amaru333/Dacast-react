@@ -1,19 +1,19 @@
 import styled, { css } from "styled-components";
 import {TableProps} from './TableTypes';
 
-export const TableContainer = styled.table<TableProps>`
+export const TableContainer = styled.table<{}>`
     height: auto;
-    margin: auto;
     border-spacing: unset;
     border-collapse: collapse;
     min-width: 600px;
+    width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
 `;
 
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div<{}>`
+export const WrapperResponsiveContainer = styled.div<TableProps>`
     overflow-x: auto;
     border: 1px solid ${props => props.theme.colors["gray-8"]};
 `;

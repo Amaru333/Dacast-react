@@ -32,8 +32,8 @@ export const Table = (props: TableProps) => {
         })
     }
     return (
-        <WrapperResponsiveContainer >
-            <TableContainer {...props}>
+        <WrapperResponsiveContainer  {...props}>
+            <TableContainer>
                 {props.header ? 
                     <TableHeaderContainer>
                         <TableHeaderRow>
