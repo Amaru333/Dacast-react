@@ -8,21 +8,26 @@ import styled from 'styled-components';
 import { CustomStepper } from '../../Stepper/Stepper';
 import { Input } from '../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
+import { EncodingRecipeItem } from './EncodingRecipesTypes';
 
-const recipesBodyElement = () => {
 
-    
+const recipesBodyElement = (recipeData: EncodingRecipeItem) => {
 
     return [[
         <Text size={14} weight="reg">Default recipe</Text>,
         <Icon>check</Icon>,
-        <></>
+        <IconContainer className="iconAction"><Icon>delete</Icon><Icon >edit</Icon> </IconContainer>
     ],
     [
         <Text size={14} weight="reg">Jake's amazing recipe</Text>,
         <></>,
         <></>
     ],
+    [
+        <Text size={14} weight="reg">{recipeData.name}</Text>,
+        <></>,
+        <IconContainer className="iconAction"><Icon>delete</Icon><Icon >edit</Icon> </IconContainer>
+    ]
     ]
 }
 
@@ -146,13 +151,13 @@ const presetStep = () => {
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt1" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement()} />
-            <Text className="col col-12 mt1" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
+            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement()} />
+            <Text className="col col-12 mt25" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
             {/* extraEncodingOptions table to have header removed */}
-            <Table className="col col-12 mt1" id="extraEncodingOptions" header={createRecipeHeaderElement()} body={extraEncodingOptionsBodyElement()} />
-            <div className="flex col col-12 mt1">
-                <Icon>info</Icon>
-                <Text size={14} weight="reg">Need help choosing your presets? Visit the Knowledge Base</Text>
+            <Table className="col col-12 mt1" id="extraEncodingOptions" body={extraEncodingOptionsBodyElement()} />
+            <div className="flex col col-12 mt3">
+                <Icon style={{marginRight: "10px"}}>info</Icon>
+                <Text  size={14} weight="reg">Need help choosing your presets? Visit the Knowledge Base</Text>
             </div>
         </StepContent>
     )
@@ -166,6 +171,8 @@ const stepList = [settingsStep, presetStep]
 
 const EncodingRecipes = () => {
 
+    const recipeData: EncodingRecipeItem = {name: "Sick new Recipe", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p"]}
+
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
 
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
@@ -177,7 +184,7 @@ const EncodingRecipes = () => {
                 <Icon style={{marginLeft: "10px"}}>info</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement()} />
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement(recipeData)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
             stepperHeader="Create Recipes"
@@ -240,3 +247,12 @@ const PositioningRow = styled.div`
 display: flex;
 align-items: flex-end;
 `
+
+const IconContainer = styled.div`
+    float:right;
+    display:none;
+    .material-icons{
+        margin-right:16px;
+        color:  ${props => props.theme.colors["gray-1"]};
+    }
+   ` 
