@@ -1,4 +1,9 @@
-import { Data } from 'popper.js';
+
+
+export type DatePickerProps = {
+    className?: string;
+    DatepickerTitle?: string;
+}
 
 interface DatePickerContext {
     focusedDate: any;

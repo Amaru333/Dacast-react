@@ -6,6 +6,7 @@ import { Icon } from '@material-ui/core';
 import {DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle, EndTextStyle} from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
+import { DatePickerProps } from './DatePickerTypes';
 
 const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -19,7 +20,7 @@ const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
 }
 
 
-export const  DateSinglePicker = () => {
+export const  DateSinglePicker = (props: DatePickerProps) => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -62,7 +63,7 @@ export const  DateSinglePicker = () => {
     });
 
     return (
-        <DatepickerStyle ref={datepickerRef} isSingle>
+        <DatepickerStyle className={props.className} ref={datepickerRef} isSingle>
             <DatepickerContext.Provider
                 value={{
                     focusedDate,

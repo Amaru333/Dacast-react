@@ -8,6 +8,7 @@ import { Theme } from '../styled/themes/dacast-theme';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
+import Security from '../containers/Settings/Security/Security';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -247,7 +248,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/security',
                 name: 'Security',
-                component: functionTest2
+                component: Security
             },
             {
                 path: '/mainsettings/monetization',
