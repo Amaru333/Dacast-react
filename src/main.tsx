@@ -97,6 +97,7 @@ const Content = styled.div<{isOpen: boolean}>`
     min-height: 100vh;
     padding: 24px;
     padding-top: 81px;
+    overflow: auto;
 `
 
 const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean}>`
