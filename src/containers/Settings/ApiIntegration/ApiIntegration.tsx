@@ -10,7 +10,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
-import { tsToLocaleDate } from '../../../utils/utils';
+import { tsToLocaleDate, useMedia } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 import styled, { css } from "styled-components";
@@ -37,6 +37,8 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
     const [postWebHooksModalOpened, setPostWebHooksModalOpened] = React.useState<boolean>(false);
     const [putWebHooksModalOpened, setPutWebHooksModalOpened] = React.useState<boolean>(false);
     const [selectedEditWebHooks, setSelectedEditWebHooks] = React.useState<WebHookItem | false>(false);
+    
+    let smScreen = useMedia('(max-width: 780px)');
 
     React.useEffect(() => {
         if(!props.infos) {
@@ -67,7 +69,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write' }</Text>,
                     <Text key={key+value.clientId} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer className="iconAction" key={key+value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key+value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -80,7 +82,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <Text key="tokenArrayApiKeys" size={14}  weight="med" color="gray-1">Token</Text>,
             <Text key="typeArrayApiKeys" size={14}  weight="med" color="gray-1">Type</Text>,
             <Text key="createdArrayApiKeys" size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button key="actionArrayApiKeys" className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+            <Button key="actionArrayApiKeys" className={"right mr2 "+ (smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
         ]
     }
 
@@ -91,17 +93,18 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.encoder}</Text>,
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key+value.created} size={14}  weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer className="iconAction" key={key+value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key+value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
                 ]
             })
         }
     }
 
     const webHooksHeaderElement= () => {
+        console.log(smScreen);
         return[
             <Text key="urlTableWebHooks" size={14}  weight="med" color="gray-1">URL</Text>,
             <Text key="methodTableWebHooks" size={14}  weight="med" color="gray-1">Method</Text>,
-            <Button key="actionTableWebHooks" onClick={() => setPostWebHooksModalOpened(true)} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
+            <Button key="actionTableWebHooks" onClick={() => setPostWebHooksModalOpened(true)} className={"right mr2 "+(smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
         ]
     }
 
@@ -111,7 +114,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
                 return [
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.url}</Text>,
                     <Text key={key+value.url} size={14}  weight="reg" color="gray-1">{value.method}</Text>,
-                    <IconContainer className="iconAction" key={key+value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key+value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -122,7 +125,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <Text key="encoderTable" size={14}  weight="med" color="gray-1">Encoder</Text>,
             <Text key="keyTable" size={14}  weight="med" color="gray-1">Key</Text>,
             <Text key="createdTable" size={14}  weight="med" color="gray-1">Created</Text>,
-            <Button key="actionTable" className="right mr2" onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+            <Button key="actionTable" className={"right mr2 "+(smScreen ? 'hide' : '')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
         ]
     }
     
@@ -132,15 +135,18 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <>
                 <Card className='clearfix col-12'>
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Key</Text>
-                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                    <Text className={"inline-block "+ (smScreen ? 'mb2' : 'mb25')}  size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                    <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                     <Table className="col-12" id="apiKeysTable" header={apiKeyHeaderElement()} body={apiKeyBodyElement()}/>
                     <HrStyle />
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoding Key</Text>
-                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >These keys can be pasted in your encoder settings and will authenticate your list of Dacast live channels. For the Dacast version of OBS Studio please use the OBS Studio key.</Text>
+                    <Text className={"inline-block "+ (smScreen ? 'mb2' : 'mb25')} size={14} weight="reg" color="gray-1" >These keys can be pasted in your encoder settings and will authenticate your list of Dacast live channels. For the Dacast version of OBS Studio please use the OBS Studio key.</Text>
+                    <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
                     <Table className="col-12" id="apiKeysTable" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
                     <HrStyle />
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
-                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                    <Text className={"inline-block "+ (smScreen ? 'mb2' : 'mb25')}  size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                    <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left mb2 "+(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
                     <Table className="col-12" id="apiKeysTable" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
                 </Card>
                 <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} > 
