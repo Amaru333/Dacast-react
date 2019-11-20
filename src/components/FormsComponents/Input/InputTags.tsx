@@ -36,7 +36,7 @@ export const InputTags = (props: TagProps) => {
 
     return (
         <ContainerStyle className={className} >
-            {label ? <LabelStyle disabled={props.disabled} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
+            {label ? <LabelStyle disabled={props.disabled ? true : false} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
             <TagsContainer>
                 <TagsWrapper>
                     <TagListStyle>
@@ -58,7 +58,7 @@ export const InputTags = (props: TagProps) => {
                         </li>
                     </TagListStyle>
                 </TagsWrapper>
-                {icon ? <IconStyle disabled={props.disabled}>
+                {icon ? <IconStyle disabled={props.disabled ? true : false}>
                     <Icon>{icon}</Icon>
                 </IconStyle> : null}
             </TagsContainer>
