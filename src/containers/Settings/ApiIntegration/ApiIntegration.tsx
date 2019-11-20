@@ -99,7 +99,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 
     const webHooksHeaderElement= () => {
         return[
-            <Text key="urlTableWebHooks" size={14}  weight="med" color="gray-1">Url</Text>,
+            <Text key="urlTableWebHooks" size={14}  weight="med" color="gray-1">URL</Text>,
             <Text key="methodTableWebHooks" size={14}  weight="med" color="gray-1">Method</Text>,
             <Button key="actionTableWebHooks" onClick={() => setPostWebHooksModalOpened(true)} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
         ]
@@ -130,17 +130,17 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
     if(props.infos) {
         return (
             <>
-                <Card className='clearfix p2 col-12'>
+                <Card className='clearfix col-12'>
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Key</Text>
-                    <Text className="mb3 inline-block" size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
                     <Table className="col-12" id="apiKeysTable" header={apiKeyHeaderElement()} body={apiKeyBodyElement()}/>
                     <HrStyle />
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoding Key</Text>
-                    <Text className="mb3 inline-block" size={14} weight="reg" color="gray-1" >These keys can be pasted in your encoder settings and will authenticate your list of Dacast live channels. For the Dacast version of OBS Studio please use the OBS Studio key.</Text>
+                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >These keys can be pasted in your encoder settings and will authenticate your list of Dacast live channels. For the Dacast version of OBS Studio please use the OBS Studio key.</Text>
                     <Table className="col-12" id="apiKeysTable" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
                     <HrStyle />
                     <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
-                    <Text className="mb3 inline-block" size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                    <Text className="mb25 inline-block" size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
                     <Table className="col-12" id="apiKeysTable" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
                 </Card>
                 <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} > 
@@ -183,7 +183,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 export const HrStyle = styled.hr<{}>`
     height: 1px;
     border: none;
-    margin: 32px 0;    
+    margin: 32px 0 24px 0;    
     background-color:  ${props => props.theme.colors["gray-7"]};
 `;
 

@@ -17,7 +17,7 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
                 <div className="clearfix"></div>
             </div>
             <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
-            <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
 
@@ -27,7 +27,7 @@ const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
     
     return (
         <form>
-            <Input defaultValue={ props.item? props.item.url : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="Url" placeholder="Url"  />
+            <Input defaultValue={ props.item? props.item.url : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="URL" placeholder="URL"  />
             <Text size={14} weight="med" className='inline-block mb1' >Method</Text>
             <div className="mb3">
                 <InputRadio defaultChecked={props.item && props.item.method == 'GET'} className="col col-6" value="GET" name="type" label="GET"></InputRadio>
@@ -35,7 +35,7 @@ const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
                 <div className="clearfix"></div>
             </div>
             <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Submit"}</Button>
-            <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
 
@@ -46,9 +46,9 @@ const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
     
     return (
         <form>
-            <Input defaultValue={ props.item? props.item.encoder : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="Name" placeholder="Name"  />
+            <Input defaultValue={ props.item? props.item.encoder : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb3" label="Name" placeholder="Name"  />
             <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
-            <Button onClick={()=> props.toggle(false)} type="button" className="ml2" sizeButton="small" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2"  typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
 
