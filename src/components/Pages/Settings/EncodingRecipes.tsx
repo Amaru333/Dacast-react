@@ -34,6 +34,78 @@ const recipesHeaderElement = (FunctionRecipe: Function) => {
     ]
 }
 
+const createRecipeHeaderElement = () => {
+    return[
+        <></>,
+        <Text size={14} weight="med">Preset</Text>,
+        <Text size={14} weight="med">Size (Px)</Text>,
+        <Text size={14} weight="med">Bitrate (Mbps)</Text>
+    ]
+}
+
+const createRecipeBodyElement = () => {
+    return [
+        [
+            <InputCheckbox id="2160p" />,
+            <Text size={14} weight="reg">4K - 2160p</Text>,
+            <Text size={14} weight="reg">3480</Text>,
+            <Text size={14} weight="reg">68</Text>
+        ],
+        [
+            <InputCheckbox id="1140p" />,
+            <Text size={14} weight="reg">2K - 1440p</Text>,
+            <Text size={14} weight="reg">2560</Text>,
+            <Text size={14} weight="reg">24</Text>
+        ],
+        [
+            <InputCheckbox id="1080p" />,
+            <Text size={14} weight="reg">HD - 1080p</Text>,
+            <Text size={14} weight="reg">1920</Text>,
+            <Text size={14} weight="reg">12</Text>
+        ],
+        [
+            <InputCheckbox id="720p" />,
+            <Text size={14} weight="reg">SD - 720p</Text>,
+            <Text size={14} weight="reg">1280</Text>,
+            <Text size={14} weight="reg">7.5</Text>
+        ],
+        [
+            <InputCheckbox id="480p" />,
+            <Text size={14} weight="reg">LD - 480p</Text>,
+            <Text size={14} weight="reg">854</Text>,
+            <Text size={14} weight="reg">4</Text>
+        ],
+        [
+            <InputCheckbox id="360p" />,
+            <Text size={14} weight="reg">SLD - 360p</Text>,
+            <Text size={14} weight="reg">640</Text>,
+            <Text size={14} weight="reg">1.5</Text>
+        ],
+        [
+            <InputCheckbox id="240p" />,
+            <Text size={14} weight="reg">ULD - 240p</Text>,
+            <Text size={14} weight="reg">426</Text>,
+            <Text size={14} weight="reg">0.5</Text>
+        ]
+    ]
+}
+
+const extraEncodingOptionsBodyElement = () => {
+    return [
+        [
+            <InputCheckbox id="magicEncoding" />,
+            <Text size={14} weight="reg">Magic Encoding</Text>,
+            <Text size={14} weight="reg">Auto</Text>,
+            <Text size={14} weight="reg">7.5</Text>
+        ],
+        [<InputCheckbox id="DNE" />,
+            <Text size={14} weight="reg">DNE - Do Not Encode</Text>,
+            <Text size={14} weight="reg">Auto</Text>,
+            <Text size={14} weight="reg">Auto</Text>
+        ]
+    ]
+}
+
 const settingsStep = () => {
     return (
        <StepContent className="clearfix">
@@ -70,7 +142,19 @@ const settingsStep = () => {
 
 const presetStep = () => {
     return (
-        <Text size={14} weight="reg">Presets step content</Text>
+        <StepContent className="clearfix">
+            <Text weight='reg' size={14}>
+                Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
+            </Text>
+            <Table className="col col-12 mt1" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement()} />
+            <Text className="col col-12 mt1" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
+            {/* extraEncodingOptions table to have header removed */}
+            <Table className="col col-12 mt1" id="extraEncodingOptions" header={createRecipeHeaderElement()} body={extraEncodingOptionsBodyElement()} />
+            <div className="flex col col-12 mt1">
+                <Icon>info</Icon>
+                <Text size={14} weight="reg">Need help choosing your presets? Visit the Knowledge Base</Text>
+            </div>
+        </StepContent>
     )
 }
 
@@ -93,7 +177,7 @@ const EncodingRecipes = () => {
                 <Icon style={{marginLeft: "10px"}}>info</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement()}></Table>
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement()} />
             <CustomStepper
             opened={createRecipeStepperOpen}
             stepperHeader="Create Recipes"
