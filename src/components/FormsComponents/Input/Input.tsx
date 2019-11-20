@@ -36,14 +36,14 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                         <AddonStyle suffix={false}>
                             {prefix}
                         </AddonStyle>
-                         :
+                        :
                         null}
                     <InputStyle ref={ref} isError={isError} {...other} />
                     {suffix ?
                         <AddonStyle suffix={true}>
                             {suffix}
                         </AddonStyle>
-                         :
+                        :
                         null}
                 </div>
                 {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
