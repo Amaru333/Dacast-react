@@ -14,9 +14,9 @@ export const CustomStepper = (props: StepperProps) => {
 
     const steps: string[] = props.stepTitles
 
-    const renderStepperContent = (stepIndex: number) => {
+    const renderStepperContent = (stepIndex: number, stepperData: any) => {
         return ( 
-            props.stepList[stepIndex]()
+            props.stepList[stepIndex](stepperData)
         )
     };
 
@@ -52,8 +52,8 @@ export const CustomStepper = (props: StepperProps) => {
                     })}
                 </Stepper>
             </StepperStyle>
-            <StepperContentStyle>
-                {renderStepperContent(stepIndex)}
+            <StepperContentStyle> 
+                {renderStepperContent(stepIndex, props.stepperData)}
             </StepperContentStyle>
             <StepperFooterStyle>
                 <Button {...props.nextButtonProps} onClick={nextStep}>

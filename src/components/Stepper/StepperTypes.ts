@@ -17,6 +17,7 @@ export interface StepperSpecificProps {
     finalFunction: Function;
     opened: boolean;
     functionCancel?: Function;
+    stepperData?: any;
 }
 
 export type StepperProps = StepperSpecificProps & React.HTMLAttributes<HTMLDivElement>

@@ -8,5 +8,5 @@ export interface EncodingRecipeItem {
 }
 
 export interface EncodingRecipes {
-    recipe: {}
+    recipes: EncodingRecipeItem[]
 }

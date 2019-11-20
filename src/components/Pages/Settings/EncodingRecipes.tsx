@@ -10,32 +10,24 @@ import { Input } from '../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
 import { EncodingRecipeItem } from './EncodingRecipesTypes';
 
+//TABLES
 
-const recipesBodyElement = (recipeData: EncodingRecipeItem) => {
-
-    return [[
-        <Text size={14} weight="reg">Default recipe</Text>,
-        <Icon>check</Icon>,
-        <IconContainer className="iconAction"><Icon>delete</Icon><Icon >edit</Icon> </IconContainer>
-    ],
-    [
-        <Text size={14} weight="reg">Jake's amazing recipe</Text>,
-        <></>,
-        <></>
-    ],
-    [
-        <Text size={14} weight="reg">{recipeData.name}</Text>,
-        <></>,
-        <IconContainer className="iconAction"><Icon>delete</Icon><Icon >edit</Icon> </IconContainer>
-    ]
-    ]
+const recipesBodyElement = (recipeData: EncodingRecipes, setSelectedRecipe: Function, editRecipe: Function) => {
+    return recipeData.map((value, key) => {
+        return [
+            <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
+            <Icon>{value.isDefault ? "check" : null}</Icon>,
+            <IconContainer className="iconAction"><Icon>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
+        ]
+    })
+    
 }
 
-const recipesHeaderElement = (FunctionRecipe: Function) => {
+const recipesHeaderElement = (newRecipe: Function) => {
     return[
         <Text size={14} weight="med">Name</Text>,
         <Text size={14} weight="med">Default</Text>,
-        <Button className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => FunctionRecipe(true)}>Create Recipe</Button>
+        <Button className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
     ]
 }
 
@@ -48,46 +40,46 @@ const createRecipeHeaderElement = () => {
     ]
 }
 
-const createRecipeBodyElement = () => {
+const createRecipeBodyElement = (stepperData) => {
     return [
         [
-            <InputCheckbox id="2160p" />,
+            <InputCheckbox defaultChecked={stepperData.recipePresets.includes("2160p")} id="2160p" />,
             <Text size={14} weight="reg">4K - 2160p</Text>,
             <Text size={14} weight="reg">3480</Text>,
             <Text size={14} weight="reg">68</Text>
         ],
         [
-            <InputCheckbox id="1140p" />,
+            <InputCheckbox id="1440p" defaultChecked={stepperData.recipePresets.includes("1440p")} />,
             <Text size={14} weight="reg">2K - 1440p</Text>,
             <Text size={14} weight="reg">2560</Text>,
             <Text size={14} weight="reg">24</Text>
         ],
         [
-            <InputCheckbox id="1080p" />,
+            <InputCheckbox id="1080p" defaultChecked={stepperData.recipePresets.includes("1080p")} />,
             <Text size={14} weight="reg">HD - 1080p</Text>,
             <Text size={14} weight="reg">1920</Text>,
             <Text size={14} weight="reg">12</Text>
         ],
         [
-            <InputCheckbox id="720p" />,
+            <InputCheckbox id="720p" defaultChecked={stepperData.recipePresets.includes("720p")} />,
             <Text size={14} weight="reg">SD - 720p</Text>,
             <Text size={14} weight="reg">1280</Text>,
             <Text size={14} weight="reg">7.5</Text>
         ],
         [
-            <InputCheckbox id="480p" />,
+            <InputCheckbox id="480p" defaultChecked={stepperData.recipePresets.includes("480p")} />,
             <Text size={14} weight="reg">LD - 480p</Text>,
             <Text size={14} weight="reg">854</Text>,
             <Text size={14} weight="reg">4</Text>
         ],
         [
-            <InputCheckbox id="360p" />,
+            <InputCheckbox id="360p" defaultChecked={stepperData.recipePresets.includes("360p")} />,
             <Text size={14} weight="reg">SLD - 360p</Text>,
             <Text size={14} weight="reg">640</Text>,
             <Text size={14} weight="reg">1.5</Text>
         ],
         [
-            <InputCheckbox id="240p" />,
+            <InputCheckbox id="240p" defaultChecked={stepperData.recipePresets.includes("240p")}/>,
             <Text size={14} weight="reg">ULD - 240p</Text>,
             <Text size={14} weight="reg">426</Text>,
             <Text size={14} weight="reg">0.5</Text>
@@ -95,15 +87,15 @@ const createRecipeBodyElement = () => {
     ]
 }
 
-const extraEncodingOptionsBodyElement = () => {
+const extraEncodingOptionsBodyElement = (stepperData) => {
     return [
         [
-            <InputCheckbox id="magicEncoding" />,
+            <InputCheckbox id="magicEncoding" defaultChecked={stepperData.recipePresets.includes("magicEncoding")} />,
             <Text size={14} weight="reg">Magic Encoding</Text>,
             <Text size={14} weight="reg">Auto</Text>,
             <Text size={14} weight="reg">7.5</Text>
         ],
-        [<InputCheckbox id="DNE" />,
+        [<InputCheckbox id="DNE" defaultChecked={stepperData.recipePresets.includes("DNE")} />,
             <Text size={14} weight="reg">DNE - Do Not Encode</Text>,
             <Text size={14} weight="reg">Auto</Text>,
             <Text size={14} weight="reg">Auto</Text>
@@ -111,31 +103,36 @@ const extraEncodingOptionsBodyElement = () => {
     ]
 }
 
-const settingsStep = () => {
+//STEPS
+
+const settingsStep = (stepperData: any) => {
+    
     return (
        <StepContent className="clearfix">
            <RecipeNameRow className="col-12 mb1">
-                <RecipeNameInput className="col-6" required label="Recipe Name" />
-                <DefaultRecipeCheckbox className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" />
+                <RecipeNameInput value={stepperData ? stepperData.name : ""} className="col-6" required label="Recipe Name" />
+                <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault} className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" />
            </RecipeNameRow>
            <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
            <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
            <Button className="col-2 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+           {stepperData.watermarkFile ? 
            <WatermarkFile className="col col-6 mt1">
-                <Text className="ml2" color="gray-1" size={14} weight="reg">my_watermark.png</Text>
+                <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                 <button style={{border: "none", backgroundColor:"inherit"}}>
                     <Icon style={{fontSize: "14px"}}>close</Icon>
                 </button>   
            </WatermarkFile>
+           : null}
            <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
            <PositioningRow className="col col-12">
                 
-                <Input className="col col-2" required label="Left"></Input>
+                <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft : null }className="col col-2" required label="Left"></Input>
                 <Suffix className="col col-1 mr2" >
                     <Text weight="med" size={14} color="gray-3">px</Text>
                 </Suffix>
-                <Input className="col col-2" required label="Right"></Input>
+                <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight : null} className="col col-2" required label="Right"></Input>
                 <Suffix className="col col-1" >
                     <Text weight="med" size={14} color="gray-3">px</Text>
                 </Suffix>
@@ -145,18 +142,18 @@ const settingsStep = () => {
     )
 }
 
-const presetStep = () => {
+const presetStep = (stepperData: any) => {
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement()} />
+            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData)} />
             <Text className="col col-12 mt25" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
             {/* extraEncodingOptions table to have header removed */}
-            <Table className="col col-12 mt1" id="extraEncodingOptions" body={extraEncodingOptionsBodyElement()} />
+            <Table className="col col-12 mt1" id="extraEncodingOptions" body={extraEncodingOptionsBodyElement(stepperData)} />
             <div className="flex col col-12 mt3">
-                <Icon style={{marginRight: "10px"}}>info</Icon>
+                <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help choosing your presets? Visit the Knowledge Base</Text>
             </div>
         </StepContent>
@@ -171,9 +168,23 @@ const stepList = [settingsStep, presetStep]
 
 const EncodingRecipes = () => {
 
-    const recipeData: EncodingRecipeItem = {name: "Sick new Recipe", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p"]}
+    const recipeData: EncodingRecipes = [
+        {name: "Sick new Recipe", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 3, watermarkPositioningRight: 3},
+        {name: "Default", isDefault: true, recipePresets: ["magicEncoding", "480p", "360p", "240p"]}
+]
 
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
+    const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
+
+    const editRecipe = (recipe: EncodingRecipeItem) => {
+        setSelectedRecipe(recipe);
+        FunctionRecipe(true);
+    }
+
+    const newRecipe = () => {
+        setSelectedRecipe(false);
+        FunctionRecipe(true);
+    }
 
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
 
@@ -181,13 +192,13 @@ const EncodingRecipes = () => {
         <Card className="col-12 clearfix p50">
             <HeaderStyle>
                 <Text size={20} weight="reg">Encoding Recipes</Text>
-                <Icon style={{marginLeft: "10px"}}>info</Icon>
+                <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(FunctionRecipe)} body={recipesBodyElement(recipeData)} />
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(recipeData, setSelectedRecipe, editRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
-            stepperHeader="Create Recipes"
+            stepperHeader={selectedRecipe ? "Edit Recipe" : "Create Recipe"}
             stepList={stepList}
             nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
             backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
@@ -195,7 +206,9 @@ const EncodingRecipes = () => {
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
             functionCancel={FunctionRecipe}
-            finalFunction={submitRecipe}/>
+            finalFunction={submitRecipe}
+            stepperData={selectedRecipe}
+            />
         </Card>
     )
 }
