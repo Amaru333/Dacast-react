@@ -74,7 +74,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                 required
                                 {...handleValidationProps('lastName', validations)} 
                             />
-                            <Avatar className="col col-1 ml1 mt3"  size='large' name='JL' /> 
+                            <Avatar className="col col-1 ml1 mt3"  size='large' name={value['firstName'] ? value['firstName'].value.toString() + ' ' + value['lastName'].value.toString() : props.ProfilePageDetails.firstName + ' ' + props.ProfilePageDetails.lastName} /> 
                         </AvatarInputContainer>
 
                     </div>
@@ -146,13 +146,13 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 <Button disabled={!enabledSubmit} form='profilePageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
+            <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
                 <ModalContent>
                     <Input 
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="currentPassword" 
                         label="Current Password" 
                         placeholder="Current Password" 
@@ -162,7 +162,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="newPassword" 
                         label="New Password" 
                         placeholder="New Password" 
@@ -173,7 +173,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         disabled={false} 
                         defaultValue={''}
                         type="password" 
-                        className="col col-12 p1" 
+                        className="col col-12" 
                         id="confirmPassword" 
                         label="Confirm Password" 
                         placeholder="Confirm Password" 
