@@ -1,8 +1,8 @@
 import { ActionTypes, DeliveryAndEmbedOptionType } from "./types";
 import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "..";
+import { ApplicationState } from "../..";
 import { SettingsServices } from './services';
-import { showToastNotification } from '../toasts';
+import { showToastNotification } from '../../toasts';
 
 export interface GetDeliveryAndEmbedOptions {
     type: ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS;

@@ -62,7 +62,7 @@ export interface RadioSpecificProps {
     checked?: boolean;
     label: string;
     disabled?: boolean;
-    value: string;
+    value?: string;
 }
 
 export type RadioProps = RadioSpecificProps & React.HTMLAttributes<HTMLInputElement>;

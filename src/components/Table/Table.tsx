@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TableProps} from './TableTypes'
-import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell } from './TableStyle';
+import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer } from './TableStyle';
 
 export const Table = (props: TableProps) => {
 
@@ -32,15 +32,19 @@ export const Table = (props: TableProps) => {
         })
     }
     return (
-        <TableContainer {...props}>
-            <TableHeaderContainer>
-                <TableHeaderRow>
-                    {renderTableHeader()}
-                </TableHeaderRow>
-            </TableHeaderContainer>
-            <TableBodyContainer>
-                {renderTableBody()}
-            </TableBodyContainer>
-        </TableContainer>
+        <WrapperResponsiveContainer  {...props}>
+            <TableContainer>
+                {props.header ? 
+                    <TableHeaderContainer>
+                        <TableHeaderRow>
+                            {renderTableHeader()}
+                        </TableHeaderRow>
+                    </TableHeaderContainer> : null
+                }
+                <TableBodyContainer>
+                    {renderTableBody()}
+                </TableBodyContainer>
+            </TableContainer>
+        </WrapperResponsiveContainer>
     );
 }

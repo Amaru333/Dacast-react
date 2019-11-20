@@ -5,6 +5,7 @@ import {DropdownSingle} from '../components/FormsComponents/Dropdown/DropdownSin
 import { withKnobs } from '@storybook/addon-knobs';
 import styled from 'styled-components';
 import "../scss/style.scss";
+import { DropdownCountries } from '../components/FormsComponents/Dropdown/DropdownCountries';
 
 
 const stories = storiesOf('Dropdown', module);
@@ -19,10 +20,17 @@ stories.add('Dropdown', () => {
                     dropdownTitle="My dropdown" 
                     list={{ "item1":false, "item2":false, "item3":false }}/> 
             </StorybookDropdownContainerStyle>
-            <StorybookDropdownContainerStyle>
+            {/* <StorybookDropdownContainerStyle>
                 <DropdownCheckbox  
                     id="checkboxDropdown"
                     dropdownTitle="My checkbox dropdown"
+                    list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }
+                /> 
+            </StorybookDropdownContainerStyle> */}
+            <StorybookDropdownContainerStyle>
+                <DropdownCountries 
+                    id="countriesDropdown"
+                    dropdownTitle="My ccountries dropdown"
                     list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }
                 /> 
             </StorybookDropdownContainerStyle>
