@@ -1,6 +1,9 @@
 import styled, {css} from 'styled-components';
 
-
+export const DatepickerContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 export const DatepickerStyle = styled.div<{isSingle: boolean}>`
     position: relative;
     width: 630px;
@@ -12,7 +15,7 @@ export const BoxStyle = styled.div<{}>`
     display: flex;
     flex-direction: row;
     position: relative;
-    height: 30px;
+    height: 22px;
     width: 283px;
     border: 1px solid ${props => props.theme.colors["violet"]};
     background-color: ${props => props.theme.colors["gray-10"]};
@@ -64,14 +67,19 @@ export const IconStyle = styled.div<{isCalendar: boolean}>`
     ${props => props.isCalendar && css`
         position: absolute;
         right: 5px;
-        padding-top: 0.125em;
+        top: 20%;
     `}
 `
 
-export const MonthContainerStyle = styled.div<{open: boolean}>`
+export const MonthContainerStyle = styled.div<{open: boolean, isSingle: boolean}>`
     display: grid;
-    position: relative;
+    position: absolute;
+    z-index: 999;
+    background-color: ${props => props.theme.colors['white']};
     max-width: 600px;
+    ${props => props.isSingle && css`
+        max-width: 300px;
+    `}
     margin: 5px 0 0 0;
     grid-template-columns: repeat(2, 300px);
     ${props => !props.open && css`

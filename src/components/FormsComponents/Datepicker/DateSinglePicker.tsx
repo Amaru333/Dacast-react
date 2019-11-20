@@ -3,7 +3,7 @@ import {useDatepicker, START_DATE, UseDatepickerProps, OnDatesChangeProps } from
 import DatepickerContext from "./DatepickerContext";
 import Month from "./Month";
 import { Icon } from '@material-ui/core';
-import {DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle, EndTextStyle} from './DatePickerStyle';
+import {DatepickerContainer, DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle, EndTextStyle} from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { DatePickerProps } from './DatePickerTypes';
@@ -63,7 +63,9 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
     });
 
     return (
-        <DatepickerStyle className={props.className} ref={datepickerRef} isSingle>
+        <DatepickerContainer className={props.className}>
+            {props.DatepickerTitle ?<Text size={14} weight='med' color='gray-1'>{props.DatepickerTitle}</Text> : null}
+            <DatepickerStyle  ref={datepickerRef} isSingle>
             <DatepickerContext.Provider
                 value={{
                     focusedDate,
@@ -87,7 +89,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                     </StartTextStyle>
                     <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>
                 </BoxStyle>
-                <MonthContainerStyle open={isOpened}>
+                <MonthContainerStyle isSingle open={isOpened}>
                     <NavButtonLeftStyle>
                         <NavButton onClick={goToPreviousMonths}>
                             <Icon>keyboard_arrow_left</Icon>
@@ -110,6 +112,8 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                 </MonthContainerStyle>
             </DatepickerContext.Provider>
         </DatepickerStyle>
+        </DatepickerContainer>
+
      
     );
 }

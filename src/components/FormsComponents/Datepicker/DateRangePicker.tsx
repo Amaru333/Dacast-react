@@ -94,7 +94,7 @@ export const  Datepicker = () => {
                     </EndTextStyle>
                     <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>
                 </BoxStyle>
-                <MonthContainerStyle open={isOpened}>
+                <MonthContainerStyle isSingle={false} open={isOpened}>
                     <NavButtonLeftStyle>
                         <NavButton onClick={goToPreviousMonths}>
                             <Icon>keyboard_arrow_left</Icon>
