@@ -97,10 +97,10 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; di
     width: 16px;
     cursor: pointer;
     margin-right: 8px;
-    ${props => ((props.defaultChecked !== false) && 
+    ${props => (
                 ((!props.checkbox.current && props.defaultChecked) 
                     || 
-                (props.checkbox.current && (props.checkbox.current.checked || props.defaultChecked) )))  && css`
+                (props.checkbox.current && (props.checkbox.current.checked) )))  && css`
         &:after{
             font-family: Material Icons;
             content: "check";
