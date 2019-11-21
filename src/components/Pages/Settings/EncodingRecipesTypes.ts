@@ -7,6 +7,6 @@ export interface EncodingRecipeItem {
     recipePresets: string[], 
 }
 
-export interface EncodingRecipes {
+export interface EncodingRecipesData {
     recipes: EncodingRecipeItem[]
 }

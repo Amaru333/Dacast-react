@@ -8,11 +8,11 @@ import styled from 'styled-components';
 import { CustomStepper } from '../../Stepper/Stepper';
 import { Input } from '../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
-import { EncodingRecipeItem } from './EncodingRecipesTypes';
+import { EncodingRecipeItem, EncodingRecipesData } from './EncodingRecipesTypes';
 
 //TABLES
 
-const recipesBodyElement = (recipeData: EncodingRecipes, setSelectedRecipe: Function, editRecipe: Function) => {
+const recipesBodyElement = (recipeData: EncodingRecipesData, setSelectedRecipe: Function, editRecipe: Function) => {
     return recipeData.map((value, key) => {
         return [
             <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
@@ -41,6 +41,7 @@ const createRecipeHeaderElement = () => {
 }
 
 const createRecipeBodyElement = (stepperData) => {
+
     return [
         [
             <InputCheckbox defaultChecked={stepperData.recipePresets.includes("2160p")} id="2160p" />,
@@ -106,7 +107,6 @@ const extraEncodingOptionsBodyElement = (stepperData) => {
 //STEPS
 
 const settingsStep = (stepperData: any) => {
-    
     return (
        <StepContent className="clearfix">
            <RecipeNameRow className="col-12 mb1">
@@ -168,11 +168,13 @@ const stepList = [settingsStep, presetStep]
 
 const EncodingRecipes = () => {
 
-    const recipeData: EncodingRecipes = [
+    const recipeData: EncodingRecipesData = [
         {name: "Sick new Recipe", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 3, watermarkPositioningRight: 3},
         {name: "Default", isDefault: true, recipePresets: ["magicEncoding", "480p", "360p", "240p"]}
 ]
 
+    const emptyRecipe = {name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+   
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
 
@@ -182,7 +184,7 @@ const EncodingRecipes = () => {
     }
 
     const newRecipe = () => {
-        setSelectedRecipe(false);
+        setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
     }
 
