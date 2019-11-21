@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
-import { DropdownProps } from './DropdownTypes';
+import { DropdownProps, DropdownCountriesProps } from './DropdownTypes';
 import { Text } from "../../Typography/Text";
 import { Input } from '../Input/Input';
 
-export const ContainerStyle = styled.div<DropdownProps>`
+export const ContainerStyle = styled.div<DropdownProps | DropdownCountriesProps>`
     display: block;
     height:auto;
     position: relative;

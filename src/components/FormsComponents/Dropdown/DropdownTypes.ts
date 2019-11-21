@@ -26,10 +26,18 @@ export interface ContinentListType {
 }
 
 interface DropdownCountriesSpecificProps {
-    list: ContinentListType;
+    list: string[];
+    id: string;
+    dropdownTitle: string;
+    isNavigation?: boolean;
+    ref?: any;
+    callback?: Function;
+    hasSearch?: boolean;
 }
 
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
+
+export type DropdownCountriesProps =  DropdownCountriesSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
 
