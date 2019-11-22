@@ -13,7 +13,7 @@ import { Icon } from '@material-ui/core';
 import { Modal } from '../../../Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
-import { SettingsSecurityDetails } from '../../../../redux-flow/store/Settings/Security/types';
+import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../../redux-flow/store/Settings/Security/types';
 
 interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
@@ -30,6 +30,19 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
 
+    React.useEffect(() => {}, [selectedItem])
+
+    const domainControlEmptyValues: DomainControl = {
+        name: '',
+        isDefault: false,
+        domains: []
+    }
+
+    const geoRestrictionEmptyValues: GeoRestriction = {
+        name: '',
+        isDefault: false,
+        countries: ['']
+    }
 
     let formRef = React.useRef<HTMLFormElement>(null);   
     let {value, validations, enabledSubmit} = formSubmit(formRef);
@@ -172,11 +185,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 </form>
             </Card>
             <Modal hasClose={false} title='Create Geo-restricion Group' toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
-                <GeoRestrictionForm item={props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0]} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
+                <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
             </Modal>
 
             <Modal hasClose={false} title='Create Domain Group' toggle={() => setDomainControlModalOpened(!domainControlModalOpened)} size='small' opened={domainControlModalOpened}>
-            <DomainControlForm item={props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0]} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
+            <DomainControlForm item={selectedItem  && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
             </Modal>
 
         </div>

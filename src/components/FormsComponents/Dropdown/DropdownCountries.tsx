@@ -2,7 +2,7 @@ import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton } from './DropdownStyle';
-import { DropdownProps , dropdownIcons, ContinentListType, DropdownCountriesProps} from './DropdownTypes';
+import { dropdownIcons, ContinentListType, DropdownCountriesProps} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Input } from '../Input/Input';
@@ -18,19 +18,24 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
     const [selectAllState, setSelectAllState] = React.useState<'unchecked' | 'checked' | 'undeterminate'>('unchecked');
     const [filteringList, setFilteringList] = React.useState<string>('');
 
-
     React.useEffect(() => {
+
         let initCountriesList: ContinentListType = {...Object.keys(continents).reduce((reduced, continent) => {
             return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked'}}
         }, {})}
         Object.keys(countries).forEach((country) => {
             const continent = continents[countries[country].continent]
-            initCountriesList[continent].countries = {...initCountriesList[continent].countries, [countries[country].name]: {isChecked: false, isFiltered: false}}
+            initCountriesList[continent].countries = {...initCountriesList[continent].countries, [countries[country].name]: {isChecked: props.list.includes(countries[country].name), isFiltered: false}}
         })
-        console.log(initCountriesList)
+        Object.keys(initCountriesList).forEach((continent) => {
+            initCountriesList[continent].checked = handleContinentState(continent, initCountriesList)
+        })
+
         setCheckedContinents(initCountriesList);
         setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
-    }, [])
+        handleTitle();
+        handleSelectAllState();
+    }, [props.list])
 
     useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
 
@@ -92,10 +97,10 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         const checkedCountries = Object.keys(continents[continent].countries).filter(country => continents[continent].countries[country].isChecked && !continents[continent].countries[country].isFiltered).length;
         if(checkedCountries === 0) {
             return 'unchecked'
-        } else if(checkedCountries === Object.keys(continents[continent].countries).filter(country => !continents[continent].countries[country].isFiltered).length) {
+        }else if(checkedCountries === Object.keys(continents[continent].countries).filter(country => !continents[continent].countries[country].isFiltered).length) {
             return 'checked'
-        } else {
-            return 'undeterminate'
+        }else {
+           return 'undeterminate'
         }
 
     }
@@ -289,10 +294,13 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                 })
             )
         }
+        else {
+            return null
+        }
     }
     
     return (
-        <ContainerStyle {...props} >
+        <ContainerStyle>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title ref={null}><Text size={14} weight='reg'>{selectedItem}</Text></Title>

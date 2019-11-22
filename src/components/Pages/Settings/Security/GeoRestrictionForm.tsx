@@ -4,11 +4,15 @@ import { GeoRestriction } from '../../../../redux-flow/store/Settings/Security/t
 import { DropdownCountries } from '../../../FormsComponents/Dropdown/DropdownCountries';
 import { InputCheckbox } from '../../../FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../FormsComponents/Button/Button';
-import { Toggle } from 'material-ui';
 
-export const GeoRestrictionForm = (props: {item?: GeoRestriction; toggle:Function; submit: Function}) => {
+export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle:Function; submit: Function}) => {
 
-    const [geoRestrictionItem, setGeoRestrictionItem] = React.useState<GeoRestriction>(props.item);
+    const [geoRestrictionItem, setGeoRestrictionItem] = React.useState<GeoRestriction>(null);
+
+    React.useEffect(() => {
+        setGeoRestrictionItem(props.item)
+    }, [props.item])
+    console.log(props.item)
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -16,9 +20,11 @@ export const GeoRestrictionForm = (props: {item?: GeoRestriction; toggle:Functio
         props.toggle(false);
     }
     return (
+        geoRestrictionItem ?
+
         <form onSubmit={event => submitForm(event)}>
             <Input 
-                defaultValue={props.item? props.item.name : ''}
+                defaultValue={geoRestrictionItem.name}
                 disabled={false}
                 onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, name: event.currentTarget.value})}
                 required
@@ -28,23 +34,26 @@ export const GeoRestrictionForm = (props: {item?: GeoRestriction; toggle:Functio
                 label='Group Name'
                 placeholder='Group Name'
             />
-            <DropdownCountries 
-                className='col col-12 py1'
-                id="geoRestrictionCountriesDropdown"
-                dropdownTitle="Countries"
-                list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }
-            />
+            <div className='col col-12 py1'>
+                <DropdownCountries 
+                    id="geoRestrictionCountriesDropdown"
+                    dropdownTitle="Countries"
+                    list={geoRestrictionItem.countries}
+                />
+            </div>
+
             <InputCheckbox 
                 className='col col-12 py1'
                 id='geoRestrictionDefautChecked'
                 label='Make as Default Group'
                 onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, isDefault: event.currentTarget.checked})}
-                defaultChecked={props.item ? props.item.isDefault : true}
+                defaultChecked={geoRestrictionItem.isDefault}
             />
             <div className='col col-12 py1'>
                 <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Create"}</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </form>
+        : null
     )
 }

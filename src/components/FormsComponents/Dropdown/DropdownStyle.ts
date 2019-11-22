@@ -3,7 +3,7 @@ import { DropdownProps, DropdownCountriesProps } from './DropdownTypes';
 import { Text } from "../../Typography/Text";
 import { Input } from '../Input/Input';
 
-export const ContainerStyle = styled.div<DropdownProps | DropdownCountriesProps>`
+export const ContainerStyle = styled.div<{}>`
     display: block;
     height:auto;
     position: relative;
@@ -51,8 +51,8 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    right: .5rem;
-    left: .5rem;
+    right: 0;
+    left: 0;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
@@ -138,6 +138,7 @@ export const SearchItem = styled.div`
     position: sticky;
     top: 0;
     display: flex;
+    background-color: ${props => props.theme.colors.white};
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
 `
 

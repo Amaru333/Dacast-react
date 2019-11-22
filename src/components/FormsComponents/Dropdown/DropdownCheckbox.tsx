@@ -97,7 +97,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     }
     
     return (
-        <ContainerStyle {...props} >
+        <ContainerStyle >
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title ref={null}><Text size={14} weight='reg'>{selectedItem}</Text></Title>

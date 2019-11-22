@@ -100,7 +100,7 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
     }
     
     return (
-        <ContainerStyle  {...props} >
+        <ContainerStyle >
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title ref={ref} ><Text  size={14} weight='reg'>{selectedItem}</Text></Title>

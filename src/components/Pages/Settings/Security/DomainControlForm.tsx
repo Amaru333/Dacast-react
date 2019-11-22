@@ -5,7 +5,7 @@ import { InputCheckbox } from '../../../FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../FormsComponents/Button/Button';
 import { InputTags } from '../../../FormsComponents/Input/InputTags';
 
-export const DomainControlForm = (props: {item?: DomainControl, toggle:Function, submit: Function}) => {
+export const DomainControlForm = (props: {item: DomainControl, toggle:Function, submit: Function}) => {
 
     const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(props.item);
 
@@ -17,7 +17,7 @@ export const DomainControlForm = (props: {item?: DomainControl, toggle:Function,
     return (
         <form onSubmit={event => submitForm(event)}>
             <Input 
-                defaultValue={props.item? props.item.name : ''}
+                defaultValue={props.item.name}
                 disabled={false}
                 onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
 
@@ -30,7 +30,7 @@ export const DomainControlForm = (props: {item?: DomainControl, toggle:Function,
             />
             <InputTags 
                 className='col col-12 py1'
-                defaultTags={props.item ? props.item.domains : []} 
+                defaultTags={props.item.domains} 
                 placeholder="Type URL" 
                 label="URLS"
             />
@@ -40,7 +40,7 @@ export const DomainControlForm = (props: {item?: DomainControl, toggle:Function,
                 id='domainControlDefautGroup'
                 onChange={(event) => setDomainControlItem({...domainControlItem, isDefault: event.currentTarget.checked})}
                 label='Make as Default Group'
-                defaultChecked={props.item ? props.item.isDefault : true}
+                defaultChecked={props.item.isDefault}
             />
             <div className='col col-12 py1'>
                 <Button sizeButton="large" type="submit" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Create"}</Button>

@@ -7,8 +7,12 @@ import { Tooltip } from '../../Tooltip/Tooltip';
 
 export const InputTags = (props: TagProps) => {
 
-    const [tags, setTags] = React.useState<string[]>(props.defaultTags)
+    const [tags, setTags] = React.useState<string[]>([])
     const inputRef = React.useRef<HTMLInputElement>(null);
+
+    React.useEffect(() => {
+        setTags(props.defaultTags)
+    }, [props.defaultTags])
 
     const removeTag = (i: number) => {
         const newTags = [ ...tags ];
