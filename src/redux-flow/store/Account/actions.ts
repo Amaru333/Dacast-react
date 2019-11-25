@@ -34,7 +34,7 @@ export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
         await AccountServices.getCompanyPageDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
-            }).catch(error => {
+            }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -57,7 +57,7 @@ export const getUploadLogoUrl = (): ThunkDispatch<Promise<void>, {}, GetUploadLo
         await AccountServices.getUploadLogoUrlService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_UPLOAD_LOGO_URL, payload: response.data} );
-            }).catch(error => {
+            }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -101,7 +101,7 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
             .then( response => {
                 dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
-            }).catch(error => {
+            }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

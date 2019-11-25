@@ -71,7 +71,7 @@ export const IconStyle = styled.div<{isCalendar: boolean}>`
     `}
 `
 
-export const MonthContainerStyle = styled.div<{open: boolean, isSingle: boolean}>`
+export const MonthContainerStyle = styled.div<{open: boolean; isSingle: boolean}>`
     display: grid;
     position: absolute;
     z-index: 999;

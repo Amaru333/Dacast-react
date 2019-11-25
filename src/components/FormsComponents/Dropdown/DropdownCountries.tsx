@@ -18,26 +18,28 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
     const [selectAllState, setSelectAllState] = React.useState<'unchecked' | 'checked' | 'undeterminate'>('unchecked');
     const [filteringList, setFilteringList] = React.useState<string>('');
 
-    React.useEffect(() => {
 
-        let initCountriesList: ContinentListType = {...Object.keys(continents).reduce((reduced, continent) => {
-            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked'}}
-        }, {})}
-        Object.keys(countries).forEach((country) => {
-            const continent = continents[countries[country].continent]
-            initCountriesList[continent].countries = {...initCountriesList[continent].countries, [countries[country].name]: {isChecked: props.list.includes(countries[country].name), isFiltered: false}}
-        })
-        Object.keys(initCountriesList).forEach((continent) => {
-            initCountriesList[continent].checked = handleContinentState(continent, initCountriesList)
-        })
+    useOutsideAlerter(dropdownListRef, () => {
+        setOpen(!isOpened)
+        if(props.callback) {
+            let returnedString: string[] = []
+            Object.keys(checkedContinents).map((continent) => {
+                if(checkedContinents[continent].checked === 'checked') {
+                    returnedString.push(continent)
+                }
+                else if(checkedContinents[continent].checked === 'undeterminate') {
+                    Object.keys(checkedContinents[continent].countries).map((country) => {
+                        if(checkedContinents[continent].countries[country].isChecked) {
+                            returnedString.push(country);
+                        }
+                    })
+                }
 
-        setCheckedContinents(initCountriesList);
-        setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
-        handleTitle();
-        handleSelectAllState();
-    }, [props.list])
-
-    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
+            })
+            console.log(returnedString);
+            props.callback(returnedString);
+        }
+    });
 
     const handleTitle = () => {
         if(checkedContinents) {
@@ -100,10 +102,29 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         }else if(checkedCountries === Object.keys(continents[continent].countries).filter(country => !continents[continent].countries[country].isFiltered).length) {
             return 'checked'
         }else {
-           return 'undeterminate'
+            return 'undeterminate'
         }
 
     }
+
+    React.useEffect(() => {
+
+        let initCountriesList: ContinentListType = {...Object.keys(continents).reduce((reduced, continent) => {
+            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked'}}
+        }, {})}
+        Object.keys(countries).forEach((country) => {
+            const continent = continents[countries[country].continent]
+            initCountriesList[continent].countries = {...initCountriesList[continent].countries, [countries[country].name]: {isChecked: props.list.includes(countries[country].name), isFiltered: false}}
+        })
+        Object.keys(initCountriesList).forEach((continent) => {
+            initCountriesList[continent].checked = handleContinentState(continent, initCountriesList)
+        })
+
+        setCheckedContinents(initCountriesList);
+        setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
+        handleTitle();
+        handleSelectAllState();
+    }, [props.list])
     
     React.useEffect(() => {
         handleTitle();
@@ -215,7 +236,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                             {key === 0 ?
                                 <>
                                 <SearchItem 
-                                    key={props.id + '_search'} 
+                                    key={props.id + key.toString() + '_search'} 
                                     id={props.id + '_search'} 
                                 > 
                                     <SearchIconStyle>
@@ -237,7 +258,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                             null
                                     }
                                 </SearchItem>
-                                    <DropdownItem key={key+"selectAllcountries"} isSelected={false}> 
+                                    <DropdownItem key={key.toString()+"selectAllcountries"} isSelected={false}> 
                                         <InputCheckbox 
                                             id={props.id + '_SelectAll'} 
                                             label={"Select All"}
@@ -246,7 +267,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                             defaultChecked={selectAllState === 'checked'}
                                             onChange={() => handleSelectAllChange()}/> 
                                     </DropdownItem>
-                                    <BorderItem />
+                                    <BorderItem key={key.toString()+"borderItem"} />
                                 </>
                                 : null}
                             <DropdownItem style={{paddingLeft: '4px'}} key={props.id + '_' + continent + key.toString()} isSelected={false}  >
@@ -303,7 +324,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         <ContainerStyle>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                <Title ref={null}><Text size={14} weight='reg'>{selectedItem}</Text></Title>
+                <Title><Text size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
             <DropdownList isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>

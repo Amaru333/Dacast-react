@@ -14,6 +14,8 @@ import { Modal } from '../../../Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../../redux-flow/store/Settings/Security/types';
+var moment = require('moment-timezone');
+
 
 interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
@@ -48,6 +50,21 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     let {value, validations, enabledSubmit} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
         event.preventDefault();
+        props.saveSettingsSecurityOptions({
+            privateVideo: value['Private Videos'].value,
+            passowrdProtectedVideo: {
+                enabled: value['Password Protected Videos'].value,
+                promptTime: value['promptTime'] ? value['promptTime'].value : null,
+                password: value['password'] ? value['password'].value : null
+            },
+            videoScheduling: {
+                enabled: value['Video Scheduling'].value,
+                startDate: value['startDate'] ? value['startDate'].value : null,
+                startTime: value['startTime'] ? value['startTime'].value : null,
+                endDate: value['endDate'] ? value['endDate'].value : null,
+                endTime: value['endTime'] ? value['endTime'].value : null
+            }
+        })
     }
 
     const tableHeaderElement= (tableType: string) => {
@@ -85,20 +102,20 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     return (
         <div>
             <Card>
-                <form ref={formRef} onSubmit={event => handleSubmit(event, value)}>
+                <form id='settingsPageForm' ref={formRef} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
-                    <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={true} {...handleValidationProps('Private Videos', validations)}/>
+                    <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo>
                     <div className='col col-12'>
-                        <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={false} {...handleValidationProps('Password Protected Videos', validations)}/>
+                        <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
                         <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
                         {
-                            value['Password Protected Videos'] && value['Password Protected Videos'].value ?
+                            value['Password Protected Videos'] && value['Password Protected Videos'].value || props.securityDetails.videoScheduling.enabled && value['Password Protected Videos'] && typeof value['Password Protected Videos'].value === 'string' ?
                                 <div className='col col-12 mx3 '>
                                     <Input 
                                         type='time' 
-                                        defaultValue='00:00:00'
+                                        defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
                                         className='col col-2 ml2 p1'
                                         disabled={false} 
                                         id='promptTime' 
@@ -108,7 +125,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         
                                     <Input 
                                         type='password' 
-                                        defaultValue='' 
+                                        defaultValue={props.securityDetails.passwordProtectedVideo.password ? props.securityDetails.passwordProtectedVideo.password : ''} 
                                         className='col col-3 p1'
                                         disabled={false} 
                                         id='password' 
@@ -117,51 +134,66 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         required
                                     />
                                 </div>
-                            : 
-                            null
+                                : 
+                                null
                         }
 
                     </div>
 
                     <div className='col col-12'>
 
-                        <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={false} {...handleValidationProps('Video Scheduling', validations)}/>
+                        <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
                         <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {   
-                            value['Video Scheduling'] && value['Video Scheduling'].value ?
+                            value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
                                 <>
-                                    <div className='col col-12 py1'>   
-                                        <DateSinglePicker 
-                                            DatepickerTitle='Start Date' 
-                                            className='col col-3 p1' 
-                                        />
-                                        <DropdownSingle 
-                                            className='col col-2 p1' 
-                                            list={{'item1': false, ["item2"]: false}} 
-                                            id='startTime' 
-                                            dropdownTitle='Start Time' 
-                                            defaultValue='item1' 
-                                            
-                                        />
+                                    <div className='col col-12 py1 mx3'>
+                                        <div className='col col-3 p1 mx2'>
+                                            <DateSinglePicker 
+                                                DatepickerTitle='Start Date'
+                                                id="startDate"
+                                                callback={(startDateValue: string) => { value = {...value, ['startDate']: {value: startDateValue}}}}
+
+                                            />
+                                        </div>
+                                        <div className='col col-2 p1'>
+                                            <DropdownSingle    
+                                                hasSearch                                      
+                                                list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                                                id='startTime' 
+                                                dropdownTitle='Start Time' 
+                                                defaultValue={props.securityDetails.videoScheduling.startTime ? props.securityDetails.videoScheduling.startTime : 'Select'} 
+                                                callback={(startTimeValue: string) => { value = {...value, ['startTime']: {value: startTimeValue}}}}
+                                            />
+                                        </div>
+
 
                                     </div>
-                                    <div className='col col-12 py1'>
-                                        <DateSinglePicker 
-                                            DatepickerTitle='End Date' 
-                                            className='col col-3 p1' 
-                                        />
-                                        <DropdownSingle 
-                                            className='col col-2 p1' 
-                                            list={{'item1': false, ["item2"]: false}} 
-                                            id='endTime' 
-                                            dropdownTitle='End Time' 
-                                            defaultValue='item1' 
-                                        />
+                                    <div className='col col-12 py1 mx3'>
+                                        <div className='col col-3 p1 mx2' >
+                                            <DateSinglePicker 
+                                                DatepickerTitle='End Date' 
+                                                id="endDate"
+                                                callback={(endDateValue: string) => { value = {...value, ['endDate']: {value: endDateValue}}}}
+                                            />
+                                        </div>
+
+                                        <div className='col col-2 p1'>
+                                            <DropdownSingle 
+                                                hasSearch
+                                                callback={(endTimeValue: string) => { value = {...value, ['endTime']: {value: endTimeValue}}}}
+                                                list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                                                id='endTime' 
+                                                dropdownTitle='End Time' 
+                                                defaultValue={props.securityDetails.videoScheduling.endTime ? props.securityDetails.videoScheduling.endTime : 'Select'} 
+                                            />              
+                                        </div  >
+
 
                                     </div>
                                 </>
-                            :
-                            null
+                                :
+                                null
                         }
 
 
@@ -184,12 +216,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <Table className="col-12" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>
+            <div>
+                <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+            </div>
             <Modal hasClose={false} title='Create Geo-restricion Group' toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
             </Modal>
 
             <Modal hasClose={false} title='Create Domain Group' toggle={() => setDomainControlModalOpened(!domainControlModalOpened)} size='small' opened={domainControlModalOpened}>
-            <DomainControlForm item={selectedItem  && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
+                <DomainControlForm item={selectedItem  && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
             </Modal>
 
         </div>

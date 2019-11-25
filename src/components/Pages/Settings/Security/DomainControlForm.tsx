@@ -5,47 +5,52 @@ import { InputCheckbox } from '../../../FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../FormsComponents/Button/Button';
 import { InputTags } from '../../../FormsComponents/Input/InputTags';
 
-export const DomainControlForm = (props: {item: DomainControl, toggle:Function, submit: Function}) => {
+export const DomainControlForm = (props: {item: DomainControl; toggle: Function; submit: Function}) => {
 
-    const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(props.item);
+    const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(null);
 
+    React.useEffect(() => {
+        setDomainControlItem(props.item)
+    }, [props.item])
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         props.submit(domainControlItem);
         props.toggle(false);
     }
     return (
-        <form onSubmit={event => submitForm(event)}>
-            <Input 
-                defaultValue={props.item.name}
-                disabled={false}
-                onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
+        domainControlItem ? 
+            <form onSubmit={event => submitForm(event)}>
+                <Input 
+                    defaultValue={domainControlItem.name}
+                    disabled={false}
+                    onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
 
-                required
-                id='domainControlName'
-                type='text'
-                className='col col-12 py1'
-                label='Group Name'
-                placeholder='Group Name'
-            />
-            <InputTags 
-                className='col col-12 py1'
-                defaultTags={props.item.domains} 
-                placeholder="Type URL" 
-                label="URLS"
-            />
+                    required
+                    id='domainControlName'
+                    type='text'
+                    className='col col-12 py1'
+                    label='Group Name'
+                    placeholder='Group Name'
+                />
+                <InputTags 
+                    className='col col-12 py1'
+                    defaultTags={domainControlItem.domains} 
+                    placeholder="Type URL" 
+                    label="URLS"
+                />
 
-            <InputCheckbox 
-                className='col col-12 py1'
-                id='domainControlDefautGroup'
-                onChange={(event) => setDomainControlItem({...domainControlItem, isDefault: event.currentTarget.checked})}
-                label='Make as Default Group'
-                defaultChecked={props.item.isDefault}
-            />
-            <div className='col col-12 py1'>
-                <Button sizeButton="large" type="submit" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Create"}</Button>
-                <Button sizeButton="large" onClick={() => props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
-            </div>
-        </form>
+                <InputCheckbox 
+                    className='col col-12 py1'
+                    id='domainControlDefautGroup'
+                    onChange={(event) => setDomainControlItem({...domainControlItem, isDefault: event.currentTarget.checked})}
+                    label='Make as Default Group'
+                    defaultChecked={domainControlItem.isDefault}
+                />
+                <div className='col col-12 py1'>
+                    <Button sizeButton="large" type="submit" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Create"}</Button>
+                    <Button sizeButton="large" onClick={() => props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                </div>
+            </form>
+            : null
     )
 }

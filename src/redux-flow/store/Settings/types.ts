@@ -14,7 +14,7 @@ export const SettingsInitialState: SettingsState = {
 export interface  SettingsState {
     apiIntegration: false | ApiIntegrationPageInfos;
     deliveryAndEmbed: false | DeliveryAndEmbedOptionType;
-    security: false | SettingsSecurityDetails
+    security: false | SettingsSecurityDetails;
 }
 
 export const SettingsReducer: Reducer<SettingsState> = combineReducers({

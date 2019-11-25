@@ -34,13 +34,13 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             case 'tel':
             case 'text':
                 element.addEventListener('keyup', (event) => {
-    
+                    event.preventDefault();
                     setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
                 });
                 break;
             case 'checkbox':
                 element.addEventListener('change', (event) => {
-    
+                    event.preventDefault();
                     setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.checked} } } );
                 });
                 
@@ -59,7 +59,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
                 .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
                 .reduce((obj, key) => {
-                    dataValueInit = { ...dataValueInit, [formRef.current![key].id]: { value: formRef.current![key].defaultValue }  };
+                    dataValueInit = { ...dataValueInit, [formRef.current![key].id]: { value: formRef.current![key].type === 'checkbox' ? formRef.current![key].defaultChecked: formRef.current![key].defaultValue }  };
                     dataInit = { ...dataInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
                     return {
                         ...obj,
@@ -73,6 +73,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
 
             Object.entries(filtered).map(([key, element]) =>  {
                 element.addEventListener('blur', (event) => {
+                    event.preventDefault();
                     let validity = element.checkValidity();
                     setData( (data: ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
                 });
@@ -91,6 +92,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
         }
         
     }, [dataValue, data, enabledSubmit])
+    console.log(dataValue)
     return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
 
 }

@@ -1,7 +1,6 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, DeliveryAndEmbedOptionType } from "./types";
-import { SettingsInitialState, SettingsState } from '..';
 
 const reducer: Reducer<DeliveryAndEmbedOptionType> = (state = {}, action: Action) => {
     switch (action.type) {

@@ -25,9 +25,7 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
         isSelected,
         isSelectedStartOrEnd,
         isWithinHoverRange,
-        disabledDate,
         onClick,
-        onKeyDown,
         onMouseEnter,
         tabIndex
     } = useDay({

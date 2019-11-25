@@ -9,30 +9,48 @@ export enum ActionTypes {
 }
 
 
-export type GeoRestriction = {
+export interface GeoRestriction {
     name: string;
     isDefault: boolean;
     countries: string[];
 }
 
-export type DomainControl = {
+export interface DomainControl {
     name: string;
     isDefault: boolean;
     domains: string[];
 }
 
+interface PasswordProtectedVideo {
+    enabled: boolean;
+    promptTime?: string;
+    password?: string;
+}
+
+interface VideoScheduling {
+    enabled: boolean;
+    startDate?: string;
+    startTime?: string;
+    endDate?: string;
+    endTime?: string;
+}
+
 export interface SettingsSecurityDetails {
     privateVideo: boolean;
-    passwordProtectedVideo: boolean;
-    videoScheduling: boolean;
-    geoRestriction: GeoRestriction[];
-    domainControl: DomainControl[];
+    passwordProtectedVideo: PasswordProtectedVideo;
+    videoScheduling: VideoScheduling;
+    geoRestriction?: GeoRestriction[];
+    domainControl?: DomainControl[];
 }
 
 export const defaultStateSettingsSecurity: SettingsSecurityDetails = {
     privateVideo: false,
-    passwordProtectedVideo: false,
-    videoScheduling: false,
+    passwordProtectedVideo: {
+        enabled: false
+    },
+    videoScheduling: {
+        enabled: false,
+    },
     geoRestriction: [],
     domainControl: [],
 }
