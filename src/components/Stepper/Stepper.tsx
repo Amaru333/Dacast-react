@@ -14,7 +14,6 @@ export const CustomStepper = (props: StepperProps) => {
 
     const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
-        console.log(stepperData)
         return ( 
             props.stepList[stepIndex](stepperData, updateStepperData)
         )
@@ -25,7 +24,9 @@ export const CustomStepper = (props: StepperProps) => {
             setStepIndex(stepIndex + 1)
         }
         else {
+            setStepIndex(0)
             props.finalFunction()
+            
         }
     }
 

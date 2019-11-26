@@ -9,6 +9,7 @@ import { CustomStepper } from '../../Stepper/Stepper';
 import { Input } from '../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
 import { EncodingRecipeItem, EncodingRecipesData } from './EncodingRecipesTypes';
+import { forceReRender } from '@storybook/react';
 
 //TABLES
 
@@ -289,8 +290,11 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
     )
 }
 
-const submitRecipe = (selectedRecipe) => {
-    console.log(selectedRecipe)
+const submitRecipe = (selectedRecipe, recipeData: EncodingRecipeData, FunctionRecipe) => {
+    recipeData.push(selectedRecipe)
+    FunctionRecipe(false)
+    forceUpdate()
+    console.log(recipeData)
 }
 
 const stepList = [settingsStep, presetStep]
@@ -337,7 +341,7 @@ const EncodingRecipes = () => {
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
             functionCancel={FunctionRecipe}
-            finalFunction={() => submitRecipe(selectedRecipe)}
+            finalFunction={() => submitRecipe(selectedRecipe, recipeData, FunctionRecipe)}
             stepperData={selectedRecipe}
             updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
             />
