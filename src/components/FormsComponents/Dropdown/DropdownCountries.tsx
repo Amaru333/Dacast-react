@@ -285,31 +285,31 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                 </ContinentContainer> 
 
                             </DropdownItem>
-                                {
-                                    Object.keys(checkedContinents[continent].countries).map((country, key) => {
+                            {
+                                Object.keys(checkedContinents[continent].countries).map((country, key) => {
                                         
-                                        return (
-                                            <CountryContainer isDisplayed={toggleContinent[continent]} key={props.id + '_' + continent + '_' + country + key.toString()}>
-                                                { 
-                                                    !checkedContinents[continent].countries[country].isFiltered ?
-                                                        <DropdownItem  className='ml3'  isSelected={false}  > 
-                                                            <InputCheckbox 
-                                                                id={props.id + '_' + continent + '_' + country} 
-                                                                label={country}
-                                                                labelWeight="reg"
-                                                                defaultChecked={checkedContinents[continent].countries[country].isChecked}
-                                                                onChange={() => handleCheckboxCountryChange(continent, country)}/> 
-                                                        </DropdownItem>
-                                                        : 
-                                                        null
+                                    return (
+                                        <CountryContainer isDisplayed={toggleContinent[continent]} key={props.id + '_' + continent + '_' + country + key.toString()}>
+                                            { 
+                                                !checkedContinents[continent].countries[country].isFiltered ?
+                                                    <DropdownItem  className='ml3'  isSelected={false}  > 
+                                                        <InputCheckbox 
+                                                            id={props.id + '_' + continent + '_' + country} 
+                                                            label={country}
+                                                            labelWeight="reg"
+                                                            defaultChecked={checkedContinents[continent].countries[country].isChecked}
+                                                            onChange={() => handleCheckboxCountryChange(continent, country)}/> 
+                                                    </DropdownItem>
+                                                    : 
+                                                    null
 
-                                                }
+                                            }
 
-                                            </CountryContainer>
+                                        </CountryContainer>
 
-                                        )
-                                    })
-                                }
+                                    )
+                                })
+                            }
                         </React.Fragment>
                     )                
                 })

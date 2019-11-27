@@ -17,7 +17,7 @@ const reducer: Reducer<SettingsSecurityDetails> = (state = defaultStateSettingsS
         case ActionTypes.SAVE_GEO_RESTRICTION_GROUP:
             let savedGeoRestriction = state.geoRestriction.filter(item => item.name !== action.payload.name)
             if(action.payload.isDefault) {
-                savedGeoRestriction = savedGeoRestriction.map((item:GeoRestriction) => {return {...item, isDefault: false}})
+                savedGeoRestriction = savedGeoRestriction.map((item: GeoRestriction) => {return {...item, isDefault: false}})
             }
             savedGeoRestriction.push(action.payload)
             return {
@@ -33,7 +33,7 @@ const reducer: Reducer<SettingsSecurityDetails> = (state = defaultStateSettingsS
         case ActionTypes.SAVE_DOMAIN_CONTROL_GROUP:
             let savedDomainControl = state.domainControl.filter(item => item.name !== action.payload.name)
             if(action.payload.isDefault) {
-                savedDomainControl = savedDomainControl.map((item:DomainControl) => {return {...item, isDefault: false}})
+                savedDomainControl = savedDomainControl.map((item: DomainControl) => {return {...item, isDefault: false}})
             }
             savedDomainControl.push(action.payload)
             return {

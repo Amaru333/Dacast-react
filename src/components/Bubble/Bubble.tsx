@@ -28,9 +28,9 @@ export const Bubble = (props: BubbleProps) => {
         <BubbleContainer {...props} >
             <Icon>{renderIcon()}</Icon>
             <TextStyle>
-            <Text color='gray-1' size={16} weight='reg' >
-                {props.children}
-            </Text>
+                <Text color='gray-1' size={16} weight='reg' >
+                    {props.children}
+                </Text>
             </TextStyle>
         </BubbleContainer>
     )

@@ -157,15 +157,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             />
                                         </div>
 
-                                            <Input 
-                                                type='time' 
-                                                defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                                className='col col-1 px1'
-                                                disabled={false} 
-                                                id='startTime' 
-                                                label='Start Time' 
-                                                required
-                                            />
+                                        <Input 
+                                            type='time' 
+                                            defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
+                                            className='col col-1 px1'
+                                            disabled={false} 
+                                            id='startTime' 
+                                            label='Start Time' 
+                                            required
+                                        />
 
 
                                     </div>
@@ -177,15 +177,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                                 callback={(endDateValue: string) => { value = {...value, ['endDate']: {value: endDateValue}}}}
                                             />
                                         </div>
-                                            <Input 
-                                                type='time' 
-                                                defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                                className='col col-1 px1'
-                                                disabled={false} 
-                                                id='endTime' 
-                                                label='End Time' 
-                                                required
-                                            />            
+                                        <Input 
+                                            type='time' 
+                                            defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
+                                            className='col col-1 px1'
+                                            disabled={false} 
+                                            id='endTime' 
+                                            label='End Time' 
+                                            required
+                                        />            
 
 
                                     </div>
