@@ -1,16 +1,22 @@
 import { DeliveryAndEmbedOptionType, DeliveryAndEmbedReducer } from './DeliveryAndEmbed';
 import { combineReducers, Reducer } from 'redux';
+import EncodingRecipes from '../../../components/Pages/Settings/EncodingRecipes';
+import { EncodingRecipeOptionType } from './EncodingRecipes/EncodingRecipesTypes';
+import { EncodingRecipesReducer } from './EncodingRecipes';
 
 
 export const SettingsInitialState: SettingsState = {
-    deliveryAndEmbed: false
+    deliveryAndEmbed: false,
+    encodingRecipes: false
 };
 
 
 export interface  SettingsState {
     deliveryAndEmbed: false | DeliveryAndEmbedOptionType;
+    encodingRecipes: false | EncodingRecipeOptionType
 }
 
 export const SettingsReducer: Reducer<SettingsState> = combineReducers({
-    deliveryAndEmbed: DeliveryAndEmbedReducer
+    deliveryAndEmbed: DeliveryAndEmbedReducer,
+    encodingRecipes: EncodingRecipesReducer
 })

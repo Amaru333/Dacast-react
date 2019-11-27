@@ -8,13 +8,23 @@ import styled from 'styled-components';
 import { CustomStepper } from '../../Stepper/Stepper';
 import { Input } from '../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
-import { EncodingRecipeItem, EncodingRecipesData } from './EncodingRecipesTypes';
-import { forceReRender } from '@storybook/react';
+import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
+import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { ApplicationState } from '../../../redux-flow/store';
+import { Action, getEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
+import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+
+interface EncodingRecipesComponentProps {
+    encodingRecipeData: EncodingRecipesData
+    getEncodingRecipes: Function;
+}
 
 //TABLES
 
-const recipesBodyElement = (recipeData: EncodingRecipesData, setSelectedRecipe: Function, editRecipe: Function) => {
-    return recipeData.map((value, key) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData, setSelectedRecipe: Function, editRecipe: Function) => {
+    console.log(encodingRecipeData)
+    return encodingRecipeData.recipes.map((value, key) => {
         return [
             <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
             <Icon>{value.isDefault ? "check" : null}</Icon>,
@@ -293,18 +303,18 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
 const submitRecipe = (selectedRecipe, recipeData: EncodingRecipeData, FunctionRecipe) => {
     recipeData.push(selectedRecipe)
     FunctionRecipe(false)
-    forceUpdate()
     console.log(recipeData)
 }
 
 const stepList = [settingsStep, presetStep]
 
-const EncodingRecipes = () => {
+const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
-    const recipeData: EncodingRecipesData = [
-        {name: "Sick new Recipe", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 3, watermarkPositioningRight: 3},
-        {name: "Default", isDefault: true, recipePresets: ["magicEncoding", "480p", "360p", "240p"]}
-]
+    React.useEffect(() => {
+        props.getEncodingRecipes();
+    }, [])
+
+    
 
     const emptyRecipe = {name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
@@ -324,13 +334,16 @@ const EncodingRecipes = () => {
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
 
     return(
+        !props.encodingRecipeData? 
+            <LoadingSpinner size='large' color='blue80' />
+            :
         <Card className="col-12 clearfix p50">
             <HeaderStyle>
                 <Text size={20} weight="reg">Encoding Recipes</Text>
                 <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(recipeData, setSelectedRecipe, editRecipe)} />
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, setSelectedRecipe, editRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
             stepperHeader={selectedRecipe ? "Edit Recipe" : "Create Recipe"}
@@ -349,7 +362,21 @@ const EncodingRecipes = () => {
     )
 }
 
-export default (EncodingRecipes)
+export function mapStateToProps( state: ApplicationState) {
+    return {
+        encodingRecipeData: state.settings.encodingRecipes
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getEncodingRecipes: () => {
+            dispatch(getEncodingRecipesAction());
+        },
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EncodingRecipes)
 
 const HeaderStyle = styled.div`
 display: flex;
