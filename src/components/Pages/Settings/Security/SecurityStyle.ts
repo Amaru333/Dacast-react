@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ToggleTextInfo = styled.p<{}>`
     margin-top: 0px;
+    margin-block-end: 8px;
     display: inline-flex;
 `
 
@@ -21,4 +22,8 @@ export const IconContainer = styled.div`
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
     }
+`
+
+export const IconCheck = styled.span`
+    color:  ${props => props.theme.colors["green"]};
 `

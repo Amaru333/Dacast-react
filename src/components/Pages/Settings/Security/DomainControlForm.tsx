@@ -8,10 +8,17 @@ import { InputTags } from '../../../FormsComponents/Input/InputTags';
 export const DomainControlForm = (props: {item: DomainControl; toggle: Function; submit: Function}) => {
 
     const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(null);
+    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.name.length > 0);
 
     React.useEffect(() => {
         setDomainControlItem(props.item)
     }, [props.item])
+
+    React.useEffect(() => {
+        if(domainControlItem) {
+            setEnableSubmit(domainControlItem.name.length > 0);
+        }
+    }, [domainControlItem])
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         props.submit(domainControlItem);
@@ -24,7 +31,8 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                     defaultValue={domainControlItem.name}
                     disabled={false}
                     onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
-
+                    help={!enableSubmit ? "Input is required" : null}
+                    isError={!enableSubmit}
                     required
                     id='domainControlName'
                     type='text'
@@ -47,7 +55,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                     defaultChecked={domainControlItem.isDefault}
                 />
                 <div className='col col-12 py1'>
-                    <Button sizeButton="large" type="submit" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Create"}</Button>
+                    <Button sizeButton="large" type="submit" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={() => props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>

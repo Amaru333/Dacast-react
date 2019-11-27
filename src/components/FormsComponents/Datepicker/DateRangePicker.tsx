@@ -80,7 +80,7 @@ export const  Datepicker = () => {
                 }}
             >
                     
-                <BoxStyle onClick={() => setIsOpened(!isOpened)}>
+                <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
                     <StartTextStyle text={state.startDate ? true : false}>
                         <Text size={16} weight='reg' color='gray-3'>
                             {state.startDate ? state.startDate.toLocaleDateString() : "Select date"}

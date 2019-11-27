@@ -232,7 +232,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             return (
                 Object.keys(checkedContinents).map((continent, key) => {
                     return (
-                        <>  
+                        <React.Fragment key={"countryDropdown"+ key.toString()}>  
                             {key === 0 ?
                                 <>
                                 <SearchItem 
@@ -310,7 +310,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                         )
                                     })
                                 }
-                        </>
+                        </React.Fragment>
                     )                
                 })
             )
