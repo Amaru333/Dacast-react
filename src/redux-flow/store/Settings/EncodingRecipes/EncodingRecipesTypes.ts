@@ -5,7 +5,8 @@ export interface  SettingsState {
 export enum ActionTypes {
     GET_ENCODING_RECIPES = "@@settings_encoding/GET_ENCODING_RECIPES",
     CREATE_ENCODING_RECIPES = "@@settings_encoding/CREATE_ENCODING_RECIPES",
-    SAVE_ENCODING_RECIPES = "@@settings_encoding/SAVE_ENCODING_RECIPES"
+    SAVE_ENCODING_RECIPES = "@@settings_encoding/SAVE_ENCODING_RECIPES",
+    DELETE_ENCODING_RECIPES = "@@settings_encoding/DELETE_ENCODING_RECIPES"
 }
 
 export interface EncodingRecipeOptionType {

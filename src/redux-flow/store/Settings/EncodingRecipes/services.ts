@@ -15,13 +15,13 @@ const saveEncodingRecipeService = (data: EncodingRecipeItem) => {
     return axios.put(urlBase + 'encoding-recipe', {...data});
 }
 
-// const saveSettingsIntegrationService = (data: EncodingRecipesData) => {
-//     return axios.post(urlBase + 'getSettingsIntegration', {...data})
-// }
-
+const deleteEncodingRecipeService = (data: EncodingRecipeItem) => {
+    return axios.delete(urlBase + 'encoding-recipe', {data:{...data}});
+}
 
 export const EncodingRecipesServices = {
     getEncodingRecipesService,
     createEncodingRecipeService,
-    saveEncodingRecipeService
+    saveEncodingRecipeService,
+    deleteEncodingRecipeService
 }

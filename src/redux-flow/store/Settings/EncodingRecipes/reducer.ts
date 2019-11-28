@@ -13,8 +13,6 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
         case ActionTypes.CREATE_ENCODING_RECIPES:
             let recipes = state.recipes.slice()
             recipes.splice(recipes.length, 0, action.payload )
-            
-            // state.recipes.push(action.payload)
             return {
                 recipes  
             }
@@ -29,13 +27,9 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                           ...action.payload
                         }
                       })}
-                    
-            //         let selectedRecipe = state.recipes.filter(item => item.name !== action.payload.name)
-            //         selectedRecipe.push(action.payload)
-            // return {
-            //     ...state,
-            //     recipes:selectedRecipe 
-            // }
+            case ActionTypes.DELETE_ENCODING_RECIPES:
+                let recipeIndex = state.recipes.findIndex( item => item.id === action.payload.id)
+                return {...state, recipes: state.recipes.filter((item, index) => index != recipeIndex)}
         default:
             return state;
     }

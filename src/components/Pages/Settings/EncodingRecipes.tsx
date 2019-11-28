@@ -12,7 +12,7 @@ import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/sto
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../../redux-flow/store';
-import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
+import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface EncodingRecipesComponentProps {
@@ -20,17 +20,18 @@ interface EncodingRecipesComponentProps {
     getEncodingRecipes: Function;
     createEncodingRecipe: Function
     saveEncodingRecipe: Function
+    deleteEncodingRecipe: Function
 }
 
 //TABLES
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, props, deleteEncodingRecipe: Function) => {
     console.log(encodingRecipeData)
     return encodingRecipeData.recipes.map((value, key) => {
         return [
             <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
             <Icon>{value.isDefault ? "check" : null}</Icon>,
-            <IconContainer className="iconAction"><Icon>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
+            <IconContainer className="iconAction"><Icon onClick={() => deleteEncodingRecipe(value)}>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
         ]
     })
     
@@ -220,7 +221,6 @@ const extraEncodingOptionsBodyElement = (stepperData, setSelectedRecipe: Functio
 //STEPS
 
 const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
-    console.log(stepperData)
     return (
        <StepContent className="clearfix">
            <RecipeNameRow className="col-12 mb1">
@@ -307,7 +307,6 @@ const submitRecipe = (selectedRecipe, FunctionRecipe: Function, saveRecipe: Func
    
     saveRecipe(selectedRecipe);
     FunctionRecipe(false)
-    
 }
 
 const stepList = [settingsStep, presetStep]
@@ -326,16 +325,13 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
 
     const editRecipe = (recipe: EncodingRecipeItem) => {
-
         setSelectedRecipe(recipe);
         FunctionRecipe(true);
     }
 
     const newRecipe = () => {
-        
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
-        
     }
 
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
@@ -350,7 +346,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                 <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, setSelectedRecipe, editRecipe)} />
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, setSelectedRecipe, editRecipe, props.deleteEncodingRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
             stepperHeader={selectedRecipe ? "Edit Recipe" : "Create Recipe"}
@@ -385,7 +381,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveEncodingRecipe: (data: EncodingRecipeItem) => {
             dispatch(saveEncodingRecipesAction(data))
-        }
+        },
+        deleteEncodingRecipe: (data: EncodingRecipeItem) => {
+            dispatch(deleteEncodingRecipesAction(data))
+        },
     };
 }
 

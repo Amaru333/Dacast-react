@@ -20,6 +20,11 @@ export interface SaveEncodingRecipeDetails {
     payload: EncodingRecipeItem;
 }
 
+export interface DeleteEncodingRecipeDetails {
+    type: ActionTypes.DELETE_ENCODING_RECIPES;
+    payload: EncodingRecipeItem;
+}
+
 export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipeDetails> => {
 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetEncodingRecipeDetails> ) => {
@@ -56,16 +61,16 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
     };
 }
 
-// export const postWebHooks = (): ThunkDispatch<Promise<void>, {}, GetSettingsIntegrationDetails> => {
-//     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetSettingsIntegrationDetails> ) => {
-//         await SettingsIntegrationServices.getSettingsIntegrationService()
-//             .then( response => {
-//                 dispatch( {type: ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS, payload: response.data} );
-//             }).catch(error => {
-//                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-//             })
-//     };
-// }
+export const deleteEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispatch<Promise<void>, {}, DeleteEncodingRecipeDetails> => {
 
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteEncodingRecipeDetails> ) => {
+        await EncodingRecipesServices.deleteEncodingRecipeService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_ENCODING_RECIPES, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
 
-export type Action = GetEncodingRecipeDetails | CreateEncodingRecipeDetails | SaveEncodingRecipeDetails;
+export type Action = GetEncodingRecipeDetails | CreateEncodingRecipeDetails | SaveEncodingRecipeDetails | DeleteEncodingRecipeDetails;
