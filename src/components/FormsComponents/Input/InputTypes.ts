@@ -41,6 +41,7 @@ export interface InputSpecificProps {
     ref?: React.RefObject<HTMLInputElement>;
     prefix?: Element;
     suffix?: Element;
+    step?: string;
 }
 
 export interface CheckboxSpecificProps {
