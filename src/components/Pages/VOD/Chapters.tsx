@@ -68,7 +68,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
 
             })
         }
-        return () => player.dispose();
+        return () => player ? player.dispose() : null;
     }, [])
 
     React.useEffect(() => {
