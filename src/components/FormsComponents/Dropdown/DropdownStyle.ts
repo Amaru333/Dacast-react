@@ -74,9 +74,9 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
 export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
-    min-height: 32px;
+    min-height: 24px;
     height: 100%;
-    padding: 8px;
+    padding-left: 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
