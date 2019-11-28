@@ -22,7 +22,6 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
 
     ${props => !props.mobile && css `
         border: 1px solid ${props => props.theme.colors["gray-7"]};
-        
     `}
 
     ${props => props.mobile && css `

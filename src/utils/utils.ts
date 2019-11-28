@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime } from 'luxon';
+import { showToastNotification } from '../redux-flow/store/toasts';
+import { store } from '..';
 
 export function numberFormatter(num: number, format: 'k' | 'comma'): string {
     var formatNumeral = ''
@@ -13,6 +15,19 @@ export function numberFormatter(num: number, format: 'k' | 'comma'): string {
             break;
     }
     return numeral(num).format(formatNumeral);
+}
+
+export function updateClipboard(newClip: string) : void {
+    navigator.clipboard.writeText(newClip).then(function() {
+        store.dispatch(showToastNotification("Copy in clipboard", 'fixed', "success"));
+    }, function() {
+        store.dispatch(showToastNotification("Failed to copy in clipboard", 'fixed', "error"));
+    });
+}
+
+export function readableBytes(size: number): string {
+    var i = Math.floor( Math.log(size) / Math.log(1024) );
+    return parseInt(( size / Math.pow(1024, i) ).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
 
 export function tsToLocaleDate(ts: number): string {

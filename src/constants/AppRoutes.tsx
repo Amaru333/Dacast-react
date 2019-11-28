@@ -8,6 +8,7 @@ import { Theme } from '../styled/themes/dacast-theme';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
+import Uploader from '../containers/Vod/Uploader';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -15,6 +16,13 @@ import Profile from '../containers/Account/Profile';
 const functionTest1 = () => {
     return (
         <LoadingSpinner size="small" color="dark-violet" />
+    )
+}
+
+
+const uploader = () => {
+    return (
+        <Uploader  />
     )
 }
 
@@ -159,9 +167,9 @@ export const AppRoutes: Routes[] = [
         component: Video,
         slug: [
             {
-                path: '/videos/tab1',
-                name: 'tab1',
-                component: functionTest1
+                path: '/videos/uploader',
+                name: 'Uploader',
+                component: uploader
             },
             {
                 path: '/videos/tab2',
