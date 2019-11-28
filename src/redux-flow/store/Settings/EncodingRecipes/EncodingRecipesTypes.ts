@@ -4,6 +4,8 @@ export interface  SettingsState {
 
 export enum ActionTypes {
     GET_ENCODING_RECIPES = "@@settings_encoding/GET_ENCODING_RECIPES",
+    CREATE_ENCODING_RECIPES = "@@settings_encoding/CREATE_ENCODING_RECIPES",
+    SAVE_ENCODING_RECIPES = "@@settings_encoding/SAVE_ENCODING_RECIPES"
 }
 
 export interface EncodingRecipeOptionType {
@@ -11,6 +13,7 @@ export interface EncodingRecipeOptionType {
 }
 
 export interface EncodingRecipeItem {
+    id: string,
     name: string,
     isDefault: boolean,
     watermarkFile?: string,

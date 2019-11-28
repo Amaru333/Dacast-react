@@ -12,17 +12,19 @@ import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/sto
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../../redux-flow/store';
-import { Action, getEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
+import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData
     getEncodingRecipes: Function;
+    createEncodingRecipe: Function
+    saveEncodingRecipe: Function
 }
 
 //TABLES
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData, setSelectedRecipe: Function, editRecipe: Function) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function) => {
     console.log(encodingRecipeData)
     return encodingRecipeData.recipes.map((value, key) => {
         return [
@@ -53,7 +55,7 @@ const createRecipeHeaderElement = () => {
 
 //REFACTOR THIS ABSOLUTE MONSTROSITY
 const createRecipeBodyElement = (stepperData, setSelectedRecipe: Function) => {
-
+    
     return [
         [
             <InputCheckbox defaultChecked={stepperData.recipePresets.includes("2160p")} id="2160p" onChange={(event) => 
@@ -218,6 +220,7 @@ const extraEncodingOptionsBodyElement = (stepperData, setSelectedRecipe: Functio
 //STEPS
 
 const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
+    console.log(stepperData)
     return (
        <StepContent className="clearfix">
            <RecipeNameRow className="col-12 mb1">
@@ -300,10 +303,11 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
     )
 }
 
-const submitRecipe = (selectedRecipe, recipeData: EncodingRecipeData, FunctionRecipe) => {
-    recipeData.push(selectedRecipe)
+const submitRecipe = (selectedRecipe, FunctionRecipe: Function, saveRecipe: Function) => {
+   
+    saveRecipe(selectedRecipe);
     FunctionRecipe(false)
-    console.log(recipeData)
+    
 }
 
 const stepList = [settingsStep, presetStep]
@@ -322,13 +326,16 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
 
     const editRecipe = (recipe: EncodingRecipeItem) => {
+
         setSelectedRecipe(recipe);
         FunctionRecipe(true);
     }
 
     const newRecipe = () => {
+        
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
+        
     }
 
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
@@ -354,7 +361,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
             functionCancel={FunctionRecipe}
-            finalFunction={() => submitRecipe(selectedRecipe, recipeData, FunctionRecipe)}
+            finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, selectedRecipe === emptyRecipe ? props.createEncodingRecipe : props.saveEncodingRecipe)}
             stepperData={selectedRecipe}
             updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
             />
@@ -373,6 +380,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getEncodingRecipes: () => {
             dispatch(getEncodingRecipesAction());
         },
+        createEncodingRecipe: (data: EncodingRecipeItem) => {
+            dispatch(createEncodingRecipesAction(data))
+        },
+        saveEncodingRecipe: (data: EncodingRecipeItem) => {
+            dispatch(saveEncodingRecipesAction(data))
+        }
     };
 }
 
