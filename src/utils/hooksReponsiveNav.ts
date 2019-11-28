@@ -13,6 +13,7 @@ export const responsiveMenu = () => {
     React.useEffect(() => {
         if(!isMobile) {
             window.addEventListener('resize', (event) => {
+                event.preventDefault();
                 if(window.innerWidth < 1024 ) {
                     setOpen(false);
                 } else {
@@ -23,6 +24,7 @@ export const responsiveMenu = () => {
         }
         return () => {
             window.removeEventListener('resize', (event) => {
+                event.preventDefault();
                 if(window.innerWidth < 1024 ) {
                     setOpen(false);
                 } else {

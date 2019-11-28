@@ -14,6 +14,7 @@ export const InputSlider = (props: SliderContainerProps) => {
     let input1 = null;
     let input2 = null;
     const handleChange = (event: React.FormEvent<HTMLInputElement>, newValue: number | number[]) => {
+        event.preventDefault();
         setValue(newValue as number[]);
     };
     React.useEffect(() => {

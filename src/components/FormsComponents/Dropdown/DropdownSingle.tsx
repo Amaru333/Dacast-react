@@ -7,7 +7,7 @@ import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
 
-export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: DropdownProps, ref) => {
+export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) => {
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
@@ -100,10 +100,10 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
     }
     
     return (
-        <ContainerStyle  {...props} >
+        <ContainerStyle className={props.className}>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                <Title ref={ref} ><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
+                <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
             <DropdownList isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
@@ -111,4 +111,4 @@ export const DropdownSingle: React.FC<DropdownProps> = React.forwardRef((props: 
             </DropdownList>
         </ContainerStyle>
     );
-})
+}

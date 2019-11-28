@@ -13,7 +13,7 @@ import { Icon } from '@material-ui/core';
 import { tsToLocaleDate, useMedia } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm } from './ModalsFormsKeys';
 
 export interface ApiIntegrationProps {
