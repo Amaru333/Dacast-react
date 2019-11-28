@@ -5,19 +5,14 @@ import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, 
 export const Table = (props: TableProps) => {
 
     const renderTableHeader = () => {
-        if(props.header) {
-            return props.header.map((headerCell, i) => {
+        return props.header ? 
+            props.header.map((headerCell, i) => {
                 return (
                     <TableHeaderCell className="" key={props.id+"tableHeaderCell"+i.toString()}>
                         {headerCell}
                     </TableHeaderCell>
                 )
-            })
-        }
-        else {
-            return null
-        }
-
+            }) : null
     }
 
     const renderTableBody = () => {

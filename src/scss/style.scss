@@ -72,6 +72,17 @@ a {
     }
 }
 
+.iconAction {
+    display:none;
+}
+
+@media screen and (max-width: 780px) {
+    .iconAction {
+      display:block;
+    }
+  }
+
+
 .p25 {
     padding: 1.5rem;
 }
