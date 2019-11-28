@@ -4,11 +4,9 @@ import {  SettingsState, SettingsInitialState, SettingsReducer} from "./Settings
 import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dashboard";
 import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
-import { ApiIntegrationReducer } from './Settings/ApiIntegration';
-import { DeliveryAndEmbedReducer } from './Settings/DeliveryAndEmbed';
 
 export interface ApplicationState {
-	uploader:UploaderState;
+    uploader: UploaderState;
     settings: SettingsState;
     dashboard: DashboardState;
     toasts: ToastsState;
@@ -16,7 +14,7 @@ export interface ApplicationState {
 }
 
 export const globalDefaultState: ApplicationState = {
-	uploader:uploaderInitialState,
+    uploader:uploaderInitialState,
     settings: SettingsInitialState,
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
@@ -25,7 +23,7 @@ export const globalDefaultState: ApplicationState = {
 
 export const createRootReducer = () =>
     combineReducers({
-		uploader:UploaderReducer,
+        uploader:UploaderReducer,
         settings: SettingsReducer,
         dashboard: DashboardReducer,
         toasts: ToastReducer,

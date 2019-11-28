@@ -1,5 +1,3 @@
-import { DropdownList } from './DropdownStyle';
-
 type CheckboxStatus = 'unchecked' | 'checked' | 'undeterminate'
 export interface DropdownListType {[key: string]: boolean}
 
@@ -13,7 +11,7 @@ interface DropdownCustomProps {
     dropdownTitle: string;
     list: DropdownListType;
     isNavigation?: boolean;
-    ref?: any;
+    ref?: React.Ref<HTMLDivElement>;
     callback?: Function;
     hasSearch?: boolean;
 }
@@ -26,10 +24,18 @@ export interface ContinentListType {
 }
 
 interface DropdownCountriesSpecificProps {
-    list: ContinentListType;
+    list: string[];
+    id: string;
+    dropdownTitle: string;
+    isNavigation?: boolean;
+    ref?: React.Ref<HTMLDivElement>;
+    callback?: Function;
+    hasSearch?: boolean;
 }
 
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
+
+export type DropdownCountriesProps =  DropdownCountriesSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
 

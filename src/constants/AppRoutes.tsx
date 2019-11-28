@@ -1,14 +1,13 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
-import { Theme } from '../styled/themes/dacast-theme';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
 import Uploader from '../containers/Vod/Uploader';
+import Security from '../containers/Settings/Security/Security';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -44,70 +43,47 @@ const functionTest4 = () => {
     )
 }
 
-const DashboardRender = (props: any) => {
+const DashboardRender = () => {
     return (
         <Dashboard/>
     )
 }
 
-const ApiIntegrationRender = (props: any) => {
+const ApiIntegrationRender = () => {
     return (
         <ApiIntegration/>
     )
 }
 
 
-const LiveChannel = (props: any) => {
+const LiveChannel = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
+            <h2>LiveChannel</h2>
         </div>
     )
 }
 
-const Video = (props: any) => {
+const Video = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
+            <h2>Video</h2>
         </div>
     )
 }
 
-const Playlist = (props: any) => {
+const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
+            <h2>Playlist</h2>
         </div>
     )
 }
 
-const MainSettings = (props: any) => {
-    return (
-        <div>
-            <Tab {...props}  list={props.routes} orientation="vertical" />
-        </div>
-
-    )
-}
-
-const Account = (props: any) => {
-
-    return (
-        <div>
-            <Tab {...props} list={props.routes} orientation="vertical" />
-        </div>
-
-    )
-}
-
-const Admin = (props: any) => {
+const Admin = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
+            <h2>Admin</h2>
         </div>
     )
 }
@@ -240,7 +216,7 @@ export const AppRoutes: Routes[] = [
         path: '/mainsettings',
         name: 'Main Settings',
         iconName: 'settings',
-        component: MainSettings,
+        component: null,
         slug: [
             {
                 path: '/mainsettings/analytics',
@@ -255,7 +231,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/security',
                 name: 'Security',
-                component: functionTest2
+                component: Security
             },
             {
                 path: '/mainsettings/monetization',
@@ -288,7 +264,7 @@ export const AppRoutes: Routes[] = [
         path: '/account',
         name: 'Account',
         iconName: 'person',       
-        component: Account,
+        component: null,
         slug: [
             {
                 path: '/account/summary',

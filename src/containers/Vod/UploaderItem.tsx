@@ -115,7 +115,7 @@ export const UploaderItemLabel = styled.div<{}>`
     text-overflow: ellipsis;
 `
 
-export const ProgressItem = styled.div<{ progress: number, currentState: UploaderItemStates }>`
+export const ProgressItem = styled.div<{ progress: number; currentState: UploaderItemStates }>`
     width: ${props => props.progress}%;
     ${props => props.currentState === "completed" && css`
         background-color: ${props => props.theme.colors["green10"]};

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { InputProps, InputCheckboxProps, SliderContainerProps } from './InputTypes';
+import { InputProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div`

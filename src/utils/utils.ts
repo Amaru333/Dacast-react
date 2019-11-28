@@ -17,7 +17,7 @@ export function numberFormatter(num: number, format: 'k' | 'comma'): string {
     return numeral(num).format(formatNumeral);
 }
 
-export function updateClipboard(newClip: string) : void {
+export function updateClipboard(newClip: string): void {
     navigator.clipboard.writeText(newClip).then(function() {
         store.dispatch(showToastNotification("Copy in clipboard", 'fixed', "success"));
     }, function() {

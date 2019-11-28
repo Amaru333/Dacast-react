@@ -31,7 +31,7 @@ stories.add('Dropdown', () => {
                 <DropdownCountries 
                     id="countriesDropdown"
                     dropdownTitle="My ccountries dropdown"
-                    list={  { "Checkbox1":false, "Checkbox2":false, "Checkbox3":false } }
+                    list={['France', 'Spain']}
                 /> 
             </StorybookDropdownContainerStyle>
         </React.Fragment>

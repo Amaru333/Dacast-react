@@ -20,7 +20,7 @@ export const getDeliveryAndEmbedOptionsAction = (): ThunkDispatch<Promise<void>,
         await SettingsServices.getDeliveryAndEmbedOptionsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
-            }).catch(error => {
+            }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -31,7 +31,7 @@ export const saveDeliveryAndEmbedOptionsAction = (data: DeliveryAndEmbedOptionTy
         await SettingsServices.saveDeliveryAndEmbedOptionsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS, payload: response.data} );
-            }).catch(error => {
+            }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

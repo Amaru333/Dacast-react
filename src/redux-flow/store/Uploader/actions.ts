@@ -4,7 +4,7 @@ import { ApplicationState } from "..";
 
 export interface WhateverAction {
     type: ActionTypes.CAPITAL_LETTER_ACTION_NAME;
-    payload: { foo: Number };
+    payload: { foo: number };
 }
 
 //Exemple of Async Action

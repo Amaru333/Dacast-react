@@ -1,6 +1,5 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { SettingsInitialState, SettingsState } from "../types";
 import { ActionTypes, ApiIntegrationPageInfos, defaultStateApiIntegration } from './types';
 
 const reducer: Reducer<ApiIntegrationPageInfos> = (state = defaultStateApiIntegration, action: Action) => {

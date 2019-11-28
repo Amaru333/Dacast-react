@@ -1,6 +1,4 @@
-import styled, { css } from "styled-components";
-import { StepperProps } from './StepperTypes';
-import Stepper from '@material-ui/core/Stepper';
+import styled from "styled-components";
 
 export const StepperContainerStyle = styled.div`
     box-sizing: border-box;

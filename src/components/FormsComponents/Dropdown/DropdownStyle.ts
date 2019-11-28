@@ -1,9 +1,7 @@
 import styled, { css } from 'styled-components';
-import { DropdownProps } from './DropdownTypes';
 import { Text } from "../../Typography/Text";
-import { Input } from '../Input/Input';
 
-export const ContainerStyle = styled.div<DropdownProps>`
+export const ContainerStyle = styled.div<{}>`
     display: block;
     height:auto;
     position: relative;
@@ -34,7 +32,7 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
     `}
 `;
 
-export const Title = styled.div<{ref: any}>`
+export const Title = styled.div`
     padding: 8px 44px 8px 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -51,8 +49,9 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    right: .5rem;
-    left: .5rem;
+    z-index: 999;
+    right: 0;
+    left: 0;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
@@ -77,8 +76,7 @@ export const DropdownItem = styled.li<{isSelected: boolean}>`
     position: relative;
     min-height: 32px;
     height: 100%;
-    padding: 0 8px;
-    padding-top: 8px;
+    padding: 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
@@ -138,6 +136,7 @@ export const SearchItem = styled.div`
     position: sticky;
     top: 0;
     display: flex;
+    background-color: ${props => props.theme.colors.white};
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
 `
 

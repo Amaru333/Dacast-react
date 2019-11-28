@@ -1,17 +1,26 @@
-import { Data } from 'popper.js';
+
+
+export interface DatePickerProps {
+    className?: string;
+    id?: string;
+    callback?: Function;
+    DatepickerTitle?: string;
+    defaultStartDate?: string;
+    defaultEndDate?: string;
+}
 
 interface DatePickerContext {
-    focusedDate: any;
-    isDateFocused: (date: any) => boolean;
-    isDateSelected: (date: any) => boolean;
-    isDateHovered: (date: any) => boolean;
-    isDateBlocked: (date: any) => boolean;
-    isFirstOrLastSelectedDate: (date: any) => boolean;
+    focusedDate: Date;
+    isDateFocused: (date: Date) => boolean;
+    isDateSelected: (date: Date) => boolean;
+    isDateHovered: (date: Date) => boolean;
+    isDateBlocked: (date: Date) => boolean;
+    isFirstOrLastSelectedDate: (date: Date) => boolean;
     onDateFocus: (date: Date) => void;
     onDateHover: (date: Date) => void;
     onDateSelect: (date: Date) => void;
-    startDateStyle?: any;
-    endDateStyle?: any;
+    startDateStyle?: Date;
+    endDateStyle?: Date;
     isSingle?: boolean;
 }
 

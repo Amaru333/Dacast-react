@@ -12,13 +12,13 @@ import { Text } from '../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 
-export interface UploaderProps {
-    // Your props here
-}
+// export interface UploaderProps {
+//     // Your props here
+// }
 
-export const Uploader = (props: UploaderProps) => {
+export const Uploader = (props: {}) => {
 
-    const tempListTest : UploaderItemProps[] = [
+    const tempListTest: UploaderItemProps[] = [
         {
             currentState: 'completed',
             progress: 100,
@@ -66,12 +66,7 @@ export const Uploader = (props: UploaderProps) => {
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>(tempListTest);
 
     
-    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        if(e.target.files && e.target.files.length > 0) {
-            handleDrop(e.target.files);
-        }
-    }
+
 
     const handleDrop = (file: FileList) => {
         const acceptedVideoTypes = ['video/mp4'];
@@ -86,6 +81,13 @@ export const Uploader = (props: UploaderProps) => {
                 
             }
             reader.readAsDataURL(file[0])
+        }
+    }
+
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
         }
     }
 

@@ -9,7 +9,7 @@ import { DragAndDrop } from '../../DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/types';
-const {getNames} = require('country-list')
+const {getNames, getData} = require('country-list')
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -51,6 +51,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
+        console.log(getData())
         setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
@@ -107,7 +108,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     return (
         <CompanyPageContainer>
-            <Card className='clearfix'>
+            <Card className='clearfix p2'>
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
