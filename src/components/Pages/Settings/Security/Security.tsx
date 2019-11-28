@@ -69,7 +69,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         return[
             <Text className='col col-2' key={"groupTable" + tableType} size={14}  weight="med" color="gray-1">Group</Text>,
             <Text className='col col-2' key={"DefaultTable" + tableType} size={14}  weight="med" color="gray-1">Default</Text>,
-            <Button key={"actionTable" + tableType} onClick={() => {setSelectedItem(null);tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true)}} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
+            <Button key={"actionTable" + tableType} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true)}} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
         ]
     }
 
@@ -79,7 +79,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 return [
                     <Text key={key.toString() +value.name} size={14}  weight="reg" color="gray-1">{value.name}</Text>,
                     value.isDefault ? <IconCheck><Icon key={key.toString() +value.name}>checked</Icon></IconCheck> : <></>,
-                    <IconContainer className="iconAction" key={key.toString()+value.name}><Icon onClick={() => props.deleteGeoRestrictionGroup(value)} >delete</Icon><Icon onClick={() => {setSelectedItem(value.name);  setGeoRestrictionModalOpened(true) }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key.toString()+value.name}><Icon onClick={(event) => {event.preventDefault();props.deleteGeoRestrictionGroup(value)}} >delete</Icon><Icon onClick={(event) => {event.preventDefault();setSelectedItem(value.name);  setGeoRestrictionModalOpened(true) }}>edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -91,7 +91,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 return [
                     <Text key={key.toString() +value.name} size={14}  weight="reg" color="gray-1">{value.name}</Text>,
                     value.isDefault ? <IconCheck><Icon key={key.toString() +value.name}>checked</Icon></IconCheck> : <></>,
-                    <IconContainer className="iconAction" key={key.toString()+value.name}><Icon onClick={() => props.deleteDomainControlGroup(value)}>delete</Icon><Icon onClick={() => {setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key.toString()+value.name}><Icon onClick={(event) => {event.preventDefault();props.deleteDomainControlGroup(value)}}>delete</Icon><Icon onClick={(event) => {event.preventDefault();setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</Icon> </IconContainer>
                 ]
             })
         }

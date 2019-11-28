@@ -31,10 +31,8 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                     defaultValue={domainControlItem.name}
                     disabled={false}
                     onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
-                    help={!enableSubmit ? "Input is required" : null}
-                    isError={!enableSubmit}
-                    required
                     id='domainControlName'
+                    required={false}
                     type='text'
                     className='col col-12 py1'
                     label='Group Name'
@@ -44,7 +42,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                     className='col col-12 py1'
                     defaultTags={domainControlItem.domains} 
                     placeholder="Type URL" 
-                    label="URLS"
+                    label="URLs"
                 />
 
                 <InputCheckbox 
