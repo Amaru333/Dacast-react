@@ -30,7 +30,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
         return[
             <Text  key={"chapterTitleTableHeader"} size={14}  weight="med" color="gray-1">Title</Text>,
             <Text  key={"chapterStartTimeTableHeader"} size={14}  weight="med" color="gray-1">Start Time</Text>, 
-            <span></span>
+            <span key={"MatchingColumn"}></span>
         ]
     }
 

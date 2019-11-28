@@ -29,4 +29,4 @@ export const createRootReducer = () =>
         account: AccountReducer,
         vod: VodReducer
     },
-);
+    );

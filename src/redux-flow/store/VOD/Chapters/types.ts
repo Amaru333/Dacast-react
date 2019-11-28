@@ -9,7 +9,7 @@ export enum ActionTypes {
 export interface ChapterMarker { [key: string]: string};
 
 export interface ChapterMarkerInfos {
-    chapterMarkers: ChapterMarker[]
+    chapterMarkers: ChapterMarker[];
 }
 
 export const defaultStateChapter: ChapterMarkerInfos = {

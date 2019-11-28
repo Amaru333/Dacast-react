@@ -29,7 +29,7 @@ export const BoxStyle = styled.div<{isSelected: boolean}>`
     cursor: pointer;
 `
 
-export const StartTextStyle = styled.div<{text: boolean, isSingle: boolean}>`
+export const StartTextStyle = styled.div<{text: boolean; isSingle: boolean}>`
     ${props => !props.isSingle && css`
         border: 1px solid ${props => props.theme.colors["gray-7"]};
         border-radius: 4px;

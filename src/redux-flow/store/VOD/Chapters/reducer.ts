@@ -21,8 +21,8 @@ const reducer: Reducer<ChapterMarkerInfos> = (state = defaultStateChapter, actio
                 })
             };
         case ActionTypes.ADD_VOD_CHAPTER_MARKER:
-                let newArray = state.chapterMarkers.slice()
-                newArray.splice(newArray.length, 0, action.payload)
+            let newArray = state.chapterMarkers.slice()
+            newArray.splice(newArray.length, 0, action.payload)
             return {
                 ...state, 
                 chapterMarkers: newArray
