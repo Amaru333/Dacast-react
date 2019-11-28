@@ -33,9 +33,7 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
                     defaultValue={geoRestrictionItem.name}
                     disabled={false}
                     onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, name: event.currentTarget.value})}
-                    required
-                    help={!enableSubmit ? "Input is required" : null}
-                    isError={!enableSubmit}
+                    required={false}
                     id='geoRestrictionName'
                     type='text'
                     className='col col-12 pb1'
