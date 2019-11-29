@@ -25,12 +25,12 @@ interface EncodingRecipesComponentProps {
 
 //TABLES
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, props, deleteEncodingRecipe: Function) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, deleteEncodingRecipe: Function) => {
     console.log(encodingRecipeData)
     return encodingRecipeData.recipes.map((value, key) => {
         return [
             <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
-            <Icon>{value.isDefault ? "check" : null}</Icon>,
+            <Icon style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
             <IconContainer className="iconAction"><Icon onClick={() => deleteEncodingRecipe(value)}>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
         ]
     })
@@ -346,7 +346,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                 <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
             </HeaderStyle>
             <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, setSelectedRecipe, editRecipe, props.deleteEncodingRecipe)} />
+            <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
             stepperHeader={selectedRecipe ? "Edit Recipe" : "Create Recipe"}
