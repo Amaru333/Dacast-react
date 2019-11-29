@@ -243,14 +243,14 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
            <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
            <Button className="col-2 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-           {stepperData.watermarkFile ? 
-           <WatermarkFile className="col col-6 mt1">
+           {stepperData.watermarkFile ?
+           <div>
+               <WatermarkFile className="col col-6 mt1">
                 <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                 <button style={{border: "none", backgroundColor:"inherit"}}>
                     <Icon style={{fontSize: "14px"}}>close</Icon>
                 </button>   
            </WatermarkFile>
-           : null}
            <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
            <PositioningRow className="col col-12">
                 
@@ -279,6 +279,8 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
                     <Text weight="med" size={14} color="gray-3">px</Text>
                 </Suffix>
            </PositioningRow>
+           </div> 
+           : null}
            
        </StepContent>
     )
@@ -296,7 +298,7 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
             <Table className="col col-12 mt1" id="extraEncodingOptions" body={extraEncodingOptionsBodyElement(stepperData, setSelectedRecipe)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
-                <Text  size={14} weight="reg">Need help choosing your presets? Visit the Knowledge Base</Text>
+                <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/">Knowledge Base</a></Text>
             </div>
         </StepContent>
     )
@@ -354,7 +356,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
-            stepperHeader={selectedRecipe ? "Edit Recipe" : "Create Recipe"}
+            stepperHeader={!selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
             stepList={stepList}
             nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
             backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 

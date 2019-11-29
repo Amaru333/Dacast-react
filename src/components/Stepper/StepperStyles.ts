@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { StepperProps } from './StepperTypes';
 import { ModalProps } from '../Modal/ModalTypes';
 
 export const StepperContainerStyle = styled.div<ModalProps>`
@@ -30,13 +29,17 @@ export const StepperStyle = styled.div`
     & .MuiStepConnector-lineHorizontal {
         border-top-width: 4px;
         border-radius: 4px;
+        border-color: ${props => props.theme.colors["gray-7"]}
     }
 
     & .MuiStepConnector-active, .MuiStepConnector-completed  {
         & > * { 
             border-color: ${props => props.theme.colors["violet"]};
         }
-        
+    }
+
+    & .MuiStepIcon-root {
+        color: ${props => props.theme.colors["gray-7"]}
     }
 
     & .MuiStepIcon-root.MuiStepIcon-active, .MuiStepIcon-root.MuiStepIcon-completed {
@@ -51,7 +54,10 @@ export const StepperStyle = styled.div`
     & .MuiStepLabel-label.MuiStepLabel-alternativeLabel{
         margin-top: 8px;
     }
-    
+
+    & .MuiStepLabel-label.MuiStepLabel-completed{
+        color: ${props => props.theme.colors["gray-7"]}
+    }
 `
 export const StepperContentStyle = styled.div`
 
