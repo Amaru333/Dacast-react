@@ -306,7 +306,6 @@ const submitRecipe = (selectedRecipe, FunctionRecipe: Function, createEncodingRe
     console.log(props.encodingRecipeData)
     if (selectedRecipe.id) {
         saveEncodingRecipe(selectedRecipe)
-      
     } else
     {
         createEncodingRecipe(selectedRecipe)
