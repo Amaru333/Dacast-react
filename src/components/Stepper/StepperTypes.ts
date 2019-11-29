@@ -9,7 +9,7 @@ interface StepperButtonType {
 export interface StepperSpecificProps {
     stepperHeader: string;
     stepTitles: string[];
-    stepList: (() => JSX.Element)[];
+    stepList: (React.FC<any>)[];
     lastStepButton: string;
     nextButtonProps: StepperButtonType;
     backButtonProps: StepperButtonType;

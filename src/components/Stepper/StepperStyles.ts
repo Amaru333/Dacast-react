@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
-import { ModalProps } from '../Modal/ModalTypes';
 
-export const StepperContainerStyle = styled.div<ModalProps>`
+export const StepperContainerStyle = styled.div<{opened: boolean}>`
     box-sizing: border-box;
     display: none;
     flex-direction: column;

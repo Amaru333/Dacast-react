@@ -38,35 +38,35 @@ export const CustomStepper = (props: StepperProps) => {
 
     return (
         <React.Fragment>
-        <StepperContainerStyle opened={props.opened}>
-            <StepperHeaderStyle>
-                <Text size={24} weight="reg">{props.stepperHeader}</Text>
-            </StepperHeaderStyle>
-            <StepperStyle>
-                <Stepper activeStep={stepIndex} {...props} alternativeLabel>
-                    {steps.map((label) => {
-                        return (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-            </StepperStyle>
-            <StepperContentStyle> 
-                {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
-            </StepperContentStyle>
-            <StepperFooterStyle>
-                <Button {...props.nextButtonProps} onClick={nextStep}>
-                    {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
-                </Button>
-                {(stepIndex !== 0) &&
+            <StepperContainerStyle opened={props.opened}>
+                <StepperHeaderStyle>
+                    <Text size={24} weight="reg">{props.stepperHeader}</Text>
+                </StepperHeaderStyle>
+                <StepperStyle>
+                    <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                        {steps.map((label) => {
+                            return (
+                                <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                </StepperStyle>
+                <StepperContentStyle> 
+                    {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
+                </StepperContentStyle>
+                <StepperFooterStyle>
+                    <Button {...props.nextButtonProps} onClick={nextStep}>
+                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                    </Button>
+                    {(stepIndex !== 0) &&
                 <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
-                }
-                <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
-            </StepperFooterStyle>
-        </StepperContainerStyle>
-        <OverlayStyle opened={props.opened}/>
+                    }
+                    <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                </StepperFooterStyle>
+            </StepperContainerStyle>
+            <OverlayStyle opened={props.opened}/>
         </React.Fragment>
     )
 }

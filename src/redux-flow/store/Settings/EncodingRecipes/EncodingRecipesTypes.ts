@@ -14,17 +14,17 @@ export interface EncodingRecipeOptionType {
 }
 
 export interface EncodingRecipeItem {
-    id: string,
-    name: string,
-    isDefault: boolean,
-    watermarkFile?: string,
-    watermarkPositioningLeft?: number,
-    watermarkPositioningRight?: number,
-    recipePresets: string[]
+    id: string;
+    name: string;
+    isDefault: boolean;
+    watermarkFile?: string;
+    watermarkPositioningLeft?: number;
+    watermarkPositioningRight?: number;
+    recipePresets: string[];
 }
 
 export interface EncodingRecipesData {
-    recipes: EncodingRecipeItem[]
+    recipes: EncodingRecipeItem[];
 }
 
 export const defaultEncodingRecipes: EncodingRecipesData = {

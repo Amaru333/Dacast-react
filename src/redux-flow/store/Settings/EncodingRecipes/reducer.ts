@@ -19,23 +19,23 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
             return {
                 recipes  
             }
-            case ActionTypes.SAVE_ENCODING_RECIPES:
-                    if(action.payload.isDefault) {
-                        recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
-                    }
-                    return  {...state, recipes: recipes.map((item, index) => {
-                       let recipeIndex = recipes.findIndex( item => item.id === action.payload.id)
-                        if (index !== recipeIndex) {
-                          return item
-                        }
-                        return {
-                          ...item,
-                          ...action.payload
-                        }
-                      })}
-            case ActionTypes.DELETE_ENCODING_RECIPES:
-                let recipeIndex = state.recipes.findIndex( item => item.id === action.payload.id)
-                return {...state, recipes: state.recipes.filter((item, index) => index != recipeIndex)}
+        case ActionTypes.SAVE_ENCODING_RECIPES:
+            if(action.payload.isDefault) {
+                recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
+            }
+            return  {...state, recipes: recipes.map((item, index) => {
+                let recipeIndex = recipes.findIndex( item => item.id === action.payload.id)
+                if (index !== recipeIndex) {
+                    return item
+                }
+                return {
+                    ...item,
+                    ...action.payload
+                }
+            })}
+        case ActionTypes.DELETE_ENCODING_RECIPES:
+            let recipeIndex = state.recipes.findIndex( item => item.id === action.payload.id)
+            return {...state, recipes: state.recipes.filter((item, index) => index != recipeIndex)}
         default:
             return state;
     }

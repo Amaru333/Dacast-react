@@ -33,7 +33,7 @@ storiesOf('Inputs', module)
                 <Input label="Whatever label" placeholder="Placeholder" help="Info for this input" icon="error" disabled /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input label="Whatever label" prefix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info for this input" /> 
+                <Input label="Whatever label" inputPrefix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info for this input" /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
             <Input label="Whatever label"  suffix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info for this input" /> 
