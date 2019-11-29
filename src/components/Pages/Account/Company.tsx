@@ -29,17 +29,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
         event.preventDefault();
         props.saveCompanyPageDetails({
-            accountName: value['accountName'].value,
-            businessName: value['businessName'].value,
-            contactNumber: value['contactNumber'].value,
-            emailAddress: value['emailAddress'].value,
-            companyWebsite: value['companyWebsite'].value,
-            vatNumber: value['vatNumber'].value,
-            addressLine1: value['addressLine1'].value,
-            addressLine2: value['addressLine2'].value,
-            state: value['state'].value,
-            town: value['town'].value,
-            zipCode: value['zipCode'].value,
+            accountName: data['accountName'].value,
+            businessName: data['businessName'].value,
+            contactNumber: data['contactNumber'].value,
+            emailAddress: data['emailAddress'].value,
+            companyWebsite: data['companyWebsite'].value,
+            vatNumber: data['vatNumber'].value,
+            addressLine1: data['addressLine1'].value,
+            addressLine2: data['addressLine2'].value,
+            state: data['state'].value,
+            town: data['town'].value,
+            zipCode: data['zipCode'].value,
             country: ""
         })
 
@@ -111,7 +111,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             <Card className='clearfix p2'>
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
-                <div className="lg-col lg-col-12">
+                <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>

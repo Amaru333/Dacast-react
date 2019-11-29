@@ -15,7 +15,7 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
     display: flex;
     flex-direction: row;
     position: relative;
-    height: auto;
+    height: 38px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.theme.colors["gray-10"]};
     ${props => props.isNavigation && css`
@@ -42,7 +42,7 @@ export const Title = styled.div`
 
 export const IconStyle = styled.div`
     position: absolute;
-    right: 8%;
+    right: 19px;
     top: 17%;
 `;
 
@@ -57,8 +57,8 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
         display: block;
     `}
     margin-block-start: 0px;
-    padding-inline-start: 8px;
-    padding-inline-end: 8px;
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
     padding-block-end: 8px;
     max-height: 200px;
     overflow: scroll;

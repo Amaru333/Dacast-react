@@ -20,6 +20,7 @@ export const InputRadio = (props: RadioProps) => {
                 defaultChecked={props.defaultChecked}
                 name={name}
                 id={props.label} 
+                value={props.value}
                 disabled={props.disabled} 
                 type="radio" 
                 onFocus={() => setFocus(true)} 
