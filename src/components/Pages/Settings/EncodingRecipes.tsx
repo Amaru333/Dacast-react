@@ -26,7 +26,6 @@ interface EncodingRecipesComponentProps {
 //TABLES
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, deleteEncodingRecipe: Function) => {
-    console.log(encodingRecipeData)
     return encodingRecipeData.recipes.map((value, key) => {
         return [
             <Text key={key+value.name} size={14} weight="reg">{value.name}</Text>,
@@ -303,11 +302,18 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
     )
 }
 
-const submitRecipe = (selectedRecipe, FunctionRecipe: Function, saveRecipe: Function) => {
-   
-    saveRecipe(selectedRecipe);
+const submitRecipe = (selectedRecipe, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function, props) => {
+    console.log(props.encodingRecipeData)
+    if (selectedRecipe.id) {
+        saveEncodingRecipe(selectedRecipe)
+      
+    } else
+    {
+        createEncodingRecipe(selectedRecipe)
+    }
     FunctionRecipe(false)
-}
+    }
+
 
 const stepList = [settingsStep, presetStep]
 
@@ -357,7 +363,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
             functionCancel={FunctionRecipe}
-            finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, selectedRecipe === emptyRecipe ? props.createEncodingRecipe : props.saveEncodingRecipe)}
+            finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe, props)}
             stepperData={selectedRecipe}
             updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
             />
