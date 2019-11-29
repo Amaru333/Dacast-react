@@ -22,7 +22,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
             setSelectedItem(props.defaultValue ? props.defaultValue.toString() : "Select")
         } 
     }, [props.defaultValue])
-    React.useEffect(() => {}, [selectedItem])
+    React.useEffect(() => {setOpen(false)}, [selectedItem])
 
     const handleClick = (name: string) => {
         setSelectedItem(name);
@@ -52,7 +52,8 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 return (
                     props.isNavigation ? 
                         <Link to={name} key={props.id + '_' + name} >
-                            <DropdownItem                            
+                            <DropdownItem  
+                                isSingle                          
                                 id={props.id + '_' + name} 
                                 isSelected={selectedItem === name} 
                                 onClick={() => handleClick(name)}> 
@@ -87,6 +88,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             </SearchItem>
                             :
                             <DropdownItem 
+                                isSingle
                                 key={props.id + '_' + name} 
                                 id={props.id + '_' + name} 
                                 className={key === 1 ? 'mt1' : ''}
@@ -106,7 +108,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

@@ -46,12 +46,17 @@ export const IconStyle = styled.div`
     top: 17%;
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean;}>`
     display: none;
     position: absolute;
     z-index: 999;
     right: 0;
     left: 0;
+    ${props => props.isSingle && css `
+    right: .5rem;
+    left: .5rem;
+    `}
+
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
@@ -61,7 +66,8 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     padding-inline-end: 0px;
     padding-block-end: 8px;
     max-height: 200px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
     ${props => props.isNavigation && css`
@@ -71,11 +77,14 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     `}
 `;
 
-export const DropdownItem = styled.li<{isSelected: boolean}>`
+export const DropdownItem = styled.li<{isSelected: boolean, isSingle: boolean}>`
     display: block;
     position: relative;
     min-height: 24px;
     height: 100%;
+    ${props => props.isSingle && css`
+        padding: 8px;
+    `}
     padding-left: 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};

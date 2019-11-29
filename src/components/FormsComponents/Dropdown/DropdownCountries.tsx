@@ -258,7 +258,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                             null
                                     }
                                 </SearchItem>
-                                    <DropdownItem key={key.toString()+"selectAllcountries"} isSelected={false}> 
+                                    <DropdownItem isSingle={false} key={key.toString()+"selectAllcountries"} isSelected={false}> 
                                         <InputCheckbox 
                                             id={props.id + '_SelectAll'} 
                                             label={"Select All"}
@@ -270,10 +270,10 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                     <BorderItem key={key.toString()+"borderItem"} />
                                 </>
                                 : null}
-                            <DropdownItem style={{paddingLeft: '4px'}} key={props.id + '_' + continent + key.toString()} isSelected={false}  >
+                            <DropdownItem isSingle={false} style={{paddingLeft: '4px'}} key={props.id + '_' + continent + key.toString()} isSelected={false}  >
                                 <ContinentContainer isDisplayed={Object.keys(checkedContinents[continent].countries).filter(country => !checkedContinents[continent].countries[country].isFiltered).length === 0}>
                                     <ButtonIconStyle onClick={() => setToggleContinent({...toggleContinent, [continent]: !toggleContinent[continent]})}>
-                                        <Icon>{toggleContinent[continent] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
+                                        <Icon>{toggleContinent[continent] ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}</Icon>
                                     </ButtonIconStyle>
                                     <InputCheckbox 
                                         id={props.id + '_' + continent} 
@@ -292,7 +292,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                         <CountryContainer isDisplayed={toggleContinent[continent]} key={props.id + '_' + continent + '_' + country + key.toString()}>
                                             { 
                                                 !checkedContinents[continent].countries[country].isFiltered ?
-                                                    <DropdownItem  className='ml3'  isSelected={false}  > 
+                                                    <DropdownItem  isSingle={false} className='ml3'  isSelected={false}  > 
                                                         <InputCheckbox 
                                                             id={props.id + '_' + continent + '_' + country} 
                                                             label={country}
@@ -327,7 +327,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                 <Title><Text size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle={false} isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

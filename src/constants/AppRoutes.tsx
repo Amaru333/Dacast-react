@@ -73,20 +73,7 @@ const Admin = () => {
     )
 }
 
-export const AppRoutes: Routes[] = [
-    {
-        path: '/admin',
-        name: 'Admin',
-        iconName: 'vpn_key',
-        component: Admin,
-        slug: [
-            {
-                path: '/admin/bluechip',
-                name: 'Blue Chip',
-                component: functionTest2
-            }
-        ]
-    },
+export const AppRoutes: Routes[] = [   
     {
         path: '/dashboard',
         name: 'Dashboard',
@@ -94,32 +81,10 @@ export const AppRoutes: Routes[] = [
         component: DashboardRender,
     },
     {
-        path: '/channels',
-        name: 'Channels',
+        path: '/livestreams',
+        name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel,
-        slug: [
-            {
-                path: '/channels/general',
-                name: 'General',
-                component: functionTest2
-            },
-            {
-                path: '/channels/monetization',
-                name: 'Monetization',
-                component: functionTest3
-            },
-            {
-                path: '/channels/security',
-                name: 'Security',
-                component: functionTest2
-            },
-            {
-                path: '/channels/interactions',
-                name: 'Interactions',
-                component: functionTest4
-            }
-        ]
+        component: LiveChannel
     },
     {
         path: '/videos',
@@ -131,33 +96,39 @@ export const AppRoutes: Routes[] = [
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        slug: [
-            {
-                path: '/folders/tab1',
-                name: 'tab1',
-                component: functionTest1
-            },
-            {
-                path: '/folders/tab2',
-                name: 'tab2',
-                component: functionTest3
-            }
-        ]
+        component: functionTest1
     },
+
     {
         path: '/playlists',
         name: 'Playlists',
         iconName: 'playlist_play',
-        component: Playlist,
+        component: Playlist
+    },
+    {
+        path: '/analytics',
+        name: 'Analytics',
+        iconName: 'bar_chart',
+        component: null,
         slug: [
             {
-                path: '/playlists/tab1',
-                name: 'tab1',
-                component: functionTest4
+                path: '/analytics/dashboard',
+                name: 'Dashboard',
+                component: functionTest2
             },
             {
-                path: '/playlists/tab2',
-                name: 'tab2',
+                path: '/analytics/realtime',
+                name: 'Real Time',
+                component: functionTest2
+            },
+            {
+                path: '/analytics/viewership',
+                name: 'Viewership',
+                component: functionTest2
+            },
+            {
+                path: '/analytics/revenue',
+                name: 'Revenue',
                 component: functionTest2
             }
         ]
@@ -166,16 +137,21 @@ export const AppRoutes: Routes[] = [
         path: '/monetization',
         name: 'Monetization',
         iconName: 'attach_money',
-        component: Playlist,
+        component: null,
         slug: [
             {
-                path: '/monetization/tab1',
-                name: 'tab1',
+                path: '/monetization/presets',
+                name: 'Presets',
                 component: functionTest4
             },
             {
-                path: '/monetization/tab2',
-                name: 'tab2',
+                path: '/monetization/groups',
+                name: 'Groups',
+                component: functionTest2
+            },
+            {
+                path: '/monetization/balance',
+                name: 'Balance',
                 component: functionTest2
             }
         ]
@@ -185,51 +161,37 @@ export const AppRoutes: Routes[] = [
         name: 'break'
     },
     {
-        path: '/mainsettings',
-        name: 'Main Settings',
+        path: '/settings',
+        name: 'Settings',
         iconName: 'settings',
         component: null,
         slug: [
             {
-                path: '/mainsettings/analytics',
-                name: 'Analytics',
-                component: functionTest1
-            },
-            {
-                path: '/mainsettings/deliveryembed',
-                name: 'Delivery & Embed',
-                component: DeliveryAndEmbed
-            },
-            {
-                path: '/mainsettings/security',
-                name: 'Security',
-                component: Security
-            },
-            {
-                path: '/mainsettings/monetization',
-                name: 'Monetization',
-                component: functionTest1
-            },
-            {
-                path: '/mainsettings/apiintegrations',
-                name: 'API & Integration',
-                component: ApiIntegrationRender
-            },
-            {
-                path: '/mainsettings/encoding',
+                path: '/settings/encoding',
                 name: 'Encoding',
                 component: functionTest4
             },
             {
-                path: '/mainsettings/interations',
-                name: 'Interactions',
-                component: functionTest4
+                path: '/settings/embed',
+                name: 'Embed',
+                component: DeliveryAndEmbed
             },
             {
-                path: '/mainsettings/general',
-                name: 'General',
-                component: functionTest1
-            }
+                path: '/settings/security',
+                name: 'Security',
+                component: Security
+            },
+            {
+                path: '/settings/apiintegrations',
+                name: 'API & Integration',
+                component: ApiIntegrationRender
+            },
+
+            {
+                path: '/settings/theming',
+                name: 'Theming',
+                component: functionTest4
+            },
         ]
     },
     {
@@ -239,8 +201,8 @@ export const AppRoutes: Routes[] = [
         component: null,
         slug: [
             {
-                path: '/account/summary',
-                name: 'Summary',
+                path: '/account/plans',
+                name: 'Plans',
                 component: functionTest3
             },
             {
@@ -254,11 +216,6 @@ export const AppRoutes: Routes[] = [
                 component: Company
             },
             {
-                path: '/account/users',
-                name: 'Users',
-                component: functionTest4
-            },
-            {
                 path: '/account/billing',
                 name: 'Billing',
                 component: functionTest2
@@ -267,32 +224,7 @@ export const AppRoutes: Routes[] = [
                 path: '/account/invoices',
                 name: 'Invoices',
                 component: functionTest1
-            },
-            {
-                path: '/account/payout',
-                name: 'Payout',
-                component: functionTest1
-            },
-            {
-                path: '/account/whitelabeling',
-                name: 'Whitelabeling',
-                component: functionTest3
-            },
-            {
-                path: '/account/encoder',
-                name: 'Encoder',
-                component: functionTest1
-            },
-            {
-                path: '/account/apis3keys',
-                name: 'API & S3 Keys',
-                component: functionTest4
-            },
-            {
-                path: '/account/webhooksettings',
-                name: 'Webhook Settings',
-                component: functionTest3
-            },
+            }
         ]
-    },
+    }
 ];

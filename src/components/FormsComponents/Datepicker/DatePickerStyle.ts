@@ -3,22 +3,17 @@ import styled, {css} from 'styled-components';
 export const DatepickerContainer = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 300px;
 `
 export const DatepickerStyle = styled.div<{isSingle: boolean}>`
     position: relative;
-    width: 630px;
     margin-top: 8px;
-    ${props => props.isSingle && css`
-        width: 336px;
-    `}
+
 `
 export const BoxStyle = styled.div<{isSelected: boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;
     height: 22px;
-    width: 283px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     ${props => props.isSelected && css `
         border: 1px solid ${props => props.theme.colors["violet"]};
