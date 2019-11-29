@@ -4,6 +4,7 @@ import DatepickerContext from "./DatepickerContext";
 import { DayProps } from './DatePickerTypes';
 import React from 'react';
 import { DayStyle, DayWrapper } from './DatePickerStyle';
+import { Text } from '../../Typography/Text';
 
 function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
     const dayRef = useRef(null);
@@ -25,9 +26,7 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
         isSelected,
         isSelectedStartOrEnd,
         isWithinHoverRange,
-        disabledDate,
         onClick,
-        onKeyDown,
         onMouseEnter,
         tabIndex
     } = useDay({
@@ -70,7 +69,7 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
                 ref={dayRef}
                 isToday={isToday}
             >
-                {dayLabel}
+                <Text size={16} weight='reg' color={isSelected ? 'white' : 'gray-1'}>{dayLabel}</Text>
             </DayStyle>
         </DayWrapper>
 

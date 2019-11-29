@@ -9,7 +9,7 @@ import { DragAndDrop } from '../../DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/types';
-const {getNames} = require('country-list')
+const {getNames, getData} = require('country-list')
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -51,6 +51,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
+        console.log(getData())
         setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);

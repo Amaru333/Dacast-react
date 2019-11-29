@@ -1,9 +1,7 @@
 import styled, { css } from 'styled-components';
-import { DropdownProps } from './DropdownTypes';
 import { Text } from "../../Typography/Text";
-import { Input } from '../Input/Input';
 
-export const ContainerStyle = styled.div<DropdownProps>`
+export const ContainerStyle = styled.div<{}>`
     display: block;
     height:auto;
     position: relative;
@@ -34,7 +32,7 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
     `}
 `;
 
-export const Title = styled.div<{ref: any}>`
+export const Title = styled.div`
     padding: 8px 44px 8px 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -51,7 +49,9 @@ export const IconStyle = styled.div`
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean | undefined}>`
     display: none;
     position: absolute;
-    width: 94%;
+    z-index: 999;
+    right: 0;
+    left: 0;
     background-color: ${props => props.theme.colors.white};
     ${props => (props.displayDropdown) && css `
         display: block;
@@ -74,9 +74,9 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
 export const DropdownItem = styled.li<{isSelected: boolean}>`
     display: block;
     position: relative;
-    min-height: 32px;
+    min-height: 24px;
     height: 100%;
-    padding: 0 8px;
+    padding-left: 8px;
     &:hover {
         background-color: ${props => props.theme.colors["gray-10"]};
         cursor: pointer;
@@ -108,4 +108,52 @@ export const DropdownItemText = styled(Text)`
     width: 80%;
     min-height: 100%;
     padding-top: 4px;
+`
+
+export const ContinentContainer = styled.div<{isDisplayed: boolean}>`
+    display: flex;
+    ${props => props.isDisplayed && css`
+        display: none;
+    `}
+`
+
+export const ButtonIconStyle = styled.div<{}>`
+    color: ${props => props.theme.colors['gray-3']};
+    width: 8px;
+    margin-top: 4px;
+    display: table;
+
+`
+
+export const CountryContainer = styled.div<{isDisplayed: boolean}>`
+    ${props => props.isDisplayed && css`
+        display: none;
+    `}
+`
+
+export const SearchItem = styled.div`
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    display: flex;
+    background-color: ${props => props.theme.colors.white};
+    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
+`
+
+export const SearchIconStyle = styled.div`
+    padding-top: 8px;
+    padding-left: 8px;
+    width: 24px;
+    background-color: ${props => props.theme.colors['white']};
+`
+
+export const CloseIconButton = styled.div`
+    display: flex;
+    color: ${props => props.theme.colors['gray-3']};
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 8px;
+    right: 25px;
+    cursor: pointer;
 `

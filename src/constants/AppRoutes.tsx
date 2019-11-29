@@ -1,13 +1,15 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { Tab } from '../components/Tab/Tab';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
+import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import { Theme } from '../styled/themes/dacast-theme';
 import Profile from '../containers/Account/Profile';
 import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/EncodingRecipes';
+import Security from '../containers/Settings/Security/Security';
+import Chapters from '../containers/VOD/Chapters/Chapters';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -36,63 +38,39 @@ const functionTest4 = () => {
     )
 }
 
-const DashboardRender = (props: any) => {
+const DashboardRender = () => {
     return (
         <Dashboard/>
     )
 }
 
-const LiveChannel = (props: any) => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
-        </div>
-    )
-}
-
-const Video = (props: any) => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
-        </div>
-    )
-}
-
-const Playlist = (props: any) => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
-        </div>
-    )
-}
-
-const MainSettings = (props: any) => {
+const ApiIntegrationRender = () => {
     return (
-        <div>
-            <Tab {...props}  list={props.routes} orientation="vertical" />
-        </div>
-
+        <ApiIntegration/>
     )
 }
 
-const Account = (props: any) => {
 
-    return (
-        <div>
-            <Tab {...props} list={props.routes} orientation="vertical" />
-        </div>
-
-    )
-}
-
-const Admin = (props: any) => {
+const LiveChannel = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Account</h2>
-            <Tab {...props} list={props.routes} orientation="vertical" />
+            <h2>LiveChannel</h2>
+        </div>
+    )
+}
+
+const Playlist = () => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Playlist</h2>
+        </div>
+    )
+}
+
+const Admin = () => {
+    return (        
+        <div style={{margin: 'auto', width: '50%'}}>
+            <h2>Admin</h2>
         </div>
     )
 }
@@ -149,25 +127,12 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: Video,
-        slug: [
-            {
-                path: '/videos/tab1',
-                name: 'tab1',
-                component: functionTest1
-            },
-            {
-                path: '/videos/tab2',
-                name: 'tab2',
-                component: functionTest3
-            }
-        ]
+        component: Chapters
     },
     {
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        component: Video,
         slug: [
             {
                 path: '/folders/tab1',
@@ -225,7 +190,7 @@ export const AppRoutes: Routes[] = [
         path: '/mainsettings',
         name: 'Main Settings',
         iconName: 'settings',
-        component: MainSettings,
+        component: null,
         slug: [
             {
                 path: '/mainsettings/analytics',
@@ -240,7 +205,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/security',
                 name: 'Security',
-                component: functionTest2
+                component: Security
             },
             {
                 path: '/mainsettings/monetization',
@@ -250,7 +215,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/apiintegrations',
                 name: 'API & Integration',
-                component: functionTest1
+                component: ApiIntegrationRender
             },
             {
                 path: '/mainsettings/encoding',
@@ -273,7 +238,7 @@ export const AppRoutes: Routes[] = [
         path: '/account',
         name: 'Account',
         iconName: 'person',       
-        component: Account,
+        component: null,
         slug: [
             {
                 path: '/account/summary',

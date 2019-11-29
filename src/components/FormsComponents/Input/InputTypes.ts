@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type InputType =
 | 'text'
 | 'email'
@@ -37,6 +39,9 @@ export interface InputSpecificProps {
     value?: string;  
     required?: boolean;
     ref?: React.RefObject<HTMLInputElement>;
+    prefix?: Element;
+    suffix?: Element;
+    step?: string;
 }
 
 export interface CheckboxSpecificProps {

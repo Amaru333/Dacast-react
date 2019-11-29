@@ -1,34 +1,48 @@
 import styled, {css} from 'styled-components';
 
-
+export const DatepickerContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+`
 export const DatepickerStyle = styled.div<{isSingle: boolean}>`
     position: relative;
     width: 630px;
+    margin-top: 8px;
     ${props => props.isSingle && css`
-        width: 300px;
+        width: 336px;
     `}
 `
-export const BoxStyle = styled.div<{}>`
+export const BoxStyle = styled.div<{isSelected: boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;
-    height: 30px;
+    height: 22px;
     width: 283px;
-    border: 1px solid ${props => props.theme.colors["violet"]};
+    border: 1px solid ${props => props.theme.colors["gray-7"]};
+    ${props => props.isSelected && css `
+        border: 1px solid ${props => props.theme.colors["violet"]};
+    `}
     background-color: ${props => props.theme.colors["gray-10"]};
     padding: 0.5em 0;
     padding-left: 10px; 
     cursor: pointer;
 `
 
-export const StartTextStyle = styled.div<{text: boolean}>`
-    background-color: ${props => props.theme.colors["white"]};
-    ${props => props.text && css `
+export const StartTextStyle = styled.div<{text: boolean; isSingle: boolean}>`
+    ${props => !props.isSingle && css`
+        border: 1px solid ${props => props.theme.colors["gray-7"]};
+        border-radius: 4px;
+    `}
+    ${props => !props.isSingle && !props.text && css`
+        background-color: ${props => props.theme.colors["white"]};
+    `}
+    ${props => props.text && !props.isSingle && css `
         background-color: ${props => props.theme.colors["gray-7"]};
     `}
     padding: 2px;
-    border: 1px solid ${props => props.theme.colors["gray-7"]};
-    border-radius: 4px;
+    position: absolute;
+    bottom: 4px;
 
 `
 
@@ -64,16 +78,21 @@ export const IconStyle = styled.div<{isCalendar: boolean}>`
     ${props => props.isCalendar && css`
         position: absolute;
         right: 5px;
-        padding-top: 0.125em;
+        top: 20%;
     `}
 `
 
-export const MonthContainerStyle = styled.div<{open: boolean}>`
+export const MonthContainerStyle = styled.div<{open: boolean; isSingle: boolean}>`
     display: grid;
-    position: relative;
-    max-width: 600px;
+    position: absolute;
+    z-index: 999;
+    background-color: ${props => props.theme.colors['white']};
+    max-width: 672px;
+    ${props => props.isSingle && css`
+        max-width: 336px;
+    `}
     margin: 5px 0 0 0;
-    grid-template-columns: repeat(2, 300px);
+    grid-template-columns: repeat(2, 336px);
     ${props => !props.open && css`
         display: none;
     `}
@@ -81,12 +100,13 @@ export const MonthContainerStyle = styled.div<{open: boolean}>`
 
 export const MonthContainer = styled.div<{}>`
     border: 1px solid ${props => props.theme.colors["gray-7"]};
-    padding: 0 12px;
+    padding: 16px;
+    padding-top: 0;
 `
 
 export const MonthLabelStyle = styled.div<{}>`
     width: fit-content;
-    margin: 10px auto;
+    margin: 10px auto 16px auto;
 
 `
 
@@ -94,7 +114,7 @@ export const WeekdayStyle = styled.div<{}>`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-align: center;
 `
 
@@ -109,12 +129,12 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: b
         background-color:${props => props.theme.colors["violet20"]};
     `}
     ${props => (props.isWithinHoverRange || props.isSelected) && (props.isLineBeginning || props.isMonthFirstDay) && css`
-        border-bottom-left-radius: 32px;
-        border-top-left-radius: 32px;
+        border-bottom-left-radius: 40px;
+        border-top-left-radius: 40px;
     `}
     ${props => (props.isWithinHoverRange || props.isSelected) && (props.isLineEnd || props.isMonthLastDay) && css`
-        border-bottom-right-radius: 32px;
-        border-top-right-radius: 32px;
+        border-bottom-right-radius: 40px;
+        border-top-right-radius: 40px;
     `}
     ${props => props.isFirstDay && css`
         background: linear-gradient(90deg, ${props => props.theme.colors["white"]} 50%, ${props => props.theme.colors["violet20"]} 50%);
@@ -127,8 +147,8 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: b
 `
 
 export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: boolean; isSelectedStartOrEnd: boolean; isToday: boolean}>`
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border: none;
     border-radius: 50%;
     padding: unset;
@@ -137,6 +157,9 @@ export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: 
         background-color: ${props => props.theme.colors["violet20"]};
         color: ${props => props.theme.colors["dark-violet"]};
         cursor: pointer;
+    }
+    &:focus {
+        outline: none;
     }
     ${props => (props.isWithinHoverRange || props.isSelected) && css`
         background-color:${props => props.theme.colors["violet20"]};

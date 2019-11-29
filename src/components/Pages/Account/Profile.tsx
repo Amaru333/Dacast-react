@@ -30,7 +30,6 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
         event.preventDefault();
-        console.log(value)
         props.saveProfilePageDetails({
             firstName: value['firstName'].value,
             lastName: value['lastName'].value,

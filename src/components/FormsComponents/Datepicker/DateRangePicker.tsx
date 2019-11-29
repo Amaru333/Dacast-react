@@ -80,21 +80,21 @@ export const  Datepicker = () => {
                 }}
             >
                     
-                <BoxStyle onClick={() => setIsOpened(!isOpened)}>
-                    <StartTextStyle text={state.startDate ? true : false}>
-                        <Text size={16} weight='reg' color='gray-3'>
+                <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
+                    <StartTextStyle isSingle={false} text={state.startDate ? true : false}>
+                        <Text size={14} weight='reg' color='gray-1'>
                             {state.startDate ? state.startDate.toLocaleDateString() : "Select date"}
                         </Text>
                     </StartTextStyle>
                     <IconStyle isCalendar={false}><Icon>arrow_forward</Icon></IconStyle>
                     <EndTextStyle text={state.endDate ? true : false}>
-                        <Text size={16} weight='reg' color='gray-3'>
+                        <Text size={14} weight='reg' color='gray-1'>
                             {state.endDate ? state.endDate.toLocaleDateString() : "Select date"}
                         </Text>
                     </EndTextStyle>
                     <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>
                 </BoxStyle>
-                <MonthContainerStyle open={isOpened}>
+                <MonthContainerStyle isSingle={false} open={isOpened}>
                     <NavButtonLeftStyle>
                         <NavButton onClick={goToPreviousMonths}>
                             <Icon>keyboard_arrow_left</Icon>

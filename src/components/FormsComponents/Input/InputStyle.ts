@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { InputProps, InputCheckboxProps, SliderContainerProps } from './InputTypes';
+import { InputProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
 
 export const ContainerStyle = styled.div`
@@ -36,12 +36,30 @@ export const IndicationLabelStyle = styled.label<{}>`
     padding-bottom: 4px;
 `
 
+export const AddonStyle = styled.div<{suffix: boolean}>`
+    background: ${props => props.theme.colors["gray-8"]};
+    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+    ${props => props.suffix && css`
+        border-left: none;
+    `}
+    ${props => !props.suffix && css`
+        border-right: none;
+    `}
+    height:40px;
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    width:auto; 
+    box-sizing: border-box;
+`
+
 export const InputStyle = styled.input<InputProps>`
     display: flex;
     border: 1px solid ${props => props.theme.colors["gray-7"]} ;
     background: ${props => props.theme.colors["gray-10"]};
     box-sizing: border-box;
     padding: 8px 12px;
+    flex-grow: 1;
     height:40px;
     font-family: Roboto;
     font-style: normal;
