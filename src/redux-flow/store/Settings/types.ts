@@ -1,6 +1,5 @@
 import { DeliveryAndEmbedOptionType, DeliveryAndEmbedReducer } from './DeliveryAndEmbed';
 import { combineReducers, Reducer } from 'redux';
-import EncodingRecipes from '../../../components/Pages/Settings/EncodingRecipes';
 import { EncodingRecipeOptionType } from './EncodingRecipes/EncodingRecipesTypes';
 import { EncodingRecipesReducer } from './EncodingRecipes';
 

@@ -7,7 +7,7 @@ import Company from '../containers/Account/Company';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import { Theme } from '../styled/themes/dacast-theme';
 import Profile from '../containers/Account/Profile';
-import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes';
+import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/EncodingRecipes';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 

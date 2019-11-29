@@ -1,19 +1,19 @@
 import * as React from 'react'
-import { Card } from '../../Card/Card';
-import { Text } from "../../Typography/Text"
-import { Button } from '../../FormsComponents/Button/Button';
-import { Table } from '../../Table/Table';
+import { Card } from '../../../Card/Card';
+import { Text } from "../../../Typography/Text"
+import { Button } from '../../../FormsComponents/Button/Button';
+import { Table } from '../../../Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
-import { CustomStepper } from '../../Stepper/Stepper';
-import { Input } from '../../FormsComponents/Input/Input';
-import { InputCheckbox } from '../../FormsComponents/Input/InputCheckbox';
-import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
+import { CustomStepper } from '../../../Stepper/Stepper';
+import { Input } from '../../../FormsComponents/Input/Input';
+import { InputCheckbox } from '../../../FormsComponents/Input/InputCheckbox';
+import { EncodingRecipeItem, EncodingRecipesData } from '../../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../../../redux-flow/store';
-import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
-import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { ApplicationState } from '../../../../redux-flow/store';
+import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../../../redux-flow/store/Settings/EncodingRecipes/actions';
+import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData
@@ -33,7 +33,6 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
             <IconContainer className="iconAction"><Icon onClick={() => deleteEncodingRecipe(value)}>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
         ]
     })
-    
 }
 
 const recipesHeaderElement = (newRecipe: Function) => {
@@ -53,138 +52,41 @@ const createRecipeHeaderElement = () => {
     ]
 }
 
-//REFACTOR THIS ABSOLUTE MONSTROSITY
-const createRecipeBodyElement = (stepperData, setSelectedRecipe: Function) => {
-    
-    return [
-        [
-            <InputCheckbox defaultChecked={stepperData.recipePresets.includes("2160p")} id="2160p" onChange={(event) => 
-                    
+const recipePresets = [
+    {id: "2160p", name: "4K - 2160p", size: "3480", bitrate: "68"},
+    {id: "1440p", name: "2K - 1440p", size: "2560", bitrate: "24"},
+    {id: "1080p", name: "HD - 1080p", size: "1920", bitrate: "12"},
+    {id: "720p", name: "SD - 720p", size: "1280", bitrate: "7.5"},
+    {id: "480p", name: "LD - 480p", size: "854", bitrate: "4"},
+    {id: "360p", name: "SLD - 360p", size: "640", bitrate: "1.5"},
+    {id: "240p", name: "ULD - 240p", size: "426", bitrate: "0.5"}
+]
+
+const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets) => {
+    return recipePresets.map((value, key) => {
+        return [
+            <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
                 {
                     if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("2160p"))
+                        setSelectedRecipe({...stepperData}, stepperData.value.push(value.id))
                     } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "2160p")
+                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
                         setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
                     }
-
                 }
-                    } />,
-            <Text size={14} weight="reg">4K - 2160p</Text>,
-            <Text size={14} weight="reg">3480</Text>,
-            <Text size={14} weight="reg">68</Text>
-        ],
-        [
-            <InputCheckbox id="1440p" defaultChecked={stepperData.recipePresets.includes("1440p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("1440p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "1440p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    }/>,
-            <Text size={14} weight="reg">2K - 1440p</Text>,
-            <Text size={14} weight="reg">2560</Text>,
-            <Text size={14} weight="reg">24</Text>
-        ],
-        [
-            <InputCheckbox id="1080p" defaultChecked={stepperData.recipePresets.includes("1080p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("1080p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "1080p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    } />,
-            <Text size={14} weight="reg">HD - 1080p</Text>,
-            <Text size={14} weight="reg">1920</Text>,
-            <Text size={14} weight="reg">12</Text>
-        ],
-        [
-            <InputCheckbox id="720p" defaultChecked={stepperData.recipePresets.includes("720p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("720p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "720p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    } />,
-            <Text size={14} weight="reg">SD - 720p</Text>,
-            <Text size={14} weight="reg">1280</Text>,
-            <Text size={14} weight="reg">7.5</Text>
-        ],
-        [
-            <InputCheckbox id="480p" defaultChecked={stepperData.recipePresets.includes("480p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("480p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "480p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    }/>,
-            <Text size={14} weight="reg">LD - 480p</Text>,
-            <Text size={14} weight="reg">854</Text>,
-            <Text size={14} weight="reg">4</Text>
-        ],
-        [
-            <InputCheckbox id="360p" defaultChecked={stepperData.recipePresets.includes("360p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("360p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "360p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    } />,
-            <Text size={14} weight="reg">SLD - 360p</Text>,
-            <Text size={14} weight="reg">640</Text>,
-            <Text size={14} weight="reg">1.5</Text>
-        ],
-        [
-            <InputCheckbox id="240p" defaultChecked={stepperData.recipePresets.includes("240p")} onChange={(event) => 
-                    
-                {
-                    if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("240p"))
-                    } else {
-                        const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "240p")
-                        setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
-                    }
-
-                }
-                    }/>,
-            <Text size={14} weight="reg">ULD - 240p</Text>,
-            <Text size={14} weight="reg">426</Text>,
-            <Text size={14} weight="reg">0.5</Text>
+            } />,
+            <Text size={14} weight="reg">{value.name}</Text>,
+            <Text size={14} weight="reg">{value.size}</Text>,
+            <Text size={14} weight="reg">{value.bitrate}</Text>
         ]
-    ]
+    })   
 }
 
-const extraEncodingOptionsBodyElement = (stepperData, setSelectedRecipe: Function) => {
+const extraEncodingOptionsBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function) => {
     return [
         [
             <InputCheckbox id="magicEncoding" defaultChecked={stepperData.recipePresets.includes("magicEncoding")} 
-            onChange={(event) => 
-                    
+            onChange={(event) =>   
                 {
                     if (event.currentTarget.checked) {
                         setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("magicEncoding"))
@@ -192,15 +94,13 @@ const extraEncodingOptionsBodyElement = (stepperData, setSelectedRecipe: Functio
                         const editedRecipePresets = stepperData.recipePresets.filter(item => item !== "magicEncoding")
                         setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
                     }
-
                 }
-                    }/>,
+            }/>,
             <Text size={14} weight="reg">Magic Encoding</Text>,
             <Text size={14} weight="reg">Auto</Text>,
             <Text size={14} weight="reg">7.5</Text>
         ],
         [<InputCheckbox id="DNE" defaultChecked={stepperData.recipePresets.includes("DNE")} onChange={(event) => 
-                    
             {
                 if (event.currentTarget.checked) {
                     setSelectedRecipe({...stepperData}, stepperData.recipePresets.push("DNE"))
@@ -209,7 +109,7 @@ const extraEncodingOptionsBodyElement = (stepperData, setSelectedRecipe: Functio
                     setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
                 }
             }
-                }/>,
+        }/>,
             <Text size={14} weight="reg">DNE - Do Not Encode</Text>,
             <Text size={14} weight="reg">Auto</Text>,
             <Text size={14} weight="reg">Auto</Text>
@@ -224,20 +124,17 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
        <StepContent className="clearfix">
            <RecipeNameRow className="col-12 mb1">
                 <RecipeNameInput value={stepperData ? stepperData.name : ""} className="col-6" required label="Recipe Name" onChange={(event) => 
-                    
                     {
                         event.preventDefault();
                         setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value})
                     }
-                        } />
+                } />
                 <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault} className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
                 onChange={(event) => 
-                    
-                    {
-                        
+                    {   
                         setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
                     }
-                        }/>
+                }/>
            </RecipeNameRow>
            <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
            <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
@@ -253,35 +150,31 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
            </WatermarkFile>
            <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
            <PositioningRow className="col col-12">
-                
                 <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft : null }className="col col-2" required label="Left"
                 onChange={(event) => 
-                    
                     {
                         event.preventDefault();
                         setSelectedRecipe({...stepperData, ["watermarkPositioningLeft"]: event.currentTarget.value})
                     }
-                        }
-                        ></Input>
+                }
+                />
                 <Suffix className="col col-1 mr2" >
                     <Text weight="med" size={14} color="gray-3">px</Text>
                 </Suffix>
                 <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight : null} className="col col-2" required label="Right"
                 onChange={(event) => 
-                    
                     {
                         event.preventDefault();
                         setSelectedRecipe({...stepperData, ["watermarkPositioningRight"]: event.currentTarget.value})
                     }
-                        }
-                ></Input>
+                 }
+                />
                 <Suffix className="col col-1" >
                     <Text weight="med" size={14} color="gray-3">px</Text>
                 </Suffix>
            </PositioningRow>
            </div> 
-           : null}
-           
+           : null} 
        </StepContent>
     )
 }
@@ -292,10 +185,10 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe)} />
+            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets)} />
             <Text className="col col-12 mt25" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
             {/* extraEncodingOptions table to have header removed */}
-            <Table className="col col-12 mt1" id="extraEncodingOptions" body={extraEncodingOptionsBodyElement(stepperData, setSelectedRecipe)} />
+            <Table className="col col-12 mt1" id="extraEncodingOptions" header={createRecipeHeaderElement()} body={extraEncodingOptionsBodyElement(stepperData, setSelectedRecipe)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/">Knowledge Base</a></Text>
@@ -304,8 +197,7 @@ const presetStep = (stepperData: any, setSelectedRecipe: Function) => {
     )
 }
 
-const submitRecipe = (selectedRecipe, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function, props) => {
-    console.log(props.encodingRecipeData)
+const submitRecipe = (selectedRecipe: EncodingRecipeItem, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
     if (selectedRecipe.id) {
         saveEncodingRecipe(selectedRecipe)
     } else
@@ -313,7 +205,7 @@ const submitRecipe = (selectedRecipe, FunctionRecipe: Function, createEncodingRe
         createEncodingRecipe(selectedRecipe)
     }
     FunctionRecipe(false)
-    }
+}
 
 
 const stepList = [settingsStep, presetStep]
@@ -324,9 +216,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
         props.getEncodingRecipes();
     }, [])
 
-    
-
-    const emptyRecipe = {name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe = {id: "", name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -356,7 +246,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
             <CustomStepper
             opened={createRecipeStepperOpen}
-            stepperHeader={!selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
+            stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
             stepList={stepList}
             nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
             backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
@@ -364,7 +254,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             stepTitles={["Settings", "Presets"]}
             lastStepButton="Create"
             functionCancel={FunctionRecipe}
-            finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe, props)}
+            finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
             stepperData={selectedRecipe}
             updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
             />
