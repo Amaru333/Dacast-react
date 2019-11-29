@@ -62,13 +62,14 @@ const recipePresets = [
     {id: "240p", name: "ULD - 240p", size: "426", bitrate: "0.5"}
 ]
 
-const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets) => {
+const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key:string]: string}[]) => {
+    console.log(stepperData)
     return recipePresets.map((value, key) => {
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
                 {
                     if (event.currentTarget.checked) {
-                        setSelectedRecipe({...stepperData}, stepperData.value.push(value.id))
+                        setSelectedRecipe({...stepperData}, stepperData.recipePresets.push(value.id))
                     } else {
                         const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
                         setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
@@ -150,7 +151,7 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
            </WatermarkFile>
            <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
            <PositioningRow className="col col-12">
-                <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft : null }className="col col-2" required label="Left"
+                <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft : null }className="col col-4 mr4" required label="Left"
                 onChange={(event) => 
                     {
                         event.preventDefault();
@@ -158,10 +159,8 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
                     }
                 }
                 />
-                <Suffix className="col col-1 mr2" >
-                    <Text weight="med" size={14} color="gray-3">px</Text>
-                </Suffix>
-                <Input disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight : null} className="col col-2" required label="Right"
+            
+                <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight : null} className="col col-4" required label="Right"
                 onChange={(event) => 
                     {
                         event.preventDefault();
@@ -169,9 +168,6 @@ const settingsStep = (stepperData: any, setSelectedRecipe: Function) => {
                     }
                  }
                 />
-                <Suffix className="col col-1" >
-                    <Text weight="med" size={14} color="gray-3">px</Text>
-                </Suffix>
            </PositioningRow>
            </div> 
            : null} 
@@ -232,7 +228,6 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
     }
 
     function FunctionRecipe(value: boolean) {setCreateRecipeStepperOpen(value)}
-
     return(
         !props.encodingRecipeData? 
             <LoadingSpinner size='large' color='blue80' />
@@ -314,18 +309,6 @@ const WatermarkFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
-`
-
-const Suffix = styled.div`
-    height: 40px;
-    width: 40px;
-    background-color: ${props => props.theme.colors["gray-8"]};
-    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
-    border-left-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
 `
 
 const PositioningRow = styled.div`

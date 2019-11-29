@@ -20,7 +20,7 @@ export interface EncodingRecipeItem {
     watermarkFile?: string,
     watermarkPositioningLeft?: number,
     watermarkPositioningRight?: number,
-    recipePresets: string[], 
+    recipePresets: string[]
 }
 
 export interface EncodingRecipesData {
