@@ -48,18 +48,21 @@ const createRecipeHeaderElement = () => {
         <></>,
         <Text key={'encodingRecipesPage_Present'}size={14} weight="med">Preset</Text>,
         <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>,
-        <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>
+        <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>,
+        <Text key={'encodingRecipesPage_MPX'} size={14} weight="med">MPX (16:9)</Text>
     ]
 }
 
 const recipePresets = [
-    {id: "2160p", name: "4K - 2160p", size: "3480", bitrate: "68"},
-    {id: "1440p", name: "2K - 1440p", size: "2560", bitrate: "24"},
-    {id: "1080p", name: "HD - 1080p", size: "1920", bitrate: "12"},
-    {id: "720p", name: "SD - 720p", size: "1280", bitrate: "7.5"},
-    {id: "480p", name: "LD - 480p", size: "854", bitrate: "4"},
-    {id: "360p", name: "SLD - 360p", size: "640", bitrate: "1.5"},
-    {id: "240p", name: "ULD - 240p", size: "426", bitrate: "0.5"}
+    {id: "2160p", name: "4K - 2160p", size: "3480", bitrate: "68", mpx: "7.52"},
+    {id: "1440p", name: "2K - 1440p", size: "2560", bitrate: "24", mpx: "3.69"},
+    {id: "1080p", name: "HD - 1080p", size: "1920", bitrate: "12", mpx: "2.07"},
+    {id: "720p", name: "SD - 720p", size: "1280", bitrate: "7.5", mpx: "0.92"},
+    {id: "480p", name: "LD - 480p", size: "854", bitrate: "4", mpx: "0.41"},
+    {id: "360p", name: "SLD - 360p", size: "640", bitrate: "1.5", mpx: "0.23"},
+    {id: "240p", name: "ULD - 240p", size: "426", bitrate: "0.5", mpx: "0.10"},
+    {id: "MagicEncoding", name: "Magic Encoding", size: "7.5", bitrate: "auto", mpx: "Auto"},
+    {id: "DNE", name: "Do Not Encode", size: "Auto", bitrate: "Auto", mpx: "Auto"}
 ]
 
 const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[]) => {
@@ -78,7 +81,8 @@ const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRec
             } />,
             <Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
             <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
-            <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>
+            <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>,
+            <Text key={'encodingRecipesPage_' + value.mpx + key} size={14} weight="reg">{value.mpx}</Text>
         ]
     })   
 }
@@ -182,9 +186,6 @@ const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function
                 Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
             </Text>
             <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets)} />
-            <Text className="col col-12 mt25" size={14} weight="reg">And you can also select one of the following to also be encoded if you want</Text>
-            {/* extraEncodingOptions table to have header removed */}
-            <Table className="col col-12 mt1" id="extraEncodingOptions" header={createRecipeHeaderElement()} body={extraEncodingOptionsBodyElement(stepperData, setSelectedRecipe)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/">Knowledge Base</a></Text>
