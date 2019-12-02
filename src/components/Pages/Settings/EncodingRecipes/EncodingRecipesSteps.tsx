@@ -32,7 +32,6 @@ export const recipePresets = [
 ]
 
 export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[]) => {
-    console.log(stepperData)
     return recipePresets.map((value, key) => {
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 

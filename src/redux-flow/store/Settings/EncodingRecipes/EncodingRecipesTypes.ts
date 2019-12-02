@@ -1,7 +1,3 @@
-export interface  SettingsState {
-    encodingRecipes: false | EncodingRecipesData;
-}
-
 export enum ActionTypes {
     GET_ENCODING_RECIPES = "@@settings_encoding/GET_ENCODING_RECIPES",
     CREATE_ENCODING_RECIPES = "@@settings_encoding/CREATE_ENCODING_RECIPES",
