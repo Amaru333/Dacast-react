@@ -39,8 +39,8 @@ export interface InputSpecificProps {
     value?: string;  
     required?: boolean;
     ref?: React.RefObject<HTMLInputElement>;
-    prefix?: Element;
-    suffix?: Element;
+    inputPrefix?: JSX.Element;
+    suffix?: JSX.Element;
     step?: string;
 }
 
@@ -58,6 +58,7 @@ export interface InputCheckboxSpecificProps {
     disabled: boolean;
     indeterminate?: boolean;
     labelWeight: labelWeight;
+    checked?: boolean;
 }
 
 export type InputCheckboxProps = InputCheckboxSpecificProps & React.HTMLAttributes<HTMLInputElement>;

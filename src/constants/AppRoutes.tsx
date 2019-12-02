@@ -5,7 +5,9 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
 import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
+import { Theme } from '../styled/themes/dacast-theme';
 import Profile from '../containers/Account/Profile';
+import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/EncodingRecipes';
 import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 
@@ -218,7 +220,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/mainsettings/encoding',
                 name: 'Encoding',
-                component: functionTest4
+                component: EncodingRecipes
             },
             {
                 path: '/mainsettings/interations',

@@ -6,16 +6,16 @@ import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
 import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
+import { OverlayStyle } from '../Modal/ModalStyle';
 
 export const CustomStepper = (props: StepperProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
 
     const steps: string[] = props.stepTitles
-
-    const renderStepperContent = (stepIndex: number) => {
+    const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
         return ( 
-            props.stepList[stepIndex]()
+            props.stepList[stepIndex](stepperData, updateStepperData)
         )
     };
 
@@ -24,7 +24,9 @@ export const CustomStepper = (props: StepperProps) => {
             setStepIndex(stepIndex + 1)
         }
         else {
+            setStepIndex(0)
             props.finalFunction()
+            
         }
     }
 
@@ -35,35 +37,36 @@ export const CustomStepper = (props: StepperProps) => {
     }
 
     return (
-
-        <StepperContainerStyle>
-            <StepperHeaderStyle>
-                <Text size={24} weight="reg">{props.stepperHeader}</Text>
-            </StepperHeaderStyle>
-            <StepperStyle>
-                <Stepper activeStep={stepIndex} {...props} alternativeLabel>
-                    {steps.map((label) => {
-                        return (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-            </StepperStyle>
-            <StepperContentStyle>
-                {renderStepperContent(stepIndex)}
-            </StepperContentStyle>
-            <StepperFooterStyle>
-                <Button {...props.nextButtonProps} onClick={nextStep}>
-                    {(stepIndex >= props.stepList.length - 2) ? props.lastStepButton : props.nextButtonProps.buttonText}
-                </Button>
-                {(stepIndex !== 0) &&
-                <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button>
+        <React.Fragment>
+            <StepperContainerStyle opened={props.opened}>
+                <StepperHeaderStyle>
+                    <Text size={24} weight="reg">{props.stepperHeader}</Text>
+                </StepperHeaderStyle>
+                <StepperStyle>
+                    <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                        {steps.map((label) => {
+                            return (
+                                <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                </StepperStyle>
+                <StepperContentStyle> 
+                    {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
+                </StepperContentStyle>
+                <StepperFooterStyle>
+                    <Button {...props.nextButtonProps} onClick={nextStep}>
+                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                    </Button>
+                    {stepIndex !== 0 ?
+                <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
                 }
-                <Button {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
-            </StepperFooterStyle>
-        </StepperContainerStyle>
-        
+                    <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                </StepperFooterStyle>
+            </StepperContainerStyle>
+            <OverlayStyle opened={props.opened}/>
+        </React.Fragment>
     )
 }

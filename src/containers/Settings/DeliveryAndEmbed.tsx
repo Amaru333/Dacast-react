@@ -20,7 +20,7 @@ interface DeliveryAndEmbedComponentProps {
 
 const DeliveryAndEmbed = (props: DeliveryAndEmbedComponentProps) => {
 
-    const [inputOptions, setInputOptions] = React.useState({});
+    const [inputOptions, setInputOptions] = React.useState<DeliveryAndEmbedOptionType>({});
     let inputRef = React.useRef<HTMLInputElement>(null)
     React.useEffect(() => {
         props.getDeliveryAndEmbedOptions();
