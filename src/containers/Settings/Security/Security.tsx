@@ -2,7 +2,6 @@ import React from 'react';
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../redux-flow/store";
-
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SecurityPage } from '../../../components/Pages/Settings/Security/Security';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../redux-flow/store/Settings/Security/types';

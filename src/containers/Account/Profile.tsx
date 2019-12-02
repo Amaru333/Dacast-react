@@ -1,44 +1,41 @@
 import * as React from 'react';
-import { ProfilePageInfos, AccountAction, getProfilePageDetailsAction, saveProfilePageDetailsAction, saveProfilePasswordAction, AccountInfos } from '../../redux-flow/store/Account';
+import { ProfilePageInfos, ProfileAction, getProfilePageDetailsAction, saveProfilePageDetailsAction, saveProfilePasswordAction } from '../../redux-flow/store/Account/Profile';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { ProfilePage } from '../../components/Pages/Account/Profile';
+import { ProfilePage } from '../../components/Pages/Account/Profile/Profile';
 
 interface ProfileComponentProps {
-    AccountDetails: AccountInfos;
+    ProfileInfos: ProfilePageInfos;
     getProfilePageDetails: Function;
     saveProfilePageDetails: Function;
     saveProfilePassword: Function;
 }
 const Profile = (props: ProfileComponentProps) => {
 
-    React.useEffect( () => {
-        if(typeof props.AccountDetails.profilePage === 'undefined') {
+    React.useEffect(() => {
+        if(!props.ProfileInfos) {
             props.getProfilePageDetails();
         }
     }, [])
 
     return (
-        typeof props.AccountDetails.profilePage !== 'undefined' ? 
-            <ProfilePage ProfilePageDetails={props.AccountDetails.profilePage} {...props} />
+        typeof props.ProfileInfos !== 'undefined' ? 
+            <ProfilePage ProfilePageDetails={props.ProfileInfos} {...props} />
             : 
             <LoadingSpinner size='large' color='dark-violet' />
     )
 }
 
 
-
-
 export function mapStateToProps( state: ApplicationState) {
     return {
-        AccountDetails: state.account.data
+        ProfileInfos: state.account.profile
     };
 }
 
-
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, AccountAction>) {
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, ProfileAction>) {
     return {
         getProfilePageDetails: () => {
             dispatch(getProfilePageDetailsAction());
