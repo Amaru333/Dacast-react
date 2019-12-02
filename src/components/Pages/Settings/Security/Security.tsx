@@ -14,6 +14,7 @@ import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../Bubble/Bubble';
+import { useMedia } from '../../../../utils/utils';
 
 interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
@@ -29,6 +30,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
+
+    let smScreen = useMedia('(max-width: 780px)');
 
     React.useEffect(() => {}, [selectedItem])
 
@@ -69,7 +72,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         return[
             <Text className='col col-2' key={"groupTable" + tableType} size={14}  weight="med" color="gray-1">Group</Text>,
             <Text className='col col-2' key={"DefaultTable" + tableType} size={14}  weight="med" color="gray-1">Default</Text>,
-            <Button key={"actionTable" + tableType} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true)}} className="right mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
+            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"actionTable" + tableType} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
         ]
     }
 
@@ -99,8 +102,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     return (
         <div>
-            <Bubble type='info' className='my2'>
-            These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)            </Bubble>
+            <Bubble type='info' className='my2'>          
+                These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)            
+            </Bubble>
             <Card>
                 <form id='settingsPageForm' ref={formRef} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
@@ -143,7 +147,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <div className='col col-12'>
 
                         <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
-                        <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={12} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {   
                             value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
                                 <>
@@ -201,7 +205,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Geo-restriction</Text></TextStyle>
 
-                    <TextStyle className="px1 py2" ><Text size={14} weight='reg' color='gray-3'>Whatever</Text></TextStyle>
+                    <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>Whatever</Text></TextStyle>
+                    <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setGeoRestrictionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
 
                     <Table className="col-12 mb1" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
 
@@ -209,8 +214,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 
-                    <TextStyle className="px1 py2" ><Text size={14} weight='reg' color='gray-3'>That's it</Text></TextStyle>
-
+                    <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>That's it</Text></TextStyle>
+                    <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setDomainControlModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                     <Table className="col-12" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>

@@ -32,9 +32,7 @@ export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function;
                     defaultValue={chapterMarker.name.toString()}
                     disabled={false}
                     onChange={(event) => setChapterMarker({...chapterMarker, name: event.currentTarget.value})}
-                    required
-                    help={!enableSubmit ? "Input is required" : null}
-                    isError={!enableSubmit}
+                    required={false}
                     id='chapterMarkername'
                     type='text'
                     className='col col-12 pb1'
