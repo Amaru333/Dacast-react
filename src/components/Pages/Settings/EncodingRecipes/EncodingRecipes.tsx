@@ -13,6 +13,7 @@ import { ApplicationState } from '../../../../redux-flow/store';
 import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
+import { useMedia } from '../../../../utils/utils';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -32,11 +33,11 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
     })
 }
 
-const recipesHeaderElement = (newRecipe: Function) => {
+const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
     return[
         <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>,
         <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>,
-        <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className="right mr2" typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
+        <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
     ]
 }
 
@@ -61,6 +62,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
         props.getEncodingRecipes();
     }, [])
 
+    let smScreen = useMedia('(max-width: 780px)');
 
     const emptyRecipe = {id: "", name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
@@ -88,7 +90,8 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
                 </HeaderStyle>
                 <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
-                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
+                <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
+                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}

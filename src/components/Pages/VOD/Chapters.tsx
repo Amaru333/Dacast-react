@@ -79,10 +79,16 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 if(player.getPlayerInstance().autoplay){
                     let onPlay = () => {
                         player.getPlayerInstance().pause()
+
                         player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
                     };
                     player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
                     player.play();
+                    player.onPause(() => {
+                        if(player.paused()) {
+                            setMarker(player.getPlayerInstance().currentTime)
+                        }
+                    })
                 }
             })
         }

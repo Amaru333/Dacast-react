@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {TableProps} from './TableTypes';
 
 export const TableContainer = styled.table<{}>`
@@ -13,8 +13,20 @@ export const TableContainer = styled.table<{}>`
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div<TableProps>`
+export const WrapperResponsiveContainer = styled.div<TableProps & {isMobile: boolean}>`
     overflow-x: auto;
+    ${props => props.isMobile && css`
+        overflow-x: scroll;
+        ::-webkit-scrollbar {
+            -webkit-appearance: none;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+    `}
     border: 1px solid ${props => props.theme.colors["gray-8"]};
 `;
 
@@ -28,6 +40,7 @@ export const TableHeaderRow = styled.tr<{}>`
 export const TableHeaderCell = styled.td<{}>`
     padding-left: 16px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+    width: 150px;
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -54,4 +67,5 @@ export const TableBodyRow = styled.tr<{}>`
 
 export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
+    max-width: 150px;
 `;
