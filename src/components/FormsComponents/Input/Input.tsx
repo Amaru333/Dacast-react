@@ -6,7 +6,7 @@ import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, I
 
 export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
 
-    var { prefix, suffix, label, indicationLabel, icon, help, isError, className, ...other } = props;
+    var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, ...other } = props;
 
     return (
         <ContainerStyle className={className} >
@@ -30,11 +30,10 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     :
                     null
             }
-            <RelativeContainer>
-                <div className="flex">
-                    {prefix ?
+                <RelativeContainer >
+                {inputPrefix ?
                         <AddonStyle suffix={false}>
-                            {prefix}
+                            {inputPrefix}
                         </AddonStyle>
                         :
                         null}
@@ -45,9 +44,10 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                         </AddonStyle>
                         :
                         null}
-                </div>
+                </RelativeContainer>
+
+
                 {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
-            </RelativeContainer>
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

@@ -12,13 +12,13 @@ import { Button } from '../../FormsComponents/Button/Button';
 import { InputProps } from '../../FormsComponents/Input/InputTypes';
 import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-interface DeliveryAndEmbedComponentProps {
+interface EmbedSettingsComponentProps {
     embedSettingsOption: EmbedSettingsOptionType;
     getEmbedSettingsOptions: Function;
     saveEmbedSettingsOptions: Function;
 }
 
-const EmbedSettings = (props: DeliveryAndEmbedComponentProps) => {
+const EmbedSettings = (props: EmbedSettingsComponentProps) => {
 
     const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>({});
     let inputRef = React.useRef<HTMLInputElement>(null)

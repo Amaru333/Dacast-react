@@ -12,8 +12,9 @@ export const HelpStyle = styled.div`
     margin-top: 8px;
 `;
 
-export const RelativeContainer = styled(ContainerStyle)`
-    position: relative;
+export const RelativeContainer = styled.div`
+    display: -webkit-box;
+    display: -moz-box;
 `;
 
 export const IconStyle = styled.div<{disabled: boolean}>`
@@ -115,10 +116,10 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; di
     width: 16px;
     cursor: pointer;
     margin-right: 8px;
-    ${props => ((props.defaultChecked !== false) && 
-                ((!props.checkbox.current && props.defaultChecked) 
+    ${props => (
+        ((!props.checkbox.current && props.defaultChecked) 
                     || 
-                (props.checkbox.current && (props.checkbox.current.checked || props.defaultChecked) )))  && css`
+                (props.checkbox.current && (props.checkbox.current.checked) )))  && css`
         &:after{
             font-family: Material Icons;
             content: "check";
