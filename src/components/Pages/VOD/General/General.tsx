@@ -7,13 +7,14 @@ import styled from 'styled-components';
 import { Button } from '../../../FormsComponents/Button/Button';
 import { Table } from '../../../Table/Table';
 import { Icon } from '@material-ui/core';
+import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 
 
-const subtitlesTableHeader = () => {
+const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     return [
         <Text size={14} weight="med">Subtitles</Text>,
         <Text size={14} weight="med">Language</Text>,
-        <Button className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>
+        <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>
     ]
 };
 
@@ -52,6 +53,7 @@ const advancedVideoLinksOptions = [
 export const GeneralPage = () => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
+    const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
 
     return (
         <Card className="col-12 clearfix">
@@ -101,7 +103,7 @@ export const GeneralPage = () => {
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader()} body={subtitlesTableBody()} id="subtitlesTable"></Table>
+            <Table className="col col-12" header={subtitlesTableHeader( setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
@@ -122,6 +124,15 @@ export const GeneralPage = () => {
                     })}
                 </AdvancedVideoLinksContainer>
             </div>
+            <Modal opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
+                <ModalContent>
+                    
+                </ModalContent>
+                <ModalFooter>
+                    <Button>Add</Button>
+                    <Button onClick={() => setSubtitleModalOpen(false)} typeButton="secondary">Cancel</Button>
+                </ModalFooter>
+            </Modal>
         </Card>
         
     )
