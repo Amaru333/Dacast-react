@@ -23,7 +23,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
-    let {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
 
     let {CompanyPageDetails} = props;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
@@ -51,7 +51,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
-        console.log(getData())
+
+
         setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
         //setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
@@ -289,13 +290,16 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <DropdownSingle hasSearch defaultValue={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1 my1" id='country' dropdownTitle='Country' list={getNames().reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{})} />
 
                     </div>
-
                 </form>
-            </Card>
-            <ButtonsArea>
+            </Card>            
+            { 
+                displayFormActionButtons ?
+                <ButtonsArea> 
                 <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                 <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-            </ButtonsArea>
+                </ButtonsArea>
+                : null
+            }          
         </CompanyPageContainer>
     )
 }

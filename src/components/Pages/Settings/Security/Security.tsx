@@ -45,7 +45,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     }
 
     let formRef = React.useRef<HTMLFormElement>(null);   
-    let {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
         event.preventDefault();
         props.saveSettingsSecurityOptions({
@@ -214,10 +214,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <Table className="col-12" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>
-            <div>
-                <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-            </div>
+            {
+                displayFormActionButtons ?
+                <div>
+                    <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                </div>
+                : null
+            }
+
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create')  + ' Geo-restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
             </Modal>
