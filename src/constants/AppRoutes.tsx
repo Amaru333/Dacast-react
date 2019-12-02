@@ -9,6 +9,7 @@ import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/Encodi
 import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
+import { GeneralPage } from '../components/Pages/VOD/General/General';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -91,7 +92,19 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: Chapters
+        component: null,
+        slug: [
+            {
+                path: '/videos/general',
+                name: 'General',
+                component: GeneralPage
+            },
+            {
+                path: '/videos/chapters',
+                name: 'Chapters',
+                component: Chapters
+            }
+        ]
     },
     {
         path: '/folders',
