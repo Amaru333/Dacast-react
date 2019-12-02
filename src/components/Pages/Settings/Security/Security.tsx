@@ -45,11 +45,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     }
 
     let formRef = React.useRef<HTMLFormElement>(null);   
-    let {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
         event.preventDefault();
         props.saveSettingsSecurityOptions({
-            privateVideo: value['Private Videos'].value,
+            privateVideo: false,
             passowrdProtectedVideo: {
                 enabled: value['Password Protected Videos'].value,
                 promptTime: value['promptTime'] ? value['promptTime'].value : null,
@@ -105,8 +105,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 <form id='settingsPageForm' ref={formRef} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
-                    <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo>
+                    {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
+                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
                         <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
                         <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
@@ -116,7 +116,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     <Input 
                                         type='time' 
                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                        className='col col-1 ml2 px1 mb1'
+                                        className='col col-3 md-col-2 ml2 px1 mb1'
                                         disabled={false} 
                                         id='promptTime' 
                                         label='Prompt Time' 
@@ -124,9 +124,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     />
         
                                     <Input 
-                                        type='password' 
+                                        type='text' 
                                         defaultValue={props.securityDetails.passwordProtectedVideo.password ? props.securityDetails.passwordProtectedVideo.password : ''} 
-                                        className='col col-2 px1 mb1'
+                                        className='col col-4 md-col-3 px1 mb1'
                                         disabled={false} 
                                         id='password' 
                                         label='Password' 
@@ -148,7 +148,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
                                 <>
                                     <div className='col col-12 mx3'>
-                                        <div className='col pl1 ml2 mb2'>
+                                        <div className='col col-4 md-col-3 px1 ml2 mb2'>
                                             <DateSinglePicker 
                                                 DatepickerTitle='Start Date'
                                                 id="startDate"
@@ -160,7 +160,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         <Input 
                                             type='time' 
                                             defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                            className='col col-1 px1'
+                                            className='col col-3 md-col-2 px1'
                                             disabled={false} 
                                             id='startTime' 
                                             label='Start Time' 
@@ -170,7 +170,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                                     </div>
                                     <div className='col col-12 mx3'>
-                                        <div className='col pl1 ml2 mb2' >
+                                        <div className='col col-4 md-col-3 px1 ml2 mb2' >
                                             <DateSinglePicker 
                                                 DatepickerTitle='End Date' 
                                                 id="endDate"
@@ -180,7 +180,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         <Input 
                                             type='time' 
                                             defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                            className='col col-1 px1'
+                                            className='col col-3 md-col-2 px1'
                                             disabled={false} 
                                             id='endTime' 
                                             label='End Time' 
@@ -214,10 +214,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <Table className="col-12" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>
-            <div>
-                <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-            </div>
+            {
+                displayFormActionButtons ?
+                    <div>
+                        <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    </div>
+                    : null
+            }
+
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create')  + ' Geo-restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
             </Modal>

@@ -1,23 +1,22 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const TableContainer = styled.div`
-    width: 50%;
 `
 
-export const ChaptersContainer = styled.div`
+export const ChaptersContainer = styled.div<{mobile: boolean}>`
     display: flex;
     flex-direction: row;
-    width: 100%;
+    ${props => props.mobile && css`
+        flex-direction: column;
+    `}
 `
 
 export const PlayerSection = styled.div`
-    width: 50%;
 `
 
 
 export const PlayerContainer = styled.div`
     background-color: ${props => props.theme.colors['gray-7']};
-    width: 100%;
     height: 341px;
     position: relative;
 `

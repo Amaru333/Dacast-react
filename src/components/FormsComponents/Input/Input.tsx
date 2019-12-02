@@ -30,24 +30,24 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     :
                     null
             }
-                <RelativeContainer >
+            <RelativeContainer >
                 {inputPrefix ?
-                        <AddonStyle suffix={false}>
-                            {inputPrefix}
-                        </AddonStyle>
-                        :
-                        null}
-                    <InputStyle ref={ref} isError={isError} {...other} />
-                    {suffix ?
-                        <AddonStyle suffix={true}>
-                            {suffix}
-                        </AddonStyle>
-                        :
-                        null}
-                </RelativeContainer>
+                    <AddonStyle suffix={false}>
+                        {inputPrefix}
+                    </AddonStyle>
+                    :
+                    null}
+                <InputStyle ref={ref} isError={isError} {...other} />
+                {suffix ?
+                    <AddonStyle suffix={true}>
+                        {suffix}
+                    </AddonStyle>
+                    :
+                    null}
+            </RelativeContainer>
 
 
-                {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
+            {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

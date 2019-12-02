@@ -24,8 +24,6 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
-    React.useEffect(() => console.log(isOpened), [isOpened])
-
     const datepickerRef = React.useRef<HTMLDivElement>(null);
 
     const [state, setState] = useState<OnDatesChangeProps>({

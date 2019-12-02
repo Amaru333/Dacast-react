@@ -5,7 +5,7 @@ import { Text } from '../../Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Modal } from '../../Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
-import { intToTime } from '../../../utils/utils';
+import { intToTime, useMedia } from '../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea, IconContainer } from './ChaptersStyle';
 
@@ -24,13 +24,15 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
     const [marker, setMarker] = React.useState<number>(0);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
+    let isMobile = useMedia('(max-width: 832px)');
+
     const [player, setPlayer] = React.useState<any>(null)
 
     const tableHeaderElement = () => {
         return[
             <Text  key={"chapterTitleTableHeader"} size={14}  weight="med" color="gray-1">Title</Text>,
             <Text  key={"chapterStartTimeTableHeader"} size={14}  weight="med" color="gray-1">Start Time</Text>, 
-            <span key={"MatchingColumn"}></span>
+            <Text size={14} weight='med' color='gray-10' key={"MatchingColumn"}>Buttons placeholder</Text>
         ]
     }
 
@@ -98,11 +100,8 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
 
     return (
         <div>
-            <ChaptersContainer>
-                <TableContainer className='mr2'>
-                    <Table id='chapterTable' header={tableHeaderElement()} body={chapterBodyElement()} />
-                </TableContainer>
-                <PlayerSection>
+            <ChaptersContainer mobile={isMobile} className='col col-12'>
+                <PlayerSection className='col col-12 md-col-6 mr2 mb2'>
                     <PlayerContainer>
                         <div ref={playerRef}>
                         </div>
@@ -113,6 +112,10 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                         <Button onClick={() => {setSelectedItem(null); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Market</Button>
                     </ButtonsArea>
                 </PlayerSection>
+                <TableContainer className='col col-12 md-col-6'>
+                    <Table id='chapterTable' header={tableHeaderElement()} body={chapterBodyElement()} />
+                </TableContainer>
+
             </ChaptersContainer>
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} size='small' opened={chapterMarkerModalOpened}>
                 <ChapterMarkerForm item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {name: '', time: intToTime(marker)}} toggle={setChapterMarkerModalOpened} submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker} />

@@ -24,7 +24,9 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         let item = props.routes.find((element) => {
             return props.history.location.pathname.includes(element.path)
         })
-        return item ? item.name : props.routes[0].name;
+
+        
+        return item ?item.name : props.routes[0].name;
     };
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
     const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem());
@@ -38,7 +40,11 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             setToggleSubMenu(false)
         }
         setSelectedElement(menuName); 
-        setSelectedSubElement('')
+        const menuItem = props.routes.filter((item) => item.name === menuName)[0];
+        if(!menuItem.slug) {
+            setSelectedSubElement('')
+        }
+
     }
 
     const renderMenu = () => {

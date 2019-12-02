@@ -1,4 +1,4 @@
-import { Type, Size, ButtonProps } from '../FormsComponents/Button/ButtonTypes';
+import { Type, Size } from '../FormsComponents/Button/ButtonTypes';
 
 interface StepperButtonType {
     typeButton?: Type;
