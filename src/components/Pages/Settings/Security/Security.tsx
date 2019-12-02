@@ -216,11 +216,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             </Card>
             {
                 displayFormActionButtons ?
-                <div>
-                    <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-                </div>
-                : null
+                    <div>
+                        <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    </div>
+                    : null
             }
 
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create')  + ' Geo-restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>

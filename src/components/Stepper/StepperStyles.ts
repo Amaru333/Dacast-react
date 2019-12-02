@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const StepperContainerStyle = styled.div`
+export const StepperContainerStyle = styled.div<{opened: boolean}>`
     box-sizing: border-box;
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 24px;
     padding-bottom: 106px;
@@ -18,19 +18,27 @@ export const StepperContainerStyle = styled.div`
     transform: translate(-50%, -50%);
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;
+
+    ${props => props.opened && css`
+        display: flex;
+    `}
 `
 export const StepperStyle = styled.div`
     
     & .MuiStepConnector-lineHorizontal {
         border-top-width: 4px;
         border-radius: 4px;
+        border-color: ${props => props.theme.colors["gray-7"]}
     }
 
     & .MuiStepConnector-active, .MuiStepConnector-completed  {
         & > * { 
             border-color: ${props => props.theme.colors["violet"]};
         }
-        
+    }
+
+    & .MuiStepIcon-root {
+        color: ${props => props.theme.colors["gray-7"]}
     }
 
     & .MuiStepIcon-root.MuiStepIcon-active, .MuiStepIcon-root.MuiStepIcon-completed {
@@ -45,7 +53,10 @@ export const StepperStyle = styled.div`
     & .MuiStepLabel-label.MuiStepLabel-alternativeLabel{
         margin-top: 8px;
     }
-    
+
+    & .MuiStepLabel-label.MuiStepLabel-completed{
+        color: ${props => props.theme.colors["gray-7"]}
+    }
 `
 export const StepperContentStyle = styled.div`
 

@@ -294,11 +294,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             </Card>            
             { 
                 displayFormActionButtons ?
-                <ButtonsArea> 
-                <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-                </ButtonsArea>
-                : null
+                    <ButtonsArea> 
+                        <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    </ButtonsArea>
+                    : null
             }          
         </CompanyPageContainer>
     )

@@ -4,10 +4,11 @@ import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSp
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
-import DeliveryAndEmbed  from '../containers/Settings/DeliveryAndEmbed';
 import Profile from '../containers/Account/Profile';
+import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/EncodingRecipes';
 import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
+import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -169,12 +170,12 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/encoding',
                 name: 'Encoding',
-                component: functionTest4
+                component: EncodingRecipes
             },
             {
-                path: '/settings/embed',
+                path: '/mainsettings/deliveryembed',
                 name: 'Embed',
-                component: DeliveryAndEmbed
+                component: EmbedSettings
             },
             {
                 path: '/settings/security',

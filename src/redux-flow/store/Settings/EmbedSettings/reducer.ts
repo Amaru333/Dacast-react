@@ -1,15 +1,15 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, DeliveryAndEmbedOptionType } from "./types";
+import { ActionTypes, EmbedSettingsOptionType } from "./types";
 
-const reducer: Reducer<DeliveryAndEmbedOptionType> = (state = {}, action: Action) => {
+const reducer: Reducer<EmbedSettingsOptionType> = (state = {}, action: Action) => {
     switch (action.type) {
-        case ActionTypes.GET_DELIVERY_AND_EMBED_OPTIONS :
+        case ActionTypes.GET_EMBED_SETTINGS_OPTIONS :
             return {
                 ...state,
                 ...action.payload,
             }
-        case ActionTypes.SAVE_DELIVERY_AND_EMBED_OPTIONS:
+        case ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS:
             console.log(state)
             return {
                 ...state,
@@ -21,5 +21,5 @@ const reducer: Reducer<DeliveryAndEmbedOptionType> = (state = {}, action: Action
 };
 
 // Named export
-export { reducer as DeliveryAndEmbedReducer };
+export { reducer as EmbedSettingsReducer };
 

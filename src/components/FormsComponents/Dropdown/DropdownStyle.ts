@@ -46,7 +46,7 @@ export const IconStyle = styled.div`
     top: 17%;
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean;}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean}>`
     display: none;
     position: absolute;
     z-index: 999;
@@ -77,7 +77,7 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     `}
 `;
 
-export const DropdownItem = styled.li<{isSelected: boolean, isSingle: boolean}>`
+export const DropdownItem = styled.li<{isSelected: boolean; isSingle: boolean}>`
     display: block;
     position: relative;
     min-height: 24px;
