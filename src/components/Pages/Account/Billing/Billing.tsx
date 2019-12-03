@@ -10,14 +10,16 @@ import { useMedia } from '../../../../utils/utils';
 import { PaymentMethodModal } from './PaymentMethodModal';
 
 
-const Paypal = [
-    'email@a.com'
-]
+const Paypal = ['email@a.com'];
 
 export const BillingPage = () => {
 
     const [selectedPaypalAccount, setSelectedPaypalAccount] = React.useState<string>(null);
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
+    }, [])
 
     let smScreen = useMedia('(max-width: 780px)')
 
