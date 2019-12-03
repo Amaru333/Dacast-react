@@ -52,6 +52,15 @@ const advancedVideoLinksOptions = [
     
 ]
 
+const copyKey = (value: string) => {
+    var textArea = document.createElement("textarea");
+    textArea.value = value;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+}
+
 export const GeneralPage = () => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
@@ -74,19 +83,28 @@ export const GeneralPage = () => {
                     <LinkBoxLabel>
                         <Text size={14} weight="med">Embed Code</Text>
                     </LinkBoxLabel>
-                    <LinkBox></LinkBox>
+                    <LinkBox>
+                        <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
+                        <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy</Icon></IconButton>
+                    </LinkBox>
                 </LinkBoxContainer>
                 <LinkBoxContainer className="col col-4">
                     <LinkBoxLabel>
                         <Text size={14} weight="med">JS</Text>
                     </LinkBoxLabel>
-                    <LinkBox></LinkBox>
+                    <LinkBox>
+                         <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
+                        <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                    </LinkBox>
                 </LinkBoxContainer>
                 <LinkBoxContainer className="col col-4">
                     <LinkBoxLabel>
                         <Text size={14} weight="med">Link</Text>
                     </LinkBoxLabel>
-                    <LinkBox></LinkBox>
+                    <LinkBox>
+                        <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
+                        <IconButton onClick={() => copyKey("Link here")}><Icon>file_copy</Icon></IconButton>
+                    </LinkBox>
                 </LinkBoxContainer>
             </div>
             <Divider className="col col-12"/>
@@ -180,11 +198,13 @@ padding: 0 12px;
 background-color: ${props => props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
 align-items: center;
-
 justify-content: space-between;
-    &:hover > button{
-        display: block;
-    }
+`
+
+const LinkText = styled(Text)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
 
 const ThumbnailContainer = styled.div`
@@ -215,4 +235,10 @@ const IconContainer = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+`
+
+const IconButton = styled.button`
+display: block;
+border: none;
+background-color: inherit;
 `
