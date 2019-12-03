@@ -7,7 +7,7 @@ import { Text } from "../../../Typography/Text"
 import { Icon } from '@material-ui/core';
 import { Input } from '../../../FormsComponents/Input/Input';
 
-export const ThumbnailModal = (props) => {
+export const ThumbnailModal = (props: {toggle: () => void, opened: boolean}) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
 

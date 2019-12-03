@@ -10,7 +10,14 @@ import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 import { ThumbnailModal } from './ThumbnailModal';
+import { ApplicationState } from '../../../../redux-flow/store';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action, getVodDetailsAction } from '../../../../redux-flow/store/VOD/General/actions';
+import { connect } from 'react-redux';
 
+interface GeneralProps {
+    getVodDetails: Function
+}
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     return [
@@ -61,7 +68,7 @@ const copyKey = (value: string) => {
     textArea.remove();
 }
 
-export const GeneralPage = () => {
+export const GeneralPage = (props: GeneralProps) => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
@@ -170,6 +177,22 @@ export const GeneralPage = () => {
     )
     
 }
+
+export function mapStateToProps( state: ApplicationState) {
+    return {
+        vodDetails: state.vod.general
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getVodDetails: () => {
+            dispatch(getVodDetailsAction());
+        }
+    };
+}
+
+export default  connect(mapStateToProps, mapDispatchToProps)(GeneralPage);
 
 const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
