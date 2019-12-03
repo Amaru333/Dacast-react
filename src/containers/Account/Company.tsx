@@ -25,7 +25,7 @@ const Company = (props: CompanyContainerProps) => {
     }, [])
 
     return (
-        typeof props.CompanyInfos !== 'undefined' ? 
+        props.CompanyInfos ? 
             <CompanyPage CompanyPageDetails={props.CompanyInfos} {...props} />
             : 
             <LoadingSpinner size='large' color='dark-violet' />
