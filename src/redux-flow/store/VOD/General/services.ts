@@ -3,7 +3,7 @@ import axios from 'axios'
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
 const getVodDetailsService = () => {
-    return axios.get(urlBase + 'getVodDetails');
+    return axios.get(urlBase + 'vod-details');
 }
 
 export const VodGeneralServices = {

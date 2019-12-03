@@ -14,7 +14,7 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
     switch (action.type) {
         case ActionTypes.GET_VOD_DETAILS:
             return {
-                ...state, chapterMarkers: action.payload
+                ...state, vodDetails: action.payload
             };
         default:
             return state;

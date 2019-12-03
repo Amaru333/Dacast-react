@@ -14,9 +14,12 @@ import { ApplicationState } from '../../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodDetailsAction } from '../../../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
+import { VodDetails } from '../../../../redux-flow/store/VOD/General/types';
+import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface GeneralProps {
-    getVodDetails: Function
+    vodDetails: VodDetails;
+    getVodDetails: Function;
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -74,7 +77,15 @@ export const GeneralPage = (props: GeneralProps) => {
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
 
+    React.useEffect(() => {
+        if(!props.vodDetails) {
+            debugger;
+            props.getVodDetails();
+        }
+    }, [])
+
     return (
+        props.vodDetails ? 
         <Card className="col-12 clearfix">
             <div className="details col col-12">
                 <Text size={20} weight="med">Details</Text>
@@ -173,7 +184,7 @@ export const GeneralPage = (props: GeneralProps) => {
             </Modal>
             <ThumbnailModal toggle={() => setThumbnailModalOpen(false) }opened={thumbnailModalOpen === true}/>
         </Card>
-        
+        : <LoadingSpinner color='dark-violet' size='large' />
     )
     
 }
