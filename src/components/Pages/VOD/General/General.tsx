@@ -8,6 +8,8 @@ import { Button } from '../../../FormsComponents/Button/Button';
 import { Table } from '../../../Table/Table';
 import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
+import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
+import { ThumbnailModal } from './ThumbnailModal';
 
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -54,6 +56,7 @@ export const GeneralPage = () => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
+    const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
 
     return (
         <Card className="col-12 clearfix">
@@ -91,13 +94,10 @@ export const GeneralPage = () => {
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                 <Text className="col col-12" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
                 <ThumbnailContainer className="col col-12">
-                    <UploadThumbnail>
+                    <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
                         <Text size={12} weight="reg" color="dark-violet">Upload Thumbnail</Text>
                     </UploadThumbnail>
                 </ThumbnailContainer>
-                <Text className="col col-12" size={14} weight="reg">Or, find a still frame from your video</Text>
-                <Input className="col col-2"></Input>
-                <Button className="col col-1" typeButton="secondary" sizeButton="xs">Add Frame</Button>
             </div>
             <div className="subtitles col col-12">
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
@@ -124,15 +124,29 @@ export const GeneralPage = () => {
                     })}
                 </AdvancedVideoLinksContainer>
             </div>
-            <Modal opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
+            <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
                 <ModalContent>
-                    
+                    <DropdownSingle
+                        className="col col-12" 
+                        id="subtitleLanguage"
+                        dropdownTitle="Subtitle Language"
+                        list={{"Swedish": false, "French": false, "German":false, "Mozumban": false}}
+                    />
+                    <Button typeButton="secondary" sizeButton="xs">Select File</Button>
+                    <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
+                    <SubtitleFile className="col col-6 mt1">
+                        <Text className="ml2" color="gray-1" size={14} weight="reg">new_subtitles123.srt</Text>
+                        <button style={{border: "none", backgroundColor:"inherit"}}>
+                            <Icon style={{fontSize: "14px"}}>close</Icon>
+                        </button>   
+                    </SubtitleFile>
                 </ModalContent>
                 <ModalFooter>
                     <Button>Add</Button>
-                    <Button onClick={() => setSubtitleModalOpen(false)} typeButton="secondary">Cancel</Button>
+                    <Button onClick={() => setSubtitleModalOpen(false)} typeButton="secondary">Cancel</Button> 
                 </ModalFooter>
             </Modal>
+            <ThumbnailModal toggle={() => setThumbnailModalOpen(false) }opened={thumbnailModalOpen === true}/>
         </Card>
         
     )
@@ -192,5 +206,13 @@ const IconContainer = styled.div`
    ` 
 
    const AdvancedVideoLinksContainer = styled.div<{isExpanded: boolean}>`
-   display: ${props => props.isExpanded ? "block" : "none"}
+   display: ${props => props.isExpanded ? "block" : "none"};
    `
+
+   const SubtitleFile = styled.div`
+    display: flex;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+`
