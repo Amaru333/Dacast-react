@@ -1,5 +1,6 @@
 export enum ActionTypes {
     GET_VOD_DETAILS = "@@vod_general/GET_VOD_DETAILS",
+    ADD_VOD_SUBTITLE = "@@vod_general/ADD_VOD_SUBTITLE"
 }
 
 export interface VodDetails {

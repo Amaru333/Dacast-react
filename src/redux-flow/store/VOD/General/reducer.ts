@@ -16,6 +16,13 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
             return {
                 ...state, ...action.payload
             };
+        case ActionTypes.ADD_VOD_SUBTITLE:
+            let newArray = state.subtitles.slice()
+            newArray.splice(newArray.length, 0, action.payload)
+            return {
+                ...state,
+                subtitles: newArray
+            }
         default:
             return state;
     }

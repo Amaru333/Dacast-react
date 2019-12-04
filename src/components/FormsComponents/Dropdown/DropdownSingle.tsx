@@ -15,7 +15,12 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list);
     const [filteringList, setFilteringList] = React.useState<string>('');
 
-    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
+    useOutsideAlerter(dropdownListRef, () => {
+        if(props.callback) {
+            props.callback(selectedItem);
+        }
+        setOpen(!isOpened)
+    });
 
     React.useEffect(() => {
         if(selectedItem === 'Select') {

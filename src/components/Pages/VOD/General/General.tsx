@@ -12,14 +12,15 @@ import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle
 import { ThumbnailModal } from './ThumbnailModal';
 import { ApplicationState } from '../../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction } from '../../../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction } from '../../../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
-import { VodDetails } from '../../../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo } from '../../../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface GeneralProps {
     vodDetails: VodDetails;
     getVodDetails: Function;
+    addVodSubtitle: Function
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -64,12 +65,23 @@ const copyKey = (value: string) => {
     textArea.remove();
 }
 
+const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function) => {
+    event.preventDefault();
+    props.addVodSubtitle(data);
+    console.log(data)
+    setUploadedSubtitleFile({fileName: "", language: ""})
+    setSubtitleModalOpen(false);
+}
+
 export const GeneralPage = (props: GeneralProps) => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
+    const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>({fileName: "", language: ""})
+
+    const testSubtitleFile = "mozumban_subtitle_678.srt"
 
     React.useEffect(() => {
         if(!props.vodDetails) {
@@ -165,29 +177,37 @@ export const GeneralPage = (props: GeneralProps) => {
                     })}
                 </AdvancedVideoLinksContainer>
             </div>
+
             <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
+            <form id="addSubtitlesForm" 
+            onSubmit={event => {handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile)}}>
                 <ModalContent>
                     <DropdownSingle
                         className="col col-12" 
                         id="subtitleLanguage"
                         dropdownTitle="Subtitle Language"
-                        list={{"Swedish": false, "French": false, "German":false, "Mozumban": false}}
+                        list={{"Swedish":false, "French":false, "German":false, "Mozumban":false}}
+                        callback={(value: string) => setUploadedSubtitleFile({...uploadedSubtitleFile, language: value})}
                     />
-                    <Button typeButton="secondary" sizeButton="xs">Select File</Button>
+                    <Button onClick={(event) => {event.preventDefault();setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: testSubtitleFile})}} typeButton="secondary" sizeButton="xs">Select File</Button>
                     <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
-                    <SubtitleFile className="col col-6 mt1">
-                        <Text className="ml2" color="gray-1" size={14} weight="reg">new_subtitles123.srt</Text>
+                    { uploadedSubtitleFile.fileName === "" ? null :
+                    <SubtitleFile className="col mt1">
+                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
                         <button style={{border: "none", backgroundColor:"inherit"}}>
-                            <Icon style={{fontSize: "14px"}}>close</Icon>
+                            <Icon onClick={() => setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: ""})} style={{fontSize: "14px"}}>close</Icon>
                         </button>   
                     </SubtitleFile>
+                    }
                 </ModalContent>
                 <ModalFooter>
                     <Button>Add</Button>
                     <Button onClick={() => setSubtitleModalOpen(false)} typeButton="secondary">Cancel</Button> 
                 </ModalFooter>
+            </form>
             </Modal>
             <ThumbnailModal toggle={() => setThumbnailModalOpen(false) }opened={thumbnailModalOpen === true}/>
+
         </Card>
         : <LoadingSpinner color='dark-violet' size='large' />
     )
@@ -204,6 +224,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodDetails: () => {
             dispatch(getVodDetailsAction());
+        },
+        addVodSubtitle: (data: SubtitleInfo) => {
+            dispatch(addVodSubtitleAction(data));
         }
     };
 }
