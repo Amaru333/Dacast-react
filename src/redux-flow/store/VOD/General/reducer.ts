@@ -3,6 +3,7 @@ import { Action } from "./actions";
 import { ActionTypes, VodDetails} from './types';
 
 const initialVodGeneralState: VodDetails = {
+    id: "",
     title: "",
     folder: "",
     description: "",
@@ -22,7 +23,18 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
             return {
                 ...state,
                 subtitles: newArray
-            }
+            };
+        case ActionTypes.ADD_VOD_SUBTITLE:
+                
+                newArray.splice(newArray.length, 0, action.payload)
+                return  {...state, subtitles: state.subtitles.map((item) => {
+                    if (item.id !== action.payload.id) {
+                        return item
+                    }
+                    return {
+                        ...item,
+                        ...action.payload
+                }})}
         default:
             return state;
     }

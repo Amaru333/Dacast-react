@@ -14,6 +14,11 @@ export interface addVodSubtitle {
     payload: SubtitleInfo
 }
 
+export interface editVodSubtitle {
+    type: ActionTypes.EDIT_VOD_SUBTITLE;
+    payload: SubtitleInfo
+}
+
 export const getVodDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetVodDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodDetails> ) => {
         await VodGeneralServices.getVodDetailsService()
@@ -38,4 +43,18 @@ export const addVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<
     };
 }
 
-export type Action = GetVodDetails | addVodSubtitle
+export const editVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<void>, {}, editVodSubtitle> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, editVodSubtitle> ) => {
+        await VodGeneralServices.editVodSubtitleService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.EDIT_VOD_SUBTITLE, payload: response.data} );
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+
+
+export type Action = GetVodDetails | addVodSubtitle | editVodSubtitle

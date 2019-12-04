@@ -11,7 +11,12 @@ const addVodSubtitleService = (data: SubtitleInfo) => {
     return axios.post(urlBase + 'vod-subtitles', {...data})
 }
 
+const editVodSubtitleService = (data: SubtitleInfo) => {
+    return axios.post(urlBase + 'vod-subtitles', {...data})
+}
+
 export const VodGeneralServices = {
     getVodDetailsService,
-    addVodSubtitleService
+    addVodSubtitleService,
+    editVodSubtitleService
 }

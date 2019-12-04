@@ -12,7 +12,7 @@ import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle
 import { ThumbnailModal } from './ThumbnailModal';
 import { ApplicationState } from '../../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction } from '../../../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction } from '../../../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo } from '../../../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -20,7 +20,8 @@ import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner
 interface GeneralProps {
     vodDetails: VodDetails;
     getVodDetails: Function;
-    addVodSubtitle: Function
+    addVodSubtitle: Function;
+    editVodSubtitle: Function;
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -31,7 +32,7 @@ const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     ]
 };
 
-const subtitlesTableBody = (vodDetails: VodDetails) => {
+const subtitlesTableBody = (vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
     return vodDetails.subtitles.map((value, key) => {
         return [
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
@@ -39,7 +40,7 @@ const subtitlesTableBody = (vodDetails: VodDetails) => {
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
                 <Icon>get_app</Icon>
                 <Icon>delete</Icon>
-                <Icon>edit</Icon>   
+                <Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon>   
             </IconContainer>
         ]
     })
@@ -65,6 +66,12 @@ const copyKey = (value: string) => {
     textArea.remove();
 }
 
+const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
+    setSelectedSubtitle(subtitle);
+    setUploadedSubtitleFile(subtitle)
+    setSubtitleModalOpen(true)
+}
+
 const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function) => {
     event.preventDefault();
     props.addVodSubtitle(data);
@@ -75,12 +82,17 @@ const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Functio
 
 export const GeneralPage = (props: GeneralProps) => {
 
+    const emptySubtitle = {id: "", fileName: "", language: ""}
+
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
-    const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>({fileName: "", language: ""})
+    const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
+    const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
 
+    
+    React.useEffect(() => {}, [selectedSubtitle, subtitleModalOpen])
     const testSubtitleFile = "mozumban_subtitle_678.srt"
 
     React.useEffect(() => {
@@ -156,7 +168,7 @@ export const GeneralPage = (props: GeneralProps) => {
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props.vodDetails)} id="subtitlesTable"></Table>
+            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props.vodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
@@ -186,7 +198,8 @@ export const GeneralPage = (props: GeneralProps) => {
                         className="col col-12" 
                         id="subtitleLanguage"
                         dropdownTitle="Subtitle Language"
-                        list={{"Swedish":false, "French":false, "German":false, "Mozumban":false}}
+                        list={{"Swedish":false, "French":false, "German":false, "Mozumban":false, "Russian": false}}
+                        dropdownDefaultSelect={selectedSubtitle.language}
                         callback={(value: string) => setUploadedSubtitleFile({...uploadedSubtitleFile, language: value})}
                     />
                     <Button onClick={(event) => {event.preventDefault();setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: testSubtitleFile})}} typeButton="secondary" sizeButton="xs">Select File</Button>
@@ -201,8 +214,8 @@ export const GeneralPage = (props: GeneralProps) => {
                     }
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Add</Button>
-                    <Button onClick={() => setSubtitleModalOpen(false)} typeButton="secondary">Cancel</Button> 
+                    <Button type="submit" >Add</Button>
+                    <Button onClick={(event) => {event.preventDefault();setSubtitleModalOpen(false);setSelectedSubtitle(emptySubtitle);setUploadedSubtitleFile(emptySubtitle)}} typeButton="secondary">Cancel</Button> 
                 </ModalFooter>
             </form>
             </Modal>
@@ -227,7 +240,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         addVodSubtitle: (data: SubtitleInfo) => {
             dispatch(addVodSubtitleAction(data));
-        }
+        },
+        editVodSubtitle: (data: SubtitleInfo) => {
+            dispatch(editVodSubtitleAction(data));
+        },
     };
 }
 
