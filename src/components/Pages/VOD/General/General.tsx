@@ -30,25 +30,18 @@ const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     ]
 };
 
-const subtitlesTableBody = () => {
-    return [[
-        <Text size={14} weight="reg">subtitles_123456.srt</Text>,
-        <Text size={14} weight="reg">Bulgarian</Text>,
-        <IconContainer className="iconAction">
-            <Icon>get_app</Icon>
-            <Icon>delete</Icon>
-            <Icon>edit</Icon>   
-        </IconContainer>
-    ],
-    [
-        <Text size={14} weight="reg">subtitles_german.srt</Text>,
-        <Text size={14} weight="reg">German</Text>,
-        <IconContainer className="iconAction">
-            <Icon>get_app</Icon>
-            <Icon>delete</Icon>
-            <Icon>edit</Icon>   
-        </IconContainer>
-    ]]
+const subtitlesTableBody = (vodDetails: VodDetails) => {
+    return vodDetails.subtitles.map((value, key) => {
+        return [
+            <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
+            <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
+            <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
+                <Icon>get_app</Icon>
+                <Icon>delete</Icon>
+                <Icon>edit</Icon>   
+            </IconContainer>
+        ]
+    })
 };
 
 const advancedVideoLinksOptions = [
@@ -76,10 +69,10 @@ export const GeneralPage = (props: GeneralProps) => {
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
+    const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         if(!props.vodDetails) {
-            debugger;
             props.getVodDetails();
         }
     }, [])
@@ -89,10 +82,22 @@ export const GeneralPage = (props: GeneralProps) => {
         <Card className="col-12 clearfix">
             <div className="details col col-12">
                 <Text size={20} weight="med">Details</Text>
-                <Toggle label="Video Online"></Toggle>
-                <Input className="col col-6" label="Title"></Input>
-                <Input className="col col-6" label="Folder"></Input>
-                <Input className="col col-6" label="Description"></Input>
+                <Toggle defaultChecked={videoIsOnline === true} onChange={() => toggleVideoIsOnline(!videoIsOnline)} label="Video Online"></Toggle>
+                <Input 
+                    className="col col-6" 
+                    label="Title" 
+                    defaultValue={props.vodDetails.title}
+                />
+                <Input 
+                    className="col col-6" 
+                    label="Folder" 
+                    defaultValue={props.vodDetails.folder} 
+                />
+                <Input 
+                    className="col col-6" 
+                    label="Description" 
+                    defaultValue={props.vodDetails.description} 
+                />
             </div>
             <Divider className="col col-12"/>
             <div className="share col col-12">
@@ -139,7 +144,7 @@ export const GeneralPage = (props: GeneralProps) => {
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader( setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable"></Table>
+            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props.vodDetails)} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
