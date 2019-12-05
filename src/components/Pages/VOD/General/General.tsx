@@ -72,9 +72,13 @@ const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, set
     setSubtitleModalOpen(true)
 }
 
-const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function) => {
+const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
     event.preventDefault();
-    props.addVodSubtitle(data);
+    if (selectedSubtitle === emptySubtitle) {
+        props.addVodSubtitle(data);
+    } else {
+        props.editVodSubtitle(data)
+    }
     console.log(data)
     setUploadedSubtitleFile({fileName: "", language: ""})
     setSubtitleModalOpen(false);
@@ -192,7 +196,7 @@ export const GeneralPage = (props: GeneralProps) => {
 
             <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
             <form id="addSubtitlesForm" 
-            onSubmit={event => {handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile)}}>
+            onSubmit={event => {handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle)}}>
                 <ModalContent>
                     <DropdownSingle
                         className="col col-12" 
