@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 interface TableSpecificProps {
     header?: ReactElement[];
     body: ReactElement[][];
+    footer?: ReactElement[];
     id: string;
 }
 

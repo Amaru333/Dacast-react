@@ -69,3 +69,19 @@ export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
     max-width: 150px;
 `;
+
+export const TableFooterContainer = styled.tfoot<{}>`
+`;
+
+export const TableFooterRow = styled.tr<{}>`
+    width: auto;
+    height: 52px;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    padding-left: 16px;
+`;
+
+export const TableFooterCell = styled.td<{}>`
+    padding-left: 16px;
+    border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+    width: 150px;
+`;

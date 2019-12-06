@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TableProps} from './TableTypes'
-import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer } from './TableStyle';
+import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer, TableFooterContainer, TableFooterRow, TableFooterCell } from './TableStyle';
 import { isMobile } from 'react-device-detect';
 
 export const Table = (props: TableProps) => {
@@ -33,6 +33,18 @@ export const Table = (props: TableProps) => {
             )
         })
     }
+    const renderTableFooter = () => {
+        return props.footer ? 
+            props.footer.map((footerCell, i) => {
+                return (
+                    <TableFooterCell className="" key={props.id+"tableFooterCell"+i.toString()}>
+                        {footerCell}
+                    </TableFooterCell>
+                )
+            }) : null
+    }
+
+
     return (
         <WrapperResponsiveContainer isMobile={isMobile}  {...props}>
             <TableContainer>
@@ -46,6 +58,13 @@ export const Table = (props: TableProps) => {
                 <TableBodyContainer>
                     {renderTableBody()}
                 </TableBodyContainer>
+                {props.footer ? 
+                    <TableFooterContainer>
+                        <TableFooterRow>
+                            {renderTableFooter()}
+                        </TableFooterRow>
+                    </TableFooterContainer> : null
+                }
             </TableContainer>
         </WrapperResponsiveContainer>
     );

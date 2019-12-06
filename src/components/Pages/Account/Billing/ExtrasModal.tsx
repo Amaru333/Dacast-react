@@ -1,51 +1,81 @@
-import * as React from 'react';
+import React from 'react';
 import { Text } from '../../../Typography/Text';
-import { Input } from '../../../FormsComponents/Input/Input'
+import { Table } from '../../../Table/Table';
 import { InputRadio } from '../../../FormsComponents/Input/InputRadio';
-import { Button } from '../../../FormsComponents/Button/Button';
-import { TextStyle, RadioButtonContainer, RadioButtonOption } from './BillingStyle';
+import { Input } from '../../../FormsComponents/Input/Input'
+import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
+import { RadioButtonContainer, RadioButtonOption } from './BillingStyle';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
+const ProtectionModalTableData = [
+    {
+        label: 'Storage',
+        value: '60'
+    },
+    {
+        label: 'Price per GB',
+        value: '$2.25'
+    },
+    {
+        label: 'Billed',
+        value: 'Recurring, when Storage reaches 0 GB'
+    } 
+]
 
-export const PaymentMethodModal = (props: {toggle: Function}) => {
 
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
+export const ExtrasStepperFirstStep = (props:{toggle: Function}) => {
+    const [test, setTest] = React.useState<string>('');
+    const protectionModalTableBodyElement = () => {
+        return ProtectionModalTableData.map((value, key) => {
+            return [
+                <Text  key={"ExtraStepperStep1Table" + value.label + key.toString()} size={14}  weight="reg" color="gray-1">{value.label}</Text>,
+                <Text  key={"ExtraStepperStep1Table" + value.value + key.toString()} size={14}  weight="reg" color="gray-1">{value.value}</Text>
+            ]
+        }) 
+    }
 
-    let formRef = React.useRef<HTMLFormElement>(null);
-
-    const submitForm = (event: React.FormEvent<HTMLFormElement>) =>  {
-        let form = formRef.current
-        event.preventDefault();
-        recurly.token(form,(err, token) => {
-            if (err) {
-            } 
-            else {
-                var risk = recurly.Risk();
-                var threeDSecure = risk.ThreeDSecure({
-                    actionTokenId: token.id
-                });
-                threeDSecure.on('token', function (token) {
-                  });
-                  
-                  threeDSecure.on('error', function (error) {
-                  });
-                threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                form.submit();
-            }
-        });
+    const protectionModalTableFooterElement = () => {
+       return  [
+            <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
+            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">$135</Text>
+        ]
     }
 
     return (
+        <div>
+            <Text size={14}  weight="reg" color="gray-1">Choose which Protection you wish to enable.</Text>
 
-            <form ref={formRef} onSubmit={event => submitForm(event)}>
-                <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
-                <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
-                        <InputRadio name='paymentMethod' value='creditCard' defaultChecked={true} onChange={() => setSelectedOption('creditCard')} label='Credit Card' />
+            <DropdownSingle 
+                className='col col-6 pr2 pb2'
+                dropdownTitle='Protection Type'
+                list={{'Encoding Protection': false, 'Playback Protection': false}}
+                id='extraStepperStep1ProtectionTypeDropdown'
+                defaultValue='Playback Protection'
+
+            />
+            <DropdownSingle 
+                className='col col-6 pb2'
+                dropdownTitle='Amount'
+                list={{'10 GB': false, '60 GB': false}}
+                id='extraStepperStep1AmountDropdown'
+                defaultValue='60 GB'
+            />
+            <Table id='extraStepperStep1Table' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
+        </div>
+    )
+}
+
+export const ExtrasStepperSecondStep = () => {
+
+    const [selectedOptionExtrasModal, setSelectedOptionExtrasModal] = React.useState<string>('creditCard');
+    return (
+        <div>
+            <RadioButtonContainer isSelected={selectedOptionExtrasModal === 'creditCard'}>
+                        <InputRadio name='paymentMethod' value='creditCard' defaultChecked={true} onChange={() => setSelectedOptionExtrasModal('creditCard')} label='Credit Card' />
                         <img src={CardLogo} />
                 </RadioButtonContainer>
-                <RadioButtonOption isOpen={selectedOption === 'creditCard'} className='mb2'>
+                <RadioButtonOption isOpen={selectedOptionExtrasModal === 'creditCard'} className='mb2'>
                     <div className='col col-12 pt2 px2'>
                         <Input
                             data-recurly="first_name"
@@ -153,11 +183,11 @@ export const PaymentMethodModal = (props: {toggle: Function}) => {
                     <input type="hidden" name="recurly-token" data-recurly="token"></input>
                 </RadioButtonOption>
                
-                <RadioButtonContainer className='mt2' isSelected={selectedOption === 'paypal'} >
-                    <InputRadio name='paymentMethod' value='paypal' onChange={() => setSelectedOption('paypal')} label='PayPal' />
+                <RadioButtonContainer className='mt2' isSelected={selectedOptionExtrasModal === 'paypal'} >
+                    <InputRadio name='paymentMethod' value='paypal' onChange={() => setSelectedOptionExtrasModal('paypal')} label='PayPal' />
                     <img src={PaypalLogo} />
                 </RadioButtonContainer>
-                <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
+                <RadioButtonOption isOpen={selectedOptionExtrasModal === 'paypal'} className='mb2'>
                     <div className='col col-12 px2 pb2 pt1'>
                         <Input 
                             className='col col-6 pl1'
@@ -168,10 +198,6 @@ export const PaymentMethodModal = (props: {toggle: Function}) => {
                     </div>
                 </RadioButtonOption>
                 <div id='#threeDSecureComponent'></div>
-                <div className='col col-12 py2'>
-                    <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Add</Button>
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
-                </div>
-            </form>
+        </div>
     )
 }
