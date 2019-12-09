@@ -5,14 +5,78 @@ import styled, { css } from 'styled-components';
 import { InputRadio } from '../../../FormsComponents/Input/InputRadio';
 import { Text } from "../../../Typography/Text"
 import { Icon } from '@material-ui/core';
-import { Input } from '../../../FormsComponents/Input/Input';
 
-export const ThumbnailModal = (props: {toggle: () => void, opened: boolean}) => {
+export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, submit: Function}) => {
+
+    const testThumbnail = "sick_thumbnail.png"
 
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
+    const [uploadedThumbnail, setUploadedThumbnail] = React.useState<string>("")
+    const [player, setPlayer] = React.useState<any>(null)
+    let playerRef = React.useRef<HTMLDivElement>(null);
+
+    const handleClickNextFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault()
+        if(!player || !player.getPlayerInstance()){
+            return;
+        }
+        player.getPlayerInstance().currentTime += 1/24.0;
+    }
+
+    const handleClickPrevFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault()
+        if(!player || !player.getPlayerInstance()){
+            return;
+        }
+        player.getPlayerInstance().currentTime -= 1/24.0;
+    }
+
+    React.useEffect(() => {
+        if(playerRef && playerRef.current)
+        {
+            const playerScript = document.createElement('script');
+            playerScript.src = "https://player.dacast.com/js/player.js";
+            playerRef.current.appendChild(playerScript);
+            playerScript.addEventListener('load', () => {
+
+                setPlayer(dacast('104301_f_769886', playerRef.current, {
+                    player: 'theo',
+                    height: 341,
+                    width: '100%'
+                }))
+
+            })
+        }
+        return () => player ? player.dispose() : null;
+    }, [])
+
+    React.useEffect(() => {
+        if(player) {
+            player.onReady(() => {
+                if(player.getPlayerInstance().autoplay){
+                    let onPlay = () => {
+                        player.getPlayerInstance().pause()
+                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
+                    };
+                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
+                    player.play();
+                }
+            })
+        }
+    }, [player])
+
+    const handleSubmit = (changeVodThumbnail: Function) => {
+        event.preventDefault();
+        if (selectedOption === "upload") {
+            changeVodThumbnail(uploadedThumbnail)
+        } else {
+            // setMarker(player.getPlayerInstance().currentTime - 1/24.0)
+            changeVodThumbnail(player.getPlayerInstance().currentTime.toString())
+        }
+    }
 
     return (
-        <Modal size="small" title="Add Thumbnail" toggle={props.toggle} opened={props.opened}>
+        <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened}>
                 <ModalContent>
                     <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
                         <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
@@ -20,29 +84,40 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean}) => 
                     <RadioButtonOption isOpen={selectedOption === "upload"}>
                         <div className="col col-12">
                             <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                            <Button className="col col-3" sizeButton="xs" typeButton="secondary">Upload File</Button>
+                            <Button className="col col-3" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
                             <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                            { uploadedThumbnail === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">new_thumbnail.png</Text>
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedThumbnail}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
-                                     <Icon style={{fontSize: "14px"}}>close</Icon>
+                                     <Icon onClick={() => setUploadedThumbnail(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
                                 </button>   
                             </ThumbnailFile>
+                            }
                         </div>
                     </RadioButtonOption>
                     <RadioButtonContainer className="col col-12 px2" isSelected={selectedOption === "frame"}>
                         <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                     </RadioButtonContainer>
-                    <RadioButtonOption isOpen={selectedOption === "frame"}>
+                    <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                         <div className="col col-12">
                            <Text size={14} weight="reg">Select a still frame from your video for your Thumbnail</Text>
-                           <Input></Input>
+                           <PlayerSection className='col col-12 mr2 mb2'>
+                    <PlayerContainer className="col col-12">
+                        <div ref={playerRef}>
+                        </div>
+                    </PlayerContainer>
+                    <ButtonsArea className='my2'>
+                        <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
+                        <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
+                    </ButtonsArea>
+                </PlayerSection>
                         </div>
                         
                     </RadioButtonOption>
                 </ModalContent>
                 <ModalFooter>
-                    <Button>Add</Button>
+                    <Button onClick={() => handleSubmit(props.submit)}>Add</Button>
                     <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
                 </ModalFooter>
             </Modal>
@@ -73,4 +148,18 @@ const ThumbnailFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+`
+
+export const PlayerSection = styled.div`
+`
+
+export const PlayerContainer = styled.div`
+    width: 100%;
+    background-color: ${props => props.theme.colors['gray-7']};
+    height: 341px;
+    position: relative;
+`
+
+export const ButtonsArea = styled.div`
+
 `

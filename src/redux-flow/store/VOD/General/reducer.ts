@@ -24,8 +24,7 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                 ...state,
                 subtitles: newArray
             };
-        case ActionTypes.ADD_VOD_SUBTITLE:
-                
+        case ActionTypes.EDIT_VOD_SUBTITLE:
                 newArray.splice(newArray.length, 0, action.payload)
                 return  {...state, subtitles: state.subtitles.map((item) => {
                     if (item.id !== action.payload.id) {
@@ -34,7 +33,12 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                     return {
                         ...item,
                         ...action.payload
-                }})}
+                }})};
+        case ActionTypes.CHANGE_VOD_THUMBNAIL:
+        return {
+            ...state,
+            subtitles: action.payload
+        };
         default:
             return state;
     }

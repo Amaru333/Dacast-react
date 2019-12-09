@@ -12,9 +12,9 @@ import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle
 import { ThumbnailModal } from './ThumbnailModal';
 import { ApplicationState } from '../../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction } from '../../../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction } from '../../../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
-import { VodDetails, SubtitleInfo } from '../../../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo, Thumbnail } from '../../../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface GeneralProps {
@@ -22,6 +22,7 @@ interface GeneralProps {
     getVodDetails: Function;
     addVodSubtitle: Function;
     editVodSubtitle: Function;
+    changeVodThumbnail: Function;
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -162,9 +163,10 @@ export const GeneralPage = (props: GeneralProps) => {
             <div className="thumbnail col col-12">
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                 <Text className="col col-12" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
-                <ThumbnailContainer className="col col-12">
+                <ThumbnailContainer className="col col-12 flex">
+                    <ThumbnailImage className="mr2" src="http://place-puppy.com/172x107"/>
                     <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
-                        <Text size={12} weight="reg" color="dark-violet">Upload Thumbnail</Text>
+                        <Text size={12} weight="reg" color="dark-violet">Change Thumbnail</Text>
                     </UploadThumbnail>
                 </ThumbnailContainer>
             </div>
@@ -223,7 +225,7 @@ export const GeneralPage = (props: GeneralProps) => {
                 </ModalFooter>
             </form>
             </Modal>
-            <ThumbnailModal toggle={() => setThumbnailModalOpen(false) }opened={thumbnailModalOpen === true}/>
+            <ThumbnailModal toggle={() => setThumbnailModalOpen(false) } opened={thumbnailModalOpen === true} submit={props.changeVodThumbnail}/>
 
         </Card>
         : <LoadingSpinner color='dark-violet' size='large' />
@@ -248,6 +250,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editVodSubtitle: (data: SubtitleInfo) => {
             dispatch(editVodSubtitleAction(data));
         },
+        changeVodThumbnail: (data: Thumbnail) => {
+            dispatch(changeVodThumbnailAction(data))
+        }
     };
 }
 
@@ -290,6 +295,9 @@ const LinkText = styled(Text)`
 `
 
 const ThumbnailContainer = styled.div`
+`
+
+const ThumbnailImage = styled.img`
 `
 
 const UploadThumbnail = styled.button`
