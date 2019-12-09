@@ -7,7 +7,7 @@ const initialVodGeneralState: VodDetails = {
     title: "",
     folder: "",
     description: "",
-    thumbnail: "",
+    thumbnail: null,
     subtitles: []
 }
 
@@ -17,6 +17,10 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
             return {
                 ...state, ...action.payload
             };
+        case ActionTypes.EDIT_VOD_DETAILS:
+            return {
+                    ...state, ...action.payload
+                };
         case ActionTypes.ADD_VOD_SUBTITLE:
             let newArray = state.subtitles.slice()
             newArray.splice(newArray.length, 0, action.payload)
@@ -37,7 +41,7 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
         case ActionTypes.CHANGE_VOD_THUMBNAIL:
         return {
             ...state,
-            subtitles: action.payload
+            thumbnail: action.payload
         };
         default:
             return state;

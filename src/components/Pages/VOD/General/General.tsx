@@ -10,16 +10,12 @@ import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 import { ThumbnailModal } from './ThumbnailModal';
-import { ApplicationState } from '../../../../redux-flow/store';
-import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction } from '../../../../redux-flow/store/VOD/General/actions';
-import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, Thumbnail } from '../../../../redux-flow/store/VOD/General/types';
-import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-interface GeneralProps {
+
+interface GeneralComponentProps {
     vodDetails: VodDetails;
-    getVodDetails: Function;
+    editVodDetails: Function;
     addVodSubtitle: Function;
     editVodSubtitle: Function;
     changeVodThumbnail: Function;
@@ -73,7 +69,7 @@ const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, set
     setSubtitleModalOpen(true)
 }
 
-const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
+const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
     event.preventDefault();
     if (selectedSubtitle === emptySubtitle) {
         props.addVodSubtitle(data);
@@ -85,7 +81,7 @@ const handleSubtitleSubmit = (props: GeneralProps, setSubtitleModalOpen: Functio
     setSubtitleModalOpen(false);
 }
 
-export const GeneralPage = (props: GeneralProps) => {
+export const GeneralPage = (props: GeneralComponentProps) => {
 
     const emptySubtitle = {id: "", fileName: "", language: ""}
 
@@ -95,37 +91,35 @@ export const GeneralPage = (props: GeneralProps) => {
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
+    const [VodDetails, setVodDetails] = React.useState<VodDetails>(props.vodDetails)
 
     
     React.useEffect(() => {}, [selectedSubtitle, subtitleModalOpen])
     const testSubtitleFile = "mozumban_subtitle_678.srt"
 
-    React.useEffect(() => {
-        if(!props.vodDetails) {
-            props.getVodDetails();
-        }
-    }, [])
-
     return (
-        props.vodDetails ? 
+        <React.Fragment>
         <Card className="col-12 clearfix">
             <div className="details col col-12">
                 <Text size={20} weight="med">Details</Text>
-                <Toggle defaultChecked={videoIsOnline === true} onChange={() => toggleVideoIsOnline(!videoIsOnline)} label="Video Online"></Toggle>
+                <Toggle defaultChecked={videoIsOnline === true} onChange={(event) => {toggleVideoIsOnline(!videoIsOnline);setVodDetails({...VodDetails, ["online"]: !videoIsOnline})}} label="Video Online"></Toggle>
                 <Input 
                     className="col col-6" 
                     label="Title" 
                     defaultValue={props.vodDetails.title}
+                    onChange={event => setVodDetails({...VodDetails, ["title"]: event.currentTarget.value})}
                 />
                 <Input 
                     className="col col-6" 
                     label="Folder" 
-                    defaultValue={props.vodDetails.folder} 
+                    defaultValue={props.vodDetails.folder}
+                    onChange={event => setVodDetails({...VodDetails, ["folder"]: event.currentTarget.value})} 
                 />
                 <Input 
                     className="col col-6" 
                     label="Description" 
                     defaultValue={props.vodDetails.description} 
+                    onChange={event => setVodDetails({...VodDetails, ["description"]: event.currentTarget.value})}
                 />
             </div>
             <Divider className="col col-12"/>
@@ -228,36 +222,14 @@ export const GeneralPage = (props: GeneralProps) => {
             <ThumbnailModal toggle={() => setThumbnailModalOpen(false) } opened={thumbnailModalOpen === true} submit={props.changeVodThumbnail}/>
 
         </Card>
-        : <LoadingSpinner color='dark-violet' size='large' />
+        <ButtonContainer>
+            <Button onClick={() => console.log(VodDetails)}>Save</Button>
+            <Button>Discard</Button>
+        </ButtonContainer>
+        </React.Fragment>
     )
     
 }
-
-export function mapStateToProps( state: ApplicationState) {
-    return {
-        vodDetails: state.vod.general
-    };
-}
-
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
-    return {
-        getVodDetails: () => {
-            dispatch(getVodDetailsAction());
-        },
-        addVodSubtitle: (data: SubtitleInfo) => {
-            dispatch(addVodSubtitleAction(data));
-        },
-        editVodSubtitle: (data: SubtitleInfo) => {
-            dispatch(editVodSubtitleAction(data));
-        },
-        changeVodThumbnail: (data: Thumbnail) => {
-            dispatch(changeVodThumbnailAction(data))
-        }
-    };
-}
-
-export default  connect(mapStateToProps, mapDispatchToProps)(GeneralPage);
-
 const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
     margin: 32px 24px 24px 24px;
@@ -331,4 +303,8 @@ const IconButton = styled.button`
 display: block;
 border: none;
 background-color: inherit;
+`
+
+const ButtonContainer = styled.div`
+margin-top: 24px;
 `
