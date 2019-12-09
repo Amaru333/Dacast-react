@@ -17,7 +17,8 @@ export const Table = (props: TableProps) => {
     }
 
     const renderTableBody = () => {
-        return props.body.map((bodyRow, i) => {
+        return props.body ?
+            props.body.map((bodyRow, i) => {
             return (
                 <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
                     {
@@ -31,7 +32,7 @@ export const Table = (props: TableProps) => {
                     }
                 </TableBodyRow>
             )
-        })
+        }) : null
     }
     const renderTableFooter = () => {
         return props.footer ? 
@@ -55,9 +56,14 @@ export const Table = (props: TableProps) => {
                         </TableHeaderRow>
                     </TableHeaderContainer> : null
                 }
-                <TableBodyContainer>
+                {
+                    props.body ?
+                    <TableBodyContainer>
                     {renderTableBody()}
-                </TableBodyContainer>
+                    </TableBodyContainer>
+                    : null
+                }
+
                 {props.footer ? 
                     <TableFooterContainer>
                         <TableFooterRow>

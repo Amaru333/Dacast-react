@@ -1,51 +1,34 @@
-import * as React from 'react';
-import { Text } from '../../../Typography/Text';
-import { Input } from '../../../FormsComponents/Input/Input'
-import { InputRadio } from '../../../FormsComponents/Input/InputRadio';
-import { Button } from '../../../FormsComponents/Button/Button';
-import { TextStyle, RadioButtonContainer, RadioButtonOption } from './BillingStyle';
-const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
-const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
+import React from 'react';
+import { Text } from '../../Typography/Text';
+import { Input } from '../Input/Input'
+import { InputRadio } from '../Input/InputRadio';
+import { TextStyle, RadioButtonContainer, RadioButtonOption } from './PaymentFormStyle';
+const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
+const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 
+export const PaymentForm = (props:{id:string, paypalText: string}) => {
 
-export const PaymentMethodModal = (props: {toggle: Function}) => {
+    const [selectedOption, setSelectedOption] = React.useState<string>(null);
+    const [paymentFormValues, setPaymentFormValues] = React.useState<{id:string, paypalText: string}>(null);
 
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(false);
-    const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
+    React.useEffect(() => {
+        if(props && props.id) {
+            setPaymentFormValues(props);
+            setSelectedOption(props.id + 'creditCard')
+            console.log(props)
+        }
+    }, [props])
 
-    let formRef = React.useRef<HTMLFormElement>(null);
-
-    const submitForm = (event: React.FormEvent<HTMLFormElement>) =>  {
-        let form = formRef.current
-        event.preventDefault();
-        recurly.token(form,(err, token) => {
-            if (err) {
-            } 
-            else {
-                var risk = recurly.Risk();
-                var threeDSecure = risk.ThreeDSecure({
-                    actionTokenId: token.id
-                });
-                threeDSecure.on('token', function (token) {
-                  });
-                  
-                  threeDSecure.on('error', function (error) {
-                  });
-                threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                form.submit();
-            }
-        });
-    }
+    React.useEffect(() => {}, [paymentFormValues])
 
     return (
-
-            <form ref={formRef} onSubmit={event => submitForm(event)}>
-                <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
-                <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
-                        <InputRadio name='paymentMethodForm' value='creditCard' defaultChecked={true} onChange={() => setSelectedOption('creditCard')} label='Credit Card' />
+            paymentFormValues ? 
+            <div>
+                <RadioButtonContainer isSelected={selectedOption === paymentFormValues.id +'creditCard'}>
+                        <InputRadio name={paymentFormValues.id+'paymentMethod'} value={paymentFormValues.id +'creditCard'} defaultChecked={true} onChange={() => setSelectedOption(paymentFormValues.id +'creditCard')} label='Credit Card ' />
                         <img src={CardLogo} />
                 </RadioButtonContainer>
-                <RadioButtonOption isOpen={selectedOption === 'creditCard'} className='mb2'>
+                <RadioButtonOption isOpen={selectedOption === paymentFormValues.id+'creditCard'} className='mb2'>
                     <div className='col col-12 pt2 px2'>
                         <Input
                             data-recurly="first_name"
@@ -153,15 +136,23 @@ export const PaymentMethodModal = (props: {toggle: Function}) => {
                     <input type="hidden" name="recurly-token" data-recurly="token"></input>
                 </RadioButtonOption>
                
-                <RadioButtonContainer className='mt2' isSelected={selectedOption === 'paypal'} >
-                    <InputRadio name='paymentMethodForm' value='paypalForm' onChange={() => setSelectedOption('paypal')} label='PayPal' />
+                <RadioButtonContainer className='mt2' isSelected={selectedOption === paymentFormValues.id +'paypal'} >
+                    <InputRadio name={paymentFormValues.id +'paymentMethod'} value={paymentFormValues.id +'paypal'} onChange={() => setSelectedOption(paymentFormValues.id +'paypal')} label='PayPal ' />
                     <img src={PaypalLogo} />
                 </RadioButtonContainer>
+
+               {    
+                   paymentFormValues.paypalText ?
+                   
+                   <RadioButtonOption isOpen={selectedOption === paymentFormValues.id +'paypal'} className='mb2'>
+                    <div className='col col-12 px2 pb2 pt1'>
+                        <Text size={14} weight='reg' color='gray-1'>{paymentFormValues.paypalText}</Text>
+                    </div>
+                </RadioButtonOption>
+                : null
+            }
                 <div id='#threeDSecureComponent'></div>
-                <div className='col col-12 py2'>
-                    <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Add</Button>
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
-                </div>
-            </form>
+        </div>
+        : null
     )
 }
