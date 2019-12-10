@@ -1,4 +1,5 @@
 import React from 'react';
+import { Size, Weight } from '../../Typography/TextTypes';
 
 export type InputType =
 | 'text'
@@ -69,6 +70,8 @@ export interface RadioSpecificProps {
     label: string;
     disabled?: boolean;
     value?: string;
+    labelSize?: Size;
+    labelWeight?: Weight
 }
 
 export type RadioProps = RadioSpecificProps & React.HTMLAttributes<HTMLInputElement>;

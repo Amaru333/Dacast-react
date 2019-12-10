@@ -56,13 +56,13 @@ const EmbedSettings = (props: EmbedSettingsComponentProps) => {
                         </div>
                         <br/>
                         <div>
-                            <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "iframe"})} defaultChecked={props.embedSettingsOption["embed-settings"] === "iframe"} />
+                            <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "iframe"})} defaultChecked={props.embedSettingsOption["embed-settings"] === "iframe"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
-                                TThe embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
+                                The embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                                 </Text>
                             </RadioText>
-                            <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "html5-video"})} defaultChecked={props.embedSettingsOption["embed-settings"] === "html5-video"} />
+                            <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" labelSize={16} labelWeight="med" onChange={() => setInputOptions({...inputOptions, ["embed-settings"]: "html5-video"})} defaultChecked={props.embedSettingsOption["embed-settings"] === "html5-video"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
                                 The most lightweight way to embed your video. Does not include all Dacast features & will not count video views. Only use if your CMS does not accept iframes.
@@ -79,13 +79,13 @@ const EmbedSettings = (props: EmbedSettingsComponentProps) => {
                         </div>
                         <br/>
                         <div>
-                            <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "responsive"})} defaultChecked={props.embedSettingsOption["embed-size"] === "responsive"} />
+                            <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "responsive"})} defaultChecked={props.embedSettingsOption["embed-size"] === "responsive"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
                                 Your videos will automatically resize to fit their container.
                                 </Text>
                             </RadioText>
-                            <InputRadio name="embed-size" value="fixed" label="Fixed" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "fixed"})} defaultChecked={props.embedSettingsOption["embed-size"] === "fixed"} />
+                            <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({...inputOptions, ["embed-size"]: "fixed"})} defaultChecked={props.embedSettingsOption["embed-size"] === "fixed"} />
                             <RadioText>
                                 <Text size={14} weight="reg">
                                 Videos will default to a fixed width with their height determined automatically based on aspect ratio.
