@@ -83,7 +83,7 @@ export const changeVodThumbnailAction = (data: Thumbnail): ThunkDispatch<Promise
             .then( response => {
                 dispatch( {type: ActionTypes.CHANGE_VOD_THUMBNAIL, payload: response.data} );
             })
-            .catch(() => {
+            .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

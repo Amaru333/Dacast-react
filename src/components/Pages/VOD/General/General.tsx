@@ -70,8 +70,7 @@ const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, set
 }
 
 const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
-    event.preventDefault();
-    if (selectedSubtitle === emptySubtitle) {
+    if (selectedSubtitle.id ===  emptySubtitle.id && selectedSubtitle.fileName === emptySubtitle.fileName) {
         props.addVodSubtitle(data);
     } else {
         props.editVodSubtitle(data)
@@ -158,7 +157,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                 <Text className="col col-12" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
                 <ThumbnailContainer className="col col-12 flex">
-                    <ThumbnailImage className="mr2" src="http://place-puppy.com/172x107"/>
+                    <ThumbnailImage className="mr2" src={props.vodDetails.thumbnail.toString()}/>
                     <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
                         <Text size={12} weight="reg" color="dark-violet">Change Thumbnail</Text>
                     </UploadThumbnail>
@@ -192,7 +191,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
             <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
             <form id="addSubtitlesForm" 
-            onSubmit={event => {handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle)}}>
+            onSubmit={event => {event.preventDefault();handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle)}}>
                 <ModalContent>
                     <DropdownSingle
                         className="col col-12" 

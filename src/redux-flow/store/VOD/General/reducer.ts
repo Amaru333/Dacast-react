@@ -4,6 +4,7 @@ import { ActionTypes, VodDetails} from './types';
 
 const initialVodGeneralState: VodDetails = {
     id: "",
+    online: false,
     title: "",
     folder: "",
     description: "",

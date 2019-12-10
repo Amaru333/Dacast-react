@@ -12,11 +12,11 @@ const editVodDetailsService = (data: VodDetails) => {
 }
 
 const addVodSubtitleService = (data: SubtitleInfo) => {
-    return axios.post(urlBase + 'vod-subtitles', {...data})
+    return axios.post(urlBase + 'vod-subtitle', {...data})
 }
 
 const editVodSubtitleService = (data: SubtitleInfo) => {
-    return axios.put(urlBase + 'vod-subtitles', {...data})
+    return axios.put(urlBase + 'vod-subtitle', {...data})
 }
 
 const changeVodThumbnailService = (data: Thumbnail) => {
