@@ -42,6 +42,8 @@ export interface InputSpecificProps {
     inputPrefix?: JSX.Element;
     suffix?: JSX.Element;
     step?: string;
+    max?: string;
+    min?: string;
 }
 
 export interface CheckboxSpecificProps {

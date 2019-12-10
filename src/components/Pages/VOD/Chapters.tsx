@@ -42,7 +42,6 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
             return;
         }
         player.getPlayerInstance().currentTime += 1/24.0;
-        setMarker(player.getPlayerInstance().currentTime + 1/24.0)
     }
 
     const handleClickPrevFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -51,7 +50,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
             return;
         }
         player.getPlayerInstance().currentTime -= 1/24.0;
-        setMarker(player.getPlayerInstance().currentTime - 1/24.0)
+
     }
 
     React.useEffect(() => {
@@ -84,11 +83,11 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                     };
                     player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
                     player.play();
-                    player.onPause(() => {
-                        if(player.paused()) {
-                            setMarker(player.getPlayerInstance().currentTime)
-                        }
-                    })
+                    // player.onPause(() => {
+                    //     if(player.paused()) {
+                    //         setMarker(player.getPlayerInstance().currentTime)
+                    //     }
+                    // })
                 }
             })
         }
@@ -115,7 +114,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                     <ButtonsArea className='my2'>
                         <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
                         <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
-                        <Button onClick={() => {setSelectedItem(null); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Market</Button>
+                        <Button onClick={() => {setSelectedItem(null);setMarker(player.getPlayerInstance().currentTime); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Market</Button>
                     </ButtonsArea>
                 </PlayerSection>
                 <TableContainer className='col col-12 md-col-6'>

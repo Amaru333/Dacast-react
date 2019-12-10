@@ -33,7 +33,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    React.useEffect(() => {}, [selectedItem])
+    
 
     const domainControlEmptyValues: DomainControl = {
         name: '',
@@ -45,10 +45,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         name: '',
         isDefault: false,
         countries: ['']
-    }
+    };
+
 
     let formRef = React.useRef<HTMLFormElement>(null);   
     let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
+
+    React.useEffect(() => {}, [selectedItem])
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
         event.preventDefault();
         props.saveSettingsSecurityOptions({
@@ -106,14 +110,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)            
             </Bubble>
             <Card>
-                <form id='settingsPageForm' ref={formRef} onSubmit={event => handleSubmit(event, value)}>
+                <form id='settingsPageForm' ref={formRef} onReset={() => {}} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
                         <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
-                        <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
+                        <ToggleTextInfo className="mx1"><Text size={14} weight='reg' color='gray-3'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
                         {
                             value['Password Protected Videos'] && value['Password Protected Videos'].value || props.securityDetails.videoScheduling.enabled && value['Password Protected Videos'] && typeof value['Password Protected Videos'].value === 'string' ?
                                 <div className='col col-12 mx3 '>
@@ -125,6 +129,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         id='promptTime' 
                                         label='Prompt Time' 
                                         required
+                                        step='1'
                                     />
         
                                     <Input 
@@ -147,7 +152,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <div className='col col-12'>
 
                         <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
-                        <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <ToggleTextInfo className="mx1"><Text size={14} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {   
                             value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
                                 <>
@@ -208,22 +213,22 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>Whatever</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setGeoRestrictionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
 
-                    <Table className="col-12 mb1" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
+                    <Table className="col-12 ml1 mb1" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
 
                     <BorderStyle className="p1 mx1" />
 
                     <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 
-                    <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>That's it</Text></TextStyle>
+                    <TextStyle className="px1 pb2"><Text size={14} weight='reg' color='gray-3'>That's it</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setDomainControlModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
-                    <Table className="col-12" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
+                    <Table className="col-12 ml1" id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>
             {
                 displayFormActionButtons ?
                     <div>
                         <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form="settingsPageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button type='reset' form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
                     : null
             }

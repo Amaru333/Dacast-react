@@ -5,7 +5,6 @@ export const TableContainer = styled.table<{}>`
     height: auto;
     border-spacing: unset;
     border-collapse: collapse;
-    min-width: 600px;
     width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
 `;
