@@ -89,7 +89,11 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Text size={20} weight="reg">Encoding Recipes</Text>
                     <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
                 </HeaderStyle>
-                <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
+                <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
+                <div className="flex col col-12 mt2 mb25">
+                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank">Knowledge Base</a></Text>
+                </div>
                 <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
                 <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
                 <CustomStepper
@@ -100,7 +104,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={["Settings", "Presets"]}
-                    lastStepButton="Create"
+                    lastStepButton="Save"
                     functionCancel={FunctionRecipe}
                     finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
                     stepperData={selectedRecipe}
