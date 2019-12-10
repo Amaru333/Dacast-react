@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { Text } from '../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
+import { upload, MIN_CHUNK_SIZE } from '../../utils/uploaderService';
 
 // export interface UploaderProps {
 //     // Your props here
@@ -35,7 +36,7 @@ export const Uploader = (props: {}) => {
             name: "failed_video.mp4",
             idItem: 831767,
             embedCode: "<iframe>"
-        },{
+        }, {
             currentState: 'veryfing',
             progress: 100,
             timeRemaining: 0,
@@ -43,7 +44,7 @@ export const Uploader = (props: {}) => {
             name: "test_veryfing_name.mp4",
             idItem: 83317,
             embedCode: "<iframe>"
-        },{
+        }, {
             currentState: 'progress',
             progress: 70,
             timeRemaining: 5,
@@ -51,7 +52,7 @@ export const Uploader = (props: {}) => {
             name: "test_random_name.mp4",
             idItem: 83127,
             embedCode: "<iframe>"
-        },{
+        }, {
             currentState: 'paused',
             progress: 40,
             timeRemaining: 5,
@@ -62,57 +63,120 @@ export const Uploader = (props: {}) => {
         }
     ]
 
-    
-    const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>(tempListTest);
 
-    
+    const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
 
 
-    const handleDrop = (file: FileList) => {
-        const acceptedVideoTypes = ['video/mp4'];
-        if(file.length > 0 && acceptedVideoTypes.includes(file[0].type)) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                let acceptedRatio = true;
-                const img = new Image();
-                img.onload = () => {
-                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
-                }
-                
+
+    const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
+        setUploadingList((currentList: UploaderItemProps[]) => {
+            const index = currentList.findIndex(element => element.name === name);
+            const progressPerc = Math.round(100 * event.loaded / event.total);
+            //Calcul ETA
+            var now = (new Date()).getTime();
+            var elapsedtime = now - startTime;
+            elapsedtime = elapsedtime / 1000;
+            var eta = ((event.total / event.loaded) * elapsedtime) - elapsedtime;
+            eta = Math.round(eta);
+            return Object.assign([...currentList], {
+                [index]:
+            {
+                ...currentList[index],
+                currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
+                progress: progressPerc,
+                timeRemaining: eta
             }
-            reader.readAsDataURL(file[0])
+            })
+        });
+    }
+
+    const updateItemMultiPart = (event: ProgressEvent, name: string, startTime: number, fileSize: number, bytesUploaded: number) => {
+        setUploadingList((currentList: UploaderItemProps[]) => {
+            const index = currentList.findIndex(element => element.name === name);
+            const bytesProgress = event.loaded + bytesUploaded
+            const progressPerc = Math.round(( bytesProgress  / fileSize) * 100);
+            //Calcul ETA
+            var now = (new Date()).getTime();
+            var elapsedtime = now - startTime;
+            elapsedtime = elapsedtime / 1000;
+            var eta = ((fileSize / bytesProgress) * elapsedtime) - elapsedtime;
+            eta = Math.round(eta/60);
+            return Object.assign([...currentList], {
+                [index]:
+            {
+                ...currentList[index],
+                currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
+                progress: progressPerc,
+                timeRemaining: eta
+            }
+            })
+        });
+    }
+
+    const handleDrop = (fileList: FileList) => {
+        const acceptedVideoTypes = ['video/mp4'];
+        const file = fileList[0];
+        if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
+            try {
+                var startTime = (new Date()).getTime();
+                if (file.size < MIN_CHUNK_SIZE) {
+                    upload(file, (event: ProgressEvent) => {
+                        updateItem(event, file.name, startTime);
+                    });
+                }
+                else {
+                    upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
+                        updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
+                    });
+                }
+                setUploadingList([
+                    ...uploadingList,
+                {
+                    currentState: 'progress',
+                    progress: 0,
+                    timeRemaining: 0,
+                    size: file.size,
+                    name: file.name,
+                    idItem: 0,
+                    embedCode: ""
+                }])
+
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        if(e.target.files && e.target.files.length > 0) {
+        if (e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
         }
     }
 
     const renderList = () => {
-        return uploadingList.map( (value, key) => {
+        console.log(uploadingList);
+        return uploadingList.map((value, key) => {
             return (
                 <UploaderItem key={key} {...value} ></UploaderItem>
             )
-        } )
+        })
     }
 
     React.useEffect(() => {
 
-    }, []);
+    }, [uploadingList]);
 
     return (
         <UploaderContainer>
             <DragAndDrop hasError={false} className="lg-col lg-col-12 bg-w" handleDrop={handleDrop}>
                 <BigIcon>cloud_upload</BigIcon>
-                <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
+                <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
-                    <Button style={{marginBottom:26}} sizeButton='xs' typeButton='primary' buttonColor='blue'>    
+                    <Button style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         <label htmlFor='browseButton'>
                             <LinkStyle>
-                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                                 Browse Files
                             </LinkStyle>
                         </label>
@@ -124,10 +188,10 @@ export const Uploader = (props: {}) => {
             </ItemList>
         </UploaderContainer>
     );
-    
+
 }
 
-export function mapStateToProps( state: ApplicationState) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         //Return from global state to component props
     };
