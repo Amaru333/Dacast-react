@@ -1,4 +1,4 @@
-import { ActionTypes, VodDetails, SubtitleInfo, Thumbnail } from "./types";
+import { ActionTypes, VodDetails, SubtitleInfo, ThumbnailUpload } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../toasts';
@@ -31,7 +31,7 @@ export interface deleteVodSubtitle {
 
 export interface changeVodThumbnail {
     type: ActionTypes.CHANGE_VOD_THUMBNAIL;
-    payload: Thumbnail
+    payload: string
 }
 
 export const getVodDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetVodDetails> => {
@@ -94,13 +94,14 @@ export const deleteVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promi
     };
 }
 
-export const changeVodThumbnailAction = (data: Thumbnail): ThunkDispatch<Promise<void>, {}, changeVodThumbnail> => {
+export const changeVodThumbnailAction = (data: ThumbnailUpload): ThunkDispatch<Promise<void>, {}, changeVodThumbnail> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, changeVodThumbnail> ) => {
         await VodGeneralServices.changeVodThumbnailService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CHANGE_VOD_THUMBNAIL, payload: response.data} );
             })
             .catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

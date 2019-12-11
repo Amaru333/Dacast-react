@@ -10,7 +10,7 @@ import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 import { ThumbnailModal } from './ThumbnailModal';
-import { VodDetails, SubtitleInfo, Thumbnail } from '../../../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo } from '../../../../redux-flow/store/VOD/General/types';
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -108,19 +108,19 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                 <Input 
                     className="col col-6" 
                     label="Title" 
-                    value={VodDetails.title}
+                    value={props.vodDetails.title}
                     onChange={event => setVodDetails({...VodDetails, ["title"]: event.currentTarget.value})}
                 />
                 <Input 
                     className="col col-6" 
                     label="Folder" 
-                    value={VodDetails.folder}
+                    value={props.vodDetails.folder}
                     onChange={event => setVodDetails({...VodDetails, ["folder"]: event.currentTarget.value})} 
                 />
                 <Input 
                     className="col col-6" 
                     label="Description" 
-                    defaultValue={VodDetails.description} 
+                    defaultValue={props.vodDetails.description} 
                     onChange={event => setVodDetails({...VodDetails, ["description"]: event.currentTarget.value})}
                 />
             </div>

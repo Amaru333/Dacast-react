@@ -73,10 +73,11 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
             // setMarker(player.getPlayerInstance().currentTime - 1/24.0)
             changeVodThumbnail(player.getPlayerInstance().currentTime.toString())
         }
+        props.toggle()
     }
 
     return (
-        <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened}>
+        <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened} hasClose={false}>
                 <ModalContent>
                     <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
                         <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>

@@ -13,7 +13,7 @@ export interface VodDetails {
     title: string;
     folder: string;
     description: string;
-    thumbnail: Thumbnail
+    thumbnail: string
     subtitles: SubtitleInfo[]
 }
 
@@ -23,6 +23,6 @@ export interface SubtitleInfo {
     language: string
 }
 
-export interface Thumbnail {
+export interface ThumbnailUpload {
     thumbnail: File | string;
 }
