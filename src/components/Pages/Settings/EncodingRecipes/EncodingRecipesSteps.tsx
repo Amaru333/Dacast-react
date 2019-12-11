@@ -36,7 +36,7 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
             {
-                if (event.currentTarget.checked) {
+                if (event.currentTarget.checked && stepperData.recipePresets.length < 6) {
                     setSelectedRecipe({...stepperData}, stepperData.recipePresets.push(value.id))
                 } else {
                     const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
