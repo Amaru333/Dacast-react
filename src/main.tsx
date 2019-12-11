@@ -25,6 +25,7 @@ import Login from '../src/containers/Register/Login/Login';
 import { isLoggedIn } from './utils/token';
 import { LoadingSpinner } from './components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from './containers/Dashboard/Dashboard';
+import { NotFound } from './containers/404page';
 
 // Any additional component props go here.
 interface MainProps {
@@ -107,7 +108,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                             <PrivateRoute path='/dashboard' component={Dashboard} />
                             <Route exact path='/'><Login history={history} /></Route>
                             <Route path='/login'><Login history={history} /></Route>
-                            {/* <Route path='*' ><NotFound /></Route> */}
+                            <Route path='*' ><NotFound /></Route>
                         </Switch>
  
                     </>
