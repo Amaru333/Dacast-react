@@ -90,34 +90,37 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
-    const [VodDetails, setVodDetails] = React.useState<VodDetails>(props.vodDetails)
+    const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
 
-    
+    React.useEffect(() => {
+        setVodDetails(props.vodDetails)
+    }, [props.vodDetails]);
     React.useEffect(() => {}, [selectedSubtitle, subtitleModalOpen])
     const testSubtitleFile = "mozumban_subtitle_678.srt"
 
     return (
+        VodDetails ? 
         <React.Fragment>
         <Card className="col-12 clearfix">
             <div className="details col col-12">
                 <Text size={20} weight="med">Details</Text>
-                <Toggle defaultChecked={videoIsOnline === true} onChange={(event) => {toggleVideoIsOnline(!videoIsOnline);setVodDetails({...VodDetails, ["online"]: !videoIsOnline})}} label="Video Online"></Toggle>
+                <Toggle defaultChecked={VodDetails.online} onChange={(event) => {toggleVideoIsOnline(!videoIsOnline);setVodDetails({...VodDetails, ["online"]: !videoIsOnline})}} label="Video Online"></Toggle>
                 <Input 
                     className="col col-6" 
                     label="Title" 
-                    defaultValue={props.vodDetails.title}
+                    value={VodDetails.title}
                     onChange={event => setVodDetails({...VodDetails, ["title"]: event.currentTarget.value})}
                 />
                 <Input 
                     className="col col-6" 
                     label="Folder" 
-                    defaultValue={props.vodDetails.folder}
+                    value={VodDetails.folder}
                     onChange={event => setVodDetails({...VodDetails, ["folder"]: event.currentTarget.value})} 
                 />
                 <Input 
                     className="col col-6" 
                     label="Description" 
-                    defaultValue={props.vodDetails.description} 
+                    defaultValue={VodDetails.description} 
                     onChange={event => setVodDetails({...VodDetails, ["description"]: event.currentTarget.value})}
                 />
             </div>
@@ -157,7 +160,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                 <Text className="col col-12" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
                 <ThumbnailContainer className="col col-12 flex">
-                    <ThumbnailImage className="mr2" src={props.vodDetails.thumbnail.toString()}/>
+                    <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()}/>
                     <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
                         <Text size={12} weight="reg" color="dark-violet">Change Thumbnail</Text>
                     </UploadThumbnail>
@@ -167,7 +170,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props.vodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
+            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
@@ -222,10 +225,11 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
         </Card>
         <ButtonContainer>
-            <Button onClick={() => console.log(VodDetails)}>Save</Button>
+            <Button onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
             <Button>Discard</Button>
         </ButtonContainer>
         </React.Fragment>
+        : null
     )
     
 }

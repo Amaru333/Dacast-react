@@ -45,6 +45,7 @@ export const editVodDetailsAction = (data: VodDetails): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState , {}, editVodDetails> ) => {
         await VodGeneralServices.editVodDetailsService(data)
             .then( response => {
+                console.log(response.data)
                 dispatch( {type: ActionTypes.EDIT_VOD_DETAILS, payload: response.data} );
             })
             .catch(() => {
