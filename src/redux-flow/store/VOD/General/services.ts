@@ -19,6 +19,10 @@ const editVodSubtitleService = (data: SubtitleInfo) => {
     return axios.put(urlBase + 'vod-subtitle', {...data})
 }
 
+const deleteVodSubtitleService = (data: SubtitleInfo) => {
+    return axios.delete(urlBase + 'vod-subtitle', {data:{...data}})
+}
+
 const changeVodThumbnailService = (data: Thumbnail) => {
     return axios.put(urlBase + 'vod-thumbnail', {...data})
 }
@@ -28,5 +32,6 @@ export const VodGeneralServices = {
     editVodDetailsService,
     addVodSubtitleService,
     editVodSubtitleService,
+    deleteVodSubtitleService,
     changeVodThumbnailService
 }

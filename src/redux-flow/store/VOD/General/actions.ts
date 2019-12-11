@@ -24,6 +24,11 @@ export interface editVodSubtitle {
     payload: SubtitleInfo
 }
 
+export interface deleteVodSubtitle {
+    type: ActionTypes.DELETE_VOD_SUBTITLE;
+    payload: SubtitleInfo
+}
+
 export interface changeVodThumbnail {
     type: ActionTypes.CHANGE_VOD_THUMBNAIL;
     payload: Thumbnail
@@ -45,7 +50,6 @@ export const editVodDetailsAction = (data: VodDetails): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState , {}, editVodDetails> ) => {
         await VodGeneralServices.editVodDetailsService(data)
             .then( response => {
-                console.log(response.data)
                 dispatch( {type: ActionTypes.EDIT_VOD_DETAILS, payload: response.data} );
             })
             .catch(() => {
@@ -78,6 +82,18 @@ export const editVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise
     };
 }
 
+export const deleteVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<void>, {}, deleteVodSubtitle> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, deleteVodSubtitle> ) => {
+        await VodGeneralServices.deleteVodSubtitleService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_VOD_SUBTITLE, payload: response.data} );
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
 export const changeVodThumbnailAction = (data: Thumbnail): ThunkDispatch<Promise<void>, {}, changeVodThumbnail> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, changeVodThumbnail> ) => {
         await VodGeneralServices.changeVodThumbnailService(data)
@@ -90,4 +106,4 @@ export const changeVodThumbnailAction = (data: Thumbnail): ThunkDispatch<Promise
     };
 }
 
-export type Action = GetVodDetails | editVodDetails | addVodSubtitle | editVodSubtitle | changeVodThumbnail
+export type Action = GetVodDetails | editVodDetails | addVodSubtitle | editVodSubtitle | deleteVodSubtitle | changeVodThumbnail

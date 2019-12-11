@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction } from '../../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction } from '../../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, Thumbnail } from '../../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -14,6 +14,7 @@ interface GeneralProps {
     getVodDetails: Function;
     addVodSubtitle: Function;
     editVodSubtitle: Function;
+    deleteVodSubtitle: Function;
     changeVodThumbnail: Function;
 }
 
@@ -52,6 +53,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         editVodSubtitle: (data: SubtitleInfo) => {
             dispatch(editVodSubtitleAction(data));
+        },
+        deleteVodSubtitle: (data: SubtitleInfo) => {
+            dispatch(deleteVodSubtitleAction(data));
         },
         changeVodThumbnail: (data: Thumbnail) => {
             dispatch(changeVodThumbnailAction(data))

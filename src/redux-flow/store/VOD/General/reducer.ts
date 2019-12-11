@@ -39,6 +39,8 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                         ...item,
                         ...action.payload
                 }})};
+                case ActionTypes.DELETE_VOD_SUBTITLE:
+                        return {...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id)}
         case ActionTypes.CHANGE_VOD_THUMBNAIL:
         return {
             ...state,

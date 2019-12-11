@@ -12,12 +12,12 @@ import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle
 import { ThumbnailModal } from './ThumbnailModal';
 import { VodDetails, SubtitleInfo, Thumbnail } from '../../../../redux-flow/store/VOD/General/types';
 
-
 interface GeneralComponentProps {
     vodDetails: VodDetails;
     editVodDetails: Function;
     addVodSubtitle: Function;
     editVodSubtitle: Function;
+    deleteVodSubtitle: Function;
     changeVodThumbnail: Function;
 }
 
@@ -29,14 +29,14 @@ const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     ]
 };
 
-const subtitlesTableBody = (vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
+const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
     return vodDetails.subtitles.map((value, key) => {
         return [
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
             <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
                 <Icon>get_app</Icon>
-                <Icon>delete</Icon>
+                <Icon onClick={() => props.deleteVodSubtitle(value)}>delete</Icon>
                 <Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon>   
             </IconContainer>
         ]
@@ -170,7 +170,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
+            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
