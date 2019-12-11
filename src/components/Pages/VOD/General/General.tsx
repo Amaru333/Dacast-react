@@ -104,9 +104,14 @@ export const GeneralPage = (props: GeneralComponentProps) => {
         <Card className="col-12 clearfix">
             <div className="details col col-12">
                 <Text size={20} weight="med">Details</Text>
-                <Toggle defaultChecked={VodDetails.online} onChange={(event) => {toggleVideoIsOnline(!videoIsOnline);setVodDetails({...VodDetails, ["online"]: !videoIsOnline})}} label="Video Online"></Toggle>
+                <Toggle 
+                className="col col-12 mt2 pb2"
+                defaultChecked={VodDetails.online} 
+                onChange={(event) => {toggleVideoIsOnline(!videoIsOnline);setVodDetails({...VodDetails, ["online"]: !videoIsOnline})}} 
+                label="Video Online"
+                />
                 <Input 
-                    className="col col-6" 
+                    className="col col-6 pr2" 
                     label="Title" 
                     value={props.vodDetails.title}
                     onChange={event => setVodDetails({...VodDetails, ["title"]: event.currentTarget.value})}
@@ -118,7 +123,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     onChange={event => setVodDetails({...VodDetails, ["folder"]: event.currentTarget.value})} 
                 />
                 <Input 
-                    className="col col-6" 
+                    className="col col-6 pr2 pt2" 
                     label="Description" 
                     defaultValue={props.vodDetails.description} 
                     onChange={event => setVodDetails({...VodDetails, ["description"]: event.currentTarget.value})}
@@ -127,7 +132,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
             <Divider className="col col-12"/>
             <div className="share col col-12">
                 <Text className="col col-12" size={20} weight="med">Share</Text>
-                <LinkBoxContainer className="col col-4">
+                <LinkBoxContainer className="col col-4 pr2">
                     <LinkBoxLabel>
                         <Text size={14} weight="med">Embed Code</Text>
                     </LinkBoxLabel>
@@ -136,7 +141,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy</Icon></IconButton>
                     </LinkBox>
                 </LinkBoxContainer>
-                <LinkBoxContainer className="col col-4">
+                <LinkBoxContainer className="col col-4 pr2">
                     <LinkBoxLabel>
                         <Text size={14} weight="med">JS</Text>
                     </LinkBoxLabel>
@@ -158,19 +163,20 @@ export const GeneralPage = (props: GeneralComponentProps) => {
             <Divider className="col col-12"/>
             <div className="thumbnail col col-12">
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
-                <Text className="col col-12" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
-                <ThumbnailContainer className="col col-12 flex">
+                <Text className="col col-12 pt1" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
+                <ThumbnailContainer className="col col-12 pt2 flex">
                     <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()}/>
                     <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
                         <Text size={12} weight="reg" color="dark-violet">Change Thumbnail</Text>
                     </UploadThumbnail>
                 </ThumbnailContainer>
             </div>
+            <Divider className="col col-12"/>
             <div className="subtitles col col-12">
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
-            <Text className="col col-12" size={14} weight="reg">Something about the subtitles</Text> 
+            <Text className="col col-12 pt2" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
+            <Table className="col col-12 mt25" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
@@ -225,8 +231,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
         </Card>
         <ButtonContainer>
-            <Button onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
-            <Button>Discard</Button>
+            <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
+            <Button typeButton="secondary">Discard</Button>
         </ButtonContainer>
         </React.Fragment>
         : null
@@ -235,13 +241,15 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 }
 const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    margin: 32px 24px 24px 24px;
+    margin: 32px 24px 24px 0;
 `
 
 const LinkBoxContainer = styled.div`
     display: flex;
     flex-direction: column;
     height:auto;
+    padding-top: 24px;
+    padding-right: 16px;
 `
 
 const LinkBoxLabel = styled.label`
@@ -255,12 +263,10 @@ const LinkBoxLabel = styled.label`
 const LinkBox = styled.div`
 display: flex;
 height: 32px;
-margin: 8px 16px;
 padding: 0 12px;
 background-color: ${props => props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
 align-items: center;
-justify-content: space-between;
 `
 
 const LinkText = styled(Text)`
