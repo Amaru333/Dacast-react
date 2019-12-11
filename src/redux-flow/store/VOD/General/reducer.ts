@@ -44,7 +44,7 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
         case ActionTypes.CHANGE_VOD_THUMBNAIL:
         return {
             ...state,
-            thumbnail: action.payload
+            ...action.payload
         };
         default:
             return state;

@@ -31,7 +31,7 @@ export interface deleteVodSubtitle {
 
 export interface changeVodThumbnail {
     type: ActionTypes.CHANGE_VOD_THUMBNAIL;
-    payload: string
+    payload: {thumbnail: string;}
 }
 
 export const getVodDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetVodDetails> => {
