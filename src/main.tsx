@@ -112,7 +112,7 @@ const Content = styled.div<{isOpen: boolean}>`
     overflow: auto;
 `
 
-const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean, isLocked: boolean}>`
+const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean}>`
     margin-left: ${props => props.isMobile ? 0 : props.isLocked ? '235px' : '64px'};
     background: rgb(245, 247, 250);
     position: relative;

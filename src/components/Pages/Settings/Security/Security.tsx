@@ -117,18 +117,19 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
                         <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
-                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-3'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
+                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
                         {
                             value['Password Protected Videos'] && value['Password Protected Videos'].value || props.securityDetails.videoScheduling.enabled && value['Password Protected Videos'] && typeof value['Password Protected Videos'].value === 'string' ?
-                                <div className='col col-12 mx2 '>
+                                <div className='col col-12'>
                                     <Input 
                                         type='time' 
                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                        className='col col-3 md-col-2 ml2 px1 mb1'
+                                        className='col col-3 md-col-2 mb1'
                                         disabled={false} 
                                         id='promptTime' 
                                         label='Prompt Time' 
                                         required
+                                        pattern="[0-9]{2}:[0-9]{2}"
                                         step='1'
                                     />
         
@@ -152,12 +153,12 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <div className='col col-12'>
 
                         <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
-                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-3'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {   
                             value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
                                 <>
-                                    <div className='col col-12 mx2'>
-                                        <div className='col col-4 md-col-3 px1 ml2 mb2'>
+                                    <div className='col col-12'>
+                                        <div className='col col-4 md-col-3 mb2'>
                                             <DateSinglePicker 
                                                 DatepickerTitle='Start Date'
                                                 id="startDate"
@@ -173,13 +174,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             disabled={false} 
                                             id='startTime' 
                                             label='Start Time' 
+                                            pattern="[0-9]{2}:[0-9]{2}"
                                             required
                                         />
 
 
                                     </div>
-                                    <div className='col col-12 mx3'>
-                                        <div className='col col-4 md-col-3 px1 ml2 mb2' >
+                                    <div className='col col-12'>
+                                        <div className='col col-4 md-col-3 mb2' >
                                             <DateSinglePicker 
                                                 DatepickerTitle='End Date' 
                                                 id="endDate"
@@ -193,6 +195,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             disabled={false} 
                                             id='endTime' 
                                             label='End Time' 
+                                            pattern="[0-9]{2}:[0-9]{2}"
                                             required
                                         />            
 
@@ -210,7 +213,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-restriction</Text></TextStyle>
 
-                    <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Whatever</Text></TextStyle>
+                    <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Whatever</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setGeoRestrictionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
 
                     <Table className="col-12 mb1" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
@@ -219,7 +222,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 
-                    <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-3'>That's it</Text></TextStyle>
+                    <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-1'>That's it</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setDomainControlModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                     <Table className="col-12 " id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>

@@ -37,6 +37,7 @@ export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function;
                     type='text'
                     className='col col-12 pb1'
                     label='Title'
+                    pattern="[0-9]{2}:[0-9]{2}"
                     placeholder='Title'
                 />
 
