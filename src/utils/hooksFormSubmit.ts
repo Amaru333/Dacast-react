@@ -54,36 +54,36 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     }
     
     React.useEffect(() => {
-            if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0)  {
+        if(formRef.current && Object.getOwnPropertyNames(dataValue).length === 0)  {
 
-                var dataInit={};
-                var dataValueInit= {};
+            var dataInit={};
+            var dataValueInit= {};
     
-                const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
-                    .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
-                    .reduce((obj, key) => {
-                        dataValueInit = { ...dataValueInit, [formRef.current![key].id]: { value: formRef.current![key].type === 'checkbox' ? formRef.current![key].defaultChecked: formRef.current![key].defaultValue }  };
-                        dataInit = { ...dataInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
-                        return {
-                            ...obj,
-                            [key]: formRef.current![key]
-                        };
-                    }, {});
+            const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
+                .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
+                .reduce((obj, key) => {
+                    dataValueInit = { ...dataValueInit, [formRef.current![key].id]: { value: formRef.current![key].type === 'checkbox' ? formRef.current![key].defaultChecked: formRef.current![key].defaultValue }  };
+                    dataInit = { ...dataInit, [formRef.current![key].id]: { id: formRef.current![key].id, error: false, errorMessage: ""  }  }
+                    return {
+                        ...obj,
+                        [key]: formRef.current![key]
+                    };
+                }, {});
     
-                Object.entries(filtered).map(([key, element]) =>  {
-                    InputValueHandler(element.type, element)
-                })
+            Object.entries(filtered).map(([key, element]) =>  {
+                InputValueHandler(element.type, element)
+            })
     
-                Object.entries(filtered).map(([key, element]) =>  {
-                    element.addEventListener('blur', (event) => {
-                        event.preventDefault();
-                        let validity = element.checkValidity();
-                        setData( (data: ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
-                    });
-                })
-                setData(dataInit);
-                setDataValue(dataValueInit);
-            }
+            Object.entries(filtered).map(([key, element]) =>  {
+                element.addEventListener('blur', (event) => {
+                    event.preventDefault();
+                    let validity = element.checkValidity();
+                    setData( (data: ValidationsInputObject)  =>  {return { ...data, [element.id] : { id: element.id, error: !validity, errorMessage: returnErrorMEssage( validity, element ) } } } );
+                });
+            })
+            setData(dataInit);
+            setDataValue(dataValueInit);
+        }
 
 
 
