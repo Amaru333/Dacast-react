@@ -4,6 +4,7 @@ import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dash
 import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
+import { RegisterInitialState, RegisterState, RegisterReducer } from './Register'
 
 export interface ApplicationState {
     settings: SettingsState;
@@ -11,6 +12,7 @@ export interface ApplicationState {
     toasts: ToastsState;
     account: AccountState;
     vod: VodState;
+    register: RegisterState
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -18,7 +20,8 @@ export const globalDefaultState: ApplicationState = {
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
     account:accountInitialState,
-    vod: vodInitialState
+    vod: vodInitialState,
+    register: RegisterInitialState
 };
 
 export const createRootReducer = () =>
@@ -27,6 +30,7 @@ export const createRootReducer = () =>
         dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer,
-        vod: VodReducer
+        vod: VodReducer,
+        register: RegisterReducer
     },
     );

@@ -76,7 +76,7 @@ const Admin = () => {
 
 export const AppRoutes: Routes[] = [   
     {
-        path: '/dashboard',
+        path: '/dashboard222',
         name: 'Dashboard',
         iconName: 'dashboard',
         component: DashboardRender,

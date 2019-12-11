@@ -11,7 +11,7 @@ interface CompanyContainerProps {
     AccountDetails: AccountInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
-    getUploadLogoUrl: Function;
+    getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
 }
 const Company = (props: CompanyContainerProps) => {

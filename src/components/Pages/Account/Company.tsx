@@ -15,7 +15,7 @@ interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
-    getUploadLogoUrl: Function;
+    getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
 }
 
@@ -45,72 +45,72 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     }
 
-    // const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
-    // const [logoFile, setLogoFile] = React.useState<File>(null);
-    // const [errorMessage, setErrorMessage] = React.useState<string>('')
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
+    const [logoFile, setLogoFile] = React.useState<File>(null);
+    const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
 
 
         setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
-        //setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
 
-    // const handleDrop = (file: FileList) => {
-    //     const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
-    //     if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
-    //         const reader = new FileReader();
-    //         reader.onload = () => {
-    //             let acceptedRatio = true;
-    //             const img = new Image();
-    //             img.onload = () => {
-    //                 //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
-    //             }
-    //             if(acceptedRatio) {
-    //                 setUploadedFileUrl(reader.result.toString())
-    //                 setLogoFile(file[0])
-    //                 setErrorMessage('')
-    //             }
-    //             else {
-    //                 setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
-    //             }
-    //         }
-    //         reader.readAsDataURL(file[0])
-    //     }
-    //     else{
-    //         setErrorMessage('File provided was not an image, please retry')
-    //     }
-    // }
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setUploadedFileUrl(reader.result.toString())
+                    setLogoFile(file[0])
+                    setErrorMessage('')
+                }
+                else {
+                    setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+        else{
+            setErrorMessage('File provided was not an image, please retry')
+        }
+    }
     
-    // const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     e.preventDefault();
-    //     if(e.target.files && e.target.files.length > 0) {
-    //         handleDrop(e.target.files);
-    //     }
-    // }
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
 
-    // const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault();
-    //     setUploadedFileUrl(null);
-    // }
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setUploadedFileUrl(null);
+    }
 
-    // const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault();
-    //     await props.getUploadLogoUrl();
-    //     if(props.CompanyPageDetails.uploadLogoUrl) {
-    //         props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
-    //     }
-    // }
+    const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        await props.getLogoUrlForUploading();
+        if(props.CompanyPageDetails.uploadLogoUrl) {
+            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
+        }
+    }
 
 
     return (
         <CompanyPageContainer>
             <Card className='clearfix p2'>
-                {/* <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
+                <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
@@ -142,7 +142,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
                 {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
                 <div className="m1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
-                <BorderStyle className="p1 mx1" /> */}
+                <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
                     <div className="md-col md-col-12">

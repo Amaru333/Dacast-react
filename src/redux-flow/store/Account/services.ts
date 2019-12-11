@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { CompanyPageInfos, ProfilePageInfos } from './types';
+import { addTokenToHeader } from '../../../utils/token';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
@@ -13,7 +14,11 @@ const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
 }
 
 const getUploadLogoUrlService = () => {
-    return axios.get(urlBase + 'getUploadLogoUrl');
+    let header = addTokenToHeader();
+    debugger;
+    return axios.get('https://oau3rnx93f.execute-api.us-east-1.amazonaws.com/dev/hello', {headers: {
+        'Authorization': header
+    }});
 }
 
 const uploadCompanyLogoService = (data: File, uploadUrl: string) => {
