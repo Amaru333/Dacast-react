@@ -14,6 +14,7 @@ import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEnco
 import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { useMedia } from '../../../../utils/utils';
+import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -23,12 +24,15 @@ interface EncodingRecipesComponentProps {
     deleteEncodingRecipe: Function;
 }
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, deleteEncodingRecipe: Function) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function) => {
     return encodingRecipeData.recipes.map((value, key) => {
         return [
             <Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
             <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
-            <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction"><Icon onClick={() => deleteEncodingRecipe(value)}>delete</Icon><Icon onClick={() => editRecipe(value)}>edit</Icon> </IconContainer>
+            <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
+                <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
+                <Icon onClick={() => editRecipe(value)}>edit</Icon> 
+            </IconContainer>
         ]
     })
 }
@@ -64,10 +68,12 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe = {id: "", name: "", isDefault: false, recipePresets: [""], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe:EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: [], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
+    const [deleteWarningModalOpen, setDeleteWarningModalOpen] = React.useState<boolean>(false);
+    const [deletedRecipe, setDeletedRecipe] = React.useState<EncodingRecipeItem>(emptyRecipe)
 
     const FunctionRecipe = (value: boolean) => {setCreateRecipeStepperOpen(value)}
 
@@ -89,9 +95,13 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Text size={20} weight="reg">Encoding Recipes</Text>
                     <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
                 </HeaderStyle>
-                <Text size={14} weight="reg">Ingest recipes allow you to create a re-usable group of presets to customize how your videos are encoded and delivered.</Text>
+                <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
+                <div className="flex col col-12 mt2 mb25">
+                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank">Knowledge Base</a></Text>
+                </div>
                 <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, props.deleteEncodingRecipe)} />
+                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
@@ -100,12 +110,22 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={["Settings", "Presets"]}
-                    lastStepButton="Create"
+                    lastStepButton="Save"
                     functionCancel={FunctionRecipe}
                     finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
                 />
+                <Modal size="small" title="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">Are you sure that you want to delete {deletedRecipe.name}?</Text>
+                        <Text size={14} weight="med">Please note any unsaved schanges will be lost.</Text>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button onClick={() => {props.deleteEncodingRecipe(deletedRecipe);setDeleteWarningModalOpen(false)}}>Delete</Button>
+                        <Button typeButton="tertiary" onClick={() => setDeleteWarningModalOpen(false)}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
             </Card>
     )
 }
