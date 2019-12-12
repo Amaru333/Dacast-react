@@ -10,6 +10,7 @@ import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/Encodi
 import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
+import VodList from '../containers/Vod/List/VodList';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -24,6 +25,12 @@ const functionTest1 = () => {
 const uploader = () => {
     return (
         <Uploader  />
+    )
+}
+
+const vodList = () => {
+    return (
+        <VodList  />
     )
 }
 
@@ -99,7 +106,7 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: Chapters,
+        component: VodList,
         slug: [
             {
                 path: '/videos/uploader',
@@ -107,10 +114,15 @@ export const AppRoutes: Routes[] = [
                 component: uploader
             },
             {
-                path: '/videos/tab2',
+                path: '/videos/chapters',
                 name: 'tab2',
-                component: functionTest3
-            }
+                component: Chapters
+            },
+            {
+                path: '/videos/list',
+                name: 'Videos List',
+                component: VodList
+            },
         ]
     },
     {
