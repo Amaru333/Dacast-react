@@ -210,13 +210,13 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         dropdownDefaultSelect={selectedSubtitle.language}
                         callback={(value: string) => setUploadedSubtitleFile({...uploadedSubtitleFile, language: value})}
                     />
-                    <Button onClick={(event) => {event.preventDefault();setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: testSubtitleFile})}} typeButton="secondary" sizeButton="xs">Select File</Button>
+                    <Button className="mt25" onClick={(event) => {event.preventDefault();setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: testSubtitleFile})}} typeButton="secondary" sizeButton="xs">Select File</Button>
                     <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                     { uploadedSubtitleFile.fileName === "" ? null :
                     <SubtitleFile className="col mt1">
                         <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
                         <button style={{border: "none", backgroundColor:"inherit"}}>
-                            <Icon onClick={() => setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: ""})} style={{fontSize: "14px"}}>close</Icon>
+                            <Icon onClick={() => setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: ""})} style={{fontSize: "14px", display: "flex", alignItems: "center"}}>close</Icon>
                         </button>   
                     </SubtitleFile>
                     }

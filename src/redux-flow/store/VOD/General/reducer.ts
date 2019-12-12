@@ -30,7 +30,6 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                 subtitles: newArray
             };
         case ActionTypes.EDIT_VOD_SUBTITLE:
-                newArray.splice(newArray.length, 0, action.payload)
                 return  {...state, subtitles: state.subtitles.map((item) => {
                     if (item.id !== action.payload.id) {
                         return item

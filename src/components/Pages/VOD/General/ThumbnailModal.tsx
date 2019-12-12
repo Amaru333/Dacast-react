@@ -70,7 +70,6 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
         if (selectedOption === "upload") {
             changeVodThumbnail(uploadedThumbnail)
         } else {
-            // setMarker(player.getPlayerInstance().currentTime - 1/24.0)
             changeVodThumbnail(player.getPlayerInstance().currentTime.toString())
         }
         props.toggle()
@@ -82,11 +81,11 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
                     <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
                         <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
                     </RadioButtonContainer>
-                    <RadioButtonOption isOpen={selectedOption === "upload"}>
+                    <RadioButtonOption className="col col-12 px2 py2" isOpen={selectedOption === "upload"}>
                         <div className="col col-12">
                             <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                            <Button className="col col-3" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
-                            <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                            <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
+                            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                             { uploadedThumbnail === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedThumbnail}</Text>
@@ -97,18 +96,17 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
                             }
                         </div>
                     </RadioButtonOption>
-                    <RadioButtonContainer className="col col-12 px2" isSelected={selectedOption === "frame"}>
+                    <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
                         <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                         <div className="col col-12">
-                           <Text size={14} weight="reg">Select a still frame from your video for your Thumbnail</Text>
                            <PlayerSection className='col col-12 mr2 mb2'>
-                    <PlayerContainer className="col col-12">
+                    <PlayerContainer className="col col-12 px2 my2">
                         <div ref={playerRef}>
                         </div>
                     </PlayerContainer>
-                    <ButtonsArea className='my2'>
+                    <ButtonsArea className='my2 mx2'>
                         <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
                         <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
                     </ButtonsArea>
@@ -118,7 +116,7 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
                     </RadioButtonOption>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => handleSubmit(props.submit)}>Add</Button>
+                    <Button onClick={() => handleSubmit(props.submit)}>Save</Button>
                     <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
                 </ModalFooter>
             </Modal>
@@ -133,14 +131,18 @@ const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     padding: 8px 24px;
     background-color: ${props => props.isSelected ? props.theme.colors['violet10'] : props.theme.colors['white'] };
     border: 1px solid ${props => props.theme.colors['gray-7']};
+    margin-bottom: 0px;
 `
 
 const RadioButtonOption = styled.div<{isOpen: boolean}>`
     display: none;
+    margin-bottom: 0;
     ${props => props.isOpen && css`
         display: flex;
         flex-direction: column;
         position: relative;
+        border: 1px solid ${props => props.theme.colors['gray-7']};
+        border-top: none;
     `}
 `
 const ThumbnailFile = styled.div`
@@ -156,7 +158,6 @@ export const PlayerSection = styled.div`
 
 export const PlayerContainer = styled.div`
     width: 100%;
-    background-color: ${props => props.theme.colors['gray-7']};
     height: 341px;
     position: relative;
 `
