@@ -70,7 +70,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                     <>  
                         {key === 0 ?
                             <>
-                                <DropdownItem key={key+"selectAll"} isSelected={false}> 
+                                <DropdownItem isSingle={false} key={key+"selectAll"} isSelected={false}> 
                                     <InputCheckbox 
                                         id={props.id + '_SelectAll'} 
                                         label={"Select All"}
@@ -82,7 +82,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                                 <BorderItem />
                             </>
                             : null}
-                        <DropdownItem key={props.id + '_' + name} isSelected={false}  > 
+                        <DropdownItem isSingle={false} key={props.id + '_' + name} isSelected={false}  > 
                             <InputCheckbox 
                                 id={props.id + '_' + name} 
                                 label={name}
@@ -103,7 +103,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                 <Title><Text size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle={false} isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

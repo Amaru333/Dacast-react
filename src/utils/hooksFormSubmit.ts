@@ -16,6 +16,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
     const [dataValue, setDataValue] = React.useState<ValueInput>({})
     const [enabledSubmit, setEnabledSubmit] = React.useState<boolean>(false)
     const [data, setData] = React.useState<ValidationsInputObject>({})
+    const [displayFormActionButtons, setDisplayFormActionButtons] = React.useState<boolean>(false);
 
     const returnErrorMEssage = ( validity: boolean, element: HTMLInputElement ) => {
         //Customize this with a constant file for each type / pattern associate to an error message
@@ -36,12 +37,14 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
                 element.addEventListener('keyup', (event) => {
                     event.preventDefault();
                     setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.value} } } );
+                    setDisplayFormActionButtons(true);
                 });
                 break;
             case 'checkbox':
                 element.addEventListener('change', (event) => {
                     event.preventDefault();
                     setDataValue( (dataValue: ValueInput)  =>  {return { ...dataValue, [element.id] : { value: element.checked} } } );
+                    setDisplayFormActionButtons(true);
                 });
                 
                 break;
@@ -92,8 +95,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
         }
         
     }, [dataValue, data, enabledSubmit])
-    console.log(dataValue)
-    return {value: dataValue, validations: data, enabledSubmit: enabledSubmit};
+    return {value: dataValue, validations: data, enabledSubmit: enabledSubmit, displayFormActionButtons: displayFormActionButtons};
 
 }
 

@@ -34,6 +34,17 @@ export function tsToLocaleDate(ts: number): string {
     return DateTime.fromSeconds(ts).toLocaleString();
 }
 
+export function intToTime(num: number) {
+    var hours   = Math.floor(num / 3600);
+    var minutes = Math.floor((num - (hours * 3600)) / 60);
+    var seconds = Math.floor(num - (hours * 3600) - (minutes * 60));
+
+    const hoursString = hours >= 10 ? hours : "0"+hours;
+    const minutesString = minutes >= 10 ?  minutes : "0"+minutes;
+    const secondsString = seconds >= 10 ? seconds :"0"+seconds;
+    return hoursString+':'+minutesString+':'+secondsString;
+}
+
 export function getPercentage(num: number, max: number): number {
     return Math.round((num * 100) / max);
 }

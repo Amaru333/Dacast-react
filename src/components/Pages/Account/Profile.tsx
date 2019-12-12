@@ -25,7 +25,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
     let formRef = React.useRef<HTMLFormElement>(null);
     
-    let {value, validations, enabledSubmit} = formSubmit(formRef);
+    let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
@@ -141,10 +141,16 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 </form>
 
             </Card>
-            <div>
-                <Button disabled={!enabledSubmit} form='profilePageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
-            </div>
+            { displayFormActionButtons ? 
+
+                <div> 
+                    
+                    <Button disabled={!enabledSubmit} form='profilePageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                </div>
+                : null
+            }
+
             <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
                 <ModalContent>
                     <Input 

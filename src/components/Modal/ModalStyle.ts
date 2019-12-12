@@ -45,7 +45,7 @@ export const ModalContainerStyle = styled.div<ModalProps>`
     z-index: 9999;
 `;
 export const ModalTitleStyle = styled.div`
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     align-items: center;
     display: flex;
 `;

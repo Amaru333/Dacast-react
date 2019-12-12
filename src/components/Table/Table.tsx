@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {TableProps} from './TableTypes'
 import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer } from './TableStyle';
+import { isMobile } from 'react-device-detect';
 
 export const Table = (props: TableProps) => {
 
@@ -33,7 +34,7 @@ export const Table = (props: TableProps) => {
         })
     }
     return (
-        <WrapperResponsiveContainer  {...props}>
+        <WrapperResponsiveContainer isMobile={isMobile}  {...props}>
             <TableContainer>
                 {props.header ? 
                     <TableHeaderContainer>

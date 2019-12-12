@@ -12,8 +12,9 @@ export const HelpStyle = styled.div`
     margin-top: 8px;
 `;
 
-export const RelativeContainer = styled(ContainerStyle)`
-    position: relative;
+export const RelativeContainer = styled.div`
+    display: -webkit-box;
+    display: -moz-box;
 `;
 
 export const IconStyle = styled.div<{disabled: boolean}>`

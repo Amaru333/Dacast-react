@@ -15,7 +15,7 @@ export const InputCheckbox = (props: InputCheckboxProps) => {
 
     return (
         <ContainerStyle className={className} >
-            <InputCheckboxStyle checked={props.defaultChecked}  onFocus={() => setFocus(true)} onBlur={() => setFocus(false) }  {...other} type="checkbox" onClick={() => setChecked(!checked)} ref={checkboxRef} />
+            <InputCheckboxStyle checked={props.defaultChecked} onFocus={() => setFocus(true)} onBlur={() => setFocus(false) }  {...other} type="checkbox" onClick={() => setChecked(!checked)} ref={checkboxRef} />
             <LabelStyle disabled={props.disabled} htmlFor={props.id}>
                 <CheckBoxStyle indeterminate={props.indeterminate}  isFocus={focus} disabled={props.disabled} defaultChecked={props.defaultChecked} checkbox={checkboxRef} ></CheckBoxStyle>
                 {label ? <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight={props.labelWeight} > {props.label} </Text> : null} 
