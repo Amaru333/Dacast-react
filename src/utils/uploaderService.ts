@@ -34,12 +34,8 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
                 xhr.open('PUT', JSON.parse(url).data[0], true)
                 xhr.upload.addEventListener("progress", function (event) {
                     let bytesUploaded = FILE_CHUNK_SIZE * (index - 1)
-                    let bytesProgress = event.loaded + bytesUploaded
-                    let progressPercent = (bytesProgress / FILE_SIZE) * 100
-    
                     updateItem(event, bytesUploaded, FILE_SIZE)
                 }, false)
-
 
                 let upload = new Promise(function (resolve, reject) {
                     xhr.send(chunk)
@@ -56,7 +52,14 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
                         allEtags.push(etag)
                         resolve()
                     })
+                    xhr.onabort = () => {
+                        resolve(false);
+                        index = NUM_CHUNKS;
+                    }
                 })
+                document.addEventListener('paused'+file.name, function (e) {
+                    xhr.abort();
+                }, false);
 
                 await upload
             } catch (err) {
@@ -87,7 +90,11 @@ async function singlePartUpload(keyPrefix: string, file: File, updateItem: Funct
         let upload = new Promise(function (resolve, reject) {
             xhr.send(file)
             xhr.addEventListener("load", function (event) { resolve() })
+            xhr.onabort = () => resolve(false)
         })
+        document.addEventListener('paused'+file.name, function (e) {
+            xhr.abort();
+        }, false);
     } catch (err) {
         console.error("error put S3 " + err)
         throw new Error('error put s3')

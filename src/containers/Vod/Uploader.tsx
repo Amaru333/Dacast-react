@@ -19,54 +19,7 @@ import { upload, MIN_CHUNK_SIZE } from '../../utils/uploaderService';
 
 export const Uploader = (props: {}) => {
 
-    const tempListTest: UploaderItemProps[] = [
-        {
-            currentState: 'completed',
-            progress: 100,
-            timeRemaining: 0,
-            size: 3898883,
-            name: "test_completed_name.mp4",
-            idItem: 83167,
-            embedCode: "<iframe>"
-        }, {
-            currentState: 'failed',
-            progress: 100,
-            timeRemaining: 0,
-            size: 3898883,
-            name: "failed_video.mp4",
-            idItem: 831767,
-            embedCode: "<iframe>"
-        }, {
-            currentState: 'veryfing',
-            progress: 100,
-            timeRemaining: 0,
-            size: 3898883,
-            name: "test_veryfing_name.mp4",
-            idItem: 83317,
-            embedCode: "<iframe>"
-        }, {
-            currentState: 'progress',
-            progress: 70,
-            timeRemaining: 5,
-            size: 3898883,
-            name: "test_random_name.mp4",
-            idItem: 83127,
-            embedCode: "<iframe>"
-        }, {
-            currentState: 'paused',
-            progress: 40,
-            timeRemaining: 5,
-            size: 3898883,
-            name: "paused_video.mp4",
-            idItem: 81317,
-            embedCode: "<iframe>"
-        }
-    ]
-
-
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
-
-
 
     const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
@@ -115,35 +68,85 @@ export const Uploader = (props: {}) => {
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4'];
-        const file = fileList[0];
-        if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
-            try {
-                var startTime = (new Date()).getTime();
-                if (file.size < MIN_CHUNK_SIZE) {
-                    upload(file, (event: ProgressEvent) => {
-                        updateItem(event, file.name, startTime);
-                    });
+        for(var i = 0; i < fileList.length; i++) {
+            const file = fileList[i];
+            if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
+                try {
+                    var startTime = (new Date()).getTime();
+                    if (file.size < MIN_CHUNK_SIZE) {
+                        upload(file, (event: ProgressEvent) => {
+                            updateItem(event, file.name, startTime);
+                        });
+                    }
+                    else {
+                        upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
+                            updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
+                        });
+                    }
+                    setUploadingList([
+                        ...uploadingList,
+                    {
+                        currentState: 'progress',
+                        progress: 0,
+                        timeRemaining: 0,
+                        size: file.size,
+                        name: file.name,
+                        idItem: 0,
+                        embedCode: ""
+                    }])
+    
+                } catch (err) {
+                    setUploadingList([
+                        ...uploadingList,
+                    {
+                        currentState: 'failed',
+                        progress: 0,
+                        timeRemaining: 0,
+                        size: file.size,
+                        name: file.name,
+                        idItem: 0,
+                        embedCode: ""
+                    }])
                 }
-                else {
-                    upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-                        updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
-                    });
-                }
-                setUploadingList([
-                    ...uploadingList,
-                {
-                    currentState: 'progress',
-                    progress: 0,
-                    timeRemaining: 0,
-                    size: file.size,
-                    name: file.name,
-                    idItem: 0,
-                    embedCode: ""
-                }])
-
-            } catch (err) {
-                console.log(err)
             }
+        }
+        
+    }
+
+    const handleActionItem = (item: UploaderItemProps) => {
+        switch (item.currentState) {
+            case 'completed':
+                const items = uploadingList.filter(obj => obj.name !== item.name);
+                setUploadingList(items);
+                var event = new CustomEvent('paused'+item.name);
+                document.dispatchEvent(event);
+                break;
+            case 'failed':
+                const itemsFailed = uploadingList.filter(obj => obj.name !== item.name);
+                setUploadingList(itemsFailed);
+                var event = new CustomEvent('paused'+item.name);
+                document.dispatchEvent(event);
+                break;
+            case 'paused':
+                const itemsPaused = uploadingList.filter(obj => obj.name !== item.name);
+                setUploadingList(itemsPaused);
+                var event = new CustomEvent('paused'+item.name);
+                document.dispatchEvent(event);
+                break;
+            case 'progress':
+                const itemsProgress = uploadingList.filter(obj => obj.name !== item.name);
+                setUploadingList(itemsProgress);
+                var event = new CustomEvent('paused'+item.name);
+                document.dispatchEvent(event);
+                break;
+            case 'queue':
+                const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
+                setUploadingList(itemsQueue);
+                var event = new CustomEvent('paused'+item.name);
+                document.dispatchEvent(event);
+                break;
+            case 'veryfing':
+                
         }
     }
 
@@ -155,10 +158,9 @@ export const Uploader = (props: {}) => {
     }
 
     const renderList = () => {
-        console.log(uploadingList);
         return uploadingList.map((value, key) => {
             return (
-                <UploaderItem key={key} {...value} ></UploaderItem>
+                <UploaderItem actionFunction={() => { handleActionItem(value) }} key={key} {...value} ></UploaderItem>
             )
         })
     }
@@ -183,6 +185,10 @@ export const Uploader = (props: {}) => {
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
+            <div className=" mt2 right">
+                <Button sizeButton='xs' className="mr2"  typeButton='secondary' buttonColor='blue' onClick={ () => {setUploadingList( uploadingList.filter(element => element.currentState !== "completed") )} } >Clear Completed</Button>
+                <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' >Pause All</Button>
+            </div>
             <ItemList className="col-12">
                 {renderList()}
             </ItemList>

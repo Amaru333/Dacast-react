@@ -17,7 +17,7 @@ export interface UploaderItemProps {
     embedCode?: string;
 }
 
-export const UploaderItem = (props: UploaderItemProps) => {
+export const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) => {
 
     React.useEffect(() => {
     }, [])
@@ -71,8 +71,8 @@ export const UploaderItem = (props: UploaderItemProps) => {
 
     const handleTooltipCloseText = () => {
         switch (props.currentState) {
-            case 'completed' :
-            case 'failed' :
+            case 'completed':
+            case 'failed':
                 return 'Clear';
             default:
                 return 'Cancel upload';
@@ -87,7 +87,9 @@ export const UploaderItem = (props: UploaderItemProps) => {
                 <Text className="relative ml1 nowrap" size={14} weight="reg" color="gray-3" >{readableBytes(props.size)}</Text>
                 <ProgressItemEndInfos>
                     {renderEndItem()}
-                    <CloseIcon id={"closeIcon" + props.idItem}>close</CloseIcon>
+                    <CloseIcon onClick={() => props.actionFunction()} id={"closeIcon" + props.idItem}>{
+                        props.currentState==='paused' ? "play_for_work" : "close"
+                    }</CloseIcon>
                     <Tooltip target={"closeIcon" + props.idItem} >{handleTooltipCloseText()}</Tooltip>
                 </ProgressItemEndInfos>
             </UploaderItemStyle>
