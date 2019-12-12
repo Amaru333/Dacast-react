@@ -3,6 +3,7 @@ import { Text } from "../Typography/Text"
 
 export const ToggleWrapperStyle = styled.div`
   position: relative;
+  margin: 8px 0;
   margin-bottom: 0px;
 `;
 export const ToggleLabelStyle = styled.label`

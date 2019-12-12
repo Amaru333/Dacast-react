@@ -22,8 +22,11 @@ export const InputTags = (props: TagProps) => {
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const val = e.currentTarget.value;
+
         if (e.key === 'Enter' && val) {
+            e.preventDefault();
             if (tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
+
                 inputRef.current.value = "";
                 return;
             }
