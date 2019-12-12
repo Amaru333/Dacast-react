@@ -24,12 +24,17 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
 `;
 
 
-export const ModalContainerStyle = styled.div<ModalProps>`
+export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     box-sizing: border-box;
     padding: 24px;
+
     width: 600px;
     ${props => props.size === "small" && css`
         width: 400px;
+    `};
+    ${props => props.isMobile && css`
+        padding: 16px;
+        width: 300px;
     `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
