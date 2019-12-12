@@ -11,6 +11,7 @@ import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 import VodList from '../containers/Vod/List/VodList';
+import General from '../containers/VOD/General/General';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -112,6 +113,11 @@ export const AppRoutes: Routes[] = [
                 path: '/videos/uploader',
                 name: 'Uploader',
                 component: uploader
+            },
+            {
+                path: '/videos/general',
+                name: 'General',
+                component: General
             },
             {
                 path: '/videos/chapters',
