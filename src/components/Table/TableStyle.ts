@@ -58,7 +58,7 @@ export const TableBodyRow = styled.tr<{}>`
         background-color: ${props => props.theme.colors["violet10"]};
         td {
             .iconAction {
-                display: block;
+                display: inline-flex;
             }
         }
     }

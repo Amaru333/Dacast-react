@@ -30,7 +30,7 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
-                    defaultValue={geoRestrictionItem.name}
+                    value={geoRestrictionItem.name}
                     disabled={false}
                     onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, name: event.currentTarget.value})}
                     required={false}

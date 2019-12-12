@@ -30,6 +30,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
+    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.videoScheduling.enabled)
+    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtectedVideo.enabled)
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -110,16 +112,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)            
             </Bubble>
             <Card>
-                <form id='settingsPageForm' ref={formRef} onReset={() => {}} onSubmit={event => handleSubmit(event, value)}>
+                <form id='settingsPageForm' ref={formRef} onReset={() => {setTogglePasswordProtectedVideo(props.securityDetails.passwordProtectedVideo.enabled); setToggleSchedulingVideo(props.securityDetails.videoScheduling.enabled)}} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
+                        <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' onChange={() => {setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)}} defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
                         {
-                            value['Password Protected Videos'] && value['Password Protected Videos'].value || props.securityDetails.videoScheduling.enabled && value['Password Protected Videos'] && typeof value['Password Protected Videos'].value === 'string' ?
+                            togglePasswordProtectedVideo ?
                                 <div className='col col-12'>
                                     <Input 
                                         type='time' 
@@ -152,10 +154,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <div className='col col-12'>
 
-                        <Toggle id="videoScheduling" label='Video Scheduling' defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
+                        <Toggle id="videoScheduling" label='Video Scheduling' onChange={() => {setToggleSchedulingVideo(!toggleSchedulingVideo)}} defaultChecked={props.securityDetails.videoScheduling.enabled} {...handleValidationProps('Video Scheduling', validations)}/>
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {   
-                            value['Video Scheduling'] && value['Video Scheduling'].value || props.securityDetails.videoScheduling.enabled && value['Video Scheduling'] && typeof value['Video Scheduling'].value === 'string' ?
+                            toggleSchedulingVideo ?
                                 <>
                                     <div className='col col-12'>
                                         <div className='col col-4 md-col-3 mb2'>
