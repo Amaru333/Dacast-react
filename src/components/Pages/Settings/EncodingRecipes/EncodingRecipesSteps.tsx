@@ -31,16 +31,26 @@ export const recipePresets = [
     {id: "DNE", rendition: "Do Not Encode", size: "Auto", bitrate: "Auto", mpx: "Auto"}
 ]
 
-export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[]) => {
+export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[], setStepValidated: Function) => {
+    
+    React.useEffect(() => {
+        setStepValidated(stepperData.recipePresets.length > 0)
+    }, [])
+
     return recipePresets.map((value, key) => {
+        
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
             {
                 if (event.currentTarget.checked && stepperData.recipePresets.length < 6) {
                     setSelectedRecipe({...stepperData}, stepperData.recipePresets.push(value.id))
+                    setStepValidated(stepperData.recipePresets.length>=1)
                 } else {
                     const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
+                    setStepValidated(editedRecipePresets.length>=1)
                     setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
+
+                    
                 }
             }
             } />,
@@ -53,14 +63,20 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
 }
 
 //STEPS
-export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function) => {
+export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
+
+    React.useEffect(() => {
+        if(stepperData){setStepValidated(stepperData.name.length>0)}
+    })
+
     return (
         <StepContent className="clearfix">
             <RecipeNameRow className="col col-12 mb1">
                 <RecipeNameInput value={stepperData ? stepperData.name : ""} className="col col-6" required label="Recipe Name" onChange={(event) => 
                 {
                     event.preventDefault();
-                    setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value})
+                    setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
+                    setStepValidated(event.currentTarget.value.length>0)
                 }
                 } />
                 <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault} className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
@@ -108,13 +124,13 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
     )
 }
 
-export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function) => {
+export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets)} />
+            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank">Knowledge Base</a></Text>
