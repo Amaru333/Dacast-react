@@ -4,6 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
 import { useOutsideAlerter } from '../../utils/utils';
+import {isMobile} from "react-device-detect";
 
 export const Modal = (props: ModalProps) => {
 
@@ -14,7 +15,7 @@ export const Modal = (props: ModalProps) => {
 
     return (
         <React.Fragment>
-            <ModalContainerStyle ref={modalRef} hasClose={hasClose} {...other}>
+            <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>
                 <ModalTitleStyle>
                     {icon ? (
                         <IconStyle iconColor={icon.color} ><Icon>{icon.name}</Icon></IconStyle>

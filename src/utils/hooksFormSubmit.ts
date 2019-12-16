@@ -58,7 +58,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
 
             var dataInit={};
             var dataValueInit= {};
-
+    
             const filtered: { [key: number]: HTMLInputElement } = Object.keys(formRef.current)
                 .filter(key => /^\d+$/.test(key) && formRef.current![key] instanceof HTMLInputElement)
                 .reduce((obj, key) => {
@@ -69,11 +69,11 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
                         [key]: formRef.current![key]
                     };
                 }, {});
-
+    
             Object.entries(filtered).map(([key, element]) =>  {
                 InputValueHandler(element.type, element)
             })
-
+    
             Object.entries(filtered).map(([key, element]) =>  {
                 element.addEventListener('blur', (event) => {
                     event.preventDefault();
@@ -84,6 +84,7 @@ export const formSubmit = (formRef: React.RefObject<HTMLFormElement>) => {
             setData(dataInit);
             setDataValue(dataValueInit);
         }
+
 
 
         if(formRef.current && Object.getOwnPropertyNames(dataValue).length !== 0) {

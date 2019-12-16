@@ -31,7 +31,7 @@ export const InputRadio = (props: RadioProps) => {
             <RadioLabelStyle htmlFor={props.label} >
                 {label ? <RadioTextStyle 
                     color={props.disabled ? "gray-4" : "gray-1"} 
-                    size={14} weight="reg"                   
+                    size={props.labelSize} weight={props.labelWeight}                   
                 > 
                     {label} 
                 </RadioTextStyle> 
@@ -42,3 +42,5 @@ export const InputRadio = (props: RadioProps) => {
     )
 
 }   
+
+InputRadio.defaultProps = { labelSize: 14, labelWeight: "reg" }
