@@ -6,7 +6,7 @@ export const HeaderStyle = styled.div`
     width: inherit;
     position: fixed;
     transition: none;
-    z-index:999;
+    z-index:99;
     height: 57px;
     display: flex;
     justify-content: flex-end;
