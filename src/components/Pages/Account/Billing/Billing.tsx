@@ -11,64 +11,104 @@ import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStep } from './ExtrasModal';
 import { CustomStepper } from '../../../Stepper/Stepper';
+import { BillingPageInfos } from '../../../../redux-flow/store/Account/Billing/types';
 
+interface BillingComponentProps {
+    billingInfos: BillingPageInfos;
+    saveBillingPagePaymentMethod: Function;
+}
 
-const Paypal = ['email@a.com'];
+export const BillingPage = (props: BillingComponentProps) => {
 
-const Protection = [{
-    type: 'Playback Protection',
-    enabled: true,
-    amount: '5GB',
-    price: '$0.25 per GB'
-}]
-
-const Extras = [{
-    type: 'Encoding',
-    amount: '5GB',
-    datePurchased: 'Nov, 03 2020',
-    price: '$0.25 per GB'
-}]
-
-export const BillingPage = () => {
-
-    const [selectedPaypalAccount, setSelectedPaypalAccount] = React.useState<string>(null);
+    const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStep];
 
+    const checkPaymentMethod = () => {
+        if(props.billingInfos.paypal) {
+            setpaymentMethod('paypal');
+        }
+        else if(props.billingInfos.creditCard) {
+            setpaymentMethod('creditCard');
+        }
+        else {
+            setpaymentMethod(null);
+        }
+    }
+
     React.useEffect(() => {
         recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
+        checkPaymentMethod()
+        
     }, [])
+
+    React.useEffect(()=> {checkPaymentMethod()}, [props.billingInfos.paypal, props.billingInfos.creditCard])
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const deletePaypalOption = (value: string) => {
-        return 
-    }
     const paypalTableHeaderElement = () => {
         return [
             <Text  key={"paypalTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>,
+            <Text  key={"paypalTableBillingId"} size={14}  weight="med" color="gray-1">Billing ID</Text>,
             <Text  key={"paypalTableEmailAddress"} size={14}  weight="med" color="gray-1">Email Address</Text>,
-            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"paypalTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setSelectedPaypalAccount(null);setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>
+            <Text  key={"paypalTableActive"} size={14}  weight="med" color="gray-1">Active</Text>,
+            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"paypalTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>
         ]
     }
 
     const paypalBodyElement= () => {
-        if(Paypal) {
-            return Paypal.map((value, key) => {
-                return [
-                    <Text key={key.toString() +value} size={14}  weight="reg" color="gray-1">{value}</Text>,
-                    <IconCheck><Icon key={key.toString() +value}>checked</Icon></IconCheck>,
+        if(props.billingInfos.paypal) {
+                return [[
+                    <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
+                    <Text key={'paypalTable' + props.billingInfos.paypal.billingId} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.billingId}</Text>,
+                    <Text key={'paypalTable' + props.billingInfos.paypal.emailAddress} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.emailAddress}</Text>,
+                    <IconCheck><Icon key={'paypalTableActiveField'}>checked</Icon></IconCheck>,
                     <span></span>
-                ]
-            })
+                ]]
         }
+    }
+
+    const creditCardTableHeaderElement = () => {
+        return [
+            <Text  key={"creditCardTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>,
+            <Text  key={"creditCardTableCardHolder"} size={14}  weight="med" color="gray-1">Card Holder</Text>,
+            <Text  key={"creditCardTableCardNumber"} size={14}  weight="med" color="gray-1">Card Number</Text>,
+            <Text  key={"creditCardTableExpiry"} size={14}  weight="med" color="gray-1">Expiry</Text>,
+            <Text  key={"creditCardTableActive"} size={14}  weight="med" color="gray-1">Active</Text>,
+            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>
+        ]
+    }
+
+    const creditCardBodyElement= () => {
+        if(props.billingInfos.creditCard) {
+            return [[
+                <Text key={'creditCardTableCreditCard'} size={14}  weight="reg" color="gray-1">Credit Card</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.creditCard.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.firstName + props.billingInfos.creditCard.lastName}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.creditCard.cardNumber} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.cardNumber}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.creditCard.month} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.month + '/' + props.billingInfos.creditCard.year}</Text>,
+                <IconCheck><Icon key={'creditCardTableActive'}>checked</Icon></IconCheck>,
+                <span></span>
+            ]
+            ]
+        }
+    }
+
+    const disabledTableHeader = () => {
+        return [
+            <span></span>
+        ]
+    }
+
+    const disabledTableBody = (text: string) => {
+        return [[
+            <Text className='center' size={14} weight='reg' color='gray-3' >{text}</Text>
+        ]]
     }
 
     const protectionTableHeaderElement = () => {
         return [
-            <Text  key={"protectionTableType"} size={14}  weight="med" color="gray-1">Type</Text>,
             <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Enabled</Text>,
             <Text  key={"protectionTableAmount"} size={14}  weight="med" color="gray-1">Amount</Text>,
             <Text  key={"protectionTablePrice"} size={14}  weight="med" color="gray-1">Price</Text>,
@@ -77,10 +117,9 @@ export const BillingPage = () => {
     }
 
     const protectionBodyElement= () => {
-        if(Protection) {
-            return Protection.map((value, key) => {
+        if(props.billingInfos.playbackProtection) {
+            return props.billingInfos.playbackProtection.map((value, key) => {
                 return [
-                    <Text key={key.toString() +value.type} size={14}  weight="reg" color="gray-1">{value.type}</Text>,
                     <IconCheck><Icon key={key.toString() +'enabled'}>{value.enabled ? 'checked' : ''}</Icon></IconCheck>,
                     <Text key={key.toString() +value.amount} size={14}  weight="reg" color="gray-1">{value.amount}</Text>,
                     <Text key={key.toString() +value.price} size={14}  weight="reg" color="gray-1">{value.price}</Text>,
@@ -102,8 +141,8 @@ export const BillingPage = () => {
     }
 
     const extrasBodyElement= () => {
-        if(Extras) {
-            return Extras.map((value, key) => {
+        if(props.billingInfos.extras) {
+            return props.billingInfos.extras.map((value, key) => {
                 return [
                     <Text key={key.toString() +value.type} size={14}  weight="reg" color="gray-1">{value.type}</Text>,
                     <Text key={key.toString() +value.amount} size={14}  weight="reg" color="gray-1">{value.amount}</Text>,
@@ -119,25 +158,46 @@ export const BillingPage = () => {
         <div>   
             <Card>
                 <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
-                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-1'>Add your payment type here so we can take all your money. Choose from PayPal or Card. You can only have one payment method at a time.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedPaypalAccount(null);}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
-                <Table className="col-12" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
+                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
+                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
+                {
+                    props.billingInfos.paypal? 
+                    <Table className="col-12" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
+
+                    : props.billingInfos.creditCard ?                
+                    <Table className="col-12" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
+                    : 
+                    <Table className="col-12" id="paymentMethodTable" header={creditCardTableHeaderElement()} />
+
+
+                }
                 
                 <BorderStyle className="p1 mx1" />
-                <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Protection</Text></TextStyle>
-                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>This is what we used to call overage protection. It will get triggered when the user runs out of storage or encoding.</Text></TextStyle>
+                <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
+                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
-                <Table className="col-12 mb1" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
+               
+                {
+                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
+                    <Table className="col-12 mb1" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Enablind Playback Protection')} />
+                    :<Table className="col-12 mb1" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
+                    
+
+                }
                 
                 <BorderStyle className="p1 mx1" />
-                <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Extras</Text></TextStyle>
-                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>This is what you can purchase one off.</Text></TextStyle>
+                <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Buy Allowances</Text></TextStyle>
+                <TextStyle className="px1 pb2" ><Text size={14} weight='reg' color='gray-3'>Buy more Data / Encoding as a one-off purchase or get a recurring Storage add-on.</Text></TextStyle>
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setExtrasModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Purchase extras</Button>
-                <Table className="col-12 mb1" id="extrasTable" header={extrasTableHeaderElement()} body={extrasBodyElement()} />
+                {
+                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
+                    <Table className="col-12 mb1" id="extrasTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Purchasing any Allowances')} />
+                    :<Table className="col-12 mb1" id="extrasTable" header={extrasTableHeaderElement()} body={extrasBodyElement()} />
+                }
             
             </Card>
-            <Modal hasClose={false} title={(selectedPaypalAccount ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
-                <PaymentMethodModal toggle={setPaypaylModalOpened} />
+            <Modal hasClose={false} title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
+                <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
             </Modal>
             <Modal hasClose={false} title='Enable protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal toggle={setProtectionModalOpened} />

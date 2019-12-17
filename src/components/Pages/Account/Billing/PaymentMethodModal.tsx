@@ -8,7 +8,7 @@ const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
 
-export const PaymentMethodModal = (props: {toggle: Function}) => {
+export const PaymentMethodModal = (props: {toggle: Function; actionButton: Function}) => {
 
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(false);
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
@@ -16,25 +16,30 @@ export const PaymentMethodModal = (props: {toggle: Function}) => {
     let formRef = React.useRef<HTMLFormElement>(null);
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) =>  {
-        let form = formRef.current
         event.preventDefault();
-        recurly.token(form,(err, token) => {
-            if (err) {
-            } 
-            else {
-                var risk = recurly.Risk();
-                var threeDSecure = risk.ThreeDSecure({
-                    actionTokenId: token.id
-                });
-                threeDSecure.on('token', function (token) {
-                  });
-                  
-                  threeDSecure.on('error', function (error) {
-                  });
-                threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                form.submit();
-            }
-        });
+        if(selectedOption === 'paypal') {
+            
+        }else {
+            let form = formRef.current
+            recurly.token(form,(err: any, token: any) => {
+                if (err) {
+                } 
+                else {
+                    props.actionButton();
+                    var risk = recurly.Risk();
+                    var threeDSecure = risk.ThreeDSecure({
+                        actionTokenId: token.id
+                    });
+                    threeDSecure.on('token', function () {
+                      });
+                      
+                      threeDSecure.on('error', function () {
+                      });
+                    threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
+                    form.submit();
+                }
+            });
+        }
     }
 
     return (
@@ -157,9 +162,14 @@ export const PaymentMethodModal = (props: {toggle: Function}) => {
                     <InputRadio name='paymentMethodForm' value='paypalForm' onChange={() => setSelectedOption('paypal')} label='PayPal' />
                     <img src={PaypalLogo} />
                 </RadioButtonContainer>
+                <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
+                    <Text size={14} weight='reg' color='gray-1'>
+                    When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
+                    </Text>
+                </RadioButtonOption>
                 <div id='#threeDSecureComponent'></div>
                 <div className='col col-12 py2'>
-                    <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Add</Button>
+                    <Button sizeButton="large" type='submit' typeButton="primary" buttonColor="blue" >Add</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>

@@ -4,18 +4,14 @@ import { ActionTypes, billingInitialState, BillingPageInfos, BillingAction } fro
 
 export const reducer = (state = billingInitialState, action: BillingAction): BillingPageInfos => {
     switch (action.type) {
-        case ActionTypes.GET_BILLING_PAGE_PAYMENT_METHOD:
+        case ActionTypes.GET_BILLING_PAGE_INFOS:
             return {...state, 
                 ...action.payload
             }
         case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD:
             return {...state,
-                ...action.payload
-            }
-        case ActionTypes.CREATE_BILLING_PAGE_PAYMENT_METHOD:     
-            return {
-                ...state,
-                ...action.payload
+                paypal: 'emailAddress' in action.payload ? {...action.payload} : null,
+                creditCard: 'firstName' in action.payload ? {...action.payload} : null
             }
         default:
             return state;

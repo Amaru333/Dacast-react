@@ -9,7 +9,7 @@ import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/Encodi
 import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
-import { Billing } from '../containers/Account/Billing';
+import Billing from '../containers/Account/Billing';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
