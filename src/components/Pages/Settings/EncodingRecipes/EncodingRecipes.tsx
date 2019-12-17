@@ -15,6 +15,7 @@ import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { useMedia } from '../../../../utils/utils';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
+import { Label } from '../../../FormsComponents/Label/Label';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -25,11 +26,22 @@ interface EncodingRecipesComponentProps {
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function) => {
+    console.log(encodingRecipeData.recipes[0].recipePresets)
     return encodingRecipeData.recipes.map((value, key) => {
+        
         return [
             <Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
             <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
+            <div>
+            {    value.recipePresets.map((recipe, key) => {
+                    return (
+                        <Label size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                    )
+                }
+                )}
+            </div>,
             <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
+                
                 <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
                 <Icon onClick={() => editRecipe(value)}>edit</Icon> 
             </IconContainer>
@@ -41,6 +53,7 @@ const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
     return[
         <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>,
         <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>,
+        <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>,
         <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
     ]
 }
@@ -93,7 +106,6 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             <Card className="col-12 clearfix p50">
                 <HeaderStyle>
                     <Text size={20} weight="reg">Encoding Recipes</Text>
-                    <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
                 </HeaderStyle>
                 <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
                 <div className="flex col col-12 mt2 mb25">
