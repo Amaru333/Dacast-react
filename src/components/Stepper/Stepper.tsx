@@ -7,6 +7,7 @@ import { StepperProps } from './StepperTypes';
 import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
+import {isMobile} from "react-device-detect";
 
 export const CustomStepper = (props: StepperProps) => {
 
@@ -41,7 +42,7 @@ export const CustomStepper = (props: StepperProps) => {
 
     return (
         <React.Fragment>
-            <StepperContainerStyle opened={props.opened}>
+            <StepperContainerStyle opened={props.opened} isMobile={isMobile}>
                 <StepperHeaderStyle>
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
@@ -56,7 +57,7 @@ export const CustomStepper = (props: StepperProps) => {
                         })}
                     </Stepper>
                 </StepperStyle>
-                <StepperContentStyle> 
+                <StepperContentStyle isMobile={isMobile}> 
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
                 </StepperContentStyle>
                 <StepperFooterStyle>

@@ -72,27 +72,32 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
     return (
         <StepContent className="clearfix">
             <RecipeNameRow className="col col-12 mb1">
-                <RecipeNameInput value={stepperData ? stepperData.name : ""} className="col col-6" required label="Recipe Name" onChange={(event) => 
+                <div className="col lg-col-6 sm-col-12">
+                <RecipeNameInput value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
                 {
                     event.preventDefault();
                     setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
                     setStepValidated(event.currentTarget.value.length>0)
                 }
                 } />
-                <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault} className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
+                </div>
+                <div className="col lg-col-6 sm-col-12">
+                <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
                     onChange={(event) => 
                     {   
                         setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
                     }
                     }/>
+                </div>
+                
             </RecipeNameRow>
             <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
             <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-            <Button className="col-2 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
+            <Button className="lg-col-2 sm-col-6 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
             {stepperData.watermarkFile ?
                 <div>
-                    <WatermarkFile className="col col-6 mt1">
+                    <WatermarkFile className="col lg-col-6 md-col-6  mt1">
                         <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                         <WatermarkDeleteButton>
                             <Icon style={{fontSize: "14px"}}>close</Icon>
@@ -145,7 +150,8 @@ const StepContent = styled.div`
 
 const RecipeNameRow = styled.div`
 display: flex;
-align-items: flex-end;
+align-items: center;
+flex-wrap: wrap;
 `
 
 const RecipeNameInput = styled(Input)`
@@ -153,7 +159,7 @@ const RecipeNameInput = styled(Input)`
 
 const DefaultRecipeCheckbox = styled(InputCheckbox)`
     margin-left: 16px;
-    margin-bottom: 6px;
+    margin-bottom: -29px;
 `
 
 const WatermarkFile = styled.div`
