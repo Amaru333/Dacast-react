@@ -30,7 +30,7 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
-                    defaultValue={geoRestrictionItem.name}
+                    value={geoRestrictionItem.name}
                     disabled={false}
                     onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, name: event.currentTarget.value})}
                     required={false}
@@ -53,11 +53,11 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
                     className='col col-12 py1'
                     id='geoRestrictionDefautChecked'
                     label='Make as Default Group'
-                    onChange={(event) => setGeoRestrictionItem({...geoRestrictionItem, isDefault: event.currentTarget.checked})}
+                    onChange={(event) => {event.preventDefault;setGeoRestrictionItem({...geoRestrictionItem, isDefault: event.currentTarget.checked})}}
                     defaultChecked={geoRestrictionItem.isDefault}
                 />
                 <div className='col col-12 py1'>
-                    <Button sizeButton="large" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
+                    <Button sizeButton="large" type='submit' disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>

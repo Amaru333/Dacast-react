@@ -28,7 +28,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
         domainControlItem ? 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
-                    defaultValue={domainControlItem.name}
+                    value={domainControlItem.name}
                     disabled={false}
                     onChange={(event) => setDomainControlItem({...domainControlItem, name: event.currentTarget.value})}
                     id='domainControlName'

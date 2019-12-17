@@ -1,4 +1,5 @@
 import React from 'react';
+import { Size, Weight } from '../../Typography/TextTypes';
 
 export type InputType =
 | 'text'
@@ -42,6 +43,9 @@ export interface InputSpecificProps {
     inputPrefix?: JSX.Element;
     suffix?: JSX.Element;
     step?: string;
+    max?: string;
+    min?: string;
+    pattern?: string;
 }
 
 export interface CheckboxSpecificProps {
@@ -69,6 +73,8 @@ export interface RadioSpecificProps {
     label: string;
     disabled?: boolean;
     value?: string;
+    labelSize?: Size;
+    labelWeight?: Weight;
 }
 
 export type RadioProps = RadioSpecificProps & React.HTMLAttributes<HTMLInputElement>;

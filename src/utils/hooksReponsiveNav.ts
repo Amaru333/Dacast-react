@@ -8,14 +8,14 @@ export const responsiveMenu = () => {
 
     const [isOpen, setOpen] = React.useState<boolean>(isMobile ? false : window.innerWidth > 1024);
     const [currentNavWidth, setCurrentNavWidth] = React.useState<string>(isOpen? navBarWidth : isMobile ? "0px" : reduceNavBarWidth);
-    const [menuLocked, setMenuLocked] = React.useState(true);
-
+    const [menuLocked, setMenuLocked] = React.useState(window.innerWidth > 1024);
     React.useEffect(() => {
         if(!isMobile) {
             window.addEventListener('resize', (event) => {
                 event.preventDefault();
                 if(window.innerWidth < 1024 ) {
                     setOpen(false);
+                    setMenuLocked(false)
                 } else {
                     setOpen(true);
                     setMenuLocked(true)
@@ -27,6 +27,7 @@ export const responsiveMenu = () => {
                 event.preventDefault();
                 if(window.innerWidth < 1024 ) {
                     setOpen(false);
+                    setMenuLocked(false)
                 } else {
                     setOpen(true);
                     setMenuLocked(true)

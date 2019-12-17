@@ -20,12 +20,12 @@ export const createRecipeHeaderElement = () => {
 }
 
 export const recipePresets = [
-    {id: "1440p", rendition: "2K - 1440p", size: "2560", bitrate: "24", mpx: "3.69"},
     {id: "2160p", rendition: "4K - 2160p", size: "3480", bitrate: "68", mpx: "7.52"},
-    {id: "1080p", rendition: "HD - 1080p", size: "1920", bitrate: "12", mpx: "2.07"},
-    {id: "720p", rendition: "SD - 720p", size: "1280", bitrate: "7.5", mpx: "0.92"},
-    {id: "480p", rendition: "LD - 480p", size: "854", bitrate: "4", mpx: "0.41"},
-    {id: "360p", rendition: "SLD - 360p", size: "640", bitrate: "1.5", mpx: "0.23"},
+    {id: "1440p", rendition: "2K - 1440p", size: "2560", bitrate: "24", mpx: "3.69"},
+    {id: "1080p", rendition: "FHD - 1080p", size: "1920", bitrate: "12", mpx: "2.07"},
+    {id: "720p", rendition: "HD - 720p", size: "1280", bitrate: "7.5", mpx: "0.92"},
+    {id: "480p", rendition: "SD - 480p", size: "854", bitrate: "4", mpx: "0.41"},
+    {id: "360p", rendition: "LD - 360p", size: "640", bitrate: "1.5", mpx: "0.23"},
     {id: "240p", rendition: "ULD - 240p", size: "426", bitrate: "0.5", mpx: "0.10"},
     {id: "MagicEncoding", rendition: "Magic Encoding", size: "7.5", bitrate: "auto", mpx: "Auto"},
     {id: "DNE", rendition: "Do Not Encode", size: "Auto", bitrate: "Auto", mpx: "Auto"}
@@ -36,7 +36,7 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
             {
-                if (event.currentTarget.checked) {
+                if (event.currentTarget.checked && stepperData.recipePresets.length < 6) {
                     setSelectedRecipe({...stepperData}, stepperData.recipePresets.push(value.id))
                 } else {
                     const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
@@ -78,13 +78,13 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                 <div>
                     <WatermarkFile className="col col-6 mt1">
                         <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
-                        <button style={{border: "none", backgroundColor:"inherit"}}>
+                        <WatermarkDeleteButton>
                             <Icon style={{fontSize: "14px"}}>close</Icon>
-                        </button>   
+                        </WatermarkDeleteButton>   
                     </WatermarkFile>
                     <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                     <PositioningRow className="col col-12">
-                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft.toString() : null }className="col col-2 mr4" required label="Left"
+                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft.toString() : null }className="col col-2 mr2" required label="Left"
                             onChange={(event) => 
                             {
                                 event.preventDefault();
@@ -112,12 +112,12 @@ export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: F
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
-                Provide your audience with the best viewing experience. Select up to 4 encoding presets from the table below and we will encode based on your choices.
+                Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
             <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
-                <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/">Knowledge Base</a></Text>
+                <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
         </StepContent>
     )
@@ -151,4 +151,14 @@ const WatermarkFile = styled.div`
 const PositioningRow = styled.div`
 display: flex;
 align-items: flex-end;
+`
+
+const WatermarkDeleteButton = styled.button`
+    border: none; 
+    background-color: inherit;
+    display: flex; 
+    justify-content: center;
+        :focus {
+            outline: none;
+        }
 `
