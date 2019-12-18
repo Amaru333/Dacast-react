@@ -31,16 +31,26 @@ export const recipePresets = [
     {id: "DNE", rendition: "Do Not Encode", size: "Auto", bitrate: "Auto", mpx: "Auto"}
 ]
 
-export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[]) => {
+export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, recipePresets: {[key: string]: string}[], setStepValidated: Function) => {
+    
+    React.useEffect(() => {
+        setStepValidated(stepperData.recipePresets.length > 0)
+    }, [])
+
     return recipePresets.map((value, key) => {
+        
         return [
             <InputCheckbox key={key + value.id } defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => 
             {
                 if (event.currentTarget.checked && stepperData.recipePresets.length < 6) {
                     setSelectedRecipe({...stepperData}, stepperData.recipePresets.push(value.id))
+                    setStepValidated(stepperData.recipePresets.length>=1)
                 } else {
                     const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
+                    setStepValidated(editedRecipePresets.length>=1)
                     setSelectedRecipe({...stepperData, ["recipePresets"]: editedRecipePresets})
+
+                    
                 }
             }
             } />,
@@ -53,30 +63,41 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
 }
 
 //STEPS
-export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function) => {
+export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
+
+    React.useEffect(() => {
+        if(stepperData){setStepValidated(stepperData.name.length>0)}
+    })
+
     return (
         <StepContent className="clearfix">
             <RecipeNameRow className="col col-12 mb1">
-                <RecipeNameInput value={stepperData ? stepperData.name : ""} className="col col-6" required label="Recipe Name" onChange={(event) => 
-                {
-                    event.preventDefault();
-                    setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value})
-                }
-                } />
-                <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault} className="col-6" style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
-                    onChange={(event) => 
-                    {   
-                        setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
+                <div className="col lg-col-6 sm-col-12">
+                    <RecipeNameInput value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
+                    {
+                        event.preventDefault();
+                        setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
+                        setStepValidated(event.currentTarget.value.length>0)
                     }
-                    }/>
+                    } />
+                </div>
+                <div className="col lg-col-6 sm-col-12">
+                    <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
+                        onChange={(event) => 
+                        {   
+                            setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
+                        }
+                        }/>
+                </div>
+                
             </RecipeNameRow>
             <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
             <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-            <Button className="col-2 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
+            <Button className="lg-col-2 sm-col-6 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
             {stepperData.watermarkFile ?
                 <div>
-                    <WatermarkFile className="col col-6 mt1">
+                    <WatermarkFile className="col lg-col-6 md-col-6  mt1">
                         <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                         <WatermarkDeleteButton>
                             <Icon style={{fontSize: "14px"}}>close</Icon>
@@ -108,13 +129,13 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
     )
 }
 
-export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function) => {
+export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets)} />
+            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
             <div className="flex col col-12 mt3">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
@@ -129,7 +150,8 @@ const StepContent = styled.div`
 
 const RecipeNameRow = styled.div`
 display: flex;
-align-items: flex-end;
+align-items: center;
+flex-wrap: wrap;
 `
 
 const RecipeNameInput = styled(Input)`
@@ -137,7 +159,7 @@ const RecipeNameInput = styled(Input)`
 
 const DefaultRecipeCheckbox = styled(InputCheckbox)`
     margin-left: 16px;
-    margin-bottom: 6px;
+    margin-bottom: -29px;
 `
 
 const WatermarkFile = styled.div`

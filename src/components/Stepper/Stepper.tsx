@@ -7,21 +7,24 @@ import { StepperProps } from './StepperTypes';
 import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
+import {isMobile} from "react-device-detect";
 
 export const CustomStepper = (props: StepperProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
+    const [stepValidated, setStepValidated] = React.useState<boolean>(false)
 
     const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
         return ( 
-            props.stepList[stepIndex](stepperData, updateStepperData)
+            props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated)
         )
     };
 
     const nextStep = () => {
         if(stepIndex < props.stepList.length - 1) {
             setStepIndex(stepIndex + 1)
+            setStepValidated(false)
         }
         else {
             setStepIndex(0)
@@ -33,17 +36,18 @@ export const CustomStepper = (props: StepperProps) => {
     const previousStep = () => {
         if(stepIndex > 0) {
             setStepIndex( stepIndex - 1);
+            setStepValidated(true)
         }
     }
 
     return (
         <React.Fragment>
-            <StepperContainerStyle opened={props.opened}>
+            <StepperContainerStyle opened={props.opened} isMobile={isMobile}>
                 <StepperHeaderStyle>
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
                 <StepperStyle>
-                    <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                    <Stepper activeStep={stepIndex} alternativeLabel>
                         {steps.map((label) => {
                             return (
                                 <Step key={label}>
@@ -53,15 +57,15 @@ export const CustomStepper = (props: StepperProps) => {
                         })}
                     </Stepper>
                 </StepperStyle>
-                <StepperContentStyle> 
+                <StepperContentStyle isMobile={isMobile}> 
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
-                    <Button {...props.nextButtonProps} onClick={nextStep}>
+                    <Button {...props.nextButtonProps} disabled={!stepValidated} onClick={nextStep}>
                         {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
                     </Button>
                     {stepIndex !== 0 ?
-                        <Button {...props.backButtonProps} onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
+                        <Button {...props.backButtonProps}  onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
                     }
                     <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
                 </StepperFooterStyle>
