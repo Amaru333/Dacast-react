@@ -25,10 +25,18 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
         case ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
                 playbackProtection: action.payload
-            }       
+            }      
+            case ActionTypes.ADD_BILLING_PAGE_EXTRAS:          
+            let newExtras = state.extras ? state.extras.slice() : [];
+            newExtras.splice(newExtras.length, 0, action.payload )
+            return {...state,
+                extras: newExtras
+            } 
         default:
             return state;
     }
 };
+
+
 
 export {reducer as BillingReducer}; 

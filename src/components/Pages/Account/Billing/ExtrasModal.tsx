@@ -3,6 +3,7 @@ import { Text } from '../../../Typography/Text';
 import { Table } from '../../../Table/Table';
 import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 import { PaymentForm } from '../../../FormsComponents/PaymentForm/PaymentForm';
+import { Extras } from '../../../../redux-flow/store/Account/Billing';
 
 const ProtectionModalTableData = [
     {
@@ -20,7 +21,9 @@ const ProtectionModalTableData = [
 ]
 
 
-export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
+export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function) => {
+
+    
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
             return [
@@ -46,7 +49,7 @@ export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
                 dropdownTitle='Protection Type'
                 list={{'Encoding Protection': false, 'Playback Protection': false}}
                 id='extraStepperStep1ProtectionTypeDropdown'
-                defaultValue='Playback Protection'
+                callback={(value: string) => {setExtraItem({...extraItem, type: value})}}
 
             />
             <DropdownSingle 
@@ -54,7 +57,7 @@ export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
                 dropdownTitle='Amount'
                 list={{'10 GB': false, '60 GB': false}}
                 id='extraStepperStep1AmountDropdown'
-                defaultValue='60 GB'
+                callback={(value: string) => {setExtraItem({...extraItem, amount: value, price: '3'})}}
             />
             <Table id='extraStepperStep1Table' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
         </div>

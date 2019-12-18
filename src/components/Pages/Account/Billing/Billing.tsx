@@ -11,11 +11,15 @@ import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStep } from './ExtrasModal';
 import { CustomStepper } from '../../../Stepper/Stepper';
-import { BillingPageInfos } from '../../../../redux-flow/store/Account/Billing/types';
+import { BillingPageInfos, Extras } from '../../../../redux-flow/store/Account/Billing/types';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;
     saveBillingPagePaymentMethod: Function;
+    addBillingPagePaymenPlaybackProtection: Function;
+    editBillingPagePaymenPlaybackProtection: Function;
+    deleteBillingPagePaymenPlaybackProtection: Function;
+    addBillingPageExtras: Function;
 }
 
 export const BillingPage = (props: BillingComponentProps) => {
@@ -24,6 +28,7 @@ export const BillingPage = (props: BillingComponentProps) => {
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
+    const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStep];
 
     const checkPaymentMethod = () => {
@@ -35,6 +40,13 @@ export const BillingPage = (props: BillingComponentProps) => {
         }
         else {
             setpaymentMethod(null);
+        }
+    }
+
+    const submitExtra = () => {
+        if(stepperExtraItem) {
+            props.addBillingPageExtras(stepperExtraItem);
+            setExtrasModalOpened(false);
         }
     }
 
@@ -122,7 +134,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <IconCheck key={'playbackProtectionEnabledValue'}><Icon >{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</Icon></IconCheck>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
                 <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
-                <span key={'playbackProtectionBodyEmptyCell'}></span>
+                <IconContainer className="iconAction" key={'protectionTableActionButtons'}><Icon onClick={(event) => {event.preventDefault();props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection)}}>delete</Icon><Icon onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</Icon> </IconContainer>
             ]]
         }
     }
@@ -198,7 +210,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
             </Modal>
             <Modal hasClose={false} title='Enable protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal toggle={setProtectionModalOpened} />
+                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} />
             </Modal>
             <CustomStepper 
                 opened={extrasModalOpened}
@@ -209,8 +221,10 @@ export const BillingPage = (props: BillingComponentProps) => {
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 stepTitles={['Cart', 'Payment']}
                 lastStepButton="Purchase"
-                functionCancel={setExtrasModalOpened}
-                finalFunction={() => {console.log('yes')}}
+                functionCancel={() => {setExtrasModalOpened(false)}}
+                stepperData={stepperExtraItem}
+                finalFunction={() => {submitExtra()}}
+                updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
             />
 
         </div>

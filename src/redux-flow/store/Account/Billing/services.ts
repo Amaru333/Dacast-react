@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CreditCardPayment, PaypalPayment, PlaybackProtection } from './types';
+import { CreditCardPayment, PaypalPayment, PlaybackProtection, Extras } from './types';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
@@ -24,6 +24,9 @@ const deleteBillingPagePaymenPlaybackProtectionService = (data: PlaybackProtecti
     return axios.delete(urlBase + 'billing-playback-protection', {data:{...data}})
 }
 
+const addBillingPageExtrasService = (data: Extras) => {
+    return axios.post(urlBase + 'billing-extras', {...data})
+}
 
 
 export const BillingServices = {
@@ -31,5 +34,6 @@ export const BillingServices = {
     saveBillingPagePaymentMethodService,
     addBillingPagePaymenPlaybackProtectionService,
     editBillingPagePaymenPlaybackProtectionService,
-    deleteBillingPagePaymenPlaybackProtectionService
+    deleteBillingPagePaymenPlaybackProtectionService,
+    addBillingPageExtrasService
 } 
