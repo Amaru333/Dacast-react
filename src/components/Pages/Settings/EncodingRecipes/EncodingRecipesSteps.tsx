@@ -73,21 +73,21 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
         <StepContent className="clearfix">
             <RecipeNameRow className="col col-12 mb1">
                 <div className="col lg-col-6 sm-col-12">
-                <RecipeNameInput value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
-                {
-                    event.preventDefault();
-                    setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
-                    setStepValidated(event.currentTarget.value.length>0)
-                }
-                } />
+                    <RecipeNameInput value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
+                    {
+                        event.preventDefault();
+                        setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
+                        setStepValidated(event.currentTarget.value.length>0)
+                    }
+                    } />
                 </div>
                 <div className="col lg-col-6 sm-col-12">
-                <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
-                    onChange={(event) => 
-                    {   
-                        setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
-                    }
-                    }/>
+                    <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
+                        onChange={(event) => 
+                        {   
+                            setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
+                        }
+                        }/>
                 </div>
                 
             </RecipeNameRow>

@@ -26,44 +26,44 @@ interface EncodingRecipesComponentProps {
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
-   return ( 
-     encodingRecipeData.recipes.map((value, key) => {
+    return ( 
+        encodingRecipeData.recipes.map((value, key) => {
         
             return (
                 key === 0 ? 
-                [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
-                <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
-                <div>
-                    {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
+                    [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
+                        <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
+                        <div key={"encodingRecipesPage_labelContainer_default"}>
+                            {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
                                 return (
                                     <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                                 )
                             }
                             )}
-                </div>,
-                <IconContainer></IconContainer>
-                        ]
+                        </div>,
+                        <IconContainer key={"encodingRecipesPage_iconContainer_default"}></IconContainer>
+                    ]
                 
-                :
-                [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
-                <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
-                <div>
-                {    value.recipePresets.map((recipe, key) => {
-                        return (
-                            <RenditionLabel size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
-                        )
-                    }
-                    )}
-                </div>,
-                <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
+                    :
+                    [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
+                        <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
+                        <div key={"encodingRecipesPage_labelContainer_" + key}>
+                            {    value.recipePresets.map((recipe, key) => {
+                                return (
+                                    <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                                )
+                            }
+                            )}
+                        </div>,
+                        <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
                     
-                    <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
-                    <Icon onClick={() => editRecipe(value)}>edit</Icon> 
-                </IconContainer>
-            ]
+                            <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
+                            <Icon onClick={() => editRecipe(value)}>edit</Icon> 
+                        </IconContainer>
+                    ]
             )
         })
-   )
+    )
 }
 
 const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {

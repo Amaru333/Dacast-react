@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const StepperContainerStyle = styled.div<{opened: boolean, isMobile: boolean}>`
+export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean}>`
     box-sizing: border-box;
     display: none;
     flex-direction: column;
