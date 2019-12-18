@@ -13,10 +13,10 @@ export const reducer = (state = profileInitialState, action: ProfileAction): Pro
                 ...action.payload
             }
         case ActionTypes.SAVE_PROFILE_PASSWORD:
-                return {
-                    ...state, 
-                    lastChangedPassword: ""
-                }
+            return {
+                ...state, 
+                lastChangedPassword: ""
+            }
         default:
             return state;
     }

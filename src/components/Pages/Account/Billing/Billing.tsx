@@ -60,13 +60,13 @@ export const BillingPage = (props: BillingComponentProps) => {
 
     const paypalBodyElement= () => {
         if(props.billingInfos.paypal) {
-                return [[
-                    <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
-                    <Text key={'paypalTable' + props.billingInfos.paypal.billingId} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.billingId}</Text>,
-                    <Text key={'paypalTable' + props.billingInfos.paypal.emailAddress} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.emailAddress}</Text>,
-                    <IconCheck><Icon key={'paypalTableActiveField'}>checked</Icon></IconCheck>,
-                    <span></span>
-                ]]
+            return [[
+                <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
+                <Text key={'paypalTable' + props.billingInfos.paypal.billingId} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.billingId}</Text>,
+                <Text key={'paypalTable' + props.billingInfos.paypal.emailAddress} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.emailAddress}</Text>,
+                <IconCheck key={'paypalTableActiveField'}><Icon >checked</Icon></IconCheck>,
+                <span key={'paypalTableBodyEmptyCell'}></span>
+            ]]
         }
     }
 
@@ -88,8 +88,8 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.firstName + props.billingInfos.creditCard.lastName}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.cardNumber} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.cardNumber}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.month} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.month + '/' + props.billingInfos.creditCard.year}</Text>,
-                <IconCheck><Icon key={'creditCardTableActive'}>checked</Icon></IconCheck>,
-                <span></span>
+                <IconCheck key={'creditCardTableActive'}><Icon >checked</Icon></IconCheck>,
+                <span key={'creditCardTableBodyEmptyCell'}></span>
             ]
             ]
         }
@@ -97,13 +97,13 @@ export const BillingPage = (props: BillingComponentProps) => {
 
     const disabledTableHeader = () => {
         return [
-            <span></span>
+            <span key={'disabledTableHeader'}></span>
         ]
     }
 
     const disabledTableBody = (text: string) => {
         return [[
-            <Text className='center' size={14} weight='reg' color='gray-3' >{text}</Text>
+            <Text key={'disabledTableText' + text} className='center' size={14} weight='reg' color='gray-3' >{text}</Text>
         ]]
     }
 
@@ -119,10 +119,10 @@ export const BillingPage = (props: BillingComponentProps) => {
     const protectionBodyElement= () => {
         if(props.billingInfos.playbackProtection) {
             return [[
-                <IconCheck><Icon key={'playbackProtectionEnabledValue'}>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</Icon></IconCheck>,
+                <IconCheck key={'playbackProtectionEnabledValue'}><Icon >{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</Icon></IconCheck>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
                 <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
-                <span></span>
+                <span key={'playbackProtectionBodyEmptyCell'}></span>
             ]]
         }
     }
@@ -146,7 +146,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                     <Text key={key.toString() +value.amount} size={14}  weight="reg" color="gray-1">{value.amount}</Text>,
                     <Text key={key.toString() +value.price} size={14}  weight="reg" color="gray-1">{value.price}</Text>,
                     <Text key={key.toString() +value.datePurchased} size={14}  weight="reg" color="gray-1">{value.datePurchased}</Text>,
-                    <span></span>
+                    <span key={'extrasTableBodyElementEmptyCell'}></span>
                 ]
             })
         }
@@ -160,12 +160,12 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                 {
                     props.billingInfos.paypal? 
-                    <Table className="col-12 mx1 mb1" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
+                        <Table className="col-12 mx1 mb1" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
-                    : props.billingInfos.creditCard ?                
-                    <Table className="col-12 mx1 mb1" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
-                    : 
-                    <Table className="col-12 mx1 mb1" id="paymentMethodTable" header={creditCardTableHeaderElement()} />
+                        : props.billingInfos.creditCard ?                
+                            <Table className="col-12 mx1 mb1" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
+                            : 
+                            <Table className="col-12 mx1 mb1" id="paymentMethodTable" header={creditCardTableHeaderElement()} />
 
 
                 }
@@ -177,8 +177,8 @@ export const BillingPage = (props: BillingComponentProps) => {
                
                 {
                     (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
-                    <Table className="col-12 mx1 mb1" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Enablind Playback Protection')} />
-                    :<Table className="col-12 mx1 mb1" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
+                        <Table className="col-12 mx1 mb1" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Enablind Playback Protection')} />
+                        :<Table className="col-12 mx1 mb1" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                     
 
                 }
@@ -189,8 +189,8 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setExtrasModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Purchase extras</Button>
                 {
                     (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
-                    <Table className="col-12 mx1 mb1" id="extrasTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Purchasing any Allowances')} />
-                    :<Table className="col-12 mx1 mb1" id="extrasTable" header={extrasTableHeaderElement()} body={extrasBodyElement()} />
+                        <Table className="col-12 mx1 mb1" id="extrasTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Purchasing any Allowances')} />
+                        :<Table className="col-12 mx1 mb1" id="extrasTable" header={extrasTableHeaderElement()} body={extrasBodyElement()} />
                 }
             
             </Card>

@@ -9,10 +9,10 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
             return {...state, 
                 ...action.payload
             }
-        case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD:          
+        case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
             return {...state,
-                paypal: typeof Object.keys(action.payload).includes('emailAddress') ? {...action.payload} as PaypalPayment : null,
-                creditCard:  typeof Object.keys(action.payload).includes('firstName') ? {...action.payload} as CreditCardPayment : null
+                paypal: Object.keys(action.payload).includes('emailAddress') ? {...action.payload} as PaypalPayment : null,
+                creditCard: Object.keys(action.payload).includes('firstName') ? {...action.payload} as CreditCardPayment : null
             }
         case ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,

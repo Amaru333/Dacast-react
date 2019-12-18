@@ -12,7 +12,7 @@ export interface BillingPageInfos {
     paypal?: PaypalPayment;
     creditCard?: CreditCardPayment; 
     playbackProtection?: PlaybackProtection;
-    extras?: Extras[]
+    extras?: Extras[];
 }
 
 export interface PlaybackProtection {
@@ -28,13 +28,13 @@ export interface Extras {
     datePurchased: Date;
 }
 
-export type PaypalPayment = {
+export interface PaypalPayment {
     emailAddress: string;
     billingId: number;
 
 }
 
-export type CreditCardPayment = {
+export interface CreditCardPayment {
     firstName: string;
     lastName: string;
     cardNumber: number;

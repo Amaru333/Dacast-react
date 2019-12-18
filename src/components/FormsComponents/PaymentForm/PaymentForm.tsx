@@ -6,10 +6,10 @@ import { TextStyle, RadioButtonContainer, RadioButtonOption } from './PaymentFor
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 
-export const PaymentForm = (props:{id:string, paypalText: string}) => {
+export const PaymentForm = (props: {id: string; paypalText: string}) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>(null);
-    const [paymentFormValues, setPaymentFormValues] = React.useState<{id:string, paypalText: string}>(null);
+    const [paymentFormValues, setPaymentFormValues] = React.useState<{id: string; paypalText: string}>(null);
 
     React.useEffect(() => {
         if(props && props.id) {
@@ -22,11 +22,11 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
     React.useEffect(() => {}, [paymentFormValues])
 
     return (
-            paymentFormValues ? 
+        paymentFormValues ? 
             <div>
                 <RadioButtonContainer isSelected={selectedOption === paymentFormValues.id +'creditCard'}>
-                        <InputRadio name={paymentFormValues.id+'paymentMethod'} value={paymentFormValues.id +'creditCard'} defaultChecked={true} onChange={() => setSelectedOption(paymentFormValues.id +'creditCard')} label='Credit Card ' />
-                        <img src={CardLogo} />
+                    <InputRadio name={paymentFormValues.id+'paymentMethod'} value={paymentFormValues.id +'creditCard'} defaultChecked={true} onChange={() => setSelectedOption(paymentFormValues.id +'creditCard')} label='Credit Card ' />
+                    <img src={CardLogo} />
                 </RadioButtonContainer>
                 <RadioButtonOption isOpen={selectedOption === paymentFormValues.id+'creditCard'} className='mb2'>
                     <div className='col col-12 pt2 px2'>
@@ -55,21 +55,21 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
                             required={false}
                         />
                         <Input 
-                        data-recurly="month"
+                            data-recurly="month"
                             className='col col-1 '
                             label="Month"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="year"
+                            data-recurly="year"
                             className='col col-1 '
                             label="Year"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="cvv"
+                            data-recurly="cvv"
                             className='col col-3 px2'
                             label="CVV"
                             type='text'
@@ -79,14 +79,14 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
                     
                     <div className='col col-12 pt1 px2'>
                         <Input 
-                        data-recurly="country"
+                            data-recurly="country"
                             className='col col-6 pr2 pl1'
                             label="Country"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="vat_number"
+                            data-recurly="vat_number"
                             className='col col-6 pr2'
                             label="VAT Number"
                             type='text'
@@ -95,14 +95,14 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
                     </div>
                     <div className='col col-12 pt1 px2'>
                         <Input 
-                        data-recurly="address1"
+                            data-recurly="address1"
                             className='col col-6 pr2 pl1'
                             label="Street Address 1"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="address2"
+                            data-recurly="address2"
                             className='col col-6 pr2'
                             label="Street Address 2"
                             type='text'
@@ -112,21 +112,21 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
 
                     <div className='col col-12 px2 pb2 pt1'>
                         <Input 
-                        data-recurly="city"
+                            data-recurly="city"
                             className='col col-3 pr2 pl1'
                             label="Town/City"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="state"
+                            data-recurly="state"
                             className='col col-3 pr2'
                             label="State/Province"
                             type='text'
                             required={false}
                         />
                         <Input 
-                        data-recurly="postal_code"
+                            data-recurly="postal_code"
                             className='col col-3 pr2'
                             label="Zip/Postal Code"
                             type='text'
@@ -141,18 +141,18 @@ export const PaymentForm = (props:{id:string, paypalText: string}) => {
                     <img src={PaypalLogo} />
                 </RadioButtonContainer>
 
-               {    
-                   paymentFormValues.paypalText ?
+                {    
+                    paymentFormValues.paypalText ?
                    
-                   <RadioButtonOption isOpen={selectedOption === paymentFormValues.id +'paypal'} className='mb2'>
-                    <div className='col col-12 px2 pb2 pt1'>
-                        <Text size={14} weight='reg' color='gray-1'>{paymentFormValues.paypalText}</Text>
-                    </div>
-                </RadioButtonOption>
-                : null
-            }
+                        <RadioButtonOption isOpen={selectedOption === paymentFormValues.id +'paypal'} className='mb2'>
+                            <div className='col col-12 px2 pb2 pt1'>
+                                <Text size={14} weight='reg' color='gray-1'>{paymentFormValues.paypalText}</Text>
+                            </div>
+                        </RadioButtonOption>
+                        : null
+                }
                 <div id='#threeDSecureComponent'></div>
-        </div>
-        : null
+            </div>
+            : null
     )
 }

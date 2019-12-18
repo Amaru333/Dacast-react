@@ -19,20 +19,20 @@ export const Table = (props: TableProps) => {
     const renderTableBody = () => {
         return props.body ?
             props.body.map((bodyRow, i) => {
-            return (
-                <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
-                    {
-                        bodyRow.map((bodyCell: any, item) => {
-                            return (
-                                <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
-                                    {bodyCell}
-                                </TableBodyCell>
-                            )
-                        })
-                    }
-                </TableBodyRow>
-            )
-        }) : null
+                return (
+                    <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
+                        {
+                            bodyRow.map((bodyCell: any, item) => {
+                                return (
+                                    <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
+                                        {bodyCell}
+                                    </TableBodyCell>
+                                )
+                            })
+                        }
+                    </TableBodyRow>
+                )
+            }) : null
     }
     const renderTableFooter = () => {
         return props.footer ? 
@@ -58,10 +58,10 @@ export const Table = (props: TableProps) => {
                 }
                 {
                     props.body ?
-                    <TableBodyContainer>
-                    {renderTableBody()}
-                    </TableBodyContainer>
-                    : null
+                        <TableBodyContainer>
+                            {renderTableBody()}
+                        </TableBodyContainer>
+                        : null
                 }
 
                 {props.footer ? 

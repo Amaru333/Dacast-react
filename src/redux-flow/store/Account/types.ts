@@ -14,7 +14,7 @@ export const AccountInitialState: AccountState = {
 export interface  AccountState {
     profile: false | ProfilePageInfos;
     company: false | CompanyPageInfos;
-    billing: false | BillingPageInfos
+    billing: false | BillingPageInfos;
 }
 
 export const accountInitialState: AccountState = {

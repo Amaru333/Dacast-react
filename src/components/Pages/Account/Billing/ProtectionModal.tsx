@@ -19,7 +19,7 @@ const ProtectionModalTableData = [
     } 
 ]
 
-export const ProtectionModal = (props:{toggle: Function}) => {
+export const ProtectionModal = (props: {toggle: Function}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
     const protectionModalTableBodyElement = () => {
@@ -32,7 +32,7 @@ export const ProtectionModal = (props:{toggle: Function}) => {
     }
 
     const protectionModalTableFooterElement = () => {
-       return  [
+        return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
             <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">$135</Text>,
         ]
@@ -42,14 +42,14 @@ export const ProtectionModal = (props:{toggle: Function}) => {
         <div>
             <Text size={14}  weight="reg" color="gray-1">Select how much Data to buy each time your allowance reaches zero.</Text>
             <div className='col col-12'>
-                    <DropdownSingle   
-                        className='col col-6 pb2'                   
-                        dropdownTitle='Amount'
-                        list={{'10 GB': false, '60 GB': false}}
-                        id='amountDropdown'
-                        callback={setSelectedValue}
+                <DropdownSingle   
+                    className='col col-6 pb2'                   
+                    dropdownTitle='Amount'
+                    list={{'10 GB': false, '60 GB': false}}
+                    id='amountDropdown'
+                    callback={setSelectedValue}
                         
-                    />
+                />
             </div>
 
             {
@@ -59,13 +59,13 @@ export const ProtectionModal = (props:{toggle: Function}) => {
 
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of storage.</Text>
                 </>
-                : null
+                    : null
             }
 
 
             <div className='col col-12 py1'>
-                    <Button sizeButton="large" disabled typeButton="primary" buttonColor="blue" >Add</Button>
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                <Button sizeButton="large" disabled typeButton="primary" buttonColor="blue" >Add</Button>
+                <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             
         </div>

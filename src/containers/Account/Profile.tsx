@@ -21,7 +21,7 @@ const Profile = (props: ProfileComponentProps) => {
     }, [])
 
     return (
-         props.ProfileInfos ? 
+        props.ProfileInfos ? 
             <ProfilePage ProfilePageDetails={props.ProfileInfos} {...props} />
             : 
             <LoadingSpinner size='large' color='dark-violet' />

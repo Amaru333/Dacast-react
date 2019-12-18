@@ -20,7 +20,7 @@ const ProtectionModalTableData = [
 ]
 
 
-export const ExtrasStepperFirstStep = (props:{toggle: Function}) => {
+export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
             return [
@@ -31,7 +31,7 @@ export const ExtrasStepperFirstStep = (props:{toggle: Function}) => {
     }
 
     const protectionModalTableFooterElement = () => {
-       return  [
+        return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
             <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">$135</Text>
         ]
@@ -65,10 +65,10 @@ export const ExtrasStepperSecondStep = () => {
 
     const step2header = () => {
         return  [
-             <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total</Text>,
-             <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>
-         ]
-     }
+            <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total</Text>,
+            <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>
+        ]
+    }
 
     return (
         <>
