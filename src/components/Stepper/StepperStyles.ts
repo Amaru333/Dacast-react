@@ -76,8 +76,7 @@ export const StepStyle = styled.div`
 export const StepperFooterStyle = styled.div`
 bottom: 0;
 position: relative;
-margin-bottom: 24px;
-margin-top: 42px;
+margin-top: 32px;
     & > * { 
             margin-right: 12px;
         }

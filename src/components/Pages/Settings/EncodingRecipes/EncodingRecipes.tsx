@@ -130,7 +130,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
+                <Table className="col-12 mt3" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
