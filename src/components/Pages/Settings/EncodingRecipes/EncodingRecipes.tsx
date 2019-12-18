@@ -36,7 +36,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                 <div>
                     {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
                                 return (
-                                    <Label key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                                    <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                                 )
                             }
                             )}
@@ -50,7 +50,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                 <div>
                 {    value.recipePresets.map((recipe, key) => {
                         return (
-                            <Label size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                            <RenditionLabel size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                         )
                     }
                     )}
@@ -98,7 +98,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2160p", "1440p", "1080p", "720p", "480p", "360p", "240p"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["720p", "480p", "240p", "MagicEncoding"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -198,3 +198,7 @@ const IconContainer = styled.div`
         color:  ${props => props.theme.colors["gray-1"]};
     }
    ` 
+
+const RenditionLabel = styled(Label)`
+    margin: 14px 4px
+`
