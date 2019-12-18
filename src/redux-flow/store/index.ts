@@ -17,7 +17,7 @@ export const globalDefaultState: ApplicationState = {
     settings: SettingsInitialState,
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
-    account:accountInitialState,
+    account: accountInitialState,
     vod: vodInitialState
 };
 

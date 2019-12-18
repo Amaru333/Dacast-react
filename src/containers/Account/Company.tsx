@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
-import { CompanyPageInfos, AccountInfos } from '../../redux-flow/store/Account/types';
+import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
-import { AccountAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/actions';
+import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import {CompanyPage} from '../../components/Pages/Account/Company';
+import {CompanyPage} from '../../components/Pages/Account/Company/Company';
 
 interface CompanyContainerProps {
-    AccountDetails: AccountInfos;
+    CompanyInfos: CompanyPageInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
     getUploadLogoUrl: Function;
@@ -18,15 +18,15 @@ const Company = (props: CompanyContainerProps) => {
 
     /** Fetching data using redux and services */
     React.useEffect( () => {
-        if(typeof props.AccountDetails.companyPage === 'undefined') {
+        if(!props.CompanyInfos) {
             props.getCompanyPageDetails();
         }
 
     }, [])
 
     return (
-        typeof props.AccountDetails.companyPage !== 'undefined' ? 
-            <CompanyPage CompanyPageDetails={props.AccountDetails.companyPage} {...props} />
+        props.CompanyInfos ? 
+            <CompanyPage CompanyPageDetails={props.CompanyInfos} {...props} />
             : 
             <LoadingSpinner size='large' color='dark-violet' />
     )
@@ -36,12 +36,12 @@ const Company = (props: CompanyContainerProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        AccountDetails: state.account.data
+        CompanyInfos: state.account.company
     };
 }
 
 
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, AccountAction>) {
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, CompanyAction>) {
     return {
         getCompanyPageDetails: () => {
             dispatch(getCompanyPageDetailsAction());

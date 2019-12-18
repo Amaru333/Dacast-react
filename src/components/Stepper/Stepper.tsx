@@ -43,7 +43,7 @@ export const CustomStepper = (props: StepperProps) => {
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
                 <StepperStyle>
-                    <Stepper activeStep={stepIndex} {...props} alternativeLabel>
+                    <Stepper activeStep={stepIndex} alternativeLabel>
                         {steps.map((label) => {
                             return (
                                 <Step key={label}>

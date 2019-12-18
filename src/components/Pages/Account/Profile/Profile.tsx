@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Avatar } from '../../Avatar/Avatar';
-import { Input } from '../../FormsComponents/Input/Input';
-import { Toggle } from '../../Toggle/toggle';
-import { Text } from '../../Typography/Text';
-import { Button } from '../../FormsComponents/Button/Button';
-import { Card } from '../../Card/Card';
-import { formSubmit, handleValidationProps, ValueInput } from '../../../utils/hooksFormSubmit';
-import { Modal, ModalContent, ModalFooter } from '../../Modal/Modal';
-import { DropdownSingle } from '../../FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../FormsComponents/Dropdown/DropdownTypes';
+import { Avatar } from '../../../Avatar/Avatar';
+import { Input } from '../../../FormsComponents/Input/Input';
+import { Toggle } from '../../../Toggle/toggle';
+import { Text } from '../../../Typography/Text';
+import { Button } from '../../../FormsComponents/Button/Button';
+import { Card } from '../../../Card/Card';
+import { formSubmit, handleValidationProps, ValueInput } from '../../../../utils/hooksFormSubmit';
+import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
+import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
+import { DropdownListType } from '../../../FormsComponents/Dropdown/DropdownTypes';
 import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo } from './ProfileStyle'
-import { ProfilePageInfos } from '../../../redux-flow/store/Account/types';
+import { ProfilePageInfos } from '../../../../redux-flow/store/Account/Profile/types';
 
 var moment = require('moment-timezone');
 
