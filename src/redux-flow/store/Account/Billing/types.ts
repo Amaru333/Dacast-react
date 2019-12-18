@@ -1,13 +1,17 @@
 export enum ActionTypes {
     GET_BILLING_PAGE_INFOS = "@@account_billing/GET_BILLING_PAGE_INFOS",
     SAVE_BILLING_PAGE_PAYMENT_METHOD = "@@account_billing/SAVE_BILLING_PAGE_PAYMENT_METHOD",
+    ADD_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/ADD_BILLING_PAGE_PLAYBACK_PROTECTION",
+    EDIT_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/EDIT_BILLING_PAGE_PLAYBACK_PROTECTION",
+    DELETE_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/DELETE_BILLING_PAGE_PLAYBACK_PROTECTION",
+
 }
 
 
 export interface BillingPageInfos {
     paypal?: PaypalPayment;
     creditCard?: CreditCardPayment; 
-    playbackProtection?: PlaybackProtection[];
+    playbackProtection?: PlaybackProtection;
     extras?: Extras[]
 }
 

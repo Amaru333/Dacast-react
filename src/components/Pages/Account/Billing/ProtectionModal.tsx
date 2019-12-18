@@ -20,12 +20,13 @@ const ProtectionModalTableData = [
 ]
 
 export const ProtectionModal = (props:{toggle: Function}) => {
+    const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
             return [
                 <Text  key={"protectionModalTable" + value.label + key.toString()} size={14}  weight="reg" color="gray-1">{value.label}</Text>,
-                <Text  key={"protectionModalTable" + value.value + key.toString()} size={14}  weight="reg" color="gray-1">{value.value}</Text>
+                <Text  key={"protectionModalTable" + selectedValue + key.toString()} size={14}  weight="reg" color="gray-1">{selectedValue}</Text>
             ]
         }) 
     }
@@ -37,31 +38,30 @@ export const ProtectionModal = (props:{toggle: Function}) => {
         ]
     }
 
-
     return (
         <div>
+            <Text size={14}  weight="reg" color="gray-1">Select how much Data to buy each time your allowance reaches zero.</Text>
+            <div className='col col-12'>
+                    <DropdownSingle   
+                        className='col col-6 pb2'                   
+                        dropdownTitle='Amount'
+                        list={{'10 GB': false, '60 GB': false}}
+                        id='amountDropdown'
+                        callback={setSelectedValue}
+                        
+                    />
+            </div>
 
-            <Text size={14}  weight="reg" color="gray-1">Choose which Protection you wish to enable.</Text>
+            {
+                selectedValue !== 'Select' ? 
+                <>
+                <Table id='protectionModalTable' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
 
-            
-            <DropdownSingle 
-                className='col col-6 pr2 pb2'
-                dropdownTitle='Protection Type'
-                list={{'Encoding Protection': false, 'Playback Protection': false}}
-                id='protectionTypeDropdown'
-                defaultValue='Playback Protection'
+                <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of storage.</Text>
+                </>
+                : null
+            }
 
-            />
-            <DropdownSingle 
-                className='col col-6 pb2'
-                dropdownTitle='Amount'
-                list={{'10 GB': false, '60 GB': false}}
-                id='amountDropdown'
-                defaultValue='60 GB'
-            />
-            <Table id='protectionModalTable' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
-
-            <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of storage.</Text>
 
             <div className='col col-12 py1'>
                     <Button sizeButton="large" disabled typeButton="primary" buttonColor="blue" >Add</Button>
