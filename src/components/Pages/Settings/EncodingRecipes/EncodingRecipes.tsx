@@ -15,6 +15,7 @@ import { LoadingSpinner } from '../../../FormsComponents/Progress/LoadingSpinner
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { useMedia } from '../../../../utils/utils';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
+import { Label } from '../../../FormsComponents/Label/Label';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -24,23 +25,52 @@ interface EncodingRecipesComponentProps {
     deleteEncodingRecipe: Function;
 }
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function) => {
-    return encodingRecipeData.recipes.map((value, key) => {
-        return [
-            <Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
-            <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
-            <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
-                <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
-                <Icon onClick={() => editRecipe(value)}>edit</Icon> 
-            </IconContainer>
-        ]
-    })
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
+    return ( 
+        encodingRecipeData.recipes.map((value, key) => {
+        
+            return (
+                key === 0 ? 
+                    [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
+                        <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
+                        <div key={"encodingRecipesPage_labelContainer_default"}>
+                            {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
+                                return (
+                                    <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                                )
+                            }
+                            )}
+                        </div>,
+                        <IconContainer key={"encodingRecipesPage_iconContainer_default"}></IconContainer>
+                    ]
+                
+                    :
+                    [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
+                        <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
+                        <div key={"encodingRecipesPage_labelContainer_" + key}>
+                            {    value.recipePresets.map((recipe, key) => {
+                                return (
+                                    <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
+                                )
+                            }
+                            )}
+                        </div>,
+                        <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
+                    
+                            <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
+                            <Icon onClick={() => editRecipe(value)}>edit</Icon> 
+                        </IconContainer>
+                    ]
+            )
+        })
+    )
 }
 
 const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
     return[
         <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>,
         <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>,
+        <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>,
         <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
     ]
 }
@@ -68,7 +98,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: [], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["720p", "480p", "240p", "MagicEncoding"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -93,7 +123,6 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
             <Card className="col-12 clearfix p50">
                 <HeaderStyle>
                     <Text size={20} weight="reg">Encoding Recipes</Text>
-                    <Icon style={{marginLeft: "10px"}}>info_outlined</Icon>
                 </HeaderStyle>
                 <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
                 <div className="flex col col-12 mt2 mb25">
@@ -101,7 +130,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-                <Table style={{marginTop: "24px"}} className="col-12" id='lol' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe)} />
+                <Table className="col-12 mt3" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
@@ -169,3 +198,7 @@ const IconContainer = styled.div`
         color:  ${props => props.theme.colors["gray-1"]};
     }
    ` 
+
+const RenditionLabel = styled(Label)`
+    margin: 14px 4px
+`
