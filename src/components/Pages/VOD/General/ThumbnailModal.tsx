@@ -59,7 +59,7 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
                         player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
                     };
                     player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
+                    
                 }
             })
         }

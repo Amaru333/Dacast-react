@@ -43,6 +43,20 @@ const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails
     })
 };
 
+const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+    return [
+        <span key={'disabledTableHeader'}></span>,
+        <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>
+    ]
+}
+
+const disabledSubtitlesTableBody = (text: string) => {
+    return [[
+        <Text key={text} className='center' size={14} weight='reg' color='gray-3' >{text}</Text>,
+        <span key={'disabledTableBody'}></span>
+    ]]
+}
+
 const advancedVideoLinksOptions = [
     {id: "thumb", label: "Thumbnail"},
     {id: "download", label: "Download Video"},
@@ -103,7 +117,10 @@ export const GeneralPage = (props: GeneralComponentProps) => {
         <React.Fragment>
         <Card className="col-12 clearfix">
             <div className="details col col-12">
-                <Text size={20} weight="med">Details</Text>
+                <header className="flex justify-between">
+                    <Text size={20} weight="med">Details</Text>
+                    <Button sizeButton="xs" typeButton="secondary">Download</Button>
+                </header>
                 <Toggle 
                 className="col col-12 mt2 pb2"
                 defaultChecked={VodDetails.online} 
@@ -138,7 +155,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     </LinkBoxLabel>
                     <LinkBox>
                         <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                        <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy</Icon></IconButton>
+                        <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                     </LinkBox>
                 </LinkBoxContainer>
                 <LinkBoxContainer className="col col-4 pr2">
@@ -161,22 +178,33 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                 </LinkBoxContainer>
             </div>
             <Divider className="col col-12"/>
+            <div className="col col-12">
+                <Text className="col col-12" size={20} weight="med">Advertising</Text>
+                <Text className="col col-12 pt1" size={14} weight="reg">Some text about advertising</Text>
+                <AdContainer className="col col-12 mt2">
+                     <AdInput className="col col-4 mr2" label="Ad URL" />
+                     <Button className="mt3" sizeButton="xs" typeButton="secondary">Preview Ads</Button>
+                </AdContainer>
+            <Divider className="col col-12"/>    
+            </div>
             <div className="thumbnail col col-12">
                 <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                 <Text className="col col-12 pt1" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
                 <ThumbnailContainer className="col col-12 pt2 flex">
                     <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()}/>
-                    <UploadThumbnail onClick={() => setThumbnailModalOpen(true)}>
-                        <Text size={12} weight="reg" color="dark-violet">Change Thumbnail</Text>
-                    </UploadThumbnail>
+                    
                 </ThumbnailContainer>
+                <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setThumbnailModalOpen(true)}>Change Thumbnail</Button>
             </div>
             <Divider className="col col-12"/>
             <div className="subtitles col col-12">
             <Text className="col col-12" size={20} weight="med">Subtitles</Text>
             <Text className="col col-12 pt2" size={14} weight="reg">Something about the subtitles</Text> 
             </div>
-            <Table className="col col-12 mt25" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable"></Table>
+            { (props.vodDetails.subtitles.length === 0) ? 
+            <Table className="col col-12 mt25" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('No subtitles')} id="subtitlesTable" />
+            : <Table className="col col-12 mt25" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
+            }
             <Divider className="col col-12"/>
             <div className="col col-12 advancedVideoLinks">
                 <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{ advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
@@ -262,11 +290,16 @@ const LinkBoxLabel = styled.label`
 
 const LinkBox = styled.div`
 display: flex;
-height: 32px;
+height: 40px;
 padding: 0 12px;
 background-color: ${props => props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
 align-items: center;
+justify-content: space-between;
+
+&:hover > button{
+        display: block;
+    }
 `
 
 const LinkText = styled(Text)`
@@ -275,10 +308,24 @@ const LinkText = styled(Text)`
     white-space: nowrap;
 `
 
+const AdContainer = styled.div`
+display: flex;
+align-items: center;
+`
+
+const AdInput = styled(Input)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`
+
 const ThumbnailContainer = styled.div`
+flex-direction: column;
 `
 
 const ThumbnailImage = styled.img`
+max-height: 107px;
+max-width: 172px;
 `
 
 const UploadThumbnail = styled.button`
@@ -309,7 +356,7 @@ const IconContainer = styled.div`
 `
 
 const IconButton = styled.button`
-display: block;
+display: none;
 border: none;
 background-color: inherit;
 `
