@@ -276,7 +276,7 @@ const LinkBoxContainer = styled.div`
     display: flex;
     flex-direction: column;
     height:auto;
-    padding-top: 24px;
+    padding-top: 16px;
     padding-right: 16px;
 `
 
