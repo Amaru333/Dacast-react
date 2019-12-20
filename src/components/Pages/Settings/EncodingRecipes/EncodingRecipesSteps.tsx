@@ -1,5 +1,5 @@
 import { EncodingRecipeItem } from '../../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import React from 'react';
 import { Input } from '../../../FormsComponents/Input/Input';
 import { InputCheckbox } from '../../../FormsComponents/Input/InputCheckbox';
@@ -7,6 +7,7 @@ import { Text } from "../../../Typography/Text"
 import { Button } from '../../../FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { Table } from '../../../Table/Table';
+import {isMobile} from "react-device-detect";
 
 //TABLE ELEMENTS
 export const createRecipeHeaderElement = () => {
@@ -71,29 +72,27 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
 
     return (
         <StepContent className="clearfix">
-            <RecipeNameRow className="col col-12 mb1">
-                <div className="col lg-col-6 sm-col-12">
-                    <RecipeNameInput value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
+            <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
+                
+                    <RecipeNameInput className="col lg-col-6 sm-col-12 mr2" value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
                     {
                         event.preventDefault();
                         setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
                         setStepValidated(event.currentTarget.value.length>0)
                     }
                     } />
-                </div>
-                <div className="col lg-col-6 sm-col-12">
-                    <DefaultRecipeCheckbox defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
+                    <DefaultRecipeCheckbox isMobile={isMobile} className="col lg-col-6 sm-col-12" defaultChecked={stepperData.isDefault}  style={{marginLeft: "16px"}} id="defaultRecipe" label="Save as default Recipe" 
                         onChange={(event) => 
                         {   
                             setSelectedRecipe({...stepperData, ["isDefault"]: event.currentTarget.checked})
                         }
                         }/>
-                </div>
-                
+                 
             </RecipeNameRow>
+            <WatermarkContainer isMobile={isMobile} className="col col-12">
             <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
             <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-            <Button className="lg-col-2 sm-col-6 mt1" sizeButton="xs" typeButton="secondary">Upload File</Button>
+            <Button className="lg-col-2 sm-col-6 mt2" sizeButton="xs" typeButton="secondary">Upload File</Button>
             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
             {stepperData.watermarkFile ?
                 <div>
@@ -105,7 +104,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                     </WatermarkFile>
                     <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                     <PositioningRow className="col col-12">
-                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft.toString() : null }className="col col-2 mr2" required label="Left"
+                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft.toString() : null }className="col lg-col-3 col-6 mr2" required label="Left"
                             onChange={(event) => 
                             {
                                 event.preventDefault();
@@ -113,8 +112,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                             }
                             }
                         />
-            
-                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight.toString() : null} className="col col-2" required label="Right"
+                        <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6" required label="Right"
                             onChange={(event) => 
                             {
                                 event.preventDefault();
@@ -123,8 +121,10 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                             }
                         />
                     </PositioningRow>
+                    
                 </div> 
                 : null} 
+                </WatermarkContainer>
         </StepContent>
     )
 }
@@ -148,18 +148,31 @@ const StepContent = styled.div`
     display: block;
 `
 
-const RecipeNameRow = styled.div`
+const RecipeNameRow = styled.div<{isMobile: boolean}>`
 display: flex;
 align-items: center;
-flex-wrap: wrap;
+
+${props => props.isMobile && css`
+        align-items: flex-start;
+        flex-direction: column;
+    `};
 `
 
 const RecipeNameInput = styled(Input)`
 `
 
-const DefaultRecipeCheckbox = styled(InputCheckbox)`
-    margin-left: 16px;
+const DefaultRecipeCheckbox = styled(InputCheckbox)<{isMobile: boolean}>`
     margin-bottom: -29px;
+
+    ${props => props.isMobile && css`
+        margin-left: 0;
+    `};
+`
+
+const WatermarkContainer = styled.div<{isMobile: boolean}>`
+${props => props.isMobile && css`
+        margin-top: 24px;
+    `};
 `
 
 const WatermarkFile = styled.div`

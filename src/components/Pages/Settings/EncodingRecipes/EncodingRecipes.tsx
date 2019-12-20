@@ -200,5 +200,5 @@ const IconContainer = styled.div`
    ` 
 
 const RenditionLabel = styled(Label)`
-    margin: 14px 4px
+    margin: 14px 4px;
 `
