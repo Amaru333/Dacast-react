@@ -10,7 +10,6 @@ const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
 export const PaymentMethodModal = (props: {toggle: Function; actionButton: Function}) => {
 
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(false);
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
 
     let formRef = React.useRef<HTMLFormElement>(null);
@@ -165,12 +164,12 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                 <img src={PaypalLogo} />
             </RadioButtonContainer>
             <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
-                <Text size={14} weight='reg' color='gray-1'>
+                <Text className='px2' size={14} weight='reg' color='gray-1'>
                     When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                 </Text>
             </RadioButtonOption>
             <div id='#threeDSecureComponent'></div>
-            <div className='col col-12 py2'>
+            <div className='col col-12 pt3 pb1'>
                 <Button sizeButton="large" type='submit' typeButton="primary" buttonColor="blue" >Add</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
