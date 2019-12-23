@@ -74,7 +74,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
         <StepContent className="clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
                 
-                    <RecipeNameInput className="col lg-col-6 sm-col-12 mr2" value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
+                    <RecipeNameInput isMobile={isMobile} className="col lg-col-6 sm-col-12 mr2" value={stepperData ? stepperData.name : ""}  required label="Recipe Name" onChange={(event) => 
                     {
                         event.preventDefault();
                         setSelectedRecipe({...stepperData, ["name"]: event.currentTarget.value});
@@ -158,7 +158,10 @@ ${props => props.isMobile && css`
     `};
 `
 
-const RecipeNameInput = styled(Input)`
+const RecipeNameInput = styled(Input)<{isMobile: boolean}>`
+${props => props.isMobile && css`
+    width: 100%;
+    `};
 `
 
 const DefaultRecipeCheckbox = styled(InputCheckbox)<{isMobile: boolean}>`
