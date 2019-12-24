@@ -4,7 +4,7 @@ import { Text } from "../../../Typography/Text"
 import { Button } from '../../../FormsComponents/Button/Button';
 import { Table } from '../../../Table/Table';
 import { Icon } from '@material-ui/core';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { connect } from 'react-redux';
@@ -16,6 +16,8 @@ import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { useMedia } from '../../../../utils/utils';
 import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 import { Label } from '../../../FormsComponents/Label/Label';
+import { TableContainer } from '../../../Table/TableStyle';
+import { isMobile } from 'react-device-detect';
 
 interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -33,7 +35,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                 key === 0 ? 
                     [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
                         <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
-                        <div key={"encodingRecipesPage_labelContainer_default"}>
+                        <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
                             {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
                                 return (
                                     <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
@@ -130,7 +132,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className={"left mb2 "+ (!smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-                <Table className="col-12 mt3" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
+                <RecipesTable isMobile={isMobile} className="col-12 mt3" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
@@ -201,4 +203,12 @@ const IconContainer = styled.div`
 
 const RenditionLabel = styled(Label)`
     margin: 14px 4px;
+`
+
+const RecipesTable = styled(Table)<{isMobile: boolean}>`
+    ${props => props.isMobile && css`
+        ${TableContainer} {
+        width: 350%;
+    }
+    `}
 `

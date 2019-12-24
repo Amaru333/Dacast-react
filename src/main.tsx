@@ -108,11 +108,12 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
+    overflow: auto;
     ${props => props.isMobile && css`
+        overflow-x: hidden;
         padding: 16px;
     `}
     padding-top: 81px;
-    overflow: auto;
 `
 
 const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean}>`
