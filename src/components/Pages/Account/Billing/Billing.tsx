@@ -115,7 +115,9 @@ export const BillingPage = (props: BillingComponentProps) => {
 
     const disabledTableBody = (text: string) => {
         return [[
-            <Text key={'disabledTableText' + text} className='center' size={14} weight='reg' color='gray-3' >{text}</Text>
+            <div className='center'>
+                <Text key={'disabledTableText' + text} size={14} weight='reg' color='gray-3' >{text}</Text>
+            </div> 
         ]]
     }
 
