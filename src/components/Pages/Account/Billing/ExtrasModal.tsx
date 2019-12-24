@@ -46,6 +46,7 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
             <div className='col col-12'>
 
                 <DropdownSingle 
+                    isInModal
                     className='col col-5 mr1 pb2'
                     dropdownTitle='Protection Type'
                     list={{'Encoding Protection': false, 'Playback Protection': false}}
@@ -53,7 +54,8 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
                     callback={(value: string) => {setExtraItem({...extraItem, type: value})}}
 
                 />
-                <DropdownSingle 
+                <DropdownSingle
+                    isInModal 
                     className='col col-5 ml1 pb2'
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}

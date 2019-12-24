@@ -14,6 +14,7 @@ interface DropdownCustomProps {
     ref?: React.Ref<HTMLDivElement>;
     callback?: Function;
     hasSearch?: boolean;
+    isInModal?: boolean;
 }
 
 export interface ContinentListType {
