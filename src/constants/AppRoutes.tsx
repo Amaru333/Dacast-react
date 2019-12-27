@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 import Billing from '../containers/Account/Billing';
+import {PlansPage} from './../components/Pages/Account/Plans/Plans'
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -23,12 +24,6 @@ const functionTest1 = () => {
 const functionTest2 = () => {
     return (
         <LoadingSpinner size="small" color="red" />
-    )
-}
-
-const functionTest3 = () => {
-    return (
-        <LoadingSpinner size="small" color="yellow" />
     )
 }
 
@@ -63,14 +58,6 @@ const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Playlist</h2>
-        </div>
-    )
-}
-
-const Admin = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Admin</h2>
         </div>
     )
 }
@@ -205,7 +192,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: functionTest3
+                component: PlansPage
             },
             {
                 path: '/account/profile',
