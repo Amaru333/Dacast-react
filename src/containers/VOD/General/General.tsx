@@ -5,7 +5,7 @@ import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleActio
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, ThumbnailUpload } from '../../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { GeneralPage } from '../../../components/Pages/VOD/General/General';
+import { GeneralPage } from '../../../components/Pages/VOD/General/General'
 
 
 interface GeneralProps {
@@ -21,20 +21,22 @@ interface GeneralProps {
 const General = (props: GeneralProps) => {
 
     React.useEffect(() => {
-        if(!props.vodDetails) {
+        if (!props.vodDetails) {
             props.getVodDetails();
         }
     }, [])
 
     return (
-        props.vodDetails ? 
-            <GeneralPage {...props} />
-        : <LoadingSpinner color='dark-violet' size='large' />
+        props.vodDetails ?
+            (
+                <GeneralPage {...props} />
+            )
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
-    
+
 }
 
-export function mapStateToProps( state: ApplicationState) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         vodDetails: state.vod.general
     };
@@ -63,4 +65,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(General);
+export default connect(mapStateToProps, mapDispatchToProps)(General);

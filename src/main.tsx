@@ -76,7 +76,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                         <Toasts />
                         <MainMenu 
                             menuLocked={menuLocked} 
-                            onMouseEnter={ () => menuHoverOpen()} 
+                            onMouseEnter={() => menuHoverOpen()} 
                             onMouseLeave={() => menuHoverClose()} 
                             navWidth={currentNavWidth} 
                             isMobile={isMobile} 

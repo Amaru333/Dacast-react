@@ -1,23 +1,24 @@
 import { connect } from "react-redux";
-import { ThunkDispatch } from "redux-thunk";
+import * as Redux from 'redux'
 
 import { ApplicationState } from "../../redux-flow/store";
 import { Action } from "../../redux-flow/store/Uploader";
 import React from 'react';
 import { DragAndDrop } from '../../components/DragAndDrop/DragAndDrop';
-import { LinkStyle } from '../../components/Pages/Account/CompanyStyle';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { Text } from '../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { upload, MIN_CHUNK_SIZE } from '../../utils/uploaderService';
+import { Prompt } from 'react-router'
+import { postVodDemo } from '../../redux-flow/store/VOD/General/actions';
 
 // export interface UploaderProps {
 //     // Your props here
 // }
 
-export const Uploader = (props: {}) => {
+export const Uploader = (props: { postVodDemo: Function }) => {
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
 
@@ -30,15 +31,21 @@ export const Uploader = (props: {}) => {
             var elapsedtime = now - startTime;
             elapsedtime = elapsedtime / 1000;
             var eta = ((event.total / event.loaded) * elapsedtime) - elapsedtime;
-            eta = Math.round(eta);
+            if(eta > 120) {
+                eta = Math.round(eta / 60);
+                var etaUnit = 'minutes'
+            } else {
+                eta = Math.round(eta);
+                var etaUnit= ' seconds';
+            }      
             return Object.assign([...currentList], {
                 [index]:
-            {
-                ...currentList[index],
-                currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                progress: progressPerc,
-                timeRemaining: eta
-            }
+                {
+                    ...currentList[index],
+                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
+                    progress: progressPerc,
+                    timeRemaining: {num: eta, unit: etaUnit}
+                }
             })
         });
     }
@@ -47,70 +54,79 @@ export const Uploader = (props: {}) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
             const bytesProgress = event.loaded + bytesUploaded
-            const progressPerc = Math.round(( bytesProgress  / fileSize) * 100);
+            const progressPerc = Math.round((bytesProgress / fileSize) * 100);
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
             elapsedtime = elapsedtime / 1000;
             var eta = ((fileSize / bytesProgress) * elapsedtime) - elapsedtime;
-            eta = Math.round(eta/60);
+            if(eta > 120) {
+                eta = Math.round(eta / 60);
+                var etaUnit = 'minutes'
+            } else {
+                eta = Math.round(eta);
+                var etaUnit= ' seconds';
+            }
+            if(bytesProgress === fileSize) {
+                props.postVodDemo()
+            };
             return Object.assign([...currentList], {
                 [index]:
-            {
-                ...currentList[index],
-                currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                progress: progressPerc,
-                timeRemaining: eta
-            }
+                {
+                    ...currentList[index],
+                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
+                    progress: progressPerc,
+                    timeRemaining: {num: eta, unit: etaUnit}
+                }
             })
         });
     }
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4'];
-        for(var i = 0; i < fileList.length; i++) {
+        for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
             if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
-                try {
-                    var startTime = (new Date()).getTime();
-                    if (file.size < MIN_CHUNK_SIZE) {
-                        upload(file, (event: ProgressEvent) => {
-                            updateItem(event, file.name, startTime);
+                var startTime = (new Date()).getTime();
+                if (file.size < MIN_CHUNK_SIZE) {
+                    upload(file, (event: ProgressEvent) => {
+                        updateItem(event, file.name, startTime);
+                    })
+                        .catch(err => {
+                            setUploadingList((currentList: UploaderItemProps[]) => {
+                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                                return updatedList;
+                            })
                         });
-                    }
-                    else {
-                        upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-                            updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
-                        });
-                    }
-                    setUploadingList([
-                        ...uploadingList,
-                    {
-                        currentState: 'progress',
-                        progress: 0,
-                        timeRemaining: 0,
-                        size: file.size,
-                        name: file.name,
-                        idItem: 0,
-                        embedCode: ""
-                    }])
-    
-                } catch (err) {
-                    setUploadingList([
-                        ...uploadingList,
-                    {
-                        currentState: 'failed',
-                        progress: 0,
-                        timeRemaining: 0,
-                        size: file.size,
-                        name: file.name,
-                        idItem: 0,
-                        embedCode: ""
-                    }])
                 }
+                else {
+                    upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
+                        updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
+                    })
+                        .catch(err => {
+                            console.log(err);
+                            setUploadingList((currentList: UploaderItemProps[]) => {
+                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                                return updatedList;
+                            })
+                        });
+                }
+                setUploadingList((currentList: UploaderItemProps[]) => {
+                    return [
+                        ...currentList,
+                        {
+                            currentState: 'progress',
+                            progress: 0,
+                            timeRemaining: {num: 0, unit: ''},
+                            size: file.size,
+                            name: file.name,
+                            idItem: 0,
+                            embedCode: ""
+                        }]
+                })
             }
         }
-        
+
     }
 
     const handleActionItem = (item: UploaderItemProps) => {
@@ -118,35 +134,35 @@ export const Uploader = (props: {}) => {
             case 'completed':
                 const items = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(items);
-                var event = new CustomEvent('paused'+item.name);
+                var event = new CustomEvent('paused' + item.name);
                 document.dispatchEvent(event);
                 break;
             case 'failed':
                 const itemsFailed = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsFailed);
-                var event = new CustomEvent('paused'+item.name);
+                var event = new CustomEvent('paused' + item.name);
                 document.dispatchEvent(event);
                 break;
             case 'paused':
                 const itemsPaused = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsPaused);
-                var event = new CustomEvent('paused'+item.name);
+                var event = new CustomEvent('paused' + item.name);
                 document.dispatchEvent(event);
                 break;
             case 'progress':
                 const itemsProgress = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsProgress);
-                var event = new CustomEvent('paused'+item.name);
+                var event = new CustomEvent('paused' + item.name);
                 document.dispatchEvent(event);
                 break;
             case 'queue':
                 const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsQueue);
-                var event = new CustomEvent('paused'+item.name);
+                var event = new CustomEvent('paused' + item.name);
                 document.dispatchEvent(event);
                 break;
             case 'veryfing':
-                
+
         }
     }
 
@@ -166,27 +182,30 @@ export const Uploader = (props: {}) => {
     }
 
     React.useEffect(() => {
-
     }, [uploadingList]);
 
     return (
         <UploaderContainer>
+            <Prompt
+                when={uploadingList.filter((value, index) => value.currentState === "progress").length > 0}
+                message={"Are you sure you want to leave? " + uploadingList.filter((value, index) => value.currentState === "progress").length + "item(s) still uploading"}
+            />
             <DragAndDrop hasError={false} className="lg-col lg-col-12 bg-w" handleDrop={handleDrop}>
                 <BigIcon>cloud_upload</BigIcon>
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
                     <Button style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         <label htmlFor='browseButton'>
-                            <LinkStyle>
+                            <LinkStyleUploader>
                                 <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                                 Browse Files
-                            </LinkStyle>
+                            </LinkStyleUploader>
                         </label>
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
             <div className=" mt2 right">
-                <Button sizeButton='xs' className="mr2"  typeButton='secondary' buttonColor='blue' onClick={ () => {setUploadingList( uploadingList.filter(element => element.currentState !== "completed") )} } >Clear Completed</Button>
+                <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
                 <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' >Pause All</Button>
             </div>
             <ItemList className="col-12">
@@ -203,9 +222,11 @@ export function mapStateToProps(state: ApplicationState) {
     };
 }
 
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+export function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
     return {
-        //Return from dispatch function to component props
+        postVodDemo: () => {
+            dispatch(postVodDemo());
+        },
     };
 }
 
@@ -241,4 +262,10 @@ export const BigIcon = styled(Icon)`
 export const UploaderContainer = styled.div<{}>`
     max-width: 958px;
     margin: 0 auto;
+`
+
+export const LinkStyleUploader = styled.span<{}>`
+    &:hover{
+        cursor:pointer;
+    }
 `

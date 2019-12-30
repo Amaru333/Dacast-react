@@ -6,7 +6,7 @@ import { InputRadio } from '../../../FormsComponents/Input/InputRadio';
 import { Text } from "../../../Typography/Text"
 import { Icon } from '@material-ui/core';
 
-export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, submit: Function}) => {
+export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
 
     const testThumbnail = "sick_thumbnail.png"
 
@@ -59,7 +59,7 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
                         player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
                     };
                     player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
+                    
                 }
             })
         }
@@ -77,49 +77,49 @@ export const ThumbnailModal = (props: {toggle: () => void, opened: boolean, subm
 
     return (
         <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened} hasClose={false}>
-                <ModalContent>
-                    <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
-                        <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
-                    </RadioButtonContainer>
-                    <RadioButtonOption className="col col-12 px2 py2" isOpen={selectedOption === "upload"}>
-                        <div className="col col-12">
-                            <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                            <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
-                            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                            { uploadedThumbnail === "" ? null :
+            <ModalContent>
+                <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
+                    <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
+                </RadioButtonContainer>
+                <RadioButtonOption className="col col-12 px2 py2" isOpen={selectedOption === "upload"}>
+                    <div className="col col-12">
+                        <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
+                        <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
+                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                        { uploadedThumbnail === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedThumbnail}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
-                                     <Icon onClick={() => setUploadedThumbnail(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
+                                    <Icon onClick={() => setUploadedThumbnail(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
                                 </button>   
                             </ThumbnailFile>
-                            }
-                        </div>
-                    </RadioButtonOption>
-                    <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
-                        <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
-                    </RadioButtonContainer>
-                    <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
-                        <div className="col col-12">
-                           <PlayerSection className='col col-12 mr2 mb2'>
-                    <PlayerContainer className="col col-12 px2 my2">
-                        <div ref={playerRef}>
-                        </div>
-                    </PlayerContainer>
-                    <ButtonsArea className='my2 mx2'>
-                        <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
-                        <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
-                    </ButtonsArea>
-                </PlayerSection>
-                        </div>
+                        }
+                    </div>
+                </RadioButtonOption>
+                <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
+                    <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
+                </RadioButtonContainer>
+                <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
+                    <div className="col col-12">
+                        <PlayerSection className='col col-12 mr2 mb2'>
+                            <PlayerContainer className="col col-12 px2 my2">
+                                <div ref={playerRef}>
+                                </div>
+                            </PlayerContainer>
+                            <ButtonsArea className='my2 mx2'>
+                                <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
+                                <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
+                            </ButtonsArea>
+                        </PlayerSection>
+                    </div>
                         
-                    </RadioButtonOption>
-                </ModalContent>
-                <ModalFooter>
-                    <Button onClick={() => handleSubmit(props.submit)}>Save</Button>
-                    <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
-                </ModalFooter>
-            </Modal>
+                </RadioButtonOption>
+            </ModalContent>
+            <ModalFooter>
+                <Button onClick={() => handleSubmit(props.submit)}>Save</Button>
+                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
+            </ModalFooter>
+        </Modal>
     )
 }
 

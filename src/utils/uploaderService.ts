@@ -1,24 +1,55 @@
-const BASE_PATH = "http://localhost:9000"
+const BASE_PATH = "https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev"
 export const MIN_CHUNK_SIZE = 5000000 //
 export const FILE_CHUNK_SIZE = 10000000 // 10MB
+const axios = require('axios');
 
-export async function upload(file: File, updateItem: Function) {
+async function completeMultipart(keyPrefix: string, file: File, uploadId: string, allEtags: any, s3Url: string) {
+    axios({
+        url: `${BASE_PATH}/complete-multipart-upload?uploaderId=${uploadId}&s3Path=${s3Url}`,
+        method: 'post',
+        data: JSON.stringify(allEtags)
+    }).then((response: any) => {
+        console.log(response);
+    })
+        .catch((error: any) => {
+            console.log(error);
+            throw new Error(error)
+        });
 
-    let keyPrefix = "";
-
-    if (file.size < MIN_CHUNK_SIZE) {
-        await singlePartUpload(keyPrefix, file, updateItem)
-    }
-    else {
-        await multiPartUpload(keyPrefix, file, updateItem)
-    }
 }
 
+
+async function initMultiPart(keyPrefix: string, file: File) {
+    return await fetch(`${BASE_PATH}/init-multipart-upload?vodStorageId=george`, {
+        method: "POST"
+    }).then(res => { return res.text() })
+
+}
+
+
+
+async function retrieveChunkPresignedURL(keyPrefix: string, file: File, uploadId: string, partNumber: number, nbChunks: number, urlS3: string) {
+    console.log("jwfw");
+    let res = await fetch(`${BASE_PATH}/multipart-upload-urls?s3Path=${urlS3}&toPart=${nbChunks.toString()}&fromPart=${partNumber.toString()}&uploaderId=${uploadId}&vodStorageId=george`, {
+        method: 'GET',
+    })
+
+    if (!res.ok) {
+        throw new Error("Error retrivieng chunk")
+    }
+    return await res.text()
+}
+
+
 async function multiPartUpload(keyPrefix: string, file: File, updateItem: Function) {
-    let allEtags:any = []
+    let allEtags: any = []
 
     try {
-        var uploadId = await initMultiPart(keyPrefix, file)
+        var res = await initMultiPart(keyPrefix, file);
+        console.log(res);
+        var uploadId = JSON.parse(res).uploaderId;
+        var urlS3 = JSON.parse(res).s3Path;
+
         const FILE_SIZE = file.size
         const NUM_CHUNKS = Math.ceil(FILE_SIZE / FILE_CHUNK_SIZE)
 
@@ -29,9 +60,10 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
             let chunk = (index < NUM_CHUNKS) ? file.slice(start, end) : file.slice(start)
             try {
                 let xhr = new XMLHttpRequest()
-                let url = await retrieveChunkPresignedURL(keyPrefix, file, JSON.parse(uploadId).data, index, index + 1)
-
-                xhr.open('PUT', JSON.parse(url).data[0], true)
+                console.log("jwfw");
+                let url = await retrieveChunkPresignedURL(keyPrefix, file, uploadId, index, index + 1, urlS3)
+                console.log(url);
+                xhr.open('PUT', JSON.parse(url).urls[0], true)
                 xhr.upload.addEventListener("progress", function (event) {
                     let bytesUploaded = FILE_CHUNK_SIZE * (index - 1)
                     updateItem(event, bytesUploaded, FILE_SIZE)
@@ -42,14 +74,8 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
                     xhr.addEventListener("load", function (event) {
                         let etagStr = xhr.getResponseHeader('ETag')
                         etagStr = etagStr.substring(1, etagStr.length - 1)
-                        console.info('uploaded part', index, ' got etag ', etagStr)
 
-                        let etag = {
-                            ETag: etagStr,
-                            PartNumber: index
-                        }
-
-                        allEtags.push(etag)
+                        allEtags.push(etagStr)
                         resolve()
                     })
                     xhr.onabort = () => {
@@ -57,33 +83,42 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
                         index = NUM_CHUNKS;
                     }
                 })
-                document.addEventListener('paused'+file.name, function (e) {
+                document.addEventListener('paused' + file.name, function (e) {
                     xhr.abort();
                 }, false);
 
                 await upload
             } catch (err) {
-                console.error("error put S3 " + err)
-                throw new Error('error put s3')
+                console.log(err);
+                throw new Error(err)
             }
         }
 
-        let completeUploadResp = await completeMultipart(keyPrefix, file, uploadId, allEtags)
-        console.info('AllEtags ', allEtags)
-
-        console.info('Multipart Upload Completed')
-
+        let completeUploadResp = await completeMultipart(keyPrefix, file, uploadId, allEtags, urlS3)
     } catch (err) {
-        console.info(err)
+        throw new Error(err);
     }
 }
+
+async function retrieveSinglePartURL(keyPrefix: string, file: File) {
+    let res = await fetch(`${BASE_PATH}/single-part-upload-url?vodStorageId=george`, {
+        method: "GET"
+    })
+    if (res.ok) {
+        let url = await res.text()
+        return url
+    } else {
+        throw new Error("Error retrieving url")
+    }
+}
+
 
 async function singlePartUpload(keyPrefix: string, file: File, updateItem: Function) {
 
     let signedSinglePartURL = await retrieveSinglePartURL(keyPrefix, file)
 
     let xhr = new XMLHttpRequest()
-    xhr.open('PUT', JSON.parse(signedSinglePartURL).data, true)
+    xhr.open('PUT', JSON.parse(signedSinglePartURL).url, true)
     xhr.upload.addEventListener("progress", updateItem, false)
 
     try {
@@ -92,82 +127,29 @@ async function singlePartUpload(keyPrefix: string, file: File, updateItem: Funct
             xhr.addEventListener("load", function (event) { resolve() })
             xhr.onabort = () => resolve(false)
         })
-        document.addEventListener('paused'+file.name, function (e) {
+        document.addEventListener('paused' + file.name, function (e) {
             xhr.abort();
         }, false);
     } catch (err) {
-        console.error("error put S3 " + err)
-        throw new Error('error put s3')
-    }
-}
-
-async function retrieveSinglePartURL(keyPrefix: string, file: File) {
-    let res = await fetch(`${BASE_PATH}/single-part-sig`, {
-        method: "POST",
-        body: JSON.stringify({
-            key_prefix: keyPrefix,
-            filename: file.name
-        })
-    })
-    if (res.ok) {
-        let url = await res.text()
-        return url
-    } else {
-        throw new Error("failed to get signed url:" + res.status)
-    }
-}
-
-async function initMultiPart(keyPrefix: string, file: File) {
-    let res = await fetch(`${BASE_PATH}/init-multipart`, {
-        method: "POST",
-        body: JSON.stringify({
-            key_prefix: keyPrefix,
-            filename: file.name
-        })
-    })
-    if (res.ok) {
-        let url = await res.text()
-        return url
-    } else {
-        throw new Error("failed to get signed url:" + res.status)
+        throw new Error(err)
     }
 }
 
 
 
-async function retrieveChunkPresignedURL(keyPrefix: string, file: File, uploadId: string, partNumber: number, nbChunks: number) {
-    let res = await fetch(`${BASE_PATH}/parts-multipart`, {
-        method: 'POST',
-        body: JSON.stringify({
-            key_prefix: keyPrefix,
-            filename: file.name,
-            to_part_number: nbChunks.toString(),
-            from_part_number: partNumber.toString(),
-            upload_id: uploadId
-        })
-    })
 
-    if (!res.ok) {
-        console.error("failed to get part etag:" + res.status)
-        throw new Error('failed to get part etag')
+export async function upload(file: File, updateItem: Function) {
+
+    try {
+        let keyPrefix = "";
+
+        if (file.size < MIN_CHUNK_SIZE) {
+            await singlePartUpload(keyPrefix, file, updateItem)
+        }
+        else {
+            await multiPartUpload(keyPrefix, file, updateItem)
+        }
+    } catch (err) {
+        throw new Error(err);
     }
-    return await res.text()
-}
-
-
-async function completeMultipart(keyPrefix: string, file: File, uploadId: string, allEtags: any) {
-    console.info(JSON.stringify(allEtags))
-    await fetch(`${BASE_PATH}/complete-multipart`, {
-        method: 'POST',
-        body: JSON.stringify({
-            key_prefix: keyPrefix,
-            filename: file.name,
-            parts: allEtags,
-            upload_id: JSON.parse(uploadId).data
-        })
-    }).then(() => {
-        console.info("file:" + file + " " + uploadId + "mulitpart is completed")
-    }).catch(err => {
-        throw new Error("error multipart complete error " + err)
-    })
 }

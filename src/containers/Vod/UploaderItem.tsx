@@ -10,14 +10,14 @@ export type UploaderItemStates = 'completed' | 'queue' | 'progress' | 'paused' |
 export interface UploaderItemProps {
     currentState: UploaderItemStates;
     progress: number;
-    timeRemaining: number;
+    timeRemaining: {num: number; unit: string};
     size: number;
     name: string;
     idItem?: number;
     embedCode?: string;
 }
 
-export const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) => {
+const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) => {
 
     React.useEffect(() => {
     }, [])
@@ -52,7 +52,7 @@ export const UploaderItem = (props: UploaderItemProps & { actionFunction: Functi
             case 'progress':
                 return (
                     <>
-                        <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining} minutes remaining</Text>
+                        <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
                         <Text className="mr2" weight="med" size={14} color="gray-1">
                             {props.progress}%
                         </Text>
@@ -154,6 +154,7 @@ export const UploaderItemStyle = styled.div<UploaderItemProps>`
     width: 100%;
     padding:16px;
     position: relative;
+    background: white;
     display: flex;
     align-items:center;
     box-sizing: border-box;
@@ -167,3 +168,5 @@ export const CloseIcon = styled(Icon)`
     color: ${props => props.theme.colors["gray-3"]};
     cursor: pointer;
 `
+
+export {UploaderItem};

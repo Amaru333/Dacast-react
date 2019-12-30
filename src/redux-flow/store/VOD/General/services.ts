@@ -7,6 +7,10 @@ const getVodDetailsService = () => {
     return axios.get(urlBase + 'vod-details');
 }
 
+const getVodList = () => {
+    return axios.get(urlBase + 'vods');
+}
+
 const editVodDetailsService = (data: VodDetails) => {
     return axios.put(urlBase + 'vod-details', {...data});
 }
@@ -33,5 +37,6 @@ export const VodGeneralServices = {
     addVodSubtitleService,
     editVodSubtitleService,
     deleteVodSubtitleService,
-    changeVodThumbnailService
+    changeVodThumbnailService,
+    getVodList
 }
