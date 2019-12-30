@@ -1,6 +1,6 @@
 import { ActionTypes, BillingPageInfos, CreditCardPayment, PaypalPayment, PlaybackProtection } from './types';
 import { BillingServices } from './services';
-import { showToastNotification } from '../../toasts/actions';
+import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from "../..";
 

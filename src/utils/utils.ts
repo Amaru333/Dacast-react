@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime } from 'luxon';
-import { showToastNotification } from '../redux-flow/store/toasts';
+import { showToastNotification } from '../redux-flow/store/Toasts';
 import { store } from '..';
 
 export function numberFormatter(num: number, format: 'k' | 'comma'): string {

@@ -2,7 +2,7 @@ import { ActionTypes, DashboardInfos } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "..";
 import { DashboardServices } from './services';
-import { showToastNotification } from '../toasts';
+import { showToastNotification } from '../Toasts';
 
 export interface GetDashboardDetails {
     type: ActionTypes.GET_DASHBOARD_DETAILS;

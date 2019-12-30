@@ -2,7 +2,7 @@ import { ActionTypes, SettingsSecurityDetails, GeoRestriction, DomainControl } f
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { SettingsServices } from './services';
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 
 export interface GetSettingsSecurityOptions {
     type: ActionTypes.GET_SETTINGS_SECURITY_OPTIONS;

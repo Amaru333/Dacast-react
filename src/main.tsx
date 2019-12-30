@@ -20,7 +20,7 @@ import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
-import Toasts from './containers/Toasts';
+import Toasts from './containers/Others/Toasts';
 
 // Any additional component props go here.
 interface MainProps {

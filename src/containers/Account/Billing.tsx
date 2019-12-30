@@ -1,5 +1,5 @@
 import React from 'react';
-import { BillingPage } from '../../components/Pages/Account/Billing/Billing';
+import { BillingPage } from '../../pages/Account/Billing/Billing';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { BillingAction, saveBillingPagePaymentMethodAction, getBillingPageInfosAction } from '../../redux-flow/store/Account/Billing/actions';

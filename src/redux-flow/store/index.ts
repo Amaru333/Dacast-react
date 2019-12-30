@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import {  uploaderInitialState, UploaderState, UploaderReducer } from "./Uploader";
 import {  SettingsState, SettingsInitialState, SettingsReducer} from "./Settings";
 import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dashboard";
-import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
+import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 

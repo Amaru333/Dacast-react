@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { storiesOf } from '@storybook/react';
-import { showToastNotification} from '../redux-flow/store/toasts/actions';
+import { showToastNotification} from '../redux-flow/store/Toasts/actions';
 import Home, { DispatchProps }from '../components/Toasts';
 import {Size, NotificationType } from '../components/Toast/ToastTypes';
 
