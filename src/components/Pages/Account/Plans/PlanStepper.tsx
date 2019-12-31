@@ -128,14 +128,21 @@ const stepperSecondStepData = [
 export const PlanStepperSecondStep = () => {
 
     const featuresTableBody = () => {
-        return stepperSecondStepData.map((item) => {
+        return stepperSecondStepData.filter(item => {return !item.included}).map((item) => {
             return [
-                item.included ? <span></span>
-                    :
-                    <InputCheckbox id={'chekbox'+ item.value} key={'secondStepCheckbox'+item.id} defaultChecked={false}  onChange={() => {}} />,
+                <InputCheckbox id={'chekbox'+ item.value} key={'secondStepCheckbox'+item.id} defaultChecked={false}  onChange={() => {}} />,
                 <Text key={'secondStepText' + item.id} size={14} weight='reg' color='gray-3'>{item.value}</Text>,
-                item.included ? <Icon>check</Icon>
-                    :<Text key={'secondStepPrice' + item.id} size={14} weight='reg' color={item.included ? 'green' : 'gray-3'}>{'$'+item.price.toString()}</Text>
+                <Text key={'secondStepPrice' + item.id} size={14} weight='reg' color={'gray-3'}>{'$'+item.price.toString()}</Text>
+            ]
+        })
+
+    }    
+
+    const includedFeaturesTableBody = () => {
+        return stepperSecondStepData.filter(item => {return item.included}).map((item) => {
+            return [
+                <Text key={'secondStepTextIncludedFeature' + item.id} size={14} weight='reg' color='gray-3'>{item.value}</Text>,
+                <Icon key={'secondStepTextIncludedFeatureIcon' + item.id}>check</Icon>
             ]
         })
 
@@ -161,7 +168,11 @@ export const PlanStepperSecondStep = () => {
     
     return (
         <div>
-            <Text size={14} weight='reg' color='gray-3'>If you want to add any additional Features you can do that here.</Text>
+            <Text size={14} weight='reg' color='gray-3'>Included Features in your Monthly Enterprise Plan:</Text>
+            <Table className='my2' id='secondStepIncludedFeatureTable' body={includedFeaturesTableBody()} />
+
+
+            <Text size={14} weight='reg' color='gray-3'>Add additional Features:</Text>
             <Table className='my2' id='secondStepFeatureTable' body={featuresTableBody()} />
             <Table className='my2' id='secondStepTotalTable' footer={secondStepTableFooterElement()} />
 
