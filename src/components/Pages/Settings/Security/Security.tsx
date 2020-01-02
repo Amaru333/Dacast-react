@@ -15,6 +15,7 @@ import { DomainControlForm } from './DomainControlForm';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../Bubble/Bubble';
 import { useMedia } from '../../../../utils/utils';
+import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 
 interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
@@ -32,6 +33,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.videoScheduling.enabled)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtectedVideo.enabled)
+    const [startDateTime, setStartDateTime] = React.useState<string>(null);
+    const [endDateTime, setEndDateTime] = React.useState<string>(null);
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -59,15 +62,17 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         event.preventDefault();
         props.saveSettingsSecurityOptions({
             privateVideo: false,
-            passowrdProtectedVideo: {
+            passwordProtectedVideo: {
                 enabled: value['Password Protected Videos'].value,
                 promptTime: value['promptTime'] ? value['promptTime'].value : null,
                 password: value['password'] ? value['password'].value : null
             },
             videoScheduling: {
                 enabled: value['Video Scheduling'].value,
+                availableStart: value['availableStart'].value ? value['availableStart'].value : null,
                 startDate: value['startDate'] ? value['startDate'].value : null,
                 startTime: value['startTime'] ? value['startTime'].value : null,
+                availableEnd: value['availableEnd'].value ? value['availableStart'].value : null,
                 endDate: value['endDate'] ? value['endDate'].value : null,
                 endTime: value['endTime'] ? value['endTime'].value : null
             }
@@ -118,8 +123,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passowrdProtectedVideosToggle" label='Password Protected Videos' onChange={() => {setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)}} defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
-                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Users will be prompted to enter a password before watching. For best security practices you should change your password every 6 months.</Text></ToggleTextInfo>
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protected Videos' onChange={() => {setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)}} defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)}/>
+                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo ?
                                 <div className='col col-12'>
@@ -159,63 +164,70 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         {   
                             toggleSchedulingVideo ?
                                 <>
-                                    <div className='col col-12'>
-                                        <div className='col col-4 md-col-3 mb2'>
-                                            <DateSinglePicker 
-                                                DatepickerTitle='Start Date'
-                                                id="startDate"
-                                                callback={(startDateValue: string) => { value = {...value, ['startDate']: {value: startDateValue}}}}
+                                    <div className='col col-12 flex items-center'>
+                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableStart" dropdownTitle="Available" list={{'Always': false, "Set Date and Time": false}} callback={(value: string) => {setStartDateTime(value)}} />
 
+                                    {
+                                        startDateTime === "Set Date and Time" ?
+                                        <>
+                                            <div className='col col-4 md-col-3 mb2'>
+                                                <DateSinglePicker 
+                                                    className='mt2'
+                                                    id="startDate"
+                                                    callback={(startDateValue: string) => { value = {...value, ['startDate']: {value: startDateValue}}}}
+                                                />
+                                            </div>
+
+                                            <Input 
+                                                type='time' 
+                                                defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
+                                                className='col col-3 md-col-2 px1 mt1'
+                                                disabled={false} 
+                                                id='startTime' 
+                                                pattern="[0-9]{2}:[0-9]{2}"
+                                                required
                                             />
-                                        </div>
-
-                                        <Input 
-                                            type='time' 
-                                            defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                            className='col col-3 md-col-2 px1'
-                                            disabled={false} 
-                                            id='startTime' 
-                                            label='Start Time' 
-                                            pattern="[0-9]{2}:[0-9]{2}"
-                                            required
-                                        />
-
-
+                                        </>
+                                    : null
+                                    }
                                     </div>
-                                    <div className='col col-12'>
-                                        <div className='col col-4 md-col-3 mb2' >
-                                            <DateSinglePicker 
-                                                DatepickerTitle='End Date' 
-                                                id="endDate"
-                                                callback={(endDateValue: string) => { value = {...value, ['endDate']: {value: endDateValue}}}}
-                                            />
-                                        </div>
-                                        <Input 
-                                            type='time' 
-                                            defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                            className='col col-3 md-col-2 px1'
-                                            disabled={false} 
-                                            id='endTime' 
-                                            label='End Time' 
-                                            pattern="[0-9]{2}:[0-9]{2}"
-                                            required
-                                        />            
 
-
+                                    <div className='col col-12 flex items-center'>
+                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Until" list={{Forever: false, "Set Date and Time": false}} callback={(value: string) => {setEndDateTime(value)}} />
+                                        
+                                        {
+                                            endDateTime === "Set Date and Time" ?
+                                            <>
+                                                <div className='col col-4 md-col-3 mb2' >
+                                                    <DateSinglePicker
+                                                        className='mt2' 
+                                                        id="endDate"
+                                                        callback={(endDateValue: string) => { value = {...value, ['endDate']: {value: endDateValue}}}}
+                                                    />
+                                                </div>
+                                                <Input 
+                                                    type='time' 
+                                                    defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
+                                                    className='col col-3 md-col-2 mt1 px1'
+                                                    disabled={false} 
+                                                    id='endTime' 
+                                                    pattern="[0-9]{2}:[0-9]{2}"
+                                                    required
+                                                /> 
+                                            </> : null         
+                                        }
                                     </div>
                                 </>
                                 :
                                 null
                         }
-
-
                     </div>
 
                     <BorderStyle className="p1" />
 
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-restriction</Text></TextStyle>
 
-                    <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Whatever</Text></TextStyle>
+                    <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setGeoRestrictionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
 
                     <Table className="col-12 mb1" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
@@ -224,7 +236,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 
-                    <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-1'>That's it</Text></TextStyle>
+                    <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></TextStyle>
                     <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setSelectedItem(null);setDomainControlModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                     <Table className="col-12 " id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
@@ -233,7 +245,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 displayFormActionButtons ?
                     <div>
                         <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
                     : null
             }
