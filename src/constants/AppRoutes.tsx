@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 import Billing from '../containers/Account/Billing';
+import { VodSecurity } from '../containers/VOD/Security/Security';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -92,7 +93,19 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: Chapters
+        component: null,
+        slug: [
+            {
+                path: '/videos/Security',
+                name: 'Security',
+                component: VodSecurity
+            },
+            {
+                path: '/videos/chapters',
+                name: 'Chapters',
+                component: Chapters
+            }
+        ]
     },
     {
         path: '/folders',
