@@ -3,6 +3,8 @@ import { Text } from '../../../Typography/Text';
 import { Label } from '../../../FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { Table } from '../../../Table/Table';
+import { Icon } from '@material-ui/core';
+import styled from 'styled-components';
 
 
 const invoicesData = [
@@ -64,6 +66,7 @@ export const Invoices = () => {
             <Text key='invoicesTableHeaderDate' size={14} weight='med' color='gray-1'>Date</Text>,
             <Text key='invoicesTableHeaderTotal' size={14} weight='med' color='gray-1'>Total</Text>,
             <Text key='invoicesTableHeaderStatus' size={14} weight='med' color='gray-1'>Status</Text>,
+            <span key='invoicesTableEmptyCell'></span>
         ]
     }
 
@@ -75,7 +78,9 @@ export const Invoices = () => {
                 <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{item.date}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
-                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status}  />
+                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status}  />,
+                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >print</Icon><a href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><Icon>get_app</Icon></a> </IconContainer>
+
             ]
         })
     }
@@ -85,3 +90,12 @@ export const Invoices = () => {
         </div>
     )
 }
+
+export const IconContainer = styled.div`
+    float:right;
+    display:none;
+    .material-icons{
+        margin-right:16px;
+        color:  ${props => props.theme.colors["gray-1"]};
+    }
+`
