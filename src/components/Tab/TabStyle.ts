@@ -4,6 +4,7 @@ import {TabProps} from './TabTypes';
 
 export const TabContainer = styled.div<{mobile: boolean}>`
     display: flex;
+    flex-direction: column;
     ${props => props.mobile && css`
         flex-direction: column;
     `}
@@ -12,6 +13,8 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
     display: flex;
     flex-direction: row;
     background-color: ${props => props.theme.colors["white"]};
+    width: fit-content;
+
     ${props => props.orientation == "vertical" && css`
         flex-direction: column;
         min-width: 174px;
@@ -22,7 +25,6 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
 
     ${props => !props.mobile && css `
         border: 1px solid ${props => props.theme.colors["gray-7"]};
-        
     `}
 
     ${props => props.mobile && css `
@@ -63,11 +65,13 @@ export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
 
 export const TabBody = styled.div<{}>`
     display: flex;
+    flex-direction: column;
 `;
 
 export const TabContentStyle = styled.div<{isDisplayed: boolean}>`
     display: none;
     ${props => props.isDisplayed && css`
         display: flex;   
+        flex-direction: column;
     `}
 `;

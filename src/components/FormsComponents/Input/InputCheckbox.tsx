@@ -11,7 +11,7 @@ export const InputCheckbox = (props: InputCheckboxProps) => {
     const [checked, setChecked] = React.useState<boolean>(false)
     React.useEffect(() => {}, [focus, checked]);
 
-    let { label, className, ...other } = props;
+    let { label, className, defaultChecked, ...other } = props;
 
     return (
         <ContainerStyle className={className} >

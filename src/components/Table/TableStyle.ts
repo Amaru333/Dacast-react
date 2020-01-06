@@ -39,7 +39,6 @@ export const TableHeaderRow = styled.tr<{}>`
 export const TableHeaderCell = styled.td<{}>`
     padding-left: 16px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
-    width: 150px;
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -58,7 +57,7 @@ export const TableBodyRow = styled.tr<{}>`
         background-color: ${props => props.theme.colors["violet10"]};
         td {
             .iconAction {
-                display: inline-flex;
+                visibility: visible;
             }
         }
     }

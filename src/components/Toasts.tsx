@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Toasts from '../containers/Toasts';
+import Toasts from '../containers/Others/Toasts';
 import {Size, NotificationType } from '../components/Toast/ToastTypes'
 
 export interface DispatchProps {

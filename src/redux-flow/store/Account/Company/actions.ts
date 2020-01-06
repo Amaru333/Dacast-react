@@ -1,6 +1,6 @@
 import { ActionTypes, CompanyPageInfos } from './types';
 import { CompanyServices } from './services';
-import { showToastNotification } from '../../toasts/actions';
+import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from "../..";
 

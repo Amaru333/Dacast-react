@@ -4,7 +4,7 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { ProfilePage } from '../../components/Pages/Account/Profile/Profile';
+import { ProfilePage } from '../../pages/Account/Profile/Profile';
 
 interface ProfileComponentProps {
     ProfileInfos: ProfilePageInfos;

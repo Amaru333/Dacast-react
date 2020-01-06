@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
+import {  uploaderInitialState, UploaderState, UploaderReducer } from "./Uploader";
 import {  SettingsState, SettingsInitialState, SettingsReducer} from "./Settings";
 import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dashboard";
-import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
+import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 
 export interface ApplicationState {
+    uploader: UploaderState;
     settings: SettingsState;
     dashboard: DashboardState;
     toasts: ToastsState;
@@ -14,6 +16,7 @@ export interface ApplicationState {
 }
 
 export const globalDefaultState: ApplicationState = {
+    uploader:uploaderInitialState,
     settings: SettingsInitialState,
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
@@ -23,6 +26,7 @@ export const globalDefaultState: ApplicationState = {
 
 export const createRootReducer = () =>
     combineReducers({
+        uploader:UploaderReducer,
         settings: SettingsReducer,
         dashboard: DashboardReducer,
         toasts: ToastReducer,
