@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 import Billing from '../containers/Account/Billing';
+import { Theming } from '../components/Pages/Settings/Theming/Theming';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -63,14 +64,6 @@ const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Playlist</h2>
-        </div>
-    )
-}
-
-const Admin = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Admin</h2>
         </div>
     )
 }
@@ -192,7 +185,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/theming',
                 name: 'Theming',
-                component: functionTest4
+                component: Theming
             },
         ]
     },
