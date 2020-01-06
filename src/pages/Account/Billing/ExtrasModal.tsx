@@ -2,7 +2,9 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Table } from '../../../components/Table/Table';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { PaymentForm } from '../../../components/FormsComponents/PaymentForm/PaymentForm';
+import { Extras } from '../../../redux-flow/store/Account/Billing';
+const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
+const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
 const ProtectionModalTableData = [
     {
@@ -20,7 +22,9 @@ const ProtectionModalTableData = [
 ]
 
 
-export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
+export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function) => {
+
+    
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
             return [
@@ -40,29 +44,34 @@ export const ExtrasStepperFirstStep = (props: {toggle: Function}) => {
     return (
         <div>
             <Text size={14}  weight="reg" color="gray-1">Choose which Protection you wish to enable.</Text>
+            <div className='col col-12'>
 
-            <DropdownSingle 
-                className='col col-6 pr2 pb2'
-                dropdownTitle='Protection Type'
-                list={{'Encoding Protection': false, 'Playback Protection': false}}
-                id='extraStepperStep1ProtectionTypeDropdown'
-                defaultValue='Playback Protection'
+                <DropdownSingle 
+                    isInModal
+                    className='col col-5 mr1 pb2'
+                    dropdownTitle='Protection Type'
+                    list={{'Encoding Protection': false, 'Playback Protection': false}}
+                    id='extraStepperStep1ProtectionTypeDropdown'
+                    callback={(value: string) => {setExtraItem({...extraItem, type: value})}}
 
-            />
-            <DropdownSingle 
-                className='col col-6 pb2'
-                dropdownTitle='Amount'
-                list={{'10 GB': false, '60 GB': false}}
-                id='extraStepperStep1AmountDropdown'
-                defaultValue='60 GB'
-            />
+                />
+                <DropdownSingle
+                    isInModal 
+                    className='col col-5 ml1 pb2'
+                    dropdownTitle='Amount'
+                    list={{'10 GB': false, '60 GB': false}}
+                    id='extraStepperStep1AmountDropdown'
+                    callback={(value: string) => {setExtraItem({...extraItem, amount: value, price: '3'})}}
+                />
+            </div>
+
             <Table id='extraStepperStep1Table' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
         </div>
     )
 }
 
-export const ExtrasStepperSecondStep = () => {
 
+export const ExtrasStepperSecondStepCreditCard = () => {
     const step2header = () => {
         return  [
             <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total</Text>,
@@ -70,10 +79,25 @@ export const ExtrasStepperSecondStep = () => {
         ]
     }
 
+    const step2CreditCardTableHeader = () => {
+        return [
+            <Text  key={"step2PCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>,
+            <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} />
+        ]
+    }
+    const step2CreditCardTableBody = () => {
+        return [[
+            <Text  key={"step2PCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
+            <Text  className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>,
+
+        ]]
+    }
+
     return (
         <>
-            <Table className='my2' id='extraStepperStep2Table' header={step2header()}/>
-            <PaymentForm id='billingExtrasForm' paypalText="When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast."/>
-        </>
+            <Table className='my2' id='extraStepperStep2TotalTable' header={step2header()}/>
+            <Table className='my2' id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+        </> 
     )
+
 }

@@ -116,9 +116,11 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isSingle isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>
     );
 }
+
+DropdownSingle.defaultProps = {isInModal: false}

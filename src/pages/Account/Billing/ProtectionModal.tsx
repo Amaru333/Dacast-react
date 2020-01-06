@@ -19,7 +19,7 @@ const ProtectionModalTableData = [
     } 
 ]
 
-export const ProtectionModal = (props: {toggle: Function}) => {
+export const ProtectionModal = (props: {toggle: Function; actionButton: Function;}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
     const protectionModalTableBodyElement = () => {
@@ -42,7 +42,8 @@ export const ProtectionModal = (props: {toggle: Function}) => {
         <div>
             <Text size={14}  weight="reg" color="gray-1">Select how much Data to buy each time your allowance reaches zero.</Text>
             <div className='col col-12'>
-                <DropdownSingle   
+                <DropdownSingle
+                    isInModal   
                     className='col col-6 pb2'                   
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}
@@ -64,7 +65,7 @@ export const ProtectionModal = (props: {toggle: Function}) => {
 
 
             <div className='col col-12 py1'>
-                <Button sizeButton="large" disabled typeButton="primary" buttonColor="blue" >Add</Button>
+                <Button sizeButton="large" disabled={selectedValue === 'Select'} onClick={() => {props.actionButton({enabled: true, price: '2$', amount: selectedValue}); props.toggle(false)}} typeButton="primary" buttonColor="blue" >Add</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             

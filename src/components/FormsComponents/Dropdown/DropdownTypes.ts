@@ -15,6 +15,7 @@ interface DropdownCustomProps {
     callback?: Function;
     hasSearch?: boolean;
     dropdownDefaultSelect?: string;
+    isInModal?: boolean;
 }
 
 export interface ContinentListType {
