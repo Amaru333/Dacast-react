@@ -19,7 +19,7 @@ const ProtectionModalTableData = [
     } 
 ]
 
-export const ProtectionModal = (props: {toggle: Function; actionButton: Function;}) => {
+export const ProtectionModal = (props: {toggle: Function; actionButton: Function}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
     const protectionModalTableBodyElement = () => {

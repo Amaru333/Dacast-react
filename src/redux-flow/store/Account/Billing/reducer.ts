@@ -26,7 +26,7 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
             return {...state,
                 playbackProtection: action.payload
             }      
-            case ActionTypes.ADD_BILLING_PAGE_EXTRAS:          
+        case ActionTypes.ADD_BILLING_PAGE_EXTRAS:          
             let newExtras = state.extras ? state.extras.slice() : [];
             newExtras.splice(newExtras.length, 0, action.payload )
             return {...state,

@@ -29,6 +29,12 @@ const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     ]
 };
 
+const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
+    setSelectedSubtitle(subtitle);
+    setUploadedSubtitleFile(subtitle)
+    setSubtitleModalOpen(true)
+}
+
 const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
     return vodDetails.subtitles.map((value, key) => {
         return [
@@ -75,12 +81,6 @@ const copyKey = (value: string) => {
     textArea.select();
     document.execCommand("Copy");
     textArea.remove();
-}
-
-const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
-    setSelectedSubtitle(subtitle);
-    setUploadedSubtitleFile(subtitle)
-    setSubtitleModalOpen(true)
 }
 
 const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
