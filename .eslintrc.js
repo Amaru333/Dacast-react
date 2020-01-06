@@ -20,6 +20,8 @@ module.exports = {
         "@typescript-eslint/no-var-requires": 0,
         "react/no-unescaped-entities": 0,
         "@typescript-eslint/no-non-null-assertion": 0,
-        "@typescript-eslint/no-object-literal-type-assertion": 0
+        "@typescript-eslint/no-object-literal-type-assertion": 0,
+        "react/jsx-key": 0,
+        "react/prop-types": 0
     }
 };

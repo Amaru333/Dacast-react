@@ -2,7 +2,7 @@ import { ActionTypes, EmbedSettingsOptionType } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { SettingsServices } from './services';
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 
 export interface GetEmbedSettingsOptions {
     type: ActionTypes.GET_EMBED_SETTINGS_OPTIONS;

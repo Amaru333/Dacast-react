@@ -20,7 +20,7 @@ import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
-import Toasts from './containers/Toasts';
+import Toasts from './containers/Others/Toasts';
 
 // Any additional component props go here.
 interface MainProps {
@@ -76,7 +76,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                         <Toasts />
                         <MainMenu 
                             menuLocked={menuLocked} 
-                            onMouseEnter={ () => menuHoverOpen()} 
+                            onMouseEnter={() => menuHoverOpen()} 
                             onMouseLeave={() => menuHoverClose()} 
                             navWidth={currentNavWidth} 
                             isMobile={isMobile} 
@@ -108,11 +108,12 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
+    overflow: auto;
     ${props => props.isMobile && css`
+        overflow-x: hidden;
         padding: 16px;
     `}
     padding-top: 81px;
-    overflow: auto;
 `
 
 const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean}>`
