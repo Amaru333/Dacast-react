@@ -5,7 +5,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { EncodingRecipesData, EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
-import { EncodingRecipesComponentProps } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
+import { EncodingRecipesComponentProps, EncodingRecipesPage } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
 
 
 const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
