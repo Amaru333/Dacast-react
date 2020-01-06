@@ -63,7 +63,6 @@ export const VideosListPage = (props: VideosListProps) => {
     const vodListBodyElement = () => {
         if (props.items) {
             return props.items.map((value, key) => {
-                debugger;
                 return [
                     <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkbox" + value.id.toString()} onChange={(event) => {
                         if (event.currentTarget.checked && selectedVod.length < props.items.length) {
