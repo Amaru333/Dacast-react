@@ -10,7 +10,7 @@ import Security from '../containers/Settings/Security/Security';
 import Chapters from '../containers/VOD/Chapters/Chapters';
 import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
 import Billing from '../containers/Account/Billing';
-import { VodSecurity } from '../containers/VOD/Security/Security';
+import VodSecurity from '../containers/VOD/Security/Security';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 

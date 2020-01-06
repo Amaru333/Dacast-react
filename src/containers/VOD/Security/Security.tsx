@@ -5,6 +5,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodSecuritySettingsAction } from '../../../redux-flow/store/VOD/Security/actions';
 import { connect } from 'react-redux';
 import { VodSecuritySettings } from '../../../redux-flow/store/VOD/Security';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -12,8 +13,17 @@ interface VodSecurityContainerProps {
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
+
+    React.useEffect(() => {
+        if(!props.vodSecuritySettings) {
+            props.getVodSecuritySettings();
+        }
+    }, [])
+
     return (
-        <VodSecurityPage />
+        props.vodSecuritySettings ? 
+            <VodSecurityPage {...props}/>
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
 }
 

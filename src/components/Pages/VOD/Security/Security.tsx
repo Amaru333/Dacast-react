@@ -7,8 +7,15 @@ import { Input } from '../../../FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../FormsComponents/Dropdown/DropdownSingle';
 import { DateSinglePicker } from '../../../FormsComponents/Datepicker/DateSinglePicker';
 import { Button } from '../../../FormsComponents/Button/Button';
+import { VodSecuritySettings } from '../../../../redux-flow/store/VOD/Security/types';
+import { DropdownListType } from '../../../FormsComponents/Dropdown/DropdownTypes';
+import { GeoRestriction, DomainControl } from '../../../../redux-flow/store/Settings/Security';
 
-export const VodSecurityPage = () => {
+interface VodSecurityComponentProps {
+    vodSecuritySettings: VodSecuritySettings;
+}
+
+export const VodSecurityPage = (props: VodSecurityComponentProps) => {
 
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(false)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(false)
@@ -35,20 +42,21 @@ export const VodSecurityPage = () => {
                     <Text size={20} weight='med' color='gray-1'>Security</Text>
                 </TextStyle>
 
-                <Toggle id="privateVideosToggle" label='Private Video'/>
+                <Toggle id="privateVideosToggle" label='Private Video' defaultChecked={props.vodSecuritySettings.securitySettings.privateVideo} />
                     <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
                     </ToggleTextInfo>
 
               <div className='col col-12 mb1'>
-                    <Toggle id="passwordProtectedVideosToggle" label='Password Protected Videos' onChange={() => setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)}/>
-                    <ToggleTextInfo className="">
+                    <Toggle id="passwordProtectedVideosToggle" label='Password Protected Videos' onChange={() => setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)} defaultChecked={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.enabled}/>
+                    <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
                     </ToggleTextInfo>
                     { togglePasswordProtectedVideo ? 
                         <div className='col col-12'>
                             <Input 
                                 type='time' 
+                                defaultValue={props.vodSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
                                 className='col col-3 md-col-2 mb1'
                                 disabled={false} 
                                 id='promptTime' 
@@ -59,7 +67,8 @@ export const VodSecurityPage = () => {
                             />
 
                             <Input 
-                                type='text'  
+                                type='text'
+                                defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
                                 className='col col-4 md-col-3 px1 mb1'
                                 disabled={false} 
                                 id='password' 
@@ -72,8 +81,8 @@ export const VodSecurityPage = () => {
                     </div> 
 
                 <div className='col col-12'>
-                    <Toggle id="videoScheduling" label='Video Scheduling' onChange={() => setToggleSchedulingVideo(!toggleSchedulingVideo)}/>
-                    <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                    <Toggle id="videoScheduling" label='Video Scheduling' onChange={() => setToggleSchedulingVideo(!toggleSchedulingVideo)} defaultChecked={props.vodSecuritySettings.securitySettings.videoScheduling.enabled}/>
+                    <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
                     { toggleSchedulingVideo ? 
                         <>
@@ -82,12 +91,14 @@ export const VodSecurityPage = () => {
                             <div className='col col-4 md-col-3 mb2'>
                                 <DateSinglePicker 
                                     className='mt2'
-                                    id="startDate"   
+                                    id="startDate"
+                                    // callback={(startDateValue: string) => { value = {...value, ['startDate']: {value: startDateValue}}}}   
                                 />
                             </div>
 
                             <Input 
-                                type='time' 
+                                type='time'
+                                defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'} 
                                 className='col col-3 md-col-2 px1 mt1'
                                 disabled={false} 
                                 id='startTime' 
@@ -102,12 +113,12 @@ export const VodSecurityPage = () => {
                             <DateSinglePicker
                                 className='mt2' 
                                 id="endDate"
-                                
+                                // callback={(endDateValue: string) => { value = {...value, ['endDate']: {value: endDateValue}}}}
                             />
                         </div>
                         <Input 
                             type='time' 
-                            
+                            defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
                             className='col col-3 md-col-2 mt1 px1'
                             disabled={false} 
                             id='endTime' 
@@ -132,7 +143,7 @@ export const VodSecurityPage = () => {
                         <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
                     </TextStyle>
 
-                    <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Select Geo-Restriction Group" list={{"Default Group": false}} />
+                    <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Select Geo-Restriction Group" list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} />
                 </div>
 
                 <BorderStyle className="p1" />
@@ -146,7 +157,7 @@ export const VodSecurityPage = () => {
                         <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
                     </TextStyle>
                     <div className="col col-12 pb2">
-                        <DropdownSingle className="col col-3" id="availableEnd" dropdownTitle="Select Domain Control Group" list={{"Default Group": false}} />
+                        <DropdownSingle className="col col-3" id="availableEnd" dropdownTitle="Select Domain Control Group" list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} />
                     </div>
                 </div>
             </DisabledCard>
