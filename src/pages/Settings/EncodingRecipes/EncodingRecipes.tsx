@@ -19,7 +19,7 @@ import { Label } from '../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 
-interface EncodingRecipesComponentProps {
+export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
     getEncodingRecipes: Function;
     createEncodingRecipe: Function;
