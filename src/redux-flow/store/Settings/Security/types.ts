@@ -29,8 +29,10 @@ export interface PasswordProtectedVideo {
 
 export interface VideoScheduling {
     enabled: boolean;
+    startDateTime?: string;
     startDate?: string;
     startTime?: string;
+    endDateTime?: string;
     endDate?: string;
     endTime?: string;
 }

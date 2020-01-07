@@ -2,14 +2,15 @@ import React from 'react';
 import { VodSecurityPage } from '../../../components/Pages/VOD/Security/Security';
 import { ApplicationState } from '../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodSecuritySettingsAction } from '../../../redux-flow/store/VOD/Security/actions';
+import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } from '../../../redux-flow/store/VOD/Security/actions';
 import { connect } from 'react-redux';
-import { VodSecuritySettings } from '../../../redux-flow/store/VOD/Security';
+import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
     getVodSecuritySettings: Function
+    saveVodSecuritySettings: Function
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
@@ -37,6 +38,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodSecuritySettings: () => {
             dispatch(getVodSecuritySettingsAction());
+        },
+        saveVodSecuritySettings: (data: SecuritySettings) => {
+            dispatch(saveVodSecuritySettingsAction(data));
         }
     }
 }
