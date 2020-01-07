@@ -215,11 +215,12 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 </div>
             </DisabledCard>
           
-            <div>
+        { selectedSettings === props.vodSecuritySettings.securitySettings ? null :
+               <div>
                 <Button 
                 type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
                 <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
-            </div>
+            </div>}
         
         </div>
                     
