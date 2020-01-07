@@ -5,7 +5,7 @@ export interface DatePickerProps {
     id?: string;
     callback?: Function;
     DatepickerTitle?: string;
-    defaultStartDate?: string;
+    defaultStartDate?: Date;
     defaultEndDate?: string;
 }
 

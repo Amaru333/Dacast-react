@@ -65,7 +65,11 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     </ToggleTextInfo>
 
               <div className='col col-12 mb1'>
-                    <Toggle id="passwordProtectedVideosToggle" label='Password Protected Videos' onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}/>
+                    <Toggle 
+                        id="passwordProtectedVideosToggle" 
+                        label='Password Protected Videos' 
+                        onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
+                    />
                     <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
                     </ToggleTextInfo>
@@ -100,24 +104,33 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     </div> 
 
                 <div className='col col-12'>
-                    <Toggle id="videoScheduling" label='Video Scheduling' onChange={() => {setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, enabled:!selectedSettings.videoScheduling.enabled}})}} defaultChecked={selectedSettings.videoScheduling.enabled}/>
+                    <Toggle 
+                        id="videoScheduling" 
+                        label='Video Scheduling' 
+                        onChange={() => {setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, enabled:!selectedSettings.videoScheduling.enabled}})}} defaultChecked={selectedSettings.videoScheduling.enabled}
+                    />
                     <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
                     { toggleSchedulingVideo ? 
                         <>
                         <div className='col col-12 flex items-center'>
-                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableStart" dropdownTitle="Available" list={{'Always': false, "Set Date and Time": false}} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} />
+                        <DropdownSingle 
+                            className='col col-4 md-col-3 mb2 mr1' 
+                            id="availableStart" 
+                            dropdownTitle="Available" 
+                            list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.videoScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
+                        />
                             <div className='col col-4 md-col-3 mb2'>
                                 <DateSinglePicker 
                                     className='mt2'
                                     id="startDate"
-                                    callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}   
+                                    callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
                                 />
                             </div>
 
                             <Input 
                                 type='time'
-                                defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'} 
+                                defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.startTime ? props.vodSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
                                 className='col col-3 md-col-2 px1 mt1'
                                 disabled={false} 
                                 id='startTime' 
@@ -128,7 +141,13 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     </div>
 
                     <div className='col col-12 flex items-center'>
-                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Until" list={{Forever: false, "Set Date and Time": false}} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDateTime: selectedItem}})} />
+                        <DropdownSingle 
+                            className='col col-4 md-col-3 mb2 mr1' 
+                            id="availableEnd" 
+                            dropdownTitle="Until" 
+                            list={{Forever: false, "Set Date and Time": false}} 
+                            defaultValue={selectedSettings.videoScheduling.endDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDateTime: selectedItem}})}
+                        />
                         <div className='col col-4 md-col-3 mb2' >
                             <DateSinglePicker
                                 className='mt2' 
@@ -138,7 +157,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         </div>
                         <Input 
                             type='time' 
-                            defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
+                            defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.endTime ? props.vodSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
                             className='col col-3 md-col-2 mt1 px1'
                             disabled={false} 
                             id='endTime' 
@@ -164,7 +183,13 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
                     </TextStyle>
 
-                    <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Select Geo-Restriction Group" list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} />
+                    <DropdownSingle 
+                        className='col col-4 md-col-3 mb2 mr1' 
+                        id="availableEnd" 
+                        dropdownTitle="Select Geo-Restriction Group" 
+                        list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
+                        defaultValue={selectedSettings.selectedGeoRestriction} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
+                    />
                 </div>
 
                 <BorderStyle className="p1" />
@@ -178,13 +203,21 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
                     </TextStyle>
                     <div className="col col-12 pb2">
-                        <DropdownSingle className="col col-3" id="availableEnd" dropdownTitle="Select Domain Control Group" list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} />
+                        <DropdownSingle 
+                            className="col col-3" 
+                            id="availableEnd" 
+                            dropdownTitle="Select Domain Control Group" 
+                            list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
+                            defaultValue={selectedSettings.selectedDomainControl} 
+                            callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
+                        />
                     </div>
                 </div>
             </DisabledCard>
           
             <div>
-                <Button form='' type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
+                <Button 
+                type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
                 <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
             </div>
         
