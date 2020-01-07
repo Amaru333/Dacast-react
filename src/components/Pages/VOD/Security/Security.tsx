@@ -13,6 +13,8 @@ import { GeoRestriction, DomainControl } from '../../../../redux-flow/store/Sett
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
+    globalSecuritySettings: SecuritySettings;
+    getSettingsSecurityOptions: Function
     saveVodSecuritySettings: Function
 }
 
@@ -40,7 +42,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     return (
         <div >
             <div className="col col-12">
-               <Button typeButton="secondary" type="button" sizeButton="small" className="col-right m25" onClick={() => setSettingsEditable(!settingsEditable)}>
+               <Button typeButton="secondary" type="button" sizeButton="small" className="col-right m25" onClick={settingsEditable? () => {setSettingsEditable(!settingsEditable);() => setSelectedSettings(props.globalSecuritySettings);console.log(props.globalSecuritySettings)} : () => setSettingsEditable(!settingsEditable)}>
                    { settingsEditable ? 
                        "Revert Security Settings"
                     : "Edit Security Settings"}

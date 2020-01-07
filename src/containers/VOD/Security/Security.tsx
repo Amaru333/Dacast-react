@@ -6,23 +6,27 @@ import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } f
 import { connect } from 'react-redux';
 import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { getSettingsSecurityOptionsAction } from '../../../redux-flow/store/Settings/Security/actions';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
+    globalSecuritySettings: SecuritySettings;
     getVodSecuritySettings: Function
     saveVodSecuritySettings: Function
+    getSettingsSecurityOptions: Function;
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
 
     React.useEffect(() => {
-        if(!props.vodSecuritySettings) {
+        if(!props.vodSecuritySettings && !props.globalSecuritySettings) {
             props.getVodSecuritySettings();
+            props.getSettingsSecurityOptions();
         }
     }, [])
 
     return (
-        props.vodSecuritySettings ? 
+        props.vodSecuritySettings && props.globalSecuritySettings ? 
             <VodSecurityPage {...props}/>
             : <LoadingSpinner color='dark-violet' size='large' />
     )
@@ -30,7 +34,8 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        vodSecuritySettings: state.vod.security
+        vodSecuritySettings: state.vod.security,
+        globalSecuritySettings: state.settings.security
     }
 }
 
@@ -41,7 +46,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveVodSecuritySettings: (data: SecuritySettings) => {
             dispatch(saveVodSecuritySettingsAction(data));
-        }
+        },
+        getSettingsSecurityOptions: () => {
+            dispatch(getSettingsSecurityOptionsAction());
+        },
     }
 }
 
