@@ -13,7 +13,7 @@ import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
-import { Theming } from '../components/Pages/Settings/Theming/Theming';
+import Theming from '../containers/Settings/Theming';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 

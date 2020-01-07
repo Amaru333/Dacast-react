@@ -1,7 +1,13 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
 export const ThemingContainer = styled.div`
     display: flex;
+    width: 100%;
+`
+
+export const Heading = styled.div`
+    display: flex;
+    flex-direction: row;
     width: 100%;
 `
 
@@ -33,7 +39,6 @@ export const TextStyle = styled.span<{}>`
 
 export const IconContainer = styled.div`
     float:right;
-    display:none;
     .material-icons{
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
