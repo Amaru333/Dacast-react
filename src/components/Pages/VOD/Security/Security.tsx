@@ -45,27 +45,40 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     return (
         <div >
             <div className="col col-12">
-               <Button typeButton="secondary" type="button" sizeButton="small" className="col-right m25" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
-                   { settingsEditable ? 
-                       "Revert Security Settings"
-                    : "Edit Security Settings"}
-                   </Button>
+               <Button 
+                    typeButton="secondary" 
+                    type="button" 
+                    sizeButton="small" 
+                    className="col-right m25" 
+                    onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                        { 
+                            settingsEditable ? 
+                            "Revert Security Settings"
+                            : "Edit Security Settings"
+                    }
+                </Button>
             </div>
             
         {  !settingsEditable ? 
         
-        <Bubble type='info' className='my2'>          
+            <Bubble type='info' className='my2'>          
                 This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
-            </Bubble> : null}
+            </Bubble> : null
+        }
             <DisabledCard settingsEditable={settingsEditable}>
                 <TextStyle className="py2" >
                     <Text size={20} weight='med' color='gray-1'>Security</Text>
                 </TextStyle>
                 
-                <Toggle id="privateVideosToggle" label='Private Video' defaultChecked={selectedSettings.privateVideo} onChange={() => setSelectedSettings({...selectedSettings, privateVideo: !selectedSettings.privateVideo})}/>
-                    <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
-                    </ToggleTextInfo>
+                <Toggle 
+                    id="privateVideosToggle" 
+                    label='Private Video' 
+                    defaultChecked={selectedSettings.privateVideo} 
+                    onChange={() => setSelectedSettings({...selectedSettings, privateVideo: !selectedSettings.privateVideo})}
+                />
+                <ToggleTextInfo>
+                    <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
+                </ToggleTextInfo>
 
               <div className='col col-12 mb1'>
                     <Toggle 
