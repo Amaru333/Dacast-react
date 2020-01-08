@@ -10,6 +10,7 @@ import { Button } from '../../../FormsComponents/Button/Button';
 import { VodSecuritySettings, SecuritySettings } from '../../../../redux-flow/store/VOD/Security/types';
 import { DropdownListType } from '../../../FormsComponents/Dropdown/DropdownTypes';
 import { GeoRestriction, DomainControl } from '../../../../redux-flow/store/Settings/Security';
+import { Modal, ModalContent, ModalFooter } from '../../../Modal/Modal';
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -24,6 +25,8 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(false)
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(false)
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.vodSecuritySettings.securitySettings)
+    const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
+    const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
 
     const handleReset = () => {
         setSelectedSettings(props.vodSecuritySettings.securitySettings)
@@ -42,7 +45,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     return (
         <div >
             <div className="col col-12">
-               <Button typeButton="secondary" type="button" sizeButton="small" className="col-right m25" onClick={settingsEditable? () => {setSettingsEditable(!settingsEditable);() => setSelectedSettings(props.globalSecuritySettings);console.log(props.globalSecuritySettings)} : () => setSettingsEditable(!settingsEditable)}>
+               <Button typeButton="secondary" type="button" sizeButton="small" className="col-right m25" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                    { settingsEditable ? 
                        "Revert Security Settings"
                     : "Edit Security Settings"}
@@ -120,24 +123,29 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             dropdownTitle="Available" 
                             list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.videoScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
                         />
-                            <div className='col col-4 md-col-3 mb2'>
-                                <DateSinglePicker 
-                                    className='mt2'
-                                    id="startDate"
-                                    callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
-                                />
-                            </div>
+                            {
+                                selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
+                                <>        
+                                <div className='col col-4 md-col-3 mb2'>
+                                    <DateSinglePicker 
+                                        className='mt2'
+                                        id="startDate"
+                                        callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
+                                    />
+                                </div>
 
-                            <Input 
-                                type='time'
-                                defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.startTime ? props.vodSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
-                                className='col col-3 md-col-2 px1 mt1'
-                                disabled={false} 
-                                id='startTime' 
-                                pattern="[0-9]{2}:[0-9]{2}"
-                                onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startTime: event.currentTarget.value}}) }
-                                required
-                            />                    
+                                <Input 
+                                    type='time'
+                                    defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.startTime ? props.vodSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
+                                    className='col col-3 md-col-2 px1 mt1'
+                                    disabled={false} 
+                                    id='startTime' 
+                                    pattern="[0-9]{2}:[0-9]{2}"
+                                    onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startTime: event.currentTarget.value}}) }
+                                    required
+                                /> 
+                                </> : null
+                            }                
                     </div>
 
                     <div className='col col-12 flex items-center'>
@@ -148,23 +156,31 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             list={{Forever: false, "Set Date and Time": false}} 
                             defaultValue={selectedSettings.videoScheduling.endDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDateTime: selectedItem}})}
                         />
-                        <div className='col col-4 md-col-3 mb2' >
-                            <DateSinglePicker
-                                className='mt2' 
-                                id="endDate"
-                                callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}
-                            />
-                        </div>
-                        <Input 
-                            type='time' 
-                            defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.endTime ? props.vodSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
-                            className='col col-3 md-col-2 mt1 px1'
-                            disabled={false} 
-                            id='endTime' 
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endTime: event.currentTarget.value}})}
-                            required
-                        /> 
+
+                        {
+                        
+                            selectedSettings.videoScheduling.endDateTime === "Set Date and Time" ?
+                        
+                                <>
+                                <div className='col col-4 md-col-3 mb2' >
+                                    <DateSinglePicker
+                                        className='mt2' 
+                                        id="endDate"
+                                        callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}
+                                    />
+                                </div>
+                                <Input 
+                                    type='time' 
+                                    defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.endTime ? props.vodSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
+                                    className='col col-3 md-col-2 mt1 px1'
+                                    disabled={false} 
+                                    id='endTime' 
+                                    pattern="[0-9]{2}:[0-9]{2}"
+                                    onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endTime: event.currentTarget.value}})}
+                                    required
+                                /> 
+                                </> : null
+                        }
                     </div>
                     </> : null
                     }      
@@ -221,7 +237,24 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
                 <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
             </div>}
-        
+            <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">This page is using the global settings. Override this if you wish to edit, but keep in mind that something, and this is a user based setting. </Text>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button onClick={() => {setSettingsEditable(!settingsEditable);setEditSettingsModalOpen(false)}}>Edit</Button>
+                        <Button typeButton="tertiary" onClick={() => setEditSettingsModalOpen(false)}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal size="small" title="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">Choosing to revert to the Global Security Settings means that blah blah balh...</Text>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button onClick={() => {setSettingsEditable(!settingsEditable); setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>
+                        <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
         </div>
                     
     )
