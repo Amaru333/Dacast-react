@@ -40,7 +40,7 @@ export interface ThemeOptions {
     brandTextLink: string;
     offlineMessage: string;
     deliveryMethod: DeliveryMethod;
-    regionSetting: RegionSetting;
+    regionSettings: RegionSetting;
 }
 
 export interface MailCatcher {
