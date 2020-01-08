@@ -14,6 +14,7 @@ import VodList from '../containers/Videos/VideosList';
 import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
 import VodSecurity from '../containers/Videos/Security';
+import { LiveGeneral } from '../containers/Live/General';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -96,13 +97,25 @@ export const AppRoutes: Routes[] = [
         path: '/livestreams',
         name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel
+        component: LiveGeneral
     },
     {
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: null,
+        slug: [
+            {
+                path: '/videos/vodlist',
+                name: 'VOD List',
+                component: VodList
+            },
+            {
+                path: '/videos/general',
+                name: 'General',
+                component: General
+            },
+        ]
     },
     {
         path: '/folders',
