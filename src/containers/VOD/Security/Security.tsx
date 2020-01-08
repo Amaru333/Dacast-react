@@ -1,5 +1,5 @@
 import React from 'react';
-import { VodSecurityPage } from '../../../components/Pages/VOD/Security/Security';
+import { VodSecurityPage } from '../../../pages/Videos/Security/Security';
 import { ApplicationState } from '../../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } from '../../../redux-flow/store/VOD/Security/actions';
@@ -11,8 +11,8 @@ import { getSettingsSecurityOptionsAction } from '../../../redux-flow/store/Sett
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
     globalSecuritySettings: SecuritySettings;
-    getVodSecuritySettings: Function
-    saveVodSecuritySettings: Function
+    getVodSecuritySettings: Function;
+    saveVodSecuritySettings: Function;
     getSettingsSecurityOptions: Function;
 }
 

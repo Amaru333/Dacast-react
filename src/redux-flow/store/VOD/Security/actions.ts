@@ -11,7 +11,7 @@ export interface GetVodSecuritySettings {
 
 export interface SaveVodSecuritySettings {
     type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS;
-    payload: VodSecuritySettings
+    payload: VodSecuritySettings;
 }
 
 export const getVodSecuritySettingsAction = (): ThunkDispatch<Promise<void>, {}, GetVodSecuritySettings> => {

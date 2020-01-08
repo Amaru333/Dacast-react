@@ -2,7 +2,7 @@ import { ActionTypes } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { SettingsIntegrationServices } from './services';
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 import { ApiIntegrationPageInfos } from './types';
 
 export interface GetSettingsIntegrationDetails {

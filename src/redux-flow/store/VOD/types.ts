@@ -3,21 +3,28 @@ import { combineReducers, Reducer } from 'redux';
 import { ChapterMarkerInfos } from './Chapters/types';
 import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecuritySettings, VodSecurityReducer } from './Security';
+import { VodDetails, VodItem } from './General/types';
+import { GeneralReducer, reducerList } from './General/reducer';
 
 
 export const vodInitialState: VodState = {
     chapters: false,
-    security: false
+    security: false,
+    general: false,
+    list: false
 };
 
 
 export interface  VodState {
     chapters: false | ChapterMarkerInfos;
-    security: false | VodSecuritySettings
-
+    security: false | VodSecuritySettings;
+    general: false | VodDetails;
+    list: false | VodItem[];
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({
     chapters: ChaptersReducer, 
-    security: VodSecurityReducer
+    security: VodSecurityReducer,
+    general: GeneralReducer,
+    list: reducerList
 })

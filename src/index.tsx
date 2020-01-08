@@ -8,6 +8,6 @@ import configureStore from "./redux-flow/configureStore";
 import { globalDefaultState } from "./redux-flow/store";
 
 const initialState = globalDefaultState;
-const store = configureStore(initialState);
+export const store = configureStore(initialState);
 
 ReactDOM.render(<Main store={store}  />, document.getElementById("root"));

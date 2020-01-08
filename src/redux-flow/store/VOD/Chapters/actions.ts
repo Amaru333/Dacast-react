@@ -2,7 +2,7 @@ import { ActionTypes } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { VodChaptersServices } from './services';
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 import { ChapterMarker } from './types';
 
 export interface GetVodChapterMarkers {
