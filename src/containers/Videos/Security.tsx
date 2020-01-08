@@ -1,12 +1,12 @@
 import React from 'react';
-import { VodSecurityPage } from '../../../pages/Videos/Security/Security';
-import { ApplicationState } from '../../../redux-flow/store';
+import { VodSecurityPage } from '../../pages/Videos/Security/Security';
+import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } from '../../../redux-flow/store/VOD/Security/actions';
+import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } from '../../redux-flow/store/VOD/Security/actions';
 import { connect } from 'react-redux';
-import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security';
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getSettingsSecurityOptionsAction } from '../../../redux-flow/store/Settings/Security/actions';
+import { VodSecuritySettings, SecuritySettings } from '../../redux-flow/store/VOD/Security';
+import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
