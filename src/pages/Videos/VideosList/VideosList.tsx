@@ -8,6 +8,7 @@ import { VodItem } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled, { css } from "styled-components";
+import {VideoTabs} from '../../../containers/Videos/VideoTabs';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -18,6 +19,8 @@ export interface VideosListProps {
 export const VideosListPage = (props: VideosListProps) => {
 
     const [selectedVod, setSelectedVod] = React.useState<number[]>([]);
+    const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
+    const [selectedVodId, setSelectedVodId] = React.useState<number>(-1);
 
     React.useEffect(() => {
 
@@ -80,7 +83,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {setSelectedVodId(value.id);setShowVodTabs(true)} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -88,7 +91,10 @@ export const VideosListPage = (props: VideosListProps) => {
 
 
     return (
-        <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+        showVodTabs ?
+            <VideoTabs videoId={selectedVodId} history={props.history} />
+            : <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+
     )
 
 }
