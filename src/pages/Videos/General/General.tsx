@@ -11,6 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ThumbnailModal } from './ThumbnailModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ThumbnailImage } from "../../../shared/GeneralStyle"
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -190,10 +191,10 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <div className="thumbnail col col-12">
                         <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
                         <Text className="col col-12 pt1" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
-                        <ThumbnailContainer className="col col-12 pt2 flex">
+                        <ImagesContainer className="col col-12 pt2 flex">
                             <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()} />
 
-                        </ThumbnailContainer>
+                        </ImagesContainer>
                         <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setThumbnailModalOpen(true)}>Change Thumbnail</Button>
                     </div>
                     <Divider className="col col-12" />
@@ -267,45 +268,6 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     )
 
 }
-const Divider = styled.div`
-    border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    margin: 32px 24px 24px 0;
-`
-
-const LinkBoxContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    height:auto;
-    padding-top: 16px;
-    padding-right: 16px;
-`
-
-const LinkBoxLabel = styled.label`
-    display: flex;
-    height:auto;
-    margin-bottom: 4px;
-    margin-top:4px;
-    align-items: center;
-`
-
-const LinkBox = styled.div`
-display: flex;
-height: 40px;
-padding: 0 12px;
-background-color: ${props => props.theme.colors["gray-10"]};
-border: 1px solid ${props => props.theme.colors["gray-7"]};
-align-items: center;
-justify-content: space-between;
-&:hover > button{
-        display: block;
-    }
-`
-
-const LinkText = styled(Text)`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`
 
 const AdContainer = styled.div`
 display: flex;
@@ -316,15 +278,6 @@ const AdInput = styled(Input)`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-`
-
-const ThumbnailContainer = styled.div`
-flex-direction: column;
-`
-
-const ThumbnailImage = styled.img`
-max-height: 107px;
-max-width: 172px;
 `
 
 const UploadThumbnail = styled.button`
@@ -353,13 +306,3 @@ const SubtitleFile = styled.div`
     align-items: center;
     justify-content: space-between;
 `
-
-const IconButton = styled.button`
-display: none;
-border: none;
-background-color: inherit;
-`
-
-const ButtonContainer = styled.div`
-margin-top: 24px;
-` 
