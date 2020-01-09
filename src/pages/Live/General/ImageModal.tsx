@@ -6,7 +6,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Text } from "../../../components/Typography/Text"
 import { Icon } from '@material-ui/core';
 
-export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
+export const LiveImageModal = (props: {toggle: () => void; opened: boolean; submit: Function; title: string}) => {
 
     const testThumbnail = "sick_thumbnail.png"
 
@@ -76,7 +76,7 @@ export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; subm
     }
 
     return (
-        <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" title={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>

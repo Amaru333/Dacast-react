@@ -9,9 +9,9 @@ import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { ThumbnailModal } from './ThumbnailModal';
+import { ImageModal } from './ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ThumbnailImage } from "../../../shared/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ThumbnailImage } from "../../../shared/General/GeneralStyle"
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -101,7 +101,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
-    const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
+    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
@@ -195,7 +195,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()} />
 
                         </ImagesContainer>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setThumbnailModalOpen(true)}>Change Thumbnail</Button>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setImageModalOpen(true)}>Change Thumbnail</Button>
                     </div>
                     <Divider className="col col-12" />
                     <div className="subtitles col col-12">
@@ -256,7 +256,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ThumbnailModal toggle={() => setThumbnailModalOpen(false)} opened={thumbnailModalOpen === true} submit={props.changeVodThumbnail} />
+                    <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.changeVodThumbnail} />
 
                 </Card>
                 <ButtonContainer>

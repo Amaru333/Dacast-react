@@ -4,12 +4,17 @@ import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection } from '../../../shared/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
 import { Modal } from '../../../components/Modal/Modal';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
+import { ImageModal } from '../../Videos/General/ImageModal';
+import { LiveImageModal } from './ImageModal';
 
 export const LiveGeneralPage = () => {
+
+    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
+    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
 
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
@@ -26,7 +31,6 @@ export const LiveGeneralPage = () => {
                 <div className="details col col-12">
                     <header className="flex justify-between">
                         <Text size={20} weight="med">Details</Text>
-                        <Button sizeButton="xs" typeButton="secondary">Download</Button>
                     </header>
                     <Toggle
                         className="col col-12 mt2 pb2"
@@ -97,7 +101,8 @@ export const LiveGeneralPage = () => {
                            
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src="https://www.placecage.com/240/149" /></ImageSection>
-                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary">Change</Button></ButtonSection>  
+                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -107,7 +112,7 @@ export const LiveGeneralPage = () => {
                             </div>
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src="https://www.placecage.com/171/96" /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary">Change</Button></ButtonSection>  
+                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -117,7 +122,7 @@ export const LiveGeneralPage = () => {
                             </div>
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src="https://www.placecage.com/90/160" /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary">Change</Button></ButtonSection>  
+                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
                         </ImageContainer>
@@ -142,6 +147,7 @@ export const LiveGeneralPage = () => {
                         </ToggleTextInfo>   
                     </div>  
                 </div>
+                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={() => console.log("submitted")} title={imageModalTitle} />
 
             </Card>
             <ButtonContainer>

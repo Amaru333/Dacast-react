@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Text } from '../components/Typography/Text'
+import { Text } from '../../components/Typography/Text'
 
 export const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
