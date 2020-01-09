@@ -188,7 +188,7 @@ export const LiveGeneralPage = () => {
                         </div>
                         
                         <div className="col col-12">
-                        <Toggle label="30 Minute Rewind" onChange={() => setLiveStreamRewindToggle(true)}></Toggle>
+                        <Toggle label="30 Minute Rewind" onChange={() => setLiveStreamRewindToggle(!setLiveStreamRewindToggle)}></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the Knowledge Base.</Text>
                         </ToggleTextInfo>
