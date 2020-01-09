@@ -10,11 +10,19 @@ import { Modal } from '../../../components/Modal/Modal';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
 import { ImageModal } from '../../Videos/General/ImageModal';
 import { LiveImageModal } from './ImageModal';
+import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Bubble } from '../../../components/Bubble/Bubble';
+
+var moment = require('moment-timezone');
 
 export const LiveGeneralPage = () => {
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
+    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
+    const [liveStreamRewindToggle, setLiveStreamRewindToggle] = React.useState<boolean>(false)
 
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
@@ -137,14 +145,62 @@ export const LiveGeneralPage = () => {
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                         </ToggleTextInfo>
-                        <Toggle label="Live Stream Start Countdown"></Toggle>
+                        <div>
+                        <Toggle label="Live Stream Start Countdown" onChange={() => setLiveStreamCountdownToggle(!liveStreamCountdownToggle)}></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
                         </ToggleTextInfo>
-                        <Toggle label="30 Minute Rewind"></Toggle>
+                       
+                            {
+                                liveStreamCountdownToggle ?
+
+                                <div className="col col-12">
+                                <div 
+                                className='col col-4 md-col-3 mb2'
+                                >
+                                    <DateSinglePicker 
+                                        className='mt2'
+                                        id="startDate"
+                                    />
+                                </div>
+                                <Input 
+                                type='time' 
+                                className='col col-3 md-col-2 mb1'
+                                disabled={false} 
+                                id='promptTime' 
+                                label='Prompt Time' 
+                                required
+                                pattern="[0-9]{2}:[0-9]{2}"
+                                step='1'
+                            />
+                            <DropdownSingle 
+                            className="md-col md-col-6 p1"
+                            hasSearch
+                            dropdownTitle='Timezone'
+                            id='dropdownTimezone'
+                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                        />
+                            </div> : null
+                            }
+                            
+
+                            
+                        </div>
+                        
+                        <div className="col col-12">
+                        <Toggle label="30 Minute Rewind" onChange={() => setLiveStreamRewindToggle(true)}></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the Knowledge Base.</Text>
-                        </ToggleTextInfo>   
+                        </ToggleTextInfo>
+                        
+                            { liveStreamRewindToggle ?
+                            <div>
+                            <Bubble type="info">30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. </Bubble> 
+                            <Button sizeButton="xs" typeButton="secondary">Purge Live Stream</Button>
+                        </div>
+                          : null  }
+                        </div>
+                          
                     </div>  
                 </div>
                 <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={() => console.log("submitted")} title={imageModalTitle} />
