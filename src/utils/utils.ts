@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
-import { DateTime } from 'luxon';
+import { DateTime, LocaleOptions } from 'luxon';
 import { showToastNotification } from '../redux-flow/store/Toasts';
 import { store } from '..';
 
@@ -30,8 +30,8 @@ export function readableBytes(size: number): string {
     return parseInt(( size / Math.pow(1024, i) ).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
 
-export function tsToLocaleDate(ts: number): string {
-    return DateTime.fromSeconds(ts).toLocaleString();
+export function tsToLocaleDate(ts: number, options?: LocaleOptions & Intl.DateTimeFormatOptions): string {
+    return DateTime.fromSeconds(ts).toLocaleString(options);
 }
 
 export function intToTime(num: number) {

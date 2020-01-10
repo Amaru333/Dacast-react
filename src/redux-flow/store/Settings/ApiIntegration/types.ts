@@ -6,18 +6,26 @@ export interface ApiIntegrationPageInfos {
     apiKeys: ApiKeyItem[];
     encoderKeys: EncoderKeyItem[];
     webHook: WebHookItem[];
+    s3Keys: S3KeyItem[];
 }
 
 export const defaultStateApiIntegration: ApiIntegrationPageInfos = {
     apiKeys: [],
     encoderKeys: [],
-    webHook: []
+    webHook: [],
+    s3Keys: []
 }
 
 export interface EncoderKeyItem {
     encoder: string;
     authToken: string;
     created: number;
+}
+
+export interface S3KeyItem {
+    name: string;
+    created: number;
+    expires: number;
 }
 
 export interface ApiKeyItem {

@@ -14,6 +14,7 @@ import { tsToLocaleDate, useMedia } from '../../../utils/utils';
 
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm } from './ModalsFormsKeys';
+import { DateTime } from 'luxon';
 
 export interface ApiIntegrationProps {
     infos: false | ApiIntegrationPageInfos;
@@ -93,7 +94,6 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     }
 
     const webHooksHeaderElement = () => {
-        console.log(smScreen);
         return [
             <Text key="urlTableWebHooks" size={14} weight="med" color="gray-1">URL</Text>,
             <Text key="methodTableWebHooks" size={14} weight="med" color="gray-1">Method</Text>,
@@ -122,24 +122,67 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
         ]
     }
 
+    const s3KeyBodyElement = () => {
+        if (props.infos) {
+            return props.infos.s3Keys.map((value, key) => {
+                return [
+                    <Text key={key + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
+                    <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
+                    <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{ tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
+                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
+                ]
+            })
+        }
+    }
+
+    const s3KeyHeaderElement = () => {
+        return [
+            <Text key="encoderTable" size={14} weight="med" color="gray-1">Name</Text>,
+            <Text key="keyTable" size={14} weight="med" color="gray-1">Created</Text>,
+            <Text key="createdTable" size={14} weight="med" color="gray-1">Expires</Text>,
+            <Button key="actionTable" className={"right mr2 " + (smScreen ? 'hide' : '')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
+        ]
+    }
+
 
     return (
         <>
             <Card className='clearfix col-12'>
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Key</Text>
-                <Text className={"inline-block " + (smScreen ? 'mb2' : 'mb25')} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
-                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
+                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <Icon className="mr1" >info_outlined</Icon>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your API Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
+                <Button className={"mb2 " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                 <Table className="col-12" id="apiKeysTable" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
                 <HrStyle />
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoding Key</Text>
-                <Text className={"inline-block " + (smScreen ? 'mb2' : 'mb25')} size={14} weight="reg" color="gray-1" >These keys can be pasted in your encoder settings and will authenticate your list of Dacast live channels. For the Dacast version of OBS Studio please use the OBS Studio key.</Text>
-                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
-                <Table className="col-12" id="apiKeysTable" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
-                <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
-                <Text className={"inline-block " + (smScreen ? 'mb2' : 'mb25')} size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <Icon className="mr1" >info_outlined</Icon>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Webhook Settings? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
                 <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left mb2 " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
-                <Table className="col-12" id="apiKeysTable" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
+                <Table className="col-12" id="webHooksTable" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
+                <HrStyle />
+                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
+                <Text className={"inline-block mb2"}  size={14} weight="reg" color="gray-1" >These keys can be pasted into the settings of some video encoders to automatically authenticate your list of Dacast live channels.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <Icon className="mr1" >info_outlined</Icon>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Encoder Keys? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
+                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+                <Table className="col-12" id="encoderKeysTable" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
+                <HrStyle />
+                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
+                <Text className={"inline-block mb2"}  size={14} weight="reg" color="gray-1" >These keys can be used to upload files to an Amazon S3 (Simple Storage Service) bucket that will then be automatically uploaded to your Dacast account.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <Icon className="mr1" >info_outlined</Icon>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your S3 Keys? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
+                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+                <Table className="col-12" id="s3KeysTable" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
             </Card>
             <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
