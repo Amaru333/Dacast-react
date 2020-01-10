@@ -43,26 +43,26 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </header>
                     <Toggle
                         className="col col-12 mt2 pb2"
-                        // defaultChecked={VodDetails.online}
+                        defaultChecked={props.liveDetails.streamOnline}
                         // onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, ["online"]: !videoIsOnline }) }}
                         label="Live Stream Online"
                     />
                     <Input
                         className="col col-6 pr2"
                         label="Title"
-                        // value={props.vodDetails.title}
+                        value={props.liveDetails.title}
                         // onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                     />
                     <Input
                         className="col col-6"
                         label="Folder"
-                        // value={props.vodDetails.folder}
+                        value={props.liveDetails.folder}
                         // onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
                     />
                     <Input
                         className="col col-6 pr2 pt2"
                         label="Description"
-                        // defaultValue={props.vodDetails.description}
+                        defaultValue={props.liveDetails.description}
                         // onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
                     />
                 </div>
@@ -109,7 +109,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             </div>
                            
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src="https://www.placecage.com/240/149" /></ImageSection>
+                                <ImageSection> <SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                                 <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
                                 onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
@@ -120,7 +120,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src="https://www.placecage.com/171/96" /></ImageSection>
+                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection>
                                 <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
@@ -130,7 +130,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src="https://www.placecage.com/90/160" /></ImageSection>
+                                <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection>
                                 <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
@@ -142,12 +142,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <div className="settings col col-12">
                     <Text className="col col-12" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
-                        <Toggle label="Live Stream Recording"></Toggle>
+                        <Toggle label="Live Stream Recording" defaultChecked={props.liveDetails.recording}></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                         </ToggleTextInfo>
                         <div>
-                        <Toggle label="Live Stream Start Countdown" onChange={() => setLiveStreamCountdownToggle(!liveStreamCountdownToggle)}></Toggle>
+                        <Toggle
+                         label="Live Stream Start Countdown" 
+                         onChange={() => setLiveStreamCountdownToggle(!liveStreamCountdownToggle)}
+                         defaultChecked={props.liveDetails.countdown.enabled}
+                         ></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
                         </ToggleTextInfo>
@@ -167,6 +171,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <Input 
                                 type='time' 
                                 className='col col-3 md-col-2 mb1'
+                                defaultValue={props.liveDetails.countdown.startTime}
                                 disabled={false} 
                                 id='promptTime' 
                                 label='Prompt Time' 
@@ -178,6 +183,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Timezone'
+                            defaultValue={props.liveDetails.countdown.timezone}
                             id='dropdownTimezone'
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
                         />
