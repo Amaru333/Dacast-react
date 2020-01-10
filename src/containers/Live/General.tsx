@@ -3,7 +3,7 @@ import { LiveGeneralPage } from '../../pages/Live/General/General'
 import { LiveDetails } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveDetailsAction } from '../../redux-flow/store/Live/General/actions';
+import { Action, getLiveDetailsAction, saveLiveDetailsAction } from '../../redux-flow/store/Live/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
@@ -40,7 +40,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getLiveDetails: () => {
             dispatch(getLiveDetailsAction());
+        },
+        saveLiveDetails: (data: LiveDetails) => {
+            dispatch(saveLiveDetailsAction(data));
         }
+
     }
 }
 

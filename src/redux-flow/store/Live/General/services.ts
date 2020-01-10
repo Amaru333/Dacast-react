@@ -8,7 +8,7 @@ const getLiveDetailsService = () => {
 }
 
 const saveLiveDetailsService = (data: LiveDetails) => {
-    return axios.put(urlBase + 'live-details', {...data});
+    return axios.post(urlBase + 'live-details', {...data});
 }
 
 export const LiveGeneralServices = {

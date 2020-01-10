@@ -27,6 +27,14 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
 
+    React.useEffect(() => {
+        setNewLiveDetails(props.liveDetails)
+    }, [props.liveDetails]);
+
+    React.useEffect(() => {
+        setLiveStreamCountdownToggle(newLiveDetails.countdown.enabled);
+    }, [newLiveDetails])
+
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
         textArea.value = value;
