@@ -8,7 +8,11 @@ const reducer: Reducer<LiveDetails> = (state = initialLiveGeneralState, action: 
         case ActionTypes.GET_LIVE_DETAILS:
             return {
                 ...state, ...action.payload
-            }
+            };
+        case ActionTypes.SAVE_LIVE_DETAILS:
+                return {
+                    ...state, ...action.payload
+                };    
         default:
             return state;
     }

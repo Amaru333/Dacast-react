@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS"
+    GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS",
+    SAVE_LIVE_DETAILS = "@@live_general/SAVE_LIVE_DETAILS"
 }
 
 export interface LiveDetails {

@@ -9,7 +9,8 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 
 interface LiveGeneralProps {
     liveDetails: LiveDetails;
-    getLiveDetails: Function
+    getLiveDetails: Function;
+    saveLiveDetails: Function;
 }
 
 export const LiveGeneral = (props: LiveGeneralProps) => {

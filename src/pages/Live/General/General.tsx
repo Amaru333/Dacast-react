@@ -15,6 +15,7 @@ import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
+    saveLiveDetails: Function;
 }
 
 var moment = require('moment-timezone');
@@ -24,6 +25,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
+    const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
 
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
@@ -43,27 +45,27 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </header>
                     <Toggle
                         className="col col-12 mt2 pb2"
-                        defaultChecked={props.liveDetails.streamOnline}
-                        // onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, ["online"]: !videoIsOnline }) }}
+                        defaultChecked={newLiveDetails.streamOnline}
+                        onChange={() => setNewLiveDetails({...newLiveDetails, streamOnline: !newLiveDetails.streamOnline})}
                         label="Live Stream Online"
                     />
                     <Input
                         className="col col-6 pr2"
                         label="Title"
-                        value={props.liveDetails.title}
-                        // onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
+                        value={newLiveDetails.title}
+                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["title"]: event.currentTarget.value })}
                     />
                     <Input
                         className="col col-6"
                         label="Folder"
-                        value={props.liveDetails.folder}
-                        // onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
+                        value={newLiveDetails.folder}
+                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["folder"]: event.currentTarget.value })}
                     />
                     <Input
                         className="col col-6 pr2 pt2"
                         label="Description"
                         defaultValue={props.liveDetails.description}
-                        // onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
+                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
                 </div>
                 <Divider className="col col-12" />
@@ -142,15 +144,15 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <div className="settings col col-12">
                     <Text className="col col-12" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
-                        <Toggle label="Live Stream Recording" defaultChecked={props.liveDetails.recording}></Toggle>
+                        <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                         </ToggleTextInfo>
                         <div>
                         <Toggle
                          label="Live Stream Start Countdown" 
-                         onChange={() => setLiveStreamCountdownToggle(!liveStreamCountdownToggle)}
-                         defaultChecked={props.liveDetails.countdown.enabled}
+                         onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
+                         defaultChecked={newLiveDetails.countdown.enabled}
                          ></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
@@ -201,7 +203,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
             </Card>
             <ButtonContainer>
-                <Button className="mr2" type="button">Save</Button>
+                <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
                 <Button typeButton="secondary">Discard</Button>
             </ButtonContainer>
     </React.Fragment>
