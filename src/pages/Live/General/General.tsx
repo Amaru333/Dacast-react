@@ -6,23 +6,24 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
-import { Modal } from '../../../components/Modal/Modal';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
-import { ImageModal } from '../../Videos/General/ImageModal';
 import { LiveImageModal } from './ImageModal';
 import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { Bubble } from '../../../components/Bubble/Bubble';
+import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
+
+interface LiveGeneralComponentProps {
+    liveDetails: LiveDetails;
+}
 
 var moment = require('moment-timezone');
 
-export const LiveGeneralPage = () => {
+export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
-    const [liveStreamRewindToggle, setLiveStreamRewindToggle] = React.useState<boolean>(false)
 
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
@@ -187,19 +188,6 @@ export const LiveGeneralPage = () => {
                             
                         </div>
                         
-                        <div className="col col-12">
-                        <Toggle label="30 Minute Rewind" onChange={() => setLiveStreamRewindToggle(!liveStreamRewindToggle)}></Toggle>
-                        <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the Knowledge Base.</Text>
-                        </ToggleTextInfo>
-                        
-                            { liveStreamRewindToggle ?
-                            <div>
-                            <Bubble type="info">30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. </Bubble> 
-                            <Button sizeButton="xs" typeButton="secondary">Purge Live Stream</Button>
-                        </div>
-                          : null  }
-                        </div>
                           
                     </div>  
                 </div>

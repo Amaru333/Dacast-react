@@ -14,7 +14,7 @@ import VodList from '../containers/Videos/VideosList';
 import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
 import VodSecurity from '../containers/Videos/Security';
-import { LiveGeneral } from '../containers/Live/General';
+import LiveGeneral from '../containers/Live/General';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
