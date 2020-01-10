@@ -3,11 +3,10 @@ import { Icon } from '@material-ui/core';
 import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
-import { Button } from '../../../components/FormsComponents/Button/Button';
 import { VodItem } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {VideoTabs} from '../../../containers/Videos/VideoTabs';
 
 export interface VideosListProps {
@@ -65,7 +64,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListBodyElement = () => {
         if (props.items) {
-            return props.items.map((value, key) => {
+            return props.items.map((value) => {
                 return [
                     <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkbox" + value.id.toString()} onChange={(event) => {
                         if (event.currentTarget.checked && selectedVod.length < props.items.length) {
