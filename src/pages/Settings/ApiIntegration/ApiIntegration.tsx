@@ -226,7 +226,6 @@ export const HrStyle = styled.hr<{}>`
 
 export const IconContainer = styled.div`
     float:right;
-    display:none;
     .material-icons{
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};

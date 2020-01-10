@@ -7,10 +7,6 @@ import { Icon } from '@material-ui/core';
 import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
-import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../../../redux-flow/store';
-import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { useMedia } from '../../../utils/utils';
@@ -19,7 +15,7 @@ import { Label } from '../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 
-interface EncodingRecipesComponentProps {
+export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
     getEncodingRecipes: Function;
     createEncodingRecipe: Function;
@@ -92,7 +88,7 @@ const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe
 
 const stepList = [settingsStep, presetStep]
 
-const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
+export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     React.useEffect(() => {
         props.getEncodingRecipes();
@@ -161,31 +157,6 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
     )
 }
 
-export function mapStateToProps( state: ApplicationState) {
-    return {
-        encodingRecipeData: state.settings.encodingRecipes
-    };
-}
-
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
-    return {
-        getEncodingRecipes: () => {
-            dispatch(getEncodingRecipesAction());
-        },
-        createEncodingRecipe: (data: EncodingRecipeItem) => {
-            dispatch(createEncodingRecipesAction(data))
-        },
-        saveEncodingRecipe: (data: EncodingRecipeItem) => {
-            dispatch(saveEncodingRecipesAction(data))
-        },
-        deleteEncodingRecipe: (data: EncodingRecipeItem) => {
-            dispatch(deleteEncodingRecipesAction(data))
-        },
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EncodingRecipes)
-
 const HeaderStyle = styled.div`
 display: flex;
 align-content: center;
@@ -194,7 +165,6 @@ margin-bottom: 16px;
 
 const IconContainer = styled.div`
     float:right;
-    display:none;
     .material-icons{
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
