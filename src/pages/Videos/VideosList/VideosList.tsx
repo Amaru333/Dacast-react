@@ -92,7 +92,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     return (
         showVodTabs ?
-            <VideoTabs videoId={selectedVodId} history={props.history} />
+            <VideoTabs videoId={selectedVodId.toString()} history={props.history} />
             : <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
 
     )

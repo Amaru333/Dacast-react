@@ -49,14 +49,14 @@ export const Tab = (props: TabProps) => {
     }
 
     const renderTabsContent = () => {
-        return (
-            props.list.map((tabContent: any, i) => {
-                return (
-                    <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
-                        <tabContent.component />
-                    </TabContentStyle>
-                )
-            })
+        return ( <div></div>
+            // props.list.map((tabContent: any, i) => {
+            //     return (
+            //         <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
+            //             <tabContent.component />
+            //         </TabContentStyle>
+            //     )
+            // })
         )
     }
 
