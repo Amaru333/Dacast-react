@@ -1,7 +1,7 @@
 import { ActionTypes, EncodingRecipeItem } from "../EncodingRecipes/EncodingRecipesTypes";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 import { EncodingRecipesData } from './EncodingRecipesTypes';
 import { EncodingRecipesServices } from './services';
 
@@ -43,6 +43,7 @@ export const createEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
         await EncodingRecipesServices.createEncodingRecipeService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: response.data} );
+                dispatch(showToastNotification(`${response.data.name} created`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -55,6 +56,7 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
         await EncodingRecipesServices.saveEncodingRecipeService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: response.data} );
+                dispatch(showToastNotification(`${response.data.name} has been updated`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -67,6 +69,7 @@ export const deleteEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
         await EncodingRecipesServices.deleteEncodingRecipeService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_ENCODING_RECIPES, payload: response.data} );
+                dispatch(showToastNotification(`${response.data.name} has been deleted`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

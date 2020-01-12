@@ -3,14 +3,14 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../redux-flow/store";
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { LoginPage } from '../../../components/Pages/Register/Login/Login';
+import { LoginPage } from '../../../Pages/Register/Login/Login';
 import { loginAction, Action } from '../../../redux-flow/store/Register/Login/actions'
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 
 interface LoginContainerProps {
-    login: Function,
-    loginInfos: TokenInfos,
-    history: any
+    login: Function;
+    loginInfos: TokenInfos;
+    history: any;
 }
 const Login = (props: LoginContainerProps) => {
 

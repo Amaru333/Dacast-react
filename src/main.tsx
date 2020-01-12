@@ -5,7 +5,7 @@ import { Router, Switch, Route, Redirect} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../src/styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
@@ -20,12 +20,12 @@ import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
-import Toasts from './containers/Toasts';
 import Login from '../src/containers/Register/Login/Login';
 import { isLoggedIn } from './utils/token';
 import { LoadingSpinner } from './components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from './containers/Dashboard/Dashboard';
 import { NotFound } from './containers/404page';
+import Toasts from './containers/Others/Toasts';
 
 // Any additional component props go here.
 interface MainProps {
@@ -60,7 +60,7 @@ const test = () => {
     return <LoadingSpinner color='black' size='large' />
 }
 
-const PrivateRoute = (props:{component: any, path: string}) => {
+const PrivateRoute = (props: {component: any; path: string}) => {
     const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
 
     const menuHoverOpen = () => {
@@ -76,12 +76,12 @@ const PrivateRoute = (props:{component: any, path: string}) => {
     return (
         isLoggedIn() ?
             <Route 
-              path={props.path}
+                path={props.path}
             >
                 <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
-                <FullContent isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                     <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
-                    <Content isOpen={isOpen}>
+                    <Content isMobile={isMobile} isOpen={isOpen}>
                         <props.component {...props} />
                     </Content>
                 </FullContent>  
@@ -95,22 +95,50 @@ const PrivateRoute = (props:{component: any, path: string}) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
-
+    const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
+    const menuHoverOpen = () => {
+        if (!isOpen && !menuLocked) {
+            setOpen(true)
+        }
+    };
+    const menuHoverClose = () => {
+        if (isOpen && !menuLocked) {
+            setOpen(false)
+        }
+    };
 
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <Router  history={history}>
-                    <>
-                        <Toasts />                     
-                        <Switch>
-                            {returnRouter(AppRoutes)}
-                            <PrivateRoute path='/dashboard' component={Dashboard} />
-                            <Route exact path='/'><Login history={history} /></Route>
-                            <Route path='/login'><Login history={history} /></Route>
-                            <Route path='*' ><NotFound /></Route>
-                        </Switch>
+                    <>                 
  
+                        <Toasts />
+                        <MainMenu 
+                            menuLocked={menuLocked} 
+                            onMouseEnter={() => menuHoverOpen()} 
+                            onMouseLeave={() => menuHoverClose()} 
+                            navWidth={currentNavWidth} 
+                            isMobile={isMobile} 
+                            isOpen={isOpen} 
+                            setMenuLocked={setMenuLocked} 
+                            setOpen={setOpen} 
+                            className="navigation" 
+                            history={history} 
+                            routes={AppRoutes}
+                        />
+                        <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
+                            <Content isMobile={isMobile} isOpen={isOpen}>
+                                <Switch>
+                                    {returnRouter(AppRoutes)}
+                                    <PrivateRoute path='/dashboard' component={Dashboard} />
+                                    <Route exact path='/'><Login history={history} /></Route>
+                                    <Route path='/login'><Login history={history} /></Route>
+                                    <Route path='*' ><NotFound /></Route>
+                                </Switch>
+                            </Content>
+                        </FullContent>   
                     </>
                 </Router>
             </ThemeProvider>
@@ -119,22 +147,26 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     );
 };
 
-const Content = styled.div<{isOpen: boolean}>`
+const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     position: relative;
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    padding-top: 81px;
     overflow: auto;
+    ${props => props.isMobile && css`
+        overflow-x: hidden;
+        padding: 16px;
+    `}
+    padding-top: 81px;
 `
 
-const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean}>`
-    margin-left: ${props => props.isMobile ? 0 : props.navBarWidth};
+const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean}>`
+    margin-left: ${props => props.isMobile ? 0 : props.isLocked ? '235px' : '64px'};
     background: rgb(245, 247, 250);
     position: relative;
     padding: 0;
     min-width: 240px;
-    width: ${props => props.isMobile ? "100%" : "calc(100% - "+props.navBarWidth+")" };
+    width: ${props => props.isMobile ? "100%" : props.isLocked ? "calc(100% - 235px)" : "calc(100% - 64px)"};
 `
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).

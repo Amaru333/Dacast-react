@@ -1,12 +1,13 @@
 import styled, { css } from "styled-components";
 
-export const StepperContainerStyle = styled.div<{opened: boolean}>`
+export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean}>`
     box-sizing: border-box;
     display: none;
     flex-direction: column;
     padding: 24px;
-    padding-bottom: 106px;
+    
     width: 600px;
+    
     height: auto;
     min-height: 472px;
     border-radius: ${props => props.theme.borderRadius};
@@ -22,6 +23,12 @@ export const StepperContainerStyle = styled.div<{opened: boolean}>`
     ${props => props.opened && css`
         display: flex;
     `}
+
+    ${props => props.isMobile && css`
+        padding: 16px;
+        width: 300px;
+        top: 45%;
+    `};
 `
 export const StepperStyle = styled.div`
     
@@ -58,17 +65,19 @@ export const StepperStyle = styled.div`
         color: ${props => props.theme.colors["gray-7"]}
     }
 `
-export const StepperContentStyle = styled.div`
-
+export const StepperContentStyle = styled.div<{isMobile: boolean}>`
+    ${props => props.isMobile && css`
+        max-height: 300px;
+        overflow: auto;
+    `};
 `
 
 export const StepStyle = styled.div`
 `
 export const StepperFooterStyle = styled.div`
 bottom: 0;
-position: absolute;
-margin-bottom: 24px;
-margin-top: 42px;
+position: relative;
+margin-top: 32px;
     & > * { 
             margin-right: 12px;
         }

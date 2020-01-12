@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TableProps} from './TableTypes'
-import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer } from './TableStyle';
+import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer, TableFooterContainer, TableFooterRow, TableFooterCell } from './TableStyle';
 import { isMobile } from 'react-device-detect';
 
 export const Table = (props: TableProps) => {
@@ -17,22 +17,35 @@ export const Table = (props: TableProps) => {
     }
 
     const renderTableBody = () => {
-        return props.body.map((bodyRow, i) => {
-            return (
-                <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
-                    {
-                        bodyRow.map((bodyCell: any, item) => {
-                            return (
-                                <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
-                                    {bodyCell}
-                                </TableBodyCell>
-                            )
-                        })
-                    }
-                </TableBodyRow>
-            )
-        })
+        return props.body ?
+            props.body.map((bodyRow, i) => {
+                return (
+                    <TableBodyRow key={props.id+"tableBodyRow"+i.toString()}>
+                        {
+                            bodyRow.map((bodyCell: any, item) => {
+                                return (
+                                    <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
+                                        {bodyCell}
+                                    </TableBodyCell>
+                                )
+                            })
+                        }
+                    </TableBodyRow>
+                )
+            }) : null
     }
+    const renderTableFooter = () => {
+        return props.footer ? 
+            props.footer.map((footerCell, i) => {
+                return (
+                    <TableFooterCell className="" key={props.id+"tableFooterCell"+i.toString()}>
+                        {footerCell}
+                    </TableFooterCell>
+                )
+            }) : null
+    }
+
+
     return (
         <WrapperResponsiveContainer isMobile={isMobile}  {...props}>
             <TableContainer>
@@ -43,9 +56,21 @@ export const Table = (props: TableProps) => {
                         </TableHeaderRow>
                     </TableHeaderContainer> : null
                 }
-                <TableBodyContainer>
-                    {renderTableBody()}
-                </TableBodyContainer>
+                {
+                    props.body ?
+                        <TableBodyContainer>
+                            {renderTableBody()}
+                        </TableBodyContainer>
+                        : null
+                }
+
+                {props.footer ? 
+                    <TableFooterContainer>
+                        <TableFooterRow>
+                            {renderTableFooter()}
+                        </TableFooterRow>
+                    </TableFooterContainer> : null
+                }
             </TableContainer>
         </WrapperResponsiveContainer>
     );

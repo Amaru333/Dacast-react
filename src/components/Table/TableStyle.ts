@@ -5,7 +5,6 @@ export const TableContainer = styled.table<{}>`
     height: auto;
     border-spacing: unset;
     border-collapse: collapse;
-    min-width: 600px;
     width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
 `;
@@ -40,7 +39,6 @@ export const TableHeaderRow = styled.tr<{}>`
 export const TableHeaderCell = styled.td<{}>`
     padding-left: 16px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
-    width: 150px;
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -59,7 +57,7 @@ export const TableBodyRow = styled.tr<{}>`
         background-color: ${props => props.theme.colors["violet10"]};
         td {
             .iconAction {
-                display: block;
+                visibility: visible;
             }
         }
     }
@@ -68,4 +66,20 @@ export const TableBodyRow = styled.tr<{}>`
 export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
     max-width: 150px;
+`;
+
+export const TableFooterContainer = styled.tfoot<{}>`
+`;
+
+export const TableFooterRow = styled.tr<{}>`
+    width: auto;
+    height: 52px;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    padding-left: 16px;
+`;
+
+export const TableFooterCell = styled.td<{}>`
+    padding-left: 16px;
+    border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+    width: 150px;
 `;
