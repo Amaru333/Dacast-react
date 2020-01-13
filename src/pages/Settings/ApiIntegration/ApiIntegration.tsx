@@ -202,7 +202,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up Google Analytics? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
                 <Toggle defaultChecked={props.infos.ga.enabled}  label="Google Analytics" className="col col-12 mb2" />
-                <Input defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-12 mb2" label="URL" placeholder="URL"  />
+                <Input defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-12 mb2" label="Key" placeholder="UA-xxxxxx"  />
             </Card>
             <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
