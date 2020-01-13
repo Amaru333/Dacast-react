@@ -5,15 +5,23 @@ export enum ActionTypes {
 export interface ApiIntegrationPageInfos {
     apiKeys: ApiKeyItem[];
     encoderKeys: EncoderKeyItem[];
-    webHook: WebHookItem[];
+    webHooks: WebHookItem[];
     s3Keys: S3KeyItem[];
+    ga: {
+        enabled: boolean;
+        key: string;
+    };
 }
 
 export const defaultStateApiIntegration: ApiIntegrationPageInfos = {
     apiKeys: [],
     encoderKeys: [],
-    webHook: [],
-    s3Keys: []
+    webHooks: [],
+    s3Keys: [],
+    ga: {
+        enabled: false,
+        key: ""
+    }
 }
 
 export interface EncoderKeyItem {

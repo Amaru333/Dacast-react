@@ -14,6 +14,7 @@ export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {},
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetSettingsIntegrationDetails> ) => {
         await SettingsIntegrationServices.getSettingsIntegrationService()
             .then( response => {
+                console.log(response);
                 dispatch( {type: ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

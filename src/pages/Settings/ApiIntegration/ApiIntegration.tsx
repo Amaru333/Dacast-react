@@ -1,8 +1,4 @@
-import { connect } from "react-redux";
-import { ThunkDispatch } from "redux-thunk";
-
-import { ApplicationState } from "../../../redux-flow/store";
-import { Action, getSettingsIntegrationAction, ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem, WebHookItem } from "../../../redux-flow/store/Settings/ApiIntegration";
+import { Action, getSettingsIntegrationAction, ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem, WebHookItem, S3KeyItem } from "../../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 import { Modal } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
@@ -13,11 +9,13 @@ import { Icon } from '@material-ui/core';
 import { tsToLocaleDate, useMedia } from '../../../utils/utils';
 
 import styled from "styled-components";
-import { ApiKeysForm, EncoderKeysForm, WebHooksForm } from './ModalsFormsKeys';
+import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
 import { DateTime } from 'luxon';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { Input } from '../../../components/FormsComponents/Input/Input';
 
 export interface ApiIntegrationProps {
-    infos: false | ApiIntegrationPageInfos;
+    infos: ApiIntegrationPageInfos;
     getSettingsIntegrationAction: Function;
 }
 
@@ -38,6 +36,12 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     const [putWebHooksModalOpened, setPutWebHooksModalOpened] = React.useState<boolean>(false);
     const [selectedEditWebHooks, setSelectedEditWebHooks] = React.useState<WebHookItem | false>(false);
 
+
+    //** S3 Keys states */
+    const [postS3KeysModalOpened, setPostS3KeysModalOpened] = React.useState<boolean>(false);
+    const [putS3KeysModalOpened, setPutS3KeysModalOpened] = React.useState<boolean>(false);
+    const [selectedEditS3Keys, setSelectedEditS3Keys] = React.useState<S3KeyItem | false>(false);
+
     let smScreen = useMedia('(max-width: 780px)');
 
     const editApiKeyItem = (item: ApiKeyItem) => {
@@ -54,7 +58,14 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
         setPutWebHooksModalOpened(true);
     }
 
+
+    const editS3KeyIten = (item: S3KeyItem) => {
+        setSelectedEditS3Keys(item);
+        setPutS3KeysModalOpened(true);
+    }
+
     const apiKeyBodyElement = () => {
+        console.log(props);
         if (props.infos) {
             return props.infos.apiKeys.map((value, key) => {
                 return [
@@ -103,7 +114,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 
     const webHooksBodyElement = () => {
         if (props.infos) {
-            return props.infos.webHook.map((value, key) => {
+            return props.infos.webHooks.map((value, key) => {
                 return [
                     <Text key={key + value.url} size={14} weight="reg" color="gray-1">{value.url}</Text>,
                     <Text key={key + value.url} size={14} weight="reg" color="gray-1">{value.method}</Text>,
@@ -129,7 +140,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Text key={key + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{ tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
-                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>delete</Icon><Icon onClick={() => { editS3KeyIten(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -140,7 +151,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             <Text key="encoderTable" size={14} weight="med" color="gray-1">Name</Text>,
             <Text key="keyTable" size={14} weight="med" color="gray-1">Created</Text>,
             <Text key="createdTable" size={14} weight="med" color="gray-1">Expires</Text>,
-            <Button key="actionTable" className={"right mr2 " + (smScreen ? 'hide' : '')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
+            <Button key="actionTable" className={"right mr2 " + (smScreen ? 'hide' : '')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
         ]
     }
 
@@ -181,8 +192,17 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Icon className="mr1" >info_outlined</Icon>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your S3 Keys? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
                 <Table className="col-12" id="s3KeysTable" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
+                <HrStyle />
+                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Google Analytics</Text>
+                <Text className={"inline-block mb2"}  size={14} weight="reg" color="gray-1" >Some text about where to find the Google Analytics number or whatever.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <Icon className="mr1" >info_outlined</Icon>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up Google Analytics? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
+                <Toggle defaultChecked={props.infos.ga.enabled}  label="Google Analytics" className="col col-12 mb2" />
+                <Input defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-12 mb2" label="URL" placeholder="URL"  />
             </Card>
             <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
@@ -208,6 +228,15 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             {selectedEditWebHooks ?
                 <Modal title="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
                     <WebHooksForm item={selectedEditWebHooks} toggle={setPutWebHooksModalOpened} />
+                </Modal> :
+                null
+            }
+            <Modal title="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
+                <S3KeysForm toggle={setPostS3KeysModalOpened} />
+            </Modal>
+            {selectedEditS3Keys ?
+                <Modal title="Edit S3 Key" toggle={() => setPutS3KeysModalOpened(!putS3KeysModalOpened)} size="small" opened={putS3KeysModalOpened} >
+                    <S3KeysForm item={selectedEditS3Keys} toggle={setPutS3KeysModalOpened} />
                 </Modal> :
                 null
             }
