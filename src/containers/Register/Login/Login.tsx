@@ -2,9 +2,9 @@ import React from 'react';
 import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../redux-flow/store";
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { LoginPage } from '../../../Pages/Register/Login/Login';
-import { loginAction, Action } from '../../../redux-flow/store/Register/Login/actions'
+import { loginAction, Action } from '../../../redux-flow/store/Register/Login/actions';
+import { addToken } from '../../../utils/token';
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 
 interface LoginContainerProps {
@@ -14,8 +14,18 @@ interface LoginContainerProps {
 }
 const Login = (props: LoginContainerProps) => {
 
+    React.useEffect(() => {}, [props.loginInfos])
+
+    const  loginUser = async (username: string, password: string) => {
+        await props.login({username: username, password: password})
+        if(props.loginInfos && props.loginInfos.token.length > 0) {
+            addToken(props.loginInfos);
+            props.history.push('/dashboard');
+        }
+    }
+
     return (
-        <LoginPage {...props} /> 
+        <LoginPage login={loginUser} /> 
     )
 }
 

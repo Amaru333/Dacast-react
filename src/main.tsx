@@ -35,23 +35,17 @@ interface MainProps {
 const returnRouter = (props: Routes[]) => {
     return (
         props.map((route: Routes, i: number) => {
-            return !route.slug ? <Route key={i}
+            return !route.slug ? <PrivateRoute key={i.toString()}
                 path={route.path}
-                render={props => (
-                    // pass the sub-routes down to keep nesting
-                    <route.component {...props} routes={route.slug} />
-                )}
+                // pass the sub-routes down to keep nesting
+                component={route.component}
             />
                 : route.slug.map((subroute, index) => {
-                    return <Route key={'subroute'+index}
+                    return <PrivateRoute key={'subroute'+index}
                         path={subroute.path}
-                        render={props => (
-                            // pass the sub-routes down to keep nesting
-                            <subroute.component {...props} />
-                        )}
+                        component={subroute.component}                          
                     />
                 })
-
         })
     )
 }
@@ -60,7 +54,7 @@ const test = () => {
     return <LoadingSpinner color='black' size='large' />
 }
 
-const PrivateRoute = (props: {component: any; path: string}) => {
+const PrivateRoute = (props: {key: string; component: any; path: string}) => {
     const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
 
     const menuHoverOpen = () => {
@@ -95,17 +89,7 @@ const PrivateRoute = (props: {component: any; path: string}) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
-    const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
-    const menuHoverOpen = () => {
-        if (!isOpen && !menuLocked) {
-            setOpen(true)
-        }
-    };
-    const menuHoverClose = () => {
-        if (isOpen && !menuLocked) {
-            setOpen(false)
-        }
-    };
+
 
     return (
         <Provider store={store}>
@@ -114,31 +98,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     <>                 
  
                         <Toasts />
-                        <MainMenu 
-                            menuLocked={menuLocked} 
-                            onMouseEnter={() => menuHoverOpen()} 
-                            onMouseLeave={() => menuHoverClose()} 
-                            navWidth={currentNavWidth} 
-                            isMobile={isMobile} 
-                            isOpen={isOpen} 
-                            setMenuLocked={setMenuLocked} 
-                            setOpen={setOpen} 
-                            className="navigation" 
-                            history={history} 
-                            routes={AppRoutes}
-                        />
-                        <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
-                            <Content isMobile={isMobile} isOpen={isOpen}>
-                                <Switch>
-                                    {returnRouter(AppRoutes)}
-                                    <PrivateRoute path='/dashboard' component={Dashboard} />
-                                    <Route exact path='/'><Login history={history} /></Route>
-                                    <Route path='/login'><Login history={history} /></Route>
-                                    <Route path='*' ><NotFound /></Route>
-                                </Switch>
-                            </Content>
-                        </FullContent>   
+                            <Switch>
+                                <Route exact path='/'><Login history={history} /></Route>
+                                <Route path='/login'><Login history={history} /></Route>
+                                {returnRouter(AppRoutes)}
+                                <Route path='*' ><NotFound /></Route>
+                            </Switch>
                     </>
                 </Router>
             </ThemeProvider>

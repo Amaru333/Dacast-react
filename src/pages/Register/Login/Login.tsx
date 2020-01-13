@@ -4,17 +4,11 @@ import { ModalCard, ModalFooter, ModalContent } from '../../../components/Modal/
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { isLoggedIn, addToken } from '../../../utils/token';
-import { TokenInfos } from '../../../redux-flow/store/Register/Login';
-
-
 
 const logo = require('../../../../public/assets/logo.png');
 
 interface LoginComponentProps {
     login: Function;
-    loginInfos: TokenInfos;
-    history: any;
 }
 export const LoginPage = (props: LoginComponentProps) => {
 
@@ -23,10 +17,6 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     const submitLogin = (username: string, password: string) => {
         props.login({username, password})
-        if(props.loginInfos && props.loginInfos.token.length > 0) {
-            addToken(props.loginInfos);
-            props.history.push('/dashboard');
-        }
     }
     return (
         <LoginContainer>
