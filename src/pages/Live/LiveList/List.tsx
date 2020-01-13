@@ -6,6 +6,7 @@ import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
+import styled from 'styled-components';
 
 export interface LiveListProps {
     liveList: LiveItem[];
@@ -47,6 +48,26 @@ export const LiveListPage = (props: LiveListProps) => {
         ]
     }
 
+    const handleFeatures = (item: LiveItem) => {
+        var vodElement = []
+        if (item.features.paywall) {
+            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
+        }
+        if (item.features.recording) {
+            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>videocam</IconStyle></IconGreyContainer>)
+        }
+        if (item.features.playlist) {
+            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
+        }
+        if (item.features.rewind) {
+            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>replay_30</IconStyle></IconGreyContainer>)
+        }
+        if (item.features.advertising) {
+            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
+        }
+        return vodElement;
+    }
+
     const liveListBodyElement = () => {
         if (props.liveList) {
             return props.liveList.map((value, key) => {
@@ -64,7 +85,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <></>,
+                    <>{handleFeatures(value)}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {} } className="right mr1" >edit</Icon><Icon  className="right mr1" >delete</Icon></div>,
                 ]
             })
@@ -76,3 +97,29 @@ export const LiveListPage = (props: LiveListProps) => {
         <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
     )
 }
+
+export const IconStyle = styled(Icon)`
+    margin: auto;
+    font-size: 16px !important;
+    
+`
+
+const IconGreyContainer = styled.div<{}>`
+    position: relative;
+    z-index: 1;
+    color :  ${props => props.theme.colors["gray-3"]} ;
+    display: inline-flex;
+    height: 24px;
+    width: 24px;
+    align-items: center;
+    &:before {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        z-index: -1;
+        height: 24px;
+        position: absolute;
+        border-radius: 12px;
+        background-color: ${props => props.theme.colors["gray-8"]} ;
+    }
+`
