@@ -5,11 +5,11 @@ import { ActionTypes, TokenInfos, defaultStateLogin } from './types'
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {
         case ActionTypes.LOGIN : 
-        return {
-            ... state, ...action.payload
-        }
+            return {
+                ... state, ...action.payload
+            }
         default :
-        return {...state}
+            return {...state}
     }
 }
 

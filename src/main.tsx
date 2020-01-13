@@ -22,8 +22,6 @@ import { Header } from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Login from '../src/containers/Register/Login/Login';
 import { isLoggedIn } from './utils/token';
-import { LoadingSpinner } from './components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import Dashboard from './containers/Dashboard/Dashboard';
 import { NotFound } from './containers/404page';
 import Toasts from './containers/Others/Toasts';
 
@@ -48,10 +46,6 @@ const returnRouter = (props: Routes[]) => {
                 })
         })
     )
-}
-
-const test = () => {
-    return <LoadingSpinner color='black' size='large' />
 }
 
 const PrivateRoute = (props: {key: string; component: any; path: string}) => {
