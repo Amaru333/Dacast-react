@@ -2,13 +2,17 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../toasts/actions';
 import { LiveGeneralServices } from './services';
-import { ActionTypes, LiveDetails } from './types';
-
+import { ActionTypes, LiveDetails, LiveItem } from './types';
 
 
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
     payload: LiveDetails
+}
+
+export interface GetLiveList {
+    type: ActionTypes.GET_LIVE_LIST;
+    payload: LiveItem[]
 }
 
 export interface SaveLiveDetails {
@@ -21,6 +25,18 @@ export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLive
         await LiveGeneralServices.getLiveDetailsService()
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_DETAILS, payload: response.data });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getLiveListAction = (): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveList>) => {
+        await LiveGeneralServices.getLiveList()
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_LIVE_LIST, payload: response.data });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -42,4 +58,4 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
 
 
 
-export type Action = GetLiveDetails | SaveLiveDetails
+export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails

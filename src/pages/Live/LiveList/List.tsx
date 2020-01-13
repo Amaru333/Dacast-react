@@ -5,28 +5,38 @@ import { Text } from '../../../components/Typography/Text';
 import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Label } from '../../../components/FormsComponents/Label/Label';
+import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 
+export interface LiveListProps {
+    liveList: LiveItem[];
+    deleteLiveList: Function;
+}
 
-export const LiveListPage = () => {
+export const LiveListPage = (props: LiveListProps) => {
+
+    const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
+
+    React.useEffect(() => {
+
+    }, [selectedLive])
 
     const liveListHeaderElement = () => {
         return [
             <InputCheckbox 
             className="inline-flex" 
             key="checkboxLiveListBulkAction" 
-            // indeterminate={selectedLive.length >= 1 && selectedLive.length < props.items.length} 
-            // defaultChecked={selectedLive.length === props.items.length}
+            indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length} 
+            defaultChecked={selectedLive.length === props.liveList.length}
             id="globalCheckboxVodList" 
-            // onChange={(event) => {
-            //     console.log(event.currentTarget.checked, "oco1");
-            //     if (event.currentTarget.checked) {
-            //         const editedselectedLive = props.items.map(item => { return item.id })
-            //         setSelectedLive(editedselectedLive);
-            //     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-            //         setSelectedLive([])
-            //     }
-            // }
-            // } 
+            onChange={(event) => {
+                if (event.currentTarget.checked) {
+                    const editedselectedLive = props.liveList.map(item => { return item.id })
+                    setSelectedLive(editedselectedLive);
+                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                    setSelectedLive([])
+                }
+            }
+            } 
             />,
             <></>,
             <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
@@ -38,11 +48,11 @@ export const LiveListPage = () => {
     }
 
     const liveListBodyElement = () => {
-        if (props.items) {
-            return props.items.map((value, key) => {
+        if (props.liveList) {
+            return props.liveList.map((value, key) => {
                 return [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id.toString()} onChange={(event) => {
-                        if (event.currentTarget.checked && selectedLive.length < props.items.length) {
+                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
+                        if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
                             setSelectedLive([...selectedLive, value.id])
                         } else {
                             const editedselectedLive = selectedLive.filter(item => item !== value.id)
@@ -53,7 +63,7 @@ export const LiveListPage = () => {
                     <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
+                    <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <></>,
                     <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {} } className="right mr1" >edit</Icon><Icon  className="right mr1" >delete</Icon></div>,
                 ]

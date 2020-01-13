@@ -1,5 +1,6 @@
 export enum ActionTypes {
     GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS",
+    GET_LIVE_LIST = "@@live_list/GET_LIVE_LIST",
     SAVE_LIVE_DETAILS = "@@live_general/SAVE_LIVE_DETAILS"
 }
 
@@ -14,6 +15,23 @@ export interface LiveDetails {
     poster?: string;
     recording: boolean;
     countdown: LiveStreamCountdown;
+}
+
+export interface LiveItem {
+    id: string;
+    streamOnline: boolean;
+    title: string;
+    created: number;
+    thumbnail: string;
+    features: LiveFeaturesList;
+}
+
+export interface LiveFeaturesList {
+    recording: boolean;
+    rewind: boolean;
+    paywall: boolean;
+    playlist: boolean;
+    advertising: boolean;
 }
 
 interface LiveStreamCountdown {
@@ -36,3 +54,5 @@ export const initialLiveGeneralState: LiveDetails = {
         enabled: false
     }
 }
+
+export const initialLiveList: LiveItem[] | false = false;
