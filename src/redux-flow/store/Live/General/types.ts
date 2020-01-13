@@ -1,7 +1,8 @@
 export enum ActionTypes {
     GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS",
     GET_LIVE_LIST = "@@live_list/GET_LIVE_LIST",
-    SAVE_LIVE_DETAILS = "@@live_general/SAVE_LIVE_DETAILS"
+    SAVE_LIVE_DETAILS = "@@live_general/SAVE_LIVE_DETAILS",
+    DELETE_LIVE_CHANNEL = "@@live_list/DELETE_LIVE_CHANNEL"
 }
 
 export interface LiveDetails {

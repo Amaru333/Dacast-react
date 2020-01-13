@@ -20,6 +20,11 @@ export interface SaveLiveDetails {
     payload: LiveDetails
 }
 
+export interface DeleteLiveChannel {
+    type: ActionTypes.DELETE_LIVE_CHANNEL;
+    payload: {id: string}
+}
+
 export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveDetails>) => {
         await LiveGeneralServices.getLiveDetailsService()
@@ -56,6 +61,11 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
     };
 }
 
+export const deleteLiveChannelAction = (id: string): DeleteLiveChannel => {
+    return {
+        type: ActionTypes.DELETE_LIVE_CHANNEL,
+        payload: {id}
+    }
+}
 
-
-export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails
+export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails | DeleteLiveChannel

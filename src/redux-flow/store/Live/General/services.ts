@@ -15,8 +15,13 @@ const saveLiveDetailsService = (data: LiveDetails) => {
     return axios.post(urlBase + 'live-details', {...data});
 }
 
+const deleteLiveChannelService = (data: string) => {
+    return axios.delete(urlBase + 'channel', {data}); 
+}
+
 export const LiveGeneralServices = {
     getLiveDetailsService,
     getLiveList,
-    saveLiveDetailsService
+    saveLiveDetailsService,
+    deleteLiveChannelService
 }

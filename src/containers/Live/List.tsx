@@ -3,14 +3,14 @@ import { LiveListPage, LiveListProps } from '../../pages/Live/LiveList/List';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveListAction } from '../../redux-flow/store/Live/General/actions';
+import { Action, getLiveListAction, deleteLiveChannelAction } from '../../redux-flow/store/Live/General/actions';
 import { LiveItem } from '../../redux-flow/store/Live/General/types';
 import { connect } from 'react-redux';
 
 export interface LiveListContainerProps {
     liveList: LiveItem[];
     getLiveList: Function;
-    deleteLiveList: Function;
+    deleteLiveChannel: Function;
 }
 
  export const LiveList = (props: LiveListContainerProps) => {
@@ -42,7 +42,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getLiveList: () => {
             dispatch(getLiveListAction());
-        }
+        },
+        deleteLiveChannel: (id: string) => {
+            dispatch(deleteLiveChannelAction(id));
+        },
     };
 }
 

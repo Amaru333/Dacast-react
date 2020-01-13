@@ -24,6 +24,11 @@ export const reducerList: Reducer<LiveItem[] | false> = (state = initialLiveList
             return [
                 ...action.payload
             ];
+        case ActionTypes.DELETE_LIVE_CHANNEL:
+                if(state) {
+                    var newList = state.filter(elem => elem.id !== action.payload.id);
+                    return newList;
+                }
         default:
             return state;
     }
