@@ -7,10 +7,12 @@ export interface ApiIntegrationPageInfos {
     encoderKeys: EncoderKeyItem[];
     webHooks: WebHookItem[];
     s3Keys: S3KeyItem[];
-    ga: {
-        enabled: boolean;
-        key: string;
-    };
+    ga: GaItem;
+}
+
+export interface GaItem {
+    enabled: boolean;
+    key: string;
 }
 
 export const defaultStateApiIntegration: ApiIntegrationPageInfos = {

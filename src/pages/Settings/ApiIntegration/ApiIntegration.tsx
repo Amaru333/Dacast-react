@@ -1,4 +1,4 @@
-import { Action, getSettingsIntegrationAction, ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem, WebHookItem, S3KeyItem } from "../../../redux-flow/store/Settings/ApiIntegration";
+import { ApiIntegrationPageInfos, ApiKeyItem, EncoderKeyItem, WebHookItem, S3KeyItem, GaItem } from "../../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 import { Modal } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
@@ -7,12 +7,13 @@ import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { tsToLocaleDate, useMedia } from '../../../utils/utils';
-
+import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
 import { DateTime } from 'luxon';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
+import { Label } from '../../../components/FormsComponents/Label/Label';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -42,6 +43,9 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     const [putS3KeysModalOpened, setPutS3KeysModalOpened] = React.useState<boolean>(false);
     const [selectedEditS3Keys, setSelectedEditS3Keys] = React.useState<S3KeyItem | false>(false);
 
+    const [originalStateGa, setOriginalStateGa] = React.useState<GaItem>(props.infos.ga);
+    const [currentStateGa, setCurrentStateGa] = React.useState<GaItem>(props.infos.ga);
+
     let smScreen = useMedia('(max-width: 780px)');
 
     const editApiKeyItem = (item: ApiKeyItem) => {
@@ -65,7 +69,6 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     }
 
     const apiKeyBodyElement = () => {
-        console.log(props);
         if (props.infos) {
             return props.infos.apiKeys.map((value, key) => {
                 return [
@@ -139,8 +142,8 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 return [
                     <Text key={key + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{ tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
-                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>delete</Icon><Icon onClick={() => { editS3KeyIten(value) }} >edit</Icon> </IconContainer>
+                    <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{ Date.now() > value.expires ? <Label label="Expired" size={14} weight="reg" color="red" backgroundColor="red20"  /> : tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
+                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>get_app</Icon><Icon>delete</Icon><Icon onClick={() => { editS3KeyIten(value) }} >edit</Icon> </IconContainer>
                 ]
             })
         }
@@ -201,12 +204,16 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Icon className="mr1" >info_outlined</Icon>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up Google Analytics? Visit the <a rel="noopener noreferrer" target="_blank"  href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Toggle defaultChecked={props.infos.ga.enabled}  label="Google Analytics" className="col col-12 mb2" />
-                {props.infos.ga.enabled ? 
-                    <Input defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2" label="Key" placeholder="UA-xxxxxx"  />
+                <Toggle onChange={ () => setCurrentStateGa( { enabled: !currentStateGa.enabled, key: currentStateGa.key } ) } checked={currentStateGa.enabled} defaultChecked={props.infos.ga.enabled}  label="Google Analytics" className="col col-12 mb2" />
+                {currentStateGa.enabled ? 
+                    <Input value={currentStateGa.key} onChange={ e => setCurrentStateGa( {enabled: currentStateGa.enabled, key: e.target.value } ) } defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2" label="Key" placeholder="UA-xxxxxx"  />
                     : null
                 }
             </Card>
+            <ButtonContainer hidden={JSON.stringify(currentStateGa) === JSON.stringify(originalStateGa)} >
+                <ButtonStyle typeButton="primary" onClick={() => alert("Post GA Tag")}>Save</ButtonStyle>
+                <ButtonStyle onClick={() => setCurrentStateGa(originalStateGa)} typeButton="secondary">Cancel</ButtonStyle>
+            </ButtonContainer>
             <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
             </Modal>
