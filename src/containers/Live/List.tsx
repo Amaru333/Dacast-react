@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiveListPage } from '../../pages/Live/List';
+import { LiveListPage } from '../../pages/Live/LiveList/List';
 
  export const LiveList = () => {
     return (
