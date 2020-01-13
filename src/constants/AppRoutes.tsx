@@ -103,7 +103,19 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: null,
+        slug: [
+            {
+                path: '/videos/vodlist',
+                name: 'VOD List',
+                component: VodList
+            },
+            {
+                path: '/videos/general',
+                name: 'General',
+                component: General
+            },
+        ]
     },
     {
         path: '/folders',
