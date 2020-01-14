@@ -3,9 +3,15 @@ import { Tab } from '../../components/Tab/Tab';
 import { VideoSubRoutes } from '../../constants/VideoSubRoutes';
 import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
+import { Button } from '../../components/FormsComponents/Button/Button';
+import { Icon } from '@material-ui/core';
 
-export const VideoTabs = (props: {history: any; videoId: string}) => {
+export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
+
+    React.useEffect(() => {
+        props.history.push('/videos/'+props.videoId+'/general')
+    }, [])
 
     const handleVideoSubRoutes = () => {
         return VideoSubRoutes.map((route) => {
@@ -39,6 +45,7 @@ export const VideoTabs = (props: {history: any; videoId: string}) => {
 
     return (
         <div>
+            <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
             <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
             <Switch>
                 {returnRouter(handleVideoSubRoutes())}
