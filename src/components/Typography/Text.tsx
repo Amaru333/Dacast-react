@@ -11,4 +11,4 @@ export const Text = (props: TextProps) => {
     );
 }
 
-Text.defaultProps = { color: "gray-1" };
+Text.defaultProps = { color: "gray-1", weight: 'reg' };

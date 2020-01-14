@@ -3,12 +3,13 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
-import ApiIntegration from '../containers/Settings/ApiIntegration/ApiIntegration';
+import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
-import EncodingRecipes from '../components/Pages/Settings/EncodingRecipes/EncodingRecipes';
-import Security from '../containers/Settings/Security/Security';
-import Chapters from '../containers/VOD/Chapters/Chapters';
-import EmbedSettings from '../components/Pages/Settings/EmbedSettings';
+import Uploader from '../containers/Videos/Uploader';
+import EncodingRecipes from '../containers/Settings/EncodingRecipes';
+import Security from '../containers/Settings/Security';
+import EmbedSettings from '../containers/Settings/EmbedSettings';
+import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
 import {PlansPage} from './../components/Pages/Account/Plans/Plans'
 
@@ -79,7 +80,7 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: Chapters
+        component: VodList
     },
     {
         path: '/folders',

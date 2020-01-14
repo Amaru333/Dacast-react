@@ -4,7 +4,7 @@ export enum ActionTypes {
     ADD_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/ADD_BILLING_PAGE_PLAYBACK_PROTECTION",
     EDIT_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/EDIT_BILLING_PAGE_PLAYBACK_PROTECTION",
     DELETE_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_billing/DELETE_BILLING_PAGE_PLAYBACK_PROTECTION",
-
+    ADD_BILLING_PAGE_EXTRAS = "@@account_billing/ADD_BILLING_PAGE_EXTRAS",
 }
 
 
@@ -25,7 +25,7 @@ export interface Extras {
     type: string;
     amount: string;
     price: string;
-    datePurchased: Date;
+    datePurchased?: Date;
 }
 
 export interface PaypalPayment {

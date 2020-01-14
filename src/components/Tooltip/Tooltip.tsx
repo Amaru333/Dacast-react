@@ -14,19 +14,20 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
         let target = document.getElementById(props.target);
         if(target && tooltip.current) {
 
+            console.log(target.offsetTop - (tooltip.current.clientHeight + 2) , target.offsetLeft + ((target.clientWidth - tooltip.current.clientWidth) / 2));
             setTop(target.offsetTop - (tooltip.current.clientHeight + 2) );
             setLeft(target.offsetLeft + ((target.clientWidth - tooltip.current.clientWidth) / 2) );
     
             if(!target.onmouseleave) {
                 target.onmouseleave = () => {
                     setVisibility(false);
-                };
+                };  
                 target.onmouseenter = () => {
                     setVisibility(true);
                 };
             }
         }
-    }, [props.children]);
+    }, [visibility]);
 
     return (
         <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>
