@@ -14,6 +14,7 @@ import VodList from '../containers/Videos/VideosList';
 import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
 import VodSecurity from '../containers/Videos/Security';
+import Folders from '../containers/Folders/Folders';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -108,7 +109,7 @@ export const AppRoutes: Routes[] = [
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        component: functionTest1
+        component: Folders
     },
 
     {
