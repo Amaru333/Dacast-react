@@ -1,9 +1,9 @@
 import React from 'react';
 import { LiveGeneralPage } from '../../pages/Live/General/General'
-import { LiveDetails } from '../../redux-flow/store/Live/General/types';
+import { LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveDetailsAction, saveLiveDetailsAction } from '../../redux-flow/store/Live/General/actions';
+import { Action, getLiveDetailsAction, saveLiveDetailsAction, changeLiveThumbnailAction, changeLiveSplashscreenAction, changeLivePosterAction } from '../../redux-flow/store/Live/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
@@ -11,6 +11,9 @@ interface LiveGeneralProps {
     liveDetails: LiveDetails;
     getLiveDetails: Function;
     saveLiveDetails: Function;
+    changeLiveThumbnail: Function;
+    changeLiveSplashscreen: Function;
+    changeLivePoster: Function;
 }
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
@@ -43,7 +46,16 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveLiveDetails: (data: LiveDetails) => {
             dispatch(saveLiveDetailsAction(data));
-        }
+        },
+        changeLiveThumbnail: (data: ThumbnailUpload) => {
+            dispatch(changeLiveThumbnailAction(data))
+        },
+        changeLiveSplashscreen: (data: SplashscreenUpload) => {
+            dispatch(changeLiveSplashscreenAction(data))
+        },
+        changeLivePoster: (data: PosterUpload) => {
+            dispatch(changeLivePosterAction(data))
+        },
 
     }
 }

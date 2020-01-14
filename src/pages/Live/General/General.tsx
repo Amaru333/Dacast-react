@@ -16,6 +16,9 @@ import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
     saveLiveDetails: Function;
+    changeLiveThumbnail: Function;
+    changeLiveSplashscreen: Function;
+    changeLivePoster: Function;
 }
 
 var moment = require('moment-timezone');
@@ -121,7 +124,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                                 <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true);}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>

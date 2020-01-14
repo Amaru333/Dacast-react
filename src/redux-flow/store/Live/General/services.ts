@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { LiveDetails } from './types';
+import { LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
@@ -11,7 +11,22 @@ const saveLiveDetailsService = (data: LiveDetails) => {
     return axios.post(urlBase + 'live-details', {...data});
 }
 
+const changeLiveThumbnailService = (data: ThumbnailUpload) => {
+    return axios.put(urlBase + 'live-details', {...data})
+}
+
+const changeLiveSplashscrenService = (data: SplashscreenUpload) => {
+    return axios.put(urlBase + 'live-details', {...data})
+}
+
+const changeLivePosterService = (data: PosterUpload) => {
+    return axios.put(urlBase + 'live-details', {...data})
+}
+
 export const LiveGeneralServices = {
     getLiveDetailsService,
-    saveLiveDetailsService
+    saveLiveDetailsService,
+    changeLiveThumbnailService,
+    changeLiveSplashscrenService,
+    changeLivePosterService
 }
