@@ -47,6 +47,20 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
         textArea.remove();
     }
 
+    const handleImageModalFunction = () => {
+        if (imageModalTitle === "Change Splashscreen") {
+            console.log("splash")
+           return  props.changeLiveSplashscreen
+           
+        } else if (imageModalTitle === "Change Thumbnail") {
+            console.log("thumb")
+            return props.changeLiveThumbnail
+        } else {
+            console.log("poster")
+            return props.changeLivePoster
+        }
+    }
+
     return (
         <React.Fragment>
             <Card className="col-12 clearfix">
@@ -124,7 +138,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                                 <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true);}}>Change</Button></ButtonSection>  
+                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -210,7 +224,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                           
                     </div>  
                 </div>
-                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={() => console.log("submitted")} title={imageModalTitle} />
+                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} title={imageModalTitle} />
 
             </Card>
             <ButtonContainer>

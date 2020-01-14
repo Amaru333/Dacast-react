@@ -12,15 +12,15 @@ const saveLiveDetailsService = (data: LiveDetails) => {
 }
 
 const changeLiveThumbnailService = (data: ThumbnailUpload) => {
-    return axios.put(urlBase + 'live-details', {...data})
+    return axios.put(urlBase + 'live/thumbnail', {...data})
 }
 
 const changeLiveSplashscrenService = (data: SplashscreenUpload) => {
-    return axios.put(urlBase + 'live-details', {...data})
+    return axios.put(urlBase + 'live/splashscreen', {...data})
 }
 
 const changeLivePosterService = (data: PosterUpload) => {
-    return axios.put(urlBase + 'live-details', {...data})
+    return axios.put(urlBase + 'live/poster', {...data})
 }
 
 export const LiveGeneralServices = {
