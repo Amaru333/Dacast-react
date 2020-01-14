@@ -8,12 +8,9 @@ import Profile from '../containers/Account/Profile';
 import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
-import Chapters from '../containers/Videos/Chapters';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
-import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
-import VodSecurity from '../containers/Videos/Security';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -21,12 +18,6 @@ import VodSecurity from '../containers/Videos/Security';
 const functionTest1 = () => {
     return (
         <LoadingSpinner size="small" color="dark-violet" />
-    )
-}
-
-const vodList = () => {
-    return (
-        <VodList  />
     )
 }
 
@@ -73,14 +64,6 @@ const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
             <h2>Playlist</h2>
-        </div>
-    )
-}
-
-const Admin = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Admin</h2>
         </div>
     )
 }

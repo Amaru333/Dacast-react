@@ -5,7 +5,7 @@ import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ChapterMarkerInfos, ChapterMarker } from '../../redux-flow/store/VOD/Chapters/types';
 import { Action, getVodChapterMarkersAction, saveVodChapterMarkerAction, addVodChapterMarkerAction, deleteVodChapterMarkerAction } from '../../redux-flow/store/VOD/Chapters/actions';
-import { ChaptersPage } from '../../../pages/VOD/Chapters';
+import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
 
 interface ChapterContainerProps {
     chapterPageDetails: ChapterMarkerInfos;
