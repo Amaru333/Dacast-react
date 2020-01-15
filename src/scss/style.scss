@@ -62,6 +62,10 @@ a {
     transition: none !important;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .navigation {
     a:hover {
         color: initial;
