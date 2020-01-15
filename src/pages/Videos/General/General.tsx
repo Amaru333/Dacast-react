@@ -11,7 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from './ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ThumbnailImage } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection } from "../../../shared/General/GeneralStyle"
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -20,6 +20,8 @@ interface GeneralComponentProps {
     editVodSubtitle: Function;
     deleteVodSubtitle: Function;
     changeVodThumbnail: Function;
+    changeVodSplashscreen: Function;
+    changeVodPoster: Function;
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -106,12 +108,27 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
     const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
+    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
     React.useEffect(() => { }, [selectedSubtitle, subtitleModalOpen])
     const testSubtitleFile = "mozumban_subtitle_678.srt"
+
+    const handleImageModalFunction = () => {
+        if (imageModalTitle === "Change Splashscreen") {
+            console.log("splash")
+           return  props.changeVodSplashscreen
+           
+        } else if (imageModalTitle === "Change Thumbnail") {
+            console.log("thumb")
+            return props.changeVodThumbnail
+        } else {
+            console.log("poster")
+            return props.changeVodPoster
+        }
+    }
 
     return (
         VodDetails ?
@@ -131,13 +148,13 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Input
                             className="col col-6 pr2"
                             label="Title"
-                            value={props.vodDetails.title}
+                            defaultValue={props.vodDetails.title}
                             onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                         />
                         <Input
                             className="col col-6"
                             label="Folder"
-                            value={props.vodDetails.folder}
+                            defaultValue={props.vodDetails.folder}
                             onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
                         />
                         <Input
@@ -189,14 +206,45 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Divider className="col col-12" />
                     </div>
                     <div className="thumbnail col col-12">
-                        <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
-                        <Text className="col col-12 pt1" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
-                        <ImagesContainer className="col col-12 pt2 flex">
-                            <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()} />
+                    <Text className="col col-12" size={20} weight="med">Images</Text>
+                    <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
+                    <ImagesContainer className="col col-12 pt2 flex">
+                        <ImageContainer className="mr2">
+                            <div className="flex flex-center">
+                            <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                            <Icon>info_outlined</Icon>
+                            </div>
+                           
+                            <ImageArea className="mt2">
+                                <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>
+                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                            </ImageArea>
+                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                        </ImageContainer>
+                        <ImageContainer className="mr2">
+                            <div className="flex flex-center">
+                            <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                            </div>
+                            <ImageArea className="mt2">
+                                <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>
+                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                            </ImageArea>
+                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                        </ImageContainer>
+                        <ImageContainer className="">
+                            <div className="flex flex-center">
+                            <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                            </div>
+                            <ImageArea className="mt2">
+                                <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>
+                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                            </ImageArea>
+                            <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
+                        </ImageContainer>
 
-                        </ImagesContainer>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setImageModalOpen(true)}>Change Thumbnail</Button>
-                    </div>
+                    </ImagesContainer>
+                </div>
                     <Divider className="col col-12" />
                     <div className="subtitles col col-12">
                         <Text className="col col-12" size={20} weight="med">Subtitles</Text>
@@ -256,12 +304,12 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.changeVodThumbnail} />
+                    <ImageModal title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
 
                 </Card>
                 <ButtonContainer>
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
-                    <Button typeButton="secondary">Discard</Button>
+                    <Button typeButton="secondary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
             </React.Fragment>
             : null

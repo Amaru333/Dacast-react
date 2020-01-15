@@ -7,7 +7,9 @@ export enum ActionTypes {
     ADD_VOD_SUBTITLE = "@@vod_general/ADD_VOD_SUBTITLE",
     EDIT_VOD_SUBTITLE = "@@vod_general/EDIT_VOD_SUBTITLE",
     DELETE_VOD_SUBTITLE = "@@vod_general/DELETE_VOD_SUBTITLE",
-    CHANGE_VOD_THUMBNAIL = "@@vod_general/CHANGE_VOD_THUMBNAIL"
+    CHANGE_VOD_THUMBNAIL = "@@vod_general/CHANGE_VOD_THUMBNAIL",
+    CHANGE_VOD_SPLASHSCREEN = "@@vod_general/CHANGE_VOD_SPLASHSCREEN",
+    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER"
 }
 
 export interface VodDetails {
@@ -17,6 +19,8 @@ export interface VodDetails {
     folder: string;
     description: string;
     thumbnail: string;
+    splashscreen: string;
+    poster?: string
     subtitles: SubtitleInfo[];
 }
 
@@ -45,4 +49,12 @@ export interface SubtitleInfo {
 
 export interface ThumbnailUpload {
     thumbnail: File | string;
+}
+
+export interface SplashscreenUpload {
+    splashscreen: File | string;
+}
+
+export interface PosterUpload {
+    poster: File | string;
 }

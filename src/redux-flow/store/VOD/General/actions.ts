@@ -39,6 +39,16 @@ export interface ChangeVodThumbnail {
     payload: { thumbnail: string };
 }
 
+export interface ChangeVodSplashscreen {
+    type: ActionTypes.CHANGE_VOD_SPLASHSCREEN;
+    payload: {splashscreen: string}
+}
+
+export interface ChangeVodPoster {
+    type: ActionTypes.CHANGE_VOD_POSTER;
+    payload: {poster: string}
+}
+
 export interface PostVod {
     type: ActionTypes.POST_VOD;
     payload: {};
@@ -149,4 +159,30 @@ export const changeVodThumbnailAction = (data: ThumbnailUpload): ThunkDispatch<P
     };
 }
 
-export type Action = GetVodDetails | EditVodDetails | AddVodSubtitle | EditVodSubtitle | DeleteVodSubtitle | ChangeVodThumbnail | GetVodList | PostVod | DeleteVod
+export const changeVodSplashscreenAction = (data: SplashscreenUpload): ThunkDispatch<Promise<void>, {}, ChangeVodSplashscreen> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeVodSplashscreen>) => {
+        await VodGeneralServices.changeVodSplashscrenService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.CHANGE_VOD_SPLASHSCREEN, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangeVodPoster> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeVodPoster>) => {
+        await VodGeneralServices.changeVodPosterService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.CHANGE_VOD_POSTER, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = GetVodDetails | EditVodDetails | AddVodSubtitle | EditVodSubtitle | DeleteVodSubtitle | ChangeVodThumbnail | ChangeVodSplashscreen| ChangeVodPoster| GetVodList | PostVod | DeleteVod
