@@ -8,10 +8,8 @@ import Profile from '../containers/Account/Profile';
 import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
-import Chapters from '../containers/Videos/Chapters';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
-import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
 import VodSecurity from '../containers/Videos/Security';
 import LiveList from '../containers/Live/List';
@@ -22,12 +20,6 @@ import LiveList from '../containers/Live/List';
 const functionTest1 = () => {
     return (
         <LoadingSpinner size="small" color="dark-violet" />
-    )
-}
-
-const vodList = () => {
-    return (
-        <VodList  />
     )
 }
 
@@ -78,14 +70,6 @@ const Playlist = () => {
     )
 }
 
-const Admin = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Admin</h2>
-        </div>
-    )
-}
-
 export const AppRoutes: Routes[] = [   
     {
         path: '/dashboard',
@@ -103,19 +87,7 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: null,
-        slug: [
-            {
-                path: '/videos/vodlist',
-                name: 'VOD List',
-                component: VodList
-            },
-            {
-                path: '/videos/general',
-                name: 'General',
-                component: General
-            },
-        ]
+        component: VodList,
     },
     {
         path: '/folders',
