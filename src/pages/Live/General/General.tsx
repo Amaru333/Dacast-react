@@ -89,7 +89,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <Input
                         className="col col-6 pr2 pt2"
                         label="Description"
-                        defaultValue={props.liveDetails.description}
+                        value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
                 </div>
@@ -229,7 +229,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
             </Card>
             <ButtonContainer>
                 <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
-                <Button typeButton="secondary">Discard</Button>
+                <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
     </React.Fragment>
     )

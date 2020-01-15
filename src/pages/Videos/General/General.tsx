@@ -148,19 +148,19 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Input
                             className="col col-6 pr2"
                             label="Title"
-                            defaultValue={props.vodDetails.title}
+                            value={VodDetails.title}
                             onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                         />
                         <Input
                             className="col col-6"
                             label="Folder"
-                            defaultValue={props.vodDetails.folder}
+                            value={VodDetails.folder}
                             onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
                         />
                         <Input
                             className="col col-6 pr2 pt2"
                             label="Description"
-                            defaultValue={props.vodDetails.description}
+                            value={VodDetails.description}
                             onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
                         />
                     </div>
@@ -196,15 +196,6 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </LinkBoxContainer>
                     </div>
                     <Divider className="col col-12" />
-                    <div className="col col-12">
-                        <Text className="col col-12" size={20} weight="med">Advertising</Text>
-                        <Text className="col col-12 pt1" size={14} weight="reg">Some text about advertising</Text>
-                        <AdContainer className="col col-12 mt2">
-                            <AdInput className="col col-4 mr2" label="Ad URL" />
-                            <Button className="mt3" sizeButton="xs" typeButton="secondary">Preview Ads</Button>
-                        </AdContainer>
-                        <Divider className="col col-12" />
-                    </div>
                     <div className="thumbnail col col-12">
                     <Text className="col col-12" size={20} weight="med">Images</Text>
                     <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
