@@ -12,6 +12,7 @@ import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
+import { ModalFooter, Modal, ModalContent } from '../../../components/Modal/Modal';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -27,6 +28,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
+    const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
 
@@ -63,6 +65,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     return (
         <React.Fragment>
+            <Button onClick={() => setEncoderModalOpen(true)} sizeButton="xs" typeButton="secondary" className="right mb25">Encoder Setup</Button>
             <Card className="col-12 clearfix">
                 <div className="details col col-12">
                     <header className="flex justify-between">
@@ -225,6 +228,67 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </div>  
                 </div>
                 <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} title={imageModalTitle} />
+
+                <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
+                    <ModalContent>
+                    <Text size={14} weight="reg">Some information about this and how you enter it into the encoder blah and this is.</Text>
+                        <div className="col col-12">
+                        <LinkBoxContainer className="col col-6">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Login</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg"></LinkText>
+                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                        </LinkBox>
+                    </LinkBoxContainer>
+                    <LinkBoxContainer className="col col-6">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Password</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg"></LinkText>
+                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                        </LinkBox>
+                    </LinkBoxContainer>
+                    <LinkBoxContainer className="col col-6">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Stream URL</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg"></LinkText>
+                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                        </LinkBox>
+                    </LinkBoxContainer>
+                    <LinkBoxContainer className="col col-6">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Stream Name</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg"></LinkText>
+                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                        </LinkBox>
+                    </LinkBoxContainer>
+                    <LinkBoxContainer className="col col-6">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Backup URL</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg"></LinkText>
+                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                        </LinkBox>
+                    </LinkBoxContainer>   
+                        </div>
+                        <div className="flex col col-12 mt2 mb25">
+                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <Text  size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                </div>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
+                        <Button typeButton="tertiary">Visit Knowledge Base</Button>
+                    </ModalFooter>
+                </Modal>
 
             </Card>
             <ButtonContainer>
