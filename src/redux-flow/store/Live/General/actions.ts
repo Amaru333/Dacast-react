@@ -61,11 +61,16 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
     };
 }
 
-export const deleteLiveChannelAction = (id: string): DeleteLiveChannel => {
-    return {
-        type: ActionTypes.DELETE_LIVE_CHANNEL,
-        payload: {id}
-    }
+export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<void>, {}, DeleteLiveChannel> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveChannel>) => {
+        await LiveGeneralServices.deleteLiveChannelService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: response.data });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
 }
 
 export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails | DeleteLiveChannel
