@@ -191,16 +191,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
                                 <div className="col col-12">
                                 <div 
-                                className='col col-4 md-col-3 mb2'
+                                className='col col-4 md-col-3 mr2'
                                 >
                                     <DateSinglePicker 
-                                        className='mt2'
+                                        className='mt25'
                                         id="startDate"
                                     />
                                 </div>
                                 <Input 
                                 type='time' 
-                                className='col col-3 md-col-2 mb1'
+                                className='col col-3 md-col-2 mb1 mr1'
                                 defaultValue={props.liveDetails.countdown.startTime}
                                 disabled={false} 
                                 id='promptTime' 
