@@ -7,6 +7,8 @@ import { Icon } from '@material-ui/core';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 import styled from 'styled-components';
+import { LiveTabs } from '../../../containers/Live/LiveTabs';
+
 
 export interface LiveListProps {
     liveList: LiveItem[];
@@ -16,6 +18,8 @@ export interface LiveListProps {
 export const LiveListPage = (props: LiveListProps) => {
 
     const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
+    const [showLiveTabs, setShowLiveTabs] = React.useState<boolean>(false)
+    const [selectedLiveId, setSelectedLiveId] = React.useState<string>(null)
 
     React.useEffect(() => {
 
@@ -86,7 +90,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }}  className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {setSelectedLiveId(value.id);setShowLiveTabs(true)} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }}  className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -94,7 +98,9 @@ export const LiveListPage = (props: LiveListProps) => {
 
 
     return (
-        <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+        showLiveTabs ?
+            <LiveTabs setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.toString()} history={props.history} />
+        : <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
     )
 }
 
