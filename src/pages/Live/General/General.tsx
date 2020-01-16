@@ -52,14 +52,14 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
             console.log("splash")
-           return  props.changeLiveSplashscreen
+           return  props.changeLiveSplashscreen()
            
         } else if (imageModalTitle === "Change Thumbnail") {
             console.log("thumb")
-            return props.changeLiveThumbnail
+            return props.changeLiveThumbnail()
         } else {
             console.log("poster")
-            return props.changeLivePoster
+            return props.changeLivePoster()
         }
     }
 
@@ -178,14 +178,14 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </ToggleTextInfo>
                         <div>
                         <Toggle
-                         label="Live Stream Start Countdown" 
-                         onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
-                         defaultChecked={newLiveDetails.countdown.enabled}
-                         ></Toggle>
+                        label="Live Stream Start Countdown" 
+                        onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
+                        defaultChecked={newLiveDetails.countdown.enabled}
+                        ></Toggle>
                         <ToggleTextInfo>
                         <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
                         </ToggleTextInfo>
-                       
+                    
                             {
                                 liveStreamCountdownToggle ?
 
@@ -227,7 +227,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                           
                     </div>  
                 </div>
-                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} title={imageModalTitle} />
+                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
                 <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
