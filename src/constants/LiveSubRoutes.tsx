@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
+import { LiveSecurity } from '../containers/Live/Security';
 
 const generalPlaceholder = () => {
     return (
@@ -50,7 +51,7 @@ export const LiveSubRoutes: Routes[] = [
     {
         path: '/security',
         name: 'Security',
-        component: securityPlaceholder
+        component: LiveSecurity
     },
     {
         path: '/theme',
