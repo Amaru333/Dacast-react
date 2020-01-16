@@ -9,6 +9,21 @@ export interface GetThemesList {
     payload: ThemeOptions[];
 }
 
+export interface SaveTheme {
+    type: ActionTypes.SAVE_SETTING_THEME;
+    payload: ThemeOptions;
+}
+
+export interface CreateTheme {
+    type: ActionTypes.CREATE_SETTING_THEME;
+    payload: ThemeOptions;
+}
+
+export interface DeleteTheme {
+    type: ActionTypes.DELETE_SETTING_THEME;
+    payload: ThemeOptions;
+}
+
 export const getThemingListAction = (): ThunkDispatch<Promise<void>, {}, GetThemesList> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetThemesList> ) => {
         await themingServices.getThemingList()
@@ -20,4 +35,37 @@ export const getThemingListAction = (): ThunkDispatch<Promise<void>, {}, GetThem
     };
 };
 
-export type Action = GetThemesList 
+export const saveThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void>, {}, SaveTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveTheme> ) => {
+        await themingServices.saveTheme(theme)
+            .then( response => {
+                dispatch( {type: ActionTypes.SAVE_SETTING_THEME, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+};
+
+export const createThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void>, {}, CreateTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateTheme> ) => {
+        await themingServices.createTheme(theme)
+            .then( response => {
+                dispatch( {type: ActionTypes.CREATE_SETTING_THEME, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+};
+
+export const deleteThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void>, {}, DeleteTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteTheme> ) => {
+        await themingServices.deleteTheme(theme)
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_SETTING_THEME, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+};
+
+export type Action = GetThemesList | SaveTheme | CreateTheme | DeleteTheme

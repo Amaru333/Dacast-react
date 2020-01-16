@@ -1,5 +1,8 @@
 export enum ActionTypes {
     GET_SETTING_THEMING_LIST = "@@settings_theming/GET_SETTINGS_THEMING_LIST",
+    SAVE_SETTING_THEME = "@@settings_theming/SAVE_SETTINGS_THEME",
+    CREATE_SETTING_THEME = "@@settings_theming/CREATE_SETTINGS_THEME",
+    DELETE_SETTING_THEME = "@@settings_theming/DELETE_SETTINGS_THEME",
 }
 type ThemeType = 'vod' | 'live' | 'playlist';
 

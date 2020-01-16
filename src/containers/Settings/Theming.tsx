@@ -3,12 +3,15 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { ThemeOptions, Action, getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
+import { ThemeOptions, Action, getThemingListAction, saveThemeAction, createThemeAction, deleteThemeAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import {ThemingPage} from '../../pages/Settings/Theming/Theming';
 
 export interface ThemingComponentProps {
     themingList: ThemesData;
     getThemingList: Function;
+    saveTheme: Function;
+    createTheme: Function;
+    deleteTheme: Function;
 }
 
 export const Theming = (props: ThemingComponentProps) => {
@@ -35,6 +38,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getThemingList: () => {
             dispatch(getThemingListAction());
+        },
+        saveTheme: (theme: ThemeOptions) => {
+            dispatch(saveThemeAction(theme));
+        },
+        createTheme: (theme: ThemeOptions) => {
+            dispatch(createThemeAction(theme));
+        },
+        deleteTheme: (theme: ThemeOptions) => {
+            dispatch(deleteThemeAction(theme));
         },
     };
 }
