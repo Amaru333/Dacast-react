@@ -9,8 +9,6 @@ import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
-// import { Modal } from '../../../components/Modal/Modal';
-// import { MailCatcherModal } from  './MailCatcherModal';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 
@@ -57,7 +55,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const [player, setPlayer] = React.useState<any>(null);
     const togglePadding = 'py1';
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
-    // const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         if(playerRef && playerRef.current)
@@ -97,25 +94,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     React.useEffect(() => {console.log(selectedTheme)}, [selectedTheme])
 
     const ThemingOptions = () => {
-
-        // const mailCatcherTableHeader = () => {
-        //     return [
-        //         <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>,
-        //         <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>,
-        //         <span key='MailCatcherTableHeaderEmptyCell'></span>
-        //     ]
-        // }
-
-        // const mailCatcherTableBody = () => {
-        //     return selectedTheme.mailCatcher.map((row, i) => {
-        //         return [
-        //             <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
-        //             row.isDefault ? <Icon key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
-        //             <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
-                
-        //         ]
-        //     })
-        // }
         return (
             <>
                 <Heading className='my2'>
@@ -132,18 +110,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         {
                             showAdvancedPanel ?
                                 <>
-                                    {/* <Text size={20} weight='med'>End Screen Text</Text>
-                                    <Input className='my2' value={selectedTheme.endScreenText} onChange={(event) => setSelectedTheme({...selectedTheme, endScreenText: event.currentTarget.value})}/>
-                                    <Input className='my2' label='End Screen Text Link' value={selectedTheme.endScreenTextLink} onChange={(event) => setSelectedTheme({...selectedTheme, endScreenTextLink: event.currentTarget.value})} />
-                                    <BorderStyle className="p1" />
-
-                                    <TextStyle className="py2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Use video title as brand text' defaultChecked={selectedTheme.isTitleAsBrandText} onChange={() => {setSelectedTheme({...selectedTheme, isTitleAsBrandText: !selectedTheme.isTitleAsBrandText})}} />
-                                    <Input disabled={selectedTheme.isTitleAsBrandText} className='my2' label='Brand Text' value={selectedTheme.isTitleAsBrandText ? selectedTheme.endScreenText : selectedTheme.brandText} onChange={(event) => setSelectedTheme({...selectedTheme, brandText: event.currentTarget.value})} />
-                                    <Input className='my2' label='Brand Text Link' value={selectedTheme.brandTextLink} onChange={(event) => setSelectedTheme({...selectedTheme, brandTextLink: event.currentTarget.value})} />
-
-                                    <BorderStyle className="p1" /> */}
-
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
                                     <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value})} />
                                     <BorderStyle className="p1" />
@@ -197,14 +163,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
                                     <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
                                     <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
-                                    {/* <BorderStyle className="p1" />
-
-                                    <TextStyle className="py2" > <Text size={20} weight='med'>Interactions</Text></TextStyle>
-                                    <Text size={16} weight='med'>Mail Catcher</Text>
-                                    <div className='my2'>   
-                                        <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
-                                    </div>
-                                    <Table className='my2' id='mailCatcherTable' header={mailCatcherTableHeader()} body={mailCatcherTableBody()} /> */}
                                 </>
                         }
                     </Card>
@@ -214,9 +172,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                             </div>
                         </PlayerContainer>
                     </PlayerSection>
-                    {/* <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
-                        <MailCatcherModal />
-                    </Modal> */}
                 </ThemingContainer>
             </>
         )
