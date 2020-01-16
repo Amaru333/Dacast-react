@@ -16,7 +16,7 @@ export const CustomStepper = (props: StepperProps) => {
 
     const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
-        return ( 
+        return (           
             props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated)
         )
     };
@@ -46,7 +46,7 @@ export const CustomStepper = (props: StepperProps) => {
                 <StepperHeaderStyle>
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
-                <StepperStyle>
+                <StepperStyle isMobile={isMobile}>
                     <Stepper activeStep={stepIndex} alternativeLabel>
                         {steps.map((label) => {
                             return (

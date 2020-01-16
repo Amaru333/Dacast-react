@@ -11,7 +11,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
-import {PlansPage} from './../components/Pages/Account/Plans/Plans'
+import Plans from '../containers/Account/Plans'
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -193,7 +193,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: PlansPage
+                component: Plans
             },
             {
                 path: '/account/profile',
