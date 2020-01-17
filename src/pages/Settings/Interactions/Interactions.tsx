@@ -10,52 +10,12 @@ import { MailCatcherModal } from  './MailCatcherModal';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { TextStyle, IconContainer } from './InteractionsStyle';
+import { NewAdModal } from './NewAdModal';
+import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 
-const fakeData = [
-    {
-        placement: 'placement',
-        position: "1",
-        url: 'http://url',
-    },
-    {
-        placement: 'testte',
-        position: "2",
-        url: 'http://url',
-    },
-    {
-        placement: 'plkojkok',
-        position: "2",
-        url: 'http://url',
-    },
-    {
-        placement: 'woiwprws',
-        position: "3",
-        url: 'http://url',
-    },
-    {
-        placement: 'rfjpefjerp',
-        position: "4",
-        url: 'http://url',
-    }
-]
+export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
-const mailCatcher = [
-    {
-        type: "MailChimp",
-        isDefault: true
-    },
-    {
-        type: "Google Drive",
-        isDefault: false
-    
-    },
-    {
-        type: "Custom API",
-        isDefault: false
-    }
-]
-
-export const InteractionsPage = () => {
+    const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
 
     const advertisingTableHeader = () => {
         return [
@@ -64,13 +24,13 @@ export const InteractionsPage = () => {
             <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
             <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
                 <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault()}}>Preview</Button>
-                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault()}}>New Ad</Button>
+                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setNewAdModalOpened(true)}}>New Ad</Button>
             </div>
         ]
     }
 
     const advertisingTableBody = () => {
-        return fakeData.map((item, i) => {
+        return props.interactionsInfos.adList.map((item, i) => {
             return [
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
@@ -92,7 +52,7 @@ export const InteractionsPage = () => {
     }
 
     const mailCatcherTableBody = () => {
-        return mailCatcher.map((row, i) => {
+        return props.interactionsInfos.mailCatcher.map((row, i) => {
             return [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <Icon key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
@@ -150,6 +110,9 @@ export const InteractionsPage = () => {
 
             <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
                 <MailCatcherModal toggle={setMailCatcherModalOpened} />
+            </Modal>
+            <Modal hasClose={false} opened={newAdModalOpened} title='New Ad' size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+                <NewAdModal toggle={setNewAdModalOpened}  />
             </Modal>
         </div>
     )
