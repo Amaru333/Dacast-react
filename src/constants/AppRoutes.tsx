@@ -11,6 +11,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Interactions from '../containers/Settings/Interactions';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -187,6 +188,11 @@ export const AppRoutes: Routes[] = [
                 name: 'Theming',
                 component: functionTest4
             },
+            {
+                path: '/settings/interactions',
+                name: 'Interaction',
+                component: Interactions
+            }
         ]
     },
     {
