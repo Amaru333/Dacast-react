@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Card } from '../../../components/Card/Card';
+import { Card } from '../../components/Card/Card';
 
 export const TextStyle = styled.span<{}>`
     display: block;

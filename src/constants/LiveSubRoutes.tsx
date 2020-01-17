@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { LiveSecurity } from '../containers/Live/Security';
+import LiveSecurity from '../containers/Live/Security';
 
 const generalPlaceholder = () => {
     return (
@@ -17,12 +17,6 @@ const paywallPlaceholder = () => {
 const advertisingPlaceholder = () => {
     return (
         <h1>Live Advertising</h1>
-    )
-}
-
-const securityPlaceholder = () => {
-    return (
-        <h1>Live Security</h1>
     )
 }
 

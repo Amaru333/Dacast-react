@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard } from './SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
