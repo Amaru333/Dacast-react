@@ -1,7 +1,7 @@
 import { ActionTypes, VodSecuritySettings, SecuritySettings } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
-import { showToastNotification } from '../../Toasts';
+import { showToastNotification } from '../../toasts';
 import { VodSecurityServices } from './services';
 
 export interface GetVodSecuritySettings {

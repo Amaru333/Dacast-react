@@ -1,4 +1,4 @@
-import { ApiKeyItem, EncoderKeyItem, WebHookItem, S3KeyItem } from '../../../redux-flow/store/Settings/ApiIntegration';
+import { ApiKeyItem, EncoderKeyItem, WebHookItem } from '../../../redux-flow/store/Settings/ApiIntegration';
 import * as React from 'react';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
@@ -51,18 +51,8 @@ const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
             <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2"  typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>
     )
-}
-
-const S3KeysForm = (props: {item?: S3KeyItem; toggle: Function}) => {
-    return (
-        <form>
-            <Input defaultValue={ props.item? props.item.name : ""} disabled={false} required id="s3KeyName" type="text" className="col col-12 mb3" label="Name" placeholder="Key Name"  />
-            <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
-            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2"  typeButton="tertiary" buttonColor="blue" >Cancel</Button>
-        </form>
-    )
 
 }
 
-export {ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm} ;
+export {ApiKeysForm, EncoderKeysForm, WebHooksForm} ;
 
