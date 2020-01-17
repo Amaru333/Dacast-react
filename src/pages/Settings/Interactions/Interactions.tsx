@@ -62,7 +62,10 @@ export const InteractionsPage = () => {
             <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>,
             <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>,
             <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
-            <span key='advertisingTableHeaderButtons'></span>
+            <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault()}}>Preview</Button>
+                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault()}}>New Ad</Button>
+            </div>
         ]
     }
 
@@ -72,7 +75,7 @@ export const InteractionsPage = () => {
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
-                <span key={'advertisingTableBodyButtons' + i}></span>
+                <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
             ]
         })
     }
