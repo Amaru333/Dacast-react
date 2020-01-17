@@ -8,6 +8,7 @@ import { Label } from '../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 import styled from 'styled-components';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
+import { LivesFiltering } from './LivesFiltering';
 
 
 export interface LiveListProps {
@@ -27,28 +28,28 @@ export const LiveListPage = (props: LiveListProps) => {
 
     const liveListHeaderElement = () => {
         return [
-            <InputCheckbox 
-            className="inline-flex" 
-            key="checkboxLiveListBulkAction" 
-            indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length} 
-            defaultChecked={selectedLive.length === props.liveList.length}
-            id="globalCheckboxVodList" 
-            onChange={(event) => {
-                if (event.currentTarget.checked) {
-                    const editedselectedLive = props.liveList.map(item => { return item.id })
-                    setSelectedLive(editedselectedLive);
-                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                    setSelectedLive([])
+            <InputCheckbox
+                className="inline-flex"
+                key="checkboxLiveListBulkAction"
+                indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length}
+                defaultChecked={selectedLive.length === props.liveList.length}
+                id="globalCheckboxVodList"
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedselectedLive = props.liveList.map(item => { return item.id })
+                        setSelectedLive(editedselectedLive);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setSelectedLive([])
+                    }
                 }
-            }
-            } 
+                }
             />,
             <></>,
             <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
             <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created</Text>,
             <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>,
             <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>,
-            <div style={{width: "80px"}} ></div>,
+            <div style={{ width: "80px" }} ></div>,
         ]
     }
 
@@ -90,7 +91,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {setSelectedLiveId(value.id);setShowLiveTabs(true)} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }}  className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedLiveId(value.id); setShowLiveTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -100,7 +101,12 @@ export const LiveListPage = (props: LiveListProps) => {
     return (
         showLiveTabs ?
             <LiveTabs setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.toString()} history={props.history} />
-        : <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+            :
+            <>
+                <LivesFiltering />
+                <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+
+            </>
     )
 }
 
