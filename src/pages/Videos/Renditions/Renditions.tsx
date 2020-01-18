@@ -8,20 +8,34 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 
 export const VodRenditionsPage = () => {
+    
+    interface Renditions {
+        id: string;
+        rendition: string;
+        size: string;
+        bitrateCap: string;
+        encoded?: boolean
+    }
 
+    var defaultNotEncodedRenditions = [
+        {id: "4K", rendition: "4k-2160p", size: "3480", bitrateCap: "20"},
+        {id: "2K", rendition: "2k-1440p", size: "2560", bitrateCap: "15"},
+        {id: "FHD", rendition: "FHD-1080p", size: "1920", bitrateCap: "7"},
+        {id: "HD", rendition: "HD-720p", size: "1280", bitrateCap: "5"}
+    ]
+
+    var defaultEncodedRenditions = [
+        {id: "SD", rendition: "SD-480p", size: "854", bitrateCap: "2.5", encoded: true},
+        {id:"LD", rendition: "LD-360p", size: "640", bitrateCap: "1", encoded: false},
+        {id: "ULD", rendition: "ULD-240", size: "426", bitrateCap: "0.2"},
+        {id:"magic", rendition: "Magic Encoding", size: "auto", bitrateCap: "5"},
+        {id:"dne", rendition: "Do Not Encode", size: "auto", bitrateCap: "5"}
+    ]
+
+    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Renditions[]>(defaultNotEncodedRenditions)
+    const [encodedRenditions, setEncodedRenditions] = React.useState<Renditions[]>(defaultEncodedRenditions)
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
-
-
-    var notEncodedRenditions = [
-        {id: "4K", rendition: "4k-2160p", size: "3480", bitrateCap: "20"},
-        {id: "2K", rendition: "2k-1440p", size: "2560", bitrateCap: "15"}
-    ]
-
-    var encodedRenditions = [
-        {id: "SD", rendition: "SD-480p", size: "854", bitrateCap: "2.5", encoded: true},
-        {id:"LD", rendition: "LD-360p", size: "640", bitrateCap: "1", encoded: false}
-    ]
 
     const notEncodedRenditionsTableHeader = () => {
         return [
@@ -110,6 +124,32 @@ export const VodRenditionsPage = () => {
         )
     }
 
+    const encodeRenditions = () => {
+        event.preventDefault();
+        var newNotEncodedRenditions = notEncodedRenditions.filter(rendition => !selectedNotEncodedRendition.includes(rendition.id))
+        setNotEncodedRenditions(newNotEncodedRenditions)
+
+        setEncodedRenditions(
+            [...encodedRenditions, 
+            ...notEncodedRenditions.filter(rendition => {return selectedNotEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
+            ])
+
+        setSelectedNotEncodedRendition([])
+    }
+
+    const deleteRenditions = () => {
+        event.preventDefault();
+        var newEncodedRenditions = encodedRenditions.filter(rendition => !selectedEncodedRendition.includes(rendition.id))
+        setEncodedRenditions(newEncodedRenditions)
+
+        setNotEncodedRenditions(
+            [...notEncodedRenditions, 
+            ...encodedRenditions.filter(rendition => {return selectedEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
+            ])
+
+        setSelectedEncodedRendition([])
+    }
+
     return (
         <React.Fragment>
             <div className="mt25">
@@ -165,8 +205,8 @@ export const VodRenditionsPage = () => {
                      
                 </div>
                 <ButtonContainer className="col">
-                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0}>Encode</Button>
-                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0}>Delete</Button>
+                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} onClick={() => encodeRenditions()}>Encode</Button>
+                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} onClick={() => deleteRenditions()}>Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">
