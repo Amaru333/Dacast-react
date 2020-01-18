@@ -11,6 +11,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
+import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -36,17 +37,14 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         downloadButton: false,
         socialSharing: false,
         embedCode: false,
+        playerTransparency: false,
+        hasCustomColor: false,
+        customColor: '',
         autoplay: false,
         startVideoMuted: false,
         looping: false,
         continuousPlay: false,
         skipVideos: false,
-        mailCatcher: [],
-        endScreenText: '',
-        endScreenTextLink: '',
-        isTitleAsBrandText: false,
-        brandText: '',
-        brandTextLink: '',
         offlineMessage: '',
         deliveryMethod: 'compatible',
         regionSettings: 'standard'
@@ -155,6 +153,16 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton})} />
                                     <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing})} />
                                     <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode})} />
+                                    <BorderStyle className="p1" />
+
+                                    <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
+                                    <Toggle className={togglePadding} label='Player Transparency' defaultChecked={selectedTheme.playerTransparency} onChange={() => setSelectedTheme({...selectedTheme, playerTransparency: !selectedTheme.playerTransparency})} />
+                                    <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor})} />
+                                    {
+                                        selectedTheme.hasCustomColor ? 
+                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => setSelectedTheme({...selectedTheme, customColor: value})} />
+                                            : null
+                                    }
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
