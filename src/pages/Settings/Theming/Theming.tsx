@@ -12,6 +12,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -96,13 +97,13 @@ export const ThemingPage = (props: ThemingComponentProps) => {
             <>
                 <Heading className='my2'>
                     <Button onClick={() => {setCurrentPage('list');setShowAdvancedPanel(false)}} sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-                    <Input className='ml1' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value})} />
+                    <Text size={20} weight='med' className='pl1'>Edit theme</Text>
                 </Heading>
                 <ThemingContainer>
 
                     <Card className='col col-12 md-col-4 mr2'>
-                        <TitleSection className="mb2" >
-                            <Text size={20} weight='med'>Controls</Text>
+                        <TitleSection>
+                            <Text size={20} weight='med'>Edit theme</Text>
                             <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                         </TitleSection>
                         {
@@ -131,6 +132,11 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 </>
                                 :
                                 <>
+                                    <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value})} />
+                                    <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})} />
+                                    <BorderStyle className="p1" />
+
+                                    <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                                     <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
                                     <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
                                     <Toggle className={togglePadding} label='Scrubber' defaultChecked={selectedTheme.scrubber} onChange={() => setSelectedTheme({...selectedTheme, scrubber: !selectedTheme.scrubber})} />
