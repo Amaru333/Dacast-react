@@ -2,7 +2,7 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import VodSecurity from '../containers/Videos/Security';
 import General from '../containers/Videos/General';
 import Chapters from '../containers/Videos/Chapters';
-import { VodRenditions } from '../containers/Videos/Renditions';
+import VodRenditions from '../containers/Videos/Renditions';
 
 
 export const VideoSubRoutes: Routes[] = [   
