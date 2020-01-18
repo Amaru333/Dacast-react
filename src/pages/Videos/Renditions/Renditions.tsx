@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
-import { WidgetHeader } from '../../../containers/Dashboard/DashboardStyles';
 import { RenditionsWidget, RenditionsTable, ButtonContainer } from './RenditionsStyle';
 import { Table } from '../../../components/Table/Table';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
@@ -26,7 +25,7 @@ export const VodRenditionsPage = () => {
 
     const notEncodedRenditionsTableHeader = () => {
         return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
+            <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
             onChange={(event) => {
                 if (event.currentTarget.checked) {
                     const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.id })
@@ -45,7 +44,7 @@ export const VodRenditionsPage = () => {
     const notEncodedRenditionsTableBody = () => {
         return notEncodedRenditions.map((value) => {
             return [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedEncodedRendition.length > 0}
                 defaultChecked={selectedNotEncodedRendition.includes(value.id)}
                 onChange={(event) => {
                     if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
@@ -66,7 +65,7 @@ export const VodRenditionsPage = () => {
 
     const EncodedRenditionsTableHeader = () => {
         return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === encodedRenditions.length}
+            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === encodedRenditions.length}
             onChange={(event) => {
                 if (event.currentTarget.checked) {
                     const editedSelectedEncodedRendition = encodedRenditions.map(item => { return item.id })
@@ -86,7 +85,7 @@ export const VodRenditionsPage = () => {
     const EncodedRenditionsTableBody = () => {
         return encodedRenditions.map((value) => {
             return [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
                 defaultChecked={selectedEncodedRendition.includes(value.id)}
                 onChange={(event) => {
                     if (event.currentTarget.checked && selectedEncodedRendition.length < encodedRenditions.length) {
@@ -166,8 +165,8 @@ export const VodRenditionsPage = () => {
                      
                 </div>
                 <ButtonContainer className="col">
-                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs">Encode</Button>
-                    <Button type="button" typeButton="secondary" sizeButton="xs">Delete</Button>
+                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0}>Encode</Button>
+                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0}>Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">
