@@ -5,6 +5,7 @@ import { combineReducers, Reducer } from 'redux';
 import { EncodingRecipesData } from './EncodingRecipes/EncodingRecipesTypes';
 import { EncodingRecipesReducer } from './EncodingRecipes';
 import { InteractionsInfos, InteractionReducer } from './Interactions';
+import { ThemesData, ThemingReducer } from './Theming';
 
 
 export const SettingsInitialState: SettingsState = {
@@ -12,7 +13,8 @@ export const SettingsInitialState: SettingsState = {
     embedSettings: false,
     security: false,
     encodingRecipes: false,
-    interactions: false
+    interactions: false,
+    theming: false
 };
 
 
@@ -22,6 +24,7 @@ export interface  SettingsState {
     security: false | SettingsSecurityDetails;
     encodingRecipes: false | EncodingRecipesData;
     interactions: false | InteractionsInfos;
+    theming: false | ThemesData;
 
 }
 
@@ -30,5 +33,6 @@ export const SettingsReducer: Reducer<SettingsState> = combineReducers({
     embedSettings: EmbedSettingsReducer,
     security: SettingsSecurityReducer,
     encodingRecipes: EncodingRecipesReducer,
-    interactions: InteractionReducer
+    interactions: InteractionReducer,
+    theming: ThemingReducer
 })
