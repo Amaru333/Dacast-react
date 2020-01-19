@@ -8,12 +8,12 @@ import Profile from '../containers/Account/Profile';
 import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
-import Chapters from '../containers/Videos/Chapters';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
-import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
 import Theming from '../containers/Settings/Theming';
+import Plans from '../containers/Account/Plans'
+import LiveList from '../containers/Live/List';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -24,48 +24,15 @@ const functionTest1 = () => {
     )
 }
 
-const vodList = () => {
-    return (
-        <VodList  />
-    )
-}
-
 const functionTest2 = () => {
     return (
         <LoadingSpinner size="small" color="red" />
     )
 }
 
-const functionTest3 = () => {
-    return (
-        <LoadingSpinner size="small" color="yellow" />
-    )
-}
-
 const functionTest4 = () => {
     return (
         <LoadingSpinner size="small" color="green" />
-    )
-}
-
-const DashboardRender = () => {
-    return (
-        <Dashboard/>
-    )
-}
-
-const ApiIntegrationRender = () => {
-    return (
-        <ApiIntegration/>
-    )
-}
-
-
-const LiveChannel = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>LiveChannel</h2>
-        </div>
     )
 }
 
@@ -82,19 +49,19 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: DashboardRender,
+        component: Dashboard,
     },
     {
         path: '/livestreams',
         name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel
+        component: LiveList
     },
     {
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: VodList,
     },
     {
         path: '/folders',
@@ -188,7 +155,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/apiintegrations',
                 name: 'API & Integration',
-                component: ApiIntegrationRender
+                component: ApiIntegration
             },
 
             {
@@ -207,7 +174,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: functionTest3
+                component: Plans
             },
             {
                 path: '/account/profile',
