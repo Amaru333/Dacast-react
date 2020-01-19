@@ -11,7 +11,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
-import VodSecurity from '../containers/Videos/Security';
+import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -29,27 +29,9 @@ const functionTest2 = () => {
     )
 }
 
-const functionTest3 = () => {
-    return (
-        <LoadingSpinner size="small" color="yellow" />
-    )
-}
-
 const functionTest4 = () => {
     return (
         <LoadingSpinner size="small" color="green" />
-    )
-}
-
-const DashboardRender = () => {
-    return (
-        <Dashboard/>
-    )
-}
-
-const ApiIntegrationRender = () => {
-    return (
-        <ApiIntegration/>
     )
 }
 
@@ -66,7 +48,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: DashboardRender,
+        component: Dashboard,
     },
     {
         path: '/livestreams',
@@ -172,7 +154,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/apiintegrations',
                 name: 'API & Integration',
-                component: ApiIntegrationRender
+                component: ApiIntegration
             },
 
             {
@@ -191,7 +173,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: functionTest3
+                component: Plans
             },
             {
                 path: '/account/profile',
