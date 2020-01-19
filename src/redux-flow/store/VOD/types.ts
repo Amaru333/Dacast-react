@@ -5,13 +5,16 @@ import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecuritySettings, VodSecurityReducer } from './Security';
 import { VodDetails, VodItem } from './General/types';
 import { GeneralReducer, reducerList } from './General/reducer';
+import { RenditionsReducer } from './Renditions/reducer';
+import { RenditionsList } from './Renditions/types';
 
 
 export const vodInitialState: VodState = {
     chapters: false,
     security: false,
     general: false,
-    list: false
+    list: false,
+    renditions: false
 };
 
 
@@ -20,11 +23,13 @@ export interface  VodState {
     security: false | VodSecuritySettings;
     general: false | VodDetails;
     list: false | VodItem[];
+    renditions: false | RenditionsList;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({
     chapters: ChaptersReducer, 
     security: VodSecurityReducer,
     general: GeneralReducer,
-    list: reducerList
+    list: reducerList,
+    renditions: RenditionsReducer
 })

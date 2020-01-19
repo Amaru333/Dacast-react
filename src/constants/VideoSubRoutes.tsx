@@ -2,6 +2,7 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import VodSecurity from '../containers/Videos/Security';
 import General from '../containers/Videos/General';
 import Chapters from '../containers/Videos/Chapters';
+import VodRenditions from '../containers/Videos/Renditions';
 import React from 'react';
 
 const VodPaywallPlaceholder = () => {
@@ -19,12 +20,6 @@ const VodAdvertisingPlaceholder = () => {
 const VodThemePlaceholder = () => {
     return (
         <h1>VOD Theme</h1>
-    )
-}
-
-const VodRenditionsPlaceholder = () => {
-    return (
-        <h1>VOD Renditions</h1>
     )
 }
 
@@ -60,15 +55,16 @@ export const VideoSubRoutes: Routes[] = [
         component: VodSecurity,
     },
     {
+        path: '/renditions',
+        name: 'Renditions',
+        iconName: null,
+        component: VodRenditions,
+    },
+    {
         path: '/theme',
         name: 'Theme',
         iconName: null,
         component: VodThemePlaceholder,
     },
-    {
-        path: '/renditions',
-        name: 'Renditions',
-        iconName: null,
-        component: VodRenditionsPlaceholder,
-    },
+
 ];
