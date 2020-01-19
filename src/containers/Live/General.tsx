@@ -26,10 +26,10 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 
     return (
         props.liveDetails ? 
-        (
-            <LiveGeneralPage {...props} />
-        )
-        : <LoadingSpinner color='dark-violet' size='large' />
+            (
+                <LiveGeneralPage {...props} />
+            )
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
 }
 

@@ -52,15 +52,15 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                 ...action.payload
             };
         case ActionTypes.CHANGE_VOD_SPLASHSCREEN:
-                return {
-                    ...state,
-                    ...action.payload
-                };
+            return {
+                ...state,
+                ...action.payload
+            };
         case ActionTypes.CHANGE_VOD_POSTER:
-                return {
-                    ...state,
-                    ...action.payload
-                };
+            return {
+                ...state,
+                ...action.payload
+            };
         
         default:
             return state;

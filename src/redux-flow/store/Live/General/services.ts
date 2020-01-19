@@ -1,10 +1,14 @@
 import axios from 'axios'
 import { LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getLiveDetailsService = () => {
     return axios.get(urlBase + 'live-details');
+}
+
+const getLiveList = () => {
+    return axios.get(urlBase + 'channels');
 }
 
 const saveLiveDetailsService = (data: LiveDetails) => {
@@ -23,10 +27,16 @@ const changeLivePosterService = (data: PosterUpload) => {
     return axios.put(urlBase + 'live/poster', {...data})
 }
 
+const deleteLiveChannelService = (data: string) => {
+    return axios.delete(urlBase + 'channel', {data}); 
+}
+
 export const LiveGeneralServices = {
     getLiveDetailsService,
+    getLiveList,
     saveLiveDetailsService,
     changeLiveThumbnailService,
     changeLiveSplashscrenService,
-    changeLivePosterService
+    changeLivePosterService,
+    deleteLiveChannelService
 }

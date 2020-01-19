@@ -119,7 +119,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
             console.log("splash")
-           return  props.changeVodSplashscreen
+            return  props.changeVodSplashscreen
            
         } else if (imageModalTitle === "Change Thumbnail") {
             console.log("thumb")
@@ -197,45 +197,45 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     </div>
                     <Divider className="col col-12" />
                     <div className="thumbnail col col-12">
-                    <Text className="col col-12" size={20} weight="med">Images</Text>
-                    <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
-                    <ImagesContainer className="col col-12 pt2 flex">
-                        <ImageContainer className="mr2">
-                            <div className="flex flex-center">
-                            <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                            <Icon>info_outlined</Icon>
-                            </div>
-                           
-                            <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>
-                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
-                            </ImageArea>
-                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
-                        </ImageContainer>
-                        <ImageContainer className="mr2">
-                            <div className="flex flex-center">
-                            <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
-                            </div>
-                            <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
-                            </ImageArea>
-                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
-                        </ImageContainer>
-                        <ImageContainer className="">
-                            <div className="flex flex-center">
-                            <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
-                            </div>
-                            <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
-                            </ImageArea>
-                            <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
-                        </ImageContainer>
+                        <Text className="col col-12" size={20} weight="med">Images</Text>
+                        <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
+                        <ImagesContainer className="col col-12 pt2 flex">
+                            <ImageContainer className="mr2">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                                    <Icon>info_outlined</Icon>
+                                </div>
+                            
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>
+                                    <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="mr2">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>
+                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="">
+                                <div className="flex flex-center">
+                                    <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>
+                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
+                            </ImageContainer>
 
-                    </ImagesContainer>
-                </div>
+                        </ImagesContainer>
+                    </div>
                     <Divider className="col col-12" />
                     <div className="subtitles col col-12">
                         <Text className="col col-12" size={20} weight="med">Subtitles</Text>
@@ -307,23 +307,6 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     )
 
 }
-
-const AdContainer = styled.div`
-display: flex;
-align-items: center;
-`
-
-const AdInput = styled(Input)`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`
-
-const UploadThumbnail = styled.button`
-height: 102px;
-width: 171px;
-border: 1px dashed ${props => props.theme.colors["gray-7"]};
-`
 
 const IconContainer = styled.div`
     float:right;

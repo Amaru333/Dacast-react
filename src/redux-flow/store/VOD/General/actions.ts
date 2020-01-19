@@ -1,4 +1,4 @@
-import { ActionTypes, VodDetails, SubtitleInfo, ThumbnailUpload, VodItem } from "./types";
+import { ActionTypes, VodDetails, SubtitleInfo, ThumbnailUpload, VodItem, SplashscreenUpload, PosterUpload } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -41,12 +41,12 @@ export interface ChangeVodThumbnail {
 
 export interface ChangeVodSplashscreen {
     type: ActionTypes.CHANGE_VOD_SPLASHSCREEN;
-    payload: {splashscreen: string}
+    payload: {splashscreen: string};
 }
 
 export interface ChangeVodPoster {
     type: ActionTypes.CHANGE_VOD_POSTER;
-    payload: {poster: string}
+    payload: {poster: string};
 }
 
 export interface PostVod {

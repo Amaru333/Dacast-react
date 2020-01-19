@@ -20,7 +20,7 @@ export interface VodDetails {
     description: string;
     thumbnail: string;
     splashscreen: string;
-    poster?: string
+    poster?: string;
     subtitles: SubtitleInfo[];
 }
 

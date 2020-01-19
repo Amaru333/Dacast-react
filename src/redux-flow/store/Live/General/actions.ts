@@ -2,33 +2,43 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../toasts/actions';
 import { LiveGeneralServices } from './services';
-import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
+import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem } from './types';
 
 
 
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
-    payload: LiveDetails
+    payload: LiveDetails;
+}
+
+export interface GetLiveList {
+    type: ActionTypes.GET_LIVE_LIST;
+    payload: LiveItem[];
 }
 
 export interface SaveLiveDetails {
     type: ActionTypes.SAVE_LIVE_DETAILS;
-    payload: LiveDetails
+    payload: LiveDetails;
 }
 
 export interface ChangeLiveThumbnail {
     type: ActionTypes.CHANGE_LIVE_THUMBNAIL;
-    payload: {thumbnail: string}
+    payload: {thumbnail: string};
 }
 
 export interface ChangeLiveSplashscreen {
     type: ActionTypes.CHANGE_LIVE_SPLASHSCREEN;
-    payload: {splashscreen: string}
+    payload: {splashscreen: string};
 }
 
 export interface ChangeLivePoster {
     type: ActionTypes.CHANGE_LIVE_POSTER;
-    payload: {poster: string}
+    payload: {poster: string};
+}
+
+export interface DeleteLiveChannel {
+    type: ActionTypes.DELETE_LIVE_CHANNEL;
+    payload: {id: string};
 }
 
 export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
@@ -36,6 +46,18 @@ export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLive
         await LiveGeneralServices.getLiveDetailsService()
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_DETAILS, payload: response.data });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getLiveListAction = (): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveList>) => {
+        await LiveGeneralServices.getLiveList()
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_LIVE_LIST, payload: response.data });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -63,6 +85,16 @@ export const changeLiveThumbnailAction = (data: ThumbnailUpload): ThunkDispatch<
             })
             .catch((error) => {
                 console.log(error)
+            })
+    }
+}
+export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<void>, {}, DeleteLiveChannel> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveChannel>) => {
+        await LiveGeneralServices.deleteLiveChannelService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: response.data });
+            })
+            .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -96,4 +128,4 @@ export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promis
 
 
 
-export type Action = GetLiveDetails | SaveLiveDetails | ChangeLiveThumbnail | ChangeLiveSplashscreen | ChangeLivePoster
+export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails | ChangeLiveThumbnail | ChangeLiveSplashscreen | ChangeLivePoster  | DeleteLiveChannel

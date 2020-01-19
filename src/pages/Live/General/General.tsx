@@ -52,7 +52,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
             console.log("splash")
-           return  props.changeLiveSplashscreen()
+            return  props.changeLiveSplashscreen()
            
         } else if (imageModalTitle === "Change Thumbnail") {
             console.log("thumb")
@@ -134,20 +134,20 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <ImagesContainer className="col col-12 pt2 flex">
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
-                            <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                            <Icon>info_outlined</Icon>
+                                <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                                <Icon>info_outlined</Icon>
                             </div>
                            
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                                 <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                    onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
-                            <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection>
@@ -157,7 +157,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer className="">
                             <div className="flex flex-center">
-                            <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
                                 <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection>
@@ -174,50 +174,50 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <div className="col col-12">
                         <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
                         <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
+                            <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                         </ToggleTextInfo>
                         <div>
-                        <Toggle
-                        label="Live Stream Start Countdown" 
-                        onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
-                        defaultChecked={newLiveDetails.countdown.enabled}
-                        ></Toggle>
-                        <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
-                        </ToggleTextInfo>
+                            <Toggle
+                                label="Live Stream Start Countdown" 
+                                onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
+                                defaultChecked={newLiveDetails.countdown.enabled}
+                            ></Toggle>
+                            <ToggleTextInfo>
+                                <Text size={14} weight='reg' color='gray-1'>The scheduled Paywall needs to be deleted to display the countdown.</Text>
+                            </ToggleTextInfo>
                     
                             {
                                 liveStreamCountdownToggle ?
 
-                                <div className="col col-12">
-                                <div 
-                                className='col col-4 md-col-3 mr2'
-                                >
-                                    <DateSinglePicker 
-                                        className='mt25'
-                                        id="startDate"
-                                    />
-                                </div>
-                                <Input 
-                                type='time' 
-                                className='col col-3 md-col-2 mb1 mr1'
-                                defaultValue={props.liveDetails.countdown.startTime}
-                                disabled={false} 
-                                id='promptTime' 
-                                label='Prompt Time' 
-                                required
-                                pattern="[0-9]{2}:[0-9]{2}"
-                                step='1'
-                            />
-                            <DropdownSingle 
-                            className="md-col md-col-6 p1"
-                            hasSearch
-                            dropdownTitle='Timezone'
-                            defaultValue={props.liveDetails.countdown.timezone}
-                            id='dropdownTimezone'
-                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
-                        />
-                            </div> : null
+                                    <div className="col col-12">
+                                        <div 
+                                            className='col col-4 md-col-3 mr2'
+                                        >
+                                            <DateSinglePicker 
+                                                className='mt25'
+                                                id="startDate"
+                                            />
+                                        </div>
+                                        <Input 
+                                            type='time' 
+                                            className='col col-3 md-col-2 mb1 mr1'
+                                            defaultValue={props.liveDetails.countdown.startTime}
+                                            disabled={false} 
+                                            id='promptTime' 
+                                            label='Prompt Time' 
+                                            required
+                                            pattern="[0-9]{2}:[0-9]{2}"
+                                            step='1'
+                                        />
+                                        <DropdownSingle 
+                                            className="md-col md-col-6 p1"
+                                            hasSearch
+                                            dropdownTitle='Timezone'
+                                            defaultValue={props.liveDetails.countdown.timezone}
+                                            id='dropdownTimezone'
+                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                                        />
+                                    </div> : null
                             }
                             
 
@@ -231,58 +231,58 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
                 <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
-                    <Text size={14} weight="reg">Some information about this and how you enter it into the encoder blah and this is.</Text>
+                        <Text size={14} weight="reg">Some information about this and how you enter it into the encoder blah and this is.</Text>
                         <div className="col col-12">
-                        <LinkBoxContainer className="col col-6">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Login</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg"></LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-6">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Password</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg"></LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-6">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Stream URL</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg"></LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-6">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Stream Name</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg"></LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-6">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Backup URL</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg"></LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>   
+                            <LinkBoxContainer className="col col-6">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Login</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg"></LinkText>
+                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className="col col-6">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Password</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg"></LinkText>
+                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className="col col-6">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Stream URL</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg"></LinkText>
+                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className="col col-6">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Stream Name</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg"></LinkText>
+                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className="col col-6">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Backup URL</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg"></LinkText>
+                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                </LinkBox>
+                            </LinkBoxContainer>   
                         </div>
                         <div className="flex col col-12 mt2 mb25">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
-                    <Text  size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
-                </div>
+                            <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                            <Text  size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                        </div>
                     </ModalContent>
                     <ModalFooter>
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
@@ -295,6 +295,6 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
-    </React.Fragment>
+        </React.Fragment>
     )
 }
