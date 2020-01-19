@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
+import LiveSecurity from '../containers/Live/Security';
 import LiveGeneral from '../containers/Live/General';
 
 const paywallPlaceholder = () => {
@@ -11,12 +12,6 @@ const paywallPlaceholder = () => {
 const advertisingPlaceholder = () => {
     return (
         <h1>Live Advertising</h1>
-    )
-}
-
-const securityPlaceholder = () => {
-    return (
-        <h1>Live Security</h1>
     )
 }
 
@@ -45,7 +40,7 @@ export const LiveSubRoutes: Routes[] = [
     {
         path: '/security',
         name: 'Security',
-        component: securityPlaceholder
+        component: LiveSecurity
     },
     {
         path: '/theme',
