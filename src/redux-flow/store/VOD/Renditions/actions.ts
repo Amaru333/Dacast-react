@@ -6,7 +6,7 @@ import { VodRenditionsServices } from './services';
 
 export interface GetVodRenditions {
     type: ActionTypes.GET_VOD_RENDITIONS;
-    payload: RenditionsList
+    payload: RenditionsList;
 }
 
 export const getVodRenditionsAction = (): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {

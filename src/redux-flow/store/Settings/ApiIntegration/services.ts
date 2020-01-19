@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { ApiIntegrationPageInfos } from './types';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
+const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
 const getSettingsIntegrationService = () => {
-    return axios.get(urlBase + 'settings-integration-page');
+    return axios.get(urlBase + 'getSettingsIntegration');
 }
 
 const saveSettingsIntegrationService = (data: ApiIntegrationPageInfos) => {

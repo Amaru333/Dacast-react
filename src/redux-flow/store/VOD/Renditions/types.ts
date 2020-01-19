@@ -3,8 +3,8 @@ export enum ActionTypes {
 }
 
 export interface RenditionsList {
-    renditionsList: Rendition[],
-    encodedRenditions: Rendition[]
+    renditionsList: Rendition[];
+    encodedRenditions: Rendition[];
 }
 
 export interface Rendition {
@@ -12,5 +12,5 @@ export interface Rendition {
     rendition: string;
     size: string;
     bitrateCap: string;
-    encoded?: boolean
+    encoded?: boolean;
 }

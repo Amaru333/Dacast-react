@@ -23,10 +23,10 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
 
     return (
         props.renditions ?
-        (
-        <VodRenditionsPage {...props} />
-        )
-        : <LoadingSpinner color='dark-violet' size='large' />
+            (
+                <VodRenditionsPage {...props} />
+            )
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
 }
 

@@ -6,12 +6,12 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Text } from "../../../components/Typography/Text"
 import { Icon } from '@material-ui/core';
 
-export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
+export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
 
     const testThumbnail = "sick_thumbnail.png"
 
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
-    const [uploadedThumbnail, setUploadedThumbnail] = React.useState<string>("")
+    const [uploadedImage, setUploadedImage] = React.useState<string>("")
     const [player, setPlayer] = React.useState<any>(null)
     let playerRef = React.useRef<HTMLDivElement>(null);
 
@@ -65,12 +65,12 @@ export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; subm
         }
     }, [player])
 
-    const handleSubmit = (changeVodThumbnail: Function) => {
+    const handleSubmit = (ImageModalFunction: Function) => {
         event.preventDefault();
         if (selectedOption === "upload") {
-            changeVodThumbnail(uploadedThumbnail)
+            ImageModalFunction(uploadedImage)
         } else {
-            changeVodThumbnail(player.getPlayerInstance().currentTime.toString())
+            ImageModalFunction(player.getPlayerInstance().currentTime.toString())
         }
         props.toggle()
     }
@@ -84,13 +84,13 @@ export const ThumbnailModal = (props: {toggle: () => void; opened: boolean; subm
                 <RadioButtonOption className="col col-12 px2 py2" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
                         <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                        <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedThumbnail(testThumbnail)}>Upload File</Button>
+                        <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { uploadedThumbnail === "" ? null :
+                        { uploadedImage === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedThumbnail}</Text>
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
-                                    <Icon onClick={() => setUploadedThumbnail(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
+                                    <Icon onClick={() => setUploadedImage(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
                                 </button>   
                             </ThumbnailFile>
                         }

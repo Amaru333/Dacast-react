@@ -108,11 +108,11 @@ ${props => !props.isDisplayed && css`
 `}
 `
 
-export const ButtonContainer = styled.div`
+const ButtonContainer = styled.div`
 margin-top: 24px;
 `
 
-export const ButtonStyle = styled(Button)`
+const ButtonStyle = styled(Button)`
 margin-right: 16px;
 margin-bottom: 63px;
 `

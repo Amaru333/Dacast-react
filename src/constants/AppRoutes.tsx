@@ -11,6 +11,8 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import VodSecurity from '../containers/Videos/Security';
+import LiveList from '../containers/Live/List';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -51,15 +53,6 @@ const ApiIntegrationRender = () => {
     )
 }
 
-
-const LiveChannel = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>LiveChannel</h2>
-        </div>
-    )
-}
-
 const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
@@ -79,13 +72,13 @@ export const AppRoutes: Routes[] = [
         path: '/livestreams',
         name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel
+        component: LiveList
     },
     {
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: VodList,
     },
     {
         path: '/folders',

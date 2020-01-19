@@ -39,15 +39,15 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     const notEncodedRenditionsTableHeader = () => {
         return [
             <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
-            onChange={(event) => {
-                if (event.currentTarget.checked) {
-                    const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.id })
-                    setSelectedNotEncodedRendition(editedSelectedRenditions);
-                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                    setSelectedNotEncodedRendition([])
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.id })
+                        setSelectedNotEncodedRendition(editedSelectedRenditions);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setSelectedNotEncodedRendition([])
+                    }
                 }
-            }
-            } />,
+                } />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>
@@ -58,16 +58,16 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
         return notEncodedRenditions.map((value) => {
             return [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedEncodedRendition.length > 0}
-                defaultChecked={selectedNotEncodedRendition.includes(value.id)}
-                onChange={(event) => {
-                    if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
-                        setSelectedNotEncodedRendition([...selectedNotEncodedRendition, value.id])
-                    } else {
-                        const editedSelectedRenditions = selectedNotEncodedRendition.filter(item => item !== value.id)
-                        setSelectedNotEncodedRendition(editedSelectedRenditions);
+                    defaultChecked={selectedNotEncodedRendition.includes(value.id)}
+                    onChange={(event) => {
+                        if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
+                            setSelectedNotEncodedRendition([...selectedNotEncodedRendition, value.id])
+                        } else {
+                            const editedSelectedRenditions = selectedNotEncodedRendition.filter(item => item !== value.id)
+                            setSelectedNotEncodedRendition(editedSelectedRenditions);
+                        }
                     }
-                }
-                } />,
+                    } />,
                 <Text key={value.rendition} size={14} weight="reg">{value.rendition}</Text>,
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
                 <Text key={"bitrate" + value.bitrateCap} size={14} weight="reg">{value.bitrateCap}</Text>,
@@ -79,15 +79,15 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     const EncodedRenditionsTableHeader = () => {
         return [
             <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === encodedRenditions.length}
-            onChange={(event) => {
-                if (event.currentTarget.checked) {
-                    const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
-                    setSelectedEncodedRendition(editedSelectedEncodedRendition);
-                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                    setSelectedEncodedRendition([])
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
+                        setSelectedEncodedRendition(editedSelectedEncodedRendition);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setSelectedEncodedRendition([])
+                    }
                 }
-            }
-            } />,
+                } />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>,
@@ -99,23 +99,23 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
         return props.renditions.encodedRenditions.map((value) => {
             return [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
-                defaultChecked={selectedEncodedRendition.includes(value.id)}
-                onChange={(event) => {
-                    if (event.currentTarget.checked && selectedEncodedRendition.length < encodedRenditions.length) {
-                        setSelectedEncodedRendition([...selectedEncodedRendition, value.id])
-                    } else {
-                        const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
-                        setSelectedEncodedRendition(editedSelectedEncodedRendition);
+                    defaultChecked={selectedEncodedRendition.includes(value.id)}
+                    onChange={(event) => {
+                        if (event.currentTarget.checked && selectedEncodedRendition.length < encodedRenditions.length) {
+                            setSelectedEncodedRendition([...selectedEncodedRendition, value.id])
+                        } else {
+                            const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
+                            setSelectedEncodedRendition(editedSelectedEncodedRendition);
+                        }
                     }
-                }
-                } />,
+                    } />,
                 <Text size={14} weight="reg">{value.rendition}</Text>,
                 <Text size={14} weight="reg">{value.size}</Text>,
                 <Text size={14} weight="reg">{value.bitrateCap}</Text>,
                 value.encoded ? 
-                <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
-                :
-                <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
+                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
+                    :
+                    <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
                 
                 
             ]
