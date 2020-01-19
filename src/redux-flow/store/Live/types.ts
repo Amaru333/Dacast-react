@@ -9,7 +9,7 @@ export const liveInitialState: LiveState = {
 
 export interface LiveState {
     general: false | LiveDetails;
-    list: false | LiveItem[]
+    list: false | LiveItem[];
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({

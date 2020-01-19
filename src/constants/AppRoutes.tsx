@@ -53,15 +53,6 @@ const ApiIntegrationRender = () => {
     )
 }
 
-
-const LiveChannel = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>LiveChannel</h2>
-        </div>
-    )
-}
-
 const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>

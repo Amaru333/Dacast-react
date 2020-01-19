@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SubtitleInfo, VodDetails, ThumbnailUpload } from './types';
+import { SubtitleInfo, VodDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
@@ -31,6 +31,14 @@ const changeVodThumbnailService = (data: ThumbnailUpload) => {
     return axios.put(urlBase + 'vod-thumbnail', {...data})
 }
 
+const changeVodSplashscrenService = (data: SplashscreenUpload) => {
+    return axios.put(urlBase + 'vod/splashscreen', {...data})
+}
+
+const changeVodPosterService = (data: PosterUpload) => {
+    return axios.put(urlBase + 'vod/poster', {...data})
+}
+
 export const VodGeneralServices = {
     getVodDetailsService,
     editVodDetailsService,
@@ -38,5 +46,7 @@ export const VodGeneralServices = {
     editVodSubtitleService,
     deleteVodSubtitleService,
     changeVodThumbnailService,
+    changeVodSplashscrenService,
+    changeVodPosterService,
     getVodList
 }
