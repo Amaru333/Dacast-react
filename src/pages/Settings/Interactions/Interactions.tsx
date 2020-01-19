@@ -19,6 +19,46 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
 
+    const [player, setPlayer] = React.useState<any>(null);
+    const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
+    let playerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if(playerRef && playerRef.current)
+        {
+            const playerScript = document.createElement('script');
+            playerScript.src = "https://player.dacast.com/js/player.js";
+            playerRef.current.appendChild(playerScript);
+            playerScript.addEventListener('load', () => {
+
+                setPlayer(dacast('104301_f_769886', playerRef.current, {
+                    player: 'theo',
+                    height: 341,
+                    width: '100%'
+                }))
+
+            })
+        }
+        return () => player ? player.dispose() : null;
+    }, [])
+
+    React.useEffect(() => {
+        if(player) {
+            player.onReady(() => {
+                if(player.getPlayerInstance().autoplay){
+                    let onPlay = () => {
+                        player.getPlayerInstance().pause()
+
+                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
+                    };
+                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
+                    player.play();
+                }
+            })
+        }
+    }, [player])
+
+
     React.useEffect(() => {
         setInteractionsInfos(props.interactionsInfos)
     }, [props.interactionsInfos])
@@ -29,7 +69,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>,
             <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
             <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault()}}>Preview</Button>
+                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                 <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setNewAdModalOpened(true)}}>New Ad</Button>
             </div>
         ]
@@ -125,6 +165,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Modal>
             <Modal hasClose={false} opened={newAdModalOpened} title='New Ad' size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <NewAdModal toggle={setNewAdModalOpened}  />
+            </Modal>
+            <Modal title='' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+                <div ref={playerRef}>
+                </div>
             </Modal>
         </div>
     )
