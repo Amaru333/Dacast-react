@@ -12,7 +12,7 @@ export const liveInitialState: LiveState = {
 export interface LiveState {
     general: false | LiveDetails;
     list: false | LiveItem[];
-    security: false | LiveSecuritySettings
+    security: false | LiveSecuritySettings;
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({

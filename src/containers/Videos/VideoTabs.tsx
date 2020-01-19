@@ -5,6 +5,7 @@ import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
+import { TabsContainer } from '../../shared/TabsStyle';
 
 export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
@@ -45,8 +46,10 @@ export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTab
 
     return (
         <div>
-            <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-            <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
+            <TabsContainer>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><Icon>keyboard_arrow_left</Icon></Button>
+                <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
+            </TabsContainer>
             <Switch>
                 {returnRouter(handleVideoSubRoutes())}
             </Switch>

@@ -13,7 +13,7 @@ export interface ApplicationState {
     toasts: ToastsState;
     account: AccountState;
     vod: VodState;
-    live: LiveState
+    live: LiveState;
 }
 
 export const globalDefaultState: ApplicationState = {

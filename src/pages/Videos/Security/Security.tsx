@@ -47,83 +47,83 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
         <div >
             {  !settingsEditable ? 
         
-        <Bubble type='info' className='my2'>          
+                <Bubble type='info' className='my2'>          
         This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
-        </Bubble> : null
-    }
-    <Card>
-        <Header className="pb2">
-        <TextStyle>
-            <Text size={20} weight='med' color='gray-1'>Security</Text>
-        </TextStyle>
-        <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
-            { settingsEditable ? 
-            "lock_open"
-            : "lock"
+                </Bubble> : null
             }
-        </UnlockSettingsIcon>
-        </Header>
+            <Card>
+                <Header className="pb2">
+                    <TextStyle>
+                        <Text size={20} weight='med' color='gray-1'>Security</Text>
+                    </TextStyle>
+                    <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                        { settingsEditable ? 
+                            "lock_open"
+                            : "lock"
+                        }
+                    </UnlockSettingsIcon>
+                </Header>
         
-        <DisabledSection settingsEditable={settingsEditable}>
+                <DisabledSection settingsEditable={settingsEditable}>
                 
-                <Toggle 
-                    id="privateVideosToggle" 
-                    label='Private Video' 
-                    defaultChecked={selectedSettings.privateVideo} 
-                    onChange={() => setSelectedSettings({...selectedSettings, privateVideo: !selectedSettings.privateVideo})}
-                />
-                <ToggleTextInfo>
-                    <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
-                </ToggleTextInfo>
-
-                <div className='col col-12 mb1'>
                     <Toggle 
-                        id="passwordProtectedVideosToggle" 
-                        label='Password Protected Videos' 
-                        onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
+                        id="privateVideosToggle" 
+                        label='Private Video' 
+                        defaultChecked={selectedSettings.privateVideo} 
+                        onChange={() => setSelectedSettings({...selectedSettings, privateVideo: !selectedSettings.privateVideo})}
                     />
                     <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
+                        <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
                     </ToggleTextInfo>
-                    { togglePasswordProtectedVideo ? 
-                        <div className='col col-12'>
-                            <Input 
-                                type='time' 
-                                defaultValue={props.vodSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
-                                className='col col-3 md-col-2 mb1'
-                                disabled={false} 
-                                id='promptTime' 
-                                label='Prompt Time' 
-                                required
-                                pattern="[0-9]{2}:[0-9]{2}"
-                                step='1'
-                                onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, promptTime: event.currentTarget.value}})}
-                            />
 
-                            <Input 
-                                type='text'
-                                defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
-                                className='col col-4 md-col-3 px1 mb1'
-                                disabled={false} 
-                                id='password' 
-                                label='Password' 
-                                placeholder='Password'
-                                onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, password: event.currentTarget.value }})}
-                                required
-                            />
-                        </div>
-                        : null }
-                </div> 
+                    <div className='col col-12 mb1'>
+                        <Toggle 
+                            id="passwordProtectedVideosToggle" 
+                            label='Password Protected Videos' 
+                            onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
+                        />
+                        <ToggleTextInfo>
+                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
+                        </ToggleTextInfo>
+                        { togglePasswordProtectedVideo ? 
+                            <div className='col col-12'>
+                                <Input 
+                                    type='time' 
+                                    defaultValue={props.vodSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
+                                    className='col col-3 md-col-2 mb1'
+                                    disabled={false} 
+                                    id='promptTime' 
+                                    label='Prompt Time' 
+                                    required
+                                    pattern="[0-9]{2}:[0-9]{2}"
+                                    step='1'
+                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, promptTime: event.currentTarget.value}})}
+                                />
 
-                <div className='col col-12'>
-                    <Toggle 
-                        id="videoScheduling" 
-                        label='Video Scheduling' 
-                        onChange={() => {setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, enabled:!selectedSettings.videoScheduling.enabled}})}} defaultChecked={selectedSettings.videoScheduling.enabled}
-                    />
-                    <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                                <Input 
+                                    type='text'
+                                    defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
+                                    className='col col-4 md-col-3 px1 mb1'
+                                    disabled={false} 
+                                    id='password' 
+                                    label='Password' 
+                                    placeholder='Password'
+                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, password: event.currentTarget.value }})}
+                                    required
+                                />
+                            </div>
+                            : null }
+                    </div> 
+
+                    <div className='col col-12'>
+                        <Toggle 
+                            id="videoScheduling" 
+                            label='Video Scheduling' 
+                            onChange={() => {setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, enabled:!selectedSettings.videoScheduling.enabled}})}} defaultChecked={selectedSettings.videoScheduling.enabled}
+                        />
+                        <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
-                    { toggleSchedulingVideo ? 
+                        { toggleSchedulingVideo ? 
                         <>
                         <div className='col col-12 flex items-center'>
                             <DropdownSingle 
@@ -192,52 +192,52 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         }
                     </div>
                     </> : null
-                    }      
+                        }      
                     
                               
-                </div>
+                    </div>
 
-                <BorderStyle className="p1" />
+                    <BorderStyle className="p1" />
 
-                <div className="col col-12">
-                    <TextStyle className="py2" >
-                        <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
-                    </TextStyle>
+                    <div className="col col-12">
+                        <TextStyle className="py2" >
+                            <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
+                        </TextStyle>
 
-                    <TextStyle className="py2" >
-                        <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
-                    </TextStyle>
+                        <TextStyle className="py2" >
+                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        </TextStyle>
 
-                    <DropdownSingle 
-                        className='col col-4 md-col-3 mb2 mr1' 
-                        id="availableEnd" 
-                        dropdownTitle="Select Geo-Restriction Group" 
-                        list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
-                        defaultValue={selectedSettings.selectedGeoRestriction} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
-                    />
-                </div>
-
-                <BorderStyle className="p1" />
-                
-                <div>
-                    <TextStyle className="py2" >
-                        <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
-                    </TextStyle>
-
-                    <TextStyle className="py2" >
-                        <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
-                    </TextStyle>
-                    <div className="col col-12 pb2">
                         <DropdownSingle 
-                            className="col col-3" 
+                            className='col col-4 md-col-3 mb2 mr1' 
                             id="availableEnd" 
-                            dropdownTitle="Select Domain Control Group" 
-                            list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
-                            defaultValue={selectedSettings.selectedDomainControl} 
-                            callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
+                            dropdownTitle="Select Geo-Restriction Group" 
+                            list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
+                            defaultValue={selectedSettings.selectedGeoRestriction} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
                         />
                     </div>
-                </div>
+
+                    <BorderStyle className="p1" />
+                
+                    <div>
+                        <TextStyle className="py2" >
+                            <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
+                        </TextStyle>
+
+                        <TextStyle className="py2" >
+                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        </TextStyle>
+                        <div className="col col-12 pb2">
+                            <DropdownSingle 
+                                className="col col-3" 
+                                id="availableEnd" 
+                                dropdownTitle="Select Domain Control Group" 
+                                list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
+                                defaultValue={selectedSettings.selectedDomainControl} 
+                                callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
+                            />
+                        </div>
+                    </div>
                 </DisabledSection>
             </Card>
           

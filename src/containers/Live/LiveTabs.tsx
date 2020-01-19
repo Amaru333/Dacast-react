@@ -5,6 +5,7 @@ import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { LiveSubRoutes } from '../../constants/LiveSubRoutes';
+import { TabsContainer } from '../../shared/TabsStyle';
 
 export const LiveTabs = (props: {history: any; liveId: string; setShowLiveTabs: Function}) => {
     const {path} = useRouteMatch();
@@ -45,8 +46,10 @@ export const LiveTabs = (props: {history: any; liveId: string; setShowLiveTabs: 
 
     return (
         <div>
-            <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-            <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
+            <TabsContainer>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
+            </TabsContainer>
             <Switch>
                 {returnRouter(handleLiveSubRoutes())}
             </Switch>

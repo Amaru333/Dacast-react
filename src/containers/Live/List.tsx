@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiveListPage, LiveListProps } from '../../pages/Live/LiveList/List';
+import { LiveListPage } from '../../pages/Live/LiveList/List';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -13,7 +13,7 @@ export interface LiveListContainerProps {
     deleteLiveChannel: Function;
 }
 
- export const LiveList = (props: LiveListContainerProps) => {
+export const LiveList = (props: LiveListContainerProps) => {
 
    
 
@@ -26,8 +26,8 @@ export interface LiveListContainerProps {
     if (!props.liveList) {
         return <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
     } else {
-    return (
-        <LiveListPage {...props}/>
+        return (
+            <LiveListPage {...props}/>
         )
     }
 }

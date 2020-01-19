@@ -26,8 +26,8 @@ export const LiveSecurity = (props: LiveSecurityProps) => {
 
     return (
         props.liveSecuritySettings && props.globalSecuritySettings ? 
-        <LiveSecurityPage {...props} />
-        : <LoadingSpinner color='dark-violet' size='large' />
+            <LiveSecurityPage {...props} />
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
     
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeLivePosterAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
-import { VodDetails, SubtitleInfo, ThumbnailUpload } from '../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
 
@@ -16,6 +16,8 @@ interface GeneralProps {
     editVodSubtitle: Function;
     deleteVodSubtitle: Function;
     changeVodThumbnail: Function;
+    changeVodSplashscreen: Function;
+    changeVodPoster: Function;
 }
 
 const General = (props: GeneralProps) => {
@@ -61,7 +63,13 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         changeVodThumbnail: (data: ThumbnailUpload) => {
             dispatch(changeVodThumbnailAction(data))
-        }
+        },
+        changeVodSplashscreen: (data: SplashscreenUpload) => {
+            dispatch(changeVodSplashscreenAction(data))
+        },
+        changeVodPoster: (data: PosterUpload) => {
+            dispatch(changeLivePosterAction(data))
+        },
     };
 }
 

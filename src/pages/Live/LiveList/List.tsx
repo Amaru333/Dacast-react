@@ -28,20 +28,20 @@ export const LiveListPage = (props: LiveListProps) => {
     const liveListHeaderElement = () => {
         return [
             <InputCheckbox 
-            className="inline-flex" 
-            key="checkboxLiveListBulkAction" 
-            indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length} 
-            defaultChecked={selectedLive.length === props.liveList.length}
-            id="globalCheckboxVodList" 
-            onChange={(event) => {
-                if (event.currentTarget.checked) {
-                    const editedselectedLive = props.liveList.map(item => { return item.id })
-                    setSelectedLive(editedselectedLive);
-                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                    setSelectedLive([])
+                className="inline-flex" 
+                key="checkboxLiveListBulkAction" 
+                indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length} 
+                defaultChecked={selectedLive.length === props.liveList.length}
+                id="globalCheckboxVodList" 
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedselectedLive = props.liveList.map(item => { return item.id })
+                        setSelectedLive(editedselectedLive);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setSelectedLive([])
+                    }
                 }
-            }
-            } 
+                } 
             />,
             <></>,
             <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
@@ -100,7 +100,7 @@ export const LiveListPage = (props: LiveListProps) => {
     return (
         showLiveTabs ?
             <LiveTabs setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.toString()} history={props.history} />
-        : <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+            : <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
     )
 }
 
