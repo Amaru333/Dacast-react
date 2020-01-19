@@ -12,6 +12,7 @@ import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
 import Plans from '../containers/Account/Plans'
+import LiveList from '../containers/Live/List';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -34,27 +35,6 @@ const functionTest4 = () => {
     )
 }
 
-const DashboardRender = () => {
-    return (
-        <Dashboard/>
-    )
-}
-
-const ApiIntegrationRender = () => {
-    return (
-        <ApiIntegration/>
-    )
-}
-
-
-const LiveChannel = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>LiveChannel</h2>
-        </div>
-    )
-}
-
 const Playlist = () => {
     return (        
         <div style={{margin: 'auto', width: '50%'}}>
@@ -68,19 +48,19 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: DashboardRender,
+        component: Dashboard,
     },
     {
         path: '/livestreams',
         name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel
+        component: LiveList
     },
     {
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: VodList,
     },
     {
         path: '/folders',
@@ -174,7 +154,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/apiintegrations',
                 name: 'API & Integration',
-                component: ApiIntegrationRender
+                component: ApiIntegration
             },
 
             {

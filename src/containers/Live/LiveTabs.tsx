@@ -1,23 +1,23 @@
 import React from 'react';
 import { Tab } from '../../components/Tab/Tab';
-import { VideoSubRoutes } from '../../constants/VideoSubRoutes';
 import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
+import { LiveSubRoutes } from '../../constants/LiveSubRoutes';
 import { TabsContainer } from '../../shared/TabsStyle';
 
-export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTabs: Function}) => {
+export const LiveTabs = (props: {history: any; liveId: string; setShowLiveTabs: Function}) => {
     const {path} = useRouteMatch();
 
     React.useEffect(() => {
-        props.history.push('/videos/'+props.videoId+'/general')
+        props.history.push('/livestreams/'+props.liveId+'/general')
     }, [])
 
-    const handleVideoSubRoutes = () => {
-        return VideoSubRoutes.map((route) => {
+    const handleLiveSubRoutes = () => {
+        return LiveSubRoutes.map((route) => {
             return {
-                ...route, path: path + '/' + props.videoId + route.path
+                ...route, path: path + '/' + props.liveId + route.path
             }
         })
     }
@@ -47,11 +47,11 @@ export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTab
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><Icon>keyboard_arrow_left</Icon></Button>
-                <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>
-                {returnRouter(handleVideoSubRoutes())}
+                {returnRouter(handleLiveSubRoutes())}
             </Switch>
         </div>
     )

@@ -1,42 +1,42 @@
 import React from 'react';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard, UnlockSettingsIcon, DisabledSection, Header } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, Header, DisabledSection, UnlockSettingsIcon } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
-import { Button } from '../../../components/FormsComponents/Button/Button';
-import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security/types';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
+import { SecuritySettings, LiveSecuritySettings } from '../../../redux-flow/store/Live/Security/types';
+import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security/types';
 import { Card } from '../../../components/Card/Card';
 
-interface VodSecurityComponentProps {
-    vodSecuritySettings: VodSecuritySettings;
+interface LiveSecurityComponentProps {
+    liveSecuritySettings: LiveSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     getSettingsSecurityOptions: Function;
-    saveVodSecuritySettings: Function;
+    saveLiveSecuritySettings: Function;
 }
 
-export const VodSecurityPage = (props: VodSecurityComponentProps) => {
+export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
 
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(false)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(false)
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(false)
-    const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.vodSecuritySettings.securitySettings)
+    const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.liveSecuritySettings.securitySettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
 
     const handleReset = () => {
-        setSelectedSettings(props.vodSecuritySettings.securitySettings)
-        setTogglePasswordProtectedVideo(props.vodSecuritySettings.securitySettings.passwordProtectedVideo.enabled)
+        setSelectedSettings(props.liveSecuritySettings.securitySettings)
+        setTogglePasswordProtectedVideo(props.liveSecuritySettings.securitySettings.passwordProtectedVideo.enabled)
     }
 
     React.useEffect(() => {
-        setSelectedSettings(props.vodSecuritySettings.securitySettings)
-    }, [props.vodSecuritySettings.securitySettings])
+        setSelectedSettings(props.liveSecuritySettings.securitySettings)
+    }, [props.liveSecuritySettings.securitySettings])
 
     React.useEffect(() => {
         setTogglePasswordProtectedVideo(selectedSettings.passwordProtectedVideo.enabled);
@@ -48,7 +48,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
             {  !settingsEditable ? 
         
                 <Bubble type='info' className='my2'>          
-        This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
+                This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
                 </Bubble> : null
             }
             <Card>
@@ -63,9 +63,8 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         }
                     </UnlockSettingsIcon>
                 </Header>
-        
-                <DisabledSection settingsEditable={settingsEditable}>
                 
+                <DisabledSection settingsEditable={settingsEditable}>
                     <Toggle 
                         id="privateVideosToggle" 
                         label='Private Video' 
@@ -89,7 +88,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             <div className='col col-12'>
                                 <Input 
                                     type='time' 
-                                    defaultValue={props.vodSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
+                                    defaultValue={props.liveSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.liveSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
                                     className='col col-3 md-col-2 mb1'
                                     disabled={false} 
                                     id='promptTime' 
@@ -102,7 +101,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
 
                                 <Input 
                                     type='text'
-                                    defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
+                                    defaultValue={props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
                                     className='col col-4 md-col-3 px1 mb1'
                                     disabled={false} 
                                     id='password' 
@@ -145,7 +144,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
 
                                 <Input 
                                     type='time'
-                                    defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.startTime ? props.vodSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
+                                    defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.startTime ? props.liveSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
                                     className='col col-3 md-col-2 px1 mt1'
                                     disabled={false} 
                                     id='startTime' 
@@ -180,7 +179,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 </div>
                                 <Input 
                                     type='time' 
-                                    defaultValue={props.vodSecuritySettings.securitySettings.videoScheduling.endTime ? props.vodSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
+                                    defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.endTime ? props.liveSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
                                     className='col col-3 md-col-2 mt1 px1'
                                     disabled={false} 
                                     id='endTime' 
@@ -212,7 +211,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             className='col col-4 md-col-3 mb2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
-                            list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
+                            list={props.liveSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
                             defaultValue={selectedSettings.selectedGeoRestriction} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
                         />
                     </div>
@@ -232,7 +231,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 className="col col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
-                                list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
+                                list={props.liveSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
                                 defaultValue={selectedSettings.selectedDomainControl} 
                                 callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
                             />
@@ -241,11 +240,11 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 </DisabledSection>
             </Card>
           
-            { selectedSettings === props.vodSecuritySettings.securitySettings ? null :
+            { selectedSettings === props.liveSecuritySettings.securitySettings ? null :
                 <div>
                     <Button 
-                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
-                    <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
+                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveLiveSecuritySettings(selectedSettings)}>Save</Button>
+                    <Button type="button" form="liveSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
                 </div>}
             <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
@@ -266,6 +265,6 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 </ModalFooter>
             </Modal>
         </div>
-                    
     )
+    
 }
