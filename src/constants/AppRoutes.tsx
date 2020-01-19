@@ -11,6 +11,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
@@ -163,6 +164,11 @@ export const AppRoutes: Routes[] = [
                 name: 'Theming',
                 component: Theming
             },
+            {
+                path: '/settings/interactions',
+                name: 'Interaction',
+                component: Interactions
+            }
         ]
     },
     {
