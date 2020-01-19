@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard, UnlockSettingsIcon, DisabledSection, Header } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -11,6 +11,7 @@ import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
+import { Card } from '../../../components/Card/Card';
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -44,31 +45,26 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
 
     return (
         <div >
-            <div className="col col-12">
-                <Button 
-                    typeButton="secondary" 
-                    type="button" 
-                    sizeButton="small" 
-                    className="col-right m25" 
-                    onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
-                    { 
-                        settingsEditable ? 
-                            "Revert Security Settings"
-                            : "Edit Security Settings"
-                    }
-                </Button>
-            </div>
-            
             {  !settingsEditable ? 
         
-                <Bubble type='info' className='my2'>          
-                This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
-                </Bubble> : null
+        <Bubble type='info' className='my2'>          
+        This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
+        </Bubble> : null
+    }
+    <Card>
+        <Header className="pb2">
+        <TextStyle>
+            <Text size={20} weight='med' color='gray-1'>Security</Text>
+        </TextStyle>
+        <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+            { settingsEditable ? 
+            "lock_open"
+            : "lock"
             }
-            <DisabledCard settingsEditable={settingsEditable}>
-                <TextStyle className="py2" >
-                    <Text size={20} weight='med' color='gray-1'>Security</Text>
-                </TextStyle>
+        </UnlockSettingsIcon>
+        </Header>
+        
+        <DisabledSection settingsEditable={settingsEditable}>
                 
                 <Toggle 
                     id="privateVideosToggle" 
@@ -242,7 +238,8 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         />
                     </div>
                 </div>
-            </DisabledCard>
+                </DisabledSection>
+            </Card>
           
             { selectedSettings === props.vodSecuritySettings.securitySettings ? null :
                 <div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { DisabledCard, TextStyle, ToggleTextInfo, BorderStyle } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, Header, DisabledSection, UnlockSettingsIcon } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -11,6 +11,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { SecuritySettings, LiveSecuritySettings } from '../../../redux-flow/store/Live/Security/types';
 import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security/types';
+import { Card } from '../../../components/Card/Card';
 
 interface LiveSecurityComponentProps {
     liveSecuritySettings: LiveSecuritySettings;
@@ -44,32 +45,26 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
 
     return (
         <div >
-            <div className="col col-12">
-                <Button 
-                    typeButton="secondary" 
-                    type="button" 
-                    sizeButton="small" 
-                    className="col-right m25" 
-                    onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
-                    { 
-                        settingsEditable ? 
-                            "Revert Security Settings"
-                            : "Edit Security Settings"
-                    }
-                </Button>
-            </div>
-            
             {  !settingsEditable ? 
         
                 <Bubble type='info' className='my2'>          
                 This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
                 </Bubble> : null
             }
-            <DisabledCard settingsEditable={settingsEditable}>
-                <TextStyle className="py2" >
+            <Card>
+                <Header className="pb2">
+                <TextStyle>
                     <Text size={20} weight='med' color='gray-1'>Security</Text>
                 </TextStyle>
+                <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                    { settingsEditable ? 
+                    "lock_open"
+                    : "lock"
+                    }
+                </UnlockSettingsIcon>
+                </Header>
                 
+                <DisabledSection settingsEditable={settingsEditable}>
                 <Toggle 
                     id="privateVideosToggle" 
                     label='Private Video' 
@@ -242,13 +237,14 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         />
                     </div>
                 </div>
-            </DisabledCard>
+                </DisabledSection>
+            </Card>
           
             { selectedSettings === props.liveSecuritySettings.securitySettings ? null :
                 <div>
                     <Button 
-                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveliveSecuritySettings(selectedSettings)}>Save</Button>
-                    <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
+                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveLiveSecuritySettings(selectedSettings)}>Save</Button>
+                    <Button type="button" form="liveSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
                 </div>}
             <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
