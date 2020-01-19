@@ -38,7 +38,7 @@ export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {},
                 created: 1573567252
             }
         ],
-        webHook: [{
+        webHooks: [{
             enable: true,
             url: "dacast.com/callback",
             method: "POST"

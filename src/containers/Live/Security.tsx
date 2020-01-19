@@ -18,7 +18,7 @@ interface LiveSecurityProps {
 export const LiveSecurity = (props: LiveSecurityProps) => {
 
     React.useEffect(() => {
-        if(!props.liveSecuritySettings && !props.globalSecuritySettings) {
+        if(!props.liveSecuritySettings || (!props.liveSecuritySettings && !props.globalSecuritySettings)) {
             props.getLiveSecuritySettings();
             props.getSettingsSecurityOptions();
         }
