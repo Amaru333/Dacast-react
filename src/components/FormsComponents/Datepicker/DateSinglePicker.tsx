@@ -35,7 +35,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
     useOutsideAlerter(datepickerRef, () => {
         setIsOpened(false)
         if(props.callback) {
-            props.callback(state.startDate.toLocaleDateString())
+            props.callback(state.startDate.toLocaleDateString(), state.startDate.setUTCMilliseconds)
         }
     });
 

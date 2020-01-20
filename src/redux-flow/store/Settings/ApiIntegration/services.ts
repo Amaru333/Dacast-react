@@ -8,7 +8,7 @@ const getSettingsIntegrationService = () => {
 }
 
 const saveSettingsIntegrationService = (data: ApiIntegrationPageInfos) => {
-    return axios.post(urlBase + 'saveSettingsIntegration', {...data})
+    return axios.post(urlBase + 'save-settings-integration', {...data})
 }
 
 
