@@ -26,7 +26,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
         if(selectedItem === 'Select' || props.dropdownDefaultSelect) {
             setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
         } 
-        console.log(props.dropdownDefaultSelect)
     }, [props.dropdownDefaultSelect])
 
     
@@ -113,7 +112,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
         <ContainerStyle className={props.className}>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
+                {props.children ? props.children : <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>}
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
             <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
