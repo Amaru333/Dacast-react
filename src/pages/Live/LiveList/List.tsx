@@ -9,6 +9,7 @@ import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 import styled from 'styled-components';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
+import { Pagination } from '../../../components/Pagination/Pagination'
 
 
 export interface LiveListProps {
@@ -105,7 +106,7 @@ export const LiveListPage = (props: LiveListProps) => {
             <>
                 <LivesFiltering />
                 <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
-
+                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
             </>
     )
 }
