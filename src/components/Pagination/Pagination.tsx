@@ -33,7 +33,7 @@ export const Pagination = (props: PaginationProps) => {
 
     return (    
         <div className='flex my2'>
-            <div className=' flex flex-auto'>
+            <div className=' flex items-baseline flex-auto'>
                 <Text size={16} weight='reg'>Showing </Text>
                 <DropdownButton
                     className='mx1'

@@ -169,6 +169,7 @@ export const CloseIconButton = styled.div`
 
 export const ButtonContainer = styled.div<{isOpened: boolean}>`
     display: flex;
+    align-items: center;
     border-radius: 4px;
     padding: 4px;
     background-color: white;
