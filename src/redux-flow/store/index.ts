@@ -5,6 +5,8 @@ import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
+import { TitleReducer } from './Title/logic';
+import {withRouter} from 'react-router-dom';
 
 
 export interface ApplicationState {
@@ -14,6 +16,7 @@ export interface ApplicationState {
     account: AccountState;
     vod: VodState;
     live: LiveState;
+    title: string;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -22,7 +25,8 @@ export const globalDefaultState: ApplicationState = {
     toasts: toastsInitialState,
     account: accountInitialState,
     vod: vodInitialState,
-    live: liveInitialState
+    live: liveInitialState,
+    title: ""
 };
 
 export const createRootReducer = () =>
@@ -32,6 +36,7 @@ export const createRootReducer = () =>
         toasts: ToastReducer,
         account: AccountReducer,
         vod: VodReducer,
-        live: LiveReducer
+        live: LiveReducer,
+        title: TitleReducer
     },
     );

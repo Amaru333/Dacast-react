@@ -8,6 +8,7 @@ export const HeaderStyle = styled.div`
     transition: none;
     z-index:99;
     height: 57px;
+    align-items: center;
     display: flex;
     justify-content: flex-end;
 `
