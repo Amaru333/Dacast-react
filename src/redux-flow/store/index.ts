@@ -5,6 +5,7 @@ import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
+import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
 
 
 export interface ApplicationState {
@@ -14,6 +15,7 @@ export interface ApplicationState {
     account: AccountState;
     vod: VodState;
     live: LiveState;
+    paywall: PaywallState;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -22,7 +24,8 @@ export const globalDefaultState: ApplicationState = {
     toasts: toastsInitialState,
     account: accountInitialState,
     vod: vodInitialState,
-    live: liveInitialState
+    live: liveInitialState,
+    paywall: paywallInitialState
 };
 
 export const createRootReducer = () =>
@@ -32,6 +35,7 @@ export const createRootReducer = () =>
         toasts: ToastReducer,
         account: AccountReducer,
         vod: VodReducer,
-        live: LiveReducer
+        live: LiveReducer,
+        paywall: PaywallReducer
     },
     );

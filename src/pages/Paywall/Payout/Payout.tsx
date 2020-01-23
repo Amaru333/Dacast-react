@@ -7,8 +7,11 @@ import { BorderStyle } from './PayoutStyle';
 import { PaywallPaymentMethod } from './PaywallPaymentMethod';
 import { Modal } from '../../../components/Modal/Modal';
 import { WithdrawalModal } from './WithdrawalModal';
+import { PayoutComponentProps } from '../../../containers/Paywall/Payout';
 
-export const PayoutPage = () => {
+export const PayoutPage = (props: PayoutComponentProps) => {
+
+    const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false);
 
     const paymentMethodTableHeader = () => {
         return [
@@ -16,11 +19,12 @@ export const PayoutPage = () => {
             <Text key='paymentMethodTableHeaderBillindID' size={14} weight='med'>Billing ID</Text>,
             <Text key='paymentMethodTableHeaderEmail' size={14} weight='med'>Email</Text>,
             <Text key='paymentMethodTableHeaderActive' size={14} weight='med'>Active</Text>,
-            <Button key='paymentMethodTableHeaderActionButton' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Payment Method</Button>
+            <Button key='paymentMethodTableHeaderActionButton' className='right mr2' onClick={() => {setDisplayPaymentMethodRequest(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Payment Method</Button>
         ]
     }
 
     const [withdrawalModalOpened, setWithdrawalModalOpened] = React.useState<boolean>(false);
+
 
     const withdrawalTableHeader = () => {
         return [
@@ -34,7 +38,9 @@ export const PayoutPage = () => {
         ]
     }
 
-    return (
+    return displayPaymentMethodRequest ?
+        <PaywallPaymentMethod displayPage={setDisplayPaymentMethodRequest} />
+        :
         <div>
             <Card>
                 <Text  size={20} weight='reg'>Payment Request Method</Text>
@@ -46,13 +52,7 @@ export const PayoutPage = () => {
                 <Table className='my2' id='payoutWithdrawalTable' header={withdrawalTableHeader()} />
             </Card>
             <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
-                <WithdrawalModal />
+                <WithdrawalModal toggle={setWithdrawalModalOpened} />
             </Modal>
         </div>
-
-    )
-
-    // return (
-    //     <PaywallPaymentMethod />
-    // )
 }

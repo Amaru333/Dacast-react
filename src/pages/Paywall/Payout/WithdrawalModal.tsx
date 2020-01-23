@@ -4,7 +4,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 
-export const WithdrawalModal = () => {
+export const WithdrawalModal = (props: {toggle: Function}) => {
 
     return (
         <div>
@@ -23,7 +23,7 @@ export const WithdrawalModal = () => {
             <Input className='col col-12 my2' id='withdrawalModalCommentsInput' label='Comments' placeholder='Comments' />
             <div className='flex col col-12 my2'>
                 <Button className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
-                <Button className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => {props.toggle(false)}} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )

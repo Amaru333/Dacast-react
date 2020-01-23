@@ -4,6 +4,7 @@ import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { BorderStyle } from './PayoutStyle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 enum PaymentMethod {
     BankAccountUS = 'Bank Account (US)',
@@ -132,7 +133,7 @@ const PayPal = () => {
     )
 }
 
-export const PaywallPaymentMethod = () => {
+export const PaywallPaymentMethod = (props: {displayPage: Function}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>('Bank Account (US)')
     const renderPaymentMethod = () => {
         switch(selectedPaymentMethod) {
@@ -148,21 +149,28 @@ export const PaywallPaymentMethod = () => {
     }
 
     return (
-        <Card>
-            <Text size={20} weight='reg'>New payment method</Text>
-            <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
-            <DropdownSingle 
-                className='my2 col col-4'
-                id='paywallNewPaymentDropdown' 
-                dropdownTitle='Payout Type' 
-                list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
-                callback={(value: string) => setSelectedPaymentMethod(value)}
-                dropdownDefaultSelect='Bank Account (US)'
-            />
-            <BorderStyle className='my2' />
+        <div>
+            <Card>
+                <Text size={20} weight='reg'>New payment method</Text>
+                <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
+                <DropdownSingle 
+                    className='my2 col col-4'
+                    id='paywallNewPaymentDropdown' 
+                    dropdownTitle='Payout Type' 
+                    list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
+                    callback={(value: string) => setSelectedPaymentMethod(value)}
+                    dropdownDefaultSelect='Bank Account (US)'
+                />
+                <BorderStyle className='my2' />
 
-            {renderPaymentMethod()}
-        </Card>
+                {renderPaymentMethod()}
+            </Card> 
+            <div className='my2'>
+                <Button className='mr2' onClick={() => {}} typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button onClick={() => {props.displayPage(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+            </div>
+        </div>
+
     )
 }
 
