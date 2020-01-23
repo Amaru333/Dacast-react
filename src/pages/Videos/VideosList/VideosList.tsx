@@ -9,6 +9,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import styled from "styled-components";
 import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
+import { Pagination } from '../../../components/Pagination/Pagination';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -95,6 +96,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <>
                 <VideosFiltering />
                 <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
             </>
 
     )
