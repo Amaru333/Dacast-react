@@ -33,6 +33,7 @@ interface MainProps {
   
 export const updateStateTitle = (pathname: string) => { 
     var result = AppRoutes.filter(item => pathname.includes(item.path) );
+    if( /\d/.test(pathname) ) { return; }
     if(result.length) {
         if(result[0].slug) {
             let match =  result[0].slug.filter(subRoute => {console.log(subRoute); return subRoute.path === pathname; } );
