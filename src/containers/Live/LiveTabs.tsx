@@ -50,7 +50,7 @@ export const LiveTabs = (props: { live: LiveItem; history: any; liveId: string; 
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/livestreams');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
                 <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>
