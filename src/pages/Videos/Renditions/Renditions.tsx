@@ -10,6 +10,8 @@ import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditi
 
 interface VodRenditionsProps {
     renditions: RenditionsList;
+    addVodRenditions: Function;
+    deleteVodRenditions: Function;
 }
 
 export const VodRenditionsPage = (props: VodRenditionsProps) => {
@@ -123,31 +125,32 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
         )
     }
 
-    // const encodeRenditions = () => {
-    //     event.preventDefault();
-    //     var newNotEncodedRenditions = notEncodedRenditions.filter(rendition => !selectedNotEncodedRendition.includes(rendition.id))
-    //     setNotEncodedRenditions(newNotEncodedRenditions)
+    const encodeRenditions = () => {
+        event.preventDefault();
+        var newNotEncodedRenditions = notEncodedRenditions.filter(rendition => !selectedNotEncodedRendition.includes(rendition.id))
+        setNotEncodedRenditions(newNotEncodedRenditions)
 
-    //     setEncodedRenditions(
-    //         [...encodedRenditions, 
-    //         ...notEncodedRenditions.filter(rendition => {return selectedNotEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
-    //         ])
+        setEncodedRenditions(
+            [...encodedRenditions, 
+            ...notEncodedRenditions.filter(rendition => {return selectedNotEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
+            ])
+        
+        props.addVodRenditions(selectedNotEncodedRendition)
+        setSelectedNotEncodedRendition([])
+    }
 
-    //     setSelectedNotEncodedRendition([])
-    // }
-
-    // const deleteRenditions = () => {
-    //     event.preventDefault();
-    //     var newEncodedRenditions = encodedRenditions.filter(rendition => !selectedEncodedRendition.includes(rendition.id))
-    //     setEncodedRenditions(newEncodedRenditions)
+    const deleteRenditions = () => {
+        event.preventDefault();
+        var newEncodedRenditions = encodedRenditions.filter(rendition => !selectedEncodedRendition.includes(rendition.id))
+        setEncodedRenditions(newEncodedRenditions)
 
     //     setNotEncodedRenditions(
     //         [...notEncodedRenditions, 
     //         ...encodedRenditions.filter(rendition => {return selectedEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
     //         ])
-
-    //     setSelectedEncodedRendition([])
-    // }
+        props.deleteVodRenditions(selectedEncodedRendition)
+        setSelectedEncodedRendition([])
+    }
 
     return (
         <React.Fragment>
@@ -205,10 +208,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 </div>
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
-                    // onClick={() => encodeRenditions()}
+                    onClick={() => encodeRenditions()}
                     >Encode</Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
-                    // onClick={() => deleteRenditions()}
+                    onClick={() => deleteRenditions()}
                     >Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
