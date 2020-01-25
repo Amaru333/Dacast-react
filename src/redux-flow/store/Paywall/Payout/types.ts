@@ -1,7 +1,10 @@
 import { DateTime } from 'luxon';
 
 export enum ActionTypes {
-    GET_PAYOUT_INFOS = "@@paywal_payout/GET_PAYOUT_INFOS",
+    GET_PAYOUT_INFOS = "@@paywall_payout/GET_PAYOUT_INFOS",
+    ADD_PAYMENT_METHOD_REQUEST = "@@paywall_payout/ADD_PAYMENT_METHOD_REQUEST",
+    DELETE_PAYMENT_METHOD_REQUEST = "@@paywall_payout/DELETE_PAYMENT_METHOD_REQUEST",
+    ADD_WITHDRAWAL_REQUEST = "@@paywall_payout/ADD_WITHDRAWAL_REQUEST"
 }
 export interface BankAccountUS {
     type: 'business' | 'personal';
@@ -58,6 +61,8 @@ export interface Check {
     country: string;
 }
 
+export type PaymentMethodRequest = Check | PayPal | BankAccountUS | BankAccountInternational;
+
 export interface PayPal {
     emailAddress: string;
     comments: string;
@@ -76,15 +81,15 @@ export interface WithdrawalRequest {
     amount: number;
     requestDate: DateTime;
     transferDate: DateTime;
-    status: string;
+    status: 'Completed' | 'Cancelled' | 'Pending';
 }
 
 export interface PayoutInfos {
-    paymentMethodRequests?: PayoutPaymentMethods[];
+    paymentMethodRequests?: PayoutPaymentMethods;
     withdrawalRequests?: WithdrawalRequest[];
 }
 
 export const payoutInitialState: PayoutInfos = {
-    paymentMethodRequests: [],
+    paymentMethodRequests: null,
     withdrawalRequests: []
 }

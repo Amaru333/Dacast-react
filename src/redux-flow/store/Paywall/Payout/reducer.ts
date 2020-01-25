@@ -9,6 +9,27 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 ...state,
                 ...action.payload
             }
+        case ActionTypes.ADD_PAYMENT_METHOD_REQUEST :
+            return {
+                ...state,
+                paymentMethodRequests: {...state.paymentMethodRequests, ...action.payload}
+            }
+        case ActionTypes.DELETE_PAYMENT_METHOD_REQUEST :
+            return {
+                ...state,
+                paymentMethodRequests: Object.keys(state.paymentMethodRequests).reduce((reduced, paymentRequest) => {return action.payload !== paymentRequest ? {...reduced, [paymentRequest]: state.paymentMethodRequests[paymentRequest]} : {...reduced}}, {})
+            }
+        case ActionTypes.ADD_WITHDRAWAL_REQUEST :
+            console.log('bitch')
+            debugger;
+            let withdrawalRequests = [];
+
+            withdrawalRequests = [{...action.payload}]
+            console.log(withdrawalRequests)
+            return {
+                ...state,
+                withdrawalRequests: withdrawalRequests
+            }
         default:
             return state;
     }
