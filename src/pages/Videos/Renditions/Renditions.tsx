@@ -7,6 +7,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditions/types';
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 
 interface VodRenditionsProps {
     renditions: RenditionsList;
@@ -19,6 +20,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
+    const [encodeRenditionsModalOpen, setEncodeRenditionsModalOpen] = React.useState<boolean>(false)
+    const [deleteRenditionsModalOpen, setDeleteRenditionsModalOpen] = React.useState<boolean>(false)
+    const [replaceSourceModalOpen, setReplaceSourceModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         let renditionsId = props.renditions.encodedRenditions.map((renditions) => {return renditions.id})
@@ -126,8 +130,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
 
     return (
         <React.Fragment>
-            <div className="mt25">
-                <Text className="mt25" size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
+            <div className="col col-12">
+            <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>Replace Source File</Button>
+            </div>
+            
+            <div className="">
+                <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
             </div>
             <div className=" flex mt1">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
@@ -180,10 +188,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 </div>
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
-                    onClick={() => encodeRenditions()}
+                    onClick={() => setEncodeRenditionsModalOpen(true)}
                     >Encode ></Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
-                    onClick={() => deleteRenditions()}
+                    onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
@@ -196,7 +204,33 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                      
                 </div>
             </div>
-            
+            <Modal size="small" title="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
+                <ModalContent>
+                    <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? This will come at a cost</Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {encodeRenditions();setEncodeRenditionsModalOpen(false)}}>Encode</Button>
+                    <Button typeButton="tertiary" onClick={() => setEncodeRenditionsModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
+            <Modal size="small" title="Delete Renditions" opened={deleteRenditionsModalOpen} toggle={() => setDeleteRenditionsModalOpen(false)} hasClose={false} icon={{name: "warning", color: "red"}}>
+                <ModalContent>
+                    <Text size={14} weight="reg">Are you sure you want to delete the selected renditions?</Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {deleteRenditions();setDeleteRenditionsModalOpen(false)}}>Delete</Button>
+                    <Button typeButton="tertiary" onClick={() => setDeleteRenditionsModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
+            <Modal size="small" title="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
+                <ModalContent>
+                    <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {setReplaceSourceModalOpen(false)}}>Upload Replacement</Button>
+                    <Button typeButton="tertiary" onClick={() => setReplaceSourceModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
         </React.Fragment>
     )
 }
