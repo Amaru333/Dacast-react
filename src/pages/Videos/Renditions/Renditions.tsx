@@ -39,8 +39,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedNotEncodedRendition([])
                     }
-                }
-                } />,
+                }} />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>
@@ -65,8 +64,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
                 <Text key={"bitrate" + value.bitrateCap} size={14} weight="reg">{value.bitrateCap}</Text>,
             ]
-        }
-        )
+        })
     }
 
     const EncodedRenditionsTableHeader = () => {
@@ -79,8 +77,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedEncodedRendition([])
                     }
-                }
-                } />,
+                }} />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>,
@@ -100,8 +97,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                             const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
                             setSelectedEncodedRendition(editedSelectedEncodedRendition);
                         }
-                    }
-                    } />,
+                    }} />,
                 <Text size={14} weight="reg">{value.rendition}</Text>,
                 <Text size={14} weight="reg">{value.size}</Text>,
                 <Text size={14} weight="reg">{value.bitrateCap}</Text>,
@@ -109,11 +105,8 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
-                
-                
             ]
-        }
-        )
+        })
     }
 
     const encodeRenditions = () => {
@@ -131,13 +124,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     return (
         <React.Fragment>
             <div className="col col-12">
-            <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>Replace Source File</Button>
+                <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>Replace Source File</Button>
             </div>
-            
-            <div className="">
+            <div>
                 <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
             </div>
-            <div className=" flex mt1">
+            <div className="flex mt1">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
