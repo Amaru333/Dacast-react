@@ -15,28 +15,15 @@ interface VodRenditionsProps {
 }
 
 export const VodRenditionsPage = (props: VodRenditionsProps) => {
-    
-    
 
-    var defaultNotEncodedRenditions = [
-        {id: "4K", rendition: "4k-2160p", size: "3480", bitrateCap: "20"},
-        {id: "2K", rendition: "2k-1440p", size: "2560", bitrateCap: "15"},
-        {id: "FHD", rendition: "FHD-1080p", size: "1920", bitrateCap: "7"},
-        {id: "HD", rendition: "HD-720p", size: "1280", bitrateCap: "5"}
-    ]
-
-    var defaultEncodedRenditions = [
-        {id: "SD", rendition: "SD-480p", size: "854", bitrateCap: "2.5", encoded: true},
-        {id:"LD", rendition: "LD-360p", size: "640", bitrateCap: "1", encoded: false},
-        {id: "ULD", rendition: "ULD-240", size: "426", bitrateCap: "0.2"},
-        {id:"magic", rendition: "Magic Encoding", size: "auto", bitrateCap: "5"},
-        {id:"dne", rendition: "Do Not Encode", size: "auto", bitrateCap: "5"}
-    ]
-
-    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>(defaultNotEncodedRenditions)
-    const [encodedRenditions, setEncodedRenditions] = React.useState<Rendition[]>(props.renditions.encodedRenditions)
+    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
+
+    React.useEffect(() => {
+        let renditionsId = props.renditions.encodedRenditions.map((renditions) => {return renditions.id})
+        setNotEncodedRenditions(props.renditions.renditionsList.filter((rendition) => !renditionsId.includes(rendition.id)))
+    }, [props.renditions.encodedRenditions])
 
     const notEncodedRenditionsTableHeader = () => {
         return [
@@ -80,7 +67,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
 
     const EncodedRenditionsTableHeader = () => {
         return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === encodedRenditions.length}
+            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
@@ -103,7 +90,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
                     defaultChecked={selectedEncodedRendition.includes(value.id)}
                     onChange={(event) => {
-                        if (event.currentTarget.checked && selectedEncodedRendition.length < encodedRenditions.length) {
+                        if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
                             setSelectedEncodedRendition([...selectedEncodedRendition, value.id])
                         } else {
                             const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
@@ -127,27 +114,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
 
     const encodeRenditions = () => {
         event.preventDefault();
-        var newNotEncodedRenditions = notEncodedRenditions.filter(rendition => !selectedNotEncodedRendition.includes(rendition.id))
-        setNotEncodedRenditions(newNotEncodedRenditions)
-
-        setEncodedRenditions(
-            [...encodedRenditions, 
-            ...notEncodedRenditions.filter(rendition => {return selectedNotEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
-            ])
-        
         props.addVodRenditions(selectedNotEncodedRendition)
         setSelectedNotEncodedRendition([])
     }
 
     const deleteRenditions = () => {
         event.preventDefault();
-        var newEncodedRenditions = encodedRenditions.filter(rendition => !selectedEncodedRendition.includes(rendition.id))
-        setEncodedRenditions(newEncodedRenditions)
-
-    //     setNotEncodedRenditions(
-    //         [...notEncodedRenditions, 
-    //         ...encodedRenditions.filter(rendition => {return selectedEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
-    //         ])
         props.deleteVodRenditions(selectedEncodedRendition)
         setSelectedEncodedRendition([])
     }
@@ -209,10 +181,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
                     onClick={() => encodeRenditions()}
-                    >Encode</Button>
+                    >Encode ></Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
                     onClick={() => deleteRenditions()}
-                    >Delete</Button>
+                    >&lt; Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">

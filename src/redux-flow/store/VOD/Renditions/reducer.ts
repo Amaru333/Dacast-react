@@ -18,13 +18,12 @@ const reducer: Reducer<RenditionsList> = (state = initialRenditionsState, action
             let renditions = state.encodedRenditions.slice()
             renditions.splice(renditions.length, 0, ...action.payload)
             return {
-                ...state, renditions
+                ...state, encodedRenditions: renditions
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
-            
-            return {
-                
-                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !action.payload.includes(rendition))
+            let renditionsId = action.payload.map((renditions) => {return renditions.id})
+            return { 
+                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !renditionsId.includes(rendition.id))
             }
         default:
             return state;
