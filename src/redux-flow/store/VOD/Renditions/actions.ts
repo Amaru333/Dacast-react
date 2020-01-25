@@ -1,12 +1,22 @@
 import { ThunkDispatch } from "redux-thunk";
 import { showToastNotification } from '../../Toasts';
 import { ApplicationState } from '../..';
-import { RenditionsList, ActionTypes } from '../Renditions/types'
+import { RenditionsList, ActionTypes, Rendition } from '../Renditions/types'
 import { VodRenditionsServices } from './services';
 
 export interface GetVodRenditions {
     type: ActionTypes.GET_VOD_RENDITIONS;
     payload: RenditionsList;
+}
+
+export interface AddVodRenditions {
+    type: ActionTypes.ADD_VOD_RENDITIONS;
+    payload: Rendition[]
+}
+
+export interface DeleteVodRenditions {
+    type: ActionTypes.DELETE_VOD_RENDITIONS;
+    payload: Rendition[]
 }
 
 export const getVodRenditionsAction = (): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
@@ -21,4 +31,30 @@ export const getVodRenditionsAction = (): ThunkDispatch<Promise<void>, {}, GetVo
     };
 }
 
-export type Action = GetVodRenditions
+export const addVodRenditionsAction = (data: Rendition[]): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
+        await VodRenditionsServices.addVodRenditionsService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: response.data });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const deleteVodRenditionsAction = (data: Rendition[]): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodRenditions>) => {
+        await VodRenditionsServices.deleteVodRenditionsService(data)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: response.data });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+
+
+export type Action = GetVodRenditions | AddVodRenditions | DeleteVodRenditions

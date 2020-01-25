@@ -1,15 +1,17 @@
 import React from 'react';
 import { VodRenditionsPage } from '../../pages/Videos/Renditions/Renditions';
-import { RenditionsList } from '../../redux-flow/store/VOD/Renditions/types';
+import { RenditionsList, Rendition } from '../../redux-flow/store/VOD/Renditions/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
+import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
 
 interface VodRenditionsContainerProps {
     renditions: RenditionsList;
     getVodRenditions: Function;
+    addVodRenditions: Function;
+    deleteVodRenditions: Function;
 }
 
 export const VodRenditions = (props: VodRenditionsContainerProps) => {
@@ -40,6 +42,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodRenditions: () => {
             dispatch(getVodRenditionsAction());
+        },
+        addVodRenditions: (data: Rendition[]) => {
+            dispatch(addVodRenditionsAction(data));
+        },
+        deleteVodRenditions: (data: Rendition[]) => {
+            dispatch(deleteVodRenditionsAction(data));
         }
     }
 }
