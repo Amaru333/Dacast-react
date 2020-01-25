@@ -21,7 +21,7 @@ export const LiveListPage = (props: LiveListProps) => {
 
     const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
     const [showLiveTabs, setShowLiveTabs] = React.useState<boolean>(false)
-    const [selectedLiveId, setSelectedLiveId] = React.useState<string>(null)
+    const [selectedLiveId, setSelectedLiveId] = React.useState<LiveItem>(null)
 
     React.useEffect(() => {
 
@@ -92,7 +92,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedLiveId(value.id); setShowLiveTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -101,7 +101,7 @@ export const LiveListPage = (props: LiveListProps) => {
 
     return (
         showLiveTabs ?
-            <LiveTabs setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.toString()} history={props.history} />
+            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.id.toString()} history={props.history} />
             :
             <>
                 <LivesFiltering />

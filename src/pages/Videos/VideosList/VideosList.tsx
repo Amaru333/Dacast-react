@@ -21,7 +21,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const [selectedVod, setSelectedVod] = React.useState<number[]>([]);
     const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
-    const [selectedVodId, setSelectedVodId] = React.useState<number>(-1);
+    const [selectedVodId, setSelectedVodId] = React.useState<VodItem>(null);
 
     React.useEffect(() => {
     }, [selectedVod])
@@ -82,7 +82,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedVodId(value.id); setShowVodTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -91,7 +91,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     return (
         showVodTabs ?
-            <VideoTabs setShowVideoTabs={setShowVodTabs} videoId={selectedVodId.toString()} history={props.history} />
+            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={selectedVodId.id.toString()} history={props.history} />
             :
             <>
                 <VideosFiltering />

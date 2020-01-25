@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
 import { showToastNotification } from '../redux-flow/store/Toasts';
+import { updateTitle } from '../redux-flow/store/Title/logic';
 import { store } from '..';
 
 export function numberFormatter(num: number, format: 'k' | 'comma'): string {
@@ -23,6 +24,10 @@ export function updateClipboard(newClip: string): void {
     }, function() {
         store.dispatch(showToastNotification("Failed to copy in clipboard", 'fixed', "error"));
     });
+}
+
+export function updateTitleApp(title: string): void {
+    store.dispatch(updateTitle(title))
 }
 
 export function readableBytes(size: number): string {

@@ -6,6 +6,8 @@ import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
 import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
+import { TitleReducer } from './Title/logic';
+import {withRouter} from 'react-router-dom';
 
 
 export interface ApplicationState {
@@ -16,6 +18,7 @@ export interface ApplicationState {
     vod: VodState;
     live: LiveState;
     paywall: PaywallState;
+    title: string;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -25,7 +28,8 @@ export const globalDefaultState: ApplicationState = {
     account: accountInitialState,
     vod: vodInitialState,
     live: liveInitialState,
-    paywall: paywallInitialState
+    paywall: paywallInitialState,
+    title: ""
 };
 
 export const createRootReducer = () =>
@@ -36,6 +40,7 @@ export const createRootReducer = () =>
         account: AccountReducer,
         vod: VodReducer,
         live: LiveReducer,
-        paywall: PaywallReducer
+        paywall: PaywallReducer,
+        title: TitleReducer
     },
     );

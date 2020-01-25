@@ -5,7 +5,6 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
-import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
@@ -150,7 +149,7 @@ export const AppRoutes: Routes[] = [
                 component: EncodingRecipes
             },
             {
-                path: '/mainsettings/deliveryembed',
+                path: '/settings/deliveryembed',
                 name: 'Embed',
                 component: EmbedSettings
             },
