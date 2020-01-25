@@ -6,11 +6,14 @@ import { Button } from '../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { LiveSubRoutes } from '../../constants/LiveSubRoutes';
 import { TabsContainer } from '../../shared/TabsStyle';
+import { LiveItem } from '../../redux-flow/store/Live/General/types';
+import { updateTitleApp } from '../../utils/utils';
 
-export const LiveTabs = (props: {history: any; liveId: string; setShowLiveTabs: Function}) => {
+export const LiveTabs = (props: { live: LiveItem; history: any; liveId: string; setShowLiveTabs: Function}) => {
     const {path} = useRouteMatch();
 
     React.useEffect(() => {
+        updateTitleApp(props.live.title);
         props.history.push('/livestreams/'+props.liveId+'/general')
     }, [])
 
@@ -47,7 +50,7 @@ export const LiveTabs = (props: {history: any; liveId: string; setShowLiveTabs: 
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/livestreams');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
                 <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>

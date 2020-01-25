@@ -1,7 +1,7 @@
 import { ActionTypes, LiveSecuritySettings, SecuritySettings } from "../Security/types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 import { LiveSecurityServices } from '../Security/services';
 
 export interface GetLiveSecuritySettings {

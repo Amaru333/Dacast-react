@@ -68,7 +68,7 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;
-    z-index: 99999;
+    z-index: 9997;
     ${props => props.isMobile && css`
         margin-top: 57px;
         transform: translate( ${props.isOpen ? 0: "-100%"} );

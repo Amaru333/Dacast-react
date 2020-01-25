@@ -6,11 +6,14 @@ import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { TabsContainer } from '../../shared/TabsStyle';
+import { VodItem } from '../../redux-flow/store/VOD/General/types';
+import { updateTitleApp } from '../../utils/utils';
 
-export const VideoTabs = (props: {history: any; videoId: string; setShowVideoTabs: Function}) => {
+export const VideoTabs = (props: {video: VodItem; history: any; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
 
     React.useEffect(() => {
+        updateTitleApp(props.video.title);
         props.history.push('/videos/'+props.videoId+'/general')
     }, [])
 

@@ -5,14 +5,16 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
-import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
-import VodSecurity from '../containers/Videos/Security';
+import Interactions from '../containers/Settings/Interactions';
+import Theming from '../containers/Settings/Theming';
+import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
+import Payout from '../containers/Paywall/Payout'
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -29,27 +31,9 @@ const functionTest2 = () => {
     )
 }
 
-const functionTest3 = () => {
-    return (
-        <LoadingSpinner size="small" color="yellow" />
-    )
-}
-
 const functionTest4 = () => {
     return (
         <LoadingSpinner size="small" color="green" />
-    )
-}
-
-const DashboardRender = () => {
-    return (
-        <Dashboard/>
-    )
-}
-
-const ApiIntegrationRender = () => {
-    return (
-        <ApiIntegration/>
     )
 }
 
@@ -66,7 +50,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: DashboardRender,
+        component: Dashboard,
     },
     {
         path: '/livestreams',
@@ -122,25 +106,30 @@ export const AppRoutes: Routes[] = [
         ]
     },
     {
-        path: '/monetization',
-        name: 'Monetization',
+        path: '/paywall',
+        name: 'Paywall',
         iconName: 'attach_money',
         component: null,
         slug: [
             {
-                path: '/monetization/presets',
+                path: '/paywall/presets',
                 name: 'Presets',
                 component: functionTest4
             },
             {
-                path: '/monetization/groups',
+                path: '/paywall/groups',
                 name: 'Groups',
                 component: functionTest2
             },
             {
-                path: '/monetization/balance',
+                path: '/paywall/balance',
                 name: 'Balance',
                 component: functionTest2
+            },
+            {
+                path: '/paywall/payout',
+                name: 'Payout',
+                component: Payout
             }
         ]
     },
@@ -160,7 +149,7 @@ export const AppRoutes: Routes[] = [
                 component: EncodingRecipes
             },
             {
-                path: '/mainsettings/deliveryembed',
+                path: '/settings/deliveryembed',
                 name: 'Embed',
                 component: EmbedSettings
             },
@@ -172,14 +161,19 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/apiintegrations',
                 name: 'API & Integration',
-                component: ApiIntegrationRender
+                component: ApiIntegration
             },
 
             {
                 path: '/settings/theming',
                 name: 'Theming',
-                component: functionTest4
+                component: Theming
             },
+            {
+                path: '/settings/interactions',
+                name: 'Interaction',
+                component: Interactions
+            }
         ]
     },
     {
@@ -191,7 +185,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: functionTest3
+                component: Plans
             },
             {
                 path: '/account/profile',
