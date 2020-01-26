@@ -180,10 +180,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 </div>
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
-                    onClick={() => setEncodeRenditionsModalOpen(true)}
+                        onClick={() => setEncodeRenditionsModalOpen(true)}
                     >Encode ></Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
-                    onClick={() => setDeleteRenditionsModalOpen(true)}
+                        onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">

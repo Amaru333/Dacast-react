@@ -11,12 +11,12 @@ export interface GetVodRenditions {
 
 export interface AddVodRenditions {
     type: ActionTypes.ADD_VOD_RENDITIONS;
-    payload: Rendition[]
+    payload: Rendition[];
 }
 
 export interface DeleteVodRenditions {
     type: ActionTypes.DELETE_VOD_RENDITIONS;
-    payload: Rendition[]
+    payload: Rendition[];
 }
 
 export const getVodRenditionsAction = (): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
