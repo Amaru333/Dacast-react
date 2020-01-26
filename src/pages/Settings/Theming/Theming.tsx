@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading } from './ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
