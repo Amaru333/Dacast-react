@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading } from './ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, FixedButtonContainer } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
@@ -101,7 +101,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 </Heading>
                 <ThemingContainer>
 
-                    <Card className='col col-12 md-col-4 mr2'>
+                    <Card className='col col-12 md-col-4 mr2 mb3 pb3'>
                         <TitleSection>
                             <Text size={20} weight='med'>Edit theme</Text>
                             <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
@@ -177,9 +177,15 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
                                     <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
                                     <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
+                                    
                                 </>
+                                
                         }
                     </Card>
+                    <FixedButtonContainer>
+                        <Button className="mx1">save</Button>
+                        <Button typeButton="tertiary" className="mx1">cancel</Button>
+                    </FixedButtonContainer>
                     <PlayerSection className='col col-12 md-col-8 mr2'>
                         <PlayerContainer>
                             <div ref={playerRef}>
