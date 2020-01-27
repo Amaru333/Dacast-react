@@ -99,7 +99,6 @@ export const UploaderPage = (props: { postVodDemo: Function }) => {
                         updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
                     })
                         .catch(err => {
-                            console.log(err);
                             setUploadingList((currentList: UploaderItemProps[]) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;

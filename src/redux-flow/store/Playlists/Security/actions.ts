@@ -1,0 +1,41 @@
+import { ActionTypes, PlaylistSecuritySettings, SecuritySettings } from "./types";
+import { ThunkDispatch } from "redux-thunk";
+import { ApplicationState } from "../..";
+import { showToastNotification } from '../../Toasts';
+import { PlaylistSecurityServices } from './services';
+
+export interface GetPlaylistSecuritySettings {
+    type: ActionTypes.GET_PLAYLIST_SECURITY_SETTINGS;
+    payload: PlaylistSecuritySettings;
+}
+
+export interface SavePlaylistSecuritySettings {
+    type: ActionTypes.SAVE_PLAYLIST_SECURITY_SETTINGS;
+    payload: PlaylistSecuritySettings;
+}
+
+export const getPlaylistSecuritySettingsAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistSecuritySettings> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistSecuritySettings> ) => {
+        await PlaylistSecurityServices.getPlaylistSecuritySettingsService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_PLAYLIST_SECURITY_SETTINGS, payload: response.data} );
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const savePlaylistSecuritySettingsAction = (data: SecuritySettings): ThunkDispatch<Promise<void>, {}, SavePlaylistSecuritySettings> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistSecuritySettings> ) => {
+        await PlaylistSecurityServices.savePlaylistSecuritySettingsService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_SECURITY_SETTINGS, payload: response.data} );
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = GetPlaylistSecuritySettings | SavePlaylistSecuritySettings

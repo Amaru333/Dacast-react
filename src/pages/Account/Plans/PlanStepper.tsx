@@ -209,7 +209,7 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
 export const PlanStepperFourthStep = (stepperData: Plan, setStepperData: Function) => {
 
 
-    React.useEffect(() => {console.log(stepperData)}, [stepperData])
+    React.useEffect(() => {}, [stepperData])
 
     const step2header = () => {
         const total: number = stepperData.action === 'custom' ? stepperData.firstStep.included.price + stepperData.firstStep.total + stepperData.secondStep.total : stepperData.firstStep.included.price;

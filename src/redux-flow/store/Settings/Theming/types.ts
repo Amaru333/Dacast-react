@@ -11,6 +11,7 @@ type DeliveryMethod = 'compatible' | 'secure';
 type RegionSetting = 'standard' | 'premium';
 
 export interface ThemeOptions {
+    id: string;
     themeName: string;
     isDefault: boolean;
     createdDate: string;

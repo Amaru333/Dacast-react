@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Card } from '../../components/Card/Card';
 
 export const ThemingContainer = styled.div`
     display: flex;
@@ -43,4 +44,9 @@ export const IconContainer = styled.div`
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
     }
+`
+
+export const ControlsCard = styled(Card)`
+    height: 765px;
+    overflow-y: scroll;
 `
