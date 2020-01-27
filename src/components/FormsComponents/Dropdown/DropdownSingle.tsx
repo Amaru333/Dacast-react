@@ -26,7 +26,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
         if(selectedItem === 'Select' || props.dropdownDefaultSelect) {
             setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
         } 
-        console.log(props.dropdownDefaultSelect)
     }, [props.dropdownDefaultSelect])
 
     

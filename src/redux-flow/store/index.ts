@@ -7,6 +7,7 @@ import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
 import { TitleReducer } from './Title/logic';
 import {withRouter} from 'react-router-dom';
+import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
 
 
 export interface ApplicationState {
@@ -16,6 +17,7 @@ export interface ApplicationState {
     account: AccountState;
     vod: VodState;
     live: LiveState;
+    playlist: PlaylistState;
     title: string;
 }
 
@@ -25,6 +27,7 @@ export const globalDefaultState: ApplicationState = {
     toasts: toastsInitialState,
     account: accountInitialState,
     vod: vodInitialState,
+    playlist: playlistInitialState,
     live: liveInitialState,
     title: ""
 };
@@ -37,6 +40,7 @@ export const createRootReducer = () =>
         account: AccountReducer,
         vod: VodReducer,
         live: LiveReducer,
-        title: TitleReducer
+        title: TitleReducer,
+        playlist: PlaylistReducer
     },
     );

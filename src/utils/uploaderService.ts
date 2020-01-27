@@ -9,10 +9,8 @@ async function completeMultipart(keyPrefix: string, file: File, uploadId: string
         method: 'post',
         data: JSON.stringify(allEtags)
     }).then((response: any) => {
-        console.log(response);
     })
         .catch((error: any) => {
-            console.log(error);
             throw new Error(error)
         });
 
@@ -29,7 +27,6 @@ async function initMultiPart(keyPrefix: string, file: File) {
 
 
 async function retrieveChunkPresignedURL(keyPrefix: string, file: File, uploadId: string, partNumber: number, nbChunks: number, urlS3: string) {
-    console.log("jwfw");
     let res = await fetch(`${BASE_PATH}/multipart-upload-urls?s3Path=${urlS3}&toPart=${nbChunks.toString()}&fromPart=${partNumber.toString()}&uploaderId=${uploadId}&vodStorageId=george`, {
         method: 'GET',
     })
@@ -46,7 +43,6 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
 
     try {
         var res = await initMultiPart(keyPrefix, file);
-        console.log(res);
         var uploadId = JSON.parse(res).uploaderId;
         var urlS3 = JSON.parse(res).s3Path;
 
@@ -60,9 +56,7 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
             let chunk = (index < NUM_CHUNKS) ? file.slice(start, end) : file.slice(start)
             try {
                 let xhr = new XMLHttpRequest()
-                console.log("jwfw");
                 let url = await retrieveChunkPresignedURL(keyPrefix, file, uploadId, index, index + 1, urlS3)
-                console.log(url);
                 xhr.open('PUT', JSON.parse(url).urls[0], true)
                 xhr.upload.addEventListener("progress", function (event) {
                     let bytesUploaded = FILE_CHUNK_SIZE * (index - 1)
@@ -89,7 +83,6 @@ async function multiPartUpload(keyPrefix: string, file: File, updateItem: Functi
 
                 await upload
             } catch (err) {
-                console.log(err);
                 throw new Error(err)
             }
         }
