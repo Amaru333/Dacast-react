@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ThemingContainer = styled.div`
     display: flex;
@@ -43,4 +43,13 @@ export const IconContainer = styled.div`
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
     }
+`
+
+export const DisabledSection = styled.div<{selectedTheme: string}>`
+pointer-events: none;
+opacity: 0.5;
+    ${props => props.selectedTheme === "Custom Theme" && css`
+        pointer-events: auto;
+        opacity: 1;
+    `}
 `

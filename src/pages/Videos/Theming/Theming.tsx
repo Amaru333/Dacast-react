@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, ThemingContainer, TitleSection, TextStyle, BorderStyle, PlayerSection, PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { ThemingContainer, TitleSection, TextStyle, BorderStyle, PlayerSection, PlayerContainer, DisabledSection } from '../../../shared/Theming/ThemingStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { Text } from '../../../components/Typography/Text';
@@ -77,7 +77,7 @@ export const VodThemingPage = () => {
         continuousPlay: false,
         skipVideos: false,
         offlineMessage: '',
-        deliveryMethod: 'compatible',
+        deliveryMethod: 'secure',
         regionSettings: 'standard'
     }];
 
@@ -136,6 +136,7 @@ export const VodThemingPage = () => {
                         {
                             showAdvancedPanel ?
                                 <>
+                                    <DisabledSection selectedTheme={selectedTheme.themeName}>
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
                                     <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value})} />
                                     <BorderStyle className="p1" />
@@ -155,16 +156,25 @@ export const VodThemingPage = () => {
                                     </TitleSection>
                                     <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
                                     <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'standard'})} />
-                                    <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'premium'})} /> 
+                                    <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'premium'})} />
+                                    </DisabledSection>
                                 </>
                                 :
                                 <>
                                    <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
-                                   list={themeList.reduce((reduced: DropdownListType, item: ThemeOptions )=> {return {...reduced, [item.themeName]: false}},{})} 
+                                   list={themeList.reduce((reduced: DropdownListType, item: ThemeOptions )=> {return {...reduced, [item.themeName]: false}},{})}
+                                   defaultValue={selectedTheme.themeName} 
                                    callback={(selectedTheme: string) => setSelectedTheme(themeList.find(rendition => rendition.themeName === selectedTheme))} />
-                                   <Bubble className="mt25" type="info">If you wish to create a new Theme or edit a Theme, go to Themeing.</Bubble>
+                                   <Bubble className="mt25" type="info">
+                                   { selectedTheme.themeName === "Custom Theme" ?
+                                       "Custom Settings override any Theme settings."
+                                        :
+                                        "If you wish to create a new Theme or edit a Theme, go to Themeing."
+                                    }
+                                    </Bubble>
                                     <BorderStyle className="mt3" />
 
+                                    <DisabledSection selectedTheme={selectedTheme.themeName}>
                                     <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                                     <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
                                     <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
@@ -206,6 +216,7 @@ export const VodThemingPage = () => {
                                     <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
                                     <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
                                     <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
+                                    </DisabledSection>
                                 </>
                         }
                     </Card>
