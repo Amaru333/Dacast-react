@@ -1,5 +1,7 @@
 export enum ActionTypes {
-    GET_VOD_RENDITIONS = "@@vod_renditions/GET_VOD_RENDITIONS"
+    GET_VOD_RENDITIONS = "@@vod_renditions/GET_VOD_RENDITIONS",
+    ADD_VOD_RENDITIONS = "@@vod_renditions/ADD_VOD_RENDITIONS",
+    DELETE_VOD_RENDITIONS = "@@vod_renditions/DELETE_VOD_RENDITIONS"
 }
 
 export interface RenditionsList {
