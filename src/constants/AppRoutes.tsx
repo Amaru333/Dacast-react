@@ -14,8 +14,9 @@ import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
-import PlaylistList from '../containers/Playlists/List';
 import Payout from '../containers/Paywall/Payout';
+import Transactions from '../containers/Paywall/Transactions';
+import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -36,14 +37,6 @@ const functionTest2 = () => {
 const functionTest4 = () => {
     return (
         <LoadingSpinner size="small" color="green" />
-    )
-}
-
-const Playlist = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Playlist</h2>
-        </div>
     )
 }
 
@@ -124,9 +117,9 @@ export const AppRoutes: Routes[] = [
                 component: functionTest2
             },
             {
-                path: '/paywall/balance',
-                name: 'Balance',
-                component: functionTest2
+                path: '/paywall/transactions',
+                name: 'Transactions',
+                component: Transactions
             },
             {
                 path: '/paywall/payout',

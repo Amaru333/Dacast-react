@@ -100,26 +100,26 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <Text size={20} weight='med' className='pl1'>
                         {
                             selectedTheme.id === "-1" ?
-                            "New Theme"
-                            : "Edit theme"
+                                "New Theme"
+                                : "Edit theme"
                         }
                     </Text>
                 </Heading>
                 <ThemingContainer>
-                <div className='col col-12 md-col-4 mr2 flex flex-column' >
-                    <ControlsCard className='col col-12'>
-                        <TitleSection>
-                            <Text size={20} weight='med'>
+                    <div className='col col-12 md-col-4 mr2 flex flex-column' >
+                        <ControlsCard className='col col-12'>
+                            <TitleSection>
+                                <Text size={20} weight='med'>
+                                    {
+                                        selectedTheme.id === "-1" ?
+                                            "New Theme"
+                                            : "Edit theme"
+                                    }
+                                </Text>
+                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                            </TitleSection>
                             {
-                                selectedTheme.id === "-1" ?
-                                "New Theme"
-                                : "Edit theme"
-                            }
-                            </Text>
-                            <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
-                        </TitleSection>
-                        {
-                            showAdvancedPanel ?
+                                showAdvancedPanel ?
                                 <>
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
                                     <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => {setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value});setSettingsEdited(true)}} />
@@ -142,7 +142,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'standard'});setSettingsEdited(true)}} />
                                     <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'premium'});setSettingsEdited(true)}} /> 
                                 </>
-                                :
+                                    :
                                 <>
                                     <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault});setSettingsEdited(true)}} />
@@ -191,24 +191,24 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     
                                 </>
                                 
-                        }
-                    </ControlsCard>
-                    <div className="mt25">
-                        <Button 
-                        className="mr1" 
-                        disabled={!settingsEdited}
-                        onClick={
-                            () => {{
-                                selectedTheme.id === "-1" ?
-                                props.createTheme(selectedTheme)
-                                : props.saveTheme(selectedTheme)
-                            };setCurrentPage('list')}
-                        }>
+                            }
+                        </ControlsCard>
+                        <div className="mt25">
+                            <Button 
+                                className="mr1" 
+                                disabled={!settingsEdited}
+                                onClick={
+                                    () => {{
+                                        selectedTheme.id === "-1" ?
+                                            props.createTheme(selectedTheme)
+                                            : props.saveTheme(selectedTheme)
+                                    };setCurrentPage('list')}
+                                }>
                             save
-                        </Button>
-                        <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>cancel</Button>
+                            </Button>
+                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>cancel</Button>
+                        </div>
                     </div>
-                </div>
                     <PlayerSection className='col col-12 md-col-8 mr2'>
                         <PlayerContainer>
                             <div ref={playerRef}>
