@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Card } from '../../components/Card/Card';
 
 export const ThemingContainer = styled.div`
     display: flex;
@@ -44,13 +45,8 @@ export const IconContainer = styled.div`
         color:  ${props => props.theme.colors["gray-1"]};
     }
 `
-export const FixedButtonContainer = styled.div`
-    position: fixed;
-    bottom: 1%;
-    background-color: white;
-    width: 100%;
-    border: 1px solid ${props => props.theme.colors['gray-7']};
-    box-shadow: 0px -2px 4px ${props => props.theme.colors.overlay20 };
-    padding: 16px;
 
+export const ControlsCard = styled(Card)`
+    height: 765px;
+    overflow-y: scroll;
 `

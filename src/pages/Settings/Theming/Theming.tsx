@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, FixedButtonContainer } from '../../../shared/Theming/ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, FixedButtonContainer, ControlsCard } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
@@ -100,8 +100,8 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <Text size={20} weight='med' className='pl1'>Edit theme</Text>
                 </Heading>
                 <ThemingContainer>
-
-                    <Card className='col col-12 md-col-4 mr2 mb3 pb3'>
+                <div className='col col-12 md-col-4 mr2 flex flex-column' >
+                    <ControlsCard className='col col-12'>
                         <TitleSection>
                             <Text size={20} weight='med'>Edit theme</Text>
                             <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
@@ -181,11 +181,12 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 </>
                                 
                         }
-                    </Card>
-                    <FixedButtonContainer>
-                        <Button className="mx1">save</Button>
-                        <Button typeButton="tertiary" className="mx1">cancel</Button>
-                    </FixedButtonContainer>
+                    </ControlsCard>
+                    <div className="mt25">
+                        <Button className="mr1">save</Button>
+                        <Button typeButton="tertiary">cancel</Button>
+                    </div>
+                </div>
                     <PlayerSection className='col col-12 md-col-8 mr2'>
                         <PlayerContainer>
                             <div ref={playerRef}>
