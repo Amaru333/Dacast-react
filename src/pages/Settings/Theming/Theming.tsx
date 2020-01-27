@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, FixedButtonContainer, ControlsCard } from '../../../shared/Theming/ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
@@ -20,6 +20,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
     const newTheme: ThemeOptions = {
+        id: "-1",
         themeName: '',
         isDefault: false,
         createdDate: '',
@@ -96,13 +97,25 @@ export const ThemingPage = (props: ThemingComponentProps) => {
             <>
                 <Heading className='my2'>
                     <Button onClick={() => {setCurrentPage('list');setShowAdvancedPanel(false)}} sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-                    <Text size={20} weight='med' className='pl1'>Edit theme</Text>
+                    <Text size={20} weight='med' className='pl1'>
+                        {
+                            selectedTheme.id === "-1" ?
+                            "New Theme"
+                            : "Edit theme"
+                        }
+                    </Text>
                 </Heading>
                 <ThemingContainer>
                 <div className='col col-12 md-col-4 mr2 flex flex-column' >
                     <ControlsCard className='col col-12'>
                         <TitleSection>
-                            <Text size={20} weight='med'>Edit theme</Text>
+                            <Text size={20} weight='med'>
+                            {
+                                selectedTheme.id === "-1" ?
+                                "New Theme"
+                                : "Edit theme"
+                            }
+                            </Text>
                             <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                         </TitleSection>
                         {
@@ -161,7 +174,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Player Transparency' defaultChecked={selectedTheme.playerTransparency} onChange={() => {setSelectedTheme({...selectedTheme, playerTransparency: !selectedTheme.playerTransparency});setSettingsEdited(true)}} />
                                     <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => {setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor});setSettingsEdited(true)}} />
                                     {
                                         selectedTheme.hasCustomColor ? 
@@ -182,8 +194,19 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         }
                     </ControlsCard>
                     <div className="mt25">
-                        <Button className="mr1" disabled={!settingsEdited}>save</Button>
-                        <Button typeButton="tertiary">cancel</Button>
+                        <Button 
+                        className="mr1" 
+                        disabled={!settingsEdited}
+                        onClick={
+                            () => {{
+                                selectedTheme.id === "-1" ?
+                                props.createTheme(selectedTheme)
+                                : props.saveTheme(selectedTheme)
+                            };setCurrentPage('list')}
+                        }>
+                            save
+                        </Button>
+                        <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>cancel</Button>
                     </div>
                 </div>
                     <PlayerSection className='col col-12 md-col-8 mr2'>
@@ -213,7 +236,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                     theme.isDefault ? <Icon key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
-                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.themeName === theme.themeName })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
 
                 ]
             })
@@ -223,8 +246,8 @@ export const ThemingPage = (props: ThemingComponentProps) => {
             <Card>
                 <Text className='py2' size={20} weight='med'>Themes</Text>
                 <TextStyle className='py2'><Text size={14} weight='reg'>Some information about Theming</Text></TextStyle>
-                <div className='my2'>
-                    <Icon>info_outlined</Icon> 
+                <div className='my2 flex'>
+                    <Icon className="mr1">info_outlined</Icon> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
                 <Table className='my2' id='themesListTable' header={themingTableHeader()} body={themingTableBody()} />
