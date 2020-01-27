@@ -10,11 +10,13 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const VodThemingPage = () => {
 
-    const newTheme: ThemeOptions = {
-        themeName: '',
+    const themeList: ThemeOptions[] = [{
+        themeName: 'Default Theme',
         isDefault: false,
         createdDate: '',
         themeType: 'vod',
@@ -44,9 +46,42 @@ export const VodThemingPage = () => {
         offlineMessage: '',
         deliveryMethod: 'compatible',
         regionSettings: 'standard'
-    };
+    },
 
-    const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(newTheme);
+    {
+        themeName: 'Custom Theme',
+        isDefault: false,
+        createdDate: '',
+        themeType: 'vod',
+        bigPlayButton: true,
+        playPause: false,
+        scrubber: false,
+        scrubbingThumbnail: false,
+        timeCode: false,
+        speedControls: false,
+        qualityOptions: false,
+        volume: false,
+        fullscreen: false,
+        thumbnailPosition: 'left',
+        isViewerCounterEnabled: false,
+        viewerCounterLimit: 100,
+        downloadButton: false,
+        socialSharing: false,
+        embedCode: false,
+        playerTransparency: false,
+        hasCustomColor: false,
+        customColor: '',
+        autoplay: false,
+        startVideoMuted: false,
+        looping: false,
+        continuousPlay: false,
+        skipVideos: false,
+        offlineMessage: '',
+        deliveryMethod: 'compatible',
+        regionSettings: 'standard'
+    }];
+
+    const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(themeList[0]);
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
 
     const togglePadding = 'py1';
@@ -89,8 +124,6 @@ export const VodThemingPage = () => {
         } 
     }, [player])
 
-    
-
     return (
         <React.Fragment>
                 <ThemingContainer>
@@ -126,8 +159,11 @@ export const VodThemingPage = () => {
                                 </>
                                 :
                                 <>
-                                   <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" list={{"theme 1": false, "theme 2": false, "custom theme": false}} />
-                                    <BorderStyle className="p1" />
+                                   <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
+                                   list={themeList.reduce((reduced: DropdownListType, item: ThemeOptions )=> {return {...reduced, [item.themeName]: false}},{})} 
+                                   callback={(selectedTheme: string) => setSelectedTheme(themeList.find(rendition => rendition.themeName === selectedTheme))} />
+                                   <Bubble className="mt25" type="info">If you wish to create a new Theme or edit a Theme, go to Themeing.</Bubble>
+                                    <BorderStyle className="mt3" />
 
                                     <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                                     <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
