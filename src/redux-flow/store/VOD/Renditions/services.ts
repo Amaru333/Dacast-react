@@ -1,11 +1,22 @@
 import axios from 'axios'
+import { Rendition } from './types';
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getVodRenditionsService = () => {
     return axios.get(urlBase + 'vod-rendition')
 }
 
+const addVodRenditionsService = (data: Rendition[]) => {
+    return axios.put(urlBase + 'vod-rendition', {...data})
+}
+
+const deleteVodRenditionsService = (data: Rendition[]) => {
+    return axios.delete(urlBase + 'vod-rendition', {data:{...data}})
+}
+
 export const VodRenditionsServices = {
-    getVodRenditionsService
+    getVodRenditionsService,
+    addVodRenditionsService,
+    deleteVodRenditionsService
 }

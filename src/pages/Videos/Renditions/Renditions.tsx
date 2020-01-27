@@ -7,34 +7,27 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditions/types';
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 
 interface VodRenditionsProps {
     renditions: RenditionsList;
+    addVodRenditions: Function;
+    deleteVodRenditions: Function;
 }
 
 export const VodRenditionsPage = (props: VodRenditionsProps) => {
-    
-    
 
-    var defaultNotEncodedRenditions = [
-        {id: "4K", rendition: "4k-2160p", size: "3480", bitrateCap: "20"},
-        {id: "2K", rendition: "2k-1440p", size: "2560", bitrateCap: "15"},
-        {id: "FHD", rendition: "FHD-1080p", size: "1920", bitrateCap: "7"},
-        {id: "HD", rendition: "HD-720p", size: "1280", bitrateCap: "5"}
-    ]
-
-    var defaultEncodedRenditions = [
-        {id: "SD", rendition: "SD-480p", size: "854", bitrateCap: "2.5", encoded: true},
-        {id:"LD", rendition: "LD-360p", size: "640", bitrateCap: "1", encoded: false},
-        {id: "ULD", rendition: "ULD-240", size: "426", bitrateCap: "0.2"},
-        {id:"magic", rendition: "Magic Encoding", size: "auto", bitrateCap: "5"},
-        {id:"dne", rendition: "Do Not Encode", size: "auto", bitrateCap: "5"}
-    ]
-
-    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>(defaultNotEncodedRenditions)
-    const [encodedRenditions, setEncodedRenditions] = React.useState<Rendition[]>(props.renditions.encodedRenditions)
+    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
+    const [encodeRenditionsModalOpen, setEncodeRenditionsModalOpen] = React.useState<boolean>(false)
+    const [deleteRenditionsModalOpen, setDeleteRenditionsModalOpen] = React.useState<boolean>(false)
+    const [replaceSourceModalOpen, setReplaceSourceModalOpen] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        let renditionsId = props.renditions.encodedRenditions.map((renditions) => {return renditions.id})
+        setNotEncodedRenditions(props.renditions.renditionsList.filter((rendition) => !renditionsId.includes(rendition.id)))
+    }, [props.renditions.encodedRenditions])
 
     const notEncodedRenditionsTableHeader = () => {
         return [
@@ -46,8 +39,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedNotEncodedRendition([])
                     }
-                }
-                } />,
+                }} />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>
@@ -72,13 +64,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
                 <Text key={"bitrate" + value.bitrateCap} size={14} weight="reg">{value.bitrateCap}</Text>,
             ]
-        }
-        )
+        })
     }
 
     const EncodedRenditionsTableHeader = () => {
         return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === encodedRenditions.length}
+            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
@@ -86,8 +77,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedEncodedRendition([])
                     }
-                }
-                } />,
+                }} />,
             <Text size={14} weight="med">Rendition</Text>,
             <Text size={14} weight="med">Size (px)</Text>,
             <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>,
@@ -101,14 +91,13 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
                     defaultChecked={selectedEncodedRendition.includes(value.id)}
                     onChange={(event) => {
-                        if (event.currentTarget.checked && selectedEncodedRendition.length < encodedRenditions.length) {
+                        if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
                             setSelectedEncodedRendition([...selectedEncodedRendition, value.id])
                         } else {
                             const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
                             setSelectedEncodedRendition(editedSelectedEncodedRendition);
                         }
-                    }
-                    } />,
+                    }} />,
                 <Text size={14} weight="reg">{value.rendition}</Text>,
                 <Text size={14} weight="reg">{value.size}</Text>,
                 <Text size={14} weight="reg">{value.bitrateCap}</Text>,
@@ -116,45 +105,31 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
-                
-                
             ]
-        }
-        )
+        })
     }
 
-    // const encodeRenditions = () => {
-    //     event.preventDefault();
-    //     var newNotEncodedRenditions = notEncodedRenditions.filter(rendition => !selectedNotEncodedRendition.includes(rendition.id))
-    //     setNotEncodedRenditions(newNotEncodedRenditions)
+    const encodeRenditions = () => {
+        event.preventDefault();
+        props.addVodRenditions(selectedNotEncodedRendition)
+        setSelectedNotEncodedRendition([])
+    }
 
-    //     setEncodedRenditions(
-    //         [...encodedRenditions, 
-    //         ...notEncodedRenditions.filter(rendition => {return selectedNotEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
-    //         ])
-
-    //     setSelectedNotEncodedRendition([])
-    // }
-
-    // const deleteRenditions = () => {
-    //     event.preventDefault();
-    //     var newEncodedRenditions = encodedRenditions.filter(rendition => !selectedEncodedRendition.includes(rendition.id))
-    //     setEncodedRenditions(newEncodedRenditions)
-
-    //     setNotEncodedRenditions(
-    //         [...notEncodedRenditions, 
-    //         ...encodedRenditions.filter(rendition => {return selectedEncodedRendition.includes(rendition.id)}).map(rendition => {return {...rendition, encoded: true}})
-    //         ])
-
-    //     setSelectedEncodedRendition([])
-    // }
+    const deleteRenditions = () => {
+        event.preventDefault();
+        props.deleteVodRenditions(selectedEncodedRendition)
+        setSelectedEncodedRendition([])
+    }
 
     return (
         <React.Fragment>
-            <div className="mt25">
-                <Text className="mt25" size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
+            <div className="col col-12">
+                <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>Replace Source File</Button>
             </div>
-            <div className=" flex mt1">
+            <div>
+                <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
+            </div>
+            <div className="flex mt1">
                 <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                 <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
@@ -205,11 +180,11 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 </div>
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
-                    // onClick={() => encodeRenditions()}
-                    >Encode</Button>
+                        onClick={() => setEncodeRenditionsModalOpen(true)}
+                    >Encode ></Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
-                    // onClick={() => deleteRenditions()}
-                    >Delete</Button>
+                        onClick={() => setDeleteRenditionsModalOpen(true)}
+                    >&lt; Delete</Button>
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">
@@ -221,7 +196,33 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                      
                 </div>
             </div>
-            
+            <Modal size="small" title="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
+                <ModalContent>
+                    <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? This will come at a cost</Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {encodeRenditions();setEncodeRenditionsModalOpen(false)}}>Encode</Button>
+                    <Button typeButton="tertiary" onClick={() => setEncodeRenditionsModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
+            <Modal size="small" title="Delete Renditions" opened={deleteRenditionsModalOpen} toggle={() => setDeleteRenditionsModalOpen(false)} hasClose={false} icon={{name: "warning", color: "red"}}>
+                <ModalContent>
+                    <Text size={14} weight="reg">Are you sure you want to delete the selected renditions?</Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {deleteRenditions();setDeleteRenditionsModalOpen(false)}}>Delete</Button>
+                    <Button typeButton="tertiary" onClick={() => setDeleteRenditionsModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
+            <Modal size="small" title="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
+                <ModalContent>
+                    <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {setReplaceSourceModalOpen(false)}}>Upload Replacement</Button>
+                    <Button typeButton="tertiary" onClick={() => setReplaceSourceModalOpen(false)}>Cancel</Button>  
+                </ModalFooter>
+            </Modal>
         </React.Fragment>
     )
 }
