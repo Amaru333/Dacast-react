@@ -14,7 +14,8 @@ import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
-import Payout from '../containers/Paywall/Payout'
+import Payout from '../containers/Paywall/Payout';
+import Transactions from '../containers/Paywall/Transactions';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -122,9 +123,9 @@ export const AppRoutes: Routes[] = [
                 component: functionTest2
             },
             {
-                path: '/paywall/balance',
-                name: 'Balance',
-                component: functionTest2
+                path: '/paywall/transactions',
+                name: 'Transactions',
+                component: Transactions
             },
             {
                 path: '/paywall/payout',
