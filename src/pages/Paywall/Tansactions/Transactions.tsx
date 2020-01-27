@@ -4,7 +4,8 @@ import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { TransactionsComponentProps } from '../../../containers/Paywall/Transactions';
-
+import { Label } from '../../../components/FormsComponents/Label/Label';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -24,20 +25,26 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(props.transactionsInfos) {
             return props.transactionsInfos.map((transaction, i) => {
                 return [
-                    <Text key={'transactionsTableBodyType' + i} size={14} weight='med'>{transaction.type}</Text>,
-                    <Text key={'transactionsTableBodyContentName' + i} size={14} weight='med'>{transaction.contentName}</Text>,
-                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='med'>{transaction.date}</Text>,
-                    <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='med'>{transaction.purchaser}</Text>,
-                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='med'>{transaction.currency}</Text>,
-                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='med'>{transaction.price}</Text>,
-                    <Text key='transactionsTableHeaderUSDBalance' size={14} weight='med'>USD Balance</Text>
+                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
+                    <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
+                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
+                    <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
+                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
+                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{transaction.price}</Text>,
+                    <Text key='transactionsTableHeaderUSDBalance' size={14} weight='reg'>USD Balance</Text>,
+                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />
                 ]
             })
         }
     }
     return (
         <div className='flex flex-column'>
-            <TransactionsFiltering />
+            <div>
+                <TransactionsFiltering />
+                <Button className='mr4 mb2' sizeButton='small' typeButton='secondary' buttonColor='blue'>Export </Button>
+
+            </div>
+
             <Table id='transactionTable' header={transactionsTableHeader()} body={transactionsTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[10, 30, 40]} callback={() => {}} />
         </div>
