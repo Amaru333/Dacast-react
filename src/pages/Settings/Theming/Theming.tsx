@@ -18,6 +18,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
     const newTheme: ThemeOptions = {
         themeName: '',
         isDefault: false,
@@ -90,8 +91,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         } 
     }, [player])
 
-    React.useEffect(() => {console.log(selectedTheme)}, [selectedTheme])
-
     const ThemingOptions = () => {
         return (
             <>
@@ -110,13 +109,13 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                             showAdvancedPanel ?
                                 <>
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
-                                    <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value})} />
+                                    <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => {setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Delivery Method</Text></TextStyle>
                                     <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
-                                    <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => setSelectedTheme({...selectedTheme, deliveryMethod:'compatible'})}/>
-                                    <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => setSelectedTheme({...selectedTheme, deliveryMethod: 'secure'})} />
+                                    <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod:'compatible'});setSettingsEdited(true)}}/>
+                                    <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod: 'secure'});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
                                     <TitleSection className="my2">
@@ -127,63 +126,63 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
                                     </TitleSection>
                                     <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
-                                    <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'standard'})} />
-                                    <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'premium'})} /> 
+                                    <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'standard'});setSettingsEdited(true)}} />
+                                    <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'premium'});setSettingsEdited(true)}} /> 
                                 </>
                                 :
                                 <>
-                                    <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value})} />
-                                    <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})} />
+                                    <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
+                                    <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
                                     <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
-                                    <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
-                                    <Toggle className={togglePadding} label='Scrubber' defaultChecked={selectedTheme.scrubber} onChange={() => setSelectedTheme({...selectedTheme, scrubber: !selectedTheme.scrubber})} />
-                                    <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' defaultChecked={selectedTheme.scrubbingThumbnail} onChange={() => setSelectedTheme({...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail})} />
-                                    <Toggle className={togglePadding} label='Time Code' defaultChecked={selectedTheme.timeCode} onChange={() => setSelectedTheme({...selectedTheme, timeCode: !selectedTheme.timeCode})} />
-                                    <Toggle className={togglePadding} label='Speed Controls' defaultChecked={selectedTheme.speedControls} onChange={() => setSelectedTheme({...selectedTheme, speedControls: !selectedTheme.speedControls})} />
-                                    <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions})} />
-                                    <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume})} />
-                                    <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen})} />
-                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
-                                    <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled})} />
+                                    <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => {setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => {setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Scrubber' defaultChecked={selectedTheme.scrubber} onChange={() => {setSelectedTheme({...selectedTheme, scrubber: !selectedTheme.scrubber});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' defaultChecked={selectedTheme.scrubbingThumbnail} onChange={() => {setSelectedTheme({...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Time Code' defaultChecked={selectedTheme.timeCode} onChange={() => {setSelectedTheme({...selectedTheme, timeCode: !selectedTheme.timeCode});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Speed Controls' defaultChecked={selectedTheme.speedControls} onChange={() => {setSelectedTheme({...selectedTheme, speedControls: !selectedTheme.speedControls});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => {setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => {setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => {setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen});setSettingsEdited(true)}} />
+                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});setSettingsEdited(true)}}} />
+                                    <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => {setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled});setSettingsEdited(true)}} />
                                     {
                                         selectedTheme.isViewerCounterEnabled ?
-                                            <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)})} />
+                                            <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => {setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)});setSettingsEdited(true)}} />
                                             : null
                                     }
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Actions</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton})} />
-                                    <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing})} />
-                                    <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode})} />
+                                    <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => {setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => {setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => {setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Player Transparency' defaultChecked={selectedTheme.playerTransparency} onChange={() => setSelectedTheme({...selectedTheme, playerTransparency: !selectedTheme.playerTransparency})} />
-                                    <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor})} />
+                                    <Toggle className={togglePadding} label='Player Transparency' defaultChecked={selectedTheme.playerTransparency} onChange={() => {setSelectedTheme({...selectedTheme, playerTransparency: !selectedTheme.playerTransparency});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => {setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor});setSettingsEdited(true)}} />
                                     {
                                         selectedTheme.hasCustomColor ? 
-                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => setSelectedTheme({...selectedTheme, customColor: value})} />
+                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customColor: value});setSettingsEdited(true)}} />
                                             : null
                                     }
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Autoplay' defaultChecked={selectedTheme.autoplay} onChange={() => setSelectedTheme({...selectedTheme, autoplay: !selectedTheme.autoplay})} />
-                                    <Toggle className={togglePadding} label='Start Video Muted' defaultChecked={selectedTheme.startVideoMuted} onChange={() => setSelectedTheme({...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted})} />
-                                    <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
-                                    <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
-                                    <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
+                                    <Toggle className={togglePadding} label='Autoplay' defaultChecked={selectedTheme.autoplay} onChange={() => {setSelectedTheme({...selectedTheme, autoplay: !selectedTheme.autoplay});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Start Video Muted' defaultChecked={selectedTheme.startVideoMuted} onChange={() => {setSelectedTheme({...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => {setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => {setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay});setSettingsEdited(true)}} />
+                                    <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => {setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos});setSettingsEdited(true)}} />
                                     
                                 </>
                                 
                         }
                     </ControlsCard>
                     <div className="mt25">
-                        <Button className="mr1">save</Button>
+                        <Button className="mr1" disabled={!settingsEdited}>save</Button>
                         <Button typeButton="tertiary">cancel</Button>
                     </div>
                 </div>
