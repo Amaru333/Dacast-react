@@ -51,14 +51,10 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            console.log("splash")
             return  props.changeLiveSplashscreen()
-           
         } else if (imageModalTitle === "Change Thumbnail") {
-            console.log("thumb")
             return props.changeLiveThumbnail()
         } else {
-            console.log("poster")
             return props.changeLivePoster()
         }
     }

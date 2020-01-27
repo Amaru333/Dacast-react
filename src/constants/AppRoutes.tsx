@@ -14,6 +14,7 @@ import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
+import PlaylistList from '../containers/Playlists/List';
 import Payout from '../containers/Paywall/Payout'
 
 /** TO DO: Remove the functional components and import the real one when they're built */
@@ -75,7 +76,7 @@ export const AppRoutes: Routes[] = [
         path: '/playlists',
         name: 'Playlists',
         iconName: 'playlist_play',
-        component: Playlist
+        component: PlaylistList
     },
     {
         path: '/analytics',
