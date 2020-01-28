@@ -92,7 +92,6 @@ const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen
     } else {
         props.editVodSubtitle(data)
     }
-    console.log(data)
     setUploadedSubtitleFile({ fileName: "", language: "" })
     setSubtitleModalOpen(false);
 }
@@ -118,14 +117,10 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            console.log("splash")
             return  props.changeVodSplashscreen
-           
         } else if (imageModalTitle === "Change Thumbnail") {
-            console.log("thumb")
             return props.changeVodThumbnail
         } else {
-            console.log("poster")
             return props.changeVodPoster
         }
     }

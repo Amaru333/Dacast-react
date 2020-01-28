@@ -23,7 +23,7 @@ export const  Datepicker = () => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
-    React.useEffect(() => console.log(isOpened), [isOpened])
+    React.useEffect(() => {}, [isOpened])
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(datepickerRef, () => setIsOpened(false));

@@ -36,7 +36,7 @@ export const updateStateTitle = (pathname: string) => {
     if( /\d/.test(pathname) ) { return; }
     if(result.length) {
         if(result[0].slug) {
-            let match =  result[0].slug.filter(subRoute => {console.log(subRoute); return subRoute.path === pathname; } );
+            let match =  result[0].slug.filter(subRoute => {return subRoute.path === pathname; } );
             if(match[0]){
                 updateTitleApp(match[0].name);
             } else {

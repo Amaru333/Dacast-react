@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Card } from '../../components/Card/Card';
 
 export const ThemingContainer = styled.div`
     display: flex;
@@ -52,4 +53,8 @@ opacity: 0.5;
         pointer-events: auto;
         opacity: 1;
     `}
+`
+export const ControlsCard = styled(Card)`
+    height: 765px;
+    overflow-y: scroll;
 `
