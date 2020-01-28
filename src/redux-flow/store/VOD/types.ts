@@ -7,6 +7,8 @@ import { VodDetails, VodItem } from './General/types';
 import { GeneralReducer, reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsList } from './Renditions/types';
+import { VodTheme } from './Theming/types';
+import { VodThemingReducer } from './Theming/reducer';
 
 
 export const vodInitialState: VodState = {
@@ -14,7 +16,8 @@ export const vodInitialState: VodState = {
     security: false,
     general: false,
     list: false,
-    renditions: false
+    renditions: false,
+    theming: false
 };
 
 
@@ -24,6 +27,7 @@ export interface  VodState {
     general: false | VodDetails;
     list: false | VodItem[];
     renditions: false | RenditionsList;
+    theming: false | VodTheme
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({
@@ -31,5 +35,6 @@ export const VodReducer: Reducer<VodState> = combineReducers({
     security: VodSecurityReducer,
     general: GeneralReducer,
     list: reducerList,
-    renditions: RenditionsReducer
+    renditions: RenditionsReducer,
+    theming: VodThemingReducer
 })
