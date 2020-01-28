@@ -14,76 +14,9 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { VodThemingComponentProps } from '../../../containers/Videos/Theming';
 
 export const VodThemingPage = (props: VodThemingComponentProps) => {
-
-    const themeList: ThemeOptions[] = [{
-        id: "1",
-        themeName: 'Default Theme',
-        isDefault: false,
-        createdDate: '',
-        themeType: 'vod',
-        bigPlayButton: false,
-        playPause: false,
-        scrubber: false,
-        scrubbingThumbnail: false,
-        timeCode: false,
-        speedControls: false,
-        qualityOptions: false,
-        volume: false,
-        fullscreen: false,
-        thumbnailPosition: 'left',
-        isViewerCounterEnabled: false,
-        viewerCounterLimit: 100,
-        downloadButton: false,
-        socialSharing: false,
-        embedCode: false,
-        playerTransparency: false,
-        hasCustomColor: false,
-        customColor: '',
-        autoplay: false,
-        startVideoMuted: false,
-        looping: false,
-        continuousPlay: false,
-        skipVideos: false,
-        offlineMessage: '',
-        deliveryMethod: 'compatible',
-        regionSettings: 'standard'
-    },
-
-    {
-        id: "2",
-        themeName: 'Custom Theme',
-        isDefault: false,
-        createdDate: '',
-        themeType: 'vod',
-        bigPlayButton: true,
-        playPause: false,
-        scrubber: false,
-        scrubbingThumbnail: false,
-        timeCode: false,
-        speedControls: false,
-        qualityOptions: false,
-        volume: false,
-        fullscreen: false,
-        thumbnailPosition: 'left',
-        isViewerCounterEnabled: false,
-        viewerCounterLimit: 100,
-        downloadButton: false,
-        socialSharing: false,
-        embedCode: false,
-        playerTransparency: false,
-        hasCustomColor: false,
-        customColor: '',
-        autoplay: false,
-        startVideoMuted: false,
-        looping: false,
-        continuousPlay: false,
-        skipVideos: false,
-        offlineMessage: '',
-        deliveryMethod: 'secure',
-        regionSettings: 'standard'
-    }];
-
-    const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(themeList[0]);
+    
+    
+    const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(props.theme.selectedTheme);
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
 
     const togglePadding = 'py1';
@@ -106,7 +39,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                 }))
 
             })
-        }
+        } console.log(props.themeList.themes)
         return () => player ? player.dispose() : null;
     }, [])
 
@@ -125,6 +58,8 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
             })
         } 
     }, [player])
+
+    React.useEffect(() => {}, [props.themeList])
 
     return (
         <React.Fragment>
@@ -164,9 +99,12 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                     :
                                     <>
                                     <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
-                                    list={themeList.reduce((reduced: DropdownListType, item: ThemeOptions )=> {return {...reduced, [item.themeName]: false}},{})}
-                                    defaultValue={selectedTheme.themeName} 
-                                    callback={(selectedTheme: string) => setSelectedTheme(themeList.find(rendition => rendition.themeName === selectedTheme))} />
+                                    list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
+                                    defaultValue={props.theme.selectedTheme.themeName} 
+                                    callback={
+                                        (selectedTheme: string) => {
+                                            return setSelectedTheme(props.themeList.themes.find(rendition => rendition.themeName === selectedTheme));
+                                        }} />
                                     <Bubble className="mt25" type="info">
                                     { selectedTheme.themeName === "Custom Theme" ?
                                         "Custom Settings override any Theme settings."
@@ -222,7 +160,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                             }
                         </ControlsCard>
                     <div className="mt25">
-                        <Button>save</Button>
+                        <Button onClick={() => console.log(props.themeList.themes)}>save</Button>
                         <Button typeButton="tertiary">cancel</Button>
                     </div>
                      </div>
