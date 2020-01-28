@@ -59,23 +59,25 @@ export const VodTheming = (props: VodThemingComponentProps) => {
             props.getThemingList();
         }
     }, [])
-    let customThemeListy = props.themeList.themes
+    
+    const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
     React.useEffect(() => {
         if (props.themeList) {
-            
+            let customThemeListy = props.themeList.themes
             customThemeListy.push(customTheme)
             console.log(customThemeListy)
             setCustomThemeList({themes: customThemeListy})
         }
+        console.log(props.themeList)
         
     }, [props.themeList])
 
-    const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
+
 
     return (
-        props.theme && props.themeList ?
-        <VodThemingPage  themeList={[...props.themeList.themes, customTheme]} {...props} />
-        : <LoadingSpinner color='dark-violet' size='large' />
+        props.theme && customThemeList ?
+            <VodThemingPage  themeList={customThemeList} {...props} />
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
 }
 

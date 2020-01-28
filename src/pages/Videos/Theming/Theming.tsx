@@ -63,17 +63,17 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
 
     return (
         <React.Fragment>
-                <ThemingContainer>
-                    <div className='col col-12 md-col-4 mr2 flex flex-column'>
-                        <ControlsCard className='col col-12'>
-                            <TitleSection>
-                                <Text size={20} weight='med'>Edit theme</Text>
-                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
-                            </TitleSection>
-                            {
-                                showAdvancedPanel ?
-                                    <>
-                                        <DisabledSection selectedTheme={selectedTheme.themeName}>
+            <ThemingContainer>
+                <div className='col col-12 md-col-4 mr2 flex flex-column'>
+                    <ControlsCard className='col col-12'>
+                        <TitleSection>
+                            <Text size={20} weight='med'>Edit theme</Text>
+                            <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                        </TitleSection>
+                        {
+                            showAdvancedPanel ?
+                                <>
+                                    <DisabledSection selectedTheme={selectedTheme.themeName}>
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value})} />
                                         <BorderStyle className="p1" />
@@ -94,11 +94,11 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                         <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
                                         <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'standard'})} />
                                         <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'premium'})} />
-                                        </DisabledSection>
-                                    </>
-                                    :
-                                    <>
-                                    <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
+                                    </DisabledSection>
+                                </>
+                                :
+                                <>
+                                <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
                                     list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
                                     defaultValue={props.theme.selectedTheme.themeName} 
                                     callback={
@@ -106,15 +106,15 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                             return setSelectedTheme(props.themeList.themes.find(rendition => rendition.themeName === selectedTheme));
                                         }} />
                                     <Bubble className="mt25" type="info">
-                                    { selectedTheme.themeName === "Custom Theme" ?
-                                        "Custom Settings override any Theme settings."
+                                        { selectedTheme.themeName === "Custom Theme" ?
+                                            "Custom Settings override any Theme settings."
                                             :
                                             "If you wish to create a new Theme or edit a Theme, go to Themeing."
                                         }
-                                        </Bubble>
-                                        <BorderStyle className="mt3" />
+                                    </Bubble>
+                                    <BorderStyle className="mt3" />
 
-                                        <DisabledSection selectedTheme={selectedTheme.themeName}>
+                                    <DisabledSection selectedTheme={selectedTheme.themeName}>
                                         <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                                         <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
                                         <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
@@ -155,22 +155,22 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                         <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
                                         <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
                                         <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
-                                        </DisabledSection>
-                                    </>
-                            }
-                        </ControlsCard>
+                                    </DisabledSection>
+                                </>
+                        }
+                    </ControlsCard>
                     <div className="mt25">
                         <Button onClick={() => console.log(props.themeList.themes)}>save</Button>
                         <Button typeButton="tertiary">cancel</Button>
                     </div>
-                     </div>
-                    <PlayerSection className='col col-12 md-col-8 mr2'>
-                        <PlayerContainer>
-                            <div ref={playerRef}>
-                            </div>
-                        </PlayerContainer>
-                    </PlayerSection>
-                </ThemingContainer>
+                </div>
+                <PlayerSection className='col col-12 md-col-8 mr2'>
+                    <PlayerContainer>
+                        <div ref={playerRef}>
+                        </div>
+                    </PlayerContainer>
+                </PlayerSection>
+            </ThemingContainer>
         </React.Fragment>
     )
 }
