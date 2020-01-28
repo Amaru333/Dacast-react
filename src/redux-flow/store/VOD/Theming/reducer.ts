@@ -10,6 +10,11 @@ const reducer: Reducer<VodTheme> = (state = defaultVodTheme, action: Action) => 
                 ...state,
                 theme: action.payload
             }
+        case ActionTypes.SAVE_VOD_THEME :
+            return {
+                ...state,
+                theme: action.payload
+            }
         default:
             return state;
     }

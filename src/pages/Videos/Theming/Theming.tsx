@@ -11,8 +11,9 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { VodThemingComponentProps } from '../../../containers/Videos/Theming';
 
-export const VodThemingPage = () => {
+export const VodThemingPage = (props: VodThemingComponentProps) => {
 
     const themeList: ThemeOptions[] = [{
         id: "1",

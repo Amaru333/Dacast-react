@@ -1,21 +1,24 @@
 import React from 'react';
 import { VodThemingPage } from '../../pages/Videos/Theming/Theming';
 import { VodTheme } from '../../redux-flow/store/VOD/Theming/types';
-import { ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
+import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action, getVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
+import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
 import { connect } from 'react-redux';
+import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 
 export interface VodThemingComponentProps {
     theme: VodTheme;
-    themeList: ThemeOptions[];
+    themeList: ThemesData;
     getVodTheme: Function;
+    saveVodTheme: Function;
+    getThemingList: Function;
 }
 
-export const VodTheming = () => {
+export const VodTheming = (props: VodThemingComponentProps) => {
     return (
-        <VodThemingPage />
+        <VodThemingPage {...props} />
     )
 }
 
@@ -30,6 +33,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodTheme: () => {
             dispatch(getVodThemeAction());
+        },
+        saveVodTheme: (theme: VodTheme) => {
+            dispatch(saveVodThemeAction(theme));
+        },
+        getThemingList: () => {
+            dispatch(getThemingListAction())
         }
     }
 }

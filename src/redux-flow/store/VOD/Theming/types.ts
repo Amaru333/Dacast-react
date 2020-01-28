@@ -1,7 +1,8 @@
 import { ThemeOptions } from "../../Settings/Theming/types"
 
 export enum ActionTypes {
-    GET_VOD_THEME = "@@vod_theming/GET_VOD_THEME"
+    GET_VOD_THEME = "@@vod_theming/GET_VOD_THEME",
+    SAVE_VOD_THEME = "@@vod_theming/SAVE_VOD_THEME"
 }
 
 export interface VodTheme {
