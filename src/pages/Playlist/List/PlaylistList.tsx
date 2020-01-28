@@ -9,8 +9,6 @@ import styled from 'styled-components';
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
 import { PlaylistsTabs } from './PlaylistTabs';
-import { IconGreyContainer, IconStyle } from '../../../shared/List/ListStyle';
-
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -101,3 +99,29 @@ export const PlaylistListPage = (props: LiveListProps) => {
             </>
     )
 }
+
+const IconStyle = styled(Icon)`
+    margin: auto;
+    font-size: 16px !important;
+    
+`
+
+const IconGreyContainer = styled.div<{}>`
+    position: relative;
+    z-index: 1;
+    color :  ${props => props.theme.colors["gray-3"]} ;
+    display: inline-flex;
+    height: 24px;
+    width: 24px;
+    align-items: center;
+    &:before {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        z-index: -1;
+        height: 24px;
+        position: absolute;
+        border-radius: 12px;
+        background-color: ${props => props.theme.colors["gray-8"]} ;
+    }
+`
