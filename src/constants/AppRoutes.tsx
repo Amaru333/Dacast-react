@@ -18,6 +18,7 @@ import Payout from '../containers/Paywall/Payout';
 import Transactions from '../containers/Paywall/Transactions';
 import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
+import Presets from '../containers/Paywall/Presets';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -31,12 +32,6 @@ const functionTest1 = () => {
 const functionTest2 = () => {
     return (
         <LoadingSpinner size="small" color="red" />
-    )
-}
-
-const functionTest4 = () => {
-    return (
-        <LoadingSpinner size="small" color="green" />
     )
 }
 
@@ -109,7 +104,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/presets',
                 name: 'Presets',
-                component: functionTest4
+                component: Presets
             },
             {
                 path: '/paywall/groups',

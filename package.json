@@ -14,7 +14,7 @@
     "build-storybook": "build-storybook -c .storybook -o dist/storybook/",
     "clean": "rm -rf dist; rm -rf node_modules; npm install;",
     "deploy-prod": "npm run clean; npm run build; aws s3 sync dist/ s3://dc-test-qb-react-app --acl public-read --delete",
-    "deploy-preprod": "rm -rf /dist; npm run build-preprod; npm run build-storybook; aws s3 sync dist/ s3://dc-test-qb-react-app --acl public-read --delete"
+    "deploy-preprod": "rm -rf /dist; npm run build-preprod; npm run build-storybook; aws s3 sync dist/ s3://my.unified-preprod.dacast.com --acl public-read --delete"
   },
   "keywords": [],
   "author": "",
