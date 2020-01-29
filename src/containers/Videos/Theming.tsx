@@ -15,44 +15,12 @@ export interface VodThemingComponentProps {
     getVodTheme: Function;
     saveVodTheme: Function;
     getThemingList: Function;
+    setCustomThemeList: Function;
 }
 
 export const VodTheming = (props: VodThemingComponentProps) => {
 
-    const customTheme: ThemeOptions = {
-        id: "custom",
-        themeName: 'Custom Theme',
-        isDefault: false,
-        createdDate: '',
-        themeType: 'vod',
-        bigPlayButton: false,
-        playPause: false,
-        scrubber: false,
-        scrubbingThumbnail: false,
-        timeCode: false,
-        speedControls: false,
-        qualityOptions: false,
-        volume: false,
-        fullscreen: false,
-        thumbnailPosition: 'left',
-        isViewerCounterEnabled: false,
-        viewerCounterLimit: 100,
-        downloadButton: false,
-        socialSharing: false,
-        embedCode: false,
-        playerTransparency: false,
-        hasCustomColor: false,
-        customColor: '',
-        autoplay: false,
-        startVideoMuted: false,
-        looping: false,
-        continuousPlay: false,
-        skipVideos: false,
-        offlineMessage: '',
-        deliveryMethod: 'compatible',
-        regionSettings: 'standard'
-    };
-
+    
     React.useEffect(() => {
         if(!props.theme ||  (!props.theme && !props.themeList)) {
             props.getVodTheme();
@@ -61,22 +29,55 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     }, [])
     
     const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
+    
     React.useEffect(() => {
         if (props.themeList) {
-            let customThemeListy = props.themeList.themes
-            customThemeListy.push(customTheme)
-            console.log(customThemeListy)
-            setCustomThemeList({themes: customThemeListy})
+            let customTheme: ThemeOptions = {
+
+                id: "custom",
+                themeName: 'Custom Theme',
+                isDefault: props.theme.selectedTheme.isDefault,
+                createdDate: props.theme.selectedTheme.createdDate,
+                themeType: props.theme.selectedTheme.themeType,
+                bigPlayButton: props.theme.selectedTheme.bigPlayButton,
+                playPause: props.theme.selectedTheme.playPause,
+                scrubber: props.theme.selectedTheme.scrubber,
+                scrubbingThumbnail: props.theme.selectedTheme.scrubbingThumbnail,
+                timeCode: props.theme.selectedTheme.timeCode,
+                speedControls: props.theme.selectedTheme.speedControls,
+                qualityOptions: props.theme.selectedTheme.qualityOptions,
+                volume: props.theme.selectedTheme.volume,
+                fullscreen: props.theme.selectedTheme.fullscreen,
+                thumbnailPosition: props.theme.selectedTheme.thumbnailPosition,
+                isViewerCounterEnabled: props.theme.selectedTheme.isViewerCounterEnabled,
+                viewerCounterLimit: props.theme.selectedTheme.viewerCounterLimit,
+                downloadButton: props.theme.selectedTheme.downloadButton,
+                socialSharing: props.theme.selectedTheme.socialSharing,
+                embedCode: props.theme.selectedTheme.embedCode,
+                playerTransparency: props.theme.selectedTheme.playerTransparency,
+                hasCustomColor: props.theme.selectedTheme.hasCustomColor,
+                customColor: props.theme.selectedTheme.customColor,
+                autoplay: props.theme.selectedTheme.autoplay,
+                startVideoMuted: props.theme.selectedTheme.startVideoMuted,
+                looping: props.theme.selectedTheme.looping,
+                continuousPlay: props.theme.selectedTheme.continuousPlay,
+                skipVideos: props.theme.selectedTheme.skipVideos,
+                offlineMessage: props.theme.selectedTheme.offlineMessage,
+                deliveryMethod: props.theme.selectedTheme.deliveryMethod,
+                regionSettings: props.theme.selectedTheme.regionSettings
+            };
+
+            let customThemeList = props.themeList.themes
+            customThemeList.push(customTheme)
+            setCustomThemeList({themes: customThemeList})
         }
         console.log(props.themeList)
         
     }, [props.themeList])
 
-
-
     return (
         props.theme && customThemeList ?
-            <VodThemingPage  themeList={customThemeList} {...props} />
+            <VodThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
             : <LoadingSpinner color='dark-violet' size='large' />
     )
 }

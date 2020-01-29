@@ -59,7 +59,13 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
         } 
     }, [player])
 
-    React.useEffect(() => {}, [props.themeList])
+    const handleThemeSave = () => {
+        if(selectedTheme.themeName === "Custom Theme") {
+            let replacedCustomTheme = props.themeList.themes.splice(props.themeList.themes.length-1, 1, selectedTheme)
+            props.setCustomThemeList(props.themeList.themes)
+        } 
+        props.saveVodTheme(selectedTheme)
+    }
 
     return (
         <React.Fragment>
@@ -160,7 +166,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                         }
                     </ControlsCard>
                     <div className="mt25">
-                        <Button onClick={() => console.log(props.themeList.themes)}>save</Button>
+                        <Button onClick={() => handleThemeSave()}>save</Button>
                         <Button typeButton="tertiary">cancel</Button>
                     </div>
                 </div>
