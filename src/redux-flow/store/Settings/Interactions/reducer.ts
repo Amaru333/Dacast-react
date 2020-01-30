@@ -3,13 +3,14 @@ import { Action } from "./actions";
 import { ActionTypes, InteractionsInfos, interactionsDefaultState } from './types';
 
 const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, action: Action) => {
+    let ads = null
     switch (action.type) {
         case ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS:
             return {...action.payload};
         case ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS:
             return {...action.payload};
         case ActionTypes.SAVE_AD :
-            let ads = state.adList.slice();
+            ads = state.adList.slice();
             return  {...state, adList: ads.map((item) => {
                 if (item.id !== action.payload.id) {
                     return item
@@ -20,6 +21,7 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
                 }
             })}
         case ActionTypes.CREATE_AD:
+            ads = state.adList.slice();
             ads.splice(ads.length, 0, action.payload )
             return {...state,
                 adList: ads  

@@ -12,12 +12,20 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { TextStyle, IconContainer } from './InteractionsStyle';
 import { NewAdModal } from './NewAdModal';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { InteractionsInfos } from '../../../redux-flow/store/Settings/Interactions';
+import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
+    const emptyAd: Ad = { 
+        id: "-1",
+        placement: "",
+        position: "",
+        url: "test"
+    }
+
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
+    const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
 
     const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
@@ -70,7 +78,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
             <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
                 <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setNewAdModalOpened(true)}}>New Ad</Button>
+                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
             </div>
         ]
     }
@@ -81,7 +89,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
-                <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
+                <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
+                    <Icon onClick={(event) => {props.deleteAd(item)}} >delete</Icon>
+                    <Icon onClick={() => editAd(item)}>edit</Icon> 
+                </IconContainer>
             ]
         })
     }
@@ -102,10 +113,20 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             return [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <Icon key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
             
             ]
         })
+    }
+
+    const newAd = () => {
+        setSelectedAd(emptyAd);
+       setNewAdModalOpened(true) 
+    }
+
+    const editAd = (ad: Ad) => {
+        setSelectedAd(ad);
+        setNewAdModalOpened(true);
     }
  
     return (
@@ -163,8 +184,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
                 <MailCatcherModal toggle={setMailCatcherModalOpened} />
             </Modal>
-            <Modal hasClose={false} opened={newAdModalOpened} title='New Ad' size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <NewAdModal toggle={setNewAdModalOpened}  />
+            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+                <NewAdModal createAd={props.createAd} toggle={setNewAdModalOpened} selectedAd={selectedAd} saveAd={props.saveAd}/>
             </Modal>
             <Modal title='' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div ref={playerRef}>
