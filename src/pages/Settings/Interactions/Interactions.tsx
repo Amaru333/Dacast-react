@@ -13,6 +13,7 @@ import { TextStyle, IconContainer } from './InteractionsStyle';
 import { NewAdModal } from './NewAdModal';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
+import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -23,9 +24,15 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         url: "test"
     }
 
+    const emptyMailCatcher: MailCatcher = {
+        type: "",
+        isDefault: false
+    }
+
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
+    const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
 
     const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
@@ -103,7 +110,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return [
             <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>,
             <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>,
-            <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
+            <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Mail Catcher</Button>
 
         ]
     }
@@ -113,7 +120,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             return [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <Icon key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={(event) => {event.preventDefault()}}>edit</Icon> </IconContainer>
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={() => editMailCatcher(row)}>edit</Icon> </IconContainer>
             
             ]
         })
@@ -127,6 +134,16 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const editAd = (ad: Ad) => {
         setSelectedAd(ad);
         setNewAdModalOpened(true);
+    }
+
+    const newMailCatcher = () => {
+        setSelectedMailCatcher(emptyMailCatcher);
+       setMailCatcherModalOpened(true) 
+    }
+
+    const editMailCatcher = (mailCatcher: MailCatcher) => {
+        setSelectedMailCatcher(mailCatcher);
+        setMailCatcherModalOpened(true);
     }
  
     return (
@@ -182,10 +199,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card>
 
             <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
-                <MailCatcherModal toggle={setMailCatcherModalOpened} />
+                <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />
             </Modal>
             <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <NewAdModal createAd={props.createAd} toggle={setNewAdModalOpened} selectedAd={selectedAd} saveAd={props.saveAd}/>
+                <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
             <Modal title='' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div ref={playerRef}>

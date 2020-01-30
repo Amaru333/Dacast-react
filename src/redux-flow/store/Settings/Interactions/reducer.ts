@@ -1,9 +1,10 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, InteractionsInfos, interactionsDefaultState } from './types';
+import { ActionTypes, InteractionsInfos, interactionsDefaultState, MailCatcher, Ad } from './types';
 
 const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, action: Action) => {
-    let ads = null
+    let ads: Ad[] = []
+    let mailCatcherList: MailCatcher[] = [];
     switch (action.type) {
         case ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS:
             return {...action.payload};
@@ -30,7 +31,7 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
             return {...state, adList: state.adList.filter((item) => item.id != action.payload.id)}
         
         case ActionTypes.SAVE_MAIL_CATCHER :
-            let mailCatcherList = state.mailCatcher.slice();
+            mailCatcherList = state.mailCatcher.slice();
             return  {...state, mailCatcher: mailCatcherList.map((item) => {
                 if (item.type !== action.payload.type) {
                     return item
@@ -41,6 +42,7 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
                 }
             })}
         case ActionTypes.CREATE_MAIL_CATCHER:
+            mailCatcherList = state.mailCatcher.slice();
             mailCatcherList.splice(mailCatcherList.length, 0, action.payload )
             return {...state,
                 mailCatcher: mailCatcherList  
