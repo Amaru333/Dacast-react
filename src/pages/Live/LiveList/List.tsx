@@ -34,7 +34,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 key="checkboxLiveListBulkAction"
                 indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length}
                 defaultChecked={selectedLive.length === props.liveList.length}
-                id="globalCheckboxVodList"
+                id="globalCheckboxLiveList"
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedselectedLive = props.liveList.map(item => { return item.id })
@@ -55,23 +55,23 @@ export const LiveListPage = (props: LiveListProps) => {
     }
 
     const handleFeatures = (item: LiveItem) => {
-        var vodElement = []
+        var liveElement = []
         if (item.features.paywall) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
+            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
         }
         if (item.features.recording) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>videocam</IconStyle></IconGreyContainer>)
+            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>videocam</IconStyle></IconGreyContainer>)
         }
         if (item.features.playlist) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
+            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
         }
         if (item.features.rewind) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>replay_30</IconStyle></IconGreyContainer>)
+            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>replay_30</IconStyle></IconGreyContainer>)
         }
         if (item.features.advertising) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
+            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
         }
-        return vodElement;
+        return liveElement;
     }
 
     const liveListBodyElement = () => {

@@ -10,7 +10,7 @@ export interface VodTheme {
     selectedTheme: ThemeOptions;
 }
 
-const defaultTheme: ThemeOptions = {
+export const defaultTheme: ThemeOptions = {
     id: "-1",
     themeName: '',
     isDefault: false,

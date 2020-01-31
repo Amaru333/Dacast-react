@@ -1,29 +1,27 @@
 import React from 'react';
-import { VodThemingPage } from '../../pages/Videos/Theming/Theming';
-import { VodTheme } from '../../redux-flow/store/VOD/Theming/types';
-import { ThemesData, ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
-import { ThunkDispatch } from 'redux-thunk';
+import { LiveThemingPage } from '../../pages/Live/Theming/Theming';
+import { ThemeOptions, ThemesData, Action, getThemingListAction } from '../../redux-flow/store/Settings/Theming';
+import { LiveTheme } from '../../redux-flow/store/Live/Theming/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
 import { connect } from 'react-redux';
-import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-export interface VodThemingComponentProps {
-    theme: VodTheme;
+export interface LiveThemingComponentProps {
+    theme: LiveTheme;
     themeList: ThemesData;
-    getVodTheme: Function;
-    saveVodTheme: Function;
+    getLiveTheme: Function;
+    saveLiveTheme: Function;
     getThemingList: Function;
     setCustomThemeList: Function;
 }
 
-export const VodTheming = (props: VodThemingComponentProps) => {
+export const LiveTheming = (props: LiveThemingComponentProps) => {
 
-    
     React.useEffect(() => {
         if(!props.theme ||  (!props.theme && !props.themeList)) {
-            props.getVodTheme();
+            props.getLiveTheme();
             props.getThemingList();
         }
     }, [])
@@ -72,28 +70,29 @@ export const VodTheming = (props: VodThemingComponentProps) => {
             setCustomThemeList({themes: customThemeList})
         }  
     }, [props.themeList])
-
+    
     return (
         props.theme && customThemeList ?
-            <VodThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            <LiveThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
             : <LoadingSpinner color='dark-violet' size='large' />
     )
+    
 }
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        theme: state.vod.theming,
+        theme: state.live.theming,
         themeList: state.settings.theming
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodTheme: () => {
-            dispatch(getVodThemeAction());
+        getLiveTheme: () => {
+            dispatch(getLiveThemeAction());
         },
-        saveVodTheme: (theme: VodTheme) => {
-            dispatch(saveVodThemeAction(theme));
+        saveLiveTheme: (theme: LiveTheme) => {
+            dispatch(saveLiveThemeAction(theme));
         },
         getThemingList: () => {
             dispatch(getThemingListAction())
@@ -101,4 +100,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VodTheming);
+export default connect(mapStateToProps, mapDispatchToProps)(LiveTheming);
