@@ -106,7 +106,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                 <>
                                 <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
                                     list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
-                                    defaultValue={props.theme.selectedTheme.themeName} 
+                                    dropdownDefaultSelect={props.theme.selectedTheme.themeName} 
                                     callback={
                                         (selectedTheme: string) => {
                                             return setSelectedTheme(props.themeList.themes.find(rendition => rendition.themeName === selectedTheme));

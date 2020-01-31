@@ -20,8 +20,10 @@ export interface LiveThemingComponentProps {
 export const LiveTheming = (props: LiveThemingComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.theme ||  (!props.theme && !props.themeList)) {
-            props.getLiveTheme();
+        if(!props.theme) {
+            props.getLiveTheme();            
+        }
+        if(!props.themeList) {
             props.getThemingList();
         }
     }, [])
@@ -29,7 +31,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
     
     React.useEffect(() => {
-        if (props.themeList) {
+        if (props.theme && props.themeList) {
             let customTheme: ThemeOptions = {
 
                 id: "custom",
@@ -69,7 +71,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
             customThemeList.push(customTheme)
             setCustomThemeList({themes: customThemeList})
         }  
-    }, [props.themeList])
+    }, [props.themeList, props.theme])
     
     return (
         props.theme && customThemeList ?

@@ -22,8 +22,10 @@ export const VodTheming = (props: VodThemingComponentProps) => {
 
     
     React.useEffect(() => {
-        if(!props.theme ||  (!props.theme && !props.themeList)) {
+        if(!props.theme) {
             props.getVodTheme();
+        }
+        if(!props.themeList) {
             props.getThemingList();
         }
     }, [])
@@ -31,7 +33,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
     
     React.useEffect(() => {
-        if (props.themeList) {
+        if (props.theme && props.themeList) {
             let customTheme: ThemeOptions = {
 
                 id: "custom",
@@ -71,7 +73,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
             customThemeList.push(customTheme)
             setCustomThemeList({themes: customThemeList})
         }  
-    }, [props.themeList])
+    }, [props.themeList, props.theme])
 
     return (
         props.theme && customThemeList ?
