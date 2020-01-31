@@ -120,7 +120,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.mailCatcher.map((row, i) => {
             return [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
-                row.isDefault ? <Icon key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
+                row.isDefault ? <Icon style={{color:"green"}} key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
                 <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={() => editMailCatcher(row)}>edit</Icon> </IconContainer>
             
             ]
@@ -158,7 +158,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <>
                         <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex'>
-                            <Icon>info_outlined</Icon>
+                            <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                         </div>
                         <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
@@ -231,9 +231,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
-            <Modal title='' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
-                <div ref={playerRef}>
-                </div>
+            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+                <div className="mt2" ref={playerRef}></div>
             </Modal>
         </div>
     )

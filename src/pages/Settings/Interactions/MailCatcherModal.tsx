@@ -37,7 +37,7 @@ export const MailCatcherModal = (props: SettingsInteractionComponentProps & {tog
             <InputCheckbox className='my1 col col-12' id='defaultGroupCheckbox' label='Make as Default Group' defaultChecked={mailCatcherData.isDefault} onChange={() => setMailCatcherData({...mailCatcherData, ["isDefault"]: !mailCatcherData.isDefault})} />
             <div className='my2 col col-12'>
                 <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineMailCatcherAction();props.toggle(false)}}>Save</Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => {props.toggle(false);setMailCatcherData(props.selectedMailCatcher)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )
