@@ -33,7 +33,28 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
-    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
+    const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
+
+    const newAd = () => {
+        setSelectedAd(emptyAd);
+        setNewAdModalOpened(true) 
+    }
+
+    const editAd = (ad: Ad) => {
+        setSelectedAd(ad);
+        setNewAdModalOpened(true);
+    }
+
+    const newMailCatcher = () => {
+        setSelectedMailCatcher(emptyMailCatcher);
+        setMailCatcherModalOpened(true) 
+    }
+
+    const editMailCatcher = (mailCatcher: MailCatcher) => {
+        setSelectedMailCatcher(mailCatcher);
+        setMailCatcherModalOpened(true);
+    }
 
     const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
@@ -105,8 +126,6 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         })
     }
 
-    const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
-
     const mailCatcherTableHeader = () => {
         return [
             <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>,
@@ -127,25 +146,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         })
     }
 
-    const newAd = () => {
-        setSelectedAd(emptyAd);
-       setNewAdModalOpened(true) 
-    }
 
-    const editAd = (ad: Ad) => {
-        setSelectedAd(ad);
-        setNewAdModalOpened(true);
-    }
-
-    const newMailCatcher = () => {
-        setSelectedMailCatcher(emptyMailCatcher);
-       setMailCatcherModalOpened(true) 
-    }
-
-    const editMailCatcher = (mailCatcher: MailCatcher) => {
-        setSelectedMailCatcher(mailCatcher);
-        setMailCatcherModalOpened(true);
-    }
  
     return (
         <div>
@@ -191,10 +192,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         value={interactionInfos.brandText ? interactionInfos.brandText : ""} 
                     />
                     <Input 
-                    className='my2 pl1 col col-4' 
-                    label='Brand Text Link' 
-                    value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""} 
-                    onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
+                        className='my2 pl1 col col-4' 
+                        label='Brand Text Link' 
+                        value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""} 
+                        onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
                 <Toggle className='' label='Use video title as brand text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => {setInteractionsInfos({...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle});setSettingsEdited(true)}} />
             </Card>
@@ -217,13 +218,13 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 </div>
             </Card>
 
-        {   
-            settingsEdited ?
-            <div className="mt1">
-                <Button onClick={() => {props.saveInteractionsInfos(interactionInfos);setSettingsEdited(false)}}>Save</Button>
-                <Button className="ml2" typeButton="tertiary" onClick={() => {setInteractionsInfos(props.interactionsInfos);setSettingsEdited(false)}}>Discard</Button>
-            </div> : null
-        }
+            {   
+                settingsEdited ?
+                    <div className="mt1">
+                        <Button onClick={() => {props.saveInteractionsInfos(interactionInfos);setSettingsEdited(false)}}>Save</Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => {setInteractionsInfos(props.interactionsInfos);setSettingsEdited(false)}}>Discard</Button>
+                    </div> : null
+            }
 
             <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
                 <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />

@@ -6,7 +6,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions/types';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 
-export const MailCatcherModal = (props: SettingsInteractionComponentProps & {toggle: Function, selectedMailCatcher: MailCatcher}) => {
+export const MailCatcherModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedMailCatcher: MailCatcher}) => {
 
     const [mailCatcherData, setMailCatcherData] = React.useState<MailCatcher>(props.selectedMailCatcher)
 
@@ -16,18 +16,18 @@ export const MailCatcherModal = (props: SettingsInteractionComponentProps & {tog
 
     const defineMailCatcherAction = () => {
         props.selectedMailCatcher.type === "" ?
-        props.createMailCatcher(mailCatcherData) : console.log("This will call saveMailCatcher")
+            props.createMailCatcher(mailCatcherData) : console.log("This will call saveMailCatcher")
     }
 
     return (
         <div>
             <div className='my1 col col-12'>
                 <DropdownSingle 
-                id='mailCatcherDropdown' 
-                dropdownTitle='Mail Catcher' 
-                list={{'MailChimp': false, 'Google': false}}
-                dropdownDefaultSelect={mailCatcherData.type}
-                callback={(value: string) => {setMailCatcherData({...mailCatcherData, type: value})}}
+                    id='mailCatcherDropdown' 
+                    dropdownTitle='Mail Catcher' 
+                    list={{'MailChimp': false, 'Google': false}}
+                    dropdownDefaultSelect={mailCatcherData.type}
+                    callback={(value: string) => {setMailCatcherData({...mailCatcherData, type: value})}}
                 />              
             </div>
             <div className='my1 col col-12'>

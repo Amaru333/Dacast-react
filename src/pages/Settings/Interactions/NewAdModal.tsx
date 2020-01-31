@@ -5,7 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 
-export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function, selectedAd: Ad}) => {
+export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
 
@@ -15,7 +15,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
 
     const defineAdAction = () => {
         props.selectedAd.id === "-1" ?
-        props.createAd(adData) : props.saveAd(adData)
+            props.createAd(adData) : props.saveAd(adData)
     }
 
     return (
