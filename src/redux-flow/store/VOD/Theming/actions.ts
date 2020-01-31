@@ -5,7 +5,7 @@ import { VodTheme, ActionTypes } from "../Theming/types"
 import { VodThemingServices } from './services';
 
 export interface GetVodTheme {
-    type: ActionTypes.GET_VOD_THEME
+    type: ActionTypes.GET_VOD_THEME;
     payload: VodTheme;
 }
 
