@@ -60,6 +60,7 @@ export const saveSettingsInteractionsInfosAction = (data: InteractionsInfos): Th
         await interactionsServices.saveInteractionsInfos(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, payload: response.data} );
+                dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

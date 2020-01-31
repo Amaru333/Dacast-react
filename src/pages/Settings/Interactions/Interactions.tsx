@@ -33,6 +33,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
 
     const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
@@ -77,6 +78,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     React.useEffect(() => {
         setInteractionsInfos(props.interactionsInfos)
     }, [props.interactionsInfos])
+
+    React.useEffect(() => {
+        console.log(interactionInfos)
+    }, [interactionInfos])
 
     const advertisingTableHeader = () => {
         return [
@@ -151,7 +156,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
             <Card className='my2'>
                 <Text className="py2" size={20} weight='med'>Advertising</Text>
-                <Toggle id='advertisingEnabled' defaultChecked={interactionInfos.adEnabled} onChange={() => setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled})} label='Advertising enabled' />
+                <Toggle id='advertisingEnabled' defaultChecked={interactionInfos.adEnabled} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 {
                     interactionInfos.adEnabled ?
                         <>
@@ -183,20 +188,46 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <TextStyle className="py2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
-                    <Input disabled={interactionInfos.isBrandTextAsTitle} className='my2 pr1 col col-8' label='Brand Text' onChange={(event) => {setInteractionsInfos({...interactionInfos, brandText: event.currentTarget.value})}} />
-                    <Input className='my2 pl1 col col-4' label='Brand Text Link' value='' onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value})}} />
+                    <Input 
+                        disabled={interactionInfos.isBrandTextAsTitle} className='my2 pr1 col col-8' 
+                        label='Brand Text' 
+                        onChange={(event) => {setInteractionsInfos({...interactionInfos, brandText: event.currentTarget.value})}}
+                        value={interactionInfos.brandText ? interactionInfos.brandText : ""} 
+                    />
+                    <Input 
+                    className='my2 pl1 col col-4' 
+                    label='Brand Text Link' 
+                    value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""} 
+                    onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
-                <Toggle className='' label='Use video title as brand text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => {setInteractionsInfos({...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle})}} />
+                <Toggle className='' label='Use video title as brand text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => {setInteractionsInfos({...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle});setSettingsEdited(true)}} />
             </Card>
 
             <Card className='my2'>
                 <Text className="py2" size={20} weight='med'>End Screen Text</Text>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
-                    <Input className='my2 pr1 col col-8' label='End Screen Text' value='' onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenText: event.currentTarget.value})}}/>
-                    <Input className='my2 pl1 col col-4' label='End Screen Text Link' value='' onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenTextLink: event.currentTarget.value})}} />
+                    <Input 
+                        className='my2 pr1 col col-8' 
+                        label='End Screen Text' 
+                        value={interactionInfos.endScreenText ? interactionInfos.endScreenText : ""}
+                        onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenText: event.currentTarget.value});setSettingsEdited(true)}}
+                    />
+                    <Input 
+                        className='my2 pl1 col col-4' 
+                        label='End Screen Text Link' 
+                        value={interactionInfos.endScreenTextLink ? interactionInfos.endScreenTextLink : ""} 
+                        onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
             </Card>
+
+        {   
+            settingsEdited ?
+            <div className="mt1">
+                <Button onClick={() => {props.saveInteractionsInfos(interactionInfos);setSettingsEdited(false)}}>Save</Button>
+                <Button className="ml2" typeButton="tertiary" onClick={() => {setInteractionsInfos(props.interactionsInfos);setSettingsEdited(false)}}>Discard</Button>
+            </div> : null
+        }
 
             <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
                 <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />
