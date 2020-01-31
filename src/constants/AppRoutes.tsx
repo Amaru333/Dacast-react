@@ -170,8 +170,8 @@ export const AppRoutes: Routes[] = [
                 component: Theming
             },
             {
-                path: '/settings/interactions',
-                name: 'Interaction',
+                path: '/settings/Engagement',
+                name: 'Engagement',
                 component: Interactions
             }
         ]
