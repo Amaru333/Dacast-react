@@ -9,7 +9,7 @@ const getLiveThemeService = () => {
 }
 
 const saveLiveThemeService = (data: LiveTheme) => {
-    return axios.post(urlBase + 'live-themes', {data: data})
+    return axios.post(urlBase + 'live-theme', {data: data})
 }
 
 export const LiveThemingServices = {

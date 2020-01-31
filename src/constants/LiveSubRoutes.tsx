@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import LiveSecurity from '../containers/Live/Security';
 import LiveGeneral from '../containers/Live/General';
-import { LiveTheming } from '../containers/Live/Theming';
+import LiveTheming from '../containers/Live/Theming';
 
 const paywallPlaceholder = () => {
     return (
@@ -13,12 +13,6 @@ const paywallPlaceholder = () => {
 const advertisingPlaceholder = () => {
     return (
         <h1>Live Advertising</h1>
-    )
-}
-
-const themePlaceholder = () => {
-    return (
-        <h1>Live Theme</h1>
     )
 }
 

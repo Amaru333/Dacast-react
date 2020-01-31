@@ -173,7 +173,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                 </ControlsCard>
                 <div className="mt25">
                     <Button onClick={() => handleThemeSave()}>save</Button>
-                    <Button typeButton="tertiary" onClick={() => location.href="/videos"}>cancel</Button>
+                    <Button typeButton="tertiary" onClick={() => location.href="/livestreams"}>cancel</Button>
                 </div>
             </div>
             <PlayerSection className='col col-12 md-col-8 mr2'>
