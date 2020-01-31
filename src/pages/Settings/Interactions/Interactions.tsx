@@ -79,10 +79,6 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         setInteractionsInfos(props.interactionsInfos)
     }, [props.interactionsInfos])
 
-    React.useEffect(() => {
-        console.log(interactionInfos)
-    }, [interactionInfos])
-
     const advertisingTableHeader = () => {
         return [
             <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>,

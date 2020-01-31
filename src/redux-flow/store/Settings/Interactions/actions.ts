@@ -72,6 +72,7 @@ export const saveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SaveAd>
         await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_AD, payload: response.data} );
+                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -83,6 +84,7 @@ export const createAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Creat
         await interactionsServices.createAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_AD, payload: response.data} );
+                dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -94,6 +96,7 @@ export const deleteAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Delet
         await interactionsServices.deleteAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_AD, payload: response.data} );
+                dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -105,6 +108,7 @@ export const saveMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<
         await interactionsServices.saveMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_MAIL_CATCHER, payload: response.data} );
+                dispatch(showToastNotification("Mail catcher saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -116,6 +120,7 @@ export const createMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
         await interactionsServices.createMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_MAIL_CATCHER, payload: response.data} );
+                dispatch(showToastNotification("Mail catcher created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -127,6 +132,7 @@ export const deleteMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
         await interactionsServices.deleteMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_MAIL_CATCHER, payload: response.data} );
+                dispatch(showToastNotification("Mail catcher deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
