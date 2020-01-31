@@ -10,8 +10,10 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { Toggle } from '../../../components/Toggle/toggle';
+import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { LiveThemingComponentProps } from '../../../containers/Live/Theming';
 
-export const LiveThemingPage = () => {
+export const LiveThemingPage = (props: LiveThemingComponentProps) => {
 
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(props.theme.selectedTheme);
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);

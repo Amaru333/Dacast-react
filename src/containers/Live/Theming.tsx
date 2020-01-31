@@ -1,12 +1,27 @@
 import React from 'react';
 import { LiveThemingPage } from '../../pages/Live/Theming/Theming';
-import { ThemeOptions, ThemesData } from '../../redux-flow/store/Settings/Theming';
+import { ThemeOptions, ThemesData, Action, getThemingListAction } from '../../redux-flow/store/Settings/Theming';
+import { LiveTheme } from '../../redux-flow/store/Live/Theming/types';
+import { ApplicationState } from '../../redux-flow/store';
+import { ThunkDispatch } from 'redux-thunk';
+import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
+import { connect } from 'react-redux';
+import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-export const LiveTheming = () => {
+export interface LiveThemingComponentProps {
+    theme: LiveTheme;
+    themeList: ThemesData;
+    getLiveTheme: Function;
+    saveLiveTheme: Function;
+    getThemingList: Function;
+    setCustomThemeList: Function;
+}
+
+export const LiveTheming = (props: LiveThemingComponentProps) => {
 
     React.useEffect(() => {
         if(!props.theme ||  (!props.theme && !props.themeList)) {
-            props.getVodTheme();
+            props.getLiveTheme();
             props.getThemingList();
         }
     }, [])
@@ -57,7 +72,32 @@ export const LiveTheming = () => {
     }, [props.themeList])
     
     return (
-        <LiveThemingPage />
+        props.theme && customThemeList ?
+            <LiveThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            : <LoadingSpinner color='dark-violet' size='large' />
     )
     
 }
+
+export function mapStateToProps( state: ApplicationState ) {
+    return {
+        theme: state.live.theming,
+        themeList: state.settings.theming
+    }
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getLiveTheme: () => {
+            dispatch(getLiveThemeAction());
+        },
+        saveLiveTheme: (theme: LiveTheme) => {
+            dispatch(saveLiveThemeAction(theme));
+        },
+        getThemingList: () => {
+            dispatch(getThemingListAction())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LiveTheming);
