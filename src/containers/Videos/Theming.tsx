@@ -70,9 +70,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
             let customThemeList = props.themeList.themes
             customThemeList.push(customTheme)
             setCustomThemeList({themes: customThemeList})
-        }
-        console.log(props.themeList)
-        
+        }  
     }, [props.themeList])
 
     return (
