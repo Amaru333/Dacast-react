@@ -5,6 +5,10 @@ import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
+import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
+import { TitleReducer } from './Title/logic';
+import {withRouter} from 'react-router-dom';
+import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
 
 
 export interface ApplicationState {
@@ -14,6 +18,9 @@ export interface ApplicationState {
     account: AccountState;
     vod: VodState;
     live: LiveState;
+    playlist: PlaylistState;
+    paywall: PaywallState;
+    title: string;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -22,7 +29,10 @@ export const globalDefaultState: ApplicationState = {
     toasts: toastsInitialState,
     account: accountInitialState,
     vod: vodInitialState,
-    live: liveInitialState
+    playlist: playlistInitialState,
+    live: liveInitialState,
+    paywall: paywallInitialState,
+    title: ""
 };
 
 export const createRootReducer = () =>
@@ -32,6 +42,9 @@ export const createRootReducer = () =>
         toasts: ToastReducer,
         account: AccountReducer,
         vod: VodReducer,
-        live: LiveReducer
+        live: LiveReducer,
+        title: TitleReducer,
+        playlist: PlaylistReducer,
+        paywall: PaywallReducer
     },
     );

@@ -30,8 +30,6 @@ export const SignupFormExemple = (props: { action: Function }) => {
         props.action(data);
     }
 
-    console.log(enabledSubmit);
-
     return (
         <ModalCard className="mx-auto" size="small" title="Sign Up" >
             <form onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>

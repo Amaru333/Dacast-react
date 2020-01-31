@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Card } from '../../components/Card/Card';
 import { Icon } from '@material-ui/core';
 
 export const TextStyle = styled.span<{}>`

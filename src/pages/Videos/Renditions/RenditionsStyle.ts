@@ -11,6 +11,7 @@ text-align: center;
 export const RenditionsTable = styled.div`
 height: 410px;
 background-color: white;
+border: solid 1px ${props => props.theme.colors["gray-8"]};
 `
 
 export const ButtonContainer = styled.div`
