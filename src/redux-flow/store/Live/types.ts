@@ -16,7 +16,7 @@ export interface LiveState {
     general: false | LiveDetails;
     list: false | LiveItem[];
     security: false | LiveSecuritySettings;
-    theming: false | LiveTheme
+    theming: false | LiveTheme;
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({

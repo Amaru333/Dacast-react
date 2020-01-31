@@ -68,22 +68,22 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
 
     return (
         <React.Fragment>
-        <ThemingContainer>
-            <div className='col col-12 md-col-4 mr2 flex flex-column'>
-                <ControlsCard className='col col-12'>
-                    <TitleSection>
-                        <Text size={20} weight='med'>Edit theme</Text>
-                        <Button 
-                        className='right mb2 flex' 
-                        sizeButton='large' 
-                        typeButton='tertiary' 
-                        buttonColor='blue' 
-                        onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>
-                            {showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}
-                        </Button>
-                    </TitleSection>
-                    {
-                        showAdvancedPanel ?
+            <ThemingContainer>
+                <div className='col col-12 md-col-4 mr2 flex flex-column'>
+                    <ControlsCard className='col col-12'>
+                        <TitleSection>
+                            <Text size={20} weight='med'>Edit theme</Text>
+                            <Button 
+                                className='right mb2 flex' 
+                                sizeButton='large' 
+                                typeButton='tertiary' 
+                                buttonColor='blue' 
+                                onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>
+                                {showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}
+                            </Button>
+                        </TitleSection>
+                        {
+                            showAdvancedPanel ?
                             <>
                                 <DisabledSection selectedTheme={selectedTheme.themeName}>
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
@@ -108,7 +108,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                                     <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => setSelectedTheme({...selectedTheme, regionSettings: 'premium'})} />
                                 </DisabledSection>
                             </>
-                            :
+                                :
                             <>
                             <DropdownSingle id="liveThemeList" dropdownTitle="Theme List" 
                                 list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
@@ -169,20 +169,20 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
                                 </DisabledSection>
                             </>
-                    }
-                </ControlsCard>
-                <div className="mt25">
-                    <Button onClick={() => handleThemeSave()}>save</Button>
-                    <Button typeButton="tertiary" onClick={() => location.href="/livestreams"}>cancel</Button>
-                </div>
-            </div>
-            <PlayerSection className='col col-12 md-col-8 mr2'>
-                <PlayerContainer>
-                    <div ref={playerRef}>
+                        }
+                    </ControlsCard>
+                    <div className="mt25">
+                        <Button onClick={() => handleThemeSave()}>save</Button>
+                        <Button typeButton="tertiary" onClick={() => location.href="/livestreams"}>cancel</Button>
                     </div>
-                </PlayerContainer>
-            </PlayerSection>
-        </ThemingContainer>
-    </React.Fragment>
+                </div>
+                <PlayerSection className='col col-12 md-col-8 mr2'>
+                    <PlayerContainer>
+                        <div ref={playerRef}>
+                        </div>
+                    </PlayerContainer>
+                </PlayerSection>
+            </ThemingContainer>
+        </React.Fragment>
     )
 }
