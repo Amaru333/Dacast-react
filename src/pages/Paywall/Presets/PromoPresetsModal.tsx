@@ -27,9 +27,7 @@ export const PromoPresetsModal = (props: {toggle: Function; promo: Promo}) => {
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
 
     React.useEffect(() => {
-        console.log(props.promo)
         setPromoPreset(props.promo ? props.promo : defaultPromo);
-        console.log(promoPreset)
     }, [props.promo])
 
     return (

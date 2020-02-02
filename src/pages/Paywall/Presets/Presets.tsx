@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Table } from '../../../components/Table/Table';
-import { BorderStyle } from './PresetsStyle';
+import { BorderStyle, IconContainer } from './PresetsStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
 import { PricePresetsModal } from './PricePresetsModal';
@@ -10,8 +10,6 @@ import { PromoPresetsModal } from './PromoPresetsModal';
 import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
 import { Icon } from '@material-ui/core';
-import styled from 'styled-components';
-
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -101,10 +99,3 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     )
 }
 
-const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`
