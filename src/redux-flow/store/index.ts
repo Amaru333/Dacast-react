@@ -7,7 +7,6 @@ import { vodInitialState, VodState, VodReducer } from './VOD'
 import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
 import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
 import { TitleReducer } from './Title/logic';
-import {withRouter} from 'react-router-dom';
 import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
 
 
