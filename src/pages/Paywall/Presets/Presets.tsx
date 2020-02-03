@@ -41,7 +41,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.price[0].currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.recurrence ? preset.recurrence : preset.duration.amount + ' ' + preset.duration.type}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
-                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {}}>delete</Icon><Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deletePricePreset(preset)}}>delete</Icon><Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon></IconContainer>
                 ]
             })
         }
@@ -68,7 +68,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
-                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {}}>delete</Icon><Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deletePromoPreset(promo)}}>delete</Icon><Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon></IconContainer>
                 ]
             })
         }
@@ -89,10 +89,10 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
             </Card>
             <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
-                <PricePresetsModal preset={selectedPreset} toggle={setPricePresetsModalOpened} />
+                <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
             </Modal>
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
-                <PromoPresetsModal promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
+                <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
             </Modal>
         </div>
 

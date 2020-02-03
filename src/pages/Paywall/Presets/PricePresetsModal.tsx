@@ -17,6 +17,7 @@ const pricesList = [
 ]
 
 const defaultPreset: Preset = {
+    id: '-1',
     name: '',
     type: 'Subscription',
     price: pricesList,
@@ -29,7 +30,7 @@ const defaultPreset: Preset = {
 
 }
 
-export const PricePresetsModal = (props: {toggle: Function; preset: Preset}) => {
+export const PricePresetsModal = (props: {action: Function; toggle: Function; preset: Preset}) => {
 
     const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
 
@@ -104,8 +105,8 @@ export const PricePresetsModal = (props: {toggle: Function; preset: Preset}) => 
                     : null
             }
             <div className='col col-12 py2'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
-                <Button onClick={() => props.toggle(false)}typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => {props.action(presetsList);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )

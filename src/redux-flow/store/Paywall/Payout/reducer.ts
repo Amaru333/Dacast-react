@@ -20,12 +20,8 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 paymentMethodRequests: Object.keys(state.paymentMethodRequests).reduce((reduced, paymentRequest) => {return action.payload !== paymentRequest ? {...reduced, [paymentRequest]: state.paymentMethodRequests[paymentRequest]} : {...reduced}}, {})
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
-            console.log('bitch')
-            debugger;
             let withdrawalRequests = [];
-
             withdrawalRequests = [{...action.payload}]
-            console.log(withdrawalRequests)
             return {
                 ...state,
                 withdrawalRequests: withdrawalRequests

@@ -9,6 +9,7 @@ import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 var moment = require('moment-timezone');
 
 const defaultPromo: Promo = {
+    id: '-1',
     name: '',
     alphanumericCode: '',
     discount: 0,
@@ -22,7 +23,7 @@ const defaultPromo: Promo = {
     discountApplied: 'Once'
 }
 
-export const PromoPresetsModal = (props: {toggle: Function; promo: Promo}) => {
+export const PromoPresetsModal = (props: {action: Function; toggle: Function; promo: Promo}) => {
 
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
 
@@ -58,7 +59,7 @@ export const PromoPresetsModal = (props: {toggle: Function; promo: Promo}) => {
                 }
             </div>
             <div className='col col-12 py2'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
