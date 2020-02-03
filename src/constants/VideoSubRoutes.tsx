@@ -5,7 +5,7 @@ import Chapters from '../containers/Videos/Chapters';
 import VodRenditions from '../containers/Videos/Renditions';
 import React from 'react';
 import VodTheming from '../containers/Videos/Theming';
-import { VodEngagement } from '../containers/Videos/Engagement';
+import VodEngagement from '../containers/Videos/Engagement';
 
 const VodPaywallPlaceholder = () => {
     return (

@@ -10,10 +10,10 @@ import { MailCatcherModal } from  './MailCatcherModal';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementStyle';
-import { NewAdModal } from './NewAdModal';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
+import { NewAdModal } from '../../../shared/Engagement/NewAdModal';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
