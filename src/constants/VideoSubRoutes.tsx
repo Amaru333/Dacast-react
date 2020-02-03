@@ -5,16 +5,11 @@ import Chapters from '../containers/Videos/Chapters';
 import VodRenditions from '../containers/Videos/Renditions';
 import React from 'react';
 import VodTheming from '../containers/Videos/Theming';
+import { VodEngagement } from '../containers/Videos/Engagement';
 
 const VodPaywallPlaceholder = () => {
     return (
         <h1>VOD Paywall</h1>
-    )
-}
-
-const VodAdvertisingPlaceholder = () => {
-    return (
-        <h1>VOD Advertising</h1>
     )
 }
 
@@ -38,10 +33,10 @@ export const VideoSubRoutes: Routes[] = [
         component: VodPaywallPlaceholder,
     },
     {
-        path: '/advertising',
-        name: 'Advertising',
+        path: '/engagement',
+        name: 'Engagement',
         iconName: null,
-        component: VodAdvertisingPlaceholder,
+        component: VodEngagement,
     },
     {
         path: '/security',

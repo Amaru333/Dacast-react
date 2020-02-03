@@ -9,7 +9,7 @@ import { Modal } from '../../../components/Modal/Modal';
 import { MailCatcherModal } from  './MailCatcherModal';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { TextStyle, IconContainer } from './InteractionsStyle';
+import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementStyle';
 import { NewAdModal } from './NewAdModal';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
