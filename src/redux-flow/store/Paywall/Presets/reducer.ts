@@ -3,8 +3,8 @@ import { Action } from "./actions";
 import { ActionTypes, PresetsPageInfos, presetsInitialState  } from "./types";
 
 const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action: Action) => {
-    let presets = state.presets.slice();
-    let promos = state.promos.slice();
+    let presets = null;
+    let promos = null;
     switch (action.type) {
         case ActionTypes.GET_PRESETS_INFOS :
             return {
@@ -12,15 +12,17 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                 ...action.payload
             }
         case ActionTypes.CREATE_PRICE_PRESET :
+            presets = state.presets.slice();
             presets.splice(presets.length, 0, action.payload);
             return {
                 ...state,
                 presets: presets
             }
         case ActionTypes.SAVE_PRICE_PRESET :
+            state.presets.slice();
             return {
                 ...state,
-                presets: presets.map((item) => {
+                presets: state.presets.map((item) => {
                     if(item.id !== action.payload.id) {
                         return item;
                     }
@@ -38,6 +40,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                 presets: state.presets.filter((item) => {return item.id !== action.payload.id})
             }
         case ActionTypes.CREATE_PROMO_PRESET :
+            promos = state.promos.slice();
             promos.splice(promos.length, 0, action.payload);
             return {
                 ...state,
@@ -46,7 +49,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.SAVE_PROMO_PRESET :
             return {
                 ...state,
-                promos: promos.map((item) => {
+                promos: state.promos.map((item) => {
                     if(item.id !== action.payload.id) {
                         return item;
                     }
