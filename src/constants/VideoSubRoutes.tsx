@@ -4,6 +4,7 @@ import General from '../containers/Videos/General';
 import Chapters from '../containers/Videos/Chapters';
 import VodRenditions from '../containers/Videos/Renditions';
 import React from 'react';
+import VodTheming from '../containers/Videos/Theming';
 
 const VodPaywallPlaceholder = () => {
     return (
@@ -14,12 +15,6 @@ const VodPaywallPlaceholder = () => {
 const VodAdvertisingPlaceholder = () => {
     return (
         <h1>VOD Advertising</h1>
-    )
-}
-
-const VodThemePlaceholder = () => {
-    return (
-        <h1>VOD Theme</h1>
     )
 }
 
@@ -64,7 +59,7 @@ export const VideoSubRoutes: Routes[] = [
         path: '/theme',
         name: 'Theme',
         iconName: null,
-        component: VodThemePlaceholder,
+        component: VodTheming,
     },
 
 ];
