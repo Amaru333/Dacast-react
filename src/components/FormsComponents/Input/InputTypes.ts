@@ -90,6 +90,7 @@ export interface SliderSpecificProps {
 
 export interface TagSpecificProps {
     defaultTags?: string[];
+    noBorder?: boolean;
 }
 
 export type TagProps = TagSpecificProps & InputProps;

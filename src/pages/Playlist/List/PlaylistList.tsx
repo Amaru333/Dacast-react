@@ -9,9 +9,15 @@ import styled from 'styled-components';
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
 import { PlaylistsTabs } from './PlaylistTabs';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
+import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
+    themesList: ThemeOptions[];
 }
 
 export const PlaylistListPage = (props: LiveListProps) => {
@@ -89,13 +95,70 @@ export const PlaylistListPage = (props: LiveListProps) => {
         }
     }
 
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
+
+    const bulkActions = [
+        { name: 'Online/Offline', function: setBulkOnlineOpen },
+        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Change Theme', function: setBulkThemeOpen },
+        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Delete', function: setBulkDeleteOpen },
+    ]
+
+    const renderList = () => {
+        return bulkActions.map((item, key) => {
+            return (
+                <DropdownItem
+                    isSingle
+                    key={item.name}
+                    className={key === 1 ? 'mt1' : ''}
+                    isSelected={false}
+                    onClick={() => item.function(true)}>
+                    <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
+                </DropdownItem>
+            )
+        })
+    }
+
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
+
+    console.log(props);
     return (
         showPlaylistTabs ?
             <PlaylistsTabs playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
             :
             <>
+                <HeaderPlaylistList className="mb2 flex" >
+                    <div className="flex-auto items-center flex">
+                        <IconSearch>search</IconSearch>
+                        <InputTags  noBorder={true} placeholder="Search Playlists..." style={{display: "inline-block"}} defaultTags={[]}   />
+                    </div>
+                    <div className="flex items-center" >
+                        {selectedPlaylist.length > 0 ?
+                            <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedPlaylist.length} items</Text>
+                            : null
+                        }
+                        <div className="relative">
+                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                                {renderList()}
+                            </DropdownList>
+                        </div>
+                        <SeparatorHeader className="ml2 inline-block" />
+                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
+                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Playlist</Button>
+                    </div>
+                </HeaderPlaylistList>
                 <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
-                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => { }} />
+                <OnlineBulkForm items={selectedPlaylist} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm items={selectedPlaylist} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <ThemeBulkForm themes={props.themesList} items={selectedPlaylist} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+
             </>
     )
 }
@@ -103,7 +166,25 @@ export const PlaylistListPage = (props: LiveListProps) => {
 const IconStyle = styled(Icon)`
     margin: auto;
     font-size: 16px !important;
-    
+`
+
+const IconSearch = styled(Icon)`
+    color: ${props => props.theme.colors["gray-3"]} ;
+`
+
+const HeaderPlaylistList = styled.div<{}>`
+    position:relative;
+    width: 100%;
+`
+
+const SeparatorHeader = styled.div<{}>`
+    width:1px;
+    height: 33px;
+    background-color: ${props => props.theme.colors["gray-7"]} ;
+`
+
+const invisibleInput = styled.input<{}>`
+
 `
 
 const IconGreyContainer = styled.div<{}>`
