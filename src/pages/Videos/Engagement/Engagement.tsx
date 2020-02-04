@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Icon } from '@material-ui/core';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, IconContainer, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -28,6 +28,10 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.vodEngagementSettings.engagementSettings);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
+    const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
+    const [mailSectionEditable, setMailSectionEditable] = React.useState<boolean>(false);
+    const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
+    const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
 
     const newAd = () => {
         setSelectedAd(emptyAd);
@@ -112,12 +116,29 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
         })
     }
 
+   const revertSettings = () => {
+    setEngagementSettings(props.vodEngagementSettings.engagementSettings);
+    setSettingsEdited(false)
+    setAdSectionEditable(false);
+    setMailSectionEditable(false);
+    setEndScreenSectionEditable(false);
+   } 
+
     return (
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <Icon>lock</Icon> or edit your Advertising Settings </Bubble>
             <Card className='my2'>
-                <Text className="py2" size={20} weight='med'>Advertising</Text>
-                <Toggle 
+                <Header className="mb2">
+                    <TextStyle>
+                        <Text size={20} weight='med'>Advertising</Text>
+                    </TextStyle>
+                    <UnlockSettingsIcon onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                        {adSectionEditable ? "lock_open" : "lock"}
+                    </UnlockSettingsIcon>
+                </Header>
+                <DisabledSection settingsEditable={adSectionEditable}>
+                <Toggle
+                    className="mb2" 
                     id='advertisingEnabled' 
                     defaultChecked={engagementSettings.adEnabled} 
                     onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
@@ -125,7 +146,10 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 {
                     engagementSettings.adEnabled ?
                         <>
-                        <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        <div className="py2">
+                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        </div>
+                        
                         <div className='flex'>
                             <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
@@ -134,11 +158,23 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         </>
                         : null
                 }
+                </DisabledSection>
             </Card>
 
-            <Card className='my1'>
-                <TextStyle className="py2" > <Text size={20} weight='med'>Mail Catcher</Text></TextStyle>
-                <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+            <Card className='my2'>
+                <Header className="mb2">
+                    <TextStyle>
+                        <Text size={20} weight='med'>Mail Catcher</Text>
+                    </TextStyle>
+                    <UnlockSettingsIcon onClick={() => setMailSectionEditable(!mailSectionEditable)}>
+                        {mailSectionEditable ? "lock_open" : "lock"}
+                    </UnlockSettingsIcon>
+                </Header>
+                <DisabledSection settingsEditable={mailSectionEditable}>
+                <div className="pb2">
+                    <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                </div>
+                
                 <div className='flex'>
                     <Icon>info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
@@ -152,10 +188,19 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         (selectedMailCatcher: string) => {
                             setEngagementSettings({...engagementSettings, selectedMailCatcher: selectedMailCatcher})}}
                 />
+                </DisabledSection>
             </Card>
 
-            <Card className='my1'>
-                <TextStyle className="py2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
+            <Card className='my2'>
+                <Header className="mb2">
+                    <TextStyle>
+                        <Text size={20} weight='med'>Brand Text</Text>
+                    </TextStyle>
+                    <UnlockSettingsIcon onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                        {brandSectionEditable ? "lock_open" : "lock"}
+                    </UnlockSettingsIcon>
+                </Header>
+                <DisabledSection settingsEditable={brandSectionEditable}>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Input 
@@ -171,10 +216,19 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
                 <Toggle className='' label='Use video title as brand text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                </DisabledSection>
             </Card>
 
             <Card className='my2'>
-                <Text className="py2" size={20} weight='med'>End Screen Text</Text>
+                <Header className="mb2">
+                    <TextStyle>
+                        <Text size={20} weight='med'>End Screen Text</Text>
+                    </TextStyle>
+                    <UnlockSettingsIcon onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                        {endScreenSectionEditable ? "lock_open" : "lock"}
+                    </UnlockSettingsIcon>
+                </Header>
+                <DisabledSection settingsEditable={endScreenSectionEditable}>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Input 
@@ -189,6 +243,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         value={engagementSettings.endScreenTextLink ? engagementSettings.endScreenTextLink : ""} 
                         onChange={(event) => {setEngagementSettings({...engagementSettings, endScreenTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
+                </DisabledSection>
             </Card>
 
             {   
@@ -199,7 +254,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         >
                                 Save
                         </Button>
-                        <Button className="ml2" typeButton="tertiary" onClick={() => {setEngagementSettings(props.vodEngagementSettings.engagementSettings);setSettingsEdited(false)}}>Discard</Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
                     </div> : null
             }
 
