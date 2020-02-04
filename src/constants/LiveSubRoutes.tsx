@@ -3,16 +3,11 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import LiveSecurity from '../containers/Live/Security';
 import LiveGeneral from '../containers/Live/General';
 import LiveTheming from '../containers/Live/Theming';
+import  LiveEngagement  from '../containers/Live/Engagement';
 
 const paywallPlaceholder = () => {
     return (
         <h1>Live Paywall</h1>
-    )
-}
-
-const advertisingPlaceholder = () => {
-    return (
-        <h1>Live Advertising</h1>
     )
 }
 
@@ -28,9 +23,9 @@ export const LiveSubRoutes: Routes[] = [
         component: paywallPlaceholder
     },
     {
-        path: '/advertising',
-        name: 'Advertising',
-        component: advertisingPlaceholder
+        path: '/engagement',
+        name: 'Engagement',
+        component: LiveEngagement
     },
     {
         path: '/security',

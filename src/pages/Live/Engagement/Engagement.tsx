@@ -10,12 +10,12 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
 import { Ad, MailCatcher, InteractionsInfos } from '../../../redux-flow/store/Settings/Interactions/types';
-import { VodEngagementComponentProps } from '../../../containers/Videos/Engagement';
+import { LiveEngagementComponentProps } from '../../../containers/Live/Engagement';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { VodNewAdModal } from './VodNewAdModal';
+import { LiveNewAdModal } from './LiveNewAdModal';
 
-export const VodEngagementPage = (props: VodEngagementComponentProps) => {
+export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
     const emptyAd: Ad = { 
         id: "-1",
@@ -25,7 +25,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
-    const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.vodEngagementSettings.engagementSettings);
+    const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.liveEngagementSettings.engagementSettings);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
@@ -84,8 +84,8 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
 
     React.useEffect(() => {
-        setEngagementSettings(props.vodEngagementSettings.engagementSettings)
-    }, [props.vodEngagementSettings])
+        setEngagementSettings(props.liveEngagementSettings.engagementSettings)
+    }, [props.liveEngagementSettings])
 
     const advertisingTableHeader = () => {
         return [
@@ -100,14 +100,14 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
     const advertisingTableBody = () => {
-        return props.vodEngagementSettings.engagementSettings.adList.map((item, i) => {
+        return props.liveEngagementSettings.engagementSettings.adList.map((item, i) => {
             return [
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <Icon 
-                    onClick={() => {props.deleteVodAd(item)}} 
+                    onClick={(event) => {props.deleteLiveAd(item)}} 
                     >delete
                     </Icon>
                     <Icon onClick={() => editAd(item)}>edit</Icon> 
@@ -117,7 +117,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
    const revertSettings = () => {
-    setEngagementSettings(props.vodEngagementSettings.engagementSettings);
+    setEngagementSettings(props.liveEngagementSettings.engagementSettings);
     setSettingsEdited(false)
     setAdSectionEditable(false);
     setMailSectionEditable(false);
@@ -181,9 +181,9 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 </div>
                 <DropdownSingle
                     className="col col-3 mt2" 
-                    id="vodMailCatcherList"
+                    id="LiveMailCatcherList"
                     dropdownTitle="Mail Catcher"
-                    list={props.vodEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
+                    list={props.liveEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
                     callback={
                         (selectedMailCatcher: string) => {
                             setEngagementSettings({...engagementSettings, selectedMailCatcher: selectedMailCatcher})}}
@@ -250,7 +250,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 settingsEdited ?
                     <div className="mt1">
                         <Button 
-                            onClick={() => {props.saveVodEngagementSettings(engagementSettings);setSettingsEdited(false)}}
+                            onClick={() => {props.saveLiveEngagementSettings(engagementSettings);setSettingsEdited(false)}}
                         >
                                 Save
                         </Button>
@@ -259,7 +259,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
             }
 
             <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
+                <LiveNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
