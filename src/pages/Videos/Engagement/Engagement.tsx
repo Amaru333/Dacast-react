@@ -9,11 +9,12 @@ import { TextStyle, IconContainer, Header, UnlockSettingsIcon, DisabledSection }
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
-import { NewAdModal } from '../../../shared/Engagement/NewAdModal';
+import { NewAdModal } from '../../Settings/Interactions/NewAdModal';
 import { Ad, MailCatcher, InteractionsInfos } from '../../../redux-flow/store/Settings/Interactions/types';
 import { VodEngagementComponentProps } from '../../../containers/Videos/Engagement';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { VodNewAdModal } from './VodNewAdModal';
 
 export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
@@ -259,7 +260,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
             }
 
             <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <NewAdModal toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
+                <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>

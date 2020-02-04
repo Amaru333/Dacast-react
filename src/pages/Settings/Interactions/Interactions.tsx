@@ -13,7 +13,7 @@ import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementS
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
-import { NewAdModal } from '../../../shared/Engagement/NewAdModal';
+import { NewAdModal } from './NewAdModal';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 

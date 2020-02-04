@@ -1,12 +1,12 @@
 import React from 'react';
-import { SettingsInteractionComponentProps } from '../../containers/Settings/Interactions';
-import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
-import { Input } from '../../components/FormsComponents/Input/Input';
-import { DropdownSingle } from '../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Button } from '../../components/FormsComponents/Button/Button';
+import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
+import { Ad } from '../../../redux-flow/store/Settings/Interactions/types';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 
-export const NewAdModal = (props: any & {toggle: Function; selectedAd: Ad}) => {
+export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
 
