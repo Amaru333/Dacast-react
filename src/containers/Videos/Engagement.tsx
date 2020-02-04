@@ -5,16 +5,16 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { VodEngagementSettings } from "../../redux-flow/store/VOD/Engagement/types"
-import { getVodEngagementSettingsAction, Action } from '../../redux-flow/store/VOD/Engagement/actions';
+import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
+import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 
 export interface VodEngagementComponentProps {
     vodEngagementSettings: VodEngagementSettings;
     getVodEngagementSettings: Function;
-    // saveVodEngagementSettings: Function;
-    // saveVodAd: Function;
-    // createVodAd: Function;
-    // deleteVodAd: Function;
-    // saveVodMailCatcher: Function;
+    saveVodEngagementSettings: Function;
+    saveVodAd: Function;
+    createVodAd: Function;
+    deleteVodAd: Function;
 }
 
 export const VodEngagement = (props: VodEngagementComponentProps) => {
@@ -42,22 +42,19 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodEngagementSettings: () => {
             dispatch(getVodEngagementSettingsAction());
+        },
+        saveVodEngagementSettings: (data: VodEngagementSettings) => {
+            dispatch(saveVodEngagementSettingsAction(data))
+        },
+        saveVodAd: (data: Ad) => {
+            dispatch(saveVodAdAction(data))
+        },
+        createVodAd: (data: Ad) => {
+            dispatch(createVodAdAction(data))
+        },
+        deleteVodAd: (data: Ad) => {
+            dispatch(deleteVodAdAction(data))
         }
-        // saveVodEngagementSettings: (data: VodEngagementSettings) => {
-        //     dispatch(saveVodEngagementSettingsAction(data))
-        // },
-        // saveVodAd: (data: Ad) => {
-        //     dispatch(saveVodAdAction(data))
-        // },
-        // createVodAd: (data: Ad) => {
-        //     dispatch(createVodAdAction(data))
-        // },
-        // deleteVodAd: (data: Ad) => {
-        //     dispatch(deleteVodAdAction(data))
-        // },
-        // saveVodMailCatcher: (data: MailCatcher) => {
-        //     dispatch(saveVodMailCatcherAction(data))
-        // }
     };
 }
 

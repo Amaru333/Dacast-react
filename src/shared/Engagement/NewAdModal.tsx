@@ -6,7 +6,7 @@ import { DropdownSingle } from '../../components/FormsComponents/Dropdown/Dropdo
 import { Button } from '../../components/FormsComponents/Button/Button';
 
 
-export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedAd: Ad}) => {
+export const NewAdModal = (props: any & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
 
