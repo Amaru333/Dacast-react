@@ -63,14 +63,14 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     flex-direction: column;
     height:100%;
     position: fixed;
-    width: ${props => props.isMobile ? "235px" : props.navWidth};
+    width: ${props => props.isMobile ? "75%" : props.navWidth};
     box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
     overflow-y: scroll;
     z-index: 9997;
     ${props => props.isMobile && css`
-        margin-top: 57px;
+        margin-top: 58px;
         transform: translate( ${props.isOpen ? 0: "-100%"} );
         transition: transform .2s linear ;
     `}

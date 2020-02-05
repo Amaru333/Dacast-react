@@ -19,7 +19,6 @@ const Header = (props: HeaderProps) => {
             {props.isMobile ? <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} /> : null}
             <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text>
             <IconContainerStyle>
-                <HeaderIconStyle><Icon>notifications</Icon></HeaderIconStyle>
                 <HeaderIconStyle><Icon>help</Icon></HeaderIconStyle>
                 <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
             </IconContainerStyle>
