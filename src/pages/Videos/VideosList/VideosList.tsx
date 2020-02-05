@@ -3,11 +3,13 @@ import { Icon } from '@material-ui/core';
 import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
-import { Button } from '../../../components/FormsComponents/Button/Button';
 import { VodItem } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { VideoTabs } from '../../../containers/Videos/VideoTabs';
+import { VideosFiltering } from './VideosFiltering';
+import { Pagination } from '../../../components/Pagination/Pagination';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -18,23 +20,23 @@ export interface VideosListProps {
 export const VideosListPage = (props: VideosListProps) => {
 
     const [selectedVod, setSelectedVod] = React.useState<number[]>([]);
+    const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
+    const [selectedVodId, setSelectedVodId] = React.useState<VodItem>(null);
 
     React.useEffect(() => {
-
     }, [selectedVod])
 
     const vodListHeaderElement = () => {
         return [
-            <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.length} defaultChecked={selectedVod.length === props.items.length} id="globalCheckboxVodList" onChange={(event) => {
-                console.log(event.currentTarget.checked, "oco1");
-                if (event.currentTarget.checked) {
-                    const editedSelectedVod = props.items.map(item => { return item.id })
-                    setSelectedVod(editedSelectedVod);
-                } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                    setSelectedVod([])
-                }
-            }
-            } />,
+            <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.length} defaultChecked={selectedVod.length === props.items.length} id="globalCheckboxVodList"
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedSelectedVod = props.items.map(item => { return item.id })
+                        setSelectedVod(editedSelectedVod);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setSelectedVod([])
+                    }
+                }} />,
             <></>,
             <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>,
             <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>,
@@ -42,7 +44,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created</Text>,
             <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>,
             <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>,
-            <div style={{width: "80px"}} ></div>,
+            <div style={{ width: "80px" }} ></div>,
         ]
     }
 
@@ -62,9 +64,9 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListBodyElement = () => {
         if (props.items) {
-            return props.items.map((value, key) => {
+            return props.items.map((value) => {
                 return [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkbox" + value.id.toString()} onChange={(event) => {
+                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkboxVod" + value.id.toString()} onChange={(event) => {
                         if (event.currentTarget.checked && selectedVod.length < props.items.length) {
                             setSelectedVod([...selectedVod, value.id])
                         } else {
@@ -80,7 +82,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => {} } className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
         }
@@ -88,7 +90,15 @@ export const VideosListPage = (props: VideosListProps) => {
 
 
     return (
-        <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+        showVodTabs ?
+            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={selectedVodId.id.toString()} history={props.history} />
+            :
+            <>
+                <VideosFiltering />
+                <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            </>
+
     )
 
 }

@@ -10,7 +10,6 @@ export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function;
 
     React.useEffect(() => {
         setChapterMarker(props.item);
-        console.log(props.item)
     }, [props.item])
 
     React.useEffect(() => {

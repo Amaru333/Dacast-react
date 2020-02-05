@@ -9,8 +9,9 @@ import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { ThumbnailModal } from './ThumbnailModal';
+import { ImageModal } from './ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection } from "../../../shared/General/GeneralStyle"
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -19,6 +20,8 @@ interface GeneralComponentProps {
     editVodSubtitle: Function;
     deleteVodSubtitle: Function;
     changeVodThumbnail: Function;
+    changeVodSplashscreen: Function;
+    changeVodPoster: Function;
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -89,7 +92,6 @@ const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen
     } else {
         props.editVodSubtitle(data)
     }
-    console.log(data)
     setUploadedSubtitleFile({ fileName: "", language: "" })
     setSubtitleModalOpen(false);
 }
@@ -100,17 +102,28 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
-    const [thumbnailModalOpen, setThumbnailModalOpen] = React.useState<boolean>(false)
+    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
     const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
+    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
     React.useEffect(() => { }, [selectedSubtitle, subtitleModalOpen])
     const testSubtitleFile = "mozumban_subtitle_678.srt"
+
+    const handleImageModalFunction = () => {
+        if (imageModalTitle === "Change Splashscreen") {
+            return  props.changeVodSplashscreen
+        } else if (imageModalTitle === "Change Thumbnail") {
+            return props.changeVodThumbnail
+        } else {
+            return props.changeVodPoster
+        }
+    }
 
     return (
         VodDetails ?
@@ -130,19 +143,19 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Input
                             className="col col-6 pr2"
                             label="Title"
-                            value={props.vodDetails.title}
+                            value={VodDetails.title}
                             onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                         />
                         <Input
                             className="col col-6"
                             label="Folder"
-                            value={props.vodDetails.folder}
+                            value={VodDetails.folder}
                             onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
                         />
                         <Input
                             className="col col-6 pr2 pt2"
                             label="Description"
-                            defaultValue={props.vodDetails.description}
+                            value={VodDetails.description}
                             onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
                         />
                     </div>
@@ -178,23 +191,45 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </LinkBoxContainer>
                     </div>
                     <Divider className="col col-12" />
-                    <div className="col col-12">
-                        <Text className="col col-12" size={20} weight="med">Advertising</Text>
-                        <Text className="col col-12 pt1" size={14} weight="reg">Some text about advertising</Text>
-                        <AdContainer className="col col-12 mt2">
-                            <AdInput className="col col-4 mr2" label="Ad URL" />
-                            <Button className="mt3" sizeButton="xs" typeButton="secondary">Preview Ads</Button>
-                        </AdContainer>
-                        <Divider className="col col-12" />
-                    </div>
                     <div className="thumbnail col col-12">
-                        <Text className="col col-12" size={20} weight="med">Thumbnail</Text>
-                        <Text className="col col-12 pt1" size={14} weight="reg">Select a thumbnail from the generated images, or upload your own thumbnail</Text>
-                        <ThumbnailContainer className="col col-12 pt2 flex">
-                            <ThumbnailImage className="mr2" src={VodDetails.thumbnail.toString()} />
+                        <Text className="col col-12" size={20} weight="med">Images</Text>
+                        <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
+                        <ImagesContainer className="col col-12 pt2 flex">
+                            <ImageContainer className="mr2">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                                    <Icon>info_outlined</Icon>
+                                </div>
+                            
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>
+                                    <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="mr2">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>
+                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="">
+                                <div className="flex flex-center">
+                                    <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>
+                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
+                            </ImageContainer>
 
-                        </ThumbnailContainer>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setThumbnailModalOpen(true)}>Change Thumbnail</Button>
+                        </ImagesContainer>
                     </div>
                     <Divider className="col col-12" />
                     <div className="subtitles col col-12">
@@ -255,83 +290,18 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ThumbnailModal toggle={() => setThumbnailModalOpen(false)} opened={thumbnailModalOpen === true} submit={props.changeVodThumbnail} />
+                    <ImageModal title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
 
                 </Card>
                 <ButtonContainer>
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
-                    <Button typeButton="secondary">Discard</Button>
+                    <Button typeButton="secondary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
             </React.Fragment>
             : null
     )
 
 }
-const Divider = styled.div`
-    border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    margin: 32px 24px 24px 0;
-`
-
-const LinkBoxContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    height:auto;
-    padding-top: 16px;
-    padding-right: 16px;
-`
-
-const LinkBoxLabel = styled.label`
-    display: flex;
-    height:auto;
-    margin-bottom: 4px;
-    margin-top:4px;
-    align-items: center;
-`
-
-const LinkBox = styled.div`
-display: flex;
-height: 40px;
-padding: 0 12px;
-background-color: ${props => props.theme.colors["gray-10"]};
-border: 1px solid ${props => props.theme.colors["gray-7"]};
-align-items: center;
-justify-content: space-between;
-&:hover > button{
-        display: block;
-    }
-`
-
-const LinkText = styled(Text)`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`
-
-const AdContainer = styled.div`
-display: flex;
-align-items: center;
-`
-
-const AdInput = styled(Input)`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`
-
-const ThumbnailContainer = styled.div`
-flex-direction: column;
-`
-
-const ThumbnailImage = styled.img`
-max-height: 107px;
-max-width: 172px;
-`
-
-const UploadThumbnail = styled.button`
-height: 102px;
-width: 171px;
-border: 1px dashed ${props => props.theme.colors["gray-7"]};
-`
 
 const IconContainer = styled.div`
     float:right;
@@ -353,13 +323,3 @@ const SubtitleFile = styled.div`
     align-items: center;
     justify-content: space-between;
 `
-
-const IconButton = styled.button`
-display: none;
-border: none;
-background-color: inherit;
-`
-
-const ButtonContainer = styled.div`
-margin-top: 24px;
-` 

@@ -13,20 +13,17 @@ export const Badge = (props: BadgeProps) => {
         </BadgeStyle>
     )
 }
+Badge.defaultProps = {color: "coral"}
 
 export const BadgeStyle = styled.div<BadgeProps>`
     border-radius: 100px;
     height: 20px;
     width: auto;
     min-width: 20px;
-    background-color: ${props => props.theme.colors["coral"]};
-    display: inline-block;
-    text-align: center;
-    ${props => props.number === 0 && css`
-    border-radius: 100px;
-    height: 8px;
-    min-width: 8px;
-    `}  
+    background-color: ${props => props.theme.colors[props.color]};
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
 `
 
 export const TextStyle = styled(Text)`
