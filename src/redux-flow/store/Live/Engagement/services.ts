@@ -13,15 +13,15 @@ const saveLiveEngagementSettings = (data: LiveEngagementSettings) => {
 }
 
 const saveLiveAd = (data: Ad) => {
-    return axios.put(urlBase + 'live-engagements-ad', {data: data})
+    return axios.put(urlBase + 'live-engagement-ad', {data: data})
 }
 
 const createLiveAd = (data: Ad) => {
-    return axios.post(urlBase + 'live-engagements-ad', {data: data})
+    return axios.post(urlBase + 'live-engagement-ad', {data: data})
 }
 
 const deleteLiveAd = (data: Ad) => {
-    return axios.delete(urlBase + 'live-engagements-ad', {data: data})
+    return axios.delete(urlBase + 'live-engagement-ad', {data: data})
 }
 
 export const liveEngagementServices = {

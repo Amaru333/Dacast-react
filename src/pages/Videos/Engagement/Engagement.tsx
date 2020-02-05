@@ -85,7 +85,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
     React.useEffect(() => {
         setEngagementSettings(props.vodEngagementSettings.engagementSettings)
-    }, [props.vodEngagementSettings])
+    }, [props.vodEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
         return [
@@ -183,10 +183,12 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     className="col col-3 mt2" 
                     id="vodMailCatcherList"
                     dropdownTitle="Mail Catcher"
+                    dropdownDefaultSelect={engagementSettings.selectedMailCatcher}
                     list={props.vodEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
                     callback={
                         (selectedMailCatcher: string) => {
-                            setEngagementSettings({...engagementSettings, selectedMailCatcher: selectedMailCatcher})}}
+                            setEngagementSettings({...engagementSettings, selectedMailCatcher: selectedMailCatcher});setSettingsEdited(true)}}
+                    
                 />
                 </DisabledSection>
             </Card>
@@ -206,7 +208,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <Input 
                         disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8' 
                         label='Brand Text' 
-                        onChange={(event) => {setEngagementSettings({...engagementSettings, brandText: event.currentTarget.value})}}
+                        onChange={(event) => {setEngagementSettings({...engagementSettings, brandText: event.currentTarget.value});setSettingsEdited(true)}}
                         value={engagementSettings.brandText ? engagementSettings.brandText : ""} 
                     />
                     <Input 

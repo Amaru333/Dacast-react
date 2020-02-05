@@ -9,19 +9,19 @@ const getVodEngagementSettings = () => {
 }
 
 const saveVodEngagementSettings = (data: VodEngagementSettings) => {
-    return axios.put(urlBase + 'vod-engagements', {data: data})
+    return axios.post(urlBase + 'vod-engagements', {data: data})
 }
 
 const saveVodAd = (data: Ad) => {
-    return axios.put(urlBase + 'vod-engagements-ad', {data: data})
+    return axios.put(urlBase + 'vod-engagement-ad', {data: data})
 }
 
 const createVodAd = (data: Ad) => {
-    return axios.post(urlBase + 'vod-engagements-ad', {data: data})
+    return axios.post(urlBase + 'vod-engagement-ad', {data: data})
 }
 
 const deleteVodAd = (data: Ad) => {
-    return axios.delete(urlBase + 'vod-engagements-ad', {data: data})
+    return axios.delete(urlBase + 'vod-engagement-ad', {data: data})
 }
 
 export const vodEngagementServices = {

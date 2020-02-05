@@ -70,7 +70,7 @@ export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Cr
         await vodEngagementServices.createVodAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_VOD_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -78,10 +78,10 @@ export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Cr
 }
 
 export const deleteVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodAd> ) => {
-        await vodEngagementServices.saveVodAd(data)
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodAd> ) => {
+        await vodEngagementServices.deleteVodAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: response.data} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

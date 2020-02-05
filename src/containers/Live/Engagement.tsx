@@ -34,7 +34,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        LiveEngagementSettings: state.live.engagement
+        liveEngagementSettings: state.live.engagement
     };
 }
 
