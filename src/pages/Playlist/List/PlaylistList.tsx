@@ -26,9 +26,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
     const [showPlaylistTabs, setShowPlaylistTabs] = React.useState<boolean>(false)
     const [selectedPlaylistId, setSelectedPlaylistId] = React.useState<PlaylistItem>(null)
 
-    React.useEffect(() => {
-
-    }, [selectedPlaylist])
+    React.useEffect(() => { }, [selectedPlaylist])
 
     const liveListHeaderElement = () => {
         return [
@@ -45,14 +43,13 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedPlaylist([])
                     }
-                }
-                }
+                }}
             />,
             <></>,
-            <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created</Text>,
-            <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>,
-            <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>,
+            <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>,
+            <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created</Text>,
+            <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>,
+            <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>,
             <div style={{ width: "80px" }} ></div>,
         ]
     }
