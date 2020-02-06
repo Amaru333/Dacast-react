@@ -5,60 +5,9 @@ import { ColorsApp } from '../../../styled/types';
 import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
+import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 
-
-const invoicesData = [
-    {
-        id: 62055,
-        date: '10:34:00 05/04/2019',
-        total: 165,
-        status: 'Pending'
-    },
-    {
-        id: 61603,
-        date: '10:55:23 05/22/2019',
-        total: 165,
-        status: 'Failed'
-    },
-    {
-        id: 61238,
-        date: '14:23:20 06/12/2019',
-        total: 165,
-        status: 'Paid'
-    },    
-    {
-        id: 61233,
-        date: '10:55:23 06/17/2019',
-        total: 165,
-        status: 'Paid'
-    },
-    {
-        id: 61232,
-        date: '10:34:00 07/30/2019',
-        total: 165,
-        status: 'Paid'
-    },
-    {
-        id: 61231,
-        date: '14:23:20 08/01/2019',
-        total: 165,
-        status: 'Paid'
-    },
-    {
-        id: 61226,
-        date: '10:34:00 05/04/2019',
-        total: 165,
-        status: 'Paid'
-    },
-    {
-        id: 61225,
-        date: '10:55:23 05/22/2019',
-        total: 165,
-        status: 'Paid'
-    }
-]
-
-export const Invoices = () => {
+export const InvoicesPage = (props: InvoicesComponentProps) => {
 
     const invoicesTableHeader = () => {
         return [
@@ -71,7 +20,7 @@ export const Invoices = () => {
     }
 
     const invoicesTableBody = () => {
-        return invoicesData.map((item, i) => {
+        return props.invoices.map((item, i) => {
             const color = item.status === 'Paid' ? 'green' : item.status === 'Failed' ? 'red' : 'yellow';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [
