@@ -198,7 +198,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             <div className='flex'>
                 {PaywallThemingInPlayerCustomization()}
                 <Card className='col col-8 ml1'>
-                    <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="../../../public/iframe/InPlayer/InPlayerPaywallPreview.html"
+                    <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/iframe/InPlayerPaywallPreview.html"
                         onLoad={() => {
                             inPlayerPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
@@ -210,7 +210,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             });
                         }}
                     />                   
-                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="../../../public/iframe/InPlayer/InPlayerConnectionPreview.html" 
+                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/iframe/InPlayerConnectionPreview.html" 
                         onLoad={() => {
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
