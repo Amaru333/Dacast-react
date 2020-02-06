@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Card } from '../../components/Card/Card';
 
 export const ThemingContainer = styled.div`
@@ -46,6 +46,14 @@ export const IconContainer = styled.div`
     }
 `
 
+export const DisabledSection = styled.div<{selectedTheme: string}>`
+pointer-events: none;
+opacity: 0.5;
+    ${props => props.selectedTheme === "Custom Theme" && css`
+        pointer-events: auto;
+        opacity: 1;
+    `}
+`
 export const ControlsCard = styled(Card)`
     height: 765px;
     overflow-y: scroll;

@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
@@ -18,6 +19,8 @@ import Payout from '../containers/Paywall/Payout';
 import Transactions from '../containers/Paywall/Transactions';
 import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
+import Presets from '../containers/Paywall/Presets';
+import PaywallTheming from '../containers/Paywall/Theming';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -31,12 +34,6 @@ const functionTest1 = () => {
 const functionTest2 = () => {
     return (
         <LoadingSpinner size="small" color="red" />
-    )
-}
-
-const functionTest4 = () => {
-    return (
-        <LoadingSpinner size="small" color="green" />
     )
 }
 
@@ -109,7 +106,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/presets',
                 name: 'Presets',
-                component: functionTest4
+                component: Presets
             },
             {
                 path: '/paywall/groups',
@@ -125,6 +122,11 @@ export const AppRoutes: Routes[] = [
                 path: '/paywall/payout',
                 name: 'Payout',
                 component: Payout
+            },
+            {
+                path: '/paywall/theming',
+                name: 'Theming',
+                component: PaywallTheming
             },
             {
                 path: '/paywall/settings',
@@ -170,8 +172,8 @@ export const AppRoutes: Routes[] = [
                 component: Theming
             },
             {
-                path: '/settings/interactions',
-                name: 'Interaction',
+                path: '/settings/Engagement',
+                name: 'Engagement',
                 component: Interactions
             }
         ]
@@ -205,7 +207,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: functionTest1
+                component: Invoices
             }
         ]
     }
