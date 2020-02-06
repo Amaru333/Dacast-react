@@ -1,9 +1,14 @@
 import { combineReducers } from "redux";
 import {  SettingsState, SettingsInitialState, SettingsReducer} from "./Settings";
 import {  dashboardInitialState, DashboardState, DashboardReducer } from "./Dashboard";
-import { toastsInitialState, ToastsState, ToastReducer } from './toasts'
+import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
+import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
+import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
+import { TitleReducer } from './Title/logic';
+import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
+
 
 export interface ApplicationState {
     settings: SettingsState;
@@ -11,6 +16,10 @@ export interface ApplicationState {
     toasts: ToastsState;
     account: AccountState;
     vod: VodState;
+    live: LiveState;
+    playlist: PlaylistState;
+    paywall: PaywallState;
+    title: string;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -18,7 +27,11 @@ export const globalDefaultState: ApplicationState = {
     dashboard: dashboardInitialState,
     toasts: toastsInitialState,
     account: accountInitialState,
-    vod: vodInitialState
+    vod: vodInitialState,
+    playlist: playlistInitialState,
+    live: liveInitialState,
+    paywall: paywallInitialState,
+    title: ""
 };
 
 export const createRootReducer = () =>
@@ -27,6 +40,10 @@ export const createRootReducer = () =>
         dashboard: DashboardReducer,
         toasts: ToastReducer,
         account: AccountReducer,
-        vod: VodReducer
+        vod: VodReducer,
+        live: LiveReducer,
+        title: TitleReducer,
+        playlist: PlaylistReducer,
+        paywall: PaywallReducer
     },
     );

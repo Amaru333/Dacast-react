@@ -1,7 +1,7 @@
 import { ActionTypes, EncodingRecipeItem } from "../EncodingRecipes/EncodingRecipesTypes";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 import { EncodingRecipesData } from './EncodingRecipesTypes';
 import { EncodingRecipesServices } from './services';
 

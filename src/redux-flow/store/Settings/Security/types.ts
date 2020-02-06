@@ -21,16 +21,18 @@ export interface DomainControl {
     domains: string[];
 }
 
-interface PasswordProtectedVideo {
+export interface PasswordProtectedVideo {
     enabled: boolean;
     promptTime?: string;
     password?: string;
 }
 
-interface VideoScheduling {
+export interface VideoScheduling {
     enabled: boolean;
+    startDateTime?: string;
     startDate?: string;
     startTime?: string;
+    endDateTime?: string;
     endDate?: string;
     endTime?: string;
 }

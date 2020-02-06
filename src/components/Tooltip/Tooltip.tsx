@@ -20,13 +20,13 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
             if(!target.onmouseleave) {
                 target.onmouseleave = () => {
                     setVisibility(false);
-                };
+                };  
                 target.onmouseenter = () => {
                     setVisibility(true);
                 };
             }
         }
-    }, [props.children]);
+    }, [visibility]);
 
     return (
         <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>

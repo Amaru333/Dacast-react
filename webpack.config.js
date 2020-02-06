@@ -41,6 +41,10 @@ module.exports = {
                 ]
             },
             {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
                 test: /\.(ttf|eot|svg|otf|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 include: SRC,
                 use: [{

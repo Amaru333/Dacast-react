@@ -46,13 +46,13 @@ export const IconStyle = styled.div`
     top: 17%;
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean}>`
     display: none;
     position: absolute;
     z-index: 999;
     right: 0;
     left: 0;
-    ${props => props.isSingle && css `
+    ${props => props.isSingle && !props.isInModal && css `
     right: .5rem;
     left: .5rem;
     `}
@@ -164,5 +164,15 @@ export const CloseIconButton = styled.div`
     position: absolute;
     top: 8px;
     right: 25px;
+    cursor: pointer;
+`
+
+export const ButtonContainer = styled.div<{isOpened: boolean}>`
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: white;
+    border: 1px solid ${props => props.theme.colors['gray-7']};
     cursor: pointer;
 `

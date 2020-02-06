@@ -217,7 +217,7 @@ export const TagsContainer = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    width: 352px;
+    max-width: 352px;
     min-height: 40px;
     background-color: ${props => props.theme.colors["gray-10"]};
 `

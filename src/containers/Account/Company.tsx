@@ -5,7 +5,7 @@ import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import {CompanyPage} from '../../components/Pages/Account/Company/Company';
+import {CompanyPage} from '../../pages/Account/Company/Company';
 
 interface CompanyContainerProps {
     CompanyInfos: CompanyPageInfos;

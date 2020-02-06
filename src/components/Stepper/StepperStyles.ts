@@ -27,9 +27,16 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
     ${props => props.isMobile && css`
         padding: 16px;
         width: 300px;
+        top: 45%;
     `};
 `
-export const StepperStyle = styled.div`
+export const StepperStyle = styled.div<{isMobile: boolean}>`
+
+    & .MuiStepper-root {
+        ${props => props.isMobile && css `
+            padding: 24px 0;
+        `}
+    }
     
     & .MuiStepConnector-lineHorizontal {
         border-top-width: 4px;

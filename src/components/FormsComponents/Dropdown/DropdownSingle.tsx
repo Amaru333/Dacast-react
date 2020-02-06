@@ -15,13 +15,20 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list);
     const [filteringList, setFilteringList] = React.useState<string>('');
 
-    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
+    useOutsideAlerter(dropdownListRef, () => {
+        if(props.callback) {
+            props.callback(selectedItem);
+        }
+        setOpen(!isOpened)
+    });
 
     React.useEffect(() => {
-        if(selectedItem === 'Select') {
-            setSelectedItem(props.defaultValue ? props.defaultValue.toString() : "Select")
+        if(selectedItem === 'Select' || props.dropdownDefaultSelect) {
+            setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
         } 
-    }, [props.defaultValue])
+    }, [props.dropdownDefaultSelect])
+
+    
     React.useEffect(() => {setOpen(false)}, [selectedItem])
 
     const handleClick = (name: string) => {
@@ -108,9 +115,11 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isSingle isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>
     );
 }
+
+DropdownSingle.defaultProps = {isInModal: false}

@@ -14,6 +14,8 @@ interface DropdownCustomProps {
     ref?: React.Ref<HTMLDivElement>;
     callback?: Function;
     hasSearch?: boolean;
+    dropdownDefaultSelect?: string;
+    isInModal?: boolean;
 }
 
 export interface ContinentListType {
@@ -33,9 +35,18 @@ interface DropdownCountriesSpecificProps {
     hasSearch?: boolean;
 }
 
+interface DropdownButtonSpecificProps {
+    list: string[];
+    id: string;
+    callback: Function;
+    dropdownDefaultSelect?: string;
+}
+
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export type DropdownCountriesProps =  DropdownCountriesSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
+
+export type DropdownButtonProps = DropdownButtonSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
 
