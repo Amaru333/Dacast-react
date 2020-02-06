@@ -9,8 +9,13 @@ export enum ActionTypes {
 }
 
 export interface VodEngagementSettings {
+<<<<<<< Updated upstream
     vodId: string,
     engagementSettings: InteractionsInfos
+=======
+    vodId: string;
+    engagementSettings: InteractionsInfos;
+>>>>>>> Stashed changes
 }
 
 export const vodEngagementDefaultState: VodEngagementSettings = {
