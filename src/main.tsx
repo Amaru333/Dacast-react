@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
 import { Store } from "redux";
 import { Router, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
@@ -10,7 +11,6 @@ import { Theme } from '../src/styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
-
 import {
     isMobile
 } from "react-device-detect";
@@ -18,14 +18,40 @@ import {
 // Import Main styles for this application
 import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
-import { Header } from './components/Header/Header';
+import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Others/Toasts';
+import { updateTitleApp } from './utils/utils';
 
 // Any additional component props go here.
 interface MainProps {
     store: Store<ApplicationState>;
 }
+
+
+
+  
+export const updateStateTitle = (pathname: string) => { 
+    var result = AppRoutes.filter(item => pathname.includes(item.path) );
+    if( /\d/.test(pathname) ) { return; }
+    if(result.length) {
+        if(result[0].slug) {
+            let match =  result[0].slug.filter(subRoute => {return subRoute.path === pathname; } );
+            if(match[0]){
+                updateTitleApp(match[0].name);
+            } else {
+                updateTitleApp(result[0].name);
+            }
+        } else {
+            updateTitleApp(result[0].name);
+        }
+    }
+}
+
+history.listen( (location) =>  {
+    updateStateTitle(location.pathname)
+});
+
 
 const returnRouter = (props: Routes[]) => {
     return (
@@ -52,10 +78,13 @@ const returnRouter = (props: Routes[]) => {
 }
 
 // Create an intersection type of the component props and our Redux props.
-const Main: React.FC<MainProps> = ({ store }: MainProps) => {
+const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
     const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
 
+    React.useEffect(() => {
+        updateStateTitle(location.pathname)
+    }, [])
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
             setOpen(true)

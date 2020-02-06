@@ -1,9 +1,9 @@
 const path = require('path'),
     webpack = require('webpack'),
-    HtmlWebpackPlugin = require('html-webpack-plugin');
-
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin');
 const SRC = path.resolve(__dirname, 'public/assets/');
-    
+
 module.exports = {
     entry: {
         app: ['./src/index.tsx'],
@@ -41,16 +41,24 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(ttf|eot|svg|otf|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(ttf|eot|svg|otf|gif|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 include: SRC,
                 use: [{
                     loader: 'file-loader'
                 }]
-            },
+            }
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new CopyWebpackPlugin([
+            { from: './public/iframe', to: './iframe' },
+        ], { copyUnmodified: true }
+        )
     ]
 }

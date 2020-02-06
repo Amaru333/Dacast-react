@@ -5,84 +5,29 @@ import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
-import Uploader from '../containers/Videos/Uploader';
 import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
-import Chapters from '../containers/Videos/Chapters';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
-import General from '../containers/Videos/General';
 import Billing from '../containers/Account/Billing';
-import VodSecurity from '../containers/Videos/Security';
 import Folders from '../containers/Folders/Folders';
+import Invoices from '../containers/Account/Invoices';
+import Interactions from '../containers/Settings/Interactions';
+import Theming from '../containers/Settings/Theming';
+import Plans from '../containers/Account/Plans'
+import LiveList from '../containers/Live/List';
+import Payout from '../containers/Paywall/Payout';
+import Transactions from '../containers/Paywall/Transactions';
+import PlaylistList from '../containers/Playlists/List';
+import PaywallSettings from '../containers/Paywall/Settings';
+import Presets from '../containers/Paywall/Presets';
+import PaywallTheming from '../containers/Paywall/Theming';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
-
-
-const functionTest1 = () => {
-    return (
-        <LoadingSpinner size="small" color="dark-violet" />
-    )
-}
-
-const vodList = () => {
-    return (
-        <VodList  />
-    )
-}
 
 const functionTest2 = () => {
     return (
         <LoadingSpinner size="small" color="red" />
-    )
-}
-
-const functionTest3 = () => {
-    return (
-        <LoadingSpinner size="small" color="yellow" />
-    )
-}
-
-const functionTest4 = () => {
-    return (
-        <LoadingSpinner size="small" color="green" />
-    )
-}
-
-const DashboardRender = () => {
-    return (
-        <Dashboard/>
-    )
-}
-
-const ApiIntegrationRender = () => {
-    return (
-        <ApiIntegration/>
-    )
-}
-
-
-const LiveChannel = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>LiveChannel</h2>
-        </div>
-    )
-}
-
-const Playlist = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Playlist</h2>
-        </div>
-    )
-}
-
-const Admin = () => {
-    return (        
-        <div style={{margin: 'auto', width: '50%'}}>
-            <h2>Admin</h2>
-        </div>
     )
 }
 
@@ -91,19 +36,19 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: DashboardRender,
+        component: Dashboard,
     },
     {
         path: '/livestreams',
         name: 'Live Streams',
         iconName: 'videocam',
-        component: LiveChannel
+        component: LiveList
     },
     {
         path: '/videos',
         name: 'Videos',
         iconName: 'play_arrow',
-        component: VodList
+        component: VodList,
     },
     {
         path: '/folders',
@@ -116,7 +61,7 @@ export const AppRoutes: Routes[] = [
         path: '/playlists',
         name: 'Playlists',
         iconName: 'playlist_play',
-        component: Playlist
+        component: PlaylistList
     },
     {
         path: '/analytics',
@@ -147,25 +92,40 @@ export const AppRoutes: Routes[] = [
         ]
     },
     {
-        path: '/monetization',
-        name: 'Monetization',
+        path: '/paywall',
+        name: 'Paywall',
         iconName: 'attach_money',
         component: null,
         slug: [
             {
-                path: '/monetization/presets',
+                path: '/paywall/presets',
                 name: 'Presets',
-                component: functionTest4
+                component: Presets
             },
             {
-                path: '/monetization/groups',
+                path: '/paywall/groups',
                 name: 'Groups',
                 component: functionTest2
             },
             {
-                path: '/monetization/balance',
-                name: 'Balance',
-                component: functionTest2
+                path: '/paywall/transactions',
+                name: 'Transactions',
+                component: Transactions
+            },
+            {
+                path: '/paywall/payout',
+                name: 'Payout',
+                component: Payout
+            },
+            {
+                path: '/paywall/theming',
+                name: 'Theming',
+                component: PaywallTheming
+            },
+            {
+                path: '/paywall/settings',
+                name: 'Settings',
+                component: PaywallSettings
             }
         ]
     },
@@ -185,7 +145,7 @@ export const AppRoutes: Routes[] = [
                 component: EncodingRecipes
             },
             {
-                path: '/mainsettings/deliveryembed',
+                path: '/settings/deliveryembed',
                 name: 'Embed',
                 component: EmbedSettings
             },
@@ -197,14 +157,19 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/apiintegrations',
                 name: 'API & Integration',
-                component: ApiIntegrationRender
+                component: ApiIntegration
             },
 
             {
                 path: '/settings/theming',
                 name: 'Theming',
-                component: functionTest4
+                component: Theming
             },
+            {
+                path: '/settings/Engagement',
+                name: 'Engagement',
+                component: Interactions
+            }
         ]
     },
     {
@@ -216,7 +181,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: functionTest3
+                component: Plans
             },
             {
                 path: '/account/profile',
@@ -236,7 +201,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: functionTest1
+                component: Invoices
             }
         ]
     }

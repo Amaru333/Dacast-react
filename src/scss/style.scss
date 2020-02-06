@@ -62,6 +62,10 @@ a {
     transition: none !important;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .navigation {
     a:hover {
         color: initial;
@@ -125,4 +129,25 @@ a {
 
 .mr25 {
     margin-right: 1.5rem;
+}
+
+
+/** Carousel override css classes  **/
+
+.carousel .slide {
+    background-color: unset !important;
+    margin-top: 20px;
+}
+
+.slide.selected {
+    margin-top: 0 !important;
+    padding-bottom: 50px;
+}
+
+.dot {
+    background-color: black !important;
+}
+
+.control-dots {
+    padding-inline-start: unset;
 }

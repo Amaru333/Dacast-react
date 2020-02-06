@@ -19,7 +19,7 @@ interface VodSecurityContainerProps {
 export const VodSecurity = (props: VodSecurityContainerProps) => {
 
     React.useEffect(() => {
-        if(!props.vodSecuritySettings && !props.globalSecuritySettings) {
+        if(!props.vodSecuritySettings ||  (!props.vodSecuritySettings && !props.globalSecuritySettings)) {
             props.getVodSecuritySettings();
             props.getSettingsSecurityOptions();
         }

@@ -1,0 +1,919 @@
+<script type='text/javascript' src='https://assets.inplayer.com/paywall/staging/paywall.min.js'></script>
+<style>
+    .ipx-half.paywallv2 .inplayer-modalv2 {
+        width: 100%;
+        max-width: 375px;
+        margin: 5vh auto;
+        background: #f0f3f6;
+        -webkit-box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.4);
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.4);
+        border-radius: 2px;
+        overflow: hidden;
+        -webkit-transition: all 250ms ease-out;
+        -o-transition: all 250ms ease-out;
+        transition: all 250ms ease-out;
+        position: relative;
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        line-height: 20px;
+    }
+
+    .ipx-half.paywallv2 header {
+        padding: 2vh 0;
+        position: relative;
+        border-bottom: none !important;
+    }
+
+    .ipx-half.paywallv2 .headline {
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: .04em;
+        position: relative;
+        text-align: center;
+        max-width: 76%;
+        margin: 0 auto;
+        padding: 0;
+        letter-spacing: 0.04em;
+    }
+
+    .headline.fields #ipx-headlogin {
+        border-bottom: 2px solid rgba(0, 0, 0, 0.06) !important;
+        color: rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .headline.fields #ipx-headregister {
+        border-bottom: 2px solid #00aae6 !important;
+        color: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    .ipx-half.paywallv2 label#ipx-headlogin,
+    .ipx-half.paywallv2 label#ipx-headregister {
+        border-bottom: 2px solid #00aae6;
+        color: rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+        cursor: pointer;
+        padding: 0px 5px 2px;
+        margin: 0 4px;
+    }
+
+    .ipx-half.paywallv2 label#ipx-headregister {
+        border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    .headline,
+    .inplayer-customtext p {
+        max-width: 76%;
+        margin: 0 auto;
+        padding: 2vh 0 0;
+        max-width: 76%;
+        margin: 0 auto;
+        font-size: 14px;
+        font-style: normal;
+        color: rgba(0, 0, 0, 0.45);
+        line-height: 20px;
+        letter-spacing: .02em;
+    }
+
+    .ipx-half.paywallv2 #brandheader {
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        background: #00aae6;
+        padding: 2vh 0 2vh;
+        position: relative;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        text-align: center
+    }
+
+    .ipx-half.paywallv2 #brandheader img {
+        width: auto;
+        height: auto;
+        max-width: 32%;
+        max-height: 12vh;
+        line-height: 0;
+        display: block;
+        margin: 0 auto
+    }
+
+    .ipx-half.paywallv2 .formelements {
+        position: relative;
+        width: 60%;
+        max-width: 225px;
+        min-width: 190px;
+        margin: 8px auto
+    }
+
+    .ipx-half.paywallv2 .formelements p {
+        text-align: center;
+        margin: 15px 0
+    }
+
+    .ipx-half.paywall .formelements a {
+        color: inherit
+    }
+
+    .ipx-half.paywallv2 #ipx-maincontent {
+        background: #fff;
+        border-top: 1px solid #d4dae0;
+        padding: 2vh 0;
+        position: relative;
+    }
+
+    /* forgot pass */
+    .inplayer-forgot-password {
+        display: block;
+        position: relative;
+        text-align: left;
+        color: #45a6c8;
+        left: 0;
+        cursor: pointer;
+        line-height: 20px;
+        font-size: 13px;
+        -webkit-transition: background ease 500ms;
+        -o-transition: background ease 500ms;
+        transition: background ease 500ms;
+    }
+
+    .inplayer-forgot-password:hover {
+        color: #43a7c8;
+    }
+
+    .inplayer-forgot-password:hover div.inplayer-tooltip {
+        opacity: 1;
+    }
+
+    .passwordreset {
+        max-height: 50px;
+        font-size: 11px;
+        color: rgba(0, 0, 0, 0.45);
+        text-align: left;
+    }
+
+    .passwordreset label {
+        display: inline-block;
+        cursor: default;
+        width: auto
+    }
+
+    .ipx-half.paywallv2 footer {
+        font-size: 11px;
+        padding: 2vh 4% !important;
+        position: relative;
+        background: #f0f3f6 !important;
+        border-top: 1px solid #d7dde5;
+    }
+
+    .ipx-half.paywallv2 footer label.language {
+        position: absolute;
+        left: 4%;
+        bottom: 2.4vh;
+        border: 1px solid transparent;
+        border-radius: 2px;
+        padding: 0 20px 0 8px;
+        color: rgba(0, 0, 0, .3);
+        background: hsla(0, 0%, 100%, 0);
+        font-size: 12px;
+        line-height: 1;
+    }
+
+    .ipx-half.paywallv2 footer i {
+        font-size: 8px;
+        padding-left: 8px;
+    }
+
+    .ipx-half.paywallv2 footer div {
+        display: inline-block
+    }
+
+    .ipx-half.paywallv2 footer .footerlinks {
+        width: calc(100% - 160px);
+        position: relative;
+        left: -88px;
+    }
+
+    .ipx-half.paywallv2 footer .footerlinks a {
+        margin-right: 12px;
+        color: rgba(0, 0, 0, 0.45);
+        cursor: default;
+    }
+
+    /* DROPDOWN */
+
+    .ipx-half.paywallv2 .dropdown_footer {
+        position: absolute;
+        bottom: -43px;
+        background: #00aae6;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        color: #000
+    }
+
+    .ipx-half.paywallv2 .dropdown_footer a {
+        color: #00aae6
+    }
+
+    .inplayer_dropdown_menu {
+        position: absolute;
+        right: 0;
+        top: 48px;
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: 0.2s ease-in;
+        -o-transition: 0.2s ease-in;
+        transition: 0.2s ease-in
+    }
+
+    .inplayer_dropdown_menu.dropdown--menu {
+        top: 46px
+    }
+
+    .inplayer_dropdown_menu.direction-bottom .dropdown_container::before {
+        content: "";
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #ffffff;
+        top: -10px;
+        right: 16px;
+        display: block
+    }
+
+    .inplayer_dropdown_menu.direction-bottom .dropdown_container::after {
+        display: none
+    }
+
+    .inplayer_dropdown_menu.dropdown--messages .dropdown_container::before {
+        right: 21px
+    }
+
+    .inplayer_dropdown_menu.direction-top {
+        bottom: 0;
+        left: -20px;
+        top: auto !important;
+        margin-bottom: 30px
+    }
+
+    .inplayer_dropdown_menu.direction-top .dropdown_container::before {
+        display: none
+    }
+
+    .inplayer_dropdown_menu.direction-top .dropdown_container::after {
+        content: "";
+        position: absolute;
+        width: 0px;
+        height: 0px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #fff;
+        left: 22px;
+        bottom: -7px;
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg)
+    }
+
+    .inplayer_dropdown_menu.dropdown--notifications {
+        right: -30px
+    }
+
+    .inplayer_dropdown_menu.dropdown--visible {
+        visibility: visible;
+        opacity: 1
+    }
+
+    .inplayer_dropdown_menu ul li {
+        list-style: none;
+        padding: 8px 0
+    }
+
+    .inplayer_dropdown_menu .dropdown_container {
+        border-radius: 2px;
+        -webkit-box-shadow: 0px 5px 7px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 5px 7px 2px rgba(0, 0, 0, 0.1)
+    }
+
+    .inplayer_dropdown_menu.dropdown--menu .dropdown_container {
+        background: #fff;
+        border: 1px solid #d7dde5;
+        width: auto;
+        padding: 12px 20px
+    }
+
+    .inplayer_dropdown_menu .dropdown_container .dropdown_item {
+        border-bottom: 1px solid rgba(33, 33, 33, 0.06);
+        padding-bottom: 16px;
+        margin-bottom: 16px
+    }
+
+    .inplayer_dropdown_menu .dropdown_container .dropdown_item:last-child {
+        border: none;
+        margin-bottom: 0;
+        padding-bottom: 0
+    }
+
+    .inplayer_dropdown_menu .dropdown_container .dropdown_item ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    .inplayer_dropdown_menu .dropdown_container .dropdown_item ul li a {
+        margin: 0;
+        display: block;
+        width: 100%;
+        font-size: 13px;
+        -webkit-transition: 0.2s ease-in;
+        -o-transition: 0.2s ease-in;
+        transition: 0.2s ease-in;
+        -webkit-webkit-transition: 0.2s ease-in;
+        -moz-webkit-transition: 0.2s ease-in;
+        -ms-webkit-transition: 0.2s ease-in;
+        -o-webkit-transition: 0.2s ease-in;
+        -webkit-transition: 0.2s ease-in
+    }
+
+    .inplayer_dropdown_menu .dropdown_container .dropdown_item ul li a:hover {
+        -webkit-transform: translateX(2px);
+        -ms-transform: translateX(2px);
+        transform: translateX(2px)
+    }
+
+    .inplayer_dropdown_menu.dropdown--messages .dropdown_container {
+        background: #fff;
+        min-width: 487px;
+        width: auto;
+        padding: 0;
+        max-height: 490px;
+        overflow-y: auto
+    }
+
+    .inplayer_dropdown_menu.dropdown--notifications .dropdown_container {
+        max-height: 457px;
+        min-width: 290px
+    }
+
+    .inplayer_dropdown_menu .dropdown_container::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #F5F5F5
+    }
+
+    .inplayer_dropdown_menu .dropdown_container::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5
+    }
+
+    .inplayer_dropdown_menu .dropdown_container::-webkit-scrollbar-thumb {
+        background-color: #a9a4a4;
+        border: 2px solid #a9a4a4
+    }
+
+    /* BRAND */
+    #inplayer-branded {
+        position: absolute;
+        right: 4%;
+        width: 160px
+    }
+
+    #inplayer-branded span {
+        text-align: right;
+        display: inline-block;
+        position: absolute;
+        right: 28px;
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    #inplayer-branded img {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        right: -4px;
+        top: -2px;
+    }
+
+    /* CHECKBOX */
+    .ipx-half.paywallv2 input[type="radio"].ipx-checkhid,
+    .ipx-half.paywallv2 input[type="checkbox"].ipx-checkhid {
+        position: absolute;
+        top: -9999px;
+        left: -9999px
+    }
+
+    /* LANGUAGES */
+    #languages:hover .expand {
+        background: rgba(0, 0, 0, 0.4)
+    }
+
+    #languages:hover {
+        border: 1px solid rgba(0, 0, 0, 0.2)
+    }
+
+    #languages input[type="radio"]:checked+label {
+        display: block
+    }
+
+    #ipx-languagedrop:checked~#languages label {
+        display: block;
+        margin: 10px 0;
+        width: 38px
+    }
+
+    #ipx-languagedrop:checked~#languages label i {
+        display: inline-block
+    }
+
+    #ipx-languagedrop:checked~#languages input[type="radio"]:checked+label {
+        color: rgba(0, 0, 0, 0.6);
+        font-weight: 400;
+        padding: 2px 4px 4px;
+        position: relative;
+        left: -5px;
+        border-radius: 2px;
+        border: 1px solid #d7dde5
+    }
+
+    #ipx-languagedrop:checked~#languages input[type="radio"]:checked+label i {
+        opacity: 1
+    }
+
+    #ipx-languagedrop:checked~#languages {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background: #fff;
+        padding: 10px 24px 20px
+    }
+
+    #ipx-languagedrop:checked~#languages .expand {
+        background: rgba(0, 0, 0, 0.4);
+        right: calc(50% - 3px);
+        width: 6px;
+        height: 1px
+    }
+
+    #languages {
+        border: 1px solid transparent;
+        border-radius: 2px;
+        padding: 0px 20px 0px 8px;
+        color: rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0);
+        font-size: 12px;
+        line-height: 1;
+        text-transform: uppercase;
+        width: auto;
+        margin-right: 6px;
+        position: absolute;
+        left: 4%;
+        bottom: 2vh;
+        display: block;
+        z-index: 50000001;
+        cursor: pointer;
+        -webkit-transition: all ease 350ms;
+        -o-transition: all ease 350ms;
+        transition: all ease 350ms
+    }
+
+    #languages label {
+        margin: 4px 0;
+        display: none;
+        cursor: pointer;
+        width: 18px
+    }
+
+    #languages label i {
+        height: 13px;
+        width: 13px;
+        margin-right: 7px;
+        border-radius: 50%;
+        display: none;
+        position: relative;
+        top: 2px;
+        background-size: 13px;
+        background-position: center center;
+        opacity: .5
+    }
+
+    #languages label:hover i {
+        opacity: 1
+    }
+
+    #languages label i.lang-ar {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-uae.jpg)
+    }
+
+    #languages label i.lang-dk {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-denm.jpg)
+    }
+
+    #languages label i.lang-nl {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-netherlands.jpg)
+    }
+
+    #languages label i.lang-fr {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-france.jpg)
+    }
+
+    #languages label i.lang-en {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-uk.jpg)
+    }
+
+    #languages label i.lang-de {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-germ.jpg)
+    }
+
+    #languages label i.lang-it {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-italy.jpg)
+    }
+
+    #languages label i.lang-es {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-spain.jpg)
+    }
+
+    #languages label i.lang-pl {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-portugal.jpg)
+    }
+
+    #languages label i.lang-se {
+        background-image: url(https://assets.inplayer.com/images/paywall/worldflags/sq-swe.jpg)
+    }
+
+    #languages .expand {
+        background: rgba(0, 0, 0, 0.2);
+        display: block;
+        position: absolute;
+        bottom: 9px;
+        width: 5px;
+        height: 1px;
+        -webkit-transition: all ease 250ms;
+        -o-transition: all ease 250ms;
+        transition: all ease 250ms
+    }
+
+    /* // PROGRESS BAR */
+    .ipx-half.paywallv2 #inplayer-progressbarv2 {
+        display: none
+    }
+
+    .ipx-half.paywallv2 #inplayer-progressbarv2 {
+        width: 100%;
+        height: 2px;
+        margin: 0;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-pack: justify;
+        justify-content: space-between
+    }
+
+    .ipx-half.paywallv2 .progressv2 {
+        height: 2px;
+        background-color: #d7dde5;
+        margin-right: 1px;
+        display: block;
+        width: 50%
+    }
+
+    .progressv2:last-child {
+        margin-right: 0
+    }
+
+    .labelholder {
+        position: relative;
+    }
+
+    #pswinfo,
+    .pswresetfield,
+    .passwordreset,
+    .registerfield {
+        height: auto;
+        overflow: hidden;
+        -webkit-transition: all ease 250ms;
+        -o-transition: all ease 250ms;
+        transition: all ease 250ms;
+    }
+
+    #pswinfo,
+    .registerfield {
+        max-height: 0;
+    }
+
+    .inplayer-modalv2 input[type="text"],
+    input[type="password"] {
+        border-bottom: 1px solid #d7dde5;
+        margin: 0px auto 10px;
+        line-height: 20px;
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        padding: 15px 16px 4px 32px;
+        width: 100%;
+        color: #000;
+        letter-spacing: .04em;
+        -webkit-transition: all ease 300ms;
+        -o-transition: all ease 300ms;
+        transition: all ease 300ms;
+        background: transparent;
+        font-size: 14px;
+    }
+
+    .ipx-half.paywallv2 input[type="text"],
+    .ipx-half.paywallv2 input[type="email"],
+    .ipx-half.paywallv2 input[type="password"] {
+        border-bottom: 1px solid #d7dde5;
+        border-top: none !important;
+        border-right: none !important;
+        border-left: none !important;
+        margin: 0px auto 10px;
+        line-height: 20px;
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        padding: 15px 16px 4px 32px;
+        width: 100%;
+        color: #000;
+        letter-spacing: .04em;
+        -webkit-transition: all ease 300ms;
+        -o-transition: all ease 300ms;
+        transition: all ease 300ms;
+        background: transparent;
+        font-size: 14px;
+        border-radius: 0px;
+    }
+
+    .ipx-half.paywallv2 .labelholder i {
+        position: absolute;
+        top: 12px;
+        left: 0;
+        font-size: 20px;
+        color: #b9c1cb;
+    }
+
+    .ipx-half.paywallv2 [class^="ipic_"],
+    [class*=" ipic_"] {
+        font-family: 'ipic' !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.2);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .ipx-half.paywallv2 .labelholder label {
+        position: absolute;
+        top: 1px;
+        left: 0px;
+        font-size: 14px;
+        -webkit-transition: all 200ms ease-in-out;
+        -o-transition: all 200ms ease-in-out;
+        transition: all 200ms ease-in-out;
+        margin: 12px 16px 12px 32px;
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    .buttonholder {
+        text-align: right;
+        width: 100%;
+        position: relative;
+    }
+
+    .ipx-half.paywallv2 button {
+        text-rendering: auto;
+        color: initial;
+        letter-spacing: normal;
+        word-spacing: normal;
+        text-transform: none;
+        text-indent: 0px;
+        text-shadow: none;
+        display: inline-block;
+        margin: 0;
+        border-radius: 2px;
+        border: 1px solid #00aae6;
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        text-align: center;
+        color: #00aae6;
+        background: rgba(0, 171, 210, 0);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 8px 0;
+        cursor: default;
+        margin: 10px 0;
+        width: 100%;
+        -webkit-transition: all ease 350ms;
+        -o-transition: all ease 350ms;
+        transition: all ease 350ms;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .buttonlabel {
+        position: relative;
+    }
+
+    #close {
+        position: absolute;
+        right: 2%;
+        cursor: initial;
+        display: block;
+        width: 16px;
+        padding: 7px 0;
+        top: 8px;
+        z-index: 50000001;
+        -webkit-transition: all 100ms ease-out;
+        -o-transition: all 100ms ease-out;
+        transition: all 100ms ease-out;
+    }
+
+    #close i {
+        background: rgba(0, 0, 0, 0.1);
+        width: 14px;
+        height: 1px;
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        -webkit-transition: all 200ms ease-out;
+        -o-transition: all 200ms ease-out;
+        transition: all 200ms ease-out;
+    }
+
+    #close i:first-child {
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    #close i:last-child {
+        -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        top: -1px;
+    }
+
+    /* CUSTOM FIELDS */
+    .inplayer-modalv2 .labelholder,
+    .inplayer-modalv2 .ipx-fieldcontainer {
+        margin-top: 15px;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer:first-child,
+    .inplayer-modalv2 .custom-radio-label {
+        margin: 0 !important;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer label,
+    .inplayer-modalv2 .ipx-fieldcontainer span {
+        color: rgba(0, 0, 0, .45);
+        z-index: 99;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer .custom-radio-span label {
+        display: inline-block;
+        position: relative;
+        font-size: 14px;
+        height: auto;
+        vertical-align: top;
+        margin-bottom: 8px;
+        width: calc(100% - 30px);
+        top: 3px;
+        left: 3px;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer .demo-editor span {
+        color: rgba(0, 0, 0, .45) !important;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer.separate.first {
+        margin-right: 1px !important;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer.separate input {
+        padding-left: 16px;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer .ip-mergelink {
+        font-size: 14px;
+        margin: 15px 0 0 8px;
+    }
+
+    .inplayer-modalv2 .ipx-fieldcontainer .ip-splitlink {
+        position: absolute;
+        margin: 15px 0 0 5px;
+        cursor: pointer;
+        font-size: 13px;
+        width: 21%;
+    }
+
+    .inplayer-modalv2 .inplayer-customtext p {
+        text-align: center;
+    }
+
+    .ipx-paywall-bottom {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -ms-flex-align: end;
+        align-items: flex-start;
+    }
+
+    body {
+        background-color: transparent !important;
+    }
+
+    .inplayer-modalv2 {
+        margin: 0;
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, .4);
+    }
+
+    .ipx-half.paywallv2 .inplayer-modalv2 {
+        margin: 0 auto;
+    }
+
+    .ipx-half.paywallv2 #brandheader {
+        padding: 5vh 0 !important;
+    }
+
+    #ipx-headlogin {
+        border-color: #00aae6;
+    }
+
+    #email {
+        border-color: #00aae6;
+    }
+
+    #progress-preview-inplayer {
+        background: #00aae6;
+    }
+</style>
+<script>
+    window.addEventListener('message', function (event) {
+        var data = event.data;
+        switch (data.action) {
+            case "setButtonColor":
+                var btnPreview = document.getElementById("preview-inplayer-form-btn");
+                btnPreview.style.border = "1px solid " + data.value.hex;
+                btnPreview.style.color = data.value.hex;
+                return;
+            case "setPrimaryColor":
+                document.getElementById("ipx-headlogin").style.borderColor = data.value.hex;
+                document.getElementById("email").style.borderColor = data.value.hex;
+                document.getElementById("progress-preview-inplayer").style.background = data.value.hex;
+                return;
+            case "setHeaderColor":
+                document.getElementById("brandheader").style.background = data.value.hex;
+                return;
+            case "setLogo":
+                document.getElementById("theme-logo").src = data.value;
+                return;
+            case "setThemeLogo":
+                var x = document.getElementById("theme-logo");
+                if (data.value) {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+                return;
+
+        }
+    });
+</script>
+<div class="ipx-half paywallv2">
+    <div class="inplayer-modalv2"><a id="close"><i></i><i></i></a>
+        <div id="brandheader" style="background: rgb(68, 167, 200);">
+            <img id='theme-logo' alt="logo" src="https://my.dacast.com/assets/dacast-logo.png">
+        </div>
+        <header>
+            <div class="headline"><label id="ipx-headlogin">login</label> /<label forhtml="ipx-panelcontent"
+                    id="ipx-headregister">sign up</label></div>
+            <div class="inplayer-customtext">
+                <p>Log in to your account</p>
+            </div>
+        </header>
+        <section id="ipx-maincontent">
+            <div class="formelements">
+                <div class="labelholder"><input id="email" placeholder=" " type="email" name="email" disabled=""><i
+                        class="icon-ipx_email" style="color: rgb(82, 206, 176);"></i><label
+                        forhtml="email">email</label></div>
+                <div class="labelholder pswresetfield"><input type="password" id="password" name="password"
+                        placeholder=" " disabled=""><i class="icon-ipx_lock"></i><label
+                        forhtml="password">password</label></div>
+                <div class="passwordreset"><label forhtml="ipx-pswcontent"><span>Forgot password?</span></label></div>
+                <div class="buttonholder"><button id="preview-inplayer-form-btn"><span class="buttonlabel">Log in
+                        </span></button></div>
+            </div>
+        </section>
+        <div id="inplayer-progressbarv2">
+            <div class="progressv2 first" id="progress-preview-inplayer"></div>
+            <div class="progressv2"></div>
+            <div class="progressv2"></div>
+        </div>
+        <footer><label class="language">EN<i class="icon-arrow_down"></i></label>
+            <div class="footerlinks"><a>MORE</a></div>
+        </footer>
+    </div>
+</div>

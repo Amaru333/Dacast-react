@@ -12,11 +12,11 @@ import {isMobile} from "react-device-detect";
 export const CustomStepper = (props: StepperProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
-    const [stepValidated, setStepValidated] = React.useState<boolean>(false)
+    const [stepValidated, setStepValidated] = React.useState<boolean>(true)
 
     const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
-        return ( 
+        return (           
             props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated)
         )
     };
@@ -24,7 +24,7 @@ export const CustomStepper = (props: StepperProps) => {
     const nextStep = () => {
         if(stepIndex < props.stepList.length - 1) {
             setStepIndex(stepIndex + 1)
-            setStepValidated(false)
+            setStepValidated(true)
         }
         else {
             setStepIndex(0)
@@ -46,7 +46,7 @@ export const CustomStepper = (props: StepperProps) => {
                 <StepperHeaderStyle>
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
-                <StepperStyle>
+                <StepperStyle isMobile={isMobile}>
                     <Stepper activeStep={stepIndex} alternativeLabel>
                         {steps.map((label) => {
                             return (

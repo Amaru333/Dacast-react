@@ -1,0 +1,57 @@
+<script type='text/javascript' src='https://assets.inplayer.com/paywall/staging/paywall.min.js'></script>
+​
+<script>
+    window.addEventListener('message', function (event) {
+        var data = event.data;
+        if(!data.action) {
+            return
+        }
+
+        switch(data.action) {
+            case "setButtonColor":
+                var btnPreview = document.getElementById("preview-inplayer-btn");
+                btnPreview.style.background = data.value.hex;
+                return;
+            case "setButtonTextColor":
+                var btnPreview = document.getElementById("preview-inplayer-btn");
+                btnPreview.style.color = data.value.hex;
+                return;
+            case "setProtectedLabel":
+                var protectedLabel = document.getElementById("inplayer-protected-label-preview");
+                protectedLabel.style.display = data.value ? 'block' : 'none';
+                return;
+        }
+    });
+</script>
+<style id="style-tag-preview" >
+    body {
+        background-color: transparent !important;
+    }
+    .inplayer-preview-box {
+        margin: 0 auto;
+        box-shadow: 0 1px 8px 0 rgba(0,0,0,.4);
+    }
+    #preview-inplayer-btn {
+        background: #00aae6;
+    }
+</style>
+<div id="inplayer-41979">
+    <div class="inplayer-preview-box no-box">
+        <div class="inplayer-imageholder"><img src="./preview-inplayer.jpg" class="inplayer-paywall"
+                style="cursor: pointer;"><div id="inplayer-protected-label-preview" class="inplayer-paywallexplain no-explain">
+                <div id="inplayer-whitelogo"><strong>Protected by inplayer</strong><a href="https://inplayer.com">InPlayer
+                        Paywall</a></div><i><svg version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 30 30"><path class="inplayer-lock"
+                            d="M20.9,14.7c0-4.6-2.7-8.4-5.9-8.4s-5.9,3.7-5.9,8.4H7.8v7.4c0,0.6,0.4,1,1,1h12.4c0.6,0,1-0.4,1-1v-7.4H20.9z M15,9.4c1.4,0,2.9,2.3,2.9,5.4h-5.8C12.1,11.7,13.7,9.4,15,9.4z"></path></svg></i><span>Premium
+                    content
+                </span></div>
+        </div>
+        <div class="inplayer-itemdetails">
+            <h3 class="inplayer-title">Title</h3>
+            <p>Description</p>
+        </div>
+        <div class="inplayer-buybutton"><button id="preview-inplayer-btn" class="inplayer-submit-button" type="submit">buy</button></div>
+        <div class="inplayer-preview-footer">
+            <div class="inplayer-guest-footer"><a href="#login"><span>Already have access? Login here.</span></a></div>
+        </div>
+    </div>
+</div>

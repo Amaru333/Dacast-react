@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
-import { DateTime } from 'luxon';
+import { DateTime, LocaleOptions } from 'luxon';
 import { showToastNotification } from '../redux-flow/store/Toasts';
+import { updateTitle } from '../redux-flow/store/Title/logic';
 import { store } from '..';
 
 export function numberFormatter(num: number, format: 'k' | 'comma'): string {
@@ -25,13 +26,17 @@ export function updateClipboard(newClip: string): void {
     });
 }
 
+export function updateTitleApp(title: string): void {
+    store.dispatch(updateTitle(title))
+}
+
 export function readableBytes(size: number): string {
     var i = Math.floor( Math.log(size) / Math.log(1024) );
     return parseInt(( size / Math.pow(1024, i) ).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
 
-export function tsToLocaleDate(ts: number): string {
-    return DateTime.fromSeconds(ts).toLocaleString();
+export function tsToLocaleDate(ts: number, options?: LocaleOptions & Intl.DateTimeFormatOptions): string {
+    return DateTime.fromSeconds(ts).toLocaleString(options);
 }
 
 export function intToTime(num: number) {

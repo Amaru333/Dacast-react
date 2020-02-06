@@ -13,7 +13,7 @@ export const Tab = (props: TabProps) => {
     const {list, orientation } = props;
     const firstSelectedItem = () => {
         let item = props.list.find((element) => {
-            return props.history.location.pathname === element.path
+            return props.history ? props.history.location.pathname === element.path : false
         })
         return item ? item.name : props.list[0].name;
     };
@@ -23,15 +23,18 @@ export const Tab = (props: TabProps) => {
     React.useEffect(()=> {
         if(mobile && dropdownRef.current !== null) {
             setSelectedTab(dropdownRef.current.innerText)
-        }})
+        }
+        if(props.callback) {
+            props.callback(selectedTab)
+        }
+    }, [selectedTab])
 
     const renderTabs = () => {
         const dropdownList: DropdownListType = {}
         list.forEach((item) => dropdownList[item.name] = false )
-        return (
-            mobile ?
-                <DropdownSingle defaultValue={selectedTab} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
-                :
+        return mobile && !props.callback ?
+            <DropdownSingle defaultValue={selectedTab} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
+            : !mobile && !props.callback ?
                 list.map((tab, i) => {
                     return (
                         <Link to={tab.path} key={tab.name+i.toString()}>
@@ -45,18 +48,31 @@ export const Tab = (props: TabProps) => {
                         </Link>
                     )
                 })
-        )
+                : 
+                list.map((tab) => {
+                    return (
+                        <TabStyle 
+                            
+                            key={tab.name}                              
+                            orientation={orientation} 
+                            selected={selectedTab === tab.name} 
+                            onClick={() => setSelectedTab(tab.name)}
+                        >
+                            <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.name ? 'med' : 'reg'}  color={selectedTab === tab.name ? "dark-violet" : "gray-1"}>{tab.name}</Text>
+                        </TabStyle>
+                    )
+                })
     }
 
     const renderTabsContent = () => {
-        return (
-            props.list.map((tabContent: any, i) => {
-                return (
-                    <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
-                        <tabContent.component />
-                    </TabContentStyle>
-                )
-            })
+        return ( <div></div>
+        // props.list.map((tabContent: any, i) => {
+        //     return (
+        //         <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
+        //             <tabContent.component />
+        //         </TabContentStyle>
+        //     )
+        // })
         )
     }
 
