@@ -27,8 +27,8 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
     return (
         props.liveEngagementSettings ?
-        <LiveEngagementPage {...props} />
-        : <LoadingSpinner size='medium' color='overlay70' />
+            <LiveEngagementPage {...props} />
+            : <LoadingSpinner size='medium' color='overlay70' />
     )
 }
 

@@ -9,8 +9,8 @@ export enum ActionTypes {
 }
 
 export interface VodEngagementSettings {
-    vodId: string,
-    engagementSettings: InteractionsInfos
+    vodId: string;
+    engagementSettings: InteractionsInfos;
 }
 
 export const vodEngagementDefaultState: VodEngagementSettings = {

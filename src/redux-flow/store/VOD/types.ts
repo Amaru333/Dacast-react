@@ -31,7 +31,7 @@ export interface  VodState {
     list: false | VodItem[];
     renditions: false | RenditionsList;
     theming: false | VodTheme;
-    engagement: false | VodEngagementSettings
+    engagement: false | VodEngagementSettings;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({
