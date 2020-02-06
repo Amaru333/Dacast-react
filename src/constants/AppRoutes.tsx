@@ -19,6 +19,7 @@ import Transactions from '../containers/Paywall/Transactions';
 import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
+import PaywallTheming from '../containers/Paywall/Theming';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -120,6 +121,11 @@ export const AppRoutes: Routes[] = [
                 path: '/paywall/payout',
                 name: 'Payout',
                 component: Payout
+            },
+            {
+                path: '/paywall/theming',
+                name: 'Theming',
+                component: PaywallTheming
             },
             {
                 path: '/paywall/settings',

@@ -6,12 +6,14 @@ import { TransactionsReducer } from './Transactions/reducer';
 import { PaywallSettingsInfos } from './Settings/types';
 import { PaywallSettingsReducer } from './Settings/reducer';
 import { PresetsPageInfos, PresetsReducer } from './Presets';
+import { PaywallThemingData, PaywallThemingReducer } from './Theming';
 
 export const paywallInitialState: PaywallState = {
     payout: false,
     transactions: false,
     paywallSettings: false, 
-    presets: false  
+    presets: false,
+    theming: false
 }
 
 export interface PaywallState {
@@ -19,11 +21,13 @@ export interface PaywallState {
     transactions: false | TransactionsInfos;
     paywallSettings: false | PaywallSettingsInfos;
     presets: false | PresetsPageInfos;
+    theming: false | PaywallThemingData;
 }
 
 export const PaywallReducer: Reducer<PaywallState> = combineReducers({
     payout: PayoutReducer,
     transactions: TransactionsReducer,
     paywallSettings: PaywallSettingsReducer,
-    presets: PresetsReducer
+    presets: PresetsReducer,
+    theming: PaywallThemingReducer
 })
