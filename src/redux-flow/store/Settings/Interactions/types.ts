@@ -26,7 +26,7 @@ export interface InteractionsInfos {
     adEnabled: boolean;
     adList: Ad[];
     mailCatcher: MailCatcher[];
-    selectedMailCatcher?: string
+    selectedMailCatcher?: string;
     brandText: string;
     brandTextLink: string;
     isBrandTextAsTitle: boolean;

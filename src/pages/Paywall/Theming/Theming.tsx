@@ -13,6 +13,7 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { PaywallTheme } from '../../../redux-flow/store/Paywall/Theming';
 import { PaywallThemingComponentProps } from '../../../containers/Paywall/Theming';
 import { IconContainer } from '../../../shared/Theming/ThemingStyle';
+import styled from 'styled-components';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
@@ -95,6 +96,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})
 
                     }} />
+                    <BorderStyle className='my2' />
                     <Tab className='col col-12 my1' orientation='horizontal' history={null} list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : ''}>
                         <Text size={16} weight='med'>Button Colour</Text>
@@ -198,7 +200,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             <div className='flex'>
                 {PaywallThemingInPlayerCustomization()}
                 <Card className='col col-8 ml1'>
-                    <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="../../../public/iframe/InPlayer/InPlayerPaywallPreview.html"
+                    <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/iframe/InPlayerPaywallPreview.html"
                         onLoad={() => {
                             inPlayerPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
@@ -210,7 +212,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             });
                         }}
                     />                   
-                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="../../../public/iframe/InPlayer/InPlayerConnectionPreview.html" 
+                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/iframe/InPlayerConnectionPreview.html" 
                         onLoad={() => {
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
@@ -235,3 +237,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             </div>
     )
 }
+
+export const BorderStyle = styled.div<{}>`
+    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
+    display: flex;
+`

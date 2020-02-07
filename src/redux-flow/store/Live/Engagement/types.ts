@@ -9,8 +9,8 @@ export enum ActionTypes {
 }
 
 export interface LiveEngagementSettings {
-    liveId: string,
-    engagementSettings: InteractionsInfos
+    liveId: string;
+    engagementSettings: InteractionsInfos;
 }
 
 export const liveEngagementDefaultState: LiveEngagementSettings = {

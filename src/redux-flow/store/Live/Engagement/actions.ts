@@ -22,12 +22,12 @@ export interface SaveLiveAd {
 
 export interface CreateLiveAd {
     type: ActionTypes.CREATE_LIVE_AD;
-    payload: Ad
+    payload: Ad;
 }
 
 export interface DeleteLiveAd {
     type: ActionTypes.DELETE_LIVE_AD;
-    payload: Ad 
+    payload: Ad; 
 }
 
 export const getLiveEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveEngagementSettings> => {

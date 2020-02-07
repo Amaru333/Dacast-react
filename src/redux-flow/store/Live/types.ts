@@ -20,7 +20,7 @@ export interface LiveState {
     list: false | LiveItem[];
     security: false | LiveSecuritySettings;
     theming: false | LiveTheme;
-    engagement: false | LiveEngagementSettings
+    engagement: false | LiveEngagementSettings;
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({

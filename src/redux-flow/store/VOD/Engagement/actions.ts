@@ -22,12 +22,12 @@ export interface SaveVodAd {
 
 export interface CreateVodAd {
     type: ActionTypes.CREATE_VOD_AD;
-    payload: Ad
+    payload: Ad;
 }
 
 export interface DeleteVodAd {
     type: ActionTypes.DELETE_VOD_AD;
-    payload: Ad 
+    payload: Ad; 
 }
 
 export const getVodEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
