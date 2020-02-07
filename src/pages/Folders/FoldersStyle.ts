@@ -23,8 +23,7 @@ export const SubfolderElements = styled.div`
 `
 
 export const HeadingSection = styled.div`
-    display: flex;
-    width: 100%;
+
 `
 
 export const ContentSection = styled.div`

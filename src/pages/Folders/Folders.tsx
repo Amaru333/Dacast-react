@@ -6,6 +6,9 @@ import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheck
 import { Icon } from '@material-ui/core';
 import { Label } from '../../components/FormsComponents/Label/Label';
 import { Table } from '../../components/Table/Table';
+import { Pagination } from '../../components/Pagination/Pagination';
+import { FoldersFiltering } from './FoldersFiltering';
+import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface FolderAsset {
     id: string;
@@ -18,16 +21,13 @@ export interface FolderAsset {
 
 }
 
-interface SubFolder {
-    id: string;
-    name: string;
-}
-interface Folder {
-    parentId: string;
-    id: string;
-    name: string;
-    subfolders: SubFolder[];
-    assets: FolderAsset[];
+interface FolderTreeNode {
+    fullPath: string;
+    loadingStatus: 'not-loaded' | 'loading' | 'loaded';
+    children: {
+        [childPath: string]: FolderTreeNode;
+    };
+    isExpanded: boolean;
 }
 
 const TableData: FolderAsset[] = [
@@ -87,55 +87,17 @@ const TableData: FolderAsset[] = [
     }
 ]
 
-const FoldersTree: Folder[] = [
-    {
-        parentId: 'Id',
-        id: '1',
-        name: 'Library',
-        subfolders: null,
-        assets: null
-    },
-    {
-        parentId: 'Id',
-        id: '2',
-        name: 'unsorted',
-        subfolders: null,
-        assets: null,
-    },
-    {
-        parentId: 'Id',
-        id: '3',
-        name: 'Trash',
-        subfolders: null,
-        assets: null
-    },
-    {
-        parentId: 'Id',
-        id: '4',
-        name: 'Bunnies',
-        subfolders: [
-            {
-                id: '11',
-                name: 'gray bunnies',
-            },
-            {
-                id: '12',
-                name: 'green bunnies',
-            }
-        ],
-        assets: null
-    }
+const folderTreeConst = [
+    'folder1',
+    'folder2',
+    'folder3'
 ]
 
 export const FoldersPage = () => {
-
-    const [expandedFolders, setExpandedFolders] = React.useState<string[]>([]);
-
-    React.useEffect(() => {console.log(expandedFolders)}, [expandedFolders])
-
     const foldersContentTableHeader = () => {
         return [
             <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' />,
+            <span></span>,
             <Text size={14} weight='med'>Name</Text>,
             <Text size={14} weight='med'>Duration</Text>,
             <Text size={14} weight='med'>Created</Text>,
@@ -155,81 +117,180 @@ export const FoldersPage = () => {
                 <Text key={'foldersTableDuration' + row.name} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                 <Text key={'foldersTableCreated' + row.name} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
                 <Label key={'foldersTableStatus' + row.name} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/>,
+                <span></span>,
                 <Icon className='right mr2' key={'foldersTableActionButton' + row.name}>more_vert</Icon>
 
             ]
         })
     }
 
-    const handleFolderClick = () => {
-
+    const getNameFromFullPath = (fullPath: string): string => {
+        let split = fullPath.split('/').filter(t => t)
+        return split[split.length-1]
     }
 
-    const handleSubfolderClick = () => {
+    let children = folderTreeConst.map(path => ({
+        isExpanded: false,
+        fullPath: '/' + path + '/',
+        loadingStatus: 'not-loaded',
+        children: {}
+    }))
+    .reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
 
+    let rootNode: FolderTreeNode = {
+        isExpanded: true,
+        fullPath: '/',
+        loadingStatus: 'loaded',
+        children
     }
 
-    const handleIconClick = (folderName: string) => {
-        let newArray = expandedFolders
-        if(expandedFolders.includes(folderName)) {
-            newArray = expandedFolders.filter(name => {return name !== folderName})
-        } 
-        else {
-            newArray.push(folderName);
+    
+    /*
+<div key={key}>
+    <div onClick={() => {
+        // if(!isLoadingChildren && !folder.isExpanded && foldersTree.length === 0) {
+        //     loadChildren(folder.name)
+        //     return
+        // }
+        // if(isLoadingChildren) {
+        //     console.log('blocked double loading')
+        //     return
+        // }
+        // setFoldersTree(foldersTree.map((f, i) => {
+        //     if(i === key) {
+        //         return {
+        //             ...f,
+        //             isExpanded: true
+        //         }
+        //     }
+        //     return f
+        // }))
+    }}>{folder.name}</div>
+    {folder.isExpanded ? renderFoldersTree(folder.name) : null}
+</div>`
+
+    */
+
+    // const updateNode(root: FolderTreeNode, node: FolderTreeNode): FolderTreeNode {
+    //     // fullPath = /abc/def/hij
+    //     // [abc, def, hij]
+    //     let pathElements = node.fullPath.split('/').filter(f => f)
+    //     let parent = root
+    //     while(pathElements.length !== 0) {
+    //         let pathElement = pathElements.shift()
+    //         let child = parent.children[pathElement]
+    //         if(!child){
+    //             throw new Error('child ' + pathElement + ' doesnt exist on node at ' + parent.fullPath)
+    //         }
+    //         if(pathElements.length === 0) {
+    //             console.log('parent: ', pare)
+    //         }
+    //         parent = child
+    //     }
+    // }
+
+    const wait = async () => {
+        return new Promise((resolve) => setTimeout(resolve, 3000))
+    }
+
+    const makeNode = (parent: FolderTreeNode, name: string): FolderTreeNode => {
+        return {
+            children: {},
+            fullPath: parent.fullPath + '/' + name + '/',
+            isExpanded: false,
+            loadingStatus: 'not-loaded'
         }
-        setExpandedFolders(['Bunnies'])
     }
 
-    const renderFoldersTree = () => {
-        return (FoldersTree.map((folder, key) => {
-            return (
-                folder.subfolders ? 
-                    <FolderLink key={folder.name + key.toString()}>
-                        <FolderElements>
-                            <IconStyle 
-                                onClick={() => {handleIconClick(folder.name)}} 
-                                coloricon='gray-5'
-                            >
-                                {expandedFolders.includes(folder.name) ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-                            </IconStyle>
-                            <IconStyle coloricon='gray-7'>folder_open</IconStyle>
-                            <Text size={14} weight='reg' color='gray-3'>{folder.name}</Text>
-                        </FolderElements>
-                        {folder.subfolders.map((subfolder, key) => {                        
-                            if(expandedFolders.includes(folder.name)) {
-                                return (
-                                    <SubfolderElements key={subfolder.name + key.toString()} onClick={() => {handleSubfolderClick()}}>
-                                        <IconStyle coloricon='gray-5'>keyboard_arrow_down</IconStyle>
-                                        <IconStyle coloricon='gray-7'>folder_open</IconStyle>
-                                        <Text size={14} weight='reg' color='gray-3'>{subfolder.name}</Text>
-                                    </SubfolderElements>
-                                )
-                            }
-                            
-                        })
-                        }
-                    </FolderLink>
-                    :<FolderElements key={folder.name + key.toString()} onClick={() => {handleFolderClick()}}><IconStyle coloricon='gray-7'>folder_open</IconStyle><Text size={14} weight='reg' color='gray-3'>{folder.name}</Text></FolderElements>
-            )
-        }))
+
+    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
+
+    React.useEffect(() => {
+        console.log(foldersTree)
+    }, [foldersTree])
+
+    const loadChildren = async (node: FolderTreeNode) => {
+        node.loadingStatus = 'loading'
+        setFoldersTree({
+            ...foldersTree
+        })
+        // setIsLoadingChildren(true)
+        //call http
+        console.log('loading children of ', node.fullPath)
+        await wait()
+        let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        node.children = {
+            [name1]: makeNode(node, name1),
+            [name2]: makeNode(node, name2)
+        }
+        node.isExpanded = true
+        node.loadingStatus = 'loaded'
+        setFoldersTree({
+            ...foldersTree
+        })
+        console.log('loaded children of ', node.fullPath, name1, name2)
     }
+    // wait().then(() => {
+    //     console.log('setting folder tree')
+    //     foldersTree.children.folder1.isExpanded = true
+    //     setFoldersTree({
+    //         ...foldersTree
+    //     })
+    // })
+
+    const renderNode = (node: FolderTreeNode) => {
+        let depth = node.fullPath.split('/').length-1
+        return (
+            <>
+            <div style={{paddingLeft: depth*10}} onClick={() => {
+                if(node.loadingStatus === 'not-loaded' && !node.isExpanded) {
+                    loadChildren(node)
+                    return
+                }
+                if(node.loadingStatus === 'loading') {
+                    console.log('blocked double loading')
+                    return
+                }
+                node.isExpanded = !node.isExpanded
+                setFoldersTree({
+                    ...foldersTree
+                })
+            }}>
+                {getNameFromFullPath(node.fullPath)}
+                {node.loadingStatus === 'loading' ? <LoadingSpinner size='small' color='red'/> : null}
+            </div>
+            <div>
+                {
+                    node.isExpanded ? 
+                        Object.values(node.children).map((childNode) => renderNode(childNode)) 
+                        : null
+                }
+            </div>
+            </>
+        )     
+    }
+
 
     return (
         <div>
-            <HeadingSection>
-                <Button sizeButton='large' typeButton='secondary' buttonColor='blue'>
+            <div className='mb2'>
+                <Button sizeButton='small' typeButton='secondary' buttonColor='blue'>
                     New Folder
                 </Button>
-                <Button sizeButton='large' typeButton='secondary' buttonColor='blue'>
-                    Filter
-                </Button>
-            </HeadingSection>
+                
+                <FoldersFiltering />
+            </div>
             <ContentSection>
-                <FoldersTreeSection>
-                    {renderFoldersTree()}
+                <FoldersTreeSection className='col col-2'>
+                    {renderNode(foldersTree)}
                 </FoldersTreeSection>
-                <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
-            </ContentSection>        
+                <div className='col col-10 flex flex-column right'>
+                    <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
+                    <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                </div>
+            </ContentSection> 
+       
         </div>
     )
 }
