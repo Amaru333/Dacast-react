@@ -104,7 +104,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                 </>
                                 :
                                 <>
-                                <DropdownSingle id="vodThemeList" dropdownTitle="Theme List" 
+                                <DropdownSingle id="vodThemeList" dropdownTitle="Select Theme" 
                                     list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
                                     dropdownDefaultSelect={props.theme.selectedTheme.themeName} 
                                     callback={
@@ -166,8 +166,8 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                         }
                     </ControlsCard>
                     <div className="mt25">
-                        <Button onClick={() => handleThemeSave()}>save</Button>
-                        <Button typeButton="tertiary" onClick={() => location.href="/videos"}>cancel</Button>
+                        <Button onClick={() => handleThemeSave()}>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => location.href="/videos"}>Cancel</Button>
                     </div>
                 </div>
                 <PlayerSection className='col col-12 md-col-8 mr2'>

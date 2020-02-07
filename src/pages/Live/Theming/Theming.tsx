@@ -110,7 +110,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                             </>
                                 :
                             <>
-                            <DropdownSingle id="liveThemeList" dropdownTitle="Theme List" 
+                            <DropdownSingle id="liveThemeList" dropdownTitle="Select Theme" 
                                 list={props.themeList.themes.reduce((reduced: DropdownListType, item: ThemeOptions)=> {return {...reduced, [item.themeName]: false }},{})  }
                                 dropdownDefaultSelect={props.theme.selectedTheme.themeName} 
                                 callback={
@@ -121,7 +121,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                                     { selectedTheme.themeName === "Custom Theme" ?
                                         "Custom Settings override any Theme settings."
                                         :
-                                        "If you wish to create a new Theme or edit a Theme, go to Themeing."
+                                        "To create or edit themes, go to your Theme Settings."
                                     }
                                 </Bubble>
                                 <BorderStyle className="mt3" />
@@ -172,8 +172,8 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                         }
                     </ControlsCard>
                     <div className="mt25">
-                        <Button onClick={() => handleThemeSave()}>save</Button>
-                        <Button typeButton="tertiary" onClick={() => location.href="/livestreams"}>cancel</Button>
+                        <Button onClick={() => handleThemeSave()}>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => location.href="/livestreams"}>Cancel</Button>
                     </div>
                 </div>
                 <PlayerSection className='col col-12 md-col-8 mr2'>

@@ -113,7 +113,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <WidgetElement className={classItemFullWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
-                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => alert('Go to purchase page')}>Buy More</Button>
+                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => alert('Go to purchase page')}>Upgrade</Button>
                             </WidgetHeader>
                             <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
                             <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
@@ -138,7 +138,7 @@ const ProgressBarDashboard = (props: { percentage: number; widget: 'bandwidth' |
                 return <Text size={12} weight="reg" color="red"> Upgrade before you run out of {props.widget}</Text>
             } else {
                 if(props.overage && props.overage.enabled) {
-                    return <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg" color="red"> {props.overage.value}GB Overages enabled</Text><Icon>settings</Icon></div>
+                    return <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg" color="red"> {props.overage.value}GB Playback Protection enabled</Text><Icon>settings</Icon></div>
                 } else {
                     return <><Text size={12} weight="reg" color="red"> Upgrade before you run out of data</Text><Icon>settings</Icon></>
                 }

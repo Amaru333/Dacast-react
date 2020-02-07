@@ -40,7 +40,7 @@ export const PlaylistSubRoutes: Routes[] = [
     },
     {
         path: '/engagement',
-        name: 'engagement',
+        name: 'Engagement',
         component: advertisingPlaceholder
     },
     {

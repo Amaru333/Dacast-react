@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, UnlockSettingsIcon, DisabledSection, Header } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, UnlockSettingsIcon, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,6 +12,7 @@ import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Setting
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
 import { PlaylistSecurityContainerProps } from '../../../containers/Playlists/Security';
+import { Icon } from '@material-ui/core';
 
 export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
 
@@ -38,8 +39,10 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
         <div >
             {  !settingsEditable ? 
         
-                <Bubble type='info' className='my2'>          
-        This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
+                <Bubble type='info' className='my2'>
+                    <BubbleContent>         
+                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the <Icon>lock</Icon> Padlock to override these settings.
+                    </BubbleContent>
                 </Bubble> : null
             }
             <Card>
@@ -100,16 +103,16 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <BorderStyle className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt2" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 mb2 mr1' 
+                            className='col col-4 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.playlistSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -120,16 +123,16 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <BorderStyle className="p1" />
                 
                     <div>
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt2" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
                         <div className="col col-12 pb2">
                             <DropdownSingle 
-                                className="col col-3" 
+                                className="col col-3 my2" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.playlistSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

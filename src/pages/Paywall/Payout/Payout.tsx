@@ -19,9 +19,9 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const paymentMethodTableHeader = () => {
         return [
-            <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Payout Type</Text>,
+            <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Method</Text>,
             <Text key='paymentMethodTableHeaderlastUpdated' size={14} weight='med'>Last Updated</Text>,
-            <Button key='paymentMethodTableHeaderActionButton' className='right mr2' onClick={() => {setDisplayPaymentMethodRequest(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Payment Method Request</Button>
+            <Button key='paymentMethodTableHeaderActionButton' className='right mr2' onClick={() => {setDisplayPaymentMethodRequest(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
         ]
     }
 
@@ -42,7 +42,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const withdrawalTableHeader = () => {
         return [
-            <Text key='withdrawalTableHeaderRequestType' size={14} weight='med'>Request Type</Text>,
+            <Text key='withdrawalTableHeaderRequestType' size={14} weight='med'>Method</Text>,
             <Text key='withdrawalTableHeaderCurrency' size={14} weight='med'>Currency</Text>,
             <Text key='withdrawalTableHeaderAmount' size={14} weight='med'>Amount</Text>,
             <Text key='withdrawalTableHeaderRequestDate' size={14} weight='med'>Request Date (UTC)</Text>,
@@ -75,12 +75,12 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         :
         <div>
             <Card>
-                <Text  size={20} weight='reg'>Payment Request Method</Text>
-                <Text className='py2' size={14} weight='reg'>You can add all the ways for us to pay you.</Text>
+                <Text  size={20} weight='reg'>Withdrawl Method</Text>
+                <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Table className='my2' id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
                 <BorderStyle className='py2' />
-                <Text className='py2' size={20} weight='reg'>Withdrawal Requests</Text>
-                <Text className='py2' size={14} weight='reg'>You can add all the ways for us to pay you.</Text>
+                <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
+                <Text className='py2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
                 <Table className='my2' id='payoutWithdrawalTable' header={withdrawalTableHeader()} body={withdrawalTableBody()} />
             </Card>
             <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>

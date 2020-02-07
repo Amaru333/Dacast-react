@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledCard, UnlockSettingsIcon, DisabledSection, Header } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, UnlockSettingsIcon, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,6 +12,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
+import { Icon } from '@material-ui/core';
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -47,8 +48,10 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
         <div >
             {  !settingsEditable ? 
         
-                <Bubble type='info' className='my2'>          
-        This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
+                <Bubble type='info' className='my2'>
+                    <BubbleContent>         
+                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the <Icon>lock</Icon> Padlock to override these settings.
+                    </BubbleContent>         
                 </Bubble> : null
             }
             <Card>
@@ -66,24 +69,14 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
         
                 <DisabledSection settingsEditable={settingsEditable}>
                 
-                    <Toggle 
-                        id="privateVideosToggle" 
-                        label='Private Video' 
-                        defaultChecked={selectedSettings.privateVideo} 
-                        onChange={() => setSelectedSettings({...selectedSettings, privateVideo: !selectedSettings.privateVideo})}
-                    />
-                    <ToggleTextInfo>
-                        <Text size={14} weight='reg' color='gray-1'>This video won’t be displayed publicy on your website </Text>
-                    </ToggleTextInfo>
-
                     <div className='col col-12 mb1'>
                         <Toggle 
                             id="passwordProtectedVideosToggle" 
-                            label='Password Protected Videos' 
+                            label='Password Protection' 
                             onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
                         />
                         <ToggleTextInfo>
-                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
+                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
                         </ToggleTextInfo>
                         { togglePasswordProtectedVideo ? 
                             <div className='col col-12'>
@@ -200,16 +193,16 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <BorderStyle className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt2" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 mb2 mr1' 
+                            className='col col-4 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -220,14 +213,14 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <BorderStyle className="p1" />
                 
                     <div>
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt2" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
-                        <div className="col col-12 pb2">
+                        <div className="col col-12 py2">
                             <DropdownSingle 
                                 className="col col-3" 
                                 id="availableEnd" 

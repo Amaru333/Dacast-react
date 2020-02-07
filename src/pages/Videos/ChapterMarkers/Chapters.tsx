@@ -114,7 +114,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                     <ButtonsArea className='my2'>
                         <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
                         <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
-                        <Button onClick={() => {setSelectedItem(null);setMarker(player.getPlayerInstance().currentTime); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Market</Button>
+                        <Button onClick={() => {setSelectedItem(null);setMarker(player.getPlayerInstance().currentTime); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Marker</Button>
                     </ButtonsArea>
                 </PlayerSection>
                 <TableContainer className='col col-12 md-col-6'>

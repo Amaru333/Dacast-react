@@ -34,3 +34,8 @@ align-items: center;
 export const UnlockSettingsIcon = styled(Icon)`
 cursor: pointer;
 `
+
+export const BubbleContent = styled.div`
+display: flex;
+align-items: center;
+`

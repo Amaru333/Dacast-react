@@ -112,7 +112,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Divider className="col col-12" />
                 <div className="thumbnail col col-12">
                     <Text className="col col-12" size={20} weight="med">Images</Text>
-                    <Text className="col col-12 pt1" size={14} weight="reg">Some text about the images blah blah blah splashscreen thumbnail poster</Text>
+                    <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
                     <ImagesContainer className="col col-12 pt2 flex">
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
@@ -135,7 +135,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail} /></ImageSection>
                                 <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
-                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
                         <ImageContainer className="">
                             <div className="flex flex-center">
@@ -145,7 +145,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ImageSection> <SelectedImage src={props.playlistDetails.poster} /></ImageSection>
                                 <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
-                            <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF </Text>
+                            <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
 
                     </ImagesContainer>
