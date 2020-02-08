@@ -9,6 +9,8 @@ import { Table } from '../../components/Table/Table';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { FoldersFiltering } from './FoldersFiltering';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { Modal } from '../../components/Modal/Modal';
+import { NewFolderModal } from './NewFolderModal';
 
 export interface FolderAsset {
     id: string;
@@ -94,6 +96,9 @@ const folderTreeConst = [
 ]
 
 export const FoldersPage = () => {
+
+    const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+
     const foldersContentTableHeader = () => {
         return [
             <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' />,
@@ -144,51 +149,6 @@ export const FoldersPage = () => {
         children
     }
 
-    
-    /*
-<div key={key}>
-    <div onClick={() => {
-        // if(!isLoadingChildren && !folder.isExpanded && foldersTree.length === 0) {
-        //     loadChildren(folder.name)
-        //     return
-        // }
-        // if(isLoadingChildren) {
-        //     console.log('blocked double loading')
-        //     return
-        // }
-        // setFoldersTree(foldersTree.map((f, i) => {
-        //     if(i === key) {
-        //         return {
-        //             ...f,
-        //             isExpanded: true
-        //         }
-        //     }
-        //     return f
-        // }))
-    }}>{folder.name}</div>
-    {folder.isExpanded ? renderFoldersTree(folder.name) : null}
-</div>`
-
-    */
-
-    // const updateNode(root: FolderTreeNode, node: FolderTreeNode): FolderTreeNode {
-    //     // fullPath = /abc/def/hij
-    //     // [abc, def, hij]
-    //     let pathElements = node.fullPath.split('/').filter(f => f)
-    //     let parent = root
-    //     while(pathElements.length !== 0) {
-    //         let pathElement = pathElements.shift()
-    //         let child = parent.children[pathElement]
-    //         if(!child){
-    //             throw new Error('child ' + pathElement + ' doesnt exist on node at ' + parent.fullPath)
-    //         }
-    //         if(pathElements.length === 0) {
-    //             console.log('parent: ', pare)
-    //         }
-    //         parent = child
-    //     }
-    // }
-
     const wait = async () => {
         return new Promise((resolve) => setTimeout(resolve, 3000))
     }
@@ -231,13 +191,6 @@ export const FoldersPage = () => {
         })
         console.log('loaded children of ', node.fullPath, name1, name2)
     }
-    // wait().then(() => {
-    //     console.log('setting folder tree')
-    //     foldersTree.children.folder1.isExpanded = true
-    //     setFoldersTree({
-    //         ...foldersTree
-    //     })
-    // })
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length-1
@@ -275,7 +228,7 @@ export const FoldersPage = () => {
     return (
         <div>
             <div className='mb2'>
-                <Button sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                <Button onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
                     New Folder
                 </Button>
                 
@@ -290,7 +243,9 @@ export const FoldersPage = () => {
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 
-       
+            <Modal hasClose={false} size='small' title='New Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+                <NewFolderModal toggle={setNewFolderModalOpened} />
+            </Modal>
         </div>
     )
 }
