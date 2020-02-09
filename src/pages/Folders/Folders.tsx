@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoldersTreeSection, HeadingSection, ContentSection, FolderLink, FolderElements, IconStyle, SubfolderElements } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, IconStyle, FolderRow } from './FoldersStyle';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
@@ -11,6 +11,7 @@ import { FoldersFiltering } from './FoldersFiltering';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { Modal } from '../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
+import { MoveItemModal } from './MoveItemsModal';
 
 export interface FolderAsset {
     id: string;
@@ -23,7 +24,7 @@ export interface FolderAsset {
 
 }
 
-interface FolderTreeNode {
+export interface FolderTreeNode {
     fullPath: string;
     loadingStatus: 'not-loaded' | 'loading' | 'loaded';
     children: {
@@ -43,7 +44,7 @@ const TableData: FolderAsset[] = [
         contentType: 'playlist'
     },
     {
-        id: '11',
+        id: '12',
         name: 'Video 1',
         duration: '03:12:12',
         created: 'Dec 02, 19',
@@ -52,7 +53,7 @@ const TableData: FolderAsset[] = [
         contentType: 'playlist'
     },    
     {
-        id: '11',
+        id: '13',
         name: 'Playlist 2',
         duration: '03:12:12',
         created: 'Nov 05, 19',
@@ -61,7 +62,7 @@ const TableData: FolderAsset[] = [
         contentType: 'playlist'
     },
     {
-        id: '11',
+        id: '14',
         name: 'Folder 1',
         duration: null,
         created: 'Dec 22, 19',
@@ -70,7 +71,7 @@ const TableData: FolderAsset[] = [
         contentType: 'playlist'
     },
     {
-        id: '11',
+        id: '15',
         name: 'Bibendum',
         duration: '03:12:12',
         created: 'Nov 02, 19',
@@ -79,7 +80,7 @@ const TableData: FolderAsset[] = [
         contentType: 'playlist'
     },
     {
-        id: '11',
+        id: '16',
         name: 'Bibendum',
         duration: '03:12:12',
         created: 'Nov 02, 19',
@@ -98,6 +99,10 @@ const folderTreeConst = [
 export const FoldersPage = () => {
 
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+    const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
+    const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
+
+    React.useEffect(() => {console.log(selectedFolder)}, [selectedFolder])
 
     const foldersContentTableHeader = () => {
         return [
@@ -116,12 +121,12 @@ export const FoldersPage = () => {
 
         return TableData.map((row) => {
             return [
-                <InputCheckbox id={row.name + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.name} />,
-                <Icon key={'foldersTableIcon' + row.name}>folder_open</Icon>,
-                <Text key={'foldersTableName' + row.name} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
-                <Text key={'foldersTableDuration' + row.name} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                <Text key={'foldersTableCreated' + row.name} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
-                <Label key={'foldersTableStatus' + row.name} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/>,
+                <InputCheckbox id={row.id + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} />,
+                <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + row.id}>folder_open</IconStyle>,
+                <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
+                <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
+                <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
+                <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/>,
                 <span></span>,
                 <Icon className='right mr2' key={'foldersTableActionButton' + row.name}>more_vert</Icon>
 
@@ -189,14 +194,15 @@ export const FoldersPage = () => {
         setFoldersTree({
             ...foldersTree
         })
-        console.log('loaded children of ', node.fullPath, name1, name2)
+        //console.log('loaded children of ', node.fullPath, name1, name2)
     }
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length-1
         return (
             <>
-            <div style={{paddingLeft: depth*10}} onClick={() => {
+            <FolderRow isSelected={node.fullPath === selectedFolder} style={{paddingLeft: depth*10}} className='p1 flex items-center' onClick={() => {
+                setSelectedFolder(node.fullPath);
                 if(node.loadingStatus === 'not-loaded' && !node.isExpanded) {
                     loadChildren(node)
                     return
@@ -210,9 +216,10 @@ export const FoldersPage = () => {
                     ...foldersTree
                 })
             }}>
+                <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
                 {getNameFromFullPath(node.fullPath)}
                 {node.loadingStatus === 'loading' ? <LoadingSpinner size='small' color='red'/> : null}
-            </div>
+            </FolderRow>
             <div>
                 {
                     node.isExpanded ? 
@@ -227,10 +234,13 @@ export const FoldersPage = () => {
 
     return (
         <div>
-            <div className='mb2'>
-                <Button onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
-                    New Folder
-                </Button>
+            <div className='mb2 col col-12'>
+                <div className='col col-1'>
+                    <Button  onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                        New Folder
+                    </Button>
+                </div>
+
                 
                 <FoldersFiltering />
             </div>
@@ -242,9 +252,17 @@ export const FoldersPage = () => {
                     <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
+                <Button onClick={() => {setMoveItemsModalOpened(true)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Move</Button>
             </ContentSection> 
             <Modal hasClose={false} size='small' title='New Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
+            </Modal>
+            <Modal hasClose={false} title={'Move items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+                {
+                    moveItemsModalOpened ?
+                        <MoveItemModal folders={foldersTree} initialSelectedFolder={selectedFolder} getChildren={() => {}} toggle={setMoveItemsModalOpened}  />
+                        : null
+                }
             </Modal>
         </div>
     )
