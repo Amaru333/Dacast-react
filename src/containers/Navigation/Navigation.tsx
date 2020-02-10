@@ -64,24 +64,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setAddDropdownIsOpened(!addDropdownIsOpened)
     });
 
-    const renderAddList = () => {
-        return (
-            AddItemsList.map((name) => {
-                return (
-                            <DropdownItem 
-                                isSingle
-                                key={props.id + '_' + name} 
-                                id={props.id + '_' + name} 
-                                className="mt1"
-                                isSelected={selectedAddDropdownItem === name} 
-                                onClick={() => handleClick(name)}> 
-                                <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
-                            </DropdownItem>
-                )                
-            })
-        )
-    }
-
     const UserAccountPrivileges: UserAccountPrivileges = {
         standard: true,
         compatible: true,
@@ -93,21 +75,38 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
             case "Vod":
-               return location.href="/videos"
+                return location.href="/videos"
             case "Stream":
                 setAddDropdownIsOpened(false)
                 if (UserAccountPrivileges.premium === false && UserAccountPrivileges.compatible === false && UserAccountPrivileges.rewind === false ) {
-                return location.href="/livestreams"
-              } else {
-                return setAddStreamModalOpen(true)
-              }
+                    return location.href="/livestreams"
+                } else {
+                    return setAddStreamModalOpen(true)
+                }
             case "Playlist":
                 return location.href="/playlists"
             default:
-               return
+                return
         }
     }
-    //
+
+    const renderAddList = () => {
+        return (
+            AddItemsList.map((name) => {
+                return (
+                    <DropdownItem 
+                        isSingle
+                        key={props.id + '_' + name} 
+                        id={props.id + '_' + name} 
+                        className="mt1"
+                        isSelected={selectedAddDropdownItem === name} 
+                        onClick={() => handleClick(name)}> 
+                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                    </DropdownItem>
+                )                
+            })
+        )
+    }
 
     const renderMenu = () => {
 
@@ -169,12 +168,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         <ContainerStyle isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
             <ImageStyle className="mx-auto" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
-                <div>
-                    <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
-                    <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef}>
-                        {renderAddList()}
-                    </DropdownList>
-                </div>
+            <div>
+                <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
+                <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef}>
+                    {renderAddList()}
+                </DropdownList>
+            </div>
                 
            
            

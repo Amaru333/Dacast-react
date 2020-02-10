@@ -49,7 +49,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
             {  !settingsEditable ? 
         
                 <Bubble type='info' className='my2'>
-                   <BubbleContent>         
+                    <BubbleContent>         
                         These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the <Icon>lock</Icon> Padlock to override these settings.
                     </BubbleContent>     
                 </Bubble> : null

@@ -50,7 +50,7 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean; priv
 
                     { props.privileges.premium ? 
                         <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
-                           <StreamTypeSelectorContents>
+                            <StreamTypeSelectorContents>
                                 <Icon className="mb2">public</Icon>
                                 <Text size={16} weight="med">Premium</Text>
                                 <Text className="mt2" size={14}>Standard + China</Text>

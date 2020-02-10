@@ -32,13 +32,13 @@ export interface Routes {
 }
 
 export interface UserAccountPrivileges {
-    standard: boolean,
-    compatible: boolean,
-    premium: boolean,
-    rewind: boolean
+    standard: boolean;
+    compatible: boolean;
+    premium: boolean;
+    rewind: boolean;
 }
 
 export interface StreamSetupOptions {
-    streamType: string,
-    rewind?: boolean
+    streamType: string;
+    rewind?: boolean;
 }
