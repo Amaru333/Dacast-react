@@ -4,58 +4,35 @@ import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheck
 import { IconStyle } from './FoldersStyle';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
+import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 
 
 
-export const MoveItemModal = (props: {folders: FolderTreeNode, initialSelectedFolder: string, getChildren: Function; toggle: Function}) => {
+export const MoveItemModal = (props: {initialSelectedFolder: string, findNode: Function; toggle: Function}) => {
 
-    const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
-    const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null)
-    React.useEffect(() => {
-        setSelectedModalFolder(props.initialSelectedFolder);
-        findNode(props.folders)
-    }, [props.initialSelectedFolder])
-
-    React.useEffect(() => {}, [currentNode])
-
-    const findNode = (node: FolderTreeNode) => {
-        if(node !== null) {
-            console.log('Trying to find node' , selectedModalFolder)
-            if(node.fullPath === selectedModalFolder) {
-                setCurrentNode(node);
-                return
-            }
-            else {
-                console.log('Trying to find child node', node)
-               const splitNodePath = node.fullPath.split('/');
-               const splitSelectedPath = selectedModalFolder.split('/');
-               console.log('current node path', splitNodePath)
-               console.log('desired node path', splitSelectedPath)
-               if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
-                   Object.values(node.children).map((childNode) => findNode(childNode))
-               }
-               else {
-                   if(node.fullPath === '/') {
-                    Object.values(node.children).map((childNode) => findNode(childNode))
-                   }
-                   else {
-                        return
-                   }
-
-               }
-            }
+    const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(null);
+    const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
+    const [checkedFolders, setCheckedFolders] = React.useState<string[]>(['']);
+    React.useEffect( () => {
+        if(!selectedModalFolder) {
+            setSelectedModalFolder(props.initialSelectedFolder);
         }
+        setCurrentNode(props.findNode(selectedModalFolder))
 
-    }
+    }, [props])
 
-    const renderModalNode = (node: FolderTreeNode) => {
-            return node ? Object.values(node.children).map((childNode) => {
+    React.useEffect(() => {
+        setCurrentNode(props.findNode(selectedModalFolder))
+    }, [selectedModalFolder])
+
+    const renderModalNode = () => {
+            return currentNode ? Object.values(currentNode.children).map((childNode) => {
                 return (
                     <div key={childNode.fullPath} className='col col-12'>
                         <InputCheckbox id={childNode.fullPath + 'Checkbox'} className='col col-1'/>
                         <IconStyle coloricon='gray-7'>folder_open</IconStyle>
                         <Text size={14} weight='reg'>{childNode.fullPath}</Text>
-                        <IconStyle coloricon='gray-7'>keyboard_arrow_right</IconStyle>
+                        <IconStyle onClick={() => setSelectedModalFolder(childNode.fullPath + '*')} coloricon='gray-7'>keyboard_arrow_right</IconStyle>
                     </div>
     
                 )
@@ -65,7 +42,12 @@ export const MoveItemModal = (props: {folders: FolderTreeNode, initialSelectedFo
     }
     return (
         <div>
-            {renderModalNode(currentNode)}
+            {renderModalNode()}
+            <InputTags 
+                className='col col-12 py1' 
+                defaultTags={checkedFolders} 
+
+            />
             <div>
                 <Button className='mr2'typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>

@@ -100,6 +100,7 @@ export const FoldersPage = () => {
 
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
+    const [foundFolder, setFoundFolder] = React.useState<FolderTreeNode>(null);
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
 
     React.useEffect(() => {console.log(selectedFolder)}, [selectedFolder])
@@ -174,6 +175,68 @@ export const FoldersPage = () => {
         console.log(foldersTree)
     }, [foldersTree])
 
+    const getChild = async (node: FolderTreeNode) => {
+        await wait();
+        let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        node.children = {
+            [name1]: makeNode(node, name1),
+            [name2]: makeNode(node, name2)
+        }
+        console.log('fetched new child', node.children)
+        return node.children;
+    }
+
+    const findNodeTest = (searchedFolder: string) => {
+        findNode(foldersTree, searchedFolder);
+        return foundFolder;
+    }
+
+    const findNode = async (node: FolderTreeNode, searchedFolder: string) => {
+        if(node !== null) {
+            console.log('Trying to find node' , searchedFolder)
+            if(node.fullPath === searchedFolder) {
+                console.log('returning node ', node)
+                setFoundFolder(node);
+                return node;
+                
+            }
+            else {
+                console.log('Trying to find child node', node)
+               let splitNodePath = node.fullPath.split('/');
+               if(!searchedFolder)  {searchedFolder = '/';}
+               const splitSelectedPath =  searchedFolder.split('/');
+               console.log('desired node path', splitSelectedPath)
+               if(splitNodePath[splitNodePath.length - 1] === "") {splitNodePath.pop()}
+               console.log('current node path', splitNodePath)
+               console.log(splitNodePath.every((name, index) => name === splitSelectedPath[index]))
+               if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
+                   debugger;
+                   if(Object.entries(node.children).length !== 0) {
+                    Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
+                   }
+                   else {
+                       console.log('need to fetch child');
+                       node.children = await getChild(node);
+                       setFoldersTree({...foldersTree})
+                       setFoundFolder(node);
+                       return node;
+                   }
+               }
+               else {
+                   if(node.fullPath === '/') {
+                    Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
+                   }
+                   else {
+                        return
+                   }
+
+               }
+            }
+        }
+
+    }
+
     const loadChildren = async (node: FolderTreeNode) => {
         node.loadingStatus = 'loading'
         setFoldersTree({
@@ -182,13 +245,7 @@ export const FoldersPage = () => {
         // setIsLoadingChildren(true)
         //call http
         console.log('loading children of ', node.fullPath)
-        await wait()
-        let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        node.children = {
-            [name1]: makeNode(node, name1),
-            [name2]: makeNode(node, name2)
-        }
+        node.children = await getChild(node);
         node.isExpanded = true
         node.loadingStatus = 'loaded'
         setFoldersTree({
@@ -260,7 +317,7 @@ export const FoldersPage = () => {
             <Modal hasClose={false} title={'Move items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
-                        <MoveItemModal folders={foldersTree} initialSelectedFolder={selectedFolder} getChildren={() => {}} toggle={setMoveItemsModalOpened}  />
+                        <MoveItemModal initialSelectedFolder={selectedFolder} findNode={findNodeTest} toggle={setMoveItemsModalOpened}  />
                         : null
                 }
             </Modal>
