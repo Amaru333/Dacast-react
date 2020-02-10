@@ -2,10 +2,13 @@ import * as React from "react";
 import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
+import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle, TextStyle} from './NavigationStyle'
+import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
+import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../public/assets/logo.png');
 const logoSmall = require('../../../public/assets/logo_small.png');
+import { useOutsideAlerter } from '../../utils/utils';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -31,6 +34,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
     const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem());
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
+    const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
+    const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+    const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
@@ -46,6 +53,61 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         }
 
     }
+
+    const AddItemsList = ["Vod", "Stream", "Playlist"]
+
+    
+
+    //Funtions for Add button dropdown
+
+    useOutsideAlerter(addDropdownListRef, () => {
+        setAddDropdownIsOpened(!addDropdownIsOpened)
+    });
+
+    const renderAddList = () => {
+        return (
+            AddItemsList.map((name) => {
+                return (
+                            <DropdownItem 
+                                isSingle
+                                key={props.id + '_' + name} 
+                                id={props.id + '_' + name} 
+                                className="mt1"
+                                isSelected={selectedAddDropdownItem === name} 
+                                onClick={() => handleClick(name)}> 
+                                <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                            </DropdownItem>
+                )                
+            })
+        )
+    }
+
+    const UserAccountPrivileges: UserAccountPrivileges = {
+        standard: true,
+        compatible: true,
+        premium: true,
+        rewind: true
+    }
+
+    const handleClick = (name: string) => {
+        setSelectedAddDropdownItem(name);
+        switch (name) {
+            case "Vod":
+               return location.href="/videos"
+            case "Stream":
+                setAddDropdownIsOpened(false)
+                if (UserAccountPrivileges.premium === false && UserAccountPrivileges.compatible === false && UserAccountPrivileges.rewind === false ) {
+                return location.href="/livestreams"
+              } else {
+                return setAddStreamModalOpen(true)
+              }
+            case "Playlist":
+                return location.href="/playlists"
+            default:
+               return
+        }
+    }
+    //
 
     const renderMenu = () => {
 
@@ -107,11 +169,20 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         <ContainerStyle isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
             <ImageStyle className="mx-auto" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
-            <ButtonMenuStyle className="mx-auto" sizeButton="large" typeButton="primary" >{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
+                <div>
+                    <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
+                    <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef}>
+                        {renderAddList()}
+                    </DropdownList>
+                </div>
+                
+           
+           
             <SectionStyle>
                 {renderMenu()}
             </SectionStyle>
             <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
+            <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
         </ContainerStyle>
         </>
     )

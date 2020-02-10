@@ -30,3 +30,15 @@ export interface Routes {
     component?: any;
     slug?: Routes[];
 }
+
+export interface UserAccountPrivileges {
+    standard: boolean,
+    compatible: boolean,
+    premium: boolean,
+    rewind: boolean
+}
+
+export interface StreamSetupOptions {
+    streamType: string,
+    rewind?: boolean
+}

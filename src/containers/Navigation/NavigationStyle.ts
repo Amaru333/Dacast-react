@@ -104,9 +104,13 @@ export const BreakStyle = styled.hr`
     margin-bottom: 15px;
     margin-top:0;
 `;
-export const ButtonMenuStyle = styled(Button)`
+export const ButtonMenuStyle = styled(Button)<{ menuOpen: boolean }>`
     width: 90%;
     margin-bottom: 15px;
+    margin-left: 11px;
+    ${props => !props.menuOpen && css`
+        margin-left: 3px;
+    `}
 `;
 
 export const BurgerStyle = styled.div`
@@ -159,10 +163,38 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
     }
 `
 
-export const TextStyle = styled(Text) <{selected: boolean}>`
+export const TextStyle = styled(Text)<{selected: boolean}>`
     ${props => props.selected && css`
         color: ${props.theme.colors['dark-violet']};
         margin-left: -4px;
     `}
+`
+
+export const StreamTypeSelectorContainer = styled.div`
+`
+
+export const StreamTypeSelector = styled.div<{selected: boolean}>`
+    height: 144px;
+    cursor: pointer;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid ${props => props.theme.colors["gray-7"]};
+    background-color: ${props => props.theme.colors["gray-10"]};
+    & + & {
+        margin-left: 16px;
+    }
+    ${props => props.selected && css`
+        background-color: ${props => props.theme.colors["violet10"]};
+        border: 1px solid ${props => props.theme.colors["dark-violet"]};
+    `}
+`
+export const StreamTypeSelectorContents = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 30px 35px 24px 35px;
+    justify-content: space-between;
+    align-items: center;
 
 `
