@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactHTMLElement } from 'react';
 import { BlockPicker, Color } from 'react-color';
 import { Text } from '../Typography/Text';
 import { ColorPickerHeader, SelectedColor, ColorPickerBlock } from './ColorPickerStyle';
 import { Icon } from '@material-ui/core';
 import { useOutsideAlerter } from '../../utils/utils';
 
-export const ColorPicker = (props: {defaultColor: string; callback?: Function}) => {
+export const ColorPicker = (props: {defaultColor: string; callback?: Function; className?: string}) => {
 
     const [selectedColor, setSelectedColor] = React.useState<Color>(props.defaultColor ? props.defaultColor : '#000000');
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
@@ -24,7 +24,7 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function}) 
 
     return (
         <div>
-            <ColorPickerHeader className='mb2' onClick={() => setIsOpened(!isOpened)}>
+            <ColorPickerHeader className={props.className + ' mb2' } onClick={() => setIsOpened(!isOpened)}>
                 <SelectedColor selectedColor={selectedColor.toString()} />
                 <Text size={14} weight='med'>{selectedColor}</Text>
                 <div className='right mr2'><Icon>{isOpened ?'arrow_drop_up' : 'arrow_drop_down'}</Icon></div>

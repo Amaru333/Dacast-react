@@ -14,7 +14,7 @@
     "build-storybook": "build-storybook -c .storybook -o dist/storybook/",
     "clean": "rm -rf dist; rm -rf node_modules; npm install;",
     "deploy-prod": "npm run clean; npm run build; aws s3 sync dist/ s3://my.unified-preprod.dacast.com --acl public-read --delete",
-    "deploy-preprod": "rm -rf /dist; npm run build-preprod; npm run build-storybook; aws s3 sync dist/ s3://my.unified-preprod.dacast.com --acl public-read --delete"
+    "deploy-preprod": "rm -rf /dist; npm run build-preprod; aws s3 sync dist/ s3://my.unified-preprod.dacast.com --acl public-read --delete"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +42,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
