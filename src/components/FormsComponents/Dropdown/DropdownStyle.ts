@@ -175,4 +175,5 @@ export const ButtonContainer = styled.div<{isOpened: boolean}>`
     background-color: white;
     border: 1px solid ${props => props.theme.colors['gray-7']};
     cursor: pointer;
+    height: 22px;
 `

@@ -34,14 +34,14 @@ export const Pagination = (props: PaginationProps) => {
     return (    
         <div className='flex my2'>
             <div className=' flex items-baseline flex-auto'>
-                <Text size={16} weight='reg'>Showing </Text>
+                <Text size={14} weight='reg'>Showing </Text>
                 <DropdownButton
                     className='mx1'
                     id='paginationDropdown'
                     list={props.displayedItemsOptions.map(item => item.toString())}
                     callback={(value: string) => {setDisplayedOptions(parseInt(value))}}
                 />
-                <Text size={16} weight='reg'>of {props.totalResults} results</Text>
+                <Text size={14} weight='reg'>of {props.totalResults} results</Text>
             </div>
             <div className='flex items-baseline'>
                 <IconContainer disabled={currentPage === 1}><Icon onClick={currentPage !== 1 ? () => {setCurrentPage(1)} : null}>first_page</Icon></IconContainer>
