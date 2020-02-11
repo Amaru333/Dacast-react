@@ -75,7 +75,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         :
         <div>
             <Card>
-                <Text  size={20} weight='reg'>Withdrawl Method</Text>
+                <Text  size={20} weight='reg'>Withdrawal Method</Text>
                 <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Table className='my2' id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
                 <BorderStyle className='py2' />

@@ -119,8 +119,8 @@ export const AppRoutes: Routes[] = [
                 component: Transactions
             },
             {
-                path: '/paywall/withdrawls',
-                name: 'Withdrawls',
+                path: '/paywall/withdrawals',
+                name: 'Withdrawals',
                 component: Payout
             },
             {
