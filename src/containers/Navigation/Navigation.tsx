@@ -170,7 +170,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             <BreakStyle />
             <div>
                 <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
-                <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef}>
+                <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
                     {renderAddList()}
                 </DropdownList>
             </div>
