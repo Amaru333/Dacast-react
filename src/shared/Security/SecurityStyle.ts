@@ -7,7 +7,7 @@ export const TextStyle = styled.span<{}>`
     `
 
 export const ToggleTextInfo = styled.p<{}>`
-    margin-top: 0px;
+    margin-top: 8px;
     margin-block-end: 8px;
     display: inline-flex;
 `

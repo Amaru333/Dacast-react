@@ -209,7 +209,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </div>
                 <Toggle onChange={ () => setCurrentStateGa( { enabled: !currentStateGa.enabled, key: currentStateGa.key } ) } checked={currentStateGa.enabled} defaultChecked={props.infos.ga.enabled}  label="Google Analytics" className="col col-12 mb2" />
                 {currentStateGa.enabled ? 
-                    <Input value={currentStateGa.key} onChange={ e => setCurrentStateGa( {enabled: currentStateGa.enabled, key: e.target.value } ) } defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2" label="Key" placeholder="UA-xxxxxx"  />
+                    <Input value={currentStateGa.key} onChange={ e => setCurrentStateGa( {enabled: currentStateGa.enabled, key: e.target.value } ) } defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2 mt1" label="Key" placeholder="UA-xxxxxx"  />
                     : null
                 }
             </Card>

@@ -21,7 +21,9 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <Text size={20} weight='med'>Paywall Settings</Text>
                 <div className='my2'>
                     <Toggle  id='creditCardPurchasesToggle' label="Credit Card Purchases" defaultChecked={props.paywallSettingsInfos.creditCardPurchases} onChange={() => setSettingsInfos({...settingsInfos, creditCardPurchases: !settingsInfos.creditCardPurchases})} />
-                    <Text size={14} weight='reg'>Videos won't be displayed publicy on your website</Text>  
+                    <div className="mt1">
+                        <Text size={14} weight='reg'>Videos won't be displayed publicy on your website</Text>  
+                    </div>
                 </div>
                 <div className='my2'>
                     <Toggle id='paypalPurchasesToggle' label='PayPal Purchases' defaultChecked={props.paywallSettingsInfos.paypalPurchases} onChange={() => setSettingsInfos({...settingsInfos, paypalPurchases: !settingsInfos.paypalPurchases})} />

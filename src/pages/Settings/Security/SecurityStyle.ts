@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ToggleTextInfo = styled.div<{}>`
+    margin-top: 8px;
     margin-block-end: 8px;
     display: inline-flex;
 `
