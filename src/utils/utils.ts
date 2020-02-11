@@ -81,3 +81,8 @@ export function useMedia(query: string) {
   
     return matches;
 }
+
+export const getNameFromFullPath = (fullPath: string): string => {
+    let split = fullPath.split('/').filter(t => t)
+    return split[split.length-1]
+}

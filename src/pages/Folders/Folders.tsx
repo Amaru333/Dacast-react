@@ -12,6 +12,7 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 import { Modal } from '../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
+import { getNameFromFullPath } from '../../utils/utils';
 
 export interface FolderAsset {
     id: string;
@@ -135,11 +136,6 @@ export const FoldersPage = () => {
         })
     }
 
-    const getNameFromFullPath = (fullPath: string): string => {
-        let split = fullPath.split('/').filter(t => t)
-        return split[split.length-1]
-    }
-
     let children = folderTreeConst.map(path => ({
         isExpanded: false,
         fullPath: '/' + path + '/',
@@ -162,7 +158,7 @@ export const FoldersPage = () => {
     const makeNode = (parent: FolderTreeNode, name: string): FolderTreeNode => {
         return {
             children: {},
-            fullPath: parent.fullPath + '/' + name + '/',
+            fullPath: parent.fullPath + name + '/',
             isExpanded: false,
             loadingStatus: 'not-loaded'
         }
@@ -211,7 +207,7 @@ export const FoldersPage = () => {
                console.log('current node path', splitNodePath)
                console.log(splitNodePath.every((name, index) => name === splitSelectedPath[index]))
                if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
-                   debugger;
+
                    if(Object.entries(node.children).length !== 0) {
                     Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
                    }

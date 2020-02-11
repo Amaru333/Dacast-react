@@ -22,3 +22,7 @@ export const ContentSection = styled.div`
 export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
     color: ${props => props.theme.colors[props.coloricon]};
 `
+
+export const ModalItemFolderRow = styled.div`
+    border: 1px solid ${props => props.theme.colors['gray-7']}
+`
