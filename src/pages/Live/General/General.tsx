@@ -64,11 +64,11 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
             <Button onClick={() => setEncoderModalOpen(true)} sizeButton="xs" typeButton="secondary" className="right mb25">Encoder Setup</Button>
             <Card className="col-12 clearfix">
                 <div className="details col col-12">
-                    <header className="flex justify-between">
+                    <header className="flex justify-between mb2">
                         <Text size={20} weight="med">Details</Text>
                     </header>
                     <Toggle
-                        className="col col-12 mt2 pb2"
+                        className="col col-12 pb2"
                         defaultChecked={newLiveDetails.streamOnline}
                         onChange={() => setNewLiveDetails({...newLiveDetails, streamOnline: !newLiveDetails.streamOnline})}
                         label="Live Stream Online"
@@ -165,11 +165,12 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </ImagesContainer>
                 </div>
                 <Divider className="col col-12" />
+
                 <div className="settings col col-12">
-                    <Text className="col col-12" size={20} weight="med">Settings</Text>
+                    <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
                         <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
-                        <ToggleTextInfo>
+                        <ToggleTextInfo className="mt1">
                             <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                         </ToggleTextInfo>
                         <div>
@@ -178,7 +179,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
                                 defaultChecked={newLiveDetails.countdown.enabled}
                             ></Toggle>
-                            <ToggleTextInfo>
+                            <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
                     
