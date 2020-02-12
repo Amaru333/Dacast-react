@@ -13,26 +13,8 @@ import { Modal } from '../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
 import { getNameFromFullPath } from '../../utils/utils';
-
-export interface FolderAsset {
-    id: string;
-    name: string;
-    contentType: 'playlist' | 'vod';
-    created: string;
-    duration: string;
-    features: string[];
-    status: 'deleted' | 'offline' | 'online';
-
-}
-
-export interface FolderTreeNode {
-    fullPath: string;
-    loadingStatus: 'not-loaded' | 'loading' | 'loaded';
-    children: {
-        [childPath: string]: FolderTreeNode;
-    };
-    isExpanded: boolean;
-}
+import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
+import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 
 const TableData: FolderAsset[] = [
     {
@@ -103,35 +85,55 @@ export const FoldersPage = () => {
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
     const [foundFolder, setFoundFolder] = React.useState<FolderTreeNode>(null);
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
+    const [checkedItems, setCheckedItems] = React.useState<string[]>([])
+    const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
 
-    React.useEffect(() => {console.log(selectedFolder)}, [selectedFolder])
+    React.useEffect(() => {}, [selectedFolder])
 
     const foldersContentTableHeader = () => {
         return [
-            <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' />,
-            <span></span>,
-            <Text size={14} weight='med'>Name</Text>,
-            <Text size={14} weight='med'>Duration</Text>,
-            <Text size={14} weight='med'>Created</Text>,
-            <Text size={14} weight='med'>Status</Text>,
-            <Text size={14} weight='med'>Features</Text>,
-            <span></span>
+            <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
+                indeterminate={checkedItems.length >= 1 && checkedItems.length < TableData.length}
+                defaultChecked={checkedItems.length === TableData.length}
+                onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                        const editedItem = TableData.map(item => { return item.id + item.contentType })
+                        setCheckedItems(editedItem);
+                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        setCheckedItems([])
+                    }
+                }
+                } 
+            />,
+            <span key='tableHeaderEmptyCell1'></span>,
+            <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>,
+            <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>,
+            <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created</Text>,
+            <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>,
+            <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>,
+            <span key='tableHeaderEmptyCell2'></span>
         ]
     }
 
-    const foldersContentTableBody = () => {
+    const handleCheckboxChange = (item: string) => {
+        if(checkedItems.includes(item)) {
+            setCheckedItems(checkedItems.filter(option => {return option !== item}));
+        } else {
+            setCheckedItems([...checkedItems, item]);
+        }
+    }
 
+    const foldersContentTableBody = () => {
         return TableData.map((row) => {
             return [
-                <InputCheckbox id={row.id + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} />,
+                <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={() => handleCheckboxChange(row.id + row.contentType )} />,
                 <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + row.id}>folder_open</IconStyle>,
                 <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                 <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                 <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
                 <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/>,
-                <span></span>,
+                <span key={'foldersTableFeatures'  + row.id}></span>,
                 <Icon className='right mr2' key={'foldersTableActionButton' + row.name}>more_vert</Icon>
-
             ]
         })
     }
@@ -146,6 +148,7 @@ export const FoldersPage = () => {
 
     let rootNode: FolderTreeNode = {
         isExpanded: true,
+        nbChildren: 2,
         fullPath: '/',
         loadingStatus: 'loaded',
         children
@@ -158,6 +161,7 @@ export const FoldersPage = () => {
     const makeNode = (parent: FolderTreeNode, name: string): FolderTreeNode => {
         return {
             children: {},
+            nbChildren: 10,
             fullPath: parent.fullPath + name + '/',
             isExpanded: false,
             loadingStatus: 'not-loaded'
@@ -167,9 +171,7 @@ export const FoldersPage = () => {
 
     const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
 
-    React.useEffect(() => {
-        console.log(foldersTree)
-    }, [foldersTree])
+    React.useEffect(() => {}, [foldersTree])
 
     const getChild = async (node: FolderTreeNode) => {
         await wait();
@@ -179,7 +181,6 @@ export const FoldersPage = () => {
             [name1]: makeNode(node, name1),
             [name2]: makeNode(node, name2)
         }
-        console.log('fetched new child', node.children)
         return node.children;
     }
 
@@ -190,97 +191,74 @@ export const FoldersPage = () => {
 
     const findNode = async (node: FolderTreeNode, searchedFolder: string) => {
         if(node !== null) {
-            console.log('Trying to find node' , searchedFolder)
             if(node.fullPath === searchedFolder) {
-                console.log('returning node ', node)
                 setFoundFolder(node);
-                return node;
-                
-            }
-            else {
-                console.log('Trying to find child node', node)
-               let splitNodePath = node.fullPath.split('/');
-               if(!searchedFolder)  {searchedFolder = '/';}
-               const splitSelectedPath =  searchedFolder.split('/');
-               console.log('desired node path', splitSelectedPath)
-               if(splitNodePath[splitNodePath.length - 1] === "") {splitNodePath.pop()}
-               console.log('current node path', splitNodePath)
-               console.log(splitNodePath.every((name, index) => name === splitSelectedPath[index]))
-               if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
-
+                return node;              
+            } else {
+                let splitNodePath = node.fullPath.split('/');
+                if(!searchedFolder)  {searchedFolder = '/';}
+                const splitSelectedPath =  searchedFolder.split('/');
+                if(splitNodePath[splitNodePath.length - 1] === "") {splitNodePath.pop()}
+                if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
                    if(Object.entries(node.children).length !== 0) {
                     Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
+                   } else {
+                        node.children = await getChild(node);
+                        setFoldersTree({...foldersTree})
+                        setFoundFolder(node);
+                        return node;
                    }
-                   else {
-                       console.log('need to fetch child');
-                       node.children = await getChild(node);
-                       setFoldersTree({...foldersTree})
-                       setFoundFolder(node);
-                       return node;
-                   }
-               }
-               else {
-                   if(node.fullPath === '/') {
-                    Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
-                   }
-                   else {
-                        return
-                   }
-
-               }
+                } else {
+                    if(node.fullPath === '/') {
+                        Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
+                    } else {
+                            return
+                    }
+                }
             }
         }
-
     }
 
     const loadChildren = async (node: FolderTreeNode) => {
         node.loadingStatus = 'loading'
-        setFoldersTree({
-            ...foldersTree
-        })
-        // setIsLoadingChildren(true)
-        //call http
-        console.log('loading children of ', node.fullPath)
+        setFoldersTree({...foldersTree})
         node.children = await getChild(node);
         node.isExpanded = true
         node.loadingStatus = 'loaded'
-        setFoldersTree({
-            ...foldersTree
-        })
-        //console.log('loaded children of ', node.fullPath, name1, name2)
+        setFoldersTree({...foldersTree})
     }
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length-1
         return (
-            <>
-            <FolderRow isSelected={node.fullPath === selectedFolder} style={{paddingLeft: depth*10}} className='p1 flex items-center' onClick={() => {
-                setSelectedFolder(node.fullPath);
-                if(node.loadingStatus === 'not-loaded' && !node.isExpanded) {
-                    loadChildren(node)
-                    return
-                }
-                if(node.loadingStatus === 'loading') {
-                    console.log('blocked double loading')
-                    return
-                }
-                node.isExpanded = !node.isExpanded
-                setFoldersTree({
-                    ...foldersTree
-                })
-            }}>
-                <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
-                {getNameFromFullPath(node.fullPath)}
-                {node.loadingStatus === 'loading' ? <LoadingSpinner size='small' color='red'/> : null}
-            </FolderRow>
-            <div>
-                {
-                    node.isExpanded ? 
-                        Object.values(node.children).map((childNode) => renderNode(childNode)) 
-                        : null
-                }
+            <div key={node.fullPath}>
+                <FolderRow isSelected={node.fullPath === selectedFolder} style={{paddingLeft: depth*10}} className='p1 flex items-center' onClick={() => {
+                    setSelectedFolder(node.fullPath);
+                    if(node.loadingStatus === 'not-loaded' && !node.isExpanded) {
+                        loadChildren(node)
+                        return
+                    }
+                    if(node.loadingStatus === 'loading') {
+                        console.log('blocked double loading')
+                        return
+                    }
+                    node.isExpanded = !node.isExpanded
+                    setFoldersTree({
+                        ...foldersTree
+                    })
+                }}>
+                    <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
+                    {getNameFromFullPath(node.fullPath)}
+                    {node.loadingStatus === 'loading' ? <LoadingSpinner size='small' color='red'/> : null}
+                </FolderRow>
+                <div>
+                    {
+                        node.isExpanded ? 
+                            Object.values(node.children).map((childNode) => renderNode(childNode)) 
+                            : null
+                    }
+                </div>
             </div>
-            </>
         )     
     }
 
@@ -288,20 +266,25 @@ export const FoldersPage = () => {
     return (
         <div>
             <div className='mb2 col col-12'>
-                <div className='col col-1'>
-                    <Button  onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
-                        New Folder
-                    </Button>
+                <div className='col col-6 flex items-center'>
+                    <Icon  onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
+                    <div>
+                        <Button className='mx3 col col-11' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                            New Folder
+                        </Button>
+                    </div>
+
+                    <BreadcrumbDropdown options={selectedFolder} callback={() => {}} dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} dropdownCallback={() => {}} />
                 </div>
 
                 
                 <FoldersFiltering />
             </div>
             <ContentSection>
-                <FoldersTreeSection className='col col-2'>
+                <FoldersTreeSection className={foldersTreeHidden ? 'hide' : 'col col-2'}>
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
-                <div className='col col-10 flex flex-column right'>
+                <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
                     <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
@@ -310,7 +293,7 @@ export const FoldersPage = () => {
             <Modal hasClose={false} size='small' title='New Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
-            <Modal hasClose={false} title={'Move items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+            <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
                         <MoveItemModal initialSelectedFolder={selectedFolder} findNode={findNodeTest} toggle={setMoveItemsModalOpened}  />
