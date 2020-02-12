@@ -2,6 +2,8 @@ import React from 'react';
 import { Text } from "../../../components/Typography/Text"
 import { Table } from '../../../components/Table/Table';
 import { PendingOrder } from '../../../containers/Account/PendingOrders';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
+const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 
 export const CartStep = (stepperData: PendingOrder) => {
 
@@ -30,7 +32,36 @@ export const CartStep = (stepperData: PendingOrder) => {
 }
 
 export const PaymentStep = (stepperData: PendingOrder) => {
+
+    const paymentStepheader = () => {
+        return  [
+            <Text  key={"paymentStepheaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
+            <Text  key={"paymentStepheaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + stepperData.price}</Text>
+        ]
+    }
+
+    const paymentStepCreditCardTableHeader = () => {
+        return [
+            <Text  key={"paymentStepPCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>,
+            <img key={"paymentStepCardTableHeaderImg"} className='right mr2' src={CardLogo} />
+        ]
+    }
+    const paymentStepCreditCardTableBody = () => {
+        return [[
+            <Text  key={"paymentStepPCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
+            <Text  className='right mr2' key={"paymentStepPCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>,
+
+        ]]
+    }
     return (
-        <p>this is the payment step</p>
+        <div>
+            <Table className='my2' id='paymentStepTotalTable' header={paymentStepheader()}/>
+            <Table className='my2' id='paymentStepPaymentMethodTable' header={paymentStepCreditCardTableHeader()} body={paymentStepCreditCardTableBody()} />
+            <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+            <div className='py2 col col-12'>
+                <InputCheckbox className='col col-1' id={'chekboxTC'} key={'chekboxTC'}  />
+                <Text className='col col-11' size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>
+            </div>
+        </div>
     )
 }
