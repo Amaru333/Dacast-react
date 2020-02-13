@@ -212,8 +212,8 @@ export const SliderContainerStyle = styled.div<SliderContainerProps>`
         transition: none;
     }
 `
-export const TagsContainer = styled.div`
-    border: 1px solid ${props => props.theme.colors["gray-7"]} ;
+export const TagsContainer = styled.div<{noBorder: boolean}>`
+    border: ${props => props.noBorder ? "none" : "1px solid "+ props.theme.colors["gray-7"] };  ;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
