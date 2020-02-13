@@ -8,7 +8,7 @@ const getPendingOrders = () => {
 }
 
 const updatePendingOrder = (data: PendingOrder) => {
-    return axios.put(urlBase + 'account-pendingorders', {...data});
+    return axios.put(urlBase + 'pending-orders', {...data});
 }
 
 export const PendingOrdersServices = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { LoadingSpinner} from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { PendingOrdersPage } from '../../pages/Account/PendingOrders/PendingOrders';
 import { ApplicationState } from '../../redux-flow/store';
-import { PendingOrdersList } from '../../redux-flow/store/Account/PendingOrders/types';
+import { PendingOrdersList, PendingOrder } from '../../redux-flow/store/Account/PendingOrders/types';
 import { Action, getPendingOrdersAction, updatePendingOrdersAction } from '../../redux-flow/store/Account/PendingOrders/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';

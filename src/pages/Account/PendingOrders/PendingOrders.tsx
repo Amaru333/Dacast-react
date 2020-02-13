@@ -66,7 +66,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
     const [purchaseStepperOpen, setPurchaseStepperOpen] = React.useState<boolean>(false)
     const [selectedPendingOrder, setSelectedPendingOrder] = React.useState<PendingOrder>(emptyOrder)
-
+    
     return (
         <React.Fragment>
             <Table id="pendingOrdersTable" header={pendingOrdersTableHeader()} body={pendingOrdersTableBody()} />
@@ -80,7 +80,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 stepTitles={["Cart", "Payment"]}
                 lastStepButton="Purchase"
-                finalFunction={() => {setPurchaseStepperOpen(false); console.log("Pending Order paid")}}
+                finalFunction={() => {setPurchaseStepperOpen(false); props.updatePendingOrders(selectedPendingOrder)}}
                 functionCancel={() => setPurchaseStepperOpen(false)}
                 stepperData={selectedPendingOrder}
             />

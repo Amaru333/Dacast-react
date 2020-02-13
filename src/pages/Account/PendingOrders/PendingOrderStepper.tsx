@@ -7,7 +7,10 @@ const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 
 export const CartStep = (stepperData: PendingOrder) => {
 
-    React.useEffect(() => {}, [stepperData])
+    //to prevent errors with different numbers of hooks being rendered between steps
+    const [test2, setTest2] = React.useState<boolean>(false)
+
+    React.useEffect(() => {}, [])
 
     const cartTableBodyElement = () => {
         return stepperData.items.map((order) => {
@@ -33,11 +36,13 @@ export const CartStep = (stepperData: PendingOrder) => {
     )
 }
 
-export const PaymentStep = (stepperData: PendingOrder, setStepValidated: Function) => {
+export const PaymentStep = (stepperData: PendingOrder, updateStepperData: Function, setStepValidated: Function) => {
+
+    const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setStepValidated(false)
-    }, [])
+        setStepValidated(termsAndConditionsChecked)
+    })
 
     const paymentStepheader = () => {
         return  [
@@ -65,7 +70,7 @@ export const PaymentStep = (stepperData: PendingOrder, setStepValidated: Functio
             <Table className='my2' id='paymentStepPaymentMethodTable' header={paymentStepCreditCardTableHeader()} body={paymentStepCreditCardTableBody()} />
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12'>
-                <InputCheckbox className='col col-1' id={'chekboxTC'} key={'chekboxTC'}  />
+                <InputCheckbox className='col col-1' id={'chekboxTC'} key={'chekboxTC'} onChange={() => setTermsAndConditionsChecked(!termsAndConditionsChecked)} />
                 <Text className='col col-11' size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>
             </div>
         </div>
