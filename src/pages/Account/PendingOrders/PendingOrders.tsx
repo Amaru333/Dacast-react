@@ -12,7 +12,6 @@ import { PendingOrdersComponentProps } from '../../../containers/Account/Pending
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
-
     const emptyOrder: PendingOrder = 
     {   id: "-1", 
         items: [{id: "-1", price: 0, description: ""}], 
@@ -22,12 +21,15 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
         status: "", 
         type: ""
     }
+
+    const [purchaseStepperOpen, setPurchaseStepperOpen] = React.useState<boolean>(false)
+    const [selectedPendingOrder, setSelectedPendingOrder] = React.useState<PendingOrder>(emptyOrder)
     
 
     const handlePurchase = (order: PendingOrder) => {
         setSelectedPendingOrder(order)
         selectedPendingOrder ?
-        setPurchaseStepperOpen(true) : null
+            setPurchaseStepperOpen(true) : null
         console.log(selectedPendingOrder)
     }
 
@@ -56,7 +58,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)} />,
                 <Text key={'pendingOrderTableType'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.type.charAt(0).toUpperCase() + item.type.slice(1)}</Text>,
                 item.status === "unpaid" ?
-                <div className="right mr2"><Button sizeButton="xs" onClick={() => handlePurchase(item)}>Purchase</Button></div> : null
+                    <div className="right mr2"><Button sizeButton="xs" onClick={() => handlePurchase(item)}>Purchase</Button></div> : null
                 
             ]
         })
@@ -64,8 +66,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
     const purchaseStepList = [CartStep, PaymentStep]
 
-    const [purchaseStepperOpen, setPurchaseStepperOpen] = React.useState<boolean>(false)
-    const [selectedPendingOrder, setSelectedPendingOrder] = React.useState<PendingOrder>(emptyOrder)
+
     
     return (
         <React.Fragment>

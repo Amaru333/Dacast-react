@@ -12,7 +12,7 @@ export interface GetPendingOrders {
 
 export interface UpdatePendingOrder {
     type: ActionTypes.UPDATE_PENDING_ORDER;
-    payload: PendingOrder
+    payload: PendingOrder;
 }
 
 export const getPendingOrdersAction = (): ThunkDispatch<Promise<void>, {}, GetPendingOrders> => {

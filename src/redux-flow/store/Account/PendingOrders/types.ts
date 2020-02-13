@@ -4,23 +4,23 @@ export enum ActionTypes {
 }
 
 export interface PendingOrder {
-    id: string,
-    items: PendingOrderItem[]
-    dateCreated: string,
-    price: number,
-    currency: string,
-    status: string,
-    type: string
+    id: string;
+    items: PendingOrderItem[];
+    dateCreated: string;
+    price: number;
+    currency: string;
+    status: string;
+    type: string;
 }
 
 export interface PendingOrderItem {
-    id: string,
-    description: string,
-    price: number,
+    id: string;
+    description: string;
+    price: number;
 }
 
 export interface PendingOrdersList {
-    pendingOrders: PendingOrder[]
+    pendingOrders: PendingOrder[];
 }
 
 export const pendingOrdersInitialState: PendingOrdersList = 
