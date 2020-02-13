@@ -8,48 +8,10 @@ import { Pagination } from '../../../components/Pagination/Pagination';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { CartStep, PaymentStep } from './PendingOrderStepper';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
+import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
 
-export const PendingOrdersPage = () => {
+export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
-    const pendingOrderData: PendingOrder[] = [
-        {
-            id: "1", 
-            items: [{id: "1", price: 175, description: "blah"}], 
-            dateCreated: "10:34:00 05/04/2019", 
-            price: 175, 
-            currency: "usd", 
-            status: "paid", 
-            type: "event"
-        },
-        {
-            id: "2", 
-            items: [
-                {id: "1", price: 130, description: "Cool Event"},
-                {id: "2", price: 170, description: "Another Cool Event"}
-            ], 
-            dateCreated: "10:55:23 05/22/2019", 
-            price: 300, 
-            currency: "usd", 
-            status: "unpaid", 
-            type: "event"},
-        {
-            id: "3", 
-            items: [{id: "1", price: 12, description: "whatever"}], 
-            dateCreated: "14:23:20 06/12/2019", 
-            price: 12, 
-            currency: "gbp", 
-            status: "cancelled", 
-            type: "event"
-        },
-        {
-            id: "4", 
-            items: [{id: "1", price: 400, description: "something"}], 
-            dateCreated: "10:55:23 06/17/2019", 
-            price: 400, 
-            currency: "usd", 
-            status: "failed", 
-            type: "event"}
-    ]
 
     const emptyOrder: PendingOrder = 
     {   id: "-1", 
@@ -83,7 +45,7 @@ export const PendingOrdersPage = () => {
     }
 
     const pendingOrdersTableBody = () => {
-        return pendingOrderData.map((item, i) => {
+        return props.pendingOrders.pendingOrders.map((item, i) => {
             const color = item.status === 'paid' ? 'green' : item.status === 'failed' ? 'red' : item.status === 'unpaid' ? 'yellow' : 'gray-1';
             const BackgroundColor: ColorsApp = item.status === 'cancelled' ? 'gray-8' : color + '20' as ColorsApp;
             return [
@@ -108,7 +70,7 @@ export const PendingOrdersPage = () => {
     return (
         <React.Fragment>
             <Table id="pendingOrdersTable" header={pendingOrdersTableHeader()} body={pendingOrdersTableBody()} />
-            <Pagination totalResults={pendingOrderData.length} displayedItemsOptions={[10, 20, 30]} callback={() => {}}></Pagination>
+            <Pagination totalResults={props.pendingOrders.pendingOrders.length} displayedItemsOptions={[10, 20, 30]} callback={() => {}}></Pagination>
             <CustomStepper
                 opened={purchaseStepperOpen}
                 stepperHeader="Purchase Pending Order"

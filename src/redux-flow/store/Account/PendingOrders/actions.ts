@@ -1,13 +1,13 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { showToastNotification } from '../../Toasts/actions';
-import { ActionTypes, PendingOrder, PendingOrders } from './types';
+import { ActionTypes, PendingOrder, PendingOrdersList } from './types';
 import { PendingOrdersServices } from './services';
 import { ApplicationState } from '../..';
 
 
 export interface GetPendingOrders {
     type: ActionTypes.GET_PENDING_ORDERS;
-    payload: PendingOrders;
+    payload: PendingOrdersList;
 }
 
 export interface UpdatePendingOrder {

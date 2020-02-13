@@ -1,8 +1,8 @@
 import { Reducer } from 'redux';
-import { pendingOrdersInitialState, ActionTypes, PendingOrders } from './types';
+import { pendingOrdersInitialState, ActionTypes, PendingOrdersList } from './types';
 import { Action } from './actions';
 
-const reducer: Reducer<PendingOrders> = (state = pendingOrdersInitialState, action: Action) => {
+const reducer: Reducer<PendingOrdersList> = (state = pendingOrdersInitialState, action: Action) => {
     let orders = null
     switch (action.type) {
         case ActionTypes.GET_PENDING_ORDERS :

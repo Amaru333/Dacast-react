@@ -19,11 +19,11 @@ export interface PendingOrderItem {
     price: number,
 }
 
-export interface PendingOrders {
+export interface PendingOrdersList {
     pendingOrders: PendingOrder[]
 }
 
-export const pendingOrdersInitialState: PendingOrders = 
+export const pendingOrdersInitialState: PendingOrdersList = 
 { 
     pendingOrders: [
         {   id: "-1", 
