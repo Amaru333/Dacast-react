@@ -1,6 +1,5 @@
 export enum ActionTypes {
-    GET_ROOT_FOLDERS = "@@folders/GET_ROOT_FOLDERS",
-    GET_SUBFOLDERS = "@@folders/GET_SUBFOLDERS",
+    GET_FOLDERS = "@@folders/GET_FOLDERS",
     GET_FOLDER_CONTENT = "@@folders/GET_FOLDER_CONTENT",
     MOVE_ITEMS_TO_FOLDER = "@@folders/MOVE_ITEMS_TO_FOLDER",
     ADD_FOLDER = "@@folders/ADD_FOLDER",
@@ -14,6 +13,7 @@ export interface FolderTreeNode {
     fullPath: string;
     loadingStatus: 'not-loaded' | 'loading' | 'loaded';
     nbChildren: number;
+    subfolders: number;
     children: {
         [childPath: string]: FolderTreeNode;
     };
@@ -29,4 +29,14 @@ export interface FolderAsset {
     features: string[];
     status: 'deleted' | 'offline' | 'online';
 
+}
+
+export interface FoldersState {
+    requestedFolder: false | FolderTreeNode;
+    requestedContent: false | FolderAsset[];
+}
+
+export const foldersInitialState: FoldersState = {
+    requestedFolder: false,
+    requestedContent: false
 }

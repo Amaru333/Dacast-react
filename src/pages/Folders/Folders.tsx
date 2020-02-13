@@ -15,6 +15,7 @@ import { MoveItemModal } from './MoveItemsModal';
 import { getNameFromFullPath } from '../../utils/utils';
 import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
+import { FoldersComponentProps } from '../../containers/Folders/Folders';
 
 const TableData: FolderAsset[] = [
     {
@@ -79,14 +80,34 @@ const folderTreeConst = [
     'folder3'
 ]
 
-export const FoldersPage = () => {
+export const FoldersPage = (props: FoldersComponentProps) => {
 
+
+    let children = folderTreeConst.map(path => ({
+        isExpanded: false,
+        fullPath: '/' + path + '/',
+        loadingStatus: 'not-loaded',
+        children: {}
+    }))
+    .reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
+
+    let rootNode: FolderTreeNode = {
+        isExpanded: true,
+        subfolders: 2,
+        nbChildren: 2,
+        fullPath: '/',
+        loadingStatus: 'loaded',
+        children
+    }
+
+    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
-    const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
+    const [selectedFolder, setSelectedFolder] = React.useState<string>('Library');
     const [foundFolder, setFoundFolder] = React.useState<FolderTreeNode>(null);
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [checkedItems, setCheckedItems] = React.useState<string[]>([])
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
+    const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename' | 'New Folder'>('New Folder');
 
     React.useEffect(() => {}, [selectedFolder])
 
@@ -138,30 +159,17 @@ export const FoldersPage = () => {
         })
     }
 
-    let children = folderTreeConst.map(path => ({
-        isExpanded: false,
-        fullPath: '/' + path + '/',
-        loadingStatus: 'not-loaded',
-        children: {}
-    }))
-    .reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
 
-    let rootNode: FolderTreeNode = {
-        isExpanded: true,
-        nbChildren: 2,
-        fullPath: '/',
-        loadingStatus: 'loaded',
-        children
-    }
 
     const wait = async () => {
-        return new Promise((resolve) => setTimeout(resolve, 3000))
+        return new Promise((resolve) => setTimeout(resolve, 1000))
     }
 
     const makeNode = (parent: FolderTreeNode, name: string): FolderTreeNode => {
         return {
             children: {},
             nbChildren: 10,
+            subfolders: 10,
             fullPath: parent.fullPath + name + '/',
             isExpanded: false,
             loadingStatus: 'not-loaded'
@@ -169,7 +177,6 @@ export const FoldersPage = () => {
     }
 
 
-    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
 
     React.useEffect(() => {}, [foldersTree])
 
@@ -212,7 +219,7 @@ export const FoldersPage = () => {
                     if(node.fullPath === '/') {
                         Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
                     } else {
-                            return
+                        return
                     }
                 }
             }
@@ -243,9 +250,7 @@ export const FoldersPage = () => {
                         return
                     }
                     node.isExpanded = !node.isExpanded
-                    setFoldersTree({
-                        ...foldersTree
-                    })
+                    setFoldersTree({...foldersTree})
                 }}>
                     <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
                     {getNameFromFullPath(node.fullPath)}
@@ -262,35 +267,69 @@ export const FoldersPage = () => {
         )     
     }
 
+    const handleBreadcrumbDropdownOptions = (option: string) => {
+        switch(option) {
+            case 'Rename':
+                setNewFolderModalAction('Rename');
+                setNewFolderModalOpened(true);
+                break;
+            case 'Move':
+                setMoveItemsModalOpened(true);
+                break;
+            case 'New Folder':
+                setNewFolderModalAction('New Folder');
+                setNewFolderModalOpened(true);
+                break;
+            case 'Delete':
+                break;
+            default:
+                break;
+        }
+    }
+
 
     return (
         <div>
-            <div className='mb2 col col-12'>
-                <div className='col col-6 flex items-center'>
-                    <Icon  onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
-                    <div>
-                        <Button className='mx3 col col-11' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+            <div className='mb2 col col-12 flex items-center'>
+                <div className='col col-10 flex items-center'>
+                    <div className='col col-2'>
+                        <div className='col col-2'>
+                            <Icon onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
+                        </div>
+                        <Button className='col col-5' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
                             New Folder
                         </Button>
                     </div>
-
-                    <BreadcrumbDropdown options={selectedFolder} callback={() => {}} dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} dropdownCallback={() => {}} />
-                </div>
-
-                
+                    <div className='col col-9'>
+                        <BreadcrumbDropdown 
+                            options={selectedFolder} 
+                            callback={(value: string) => setSelectedFolder(value)} 
+                            dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} 
+                            dropdownCallback={(value: string) => {handleBreadcrumbDropdownOptions(value)}} 
+                        />
+                    </div>
+                </div>          
                 <FoldersFiltering />
             </div>
             <ContentSection>
                 <FoldersTreeSection className={foldersTreeHidden ? 'hide' : 'col col-2'}>
+                    <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => setSelectedFolder("Library")}>
+                        Library
+                    </FolderRow>
+                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => setSelectedFolder("Unsorted")}>
+                        Unsorted
+                    </FolderRow>
+                    <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => setSelectedFolder("Trash")}>
+                        Trash
+                    </FolderRow>
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
                     <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
-                <Button onClick={() => {setMoveItemsModalOpened(true)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Move</Button>
             </ContentSection> 
-            <Modal hasClose={false} size='small' title='New Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal hasClose={false} size='small' title={newFolderModalAction === 'New Folder' ? newFolderModalAction : newFolderModalAction + getNameFromFullPath(selectedFolder)} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

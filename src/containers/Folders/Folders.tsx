@@ -1,14 +1,70 @@
 import React from 'react';
 import {LoadingSpinner} from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { FoldersPage } from '../../pages/Folders/Folders';
+import { ApplicationState } from '../../redux-flow/store';
+import { ThunkDispatch } from 'redux-thunk';
+import { connect } from 'react-redux';
+import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction } from '../../redux-flow/store/Folders/actions';
+import { FolderAsset, FoldersState } from '../../redux-flow/store/Folders/types';
+export interface FoldersComponentProps {
+    folderData: FoldersState;
+    getFolders: Function;
+    getFolderContent: Function;
+    moveItemsToFolder: Function;
+    addFolder: Function;
+    deleteFolder: Function;
+    deleteContent: Function;
+    restoreContent: Function;
+    renameFolder: Function;
+}
 
-const Folders = () => {
-    const test = true;
+const Folders = (props: FoldersComponentProps) => {
+    React.useEffect(() => {
+        if(!props.folderData) {
+            props.getFolders('/');
+        }
+    }, [])
     return (
-        test ? 
-            <FoldersPage />
+        props.folderData ? 
+            <FoldersPage {...props} />
             : <LoadingSpinner size='large' color='green80' />
     )
 }
 
-export default Folders;
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        folderData: state.folders
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getFolders: (folderPath: string) => {
+            dispatch(getFoldersAction(folderPath));
+        },
+        getFolderContent: (folderPath: string) => {
+            dispatch(getFoldersAction(folderPath))
+        },
+        moveItemsToFolder: (folderPath: string[], items: FolderAsset[]) => {
+            dispatch(moveItemsToFolderAction(folderPath, items))
+        },
+        addFolder: (folderPath: string) => {
+            dispatch(addFolderAction(folderPath))
+        },
+        deleteFolder: (folderPath: string) => {
+            dispatch(deleteFolderAction(folderPath))
+        },
+        deleteContent: (content: FolderAsset[]) => {
+            dispatch(deleteContentAction(content))
+        },
+        restoreContent: (content: FolderAsset[]) => {
+            dispatch(restoreContentAction(content))
+        },
+        renameFolder: (folderPath: string, newName: string) => {
+            dispatch(renameFolderAction(folderPath, newName))
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Folders);
