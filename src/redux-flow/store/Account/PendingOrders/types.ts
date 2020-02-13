@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    GET_PENDING_ORDERS = "@@account_pendingOrders/GET_PENDING_ORDERS"
+    GET_PENDING_ORDERS = "@@account_pendingOrders/GET_PENDING_ORDERS",
+    UPDATE_PENDING_ORDER = "@@account_pendingOrders/UPDATE_PENDING_ORDER"
 }
 
 export interface PendingOrder {
@@ -18,4 +19,20 @@ export interface PendingOrderItem {
     price: number,
 }
 
-export const pendingOrdersInitialState: PendingOrder[] = []
+export interface PendingOrders {
+    pendingOrders: PendingOrder[]
+}
+
+export const pendingOrdersInitialState: PendingOrders = 
+{ 
+    pendingOrders: [
+        {   id: "-1", 
+            items: [{id: "-1", price: 0, description: ""}], 
+            dateCreated: "", 
+            price: 0, 
+            currency: "", 
+            status: "", 
+            type: ""
+        }
+    ]
+}

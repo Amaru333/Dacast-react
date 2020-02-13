@@ -1,11 +1,17 @@
 import axios from 'axios';
+import { PendingOrder } from './types';
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getPendingOrders = () => {
-    return axios.get(urlBase + 'account-pendingorders');
+    return axios.get(urlBase + 'pending-orders');
+}
+
+const updatePendingOrder = (data: PendingOrder) => {
+    return axios.put(urlBase + 'account-pendingorders', {...data});
 }
 
 export const PendingOrdersServices = {
-    getPendingOrders
+    getPendingOrders,
+    updatePendingOrder
 }

@@ -3,13 +3,14 @@ import { LoadingSpinner} from '../../components/FormsComponents/Progress/Loading
 import { PendingOrdersPage } from '../../pages/Account/PendingOrders/PendingOrders';
 import { ApplicationState } from '../../redux-flow/store';
 import { PendingOrder } from '../../redux-flow/store/Account/PendingOrders/types';
-import { Action, getPendingOrdersAction } from '../../redux-flow/store/Account/PendingOrders/actions';
+import { Action, getPendingOrdersAction, updatePendingOrdersAction } from '../../redux-flow/store/Account/PendingOrders/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 
 export interface PendingOrdersComponentProps {
     pendingOrders: PendingOrder[];
     getPendingOrders: Function;
+    updatePendingOrders: Function;
 }
 
 export const PendingOrders = (props: PendingOrdersComponentProps) => {
@@ -35,9 +36,12 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getInvoices: () => {
+        getPendingOrders: () => {
             dispatch(getPendingOrdersAction());
         },
+        updatePendingOrders: (data: PendingOrder) => {
+            dispatch(updatePendingOrdersAction(data))
+        }
     };
 }
 
