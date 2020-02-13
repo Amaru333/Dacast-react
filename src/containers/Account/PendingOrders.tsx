@@ -1,25 +1,44 @@
 import React from 'react';
 import { LoadingSpinner} from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { PendingOrdersPage } from '../../pages/Account/PendingOrders/PendingOrders';
+import { ApplicationState } from '../../redux-flow/store';
+import { PendingOrder } from '../../redux-flow/store/Account/PendingOrders/types';
+import { Action, getPendingOrdersAction } from '../../redux-flow/store/Account/PendingOrders/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { connect } from 'react-redux';
 
-export interface PendingOrder {
-    id: string,
-    items: PendingOrderItem[]
-    dateCreated: string,
-    price: number,
-    currency: string,
-    status: string,
-    type: string
+export interface PendingOrdersComponentProps {
+    pendingOrders: PendingOrder[];
+    getPendingOrders: Function;
 }
 
-export interface PendingOrderItem {
-    id: string,
-    description: string,
-    price: number,
-}
+export const PendingOrders = (props: PendingOrdersComponentProps) => {
 
-export const PendingOrders = () => {
+    React.useEffect(() => {
+        if(!props.pendingOrders) {
+            props.getPendingOrders();
+        }
+    }, [])
+
     return (
-        <PendingOrdersPage />
+        props.pendingOrders ?
+            <PendingOrdersPage />
+            : <LoadingSpinner size='large' color='blue60' />
     )
 }
+
+export function mapStateToProps( state: ApplicationState) {
+    return {
+        pendingOrders: state.account.pendingOrders
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getInvoices: () => {
+            dispatch(getPendingOrdersAction());
+        },
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PendingOrders); 

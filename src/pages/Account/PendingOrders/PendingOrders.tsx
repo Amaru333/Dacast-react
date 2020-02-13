@@ -7,14 +7,14 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { CartStep, PaymentStep } from './PendingOrderStepper';
-import { PendingOrder } from '../../../containers/Account/PendingOrders';
+import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
 
 export const PendingOrdersPage = () => {
 
     const pendingOrderData: PendingOrder[] = [
         {
             id: "1", 
-            items: [{id: "1", price: 175, description: "event"}], 
+            items: [{id: "1", price: 175, description: "blah"}], 
             dateCreated: "10:34:00 05/04/2019", 
             price: 175, 
             currency: "usd", 
@@ -34,7 +34,7 @@ export const PendingOrdersPage = () => {
             type: "event"},
         {
             id: "3", 
-            items: [{id: "1", price: 12, description: ""}], 
+            items: [{id: "1", price: 12, description: "whatever"}], 
             dateCreated: "14:23:20 06/12/2019", 
             price: 12, 
             currency: "gbp", 
@@ -43,7 +43,7 @@ export const PendingOrdersPage = () => {
         },
         {
             id: "4", 
-            items: [{id: "1", price: 400, description: "event"}], 
+            items: [{id: "1", price: 400, description: "something"}], 
             dateCreated: "10:55:23 06/17/2019", 
             price: 400, 
             currency: "usd", 

@@ -7,6 +7,8 @@ const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 
 export const CartStep = (stepperData: PendingOrder) => {
 
+    React.useEffect(() => {}, [stepperData])
+
     const cartTableBodyElement = () => {
         return stepperData.items.map((order) => {
             return [
@@ -31,7 +33,11 @@ export const CartStep = (stepperData: PendingOrder) => {
     )
 }
 
-export const PaymentStep = (stepperData: PendingOrder) => {
+export const PaymentStep = (stepperData: PendingOrder, setStepValidated: Function) => {
+
+    React.useEffect(() => {
+        setStepValidated(false)
+    }, [])
 
     const paymentStepheader = () => {
         return  [
