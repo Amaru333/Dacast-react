@@ -39,12 +39,12 @@ export const InputTags = (props: TagProps) => {
 
     
 
-    var { label, icon, help, isError, className, ...other } = props;
+    var { label, icon, help, isError, className, noBorder, style, ...other } = props;
 
     return (
-        <ContainerStyle className={className} >
+        <ContainerStyle style={style} className={className} >
             {label ? <LabelStyle disabled={props.disabled ? true : false} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
-            <TagsContainer>
+            <TagsContainer noBorder={noBorder}>
                 <TagsWrapper>
                     <TagListStyle>
                         { tags.map((tag, i) => (
@@ -76,4 +76,4 @@ export const InputTags = (props: TagProps) => {
     )
 }
 
-InputTags.defaultProps = { isError: false, disabled: false, required: false, defaultTags: [] }
+InputTags.defaultProps = { isError: false, disabled: false, required: false, defaultTags: [], noBorder: false }
