@@ -4,7 +4,7 @@ import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, advancedLinksOptions } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { LiveImageModal } from '../../Live/General/ImageModal';
@@ -24,6 +24,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [newPlaylistDetails, setNewPlaylistDetails] = React.useState<PlaylistDetails>(props.playlistDetails)
+    const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setNewPlaylistDetails(props.playlistDetails)
@@ -65,23 +66,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         value={newPlaylistDetails.title}
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["title"]: event.currentTarget.value })}
                     />
-                    <Input
-                        className="col col-6"
-                        label="Folder"
-                        value={newPlaylistDetails.folder}
-                        onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["folder"]: event.currentTarget.value })}
-                    />
-                    <Input
-                        className="col col-6 pr2 pt2"
-                        label="Description"
-                        value={newPlaylistDetails.description}
-                        onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
-                    />
-                </div>
-                <Divider className="col col-12" />
-                <div className="share col col-12">
-                    <Text className="col col-12" size={20} weight="med">Share</Text>
-                    <LinkBoxContainer className="col col-4 pr2">
+                    <div className="col col-6 flex flex-column">
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
@@ -89,25 +74,19 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
                             <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                         </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-4 pr2">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">JS</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className="col col-4">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Link</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconButton onClick={() => copyKey("Link here")}><Icon>file_copy</Icon></IconButton>
-                        </LinkBox>
-                    </LinkBoxContainer>
+                    </div>
+                    <Input
+                        className="col col-6 pr2 pt2"
+                        label="Description"
+                        value={newPlaylistDetails.description}
+                        onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
+                    />
+                    <Input
+                        className="col col-6 pt2"
+                        label="Folder"
+                        value={newPlaylistDetails.folder}
+                        onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["folder"]: event.currentTarget.value })}
+                    />
                 </div>
                 <Divider className="col col-12" />
                 <div className="thumbnail col col-12">
@@ -150,6 +129,26 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
 
                     </ImagesContainer>
                 </div>
+                <Divider className="col col-12" />
+                <div className="col col-12 advancedLinks">
+                        <Icon onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)} className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                        <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
+                        <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                            {advancedLinksOptions.map((item) => {
+                                return (
+                                    <LinkBoxContainer className="col col-6">
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">{item.label}</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+
+                                )
+                            })}
+                        </AdvancedLinksContainer>
+                    </div>
     
                 <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
             </Card>

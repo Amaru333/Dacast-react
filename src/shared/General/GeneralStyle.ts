@@ -10,7 +10,6 @@ export const LinkBoxContainer = styled.div`
     display: flex;
     flex-direction: column;
     height:auto;
-    padding-top: 16px;
     padding-right: 16px;
 `
 
@@ -82,3 +81,18 @@ max-width: 172px;
 export const ButtonContainer = styled.div`
 margin-top: 24px;
 ` 
+
+export const AdvancedLinksContainer = styled.div<{ isExpanded: boolean }>`
+   display: ${props => props.isExpanded ? "block" : "none"};
+   `
+
+export const advancedLinksOptions = [
+    { id: "thumb", label: "Thumbnail" },
+    { id: "download", label: "Download Video" },
+    { id: "image", label: "Poster Frame" },
+    { id: "embed", label: "Embed Code" },
+    { id: "video", label: "Video" },
+    { id: "audio", label: "Audio Embed" },
+    { id: "adaptive.m3u8", label: "Adaptive Streaming (HLS" }
+
+]

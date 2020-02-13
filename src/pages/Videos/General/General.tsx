@@ -11,7 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from './ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer, advancedVideoLinksOptions, advancedLinksOptions } from "../../../shared/General/GeneralStyle"
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -66,16 +66,7 @@ const disabledSubtitlesTableBody = (text: string) => {
     ]]
 }
 
-const advancedVideoLinksOptions = [
-    { id: "thumb", label: "Thumbnail" },
-    { id: "download", label: "Download Video" },
-    { id: "image", label: "Poster Frame" },
-    { id: "embed", label: "Embed Code" },
-    { id: "video", label: "Video" },
-    { id: "audio", label: "Audio Embed" },
-    { id: "adaptive.m3u8", label: "Adaptive Streaming (HLS" }
 
-]
 
 const copyKey = (value: string) => {
     var textArea = document.createElement("textarea");
@@ -146,23 +137,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             value={VodDetails.title}
                             onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                         />
-                        <Input
-                            className="col col-6"
-                            label="Folder"
-                            value={VodDetails.folder}
-                            onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
-                        />
-                        <Input
-                            className="col col-6 pr2 pt2"
-                            label="Description"
-                            value={VodDetails.description}
-                            onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
-                        />
-                    </div>
-                    <Divider className="col col-12" />
-                    <div className="share col col-12">
-                        <Text className="col col-12" size={20} weight="med">Share</Text>
-                        <LinkBoxContainer className="col col-4 pr2">
+                        <div className="col col-6 flex flex-column">
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
@@ -170,25 +145,19 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                 <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
                                 <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                             </LinkBox>
-                        </LinkBoxContainer>
-                        <LinkBoxContainer className="col col-4 pr2">
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">JS</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
-                            </LinkBox>
-                        </LinkBoxContainer>
-                        <LinkBoxContainer className="col col-4">
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Link</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconButton onClick={() => copyKey("Link here")}><Icon>file_copy</Icon></IconButton>
-                            </LinkBox>
-                        </LinkBoxContainer>
+                        </div>
+                        <Input
+                            className="col col-6 pr2 pt2"
+                            label="Description"
+                            value={VodDetails.description}
+                            onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
+                        />
+                        <Input
+                            className="col col-6 pt2"
+                            label="Folder"
+                            value={VodDetails.folder}
+                            onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
+                        />
                     </div>
                     <Divider className="col col-12" />
                     <div className="thumbnail col col-12">
@@ -244,8 +213,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <div className="col col-12 advancedVideoLinks">
                         <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
                         <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
-                        <AdvancedVideoLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
-                            {advancedVideoLinksOptions.map((item) => {
+                        <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
+                            {advancedLinksOptions.map((item) => {
                                 return (
                                     <LinkBoxContainer className="col col-6">
                                         <LinkBoxLabel>
@@ -258,7 +227,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
                                 )
                             })}
-                        </AdvancedVideoLinksContainer>
+                        </AdvancedLinksContainer>
                     </div>
 
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
@@ -310,10 +279,6 @@ const IconContainer = styled.div`
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
     }
-   `
-
-const AdvancedVideoLinksContainer = styled.div<{ isExpanded: boolean }>`
-   display: ${props => props.isExpanded ? "block" : "none"};
    `
 
 const SubtitleFile = styled.div`
