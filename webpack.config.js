@@ -57,7 +57,7 @@ module.exports = {
         new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') }),
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
-            { from: './public/iframe', to: './iframe' },
+            { from: './public/iframe', to: './public/iframe' },
         ], { copyUnmodified: true }
         )
     ]
