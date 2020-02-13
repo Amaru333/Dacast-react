@@ -1,17 +1,17 @@
 import axios from 'axios'
-import { VodTheme } from './types';
+import { PlaylistTheme } from './types';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getVodThemeService = () => {
-    return axios.get(urlBase + 'vod-themes');
+const getPlaylistThemeService = () => {
+    return axios.get(urlBase + 'playlist-themes');
 }
 
-const saveVodThemeService = (data: VodTheme) => {
-    return axios.post(urlBase + 'vod-themes', {data: data})
+const savePlaylistThemeService = (data: PlaylistTheme) => {
+    return axios.post(urlBase + 'playlist-themes', {data: data})
 }
 
-export const VodThemingServices = {
-    getVodThemeService,
-    saveVodThemeService
+export const PlaylistThemingServices = {
+    getPlaylistThemeService,
+    savePlaylistThemeService
 }

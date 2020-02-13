@@ -1,12 +1,12 @@
 import { ThemeOptions } from "../../Settings/Theming/types"
 
 export enum ActionTypes {
-    GET_VOD_THEME = "@@vod_theming/GET_VOD_THEME",
-    SAVE_VOD_THEME = "@@vod_theming/SAVE_VOD_THEME"
+    GET_PLAYLIST_THEME = "@@playlist_theming/GET_PLAYLIST_THEME",
+    SAVE_PLAYLIST_THEME = "@@playlist_theming/SAVE_PLAYLIST_THEME"
 }
 
-export interface VodTheme {
-    vodId: string;
+export interface PlaylistTheme {
+    playlistId: string;
     selectedTheme: ThemeOptions;
 }
 
@@ -15,7 +15,7 @@ export const defaultTheme: ThemeOptions = {
     themeName: '',
     isDefault: false,
     createdDate: '',
-    themeType: 'vod',
+    themeType: 'playlist',
     bigPlayButton: false,
     playPause: false,
     scrubber: false,
@@ -44,7 +44,7 @@ export const defaultTheme: ThemeOptions = {
     regionSettings: 'standard'
 }
 
-export const defaultVodTheme: VodTheme = {
-    vodId: null,
+export const defaultPlaylistTheme: PlaylistTheme = {
+    playlistId: null,
     selectedTheme: defaultTheme
 }

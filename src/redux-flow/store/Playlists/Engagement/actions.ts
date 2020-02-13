@@ -1,59 +1,51 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, VodEngagementSettings } from './types';
-import { vodEngagementServices } from './services';
+import { ActionTypes, PlaylistEngagementSettings } from './types';
+import { playlistEngagementServices } from './services';
 import { InteractionsInfos, Ad } from '../../Settings/Interactions';
 
-export interface GetVodEngagementSettings {
-    type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS;
-    payload: VodEngagementSettings;
+export interface GetPlaylistEngagementSettings {
+    type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS;
+    payload: PlaylistEngagementSettings;
 }
 
-export interface SaveVodEngagementSettings {
-    type: ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS;
-    payload: VodEngagementSettings;
+export interface SavePlaylistEngagementSettings {
+    type: ActionTypes.SAVE_PLAYLIST_ENGAGEMENT_SETTINGS;
+    payload: PlaylistEngagementSettings;
 }
 
-export interface SaveVodAd {
-    type: ActionTypes.SAVE_VOD_AD;
+export interface SavePlaylistAd {
+    type: ActionTypes.SAVE_PLAYLIST_AD;
     payload: Ad;
 }
 
-export interface CreateVodAd {
-    type: ActionTypes.CREATE_VOD_AD;
-<<<<<<< Updated upstream
-    payload: Ad
-=======
+export interface CreatePlaylistAd {
+    type: ActionTypes.CREATE_PLAYLIST_AD;
     payload: Ad;
->>>>>>> Stashed changes
 }
 
-export interface DeleteVodAd {
-    type: ActionTypes.DELETE_VOD_AD;
-<<<<<<< Updated upstream
-    payload: Ad 
-=======
+export interface DeletePlaylistAd {
+    type: ActionTypes.DELETE_PLAYLIST_AD;
     payload: Ad; 
->>>>>>> Stashed changes
 }
 
-export const getVodEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodEngagementSettings> ) => {
-        await vodEngagementServices.getVodEngagementSettings()
+export const getPlaylistEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistEngagementSettings> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistEngagementSettings> ) => {
+        await playlistEngagementServices.getPlaylistEngagementSettings()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export const saveVodEngagementSettingsAction = (data: VodEngagementSettings): ThunkDispatch<Promise<void>, {}, SaveVodEngagementSettings> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodEngagementSettings> ) => {
-        await vodEngagementServices.saveVodEngagementSettings(data)
+export const savePlaylistEngagementSettingsAction = (data: PlaylistEngagementSettings): ThunkDispatch<Promise<void>, {}, SavePlaylistEngagementSettings> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistEngagementSettings> ) => {
+        await playlistEngagementServices.savePlaylistEngagementSettings(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_ENGAGEMENT_SETTINGS, payload: response.data} );
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -61,11 +53,11 @@ export const saveVodEngagementSettingsAction = (data: VodEngagementSettings): Th
     };
 }
 
-export const saveVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SaveVodAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodAd> ) => {
-        await vodEngagementServices.saveVodAd(data)
+export const savePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SavePlaylistAd> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistAd> ) => {
+        await playlistEngagementServices.savePlaylistAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_AD, payload: response.data} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -73,11 +65,11 @@ export const saveVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Save
     };
 }
 
-export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, CreateVodAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateVodAd> ) => {
-        await vodEngagementServices.createVodAd(data)
+export const createPlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, CreatePlaylistAd> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreatePlaylistAd> ) => {
+        await playlistEngagementServices.createPlaylistAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.CREATE_PLAYLIST_AD, payload: response.data} );
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -85,11 +77,11 @@ export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Cr
     };
 }
 
-export const deleteVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodAd> ) => {
-        await vodEngagementServices.deleteVodAd(data)
+export const deletePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeletePlaylistAd> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeletePlaylistAd> ) => {
+        await playlistEngagementServices.deletePlaylistAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_PLAYLIST_AD, payload: response.data} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -97,4 +89,4 @@ export const deleteVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, De
     };
 }
 
-export type Action = GetVodEngagementSettings | SaveVodEngagementSettings | SaveVodAd | CreateVodAd | DeleteVodAd
+export type Action = GetPlaylistEngagementSettings | SavePlaylistEngagementSettings | SavePlaylistAd | CreatePlaylistAd | DeletePlaylistAd

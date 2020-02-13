@@ -1,24 +1,19 @@
 import { InteractionsInfos, interactionsDefaultState } from "../../Settings/Interactions/types"
 
 export enum ActionTypes {
-    GET_VOD_ENGAGEMENT_SETTINGS = "@@vod_engagement/GET_VOD_ENGAGEMENT_SETTINGS",
-    SAVE_VOD_ENGAGEMENT_SETTINGS = "@@vod_engagement/SAVE_VOD_ENGAGEMENT_SETTINGS",
-    SAVE_VOD_AD = "@@vod_engagement/SAVE_VOD_AD",
-    CREATE_VOD_AD = "@@vod_engagement/CREATE_VOD_AD",
-    DELETE_VOD_AD = "@@vod_engagements/DELETE_VOD_AD"
+    GET_PLAYLIST_ENGAGEMENT_SETTINGS = "@@playlist_engagement/GET_PLAYLIST_ENGAGEMENT_SETTINGS",
+    SAVE_PLAYLIST_ENGAGEMENT_SETTINGS = "@@playlist_engagement/SAVE_PLAYLIST_ENGAGEMENT_SETTINGS",
+    SAVE_PLAYLIST_AD = "@@playlist_engagement/SAVE_PLAYLIST_AD",
+    CREATE_PLAYLIST_AD = "@@playlist_engagement/CREATE_PLAYLIST_AD",
+    DELETE_PLAYLIST_AD = "@@playlist_engagements/DELETE_PLAYLIST_AD"
 }
 
-export interface VodEngagementSettings {
-<<<<<<< Updated upstream
-    vodId: string,
-    engagementSettings: InteractionsInfos
-=======
-    vodId: string;
+export interface PlaylistEngagementSettings {
+    playlistId: string;
     engagementSettings: InteractionsInfos;
->>>>>>> Stashed changes
 }
 
-export const vodEngagementDefaultState: VodEngagementSettings = {
-    vodId: "-1",
+export const playlistEngagementDefaultState: PlaylistEngagementSettings = {
+    playlistId: "-1",
     engagementSettings: interactionsDefaultState
 }

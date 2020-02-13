@@ -1,24 +1,24 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { VodTheme, ActionTypes } from "../Theming/types"
-import { VodThemingServices } from './services';
+import { PlaylistTheme, ActionTypes } from "../Theming/types"
+import { PlaylistThemingServices } from './services';
 
-export interface GetVodTheme {
-    type: ActionTypes.GET_VOD_THEME;
-    payload: VodTheme;
+export interface GetPlaylistTheme {
+    type: ActionTypes.GET_PLAYLIST_THEME;
+    payload: PlaylistTheme;
 }
 
-export interface SaveVodTheme {
-    type: ActionTypes.SAVE_VOD_THEME;
-    payload: VodTheme;
+export interface SavePlaylistTheme {
+    type: ActionTypes.SAVE_PLAYLIST_THEME;
+    payload: PlaylistTheme;
 }
 
-export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
-        await VodThemingServices.getVodThemeService()
+export const getPlaylistThemeAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistTheme> ) => {
+        await PlaylistThemingServices.getPlaylistThemeService()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_PLAYLIST_THEME, payload: response.data} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -26,11 +26,11 @@ export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodThem
     };
 }
 
-export const saveVodThemeAction = (data: VodTheme): ThunkDispatch<Promise<void>, {}, SaveVodTheme> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
-        await VodThemingServices.saveVodThemeService(data)
+export const savePlaylistThemeAction = (data: PlaylistTheme): ThunkDispatch<Promise<void>, {}, SavePlaylistTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistTheme> ) => {
+        await PlaylistThemingServices.savePlaylistThemeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_THEME, payload: response.data} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -38,4 +38,4 @@ export const saveVodThemeAction = (data: VodTheme): ThunkDispatch<Promise<void>,
     };
 }
 
-export type Action = GetVodTheme | SaveVodTheme
+export type Action = GetPlaylistTheme | SavePlaylistTheme

@@ -1,16 +1,16 @@
 import { Reducer } from "redux";
-import { defaultVodTheme, VodTheme, ActionTypes } from './types';
+import { defaultPlaylistTheme, PlaylistTheme, ActionTypes } from './types';
 import { Action } from './actions';
 
 
-const reducer: Reducer<VodTheme> = (state = defaultVodTheme, action: Action) => {
+const reducer: Reducer<PlaylistTheme> = (state = defaultPlaylistTheme, action: Action) => {
     switch (action.type) {
-        case ActionTypes.GET_VOD_THEME :
+        case ActionTypes.GET_PLAYLIST_THEME :
             return {
                 ...state,
                 ...action.payload
             }
-        case ActionTypes.SAVE_VOD_THEME :
+        case ActionTypes.SAVE_PLAYLIST_THEME :
             return {
                 ...state,
                 ...action.payload
@@ -20,4 +20,4 @@ const reducer: Reducer<VodTheme> = (state = defaultVodTheme, action: Action) => 
     }
 }
 
-export {reducer as VodThemingReducer}
+export {reducer as PlaylistThemingReducer}

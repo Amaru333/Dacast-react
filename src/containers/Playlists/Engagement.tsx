@@ -1,61 +1,61 @@
 import React from 'react';
-import { VodEngagementPage } from '../../pages/Videos/Engagement/Engagement';
+import { PlaylistEngagementPage } from '../../pages/Playlist/Engagement/Engagement';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { VodEngagementSettings } from "../../redux-flow/store/VOD/Engagement/types"
-import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
+import { PlaylistEngagementSettings } from "../../redux-flow/store/Playlists/Engagement/types"
+import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 
-export interface VodEngagementComponentProps {
-    vodEngagementSettings: VodEngagementSettings;
-    getVodEngagementSettings: Function;
-    saveVodEngagementSettings: Function;
-    saveVodAd: Function;
-    createVodAd: Function;
-    deleteVodAd: Function;
+export interface PlaylistEngagementComponentProps {
+    playlistEngagementSettings: PlaylistEngagementSettings;
+    getPlaylistEngagementSettings: Function;
+    savePlaylistEngagementSettings: Function;
+    savePlaylistAd: Function;
+    createPlaylistAd: Function;
+    deletePlaylistAd: Function;
 }
 
-export const VodEngagement = (props: VodEngagementComponentProps) => {
+export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
     React.useEffect(() => {
-        if (!props.vodEngagementSettings) {
-            props.getVodEngagementSettings();
+        if (!props.playlistEngagementSettings) {
+            props.getPlaylistEngagementSettings();
         }
     }, []);
 
     return (
-        props.vodEngagementSettings ?
-            <VodEngagementPage {...props} />
+        props.playlistEngagementSettings ?
+            <PlaylistEngagementPage {...props} />
             : <LoadingSpinner size='medium' color='overlay70' />
     )
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        vodEngagementSettings: state.vod.engagement
+        playlistEngagementSettings: state.playlist.engagement
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodEngagementSettings: () => {
-            dispatch(getVodEngagementSettingsAction());
+        getPlaylistEngagementSettings: () => {
+            dispatch(getPlaylistEngagementSettingsAction());
         },
-        saveVodEngagementSettings: (data: VodEngagementSettings) => {
-            dispatch(saveVodEngagementSettingsAction(data))
+        savePlaylistEngagementSettings: (data: PlaylistEngagementSettings) => {
+            dispatch(savePlaylistEngagementSettingsAction(data))
         },
-        saveVodAd: (data: Ad) => {
-            dispatch(saveVodAdAction(data))
+        savePlaylistAd: (data: Ad) => {
+            dispatch(savePlaylistAdAction(data))
         },
-        createVodAd: (data: Ad) => {
-            dispatch(createVodAdAction(data))
+        createPlaylistAd: (data: Ad) => {
+            dispatch(createPlaylistAdAction(data))
         },
-        deleteVodAd: (data: Ad) => {
-            dispatch(deleteVodAdAction(data))
+        deletePlaylistAd: (data: Ad) => {
+            dispatch(deletePlaylistAdAction(data))
         }
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VodEngagement)
+export default connect(mapStateToProps, mapDispatchToProps)(PlaylistEngagement)
