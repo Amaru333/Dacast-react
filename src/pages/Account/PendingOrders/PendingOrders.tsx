@@ -52,9 +52,9 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 <Text key={'pendingOrderTableItemCount'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.items.length}</Text>,
                 <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.dateCreated}</Text>,
                 <Text key={'pendingOrderTablePrice'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.price}</Text>,
-                <Text key={'pendingOrderTableCurrency'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.currency}</Text>,
-                <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status} />,
-                <Text key={'pendingOrderTableType'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.type}</Text>,
+                <Text key={'pendingOrderTableCurrency'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.currency.toUpperCase()}</Text>,
+                <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)} />,
+                <Text key={'pendingOrderTableType'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.type.charAt(0).toUpperCase() + item.type.slice(1)}</Text>,
                 item.status === "unpaid" ?
                 <div className="right mr2"><Button sizeButton="xs" onClick={() => handlePurchase(item)}>Purchase</Button></div> : null
                 
