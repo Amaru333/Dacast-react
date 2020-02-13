@@ -22,6 +22,7 @@ import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
+import PendingOrders from '../containers/Account/PendingOrders';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -197,6 +198,11 @@ export const AppRoutes: Routes[] = [
                 path: '/account/billing',
                 name: 'Billing',
                 component: Billing
+            },
+            {
+                path: '/account/pendingorders',
+                name: 'Pending Orders',
+                component: PendingOrders
             },
             {
                 path: '/account/invoices',
