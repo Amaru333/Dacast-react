@@ -1,33 +1,33 @@
 import axios from 'axios';
 import { Ad } from '../../Settings/Interactions';
-import { VodEngagementSettings } from './types';
+import { PlaylistEngagementSettings } from './types';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getVodEngagementSettings = () => {
-    return axios.get(urlBase + 'vod-engagements')
+const getPlaylistEngagementSettings = () => {
+    return axios.get(urlBase + 'playlist-engagements')
 }
 
-const saveVodEngagementSettings = (data: VodEngagementSettings) => {
-    return axios.post(urlBase + 'vod-engagements', {data: data})
+const savePlaylistEngagementSettings = (data: PlaylistEngagementSettings) => {
+    return axios.post(urlBase + 'playlist-engagements', {data: data})
 }
 
-const saveVodAd = (data: Ad) => {
-    return axios.put(urlBase + 'vod-engagement-ad', {data: data})
+const savePlaylistAd = (data: Ad) => {
+    return axios.put(urlBase + 'playlist-engagement-ad', {data: data})
 }
 
-const createVodAd = (data: Ad) => {
-    return axios.post(urlBase + 'vod-engagement-ad', {data: data})
+const createPlaylistAd = (data: Ad) => {
+    return axios.post(urlBase + 'playlist-engagement-ad', {data: data})
 }
 
-const deleteVodAd = (data: Ad) => {
-    return axios.delete(urlBase + 'vod-engagement-ad', {data: data})
+const deletePlaylistAd = (data: Ad) => {
+    return axios.delete(urlBase + 'playlist-engagement-ad', {data: data})
 }
 
-export const vodEngagementServices = {
-    getVodEngagementSettings,
-    saveVodEngagementSettings,
-    saveVodAd,
-    createVodAd,
-    deleteVodAd
+export const playlistEngagementServices = {
+    getPlaylistEngagementSettings,
+    savePlaylistEngagementSettings,
+    savePlaylistAd,
+    createPlaylistAd,
+    deletePlaylistAd
 }
