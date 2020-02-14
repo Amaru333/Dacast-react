@@ -224,6 +224,15 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         return node.children;
     }
 
+    const loadChildren = async (node: FolderTreeNode) => {
+        node.loadingStatus = 'loading'
+        setFoldersTree({...foldersTree})
+        node.children = await getChild(node);
+        node.isExpanded = true
+        node.loadingStatus = 'loaded'
+        setFoldersTree({...foldersTree})
+    }
+
     const getNode = async (root: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
         let pathElements = searchedFolder.split('/').filter(f => f)
 
@@ -279,15 +288,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const goToNode = async (searchedFolder: string) => {
         return await getNode(foldersTree, searchedFolder);
-    }
-
-    const loadChildren = async (node: FolderTreeNode) => {
-        node.loadingStatus = 'loading'
-        setFoldersTree({...foldersTree})
-        node.children = await getChild(node);
-        node.isExpanded = true
-        node.loadingStatus = 'loaded'
-        setFoldersTree({...foldersTree})
     }
 
     const renderNode = (node: FolderTreeNode) => {
@@ -385,13 +385,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         {renderList()}
                     </DropdownList>
 
-                <SeparatorHeader className="mx2 inline-block" />         
-                <FoldersFiltering />
-                {
-                    selectedFolder === 'Trash' ?
-                        <Button className='ml2' sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
-                        : null
-                }
+                    <SeparatorHeader className="mx2 inline-block" />         
+                    <FoldersFiltering />
+                    {
+                        selectedFolder === 'Trash' ?
+                            <Button className='ml2' sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
+                            : null
+                    }
                 </div>
             </div>
             <ContentSection>

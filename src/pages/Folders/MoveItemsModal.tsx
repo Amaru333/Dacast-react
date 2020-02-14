@@ -24,9 +24,9 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
 
     React.useEffect(() => {
         props.goToNode(selectedModalFolder)
-        .then((node) => {
-            setCurrentNode(node);
-        })
+            .then((node) => {
+                setCurrentNode(node);
+            })
     }, [selectedModalFolder])
 
     const handleCheckboxChange = (checkedOption: string) => {
