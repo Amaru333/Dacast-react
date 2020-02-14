@@ -29,6 +29,10 @@ const Header = (props: HeaderProps) => {
         setUserOptionsDropdownOpen(!userOptionsDropdownOpen)
     });
 
+    const handleLogOut = () => {
+        localStorage.setItem('userToken', "")
+    }
+
     const handleClick = (name: string) => {
         setSelectedUserOptionDropdownItem(name);
         switch (name) {
@@ -37,7 +41,8 @@ const Header = (props: HeaderProps) => {
             case "Company Profile":
                 return location.href="/account/company"
             case "Log Out":
-                return console.log("logged out")
+                 handleLogOut()
+                return location.href="/login"
             default:
                return
         }

@@ -18,6 +18,7 @@ export const LoginPage = (props: LoginComponentProps) => {
     const submitLogin = (username: string, password: string) => {
         props.login(username, password)
     }
+
     return (
         <LoginContainer>
             <ImageStyle className="mx-auto" src={logo} />
