@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoldersTreeSection, ContentSection, IconStyle, FolderRow } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, IconStyle, FolderRow, SeparatorHeader } from './FoldersStyle';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
@@ -16,6 +16,9 @@ import { getNameFromFullPath } from '../../utils/utils';
 import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 import { FoldersComponentProps } from '../../containers/Folders/Folders';
+import { InputTags } from '../../components/FormsComponents/Input/InputTags';
+import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../Playlist/List/BulkModals';
 
 const TableData: FolderAsset[] = [
     {
@@ -85,11 +88,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     let children = folderTreeConst.map(path => ({
         isExpanded: false,
+        subfolders: 2,
+        nbChildren: 2,
         fullPath: '/' + path + '/',
         loadingStatus: 'not-loaded',
         children: {}
     }))
-    .reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
+        .reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
 
     let rootNode: FolderTreeNode = {
         isExpanded: true,
@@ -103,11 +108,39 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [selectedFolder, setSelectedFolder] = React.useState<string>('Library');
-    const [foundFolder, setFoundFolder] = React.useState<FolderTreeNode>(null);
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [checkedItems, setCheckedItems] = React.useState<string[]>([])
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
     const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename' | 'New Folder'>('New Folder');
+
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
+    const [bulkActionsDropdownIsOpened, setBulkActionsDropdownIsOpened] = React.useState<boolean>(false);
+
+    const bulkActions = [
+        { name: 'Online/Offline', function: setBulkOnlineOpen },
+        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Change Theme', function: setBulkThemeOpen },
+        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Delete', function: setBulkDeleteOpen },
+    ]
+
+    const renderList = () => {
+        return bulkActions.map((item, key) => {
+            return (
+                <DropdownItem
+                    isSingle
+                    key={item.name}
+                    className={key === 1 ? 'mt1' : ''}
+                    isSelected={false}
+                    onClick={() => item.function(true)}>
+                    <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
+                </DropdownItem>
+            )
+        })
+    }
 
     React.useEffect(() => {}, [selectedFolder])
 
@@ -165,11 +198,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         return new Promise((resolve) => setTimeout(resolve, 1000))
     }
 
-    const makeNode = (parent: FolderTreeNode, name: string): FolderTreeNode => {
+    const makeNode = (parent: FolderTreeNode, name: string, subfolders: number): FolderTreeNode => {
         return {
             children: {},
             nbChildren: 10,
-            subfolders: 10,
+            subfolders: subfolders,
             fullPath: parent.fullPath + name + '/',
             isExpanded: false,
             loadingStatus: 'not-loaded'
@@ -185,45 +218,67 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         node.children = {
-            [name1]: makeNode(node, name1),
-            [name2]: makeNode(node, name2)
+            [name1]: makeNode(node, name1, 10),
+            [name2]: makeNode(node, name2, 0)
         }
         return node.children;
     }
 
-    const findNodeTest = (searchedFolder: string) => {
-        findNode(foldersTree, searchedFolder);
-        return foundFolder;
+    const getNode = async (root: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
+        let pathElements = searchedFolder.split('/').filter(f => f)
+
+        if(pathElements.length === 0) {
+            return root
+        }
+        let currentNode = root
+        while(currentNode.fullPath !== searchedFolder) {
+
+            if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
+                await loadChildren(currentNode)
+            }
+
+            let pathElement = pathElements.shift()
+            let foundChild = currentNode.children[pathElement]
+            if(!foundChild) {
+                throw new Error('path doesnt exist: ' + pathElement + ' (of ' + searchedFolder + ')')
+            }
+            currentNode = foundChild
+        }
+        if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
+            console.log('node has no children, fecthing')
+            await loadChildren(currentNode)
+        }
+        return currentNode
     }
 
-    const findNode = async (node: FolderTreeNode, searchedFolder: string) => {
-        if(node !== null) {
-            if(node.fullPath === searchedFolder) {
-                setFoundFolder(node);
-                return node;              
-            } else {
-                let splitNodePath = node.fullPath.split('/');
-                if(!searchedFolder)  {searchedFolder = '/';}
-                const splitSelectedPath =  searchedFolder.split('/');
-                if(splitNodePath[splitNodePath.length - 1] === "") {splitNodePath.pop()}
-                if(splitNodePath.every((name, index) => name === splitSelectedPath[index])) {
-                   if(Object.entries(node.children).length !== 0) {
-                    Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
-                   } else {
-                        node.children = await getChild(node);
-                        setFoldersTree({...foldersTree})
-                        setFoundFolder(node);
-                        return node;
-                   }
-                } else {
-                    if(node.fullPath === '/') {
-                        Object.values(node.children).map((childNode) => findNode(childNode, searchedFolder))
-                    } else {
-                        return
-                    }
-                }
-            }
-        }
+    // const findNode3 = async (node: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
+    //     if(node.fullPath === searchedFolder) {
+    //         if(Object.keys(node.children).length === 0 && node.subfolders !== 0) {
+    //             console.log('node has no children, fecthing')
+    //             await loadChildren(node)
+    //         }
+    //         return node
+    //     }
+    //     if(!searchedFolder.startsWith(node.fullPath)) {
+    //         throw new Error('searching for a folder with a node of a different branch of the folder structure')
+    //     }
+
+    //     if(Object.keys(node.children).length === 0 && node.subfolders !== 0) {
+    //         console.log('node has no children, fecthing')
+    //         await loadChildren(node)
+    //     }
+        
+    //     let leftoverSearch = searchedFolder.substr(node.fullPath.length)
+    //     let pathElement = leftoverSearch.split('/').filter(f => f)[0]
+    //     let foundChild = node.children[pathElement]
+    //     if(!foundChild) {
+    //         throw new Error('path doesnt exist: ' + pathElement + ' (of ' + searchedFolder + ')')
+    //     }
+    //     return await findNode3(foundChild, searchedFolder)
+    // }
+
+    const goToNode = async (searchedFolder: string) => {
+        return await getNode(foldersTree, searchedFolder);
     }
 
     const loadChildren = async (node: FolderTreeNode) => {
@@ -252,7 +307,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     node.isExpanded = !node.isExpanded
                     setFoldersTree({...foldersTree})
                 }}>
-                    <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
+                    {
+                        node.subfolders > 0 ? 
+                            <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
+                            : null
+
+                    }
                     {getNameFromFullPath(node.fullPath)}
                     {node.loadingStatus === 'loading' ? <LoadingSpinner size='small' color='red'/> : null}
                 </FolderRow>
@@ -274,6 +334,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setNewFolderModalOpened(true);
                 break;
             case 'Move':
+                
                 setMoveItemsModalOpened(true);
                 break;
             case 'New Folder':
@@ -287,29 +348,51 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-
     return (
         <div>
             <div className='mb2 col col-12 flex items-center'>
                 <div className='col col-10 flex items-center'>
-                    <div className='col col-2'>
+                    <div className='col col-2 mr3'>
                         <div className='col col-2'>
                             <Icon onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
                         </div>
-                        <Button className='col col-5' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                        <Button onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
                             New Folder
                         </Button>
                     </div>
-                    <div className='col col-9'>
-                        <BreadcrumbDropdown 
-                            options={selectedFolder} 
-                            callback={(value: string) => setSelectedFolder(value)} 
-                            dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} 
-                            dropdownCallback={(value: string) => {handleBreadcrumbDropdownOptions(value)}} 
-                        />
+                    <div className='col col-6 flex-auto items-center'>
+                        <div className='col col-12 pl3 flex flex-auto items-center '>
+                            <BreadcrumbDropdown 
+                                options={selectedFolder} 
+                                callback={(value: string) => setSelectedFolder(value)} 
+                                dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} 
+                                dropdownCallback={(value: string) => {handleBreadcrumbDropdownOptions(value)}} 
+                            />
+                            <SeparatorHeader className={(selectedFolder.split('/').length > 1 ? '' : 'hide ') + "mx2 inline-block"} />         
+                            <IconStyle coloricon='gray-3'>search</IconStyle>
+                            <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
+                        </div>
                     </div>
-                </div>          
+
+                </div>
+                <div className="relative flex justify-end items-center col col-3">                        
+                    {checkedItems.length > 0 ?
+                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
+                        : null
+                    }
+                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                    <DropdownList style={{width: 167, left: 16, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                        {renderList()}
+                    </DropdownList>
+
+                <SeparatorHeader className="mx2 inline-block" />         
                 <FoldersFiltering />
+                {
+                    selectedFolder === 'Trash' ?
+                        <Button className='ml2' sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
+                        : null
+                }
+                </div>
             </div>
             <ContentSection>
                 <FoldersTreeSection className={foldersTreeHidden ? 'hide' : 'col col-2'}>
@@ -335,10 +418,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
-                        <MoveItemModal initialSelectedFolder={selectedFolder} findNode={findNodeTest} toggle={setMoveItemsModalOpened}  />
+                        <MoveItemModal initialSelectedFolder={selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened}  />
                         : null
                 }
             </Modal>
+            <OnlineBulkForm items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <ThemeBulkForm themes={[]} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
         </div>
     )
 }

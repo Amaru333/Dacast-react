@@ -25,15 +25,15 @@ export const Breadcrumb = (props: {options: string; callback: Function}) => {
                         <div className='flex items-center'>
                             <span onClick={() => props.callback('/')}><Text size={14} weight='med' color='dark-violet'>All files</Text></span>
                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
-                         </div>
+                        </div>
                          <DropdownButton id='breadcrumbDropdownOptions' list={options.filter((value, i) => i !== 0 && i!== options.length - 1 && i !== options.length - 2)} callback={(value: string) => props.callback(props.options.split(value)[0] + value + '/')}  />
                          <div className='flex items-center'>
-                         <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
-                            <span onClick={() => props.callback(props.options.split(options[options.length - 2]) + options[options.length - 2] +'/')}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
-                            <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
+                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
+                             <span onClick={() => props.callback(props.options.split(options[options.length - 2]) + options[options.length - 2] +'/')}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
+                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
                          </div>
                          <div className='flex items-center'>
-                            <span onClick={() => props.callback(props.options)}><Text size={14} weight='reg' color='gray-1'>{options[options.length - 1]}</Text></span>
+                             <span onClick={() => props.callback(props.options)}><Text size={14} weight='reg' color='gray-1'>{options[options.length - 1]}</Text></span>
                          </div>
                     </>
                 )

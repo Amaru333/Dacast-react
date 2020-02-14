@@ -66,7 +66,7 @@ export const FoldersFiltering = (props: {}) => {
 
     return (
         <>
-            <div className="col col-2 right">
+            <div className="right">
                 <Button buttonColor="blue" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
                     <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
@@ -83,10 +83,10 @@ export const FoldersFiltering = (props: {}) => {
                         onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
                         id='folderFilterOffline' label="Offline" labelWeight="reg" />
                     <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.processing } } }) }}
+                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.processing } } }) }}
                         id='folderFilterProcessing' label="Processing" labelWeight="reg" />
                     <InputCheckbox className="mb2" defaultChecked={filteringState.status.deleted}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.deleted } } }) }}
+                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, deleted: !prevState.status.deleted } } }) }}
                         id='folderFilterDeleted' label="Deleted" labelWeight="reg" />
                 </div>
                 <div className="mb3" id="folderFilterFeatures">

@@ -18,6 +18,7 @@ export const InputTags = (props: TagProps) => {
         const newTags = [ ...tags ];
         newTags.splice(i, 1);
         setTags(newTags);
+        props.callback(newTags)
     }
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +32,7 @@ export const InputTags = (props: TagProps) => {
                 return;
             }
             setTags([...tags, val]);
+            props.callback([...tags, val])
             inputRef.current.value = "";
         } else if (e.key === 'Backspace' && !val) {
             removeTag(tags.length - 1);

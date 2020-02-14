@@ -23,7 +23,8 @@ export interface FolderTreeNode {
 export interface FolderAsset {
     id: string;
     name: string;
-    contentType: 'playlist' | 'vod';
+    thumbnail?: string;
+    contentType: 'playlist' | 'vod' | 'live' | 'folder';
     created: string;
     duration: string;
     features: string[];

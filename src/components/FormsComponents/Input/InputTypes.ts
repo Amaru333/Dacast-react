@@ -91,6 +91,7 @@ export interface SliderSpecificProps {
 export interface TagSpecificProps {
     defaultTags?: string[];
     noBorder?: boolean;
+    callback?: Function;
 }
 
 export type TagProps = TagSpecificProps & InputProps;

@@ -17,7 +17,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
     });
 
     useOutsideAlerter(hiddenFoldersDropdownListRef, () => {
-        setBreadcrumbDropdownIsOpened(!hiddenFoldersDropdownIsOpened)
+        setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)
     });
 
 
@@ -41,9 +41,10 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/');
+        const filteredListLength = options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).length
         return (
             options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).map((name, i) => {
-                return (
+                return i < filteredListLength - 1 ? (
                     <DropdownItem 
                         isSingle
                         key={name + i} 
@@ -53,7 +54,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                         onClick={() => props.callback(props.options.split(name)[0] + name + '/')}> 
                         <DropdownItemText size={14} weight='reg' color='gray-1'>{name}</DropdownItemText>
                     </DropdownItem>
-                )                
+                ) : null               
             })
         )
     }
@@ -94,7 +95,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                 const options = props.options.split('/');
                 console.log(props.options.split(options[options.length - 2]))
                 return ( 
-                    <div className='col col-12 flex'>
+                    <div className='flex'>
                         <div className='flex items-center'>
                             <span className='pointer' onClick={() => props.callback('/')}><Text size={14} weight='med' color='dark-violet'>All files</Text></span>
                             <Text size={14} weight='reg'> / </Text>
@@ -129,7 +130,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     }
     return (
-        <div className='flex col col-12 my2'>
+        <div className='flex my2'>
             {renderOptions()}
         </div>
     )

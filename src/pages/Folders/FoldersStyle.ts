@@ -8,8 +8,8 @@ export const FoldersTreeSection = styled.div`
 `
 export const FolderRow = styled.div<{isSelected: boolean}>`
     ${props => props.isSelected && css`
-        background-color: ${props.theme.colors['violet10']}
-        color: ${props.theme.colors['dark-violet']}
+        background-color: ${props.theme.colors['violet10']};
+        color: ${props.theme.colors['dark-violet']};
     `}
     cursor: pointer;
 `
@@ -23,6 +23,15 @@ export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
     color: ${props => props.theme.colors[props.coloricon]};
 `
 
-export const ModalItemFolderRow = styled.div`
-    border: 1px solid ${props => props.theme.colors['gray-7']}
+export const ModalItemFolderRow = styled.div<{selected: boolean}>`
+    border: 1px solid ${props => props.theme.colors['gray-7']};
+    ${props => props.selected && css`
+        background-color: ${props.theme.colors['violet10']};
+    `}
+`
+
+export const SeparatorHeader = styled.div<{}>`
+    width:1px;
+    height: 33px;
+    background-color: ${props => props.theme.colors["gray-7"]} ;
 `
