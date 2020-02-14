@@ -11,7 +11,6 @@ export interface Login {
 
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
-        console.log('action')
         await loginService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data} );

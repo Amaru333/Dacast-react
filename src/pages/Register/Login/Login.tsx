@@ -16,7 +16,7 @@ export const LoginPage = (props: LoginComponentProps) => {
     const [password, setPassword] = React.useState<string>('');
 
     const submitLogin = (username: string, password: string) => {
-        props.login({username, password})
+        props.login(username, password)
     }
     return (
         <LoginContainer>
