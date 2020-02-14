@@ -2,18 +2,9 @@ import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
+import Engagement from '../containers/Playlists/Engagement';
+import Theming from '../containers/Playlists/Theming';
 
-const paywallPlaceholder = () => {
-    return (
-        <h1>Live Paywall</h1>
-    )
-}
-
-const advertisingPlaceholder = () => {
-    return (
-        <h1>Live Advertising</h1>
-    )
-}
 
 const themePlaceholder = () => {
     return (
@@ -40,13 +31,13 @@ export const PlaylistSubRoutes: Routes[] = [
     },
     {
         path: '/engagement',
-        name: 'engagement',
-        component: advertisingPlaceholder
+        name: 'Engagement',
+        component: Engagement
     },
     {
         path: '/theme',
         name: 'Theme',
-        component: themePlaceholder
+        component: Theming
     },
     {
         path: '/security',

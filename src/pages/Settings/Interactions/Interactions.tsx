@@ -9,11 +9,11 @@ import { Modal } from '../../../components/Modal/Modal';
 import { MailCatcherModal } from  './MailCatcherModal';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { TextStyle, IconContainer } from './InteractionsStyle';
-import { NewAdModal } from './NewAdModal';
+import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
+import { NewAdModal } from './NewAdModal';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -152,7 +152,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         <div>
             <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
             <Card className='my2'>
-                <Text className="py2" size={20} weight='med'>Advertising</Text>
+                <Text className="pb2" size={20} weight='med'>Advertising</Text>
                 <Toggle id='advertisingEnabled' defaultChecked={interactionInfos.adEnabled} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 {
                     interactionInfos.adEnabled ?
@@ -168,8 +168,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 }
             </Card>
 
-            <Card className='my1'>
-                <TextStyle className="py2" > <Text size={20} weight='med'>Mail Catcher</Text></TextStyle>
+            <Card className='my2'>
+                <TextStyle className="pb2" > <Text size={20} weight='med'>Mail Catcher</Text></TextStyle>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Icon>info_outlined</Icon>
@@ -181,8 +181,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Table className='my2' id='mailCatcherTable' header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
             </Card>
 
-            <Card className='my1'>
-                <TextStyle className="py2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
+            <Card className='my2'>
+                <TextStyle className="pb2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Input 
@@ -201,7 +201,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card>
 
             <Card className='my2'>
-                <Text className="py2" size={20} weight='med'>End Screen Text</Text>
+                <Text className="pb2" size={20} weight='med'>End Screen Text</Text>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Input 

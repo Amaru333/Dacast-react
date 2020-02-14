@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
@@ -19,6 +20,8 @@ import Transactions from '../containers/Paywall/Transactions';
 import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
+import PaywallTheming from '../containers/Paywall/Theming';
+import PendingOrders from '../containers/Account/PendingOrders';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -122,6 +125,11 @@ export const AppRoutes: Routes[] = [
                 component: Payout
             },
             {
+                path: '/paywall/theming',
+                name: 'Theming',
+                component: PaywallTheming
+            },
+            {
                 path: '/paywall/settings',
                 name: 'Settings',
                 component: PaywallSettings
@@ -198,9 +206,14 @@ export const AppRoutes: Routes[] = [
                 component: Billing
             },
             {
+                path: '/account/pendingorders',
+                name: 'Pending Orders',
+                component: PendingOrders
+            },
+            {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: functionTest1
+                component: Invoices
             }
         ]
     }
