@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { DropdownList } from '../FormsComponents/Dropdown/DropdownStyle';
 
 export const HeaderStyle = styled.div`
     border-bottom: 1px solid #D1DBE8;
@@ -24,5 +25,13 @@ export const IconContainerStyle = styled.div`
 export const HeaderIconStyle = styled.div`
     top: 50%;
     padding: 8px;
-    color: ${props => props.theme.colors["gray-1"]}
+    color: ${props => props.theme.colors["gray-1"]};
+`
+
+export const UserOptionsDropdownList = styled(DropdownList)`
+width: 144px;
+left: calc(100% - 194px);
+& > li {
+    padding: 0 0 0 8px;
+}
 `
