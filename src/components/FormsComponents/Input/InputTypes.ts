@@ -92,6 +92,7 @@ export interface TagSpecificProps {
     defaultTags?: string[];
     noBorder?: boolean;
     callback?: Function;
+    oneTag?: boolean;
 }
 
 export type TagProps = TagSpecificProps & InputProps;

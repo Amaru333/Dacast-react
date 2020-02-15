@@ -8,7 +8,7 @@ const getFolders = (folderPath: string) => {
 }
 
 const getFolderContent = (folderPath: string) => {
-    return axios.get(urlBase + 'folder/content?path=' + folderPath)
+    return axios.get(urlBase + 'folder-content?path=' + folderPath)
 }
 
 const moveItemsToFolder = (foldersPath: string[], items: FolderAsset[]) => {

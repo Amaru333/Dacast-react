@@ -5,6 +5,7 @@ import { ColorsApp } from '../../styled/types';
 export const FoldersTreeSection = styled.div`
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 `
 export const FolderRow = styled.div<{isSelected: boolean}>`
     ${props => props.isSelected && css`
@@ -21,6 +22,26 @@ export const ContentSection = styled.div`
 
 export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
     color: ${props => props.theme.colors[props.coloricon]};
+`
+
+export const IconGreyContainer = styled.div<{}>`
+position: relative;
+z-index: 1;
+color :  ${props => props.theme.colors["gray-3"]} ;
+display: inline-flex;
+height: 24px;
+width: 24px;
+align-items: center;
+&:before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    z-index: -1;
+    height: 24px;
+    position: absolute;
+    border-radius: 12px;
+    background-color: ${props => props.theme.colors["gray-8"]} ;
+}
 `
 
 export const ModalItemFolderRow = styled.div<{selected: boolean}>`

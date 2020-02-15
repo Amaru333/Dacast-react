@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from '../../components/Typography/Text';
 import { IconStyle } from './FoldersStyle';
-import { DropdownButton } from '../../components/FormsComponents/Dropdown/DropdownButton';
 import { useOutsideAlerter } from '../../utils/utils';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 
@@ -58,15 +57,15 @@ export const Breadcrumb = (props: {options: string; callback: Function}) => {
                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
                         </div>
                         <div className='relative pointer'>
-                                <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
-                                <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
-                                    {renderHiddenFoldersDropdownList()}
-                                </DropdownList>                       
-                            </div>                         <div className='flex items-center'>
-                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
-                             <span onClick={() => props.callback(props.options.split(options[options.length - 2]) + options[options.length - 2] +'/')}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
-                             <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
-                         </div>
+                            <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
+                            <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
+                                {renderHiddenFoldersDropdownList()}
+                            </DropdownList>                       
+                        </div>                         <div className='flex items-center'>
+                            <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
+                            <span onClick={() => props.callback(props.options.split(options[options.length - 2]) + options[options.length - 2] +'/')}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
+                            <IconStyle coloricon='gray-1'>keyboard_arrow_right</IconStyle>
+                        </div>
                          <div className='flex items-center'>
                              <span onClick={() => props.callback(props.options)}><Text size={14} weight='reg' color='gray-1'>{options[options.length - 1]}</Text></span>
                          </div>

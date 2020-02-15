@@ -4,10 +4,10 @@ import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersState } from '../../redux-flow/store/Folders/types';
+import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 export interface FoldersComponentProps {
-    folderData: FoldersState;
+    folderData: FoldersInfos;
     getFolders: Function;
     getFolderContent: Function;
     moveItemsToFolder: Function;
@@ -21,7 +21,11 @@ export interface FoldersComponentProps {
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData) {
-            props.getFolders('/');
+            const wait = async () => {
+                await props.getFolderContent('/folder1/')
+                //await props.getFolders('/');
+            }
+            wait()
         }
     }, [])
     return (
@@ -34,7 +38,7 @@ const Folders = (props: FoldersComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders
+        folderData: state.folders.data
     };
 }
 
@@ -44,7 +48,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getFoldersAction(folderPath));
         },
         getFolderContent: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath))
+            dispatch(getFolderContentAction(folderPath))
         },
         moveItemsToFolder: (folderPath: string[], items: FolderAsset[]) => {
             dispatch(moveItemsToFolderAction(folderPath, items))

@@ -71,7 +71,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                                     <span className='pointer' onClick={() => props.callback(props.options.split(option)[0] + option + '/')}>
                                         <Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 ? 'All files' : option}</Text>
                                     </span>
-                                    <Text size={14} weight='reg'> / </Text>
+                                    <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                                 </>
                                 : 
                                 <>
@@ -98,7 +98,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                     <div className='flex'>
                         <div className='flex items-center'>
                             <span className='pointer' onClick={() => props.callback('/')}><Text size={14} weight='med' color='dark-violet'>All files</Text></span>
-                            <Text size={14} weight='reg'> / </Text>
+                            <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                             <div className='relative pointer'>
                                 <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
                                 <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
@@ -109,9 +109,9 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                         </div>
                       
                         <div className='flex items-center'>
-                            <Text size={14} weight='reg'> / </Text>                            
+                            <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>                            
                             <span className='pointer' onClick={() => {props.callback(props.options.split(options[options.length - 3])[0] + options[options.length - 3] +'/')}}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 3]}</Text></span>
-                            <Text size={14} weight='reg'> / </Text>
+                            <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                         </div>
                         <div className='flex items-center relative'>
                             <div className='flex items-center pointer' onClick={() => setBreadcrumbDropdownIsOpened(!breadcrumbDropdownIsOpened)}>
