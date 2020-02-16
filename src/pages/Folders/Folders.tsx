@@ -20,7 +20,7 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../components/F
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../Playlist/List/BulkModals';
 import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
-import { addBillingPageExtrasAction } from '../../redux-flow/store/Account/Billing';
+import { Badge } from '../../components/Badge/Badge';
 
 const folderTreeConst = [
     'folder1',
@@ -33,7 +33,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     let children = folderTreeConst.map(path => ({
         isExpanded: false,
         subfolders: 2,
-        nbChildren: 2,
+        nbChildren: 64,
         fullPath: '/' + path + '/',
         loadingStatus: 'not-loaded',
         children: {}
@@ -92,8 +92,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             )
         })
     }
-
-    React.useEffect(() => {console.log(folderAssetSelected)}, [folderAssetSelected])
 
     const foldersContentTableHeader = () => {
         return [
@@ -349,7 +347,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             : null
 
                     }
-                    {getNameFromFullPath(node.fullPath)}
+                    <Text size={14} weight='reg' color={node.fullPath === selectedFolder ? 'dark-violet' : 'gray-1'}>{getNameFromFullPath(node.fullPath)}</Text>
                 </FolderRow>
                 <div>
                     {
@@ -418,13 +416,15 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <ContentSection>
                 <FoldersTreeSection className={foldersTreeHidden ? 'hide' : 'col col-2 mr2'}>
                     <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => setSelectedFolder("Library")}>
-                        Library
+                        <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => setSelectedFolder("Unsorted")}>
-                        Unsorted
+                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
+                        <Badge number={foldersTree.children['Unsorted'] ? foldersTree.children['Unsorted'].nbChildren : 6} color='gray-5'/>
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => setSelectedFolder("Trash")}>
-                        Trash
+                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
+                        <Badge number={foldersTree.children['Trash'] ? foldersTree.children['Trash'].nbChildren : 54} color='gray-5'/>
                     </FolderRow>
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
@@ -439,7 +439,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
-                        <MoveItemModal initialSelectedFolder={selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened}  />
+                        <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened}  />
                         : null
                 }
             </Modal>
