@@ -8,6 +8,8 @@ import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
 import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
 import { TitleReducer } from './Title/logic';
 import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
+import { FoldersState, foldersInitialState } from './Folders/types';
+import { FoldersReducer } from './Folders/reducer';
 
 
 export interface ApplicationState {
@@ -19,6 +21,7 @@ export interface ApplicationState {
     live: LiveState;
     playlist: PlaylistState;
     paywall: PaywallState;
+    folders: FoldersState;
     title: string;
 }
 
@@ -31,6 +34,7 @@ export const globalDefaultState: ApplicationState = {
     playlist: playlistInitialState,
     live: liveInitialState,
     paywall: paywallInitialState,
+    folders: foldersInitialState,
     title: ""
 };
 
@@ -44,6 +48,7 @@ export const createRootReducer = () =>
         live: LiveReducer,
         title: TitleReducer,
         playlist: PlaylistReducer,
-        paywall: PaywallReducer
+        paywall: PaywallReducer,
+        folders: FoldersReducer
     },
     );

@@ -10,6 +10,7 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Folders from '../containers/Folders/Folders';
 import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
@@ -24,13 +25,6 @@ import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
-
-
-const functionTest1 = () => {
-    return (
-        <LoadingSpinner size="small" color="dark-violet" />
-    )
-}
 
 const functionTest2 = () => {
     return (
@@ -61,7 +55,7 @@ export const AppRoutes: Routes[] = [
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        component: functionTest1
+        component: Folders
     },
 
     {

@@ -18,6 +18,10 @@ export const InputTags = (props: TagProps) => {
         const newTags = [ ...tags ];
         newTags.splice(i, 1);
         setTags(newTags);
+        if(props.callback) {
+            props.callback(newTags)
+        }
+
     }
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +35,9 @@ export const InputTags = (props: TagProps) => {
                 return;
             }
             setTags([...tags, val]);
+            if(props.callback) {
+                props.callback([...tags, val])
+            }
             inputRef.current.value = "";
         } else if (e.key === 'Backspace' && !val) {
             removeTag(tags.length - 1);
@@ -60,9 +67,15 @@ export const InputTags = (props: TagProps) => {
                                 </TagButtonStyle>
                             </TagStyle>
                         ))}
-                        <li>
-                            <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
-                        </li>
+                        {
+                            props.oneTag && tags.length === 1 ?
+                                null
+                                :
+                                <li>
+                                    <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                                </li>
+                        }
+
                     </TagListStyle>
                 </TagsWrapper>
                 {icon ? <IconStyle disabled={props.disabled ? true : false}>
