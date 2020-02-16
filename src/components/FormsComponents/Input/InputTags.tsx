@@ -18,6 +18,10 @@ export const InputTags = (props: TagProps) => {
         const newTags = [ ...tags ];
         newTags.splice(i, 1);
         setTags(newTags);
+        if(props.callback) {
+            props.callback(newTags)
+        }
+
     }
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +35,9 @@ export const InputTags = (props: TagProps) => {
                 return;
             }
             setTags([...tags, val]);
+            if(props.callback) {
+                props.callback([...tags, val])
+            }
             inputRef.current.value = "";
         } else if (e.key === 'Backspace' && !val) {
             removeTag(tags.length - 1);
@@ -39,12 +46,12 @@ export const InputTags = (props: TagProps) => {
 
     
 
-    var { label, icon, help, isError, className, ...other } = props;
+    var { label, icon, help, isError, className, noBorder, style, ...other } = props;
 
     return (
-        <ContainerStyle className={className} >
+        <ContainerStyle style={style} className={className} >
             {label ? <LabelStyle disabled={props.disabled ? true : false} > <Text color={props.disabled ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
-            <TagsContainer>
+            <TagsContainer noBorder={noBorder}>
                 <TagsWrapper>
                     <TagListStyle>
                         { tags.map((tag, i) => (
@@ -60,9 +67,15 @@ export const InputTags = (props: TagProps) => {
                                 </TagButtonStyle>
                             </TagStyle>
                         ))}
-                        <li>
-                            <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
-                        </li>
+                        {
+                            props.oneTag && tags.length === 1 ?
+                                null
+                                :
+                                <li>
+                                    <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
+                                </li>
+                        }
+
                     </TagListStyle>
                 </TagsWrapper>
                 {icon ? <IconStyle disabled={props.disabled ? true : false}>
@@ -76,4 +89,4 @@ export const InputTags = (props: TagProps) => {
     )
 }
 
-InputTags.defaultProps = { isError: false, disabled: false, required: false, defaultTags: [] }
+InputTags.defaultProps = { isError: false, disabled: false, required: false, defaultTags: [], noBorder: false }

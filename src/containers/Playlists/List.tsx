@@ -6,10 +6,13 @@ import { connect } from 'react-redux';
 import { PlaylistListState } from '../../redux-flow/store/Playlists/List/types';
 import { getPlaylistListAction, Action } from '../../redux-flow/store/Playlists/List/actions';
 import { PlaylistListPage } from '../../pages/Playlist/List/PlaylistList';
+import { getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 
 export interface PlaylistListContainerProps {
     playlistList: PlaylistListState;
     getPlaylistList: Function;
+    themeList: ThemesData;
+    getThemingList: Function;
 }
 
 const PlaylistList = (props: PlaylistListContainerProps) => {
@@ -20,16 +23,20 @@ const PlaylistList = (props: PlaylistListContainerProps) => {
         if (!props.playlistList) {
             props.getPlaylistList();
         }
+        if(!props.themeList) {
+            props.getThemingList();
+        }
     }, [])
 
-    if (!props.playlistList) {
+    console.log(props);
+    if (!props.playlistList || !props.themeList) {
         return (
             <LoadingSpinner size="medium" color="violet" />
         )
     } else {
         return (
             <>
-                <PlaylistListPage history={props.history} playlistItems={props.playlistList.items}  />
+                <PlaylistListPage history={props.history} themesList={props.themeList.themes} playlistItems={props.playlistList.items}  />
             </>
         )
     }
@@ -37,7 +44,8 @@ const PlaylistList = (props: PlaylistListContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistList: state.playlist.list
+        playlistList: state.playlist.list,
+        themeList: state.settings.theming
     };
 }
 
@@ -45,7 +53,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getPlaylistList: () => {
             dispatch(getPlaylistListAction());
-        }
+        },
+        getThemingList: () => {
+            dispatch(getThemingListAction());
+        },
     };
 }
 
