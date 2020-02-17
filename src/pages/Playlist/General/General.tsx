@@ -131,24 +131,24 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedLinks">
-                        <Icon onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)} className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
-                        <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
-                        <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                            {advancedLinksOptions.map((item) => {
-                                return (
-                                    <LinkBoxContainer className="col col-6">
-                                        <LinkBoxLabel>
-                                            <Text size={14} weight="med">{item.label}</Text>
-                                        </LinkBoxLabel>
-                                        <LinkBox>
-                                            <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        </LinkBox>
-                                    </LinkBoxContainer>
+                    <Icon onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)} className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                    <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
+                    <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                        {advancedLinksOptions.map((item) => {
+                            return (
+                                <LinkBoxContainer className="col col-6">
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">{item.label}</Text>
+                                    </LinkBoxLabel>
+                                    <LinkBox>
+                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                    </LinkBox>
+                                </LinkBoxContainer>
 
-                                )
-                            })}
-                        </AdvancedLinksContainer>
-                    </div>
+                            )
+                        })}
+                    </AdvancedLinksContainer>
+                </div>
     
                 <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
             </Card>

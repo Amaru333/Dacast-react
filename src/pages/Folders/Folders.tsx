@@ -396,13 +396,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 : null
                             }
                             <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList ref={bulkActionsDropdownListRef} style={{width: 167, left: 138, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                            <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{width: 167, left: 138, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
 
                             <SeparatorHeader className="mx2 inline-block" /> 
                         </>
-                        : null 
+                            : null 
                     }                     
        
                     <FoldersFiltering />

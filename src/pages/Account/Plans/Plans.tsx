@@ -11,6 +11,8 @@ import {isMobile} from 'react-device-detect';
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
 import { Plans, Plan } from '../../../containers/Account/Plans';
+import { ColorsApp } from '../../../styled/types';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PlansPage = (props: {plans: Plans}) => {
     const textClassName = 'py1';
@@ -27,19 +29,72 @@ export const PlansPage = (props: {plans: Plans}) => {
             {
                 !isMobile ?
                     <AllowancesList className={marginBlocks}>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Data</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Storage</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Encoding</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>PLayer SDKs</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>API</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Multi-user Access</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>24/7 Phone Support</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>AES for VOD</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>China</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Reseller Portal</Text>
-                        <Text className={textClassName} size={14} weight='med' color='gray-1'>Cname</Text>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconData' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconData'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Data</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconStorage' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconStorage'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Storage</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconEncoding' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconEncoding'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Encoding</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconPaywall' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconPaywall'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
+                        </div>
+
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconPlayerSdks' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconPlayerSdks'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Player SDKs</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconApi' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconApi'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>API</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconMultiUserAccess' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconMultiUserAccess'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Multi-user Access</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconM3u8' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconM3u8'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconPhoneSupport' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconPhoneSupport'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>24/7 Phone Support</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconAes' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconAes'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>AES for VOD</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconChina' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconChina'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>China</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}} id='iconReseller' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconReseller'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Reseller Portal</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconCname' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconCname'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Cname</Text>
+                        </div>
                     </AllowancesList>
                     : null
             }
@@ -51,27 +106,30 @@ export const PlansPage = (props: {plans: Plans}) => {
                             <Text size={16} weight='reg' color='gray-3'>Developer</Text>
                             <Card>
                                 <PlanInfosContainer isMobile={isMobile}>
-                                    <Text className={textClassName} size={32} weight='med' color='gray-1'>$21 pm</Text>
+                                    <div className='flex items-end'>
+                                        <Text className={textClassName} size={32} weight='med' color='gray-1'>$21</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm</Text>
+                                    </div>                                    
                                     <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>100 GB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pm</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
                                     </div>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.developerPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
                             </Card>
@@ -80,28 +138,30 @@ export const PlansPage = (props: {plans: Plans}) => {
                             <Text size={16} weight='reg' color='gray-3'>Event</Text>
                             <Card>
                                 <PlanInfosContainer isMobile={isMobile}>
-                                    <Text className={textClassName} size={32} weight='med' color='gray-1'>$63 pm</Text>
-                                    <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
+                                        <Text className={textClassName} size={32} weight='med' color='gray-1'>$63</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm</Text>
+                                    </div>                                    <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>5 TB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
                                     </div>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
                                     <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
@@ -111,28 +171,31 @@ export const PlansPage = (props: {plans: Plans}) => {
                             <Text size={16} weight='reg' color='gray-3'>Scale</Text>
                             <Card>
                                 <PlanInfosContainer isMobile={isMobile}>
-                                    <Text className={textClassName} size={32} weight='med' color='gray-1'>$250 pm*</Text>
+                                    <div className='flex items-end'>
+                                        <Text className={textClassName} size={32} weight='med' color='gray-1'>$250</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm*</Text>
+                                    </div>
                                     <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>2 TB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>1 TB</Text>
-                                    <div className='flex'>
+                                    <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>1 TB</Text>
                                         <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
                                     </div>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <IconStyle className={textClassName}>check</IconStyle>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Text className={textClassName} size={16} weight='reg' color='gray-1'>Add-On</Text>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
                                     <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
@@ -143,12 +206,12 @@ export const PlansPage = (props: {plans: Plans}) => {
                             <Card backgroundColor='violet10'>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <Text className={textClassName} size={32} weight='med' color='gray-1'>Let's chat</Text>
-                                    <>
+                                    <div className='flex flex-column mt4 pt4'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>Do you want a custom plan that is right for you and your company?</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
-                                    </>
-                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {}}>Contact Us</ButtonStyle>
+                                    </div>
+                                    <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {}}>Contact Us</ButtonStyle>
 
                                 </PlanInfosContainer>
                             </Card>
@@ -275,8 +338,8 @@ const PlanInfosContainer = styled.div<{isMobile: boolean}>`
     `}
 `
 
-const IconStyle = styled(Icon)`
-    color: green;
+export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
+    color: ${props => props.theme.colors[props.coloricon]};
 `
 
 const ButtonStyle = styled(Button)`

@@ -65,7 +65,7 @@ const data: Plans = {
             total: 0
         },
         paymentFrequency: 'Annually',
-        termsAndConditions: true
+        termsAndConditions: false
 
     }, eventPlan: {
         action: 'purchase',
@@ -109,7 +109,7 @@ const data: Plans = {
             total: 0
         },
         paymentFrequency: 'Annually',
-        termsAndConditions: true
+        termsAndConditions: false
 
     },scalePlan: {
         action: 'purchase',
@@ -151,7 +151,7 @@ const data: Plans = {
             total: 0
         },
         paymentFrequency: 'Annually',
-        termsAndConditions: true
+        termsAndConditions: false
 
     }
 }

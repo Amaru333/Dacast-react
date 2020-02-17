@@ -38,7 +38,7 @@ export interface FolderAssetFeature {
     paywall: boolean;
     playlist: boolean;
     advertising: boolean;
-    folder: boolean
+    folder: boolean;
 }
 
 export interface FoldersInfos {
@@ -47,7 +47,7 @@ export interface FoldersInfos {
 }
 
 export interface FoldersState {
-    data: FoldersInfos
+    data: FoldersInfos;
 }
 
 export const foldersInitialState: FoldersState = {

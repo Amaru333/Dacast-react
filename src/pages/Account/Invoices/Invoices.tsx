@@ -6,6 +6,9 @@ import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
 import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { InvoicesFiltering } from './InvoicesFiltering';
+import { Pagination } from '../../../components/Pagination/Pagination';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {
 
@@ -35,7 +38,15 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     }
     return (
         <div>
-            <Table id='invoicesTable' header={invoicesTableHeader()} body={invoicesTableBody()} />
+            <div className='flex mb2 col col-12'>
+                <div className='flex items-center flex-auto'>
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />   
+                </div>
+                <InvoicesFiltering />
+            </div>
+            <Table className='mb2' id='invoicesTable' header={invoicesTableHeader()} body={invoicesTableBody()} />
+            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )
 }
@@ -46,4 +57,8 @@ export const IconContainer = styled.div`
         margin-right:16px;
         color:  ${props => props.theme.colors["gray-1"]};
     }
+`
+
+export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
+    color: ${props => props.theme.colors[props.coloricon]};
 `

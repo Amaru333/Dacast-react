@@ -80,7 +80,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                                             <Text size={14} weight='reg'>{option}</Text>
                                             <IconStyle coloricon='gray-1'>{breadcrumbDropdownIsOpened ? 'arrow_drop_up' : 'arrow_drop_down'}</IconStyle>
                                         </div>
-                                        <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
+                                        <DropdownList hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
                                             {renderBreadcrumbDropdownList()}
                                         </DropdownList>
                                     </div>
@@ -101,7 +101,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                             <div className='relative pointer'>
                                 <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
-                                <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
+                                <DropdownList hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
                                     {renderHiddenFoldersDropdownList()}
                                 </DropdownList>                       
                             </div>
@@ -118,7 +118,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                                 <Text size={14} weight='reg'>{options[options.length - 2]}</Text>
                                 <IconStyle coloricon='gray-1'>{breadcrumbDropdownIsOpened ? 'arrow_drop_up' : 'arrow_drop_down'}</IconStyle>
                             </div>
-                            <DropdownList style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
+                            <DropdownList hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
                                 {renderBreadcrumbDropdownList()}
                             </DropdownList>                         
                         </div>
