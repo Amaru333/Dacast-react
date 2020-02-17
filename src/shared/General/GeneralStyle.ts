@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Text } from '../../components/Typography/Text'
+import { Input } from '../../components/FormsComponents/Input/Input';
 
 export const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
@@ -41,7 +42,7 @@ export const LinkText = styled(Text)`
 `
 
 export const IconButton = styled.button`
-display: none;
+display: block;
 border: none;
 background-color: inherit;
 `
@@ -49,14 +50,14 @@ background-color: inherit;
 export const ImagesContainer = styled.div`
 flex-direction: row;
 flex-wrap: wrap;
+display: flex;
 `
 
 export const ImageContainer = styled.div`
-    
+    flex-grow: 1;    
 `
 
 export const ImageArea = styled.div`
-width: 359px;
 height: 176px;
 border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
@@ -86,13 +87,6 @@ export const AdvancedLinksContainer = styled.div<{ isExpanded: boolean }>`
    display: ${props => props.isExpanded ? "block" : "none"};
    `
 
-export const advancedLinksOptions = [
-    { id: "thumb", label: "Thumbnail" },
-    { id: "download", label: "Download Video" },
-    { id: "image", label: "Poster Frame" },
-    { id: "embed", label: "Embed Code" },
-    { id: "video", label: "Video" },
-    { id: "audio", label: "Audio Embed" },
-    { id: "adaptive.m3u8", label: "Adaptive Streaming (HLS" }
-
-]
+export const DescriptionInput = styled(Input)`
+    height: 96px;
+`

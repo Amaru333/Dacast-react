@@ -2,12 +2,12 @@ import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, advancedLinksOptions } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
-import { LiveImageModal } from '../../Live/General/ImageModal';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { ImageModal } from '../../../shared/General/ImageModal';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -53,6 +53,13 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         }
     }
 
+    const playlistAdvancedLinksOptions = [
+        { id: "thumb", label: "Thumbnail" },
+        { id: "splashscreen", label: "Splashscreen" },
+        { id: "poster", label: "Poster" },
+        { id: "embed", label: "Embed Code" }
+    ]
+
     return (
         <React.Fragment>
             <Card className="col-12 clearfix">
@@ -81,11 +88,10 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         value={newPlaylistDetails.description}
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <Input
+                    <InputTags
                         className="col col-6 pt2"
-                        label="Folder"
-                        value={newPlaylistDetails.folder}
-                        onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["folder"]: event.currentTarget.value })}
+                        label="Folders"
+                        placeholder="Type folder name"
                     />
                 </div>
                 <Divider className="col col-12" />
@@ -131,10 +137,12 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedLinks">
-                    <Icon onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)} className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
-                    <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
+                    <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
+                        <Icon className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                        <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
+                    </div>                 
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                        {advancedLinksOptions.map((item) => {
+                        {playlistAdvancedLinksOptions.map((item) => {
                             return (
                                 <LinkBoxContainer className="col col-6">
                                     <LinkBoxLabel>
@@ -142,6 +150,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                                     </LinkBox>
                                 </LinkBoxContainer>
 
@@ -150,7 +159,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     </AdvancedLinksContainer>
                 </div>
     
-                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
+                <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
             </Card>
             <ButtonContainer>
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>

@@ -9,9 +9,10 @@ import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { ImageModal } from './ImageModal';
+import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer, advancedVideoLinksOptions, advancedLinksOptions } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -61,8 +62,8 @@ const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
 
 const disabledSubtitlesTableBody = (text: string) => {
     return [[
-        <Text key={text} className='center' size={14} weight='reg' color='gray-3' >{text}</Text>,
-        <span key={'disabledTableBody'}></span>
+        <span key={'disabledTableBody'}></span>,
+        <div className=' center'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
     ]]
 }
 
@@ -116,6 +117,16 @@ export const GeneralPage = (props: GeneralComponentProps) => {
         }
     }
 
+    const vodAdvancedLinksOptions = [
+        { id: "thumbnail", label: "Thumbnail" },
+        { id: "splashscreen", label: "Splashscreen" },
+        { id: "poster", label: "Poster" },
+        { id: "embed", label: "Embed Code" },
+        { id: "video", label: "Video" },
+        { id: "download", label: "Download" },
+        { id: "m3u8", label: "M3U8" }
+    ]
+
     return (
         VodDetails ?
             <React.Fragment>
@@ -152,18 +163,17 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             value={VodDetails.description}
                             onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
                         />
-                        <Input
+                        <InputTags
                             className="col col-6 pt2"
-                            label="Folder"
-                            value={VodDetails.folder}
-                            onChange={event => setVodDetails({ ...VodDetails, ["folder"]: event.currentTarget.value })}
+                            label="Folders"
+                            placeholder="Type folder name"
                         />
                     </div>
                     <Divider className="col col-12" />
                     <div className="thumbnail col col-12">
                         <Text className="col col-12" size={20} weight="med">Images</Text>
                         <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
-                        <ImagesContainer className="col col-12 pt2 flex">
+                        <ImagesContainer className="col col-12 pt2">
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
@@ -206,15 +216,17 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
                     </div>
                     {(props.vodDetails.subtitles.length === 0) ?
-                        <Table className="col col-12 mt25" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('No subtitles')} id="subtitlesTable" />
+                        <Table className="col col-12 mt25" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
                         : <Table className="col col-12 mt25" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
                     }
                     <Divider className="col col-12" />
                     <div className="col col-12 advancedVideoLinks">
-                        <Icon onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)} className="col col-1">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
-                        <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
+                        <div onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)}>
+                            <Icon  className="col col-1">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                            <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
+                        </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
-                            {advancedLinksOptions.map((item) => {
+                            {vodAdvancedLinksOptions.map((item) => {
                                 return (
                                     <LinkBoxContainer className="col col-6">
                                         <LinkBoxLabel>
@@ -222,6 +234,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                            <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                                         </LinkBox>
                                     </LinkBoxContainer>
 

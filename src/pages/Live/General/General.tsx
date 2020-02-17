@@ -4,15 +4,16 @@ import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, advancedVideoLinksOptions, advancedLinksOptions } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
-import { LiveImageModal } from './ImageModal';
 import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
 import { ModalFooter, Modal, ModalContent } from '../../../components/Modal/Modal';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { ImageModal } from '../../../shared/General/ImageModal';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -60,6 +61,14 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
         }
     }
 
+    const liveAdvancedLinksOptions = [
+        { id: "splashscreen", label: "Splashscreen" },
+        { id: "thumbnail", label: "Thumbnail" },
+        { id: "poster", label: "Poster" },
+        { id: "embed", label: "Embed Code" },
+        { id: "m3u8", label: "M3U8" }
+    ]
+
     return (
         <React.Fragment>
             <Button onClick={() => setEncoderModalOpen(true)} sizeButton="xs" typeButton="secondary" className="right mb25">Encoder Setup</Button>
@@ -90,16 +99,15 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBox>
                     </div>
                     <Input
-                        className="col col-6 pr2"
+                        className="col col-6 pr2 pt2"
                         label="Description"
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <Input
-                        className="col col-6"
-                        label="Folder"
-                        value={newLiveDetails.folder}
-                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["folder"]: event.currentTarget.value })}
+                    <InputTags
+                        className="col col-6 pt2"
+                        label="Folders"
+                        placeholder="Type folder name"
                     />
                 </div>
                 <Divider className="col col-12" />
@@ -200,10 +208,12 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedVideoLinks">
-                    <Icon onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)} className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
-                    <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
+                    <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
+                        <Icon className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                        <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
+                    </div>    
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                        {advancedLinksOptions.map((item) => {
+                        {liveAdvancedLinksOptions.map((item) => {
                             return (
                                 <LinkBoxContainer className="col col-6">
                                     <LinkBoxLabel>
@@ -211,6 +221,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
                                     </LinkBox>
                                 </LinkBoxContainer>
 
@@ -218,7 +229,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         })}
                     </AdvancedLinksContainer>
                 </div>
-                <LiveImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
+                <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
                 <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
