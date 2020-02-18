@@ -99,7 +99,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                 <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
                         <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                        <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { uploadedImage === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">

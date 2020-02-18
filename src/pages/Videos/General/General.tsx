@@ -179,21 +179,25 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                     <Icon>info_outlined</Icon>
                                 </div>
-                            
                                 <ImageArea className="mt2">
-                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>
-                                    <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                    <ButtonSection>
+                                        <Button 
+                                            className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                            onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                                Change
+                                        </Button>
+                                    </ButtonSection> 
+                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
-                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text><Icon>info_outlined</Icon>
                                 </div>
                                 <ImageArea className="mt2">
-                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>
-                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>
+                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -202,12 +206,23 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                     <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                                 </div>
                                 <ImageArea className="mt2">
-                                    <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>
-                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                <ButtonSection>
+                                    {
+                                        VodDetails.poster === "" ? null :
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                    }
+                                        
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
+                                            {
+                                            VodDetails.poster === "" ?
+                                            "Add" : "Change"
+                                            }
+                                        </Button>
+                                </ButtonSection>
+                                <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
-
                         </ImagesContainer>
                     </div>
                     <Divider className="col col-12" />

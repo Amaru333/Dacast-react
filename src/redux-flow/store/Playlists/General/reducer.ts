@@ -27,17 +27,28 @@ const reducer: Reducer<PlaylistDetails> = (state = initialPlaylistGeneralState, 
                 ...state,
                 ...action.payload
             };
+        case ActionTypes.DELETE_PLAYLIST_THUMBNAIL:
+                return {
+                    ...state, thumbnail: ""
+                };
         case ActionTypes.CHANGE_PLAYLIST_SPLASHSCREEN:
             return {
                 ...state,
                 ...action.payload
             };
+            case ActionTypes.DELETE_PLAYLIST_SPLASHSCREEN:
+                return {
+                    ...state, splashscreen: ""
+                };
         case ActionTypes.CHANGE_PLAYLIST_POSTER:
             return {
                 ...state,
                 ...action.payload
             };
-        
+        case ActionTypes.DELETE_PLAYLIST_POSTER:
+                return {
+                    ...state, poster: ""
+                };
         default:
             return state;
     }

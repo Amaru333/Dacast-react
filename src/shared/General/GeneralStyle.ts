@@ -54,24 +54,25 @@ display: flex;
 `
 
 export const ImageContainer = styled.div`
-    flex-grow: 1;    
+    flex-grow: 1;  
 `
 
 export const ImageArea = styled.div`
 height: 176px;
 border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
+flex-direction: column;  
 `
 
 export const ImageSection = styled.div`
-width: 80%;
+width: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
 `
 
 export const ButtonSection = styled.div`
-width: 20%;
+width: 100%;
 `
 
 export const SelectedImage = styled.img`

@@ -39,6 +39,10 @@ const changeVodPosterService = (data: PosterUpload) => {
     return axios.put(urlBase + 'vod/poster', {...data})
 }
 
+const deleteVodPosterService = () => {
+    return axios.delete(urlBase + 'vod/poster')
+}
+
 export const VodGeneralServices = {
     getVodDetailsService,
     editVodDetailsService,
@@ -48,5 +52,6 @@ export const VodGeneralServices = {
     changeVodThumbnailService,
     changeVodSplashscrenService,
     changeVodPosterService,
+    deleteVodPosterService,
     getVodList
 }

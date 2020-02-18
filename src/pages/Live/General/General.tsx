@@ -120,11 +120,21 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <Icon>info_outlined</Icon>
                             </div>
-                           
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
-                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                    onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                <ButtonSection>
+                                {
+                                    props.liveDetails.splashscreen ?
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                }
+                                <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
+                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                        {
+                                            props.liveDetails.splashscreen ?
+                                            "Change" : "Add"
+                                        }
+                                    </Button>
+                                </ButtonSection>  
+                                <ImageSection><SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -133,22 +143,43 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                <ButtonSection>
+                                    {
+                                        props.liveDetails.thumbnail ?
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
+                                    {
+                                        props.liveDetails.thumbnail ?
+                                        "Change" : "Add"
+                                    }
+                                    </Button>
+                                </ButtonSection> 
+                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection> 
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-                        <ImageContainer className="">
+                        <ImageContainer>
                             <div className="flex flex-center">
                                 <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                <ButtonSection>
+                                    {
+                                        props.liveDetails.poster ?
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
+                                    {
+                                        props.liveDetails.poster ?
+                                        "Change" : "Add"
+                                    }
+                                    </Button>
+                                </ButtonSection>
+                                <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection> 
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-
                     </ImagesContainer>
                 </div>
                 <Divider className="col col-12" />

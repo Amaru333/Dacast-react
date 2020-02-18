@@ -17,14 +17,28 @@ export interface ChangePlaylistThumbnail {
     type: ActionTypes.CHANGE_PLAYLIST_THUMBNAIL;
     payload: { thumbnail: string };
 }
+export interface DeletePlaylistThumbnail {
+    type: ActionTypes.DELETE_PLAYLIST_THUMBNAIL;
+    payload: {thumbnail: string};
+}
 
 export interface ChangePlaylistSplashscreen {
     type: ActionTypes.CHANGE_PLAYLIST_SPLASHSCREEN;
     payload: {splashscreen: string};
 }
 
+export interface DeletePlaylistSplashscreen {
+    type: ActionTypes.DELETE_PLAYLIST_SPLASHSCREEN;
+    payload: {splashscreen: string};
+}
+
 export interface ChangePlaylistPoster {
     type: ActionTypes.CHANGE_PLAYLIST_POSTER;
+    payload: {poster: string};
+}
+
+export interface DeletePlaylistPoster {
+    type: ActionTypes.DELETE_PLAYLIST_POSTER;
     payload: {poster: string};
 }
 
@@ -66,6 +80,18 @@ export const changePlaylistThumbnailAction = (data: ThumbnailUpload): ThunkDispa
     };
 }
 
+export const deletePlaylistThumbnailAction = (): ThunkDispatch<Promise<void>, {}, DeletePlaylistThumbnail> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylistThumbnail>) => {
+        await PlaylistGeneralServices.deletePlaylistThumbnailService()
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_PLAYLIST_THUMBNAIL, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+}
+
 export const changePlaylistSplashscreenAction = (data: SplashscreenUpload): ThunkDispatch<Promise<void>, {}, ChangePlaylistSplashscreen> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangePlaylistSplashscreen>) => {
         await PlaylistGeneralServices.changePlaylistSplashscrenService(data)
@@ -79,7 +105,20 @@ export const changePlaylistSplashscreenAction = (data: SplashscreenUpload): Thun
     };
 }
 
-export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangePlaylistPoster> => {
+export const deletePlaylistSplashscreenAction = (): ThunkDispatch<Promise<void>, {}, DeletePlaylistSplashscreen> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylistSplashscreen>) => {
+        await PlaylistGeneralServices.deletePlaylistSplashscrenService()
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_PLAYLIST_SPLASHSCREEN, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const changePlaylistPosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangePlaylistPoster> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangePlaylistPoster>) => {
         await PlaylistGeneralServices.changePlaylistPosterService(data)
             .then(response => {
@@ -92,4 +131,17 @@ export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promis
     };
 }
 
-export type Action = GetPlaylistDetails | EditPlaylistDetails | ChangePlaylistThumbnail | ChangePlaylistSplashscreen| ChangePlaylistPoster; 
+export const deletePlaylistPosterAction = (): ThunkDispatch<Promise<void>, {}, DeletePlaylistPoster> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylistPoster>) => {
+        await PlaylistGeneralServices.deletePlaylistPosterService()
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_PLAYLIST_POSTER, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = GetPlaylistDetails | EditPlaylistDetails | ChangePlaylistThumbnail | DeletePlaylistThumbnail | ChangePlaylistSplashscreen | DeletePlaylistSplashscreen | ChangePlaylistPoster | DeletePlaylistPoster; 

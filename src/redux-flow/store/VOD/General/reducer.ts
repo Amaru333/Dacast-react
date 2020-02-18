@@ -9,6 +9,7 @@ const initialVodGeneralState: VodDetails = {
     folder: "",
     description: "",
     thumbnail: null,
+    splashscreen: null,
     subtitles: []
 }
 
@@ -61,7 +62,10 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                 ...state,
                 ...action.payload
             };
-        
+        case ActionTypes.DELETE_VOD_POSTER:
+                return {
+                    ...state, poster: ""
+                };
         default:
             return state;
     }

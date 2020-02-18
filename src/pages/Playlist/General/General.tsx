@@ -104,11 +104,21 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <Icon>info_outlined</Icon>
                             </div>
-                           
                             <ImageArea className="mt2">
-                                <ImageSection> <SelectedImage src={props.playlistDetails.splashscreen} /></ImageSection>
-                                <ButtonSection><Button className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                    onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
+                                <ButtonSection>
+                                    {
+                                        props.playlistDetails.splashscreen ?
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
+                                    onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                        {
+                                            props.playlistDetails.splashscreen ?
+                                            "Change" : "Add"
+                                        }
+                                    </Button>
+                                </ButtonSection>
+                                <ImageSection> <SelectedImage src={props.playlistDetails.splashscreen} /></ImageSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -117,22 +127,43 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
+                                <ButtonSection>
+                                    {
+                                        props.playlistDetails.thumbnail ?
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
+                                        {
+                                        props.playlistDetails.thumbnail ?
+                                        "Change" : "Add"
+                                        }
+                                    </Button>
+                                </ButtonSection>  
                                 <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-                        <ImageContainer className="">
+                        <ImageContainer>
                             <div className="flex flex-center">
                                 <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                             </div>
                             <ImageArea className="mt2">
+                                <ButtonSection>
+                                    {
+                                        props.playlistDetails.poster ?
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
+                                    {
+                                        props.playlistDetails.poster ?
+                                        "Change" : "Add"
+                                    }
+                                    </Button>
+                                </ButtonSection>
                                 <ImageSection> <SelectedImage src={props.playlistDetails.poster} /></ImageSection>
-                                <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>Change</Button></ButtonSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-
                     </ImagesContainer>
                 </div>
                 <Divider className="col col-12" />

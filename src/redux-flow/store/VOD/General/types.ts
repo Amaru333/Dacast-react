@@ -9,7 +9,8 @@ export enum ActionTypes {
     DELETE_VOD_SUBTITLE = "@@vod_general/DELETE_VOD_SUBTITLE",
     CHANGE_VOD_THUMBNAIL = "@@vod_general/CHANGE_VOD_THUMBNAIL",
     CHANGE_VOD_SPLASHSCREEN = "@@vod_general/CHANGE_VOD_SPLASHSCREEN",
-    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER"
+    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER",
+    DELETE_VOD_POSTER = "@@vod_general/DELETE_VOD_POSTER"
 }
 
 export interface VodDetails {
