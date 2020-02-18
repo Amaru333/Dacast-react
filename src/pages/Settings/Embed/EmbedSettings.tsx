@@ -11,7 +11,7 @@ import { EmbedSettingsComponentProps } from '../../../containers/Settings/EmbedS
 
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
-    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>({});
+    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(props.embedSettingsOption);
     let inputRef = React.useRef<HTMLInputElement>(null)
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -80,10 +80,12 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     </div>
                     <br />
                 </Card>
+                {
+                    inputOptions === props.embedSettingsOption ? null :
                 <ButtonContainer>
                     <ButtonStyle typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
-                    <ButtonStyle typeButton="secondary">Cancel</ButtonStyle>
-                </ButtonContainer>
+                    <ButtonStyle typeButton="secondary">Discard</ButtonStyle>
+                </ButtonContainer>}
             </form>
         </React.Fragment>
 
@@ -96,7 +98,7 @@ const RadioText = styled.div`
 
 const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
-    margin: 32px 24px 24px 24px;
+    margin: 32px 0 24px 0;
 `
 
 const WidthInput = styled(Input) <{ isDisplayed: boolean } & InputProps>`
