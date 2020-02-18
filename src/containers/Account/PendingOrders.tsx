@@ -6,6 +6,7 @@ import { PendingOrdersList, PendingOrder } from '../../redux-flow/store/Account/
 import { Action, getPendingOrdersAction, updatePendingOrdersAction } from '../../redux-flow/store/Account/PendingOrders/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PendingOrdersComponentProps {
     pendingOrders: PendingOrdersList;
@@ -24,7 +25,7 @@ export const PendingOrders = (props: PendingOrdersComponentProps) => {
     return (
         props.pendingOrders ?
             <PendingOrdersPage {...props} />
-            : <LoadingSpinner size='large' color='blue60' />
+            : <SpinnerContainer><LoadingSpinner size='large' color='blue60' /></SpinnerContainer>
     )
 }
 

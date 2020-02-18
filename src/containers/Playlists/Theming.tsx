@@ -8,6 +8,7 @@ import { Action, getPlaylistThemeAction, savePlaylistThemeAction } from '../../r
 import { connect } from 'react-redux';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistThemingComponentProps {
     theme: PlaylistTheme;
@@ -78,7 +79,7 @@ export const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
     return (
         props.theme && customThemeList ?
             <PlaylistThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 }
 

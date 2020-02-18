@@ -1,11 +1,12 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getPlaylistDetailsAction, changePlaylistThumbnailAction, editPlaylistDetailsAction, changePlaylistSplashscreenAction, changeLivePosterAction, changePlaylistPosterAction, deletePlaylistThumbnailAction, deletePlaylistSplashscreenAction, deletePlaylistPosterAction } from '../../redux-flow/store/Playlists/General/actions';
+import { Action, getPlaylistDetailsAction, changePlaylistThumbnailAction, editPlaylistDetailsAction, changePlaylistSplashscreenAction, changePlaylistPosterAction, deletePlaylistThumbnailAction, deletePlaylistSplashscreenAction, deletePlaylistPosterAction } from '../../redux-flow/store/Playlists/General/actions';
 import { connect } from 'react-redux';
 import { PlaylistDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/Playlists/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PlaylistGeneralPage } from '../../pages/Playlist/General/General';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 interface GeneralProps {
@@ -33,7 +34,7 @@ const GeneralPlaylist = (props: GeneralProps) => {
             (
                 <PlaylistGeneralPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 
 }

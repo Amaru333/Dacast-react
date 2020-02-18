@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { VodEngagementSettings } from "../../redux-flow/store/VOD/Engagement/types"
 import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface VodEngagementComponentProps {
     vodEngagementSettings: VodEngagementSettings;
@@ -28,7 +29,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     return (
         props.vodEngagementSettings ?
             <VodEngagementPage {...props} />
-            : <LoadingSpinner size='medium' color='overlay70' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='overlay70' /></SpinnerContainer>
     )
 }
 

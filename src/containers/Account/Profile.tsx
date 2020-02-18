@@ -5,6 +5,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { ProfilePage } from '../../pages/Account/Profile/Profile';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface ProfileComponentProps {
     ProfileInfos: ProfilePageInfos;
@@ -24,7 +25,7 @@ const Profile = (props: ProfileComponentProps) => {
         props.ProfileInfos ? 
             <ProfilePage ProfilePageDetails={props.ProfileInfos} {...props} />
             : 
-            <LoadingSpinner size='large' color='dark-violet' />
+            <SpinnerContainer><LoadingSpinner size='large' color='dark-violet' /></SpinnerContainer>
     )
 }
 

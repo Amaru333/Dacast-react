@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { PlaylistEngagementSettings } from "../../redux-flow/store/Playlists/Engagement/types"
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettings: PlaylistEngagementSettings;
@@ -28,7 +29,7 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
     return (
         props.playlistEngagementSettings ?
             <PlaylistEngagementPage {...props} />
-            : <LoadingSpinner size='medium' color='overlay70' />
+            : <SpinnerContainer><LoadingSpinner size='large' color='overlay70' /></SpinnerContainer>
     )
 }
 

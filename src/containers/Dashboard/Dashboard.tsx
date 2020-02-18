@@ -9,6 +9,8 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
+import styled from 'styled-components';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -79,7 +81,8 @@ const Dashboard = (props: DashboardProps) => {
                     {renderDashboard()}
                     <div className="clearfix"></div>
                 </> :
-                    <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
+                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="large" color="violet" /></SpinnerContainer>
+                    
             }
         </>
     )
@@ -100,3 +103,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+

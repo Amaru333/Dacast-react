@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 interface GeneralProps {
@@ -34,7 +35,7 @@ const General = (props: GeneralProps) => {
             (
                 <GeneralPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 
 }

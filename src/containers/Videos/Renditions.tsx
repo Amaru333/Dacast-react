@@ -6,6 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface VodRenditionsContainerProps {
     renditions: RenditionsList;
@@ -28,7 +29,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
             (
                 <VodRenditionsPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 }
 

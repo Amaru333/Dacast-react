@@ -1,6 +1,7 @@
 import React from 'react';
 import { LoadingSpinner} from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { PlansPage } from '../../pages/Account/Plans/Plans';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface CustomAllowance {
@@ -165,7 +166,7 @@ const Plans = () => {
         value ? 
             <PlansPage plans={value}/>
             : 
-            <LoadingSpinner size='large' color='dark-violet' />
+            <SpinnerContainer><LoadingSpinner size='large' color='dark-violet' /></SpinnerContainer>
     )
 }
 

@@ -6,6 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface CompanyContainerProps {
     CompanyInfos: CompanyPageInfos;
@@ -28,7 +29,7 @@ const Company = (props: CompanyContainerProps) => {
         props.CompanyInfos ? 
             <CompanyPage CompanyPageDetails={props.CompanyInfos} {...props} />
             : 
-            <LoadingSpinner size='large' color='dark-violet' />
+            <SpinnerContainer><LoadingSpinner size='large' color='dark-violet' /></SpinnerContainer>
     )
 
 }

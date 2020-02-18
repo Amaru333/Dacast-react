@@ -6,6 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action, getLiveDetailsAction, saveLiveDetailsAction, changeLiveThumbnailAction, changeLiveSplashscreenAction, changeLivePosterAction, deleteLiveThumbnailAction, deleteLiveSplashscreenAction, deleteLivePosterAction } from '../../redux-flow/store/Live/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface LiveGeneralProps {
     liveDetails: LiveDetails;
@@ -32,7 +33,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
             (
                 <LiveGeneralPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 }
 

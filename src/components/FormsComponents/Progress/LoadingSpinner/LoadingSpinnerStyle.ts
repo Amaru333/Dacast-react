@@ -22,6 +22,7 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
   border-width: 7px;
   width: 72px;
   height: 72px;
+  background-color: inherit
 
   ${props => (props.size == "medium") && css`
     border-width: 5px;
@@ -72,4 +73,11 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     left: 21px;
   `}
   }
-`;
+`
+
+//Used in container pages to get spinner in centre of page
+export const SpinnerContainer  = styled.div`
+left: 50%;
+bottom: 50%;
+position: absolute
+`

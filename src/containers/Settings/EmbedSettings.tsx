@@ -5,6 +5,7 @@ import { ApplicationState } from "../../redux-flow/store";
 import { Action, EmbedSettingsOptionType, getEmbedSettingsOptionsAction, saveEmbedSettingsOptionsAction } from "../../redux-flow/store/Settings/EmbedSettings";
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { EmbedSettingsPage } from '../../pages/Settings/Embed/EmbedSettings';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface EmbedSettingsComponentProps {
     embedSettingsOption: EmbedSettingsOptionType;
@@ -22,7 +23,7 @@ const EmbedSettings = (props: EmbedSettingsComponentProps) => {
 
     return (
         !props.embedSettingsOption ? 
-            <LoadingSpinner size='large' color='blue80' />
+            <SpinnerContainer><LoadingSpinner size='large' color='blue80' /></SpinnerContainer>
             :
             <EmbedSettingsPage {...props} />
     )

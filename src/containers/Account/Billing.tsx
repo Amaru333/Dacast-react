@@ -6,6 +6,7 @@ import { BillingAction, saveBillingPagePaymentMethodAction, getBillingPageInfosA
 import { connect } from 'react-redux';
 import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras } from '../../redux-flow/store/Account/Billing/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface BillingContainerProps {
     billingInfos: BillingPageInfos;
@@ -26,7 +27,7 @@ const Billing = (props: BillingContainerProps) => {
     return (
         props.billingInfos ?
             <BillingPage {...props} />
-            : <LoadingSpinner size='large' color='coral' />
+            : <SpinnerContainer><LoadingSpinner size='large' color='coral' /></SpinnerContainer>
     )
 }
 

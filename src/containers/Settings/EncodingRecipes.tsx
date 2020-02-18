@@ -6,6 +6,7 @@ import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEnco
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { EncodingRecipesData, EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { EncodingRecipesComponentProps, EncodingRecipesPage } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
@@ -19,7 +20,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
     return (
         !props.encodingRecipeData ?
-            <LoadingSpinner size='large' color='blue80' />
+            <SpinnerContainer><LoadingSpinner size='large' color='blue80' /></SpinnerContainer>
             :
             <EncodingRecipesPage {...props} />
     )

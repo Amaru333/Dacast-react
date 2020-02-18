@@ -5,6 +5,7 @@ import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ThemeOptions, Action, getThemingListAction, saveThemeAction, createThemeAction, deleteThemeAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import {ThemingPage} from '../../pages/Settings/Theming/Theming';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface ThemingComponentProps {
     themingList: ThemesData;
@@ -24,7 +25,7 @@ export const Theming = (props: ThemingComponentProps) => {
     return (
         props.themingList ?
             <ThemingPage {...props} />
-            : <LoadingSpinner color='violet80' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet80' size='large' /></SpinnerContainer>
     )
 }
 

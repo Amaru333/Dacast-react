@@ -23,12 +23,13 @@ import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
+import { SpinnerContainer } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
 const functionTest2 = () => {
     return (
-        <LoadingSpinner size="small" color="red" />
+        <SpinnerContainer><LoadingSpinner size="large" color="red" /></SpinnerContainer>
     )
 }
 

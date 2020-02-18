@@ -5,6 +5,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Invoice, getInvoicesAction, Action } from '../../redux-flow/store/Account/Invoices';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InvoicesPage } from '../../pages/Account/Invoices/Invoices';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface InvoicesComponentProps {
     invoices: Invoice[];
@@ -22,7 +23,7 @@ const Invoices = (props: InvoicesComponentProps) => {
     return (
         props.invoices ?
             <InvoicesPage {...props} />
-            : <LoadingSpinner size='large' color='blue60' />
+            : <SpinnerContainer><LoadingSpinner size='large' color='blue60' /></SpinnerContainer>
     )
 }
 

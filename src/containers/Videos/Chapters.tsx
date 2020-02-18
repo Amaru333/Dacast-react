@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 import { ChapterMarkerInfos, ChapterMarker } from '../../redux-flow/store/VOD/Chapters/types';
 import { Action, getVodChapterMarkersAction, saveVodChapterMarkerAction, addVodChapterMarkerAction, deleteVodChapterMarkerAction } from '../../redux-flow/store/VOD/Chapters/actions';
 import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface ChapterContainerProps {
     chapterPageDetails: ChapterMarkerInfos;
@@ -25,7 +26,7 @@ const Chapters = (props: ChapterContainerProps) => {
     return (
         props.chapterPageDetails ?
             <ChaptersPage {...props} />
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 }
 

@@ -5,6 +5,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions';
 import { getSettingsInteractionsInfosAction, Action, InteractionsInfos, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction } from '../../redux-flow/store/Settings/Interactions';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SettingsInteractionComponentProps {
     interactionsInfos: InteractionsInfos;
@@ -30,7 +31,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
     return (
         props.interactionsInfos ?
             <InteractionsPage {...props} />
-            : <LoadingSpinner size='medium' color='overlay70' />
+            : <SpinnerContainer><LoadingSpinner size='large' color='overlay70' /></SpinnerContainer>
     )
 }
 
