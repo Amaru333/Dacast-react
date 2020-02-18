@@ -15,9 +15,10 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>,
             <Text key='transactionsTableHeaderDate' size={14} weight='med'>Date(UTC)</Text>,
             <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>,
-            <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Viewer Currency</Text>,
+            <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>,
             <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>,
-            <Text key='transactionsTableHeaderUSDBalance' size={14} weight='med'>USD Balance</Text>
+            <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>,
+            <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>,
         ]
     }
 
@@ -31,8 +32,8 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{transaction.price}</Text>,
-                    <Text key='transactionsTableHeaderUSDBalance' size={14} weight='reg'>USD Balance</Text>,
-                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />
+                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />,
+                    <span></span>
                 ]
             })
         }
