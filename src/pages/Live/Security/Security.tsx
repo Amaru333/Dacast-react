@@ -50,9 +50,17 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
         
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the <Icon>lock</Icon> Padlock to override these settings.
+                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<Icon>lock</Icon>&nbsp;Padlock to override these settings.
                     </BubbleContent>     
-                </Bubble> : null
+                </Bubble> 
+                :
+                <Bubble type='info' className='my2'>
+                    <BubbleContent>         
+                        These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<Icon>lock_open</Icon>&nbsp;Padlock to revert to global settings.
+                    </BubbleContent>     
+                </Bubble> 
+
+
             }
             <Card>
                 <Header className="pb25">
@@ -80,22 +88,9 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         { togglePasswordProtectedVideo ? 
                             <div className='col col-12'>
                                 <Input 
-                                    type='time' 
-                                    defaultValue={props.liveSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.liveSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
-                                    className='col col-3 md-col-2 mb1'
-                                    disabled={false} 
-                                    id='promptTime' 
-                                    label='Prompt Time' 
-                                    required
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    step='1'
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, promptTime: event.currentTarget.value}})}
-                                />
-
-                                <Input 
                                     type='text'
                                     defaultValue={props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
-                                    className='col col-4 md-col-3 px1 mb1'
+                                    className='col col-4 md-col-3 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 

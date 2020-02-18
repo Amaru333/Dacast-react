@@ -217,7 +217,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <BorderStyle className="p1" />
 
-                    <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-restriction</Text></TextStyle>
+                    <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></TextStyle>
 
                     <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
                     <Button className={"left mb2 " + (smScreen ? '' : 'hide')} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setGeoRestrictionModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
