@@ -176,7 +176,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     </div>
                 
                     <div className='flex'>
-                        <Icon>info_outlined</Icon>
+                        <Icon className="mr1">info_outlined</Icon>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle

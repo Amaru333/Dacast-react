@@ -172,7 +172,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <TextStyle className="pb2" > <Text size={20} weight='med'>Mail Catcher</Text></TextStyle>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
-                    <Icon>info_outlined</Icon>
+                    <Icon className="mr1">info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                 </div>
                 {/* <div className='my2'>   
