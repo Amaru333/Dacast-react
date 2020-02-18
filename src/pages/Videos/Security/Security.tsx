@@ -55,7 +55,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 </Bubble> : null
             }
             <Card>
-                <Header className="pb2">
+                <Header className="pb25">
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
@@ -193,7 +193,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <BorderStyle className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="pt2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
 
@@ -213,7 +213,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <BorderStyle className="p1" />
                 
                     <div>
-                        <TextStyle className="pt2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 

@@ -55,7 +55,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                 </Bubble> : null
             }
             <Card>
-                <Header className="pb2">
+                <Header className="pb25">
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
@@ -192,7 +192,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                     <BorderStyle className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="pt2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
 
@@ -216,7 +216,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 
-                        <TextStyle className="pt2" >
+                        <TextStyle className="pt25" >
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
                         <div className="col col-12 py2">

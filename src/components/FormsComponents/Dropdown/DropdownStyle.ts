@@ -9,6 +9,7 @@ export const ContainerStyle = styled.div<{}>`
 
 export const DropdownLabel = styled.div`
     display: flex;
+    margin-bottom: 4px;
 `;
 
 export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined}>`
