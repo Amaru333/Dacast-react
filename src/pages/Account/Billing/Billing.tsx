@@ -12,6 +12,8 @@ import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
+import { Label } from '../../../components/FormsComponents/Label/Label';
+import { ColorsApp } from '../../../styled/types';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;
@@ -141,34 +143,47 @@ export const BillingPage = (props: BillingComponentProps) => {
         }
     }
 
+    const mockPlanDetails = [{
+        planType: "event",
+        paymentAmount: 890,
+        paymentCurrency: "USD",
+        recurring: "monthly",
+        nextBill: "09/10/2020",
+        status: "active",
+        paywallBalance: 5604
+    }]
 
-    const extrasTableHeaderElement = () => {
+    const planDetailsTableHeaderElement = () => {
         return [
-            <Text  key={"extrasTableType"} size={14}  weight="med" color="gray-1">Type</Text>,
-            <Text  key={"extrasTableEnabled"} size={14}  weight="med" color="gray-1">Enabled</Text>,
-            <Text  key={"extrasTableAmount"} size={14}  weight="med" color="gray-1">Amount</Text>,
-            <Text  key={"extrasTablePrice"} size={14}  weight="med" color="gray-1">Date purchased</Text>,
-            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"extrasTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setExtrasModalOpened(true)}} sizeButton="xs" typeButton="primary" buttonColor="blue">Purchase Extras</Button>
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Plan Type</Text>,
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Payment</Text>,
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Reccuring</Text>,
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Next Bill</Text>,
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Status</Text>,
+            <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Paywall Balance</Text>
         ]
     }
 
-    const extrasBodyElement= () => {
-        if(props.billingInfos.extras) {
-            return props.billingInfos.extras.map((value, key) => {
-                return [
-                    <Text key={key.toString() +value.type} size={14}  weight="reg" color="gray-1">{value.type}</Text>,
-                    <Text key={key.toString() +value.amount} size={14}  weight="reg" color="gray-1">{value.amount}</Text>,
-                    <Text key={key.toString() +value.price} size={14}  weight="reg" color="gray-1">{value.price}</Text>,
-                    <Text key={key.toString() +value.datePurchased} size={14}  weight="reg" color="gray-1">{value.datePurchased}</Text>,
-                    <span key={'extrasTableBodyElementEmptyCell'}></span>
-                ]
-            })
-        }
+    const planDetailsTableBodyElement = () => {
+        return mockPlanDetails.map((planDetails) => {
+            const color = planDetails.status === 'active' ? 'green' : planDetails.status === 'expired' ? 'yellow' : 'red';
+            const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
+            return [
+                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{planDetails.planType.charAt(0).toUpperCase() + planDetails.planType.slice(1)}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{planDetails.paymentCurrency === 'gbp' ? "£" : "$" + planDetails.paymentAmount + " " + planDetails.paymentCurrency.toUpperCase()}</Text>,
+                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{planDetails.recurring.charAt(0).toUpperCase() + planDetails.recurring.slice(1)}</Text>,
+                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{planDetails.nextBill}</Text>,
+                <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={planDetails.status.charAt(0).toUpperCase() + planDetails.status.slice(1)} />,
+                <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{planDetails.paymentCurrency === 'gbp' ? "£" : "$" + planDetails.paywallBalance + " " + planDetails.paymentCurrency.toUpperCase()}</Text>
+            ]})    
     }
 
     return (
         <div>   
             <Card>
+                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
+                <Table id="planDetailsTable" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
+                <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
@@ -184,16 +199,6 @@ export const BillingPage = (props: BillingComponentProps) => {
 
                 }
 
-                <BorderStyle className="py1" />
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Buy Allowances</Text></TextStyle>
-                <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Buy more Data / Encoding as a one-off purchase or get a recurring Storage add-on.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setExtrasModalOpened(true)}} sizeButton="xs" typeButton="primary" buttonColor="blue">Purchase extras</Button>
-                {
-                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
-                        <Table className="col-12 mb1" id="extrasTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Purchasing any Allowances')} />
-                        :<Table className="col-12 mb1" id="extrasTable" header={extrasTableHeaderElement()} body={extrasBodyElement()} />
-                }
-                
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
