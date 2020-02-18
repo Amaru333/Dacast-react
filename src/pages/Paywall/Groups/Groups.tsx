@@ -5,18 +5,18 @@ import { Table } from '../../../components/Table/Table';
 import { BorderStyle, IconContainer } from './GroupsStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
-import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { Icon } from '@material-ui/core';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
 import { GroupPriceModal } from './GroupPriceModal'
+import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 
 export const GroupsPage = (props: GroupsComponentProps) => {
 
     const [groupPricesModalOpened, setGroupPricesModalOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
-    const [selectedGroupPrice, setSelectedGroupPrice] = React.useState<Preset>(null);
-    const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<Promo>(null);
+    const [selectedGroupPrice, setSelectedGroupPrice] = React.useState<GroupPrice>(null);
+    const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<GroupPromo>(null);
 
     const groupPricesTableHeader = () => {
         return [

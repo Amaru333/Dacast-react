@@ -5,7 +5,6 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
 import { Text } from '../../../components/Typography/Text';
-import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { GroupPromo } from '../../../redux-flow/store/Paywall/Groups';
 var moment = require('moment-timezone');
 
@@ -26,7 +25,7 @@ const defaultPromo: GroupPromo = {
 
 export const GroupPromoModal = (props: {action: Function; toggle: Function; groupPromo: GroupPromo}) => {
 
-    const [groupPromo, setGroupPromo] = React.useState<Promo>(props.groupPromo ? props.groupPromo : defaultPromo);
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? props.groupPromo : defaultPromo);
 
     React.useEffect(() => {
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
