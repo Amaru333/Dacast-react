@@ -181,8 +181,8 @@ export const BillingPage = (props: BillingComponentProps) => {
     return (
         <div>   
             <Card>
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
-                <Table id="planDetailsTable" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
+                <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
+                <Table id="planDetailsTable" className="mb1" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
