@@ -77,6 +77,32 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
         }
     }
 
+    const groupPricesTableHeader = () => {
+        return [
+            <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>,
+            <Text key='groupPricesTableHeaderType' size={14} weight='med'>Type</Text>,
+            <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>,
+            <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>,
+            <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>,
+            <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>,
+        ]
+    }
+
+    const groupPricesTableBody = () => {
+        if(props.groupsInfos.prices) {
+            return props.groupsInfos.prices.map((price, key) => {
+                return [
+                    <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
+                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
+                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price[0].amount}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.price[0].currency}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.recurrence ? price.recurrence : price.duration.amount + ' ' + price.duration.type}</Text>,
+                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.startMethod}</Text>,
+                ]
+            })
+        }
+    }
+
     const emptyPricePresetTableHeader = () => {
         return [
             <span key={"emptyPricePresetTableHeader"}></span>,
@@ -89,6 +115,20 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             <span key={"emptyPromoPresetTableHeader"}></span>,
             <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>
         ]
+    }
+
+
+    const emptyGroupPriceTableHeader = () => {
+        return [
+            <span key={"emptygroupPriceTableHeader"}></span>,
+            
+        ]
+    }
+
+    const emptyGroupTableBody = (text: string) => {
+        return [[
+            <div key='emptyGroupPriceTableBody' className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]]
     }
 
 
@@ -126,6 +166,16 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                     <Table className='my2' id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
                     <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                }
+
+                 <BorderStyle className='my2' />
+
+                <Text size={20} weight='med'>Associated Group Prices</Text>
+
+                { props.groupsInfos.prices.length === 0 ?
+                    <Table className='my2' id='associatedGroupPricesEmptyTable' header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
+                    :
+                    <Table className='my2' id='groupPricesTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 }
                 
             </Card>

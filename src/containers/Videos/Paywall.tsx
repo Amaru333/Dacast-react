@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { VodPaywallPage } from '../../pages/Videos/Paywall/Paywall'
 import { Preset, Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, Promo, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, VodPaywallPageInfos, getVodPaywallInfosAction } from '../../redux-flow/store/VOD/Paywall';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
+import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 
 export interface VodPaywallComponentProps {
     VodPaywallInfos: VodPaywallPageInfos;
@@ -15,6 +17,10 @@ export interface VodPaywallComponentProps {
     createVodPromoPreset: Function;
     saveVodPromoPreset: Function;
     deleteVodPromoPreset: Function;
+    groupsInfos: GroupsPageInfos;
+    getGroupsInfos: Function;
+    themes: PaywallThemingData;
+    getPaywallThemes: Function;
 }
 
 const VodPaywall = (props: VodPaywallComponentProps) => {
@@ -23,16 +29,24 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if(!props.VodPaywallInfos) {
             props.getVodPaywallInfos()
         }
+        if(!props.groupsInfos) {
+            props.getGroupsInfos()
+        }
+        if(!props.themes) {
+            props.getPaywallThemes()
+        }
     }, [])
 
-    return props.VodPaywallInfos ? 
+    return props.VodPaywallInfos && props.groupsInfos && props.themes ? 
         <VodPaywallPage {...props} />
         : <LoadingSpinner size='medium' color='violet' />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        VodPaywallInfos: state.vod.paywall
+        VodPaywallInfos: state.vod.paywall,
+        groupsInfos: state.paywall.groups,
+        themes: state.paywall.theming
     };
 }
 
@@ -59,6 +73,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteVodPromoPreset: (data: Promo) => {
             dispatch(deleteVodPromoPresetAction(data));
         },
+        getGroupsInfos: () => {
+            dispatch(getGroupsInfosAction());
+        },
+        getPaywallThemes: () => {
+            dispatch(getPaywallThemesAction())
+        }
     }
 }
 
