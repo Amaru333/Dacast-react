@@ -98,7 +98,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                 isSingle
                                 key={props.id + '_' + name} 
                                 id={props.id + '_' + name} 
-                                className={key === 1 ? 'mt1' : ''}
+                                className={key === 0 ? 'mt1' : ''}
                                 isSelected={selectedItem === name} 
                                 onClick={() => handleClick(name)}> 
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}

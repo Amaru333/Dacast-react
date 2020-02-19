@@ -87,6 +87,8 @@ export const DropdownItem = styled.li<{isSelected: boolean; isSingle: boolean}>`
     position: relative;
     min-height: 24px;
     height: 100%;
+    margin-left: 8px;
+    margin-right: 8px;
     ${props => props.isSingle && css`
         padding: 8px;
     `}
@@ -159,6 +161,9 @@ export const SearchIconStyle = styled.div`
     padding-left: 8px;
     width: 24px;
     background-color: ${props => props.theme.colors['white']};
+`
+export const SelectAllItem = styled(DropdownItem)`
+    padding: 4px 8px 4px 0;
 `
 
 export const CloseIconButton = styled.div`
