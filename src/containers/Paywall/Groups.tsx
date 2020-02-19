@@ -5,6 +5,8 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { getFoldersAction, getFolderContentAction, restoreContentAction } from '../../redux-flow/store/Folders/actions';
+import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
@@ -15,6 +17,10 @@ export interface GroupsComponentProps {
     createGroupPromo: Function;
     saveGroupPromo: Function;
     deleteGroupPromo: Function;
+    folderData: FoldersInfos;
+    getFolders: Function;
+    getFolderContent: Function;
+    restoreContent: Function;
 }
 
 const Groups = (props: GroupsComponentProps) => {
@@ -23,10 +29,17 @@ const Groups = (props: GroupsComponentProps) => {
         if(!props.groupsInfos) {
             props.getgroupsInfos()
         }
+        if(!props.folderData) {
+            const wait = async () => {
+                await props.getFolderContent('/')
+                //await props.getFolders('/');
+            }
+            wait()
+        }
     }, [])
 
     return (
-        props.groupsInfos ?
+        props.groupsInfos && props.folderData ?
         <GroupsPage {...props} />
         : <LoadingSpinner size='large' color='green' />
     )
@@ -34,7 +47,8 @@ const Groups = (props: GroupsComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        groupsInfos: state.paywall.groups
+        groupsInfos: state.paywall.groups,
+        folderData: state.folders.data
     };
 }
 
@@ -61,6 +75,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteGroupPromo: (data: GroupPromo) => {
             dispatch(deleteGroupPromoAction(data));
         },
+        getFolders: (folderPath: string) => {
+            dispatch(getFoldersAction(folderPath));
+        },
+        getFolderContent: (folderPath: string) => {
+            dispatch(getFolderContentAction(folderPath))
+        },
+        restoreContent: (content: FolderAsset[]) => {
+            dispatch(restoreContentAction(content))
+        }
     }
 }
 
