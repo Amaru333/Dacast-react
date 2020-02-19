@@ -74,19 +74,57 @@ export const PresetsPage = (props: PresetsComponentProps) => {
         }
     }
 
+    const emptyPricePresetTableHeader = () => {
+        return [
+            <span key={"emptyPricePresetTableHeader"}></span>,
+            <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>
+        ]
+    }
+
+    const emptyPromoPresetTableHeader = () => {
+        return [
+            <span key={"emptyPromoPresetTableHeader"}></span>,
+            <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>
+        ]
+    }
+
+
+    const emptyPresetTableBody = (text: string) => {
+        return [[
+            <span key={'emptyPresetTableBody'}></span>,
+            <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]]
+    }
+
     return (
         <div>
             <Card>
                 <Text size={20} weight='med'>Price Presets</Text>
-                <Text size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
-                <Text size={14} weight='reg' color='gray-3'>Need help setting up a Price Presets ? Visit the Knowledge Base</Text>
-                <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
-                <BorderStyle className='my2' />
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
+                <div className="flex col col-12 mt2">
+                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                </div>
+                {props.presetsInfos.presets.length === 0 ? 
+                    <Table className='my2' id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    :
+                    <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                   
+                }
+                 <BorderStyle className='my2' />
 
-                <Text size={20} weight='med'>Promo Presets</Text>
-                <Text size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
-                <Text size={14} weight='reg' color='gray-3'>Need help setting up a Promo Presets ? Visit the Knowledge Base</Text>
-                <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                <Text className="mt1" size={20} weight='med'>Promo Presets</Text>
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
+                <div className="flex col col-12 mt2">
+                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                </div>
+                { props.presetsInfos.promos.length === 0 ?
+                    <Table className='my2' id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    :
+                    <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                }
+                
             </Card>
             <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
