@@ -59,7 +59,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
         <div>
             <div className='col col-12 py2'>
                 <Input className='col col-6 pr1' label='Price Group Name' defaultValue={stepperData.firststep.name} onChange={(event) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, name: event.currentTarget.value}})} />
-                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={stepperData.firststep.type} callback={(value: string) => updateStepperData({...stepperData, firstStep: {...stepperData.firststep, type: value}})} list={{'Subscription': false, 'Pay Per View': false}} />
+                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={stepperData.firststep.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, type: value}})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             {renderPrices()}
             <div className='col col-6 py2'>
@@ -230,9 +230,9 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
 
     return (
         <>
-            <div className="inline-flex items-center flex col-7 mb2">
+            <div className="inline-flex items-center flex col-12 mb2">
                 <Icon>search</Icon>
-                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
+                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'inherit'}} defaultTags={[]}   />
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <div className="pl1 pr1">

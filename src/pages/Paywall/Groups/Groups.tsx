@@ -8,13 +8,12 @@ import { Modal } from '../../../components/Modal/Modal';
 import { Icon } from '@material-ui/core';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
-import { GroupPriceModal } from './GroupPriceModal'
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 
-export interface SetupComponentProps {
+interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
     getFolders: Function;
     getFolderContent: Function;
@@ -23,7 +22,7 @@ export interface SetupComponentProps {
 
 export interface GroupStepperData {
     firststep: GroupPrice;
-    secondStep: SetupComponentProps
+    secondStep: GroupStepperSecondStepProps
 }
 
 export const GroupsPage = (props: GroupsComponentProps) => {
@@ -53,6 +52,10 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<GroupPromo>(null);
     const [stepperData, setStepperData] = React.useState<GroupStepperData>({firststep: defaultPrice, secondStep: {...props}});
     const groupPriceSteps = [GroupPriceStepperFirstStep, GroupPriceStepperSecondStep]
+
+    React.useEffect(() => {
+        setStepperData({...stepperData, secondStep: {...props}})
+    }, [props])
 
     const groupPricesTableHeader = () => {
         return [
@@ -139,7 +142,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepperData={stepperData}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
                 functionCancel={setGroupPricesStepperOpened}
-                finalFunction={() => {selectedGroupPrice ? props.saveGroupPrice() : props.createGroupPrice()}}
+                finalFunction={() => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>
 
