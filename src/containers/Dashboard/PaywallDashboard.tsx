@@ -3,6 +3,7 @@ import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader } 
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../components/Typography/Text';
 import { numberFormatter } from '../../utils/utils';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 
 interface PaywallDashboardProps {
     balance: number;
@@ -28,6 +29,8 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
+                        <IconGray1 id="balanceTooltip" className="ml-auto">info_outline</IconGray1>
+                        <Tooltip target="balanceTooltip">Your current paywall balance as of today</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${balance}</Text>
@@ -37,7 +40,8 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
-                        <IconGray1 className="ml-auto">info_outline</IconGray1>
+                        <IconGray1 id="revenueTooltip" className="ml-auto">info_outline</IconGray1>
+                        <Tooltip target="revenueTooltip">The paywall revenue you have earned since the start of the current billing period</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${revenue}</Text>

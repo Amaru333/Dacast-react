@@ -14,6 +14,7 @@ import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
 import { ModalFooter, Modal, ModalContent } from '../../../components/Modal/Modal';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -118,7 +119,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                <Icon>info_outlined</Icon>
+                                <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -140,7 +142,9 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
-                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>
+                                <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -161,7 +165,11 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer>
                             <div className="flex flex-center">
-                                <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Poster</Text>
+                                    <Icon id="posterTooltip">info_outlined</Icon>
+                                    <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                </div>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

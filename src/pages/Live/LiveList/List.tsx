@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination'
+import { Tooltip } from '../../../components/Tooltip/Tooltip'
 
 
 export interface LiveListProps {
@@ -54,29 +55,54 @@ export const LiveListPage = (props: LiveListProps) => {
         ]
     }
 
-    const handleFeatures = (item: LiveItem) => {
+    const handleFeatures = (item: LiveItem, id: string) => {
         var liveElement = []
         if (item.features.paywall) {
-            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
+            liveElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
+                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
+                </IconGreyContainer>
+                )
         }
         if (item.features.recording) {
-            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>videocam</IconStyle></IconGreyContainer>)
+            liveElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"recordingTooltip" + id}>videocam</IconStyle>
+                    <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
+                </IconGreyContainer>
+                )
         }
         if (item.features.playlist) {
-            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
+            liveElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
+                    <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
+                </IconGreyContainer>
+                )
         }
         if (item.features.rewind) {
-            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>replay_30</IconStyle></IconGreyContainer>)
+            liveElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"rewindTooltip" + id}>replay_30</IconStyle>
+                    <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
+                </IconGreyContainer>
+                )
         }
         if (item.features.advertising) {
-            liveElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
+            liveElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"advertisingTooltip" + id}>font_download</IconStyle>
+                    <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
+                </IconGreyContainer>
+                )
         }
         return liveElement;
     }
 
     const liveListBodyElement = () => {
         if (props.liveList) {
-            return props.liveList.map((value, key) => {
+            return props.liveList.map((value) => {
                 return [
                     <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
                         if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
@@ -91,7 +117,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <>{handleFeatures(value)}</>,
+                    <>{handleFeatures(value, value.id)}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
                 ]
             })

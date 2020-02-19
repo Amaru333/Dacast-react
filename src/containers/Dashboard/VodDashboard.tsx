@@ -3,6 +3,7 @@ import { Text } from '../../components/Typography/Text';
 import { IconGray1, WidgetHeader, TableListStyle, classContainer, classItemHalfWidthContainer, classItemFullWidth, classItemFullWidthContainer } from './DashboardStyles';
 import { WidgetElement } from './WidgetElement';
 import { numberFormatter, getPercentage } from '../../utils/utils';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 
 interface VodDashboardProps {
     totalVideos: number;
@@ -36,7 +37,8 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                 <WidgetElement className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
-                        <IconGray1 className="ml-auto">info_outline</IconGray1>
+                        <IconGray1 id="totalVideosTooltip" className="ml-auto">info_outline</IconGray1>
+                        <Tooltip target="totalVideosTooltip">The number of videos in your account today</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
@@ -46,7 +48,8 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                 <WidgetElement className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
-                        <IconGray1 className="ml-auto">info_outline</IconGray1>
+                        <IconGray1 id="impressionsTooltip" className="ml-auto">info_outline</IconGray1>
+                        <Tooltip target="impressionsTooltip">The number of times your videos have been presented to viewers, regardless of whether they clicked "play" or not.</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
@@ -65,6 +68,8 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                 <WidgetElement className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
+                        <IconGray1 id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconGray1>
+                        <Tooltip target="playrateVsImpressionsTooltip">The ratio of people who played your videos against those who did not click play.</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{rateVsImpressions}%</Text>

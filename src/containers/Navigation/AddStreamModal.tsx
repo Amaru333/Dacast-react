@@ -6,6 +6,7 @@ import { UserAccountPrivileges, StreamSetupOptions } from './NavigationTypes';
 import { Toggle } from '../../components/Toggle/toggle';
 import { Icon } from '@material-ui/core';
 import { Text } from '../../components/Typography/Text';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 
 export const AddStreamModal = (props: {toggle: () => void; opened: boolean; privileges: UserAccountPrivileges}) => {
 
@@ -64,7 +65,8 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean; priv
                         <div className="col col-4">
                             <Toggle onChange={() => {setStreamSetupOptions({...streamSetupOptions, rewind: !streamSetupOptions.rewind})}} label="30 Minute Rewind" />
                         </div>
-                        <Icon>info_outlined</Icon>
+                        <Icon id="rewindTooltip">info_outlined</Icon>
+                        <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
                     </div> : null}
                 
                 <div className="flex mt2 col col-12">
