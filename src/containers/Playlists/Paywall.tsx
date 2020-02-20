@@ -56,7 +56,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistPaywallInfos: () => {
             dispatch(getPlaylistPaywallInfosAction());
         },
-        savePlaylistPaywallInfos: (data:PlaylistPaywallPageInfos) => {
+        savePlaylistPaywallInfos: (data: PlaylistPaywallPageInfos) => {
             dispatch(savePlaylistPaywallInfosAction(data));
         },
         createPlaylistPricePreset: (data: Preset) => {

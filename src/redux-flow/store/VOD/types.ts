@@ -34,7 +34,7 @@ export interface  VodState {
     renditions: false | RenditionsList;
     theming: false | VodTheme;
     engagement: false | VodEngagementSettings;
-    paywall: false | VodPaywallPageInfos
+    paywall: false | VodPaywallPageInfos;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({

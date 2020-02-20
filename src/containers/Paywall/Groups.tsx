@@ -40,8 +40,8 @@ const Groups = (props: GroupsComponentProps) => {
 
     return (
         props.groupsInfos && props.folderData ?
-        <GroupsPage {...props} />
-        : <LoadingSpinner size='large' color='green' />
+            <GroupsPage {...props} />
+            : <LoadingSpinner size='large' color='green' />
     )
 }
 

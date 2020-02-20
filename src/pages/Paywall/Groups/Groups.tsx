@@ -22,7 +22,7 @@ interface GroupStepperSecondStepProps {
 
 export interface GroupStepperData {
     firststep: GroupPrice;
-    secondStep: GroupStepperSecondStepProps
+    secondStep: GroupStepperSecondStepProps;
 }
 
 export const GroupsPage = (props: GroupsComponentProps) => {

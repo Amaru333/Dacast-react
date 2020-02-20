@@ -56,7 +56,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodPaywallInfos: () => {
             dispatch(getVodPaywallInfosAction());
         },
-        saveVodPaywallInfos: (data:VodPaywallPageInfos) => {
+        saveVodPaywallInfos: (data: VodPaywallPageInfos) => {
             dispatch(saveVodPaywallInfosAction(data));
         },
         createVodPricePreset: (data: Preset) => {

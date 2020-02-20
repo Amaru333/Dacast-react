@@ -56,7 +56,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLivePaywallInfos: () => {
             dispatch(getLivePaywallInfosAction());
         },
-        saveLivePaywallInfos: (data:LivePaywallPageInfos) => {
+        saveLivePaywallInfos: (data: LivePaywallPageInfos) => {
             dispatch(saveLivePaywallInfosAction(data));
         },
         createLivePricePreset: (data: Preset) => {
