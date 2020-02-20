@@ -75,7 +75,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
             case "Vod":
-                return location.href="/videos"
+                return props.history.push('/uploader')
             case "Stream":
                 setAddDropdownIsOpened(false)
                 if (UserAccountPrivileges.premium === false && UserAccountPrivileges.compatible === false && UserAccountPrivileges.rewind === false ) {
@@ -166,7 +166,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         <>
         {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
         <ContainerStyle isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
-            <ImageStyle className="mx-auto" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
+            <ImageStyle onClick={() => props.history.push('/')} className="mx-auto pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
             <div>
                 <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>

@@ -22,6 +22,8 @@ import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
+import Dashboard from './containers/Dashboard/Dashboard';
+import Uploader from './containers/Videos/Uploader';
 
 // Any additional component props go here.
 interface MainProps {
@@ -120,7 +122,13 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
                             <Content isMobile={isMobile} isOpen={isOpen}>
                                 <Switch>
+                                    <Route exact path="/">
+                                        <Dashboard />
+                                    </Route>
                                     {returnRouter(AppRoutes)}
+                                    <Route path="/uploader">
+                                        <Uploader postVodDemo={() => {}} />
+                                    </Route>
                                 </Switch>
                             </Content>
                         </FullContent>   
