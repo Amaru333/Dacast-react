@@ -1,29 +1,29 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, vodPaywallInitialState, VodPaywallPageInfos  } from "./types";
+import { ActionTypes, livePaywallInitialState, LivePaywallPageInfos  } from "./types";
 
-const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, action: Action) => {
+const reducer: Reducer<LivePaywallPageInfos> = (state = livePaywallInitialState, action: Action) => {
     let presets = null;
     let promos = null;
     switch (action.type) {
-        case ActionTypes.GET_VOD_PAYWALL_INFOS :
+        case ActionTypes.GET_LIVE_PAYWALL_INFOS :
             return {
                 ...state,
                 ...action.payload
             }
-        case ActionTypes.SAVE_VOD_PAYWALL_INFOS :
+        case ActionTypes.SAVE_LIVE_PAYWALL_INFOS :
             return {
                 ...state,
                 ...action.payload
             }
-        case ActionTypes.CREATE_VOD_PRICE_PRESET :
+        case ActionTypes.CREATE_LIVE_PRICE_PRESET :
             presets = state.presets.slice();
             presets.splice(presets.length, 0, action.payload);
             return {
                 ...state,
                 presets: presets
             }
-        case ActionTypes.SAVE_VOD_PRICE_PRESET :
+        case ActionTypes.SAVE_LIVE_PRICE_PRESET :
             state.presets.slice();
             return {
                 ...state,
@@ -39,19 +39,19 @@ const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, a
                     }
                 })
             }
-        case ActionTypes.DELETE_VOD_PRICE_PRESET :
+        case ActionTypes.DELETE_LIVE_PRICE_PRESET :
             return {
                 ...state,
                 presets: state.presets.filter((item) => {return item.id !== action.payload.id})
             }
-        case ActionTypes.CREATE_VOD_PROMO_PRESET :
+        case ActionTypes.CREATE_LIVE_PROMO_PRESET :
             promos = state.promos.slice();
             promos.splice(promos.length, 0, action.payload);
             return {
                 ...state,
                 promos: promos
             }
-        case ActionTypes.SAVE_VOD_PROMO_PRESET :
+        case ActionTypes.SAVE_LIVE_PROMO_PRESET :
             return {
                 ...state,
                 promos: state.promos.map((item) => {
@@ -66,7 +66,7 @@ const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, a
                     }
                 })
             }
-        case ActionTypes.DELETE_VOD_PROMO_PRESET :
+        case ActionTypes.DELETE_LIVE_PROMO_PRESET :
             return {
                 ...state,
                 promos: state.promos.filter((item) => {return item.id !== action.payload.id})
@@ -76,4 +76,4 @@ const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, a
     }
 };
 
-export { reducer as VodPaywallReducer };
+export { reducer as LivePaywallReducer };

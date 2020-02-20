@@ -1,12 +1,12 @@
 export enum ActionTypes {
-    GET_VOD_PAYWALL_INFOS = "@@vod_paywall/GET_VOD_PAYWALL_INFOS",
-    SAVE_VOD_PAYWALL_INFOS ="@@vod_paywall/SAVE_VOD_PAYWALL_INFOS",
-    CREATE_VOD_PRICE_PRESET = "@@vod_paywall/CREATE_VOD_PRICE_PRESET",
-    SAVE_VOD_PRICE_PRESET = "@@vod_paywall/SAVE_VOD_PRICE_PRESET",
-    DELETE_VOD_PRICE_PRESET = "@@vod_paywall/DELETE_VOD_PRICE_PRESET",
-    CREATE_VOD_PROMO_PRESET = "@@vod_paywall/CREATE_VOD_PROMO_PRESET",
-    SAVE_VOD_PROMO_PRESET = "@@vod_paywall/SAVE_VOD_PROMO_PRESET",
-    DELETE_VOD_PROMO_PRESET = "@@vod_paywall/DELETE_VOD_PROMO_PRESET",
+    GET_LIVE_PAYWALL_INFOS = "@@live_paywall/GET_LIVE_PAYWALL_INFOS",
+    SAVE_LIVE_PAYWALL_INFOS ="@@live_paywall/SAVE_LIVE_PAYWALL_INFOS",
+    CREATE_LIVE_PRICE_PRESET = "@@live_paywall/CREATE_LIVE_PRICE_PRESET",
+    SAVE_LIVE_PRICE_PRESET = "@@live_paywall/SAVE_LIVE_PRICE_PRESET",
+    DELETE_LIVE_PRICE_PRESET = "@@live_paywall/DELETE_LIVE_PRICE_PRESET",
+    CREATE_LIVE_PROMO_PRESET = "@@live_paywall/CREATE_LIVE_PROMO_PRESET",
+    SAVE_LIVE_PROMO_PRESET = "@@live_paywall/SAVE_LIVE_PROMO_PRESET",
+    DELETE_LIVE_PROMO_PRESET = "@@live_paywall/DELETE_LIVE_PROMO_PRESET",
 
 }
 
@@ -44,7 +44,7 @@ export interface Promo {
     discountApplied: string;
 }
 
-export interface VodPaywallPageInfos {
+export interface LivePaywallPageInfos {
     presets: Preset[];
     promos: Promo[];
     enabled: boolean;
@@ -52,7 +52,7 @@ export interface VodPaywallPageInfos {
     selectedTheme: string;
 }
 
-export const vodPaywallInitialState: VodPaywallPageInfos = {
+export const livePaywallInitialState: LivePaywallPageInfos = {
     presets: [],
     promos: [],
     enabled: false,
