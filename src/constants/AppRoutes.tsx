@@ -23,6 +23,7 @@ import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
+import Groups from '../containers/Paywall/Groups';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -106,7 +107,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/groups',
                 name: 'Groups',
-                component: functionTest2
+                component: Groups
             },
             {
                 path: '/paywall/transactions',
