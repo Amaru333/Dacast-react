@@ -402,7 +402,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
                             <SeparatorHeader className="mx2 inline-block" /> 
                         </>
-                        : null 
+                            : null 
                     }                     
        
                     <FoldersFiltering />

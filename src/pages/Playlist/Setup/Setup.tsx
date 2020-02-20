@@ -90,7 +90,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         if(checkedFolders.includes(checkedOption)) {
             setCheckedFolders(checkedFolders.filter(option => option !== checkedOption));
         } else {
-            setCheckedFolders([...checkedFolders, checkedOption]);
+            setCheckedFolders([checkedOption]);
         }
     }
 
@@ -126,7 +126,6 @@ export const SetupPage = (props: SetupComponentProps) => {
                 return (
                     <ItemSetupRow className='col col-12 flex items-center p2 pointer' 
                         onClick={() => handleCheckboxFolder(row) } 
-                        onDoubleClick={() => handleNavigateToFolder(row.name)}
                         selected={checkedFolders.includes(row)}>
                         <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
                         <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
@@ -275,18 +274,17 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </div>
             </ContainerHalfSelector>
             <div className="col col-2" style={{marginTop: 180}}>
-                <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
+                <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
                 <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">
-                    <Text color={"gray-1"} size={14} weight='med'>[Playlist name]'s Playlist</Text>
+                    <Text color={"gray-1"} size={14} weight='med'>[Playlist name]</Text>
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative  right" sizeButton="small" typeButton="primary" >Save</Button>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative  right" sizeButton="small" typeButton="tertiary" >Discard</Button>
-
+            <Button onClick={() => {} }  buttonColor="blue" className="relative mt2 mr1 right" sizeButton="small" typeButton="primary" >Save</Button>
+            <Button onClick={() => {} }  buttonColor="blue" className="relative mt2 right" sizeButton="small" typeButton="tertiary" >Discard</Button>
         </>
     )
 }
