@@ -124,15 +124,15 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                {
-                                    props.liveDetails.splashscreen ?
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
-                                }
-                                <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                    {
+                                        props.liveDetails.splashscreen ?
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                    }
+                                    <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
+                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
                                             props.liveDetails.splashscreen ?
-                                            "Change" : "Add"
+                                                "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
@@ -150,13 +150,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.liveDetails.thumbnail ?
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
-                                    {
-                                        props.liveDetails.thumbnail ?
-                                        "Change" : "Add"
-                                    }
+                                        {
+                                            props.liveDetails.thumbnail ?
+                                                "Change" : "Add"
+                                        }
                                     </Button>
                                 </ButtonSection> 
                                 <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection> 
@@ -175,13 +175,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.liveDetails.poster ?
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
-                                    {
-                                        props.liveDetails.poster ?
-                                        "Change" : "Add"
-                                    }
+                                        {
+                                            props.liveDetails.poster ?
+                                                "Change" : "Add"
+                                        }
                                     </Button>
                                 </ButtonSection>
                                 <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection> 

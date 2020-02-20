@@ -111,7 +111,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                    
                 }
-                 <BorderStyle className='my2' />
+                <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Presets</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>

@@ -108,13 +108,13 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.playlistDetails.splashscreen ?
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                    onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
                                             props.playlistDetails.splashscreen ?
-                                            "Change" : "Add"
+                                                "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
@@ -130,12 +130,12 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.playlistDetails.thumbnail ?
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
-                                        props.playlistDetails.thumbnail ?
-                                        "Change" : "Add"
+                                            props.playlistDetails.thumbnail ?
+                                                "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
@@ -151,13 +151,13 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.playlistDetails.poster ?
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
-                                    {
-                                        props.playlistDetails.poster ?
-                                        "Change" : "Add"
-                                    }
+                                        {
+                                            props.playlistDetails.poster ?
+                                                "Change" : "Add"
+                                        }
                                     </Button>
                                 </ButtonSection>
                                 <ImageSection> <SelectedImage src={props.playlistDetails.poster} /></ImageSection>

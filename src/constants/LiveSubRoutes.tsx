@@ -4,12 +4,7 @@ import LiveSecurity from '../containers/Live/Security';
 import LiveGeneral from '../containers/Live/General';
 import LiveTheming from '../containers/Live/Theming';
 import LiveEngagement  from '../containers/Live/Engagement';
-
-const paywallPlaceholder = () => {
-    return (
-        <h1>Live Paywall</h1>
-    )
-}
+import LivePaywall from '../containers/Live/Paywall';
 
 export const LiveSubRoutes: Routes[] = [
     {
@@ -20,7 +15,7 @@ export const LiveSubRoutes: Routes[] = [
     {
         path: '/paywall',
         name: 'Paywall',
-        component: paywallPlaceholder
+        component: LivePaywall
     },
     {
         path: '/engagement',

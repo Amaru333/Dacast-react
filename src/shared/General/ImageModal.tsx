@@ -18,7 +18,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
 
     React.useEffect(() => {
         if (uploadedImage) {
-        setIsSaveDisabled(false)
+            setIsSaveDisabled(false)
         }
     }, [uploadedImage])
 

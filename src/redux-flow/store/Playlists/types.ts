@@ -9,6 +9,7 @@ import { PlaylistTheme } from './Theming/types';
 import { PlaylistThemingReducer } from './Theming/reducer';
 import { PlaylistEngagementSettings } from './Engagement/types';
 import { PlaylistEngagementReducer } from './Engagement/reducer';
+import { PlaylistPaywallPageInfos, PlaylistPaywallReducer } from './Paywall';
 
 
 export const playlistInitialState: PlaylistState = {
@@ -16,7 +17,8 @@ export const playlistInitialState: PlaylistState = {
     general: false,
     security: false,
     theming: false,
-    engagement: false
+    engagement: false,
+    paywall: false
 };
 
 
@@ -26,6 +28,7 @@ export interface  PlaylistState {
     security: false | PlaylistSecuritySettings;
     theming: false | PlaylistTheme;
     engagement: false | PlaylistEngagementSettings;
+    paywall: false | PlaylistPaywallPageInfos;
 }
 
 export const PlaylistReducer: Reducer<PlaylistState> = combineReducers({
@@ -33,5 +36,6 @@ export const PlaylistReducer: Reducer<PlaylistState> = combineReducers({
     general: GeneralReducerPlaylist,
     security: PlaylistSecurityReducer,
     theming: PlaylistThemingReducer,
-    engagement: PlaylistEngagementReducer
+    engagement: PlaylistEngagementReducer,
+    paywall: PlaylistPaywallReducer
 })

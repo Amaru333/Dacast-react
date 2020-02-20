@@ -63,7 +63,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
                     <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         if (item.features.recording) {
             liveElement.push(
@@ -71,7 +71,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <IconStyle id={"recordingTooltip" + id}>videocam</IconStyle>
                     <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         if (item.features.playlist) {
             liveElement.push(
@@ -79,7 +79,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
                     <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         if (item.features.rewind) {
             liveElement.push(
@@ -87,7 +87,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <IconStyle id={"rewindTooltip" + id}>replay_30</IconStyle>
                     <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         if (item.features.advertising) {
             liveElement.push(
@@ -95,7 +95,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <IconStyle id={"advertisingTooltip" + id}>font_download</IconStyle>
                     <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         return liveElement;
     }

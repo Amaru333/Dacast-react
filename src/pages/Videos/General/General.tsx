@@ -206,20 +206,20 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                     <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
                                 </div>
                                 <ImageArea className="mt2">
-                                <ButtonSection>
-                                    {
-                                        VodDetails.poster === "" ? null :
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
-                                    }
+                                    <ButtonSection>
+                                        {
+                                            VodDetails.poster === "" ? null :
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                        }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                             {
-                                            VodDetails.poster === "" ?
-                                            "Add" : "Change"
+                                                VodDetails.poster === "" ?
+                                                    "Add" : "Change"
                                             }
                                         </Button>
-                                </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>  
+                                    </ButtonSection>
+                                    <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>

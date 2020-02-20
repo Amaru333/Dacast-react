@@ -63,9 +63,9 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
                 ...action.payload
             };
         case ActionTypes.DELETE_VOD_POSTER:
-                return {
-                    ...state, poster: ""
-                };
+            return {
+                ...state, poster: ""
+            };
         default:
             return state;
     }
