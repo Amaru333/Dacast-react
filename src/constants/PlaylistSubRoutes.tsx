@@ -5,6 +5,7 @@ import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';
 import Theming from '../containers/Playlists/Theming';
 import Setup from '../containers/Playlists/Setup';
+import PlaylistPaywall from '../containers/Playlists/Paywall';
 
 export const PlaylistSubRoutes: Routes[] = [
     {
@@ -16,6 +17,11 @@ export const PlaylistSubRoutes: Routes[] = [
         path: '/setup',
         name: 'Setup',
         component: Setup
+    },
+    {
+        path: '/paywall',
+        name: 'Paywall',
+        component: PlaylistPaywall
     },
     {
         path: '/engagement',

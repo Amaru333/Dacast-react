@@ -6,6 +6,7 @@ import { LiveTheme } from './Theming/types';
 import { LiveThemingReducer } from './Theming/reducer';
 import { LiveEngagementSettings } from './Engagement/types';
 import { LiveEngagementReducer } from './Engagement/reducer';
+import { LivePaywallPageInfos, LivePaywallReducer } from './Paywall';
 
 export const liveInitialState: LiveState = {
     general: false,
@@ -13,6 +14,7 @@ export const liveInitialState: LiveState = {
     security: false,
     theming: false,
     engagement: false,
+    paywall: false
 };
 
 export interface LiveState {
@@ -21,6 +23,7 @@ export interface LiveState {
     security: false | LiveSecuritySettings;
     theming: false | LiveTheme;
     engagement: false | LiveEngagementSettings;
+    paywall: false | LivePaywallPageInfos;
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({
@@ -28,5 +31,6 @@ export const LiveReducer: Reducer<LiveState> = combineReducers({
     list: reducerList,
     security: LiveSecurityReducer,
     theming: LiveThemingReducer,
-    engagement: LiveEngagementReducer
+    engagement: LiveEngagementReducer,
+    paywall: LivePaywallReducer
 })
