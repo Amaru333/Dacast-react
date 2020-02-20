@@ -4,13 +4,8 @@ import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';
 import Theming from '../containers/Playlists/Theming';
+import Setup from '../containers/Playlists/Setup';
 import PlaylistPaywall from '../containers/Playlists/Paywall';
-
-const setupPlaceholder = () => {
-    return (
-        <h1>Setup</h1>
-    )
-}
 
 export const PlaylistSubRoutes: Routes[] = [
     {
@@ -21,7 +16,7 @@ export const PlaylistSubRoutes: Routes[] = [
     {
         path: '/setup',
         name: 'Setup',
-        component: setupPlaceholder
+        component: Setup
     },
     {
         path: '/paywall',
