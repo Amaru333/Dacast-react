@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -23,21 +23,38 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
-    const firstSelectedItem = () => {
-        let item = props.routes.find((element) => {
-            return props.history.location.pathname.includes(element.path)
-        })
+    let location = useLocation();
 
-        
-        return item ?item.name : props.routes[0].name;
+    const firstSelectedItem = (): {main: string, slug: string} => {
+        let matchingRoute = {main: 'Dashboard', slug: ''};
+        props.routes.map((route) => {
+            if(location.pathname.includes(route.path)) {
+                console.log('found route', route.path)
+                matchingRoute =  {main: route.name, slug: null}
+            }
+            if(route.slug) {
+                route.slug.map(slug => {
+                    if(slug.path === location.pathname) {
+                        console.log('found slug', slug.path)
+                        matchingRoute =  {main: route.name, slug: slug.name}
+                    }
+                })
+            }
+        })
+        return matchingRoute;
     };
-    const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem());
-    const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem());
+    const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem().main);
+    const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem().slug);
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
+
+    React.useEffect(() => {
+        setSelectedElement(firstSelectedItem().main)
+        setSelectedSubElement(firstSelectedItem().slug)
+    }, [location])
 
     const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
