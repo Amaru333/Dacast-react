@@ -165,7 +165,7 @@ const IconStyle = styled(Icon)`
     font-size: 16px !important;
 `
 
-const IconSearch = styled(Icon)`
+export const IconSearch = styled(Icon)`
     color: ${props => props.theme.colors["gray-3"]} ;
 `
 
