@@ -14,6 +14,7 @@ import { DropdownList, DropdownItem, DropdownItemText } from '../../../component
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -54,16 +55,31 @@ export const PlaylistListPage = (props: LiveListProps) => {
         ]
     }
 
-    const handleFeatures = (item: PlaylistItem) => {
+    const handleFeatures = (item: PlaylistItem, id: string) => {
         var playlistElement = []
         if (item.features.paywall) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
+            playlistElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
+                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
+                </IconGreyContainer>
+            )
         }
         if (item.features.playlist) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
+            playlistElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
+                    <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
+                </IconGreyContainer>
+            )
         }
         if (item.features.advertising) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
+            playlistElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"advertisingTooltip" + id}>font_download</IconStyle>
+                    <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
+                </IconGreyContainer>
+            )
         }
         return playlistElement;
     }
@@ -85,7 +101,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <>{handleFeatures(value)}</>,
+                    <>{handleFeatures(value, value.id)}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
                 ]
             })

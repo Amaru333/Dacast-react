@@ -8,6 +8,7 @@ import { Icon } from '@material-ui/core';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -79,7 +80,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <IconButton id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
                     <Input
@@ -102,7 +104,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                <Icon>info_outlined</Icon>
+                                <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -124,7 +127,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
-                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon>info_outlined</Icon>
+                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -145,7 +149,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer>
                             <div className="flex flex-center">
-                                <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon id="posterTooltip">info_outlined</Icon>
+                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

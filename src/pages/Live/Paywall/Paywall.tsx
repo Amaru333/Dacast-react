@@ -14,6 +14,7 @@ import { Preset, Promo, LivePaywallPageInfos } from '../../../redux-flow/store/L
 import { LivePaywallComponentProps } from '../../../containers/Live/Paywall'
 import { BorderStyle, IconContainer } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
@@ -77,7 +78,10 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
-                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deleteLivePromoPreset(promo)}}>delete</Icon><Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
+                        <Icon id={"promoPresetsDeleteTooltip" + key} onClick={() =>  {props.deleteLivePromoPreset(promo)}}>delete</Icon>
+                        <Icon id="promoPresetsEditTooltip" onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                    </IconContainer>
                 ]
             })
         }

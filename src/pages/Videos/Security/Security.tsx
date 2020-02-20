@@ -13,6 +13,7 @@ import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Setting
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
 import { Icon } from '@material-ui/core';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -65,12 +66,13 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                    <UnlockSettingsIcon id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ? 
                             "lock_open"
                             : "lock"
                         }
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockSecurityTooltip">{settingsEditable ? "Click to revert Security Settings" : "Click to edit Security Settings"}</Tooltip>
                 </Header>
         
                 <DisabledSection settingsEditable={settingsEditable}>

@@ -14,6 +14,7 @@ import { LiveEngagementComponentProps } from '../../../containers/Live/Engagemen
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveNewAdModal } from './LiveNewAdModal';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
@@ -132,9 +133,10 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>Advertising</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                    <UnlockSettingsIcon id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
                         {adSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={adSectionEditable}>
                     <Toggle
@@ -164,11 +166,12 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
             <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
-                        <Text size={20} weight='med'>Mail Catcher</Text>
+                        <Text size={20} weight='med'>Email Catcher</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setMailSectionEditable(!mailSectionEditable)}>
+                    <UnlockSettingsIcon id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockMailSectionTooltip">{adSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
                     <div className="pb2">
@@ -196,9 +199,10 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                    <UnlockSettingsIcon id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
                         {brandSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockBrandSectionTooltip">{adSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
@@ -224,9 +228,10 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                    <UnlockSettingsIcon id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockEndScreenSectionTooltip">{adSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>

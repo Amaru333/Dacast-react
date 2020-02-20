@@ -21,6 +21,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../components/Badge/Badge';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 
 const folderTreeConst = [
     'folder1',
@@ -153,22 +154,43 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleFeatures = (item: FolderAsset): JSX.Element[] => {
+    const handleFeatures = (item: FolderAsset, id: string): JSX.Element[] => {
         var folderElement = []
         if (item.features.paywall) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>attach_money</IconStyle></IconGreyContainer>)
+            folderElement.push(
+            <IconGreyContainer className="mr1" >
+                <IconStyle id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
+                <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
+            </IconGreyContainer>
+            )
         }
         if (item.features.recording) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>videocam</IconStyle></IconGreyContainer>)
+            folderElement.push(
+            <IconGreyContainer className="mr1" >
+                <IconStyle id={"recordingTooltip" + id} coloricon='gray-3'>videocam</IconStyle>
+                <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
+            </IconGreyContainer>)
         }
         if (item.features.playlist) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>video_library</IconStyle></IconGreyContainer>)
+            folderElement.push(
+            <IconGreyContainer className="mr1" >
+                <IconStyle id={"playlistTooltip" + id} coloricon='gray-3'>video_library</IconStyle>
+                <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
+            </IconGreyContainer>)
         }
         if (item.features.rewind) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>replay_30</IconStyle></IconGreyContainer>)
+            folderElement.push(
+            <IconGreyContainer className="mr1" >
+                <IconStyle id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
+                <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
+            </IconGreyContainer>)
         }
         if (item.features.advertising) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>font_download</IconStyle></IconGreyContainer>)
+            folderElement.push(
+            <IconGreyContainer className="mr1" >
+                <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>font_download</IconStyle>
+                <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
+            </IconGreyContainer>)
         }
         return folderElement;
     }
@@ -214,7 +236,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
                     row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
-                    <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row)}</div>,
+                    <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
                     <div className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
                             <Icon>more_vert</Icon>

@@ -13,6 +13,7 @@ import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -154,7 +155,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
                         <Input
@@ -177,7 +179,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                    <Icon>info_outlined</Icon>
+                                    <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                    <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
@@ -193,7 +196,9 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ImageContainer>
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
-                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text><Icon>info_outlined</Icon>
+                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text>
+                                    <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                    <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>
@@ -203,7 +208,9 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ImageContainer>
                             <ImageContainer className="">
                                 <div className="flex flex-center">
-                                    <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon>info_outlined</Icon>
+                                    <Text className="mr1" size={16} weight="med">Poster</Text>  
+                                    <Icon id="posterTooltip">info_outlined</Icon>
+                                    <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
@@ -249,7 +256,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                            <IconButton onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                            <IconButton id={item.id} onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                            <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                         </LinkBox>
                                     </LinkBoxContainer>
 

@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -48,16 +49,29 @@ export const VideosListPage = (props: VideosListProps) => {
         ]
     }
 
-    const handleFeatures = (item: VodItem) => {
+    const handleFeatures = (item: VodItem, id: string) => {
         var vodElement = []
         if (item.features.paywall) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
+            vodElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
+                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
+                </IconGreyContainer>
+                )
         }
         if (item.features.folder) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>folder</IconStyle></IconGreyContainer>)
+            vodElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"folderTooltip" + id}>folder</IconStyle>
+                    <Tooltip target={"folderTooltip" + id}></Tooltip>
+                </IconGreyContainer>)
         }
         if (item.features.playlist) {
-            vodElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
+            vodElement.push(
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
+                    <Tooltip target={"playlistTooltip" + id}>Playlist</Tooltip>
+                </IconGreyContainer>)
         }
         return vodElement;
     }
@@ -81,7 +95,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"views" + value.id} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <>{handleFeatures(value)}</>,
+                    <>{handleFeatures(value, value.id.toString())}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
                 ]
             })
