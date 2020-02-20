@@ -57,7 +57,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
                     <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
                 </IconGreyContainer>
-                )
+            )
         }
         if (item.features.folder) {
             vodElement.push(

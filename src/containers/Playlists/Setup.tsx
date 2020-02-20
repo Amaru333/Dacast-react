@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -33,7 +34,7 @@ const Setup = (props: FoldersComponentProps) => {
     return (
         props.folderData ? 
             <SetupPage {...props} />
-            : <LoadingSpinner size='large' color='green80' />
+            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
     )
 }
 

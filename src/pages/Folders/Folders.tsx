@@ -158,39 +158,39 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         var folderElement = []
         if (item.features.paywall) {
             folderElement.push(
-            <IconGreyContainer className="mr1" >
-                <IconStyle id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
-                <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
-            </IconGreyContainer>
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
+                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
+                </IconGreyContainer>
             )
         }
         if (item.features.recording) {
             folderElement.push(
-            <IconGreyContainer className="mr1" >
-                <IconStyle id={"recordingTooltip" + id} coloricon='gray-3'>videocam</IconStyle>
-                <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
-            </IconGreyContainer>)
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"recordingTooltip" + id} coloricon='gray-3'>videocam</IconStyle>
+                    <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
+                </IconGreyContainer>)
         }
         if (item.features.playlist) {
             folderElement.push(
-            <IconGreyContainer className="mr1" >
-                <IconStyle id={"playlistTooltip" + id} coloricon='gray-3'>video_library</IconStyle>
-                <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
-            </IconGreyContainer>)
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"playlistTooltip" + id} coloricon='gray-3'>video_library</IconStyle>
+                    <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
+                </IconGreyContainer>)
         }
         if (item.features.rewind) {
             folderElement.push(
-            <IconGreyContainer className="mr1" >
-                <IconStyle id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
-                <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
-            </IconGreyContainer>)
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
+                    <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
+                </IconGreyContainer>)
         }
         if (item.features.advertising) {
             folderElement.push(
-            <IconGreyContainer className="mr1" >
-                <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>font_download</IconStyle>
-                <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
-            </IconGreyContainer>)
+                <IconGreyContainer className="mr1" >
+                    <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>font_download</IconStyle>
+                    <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
+                </IconGreyContainer>)
         }
         return folderElement;
     }

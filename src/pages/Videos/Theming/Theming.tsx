@@ -124,125 +124,125 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                     <DisabledSection selectedTheme={selectedTheme.themeName}>
                                         <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                                         <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
-                                        <Icon id="bigPlayTooltip">info_outlined</Icon>
+                                            <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton} onChange={() => setSelectedTheme({...selectedTheme, bigPlayButton: !selectedTheme.bigPlayButton})} />
+                                            <Icon id="bigPlayTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
-                                        <Icon id="playPauseTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Play/Pause' defaultChecked={selectedTheme.playPause} onChange={() => setSelectedTheme({...selectedTheme, playPause: !selectedTheme.playPause})} />
+                                            <Icon id="playPauseTooltip">info_outlined</Icon>
                                        
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Scrubber' defaultChecked={selectedTheme.scrubber} onChange={() => setSelectedTheme({...selectedTheme, scrubber: !selectedTheme.scrubber})} />
-                                        <Icon id="scrubberTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Scrubber' defaultChecked={selectedTheme.scrubber} onChange={() => setSelectedTheme({...selectedTheme, scrubber: !selectedTheme.scrubber})} />
+                                            <Icon id="scrubberTooltip">info_outlined</Icon>
                                        
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' defaultChecked={selectedTheme.scrubbingThumbnail} onChange={() => setSelectedTheme({...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail})} />
-                                        <Icon id="scrubberThumbnailTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' defaultChecked={selectedTheme.scrubbingThumbnail} onChange={() => setSelectedTheme({...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail})} />
+                                            <Icon id="scrubberThumbnailTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Time Code' defaultChecked={selectedTheme.timeCode} onChange={() => setSelectedTheme({...selectedTheme, timeCode: !selectedTheme.timeCode})} />
-                                        <Icon id="timeCodeTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Time Code' defaultChecked={selectedTheme.timeCode} onChange={() => setSelectedTheme({...selectedTheme, timeCode: !selectedTheme.timeCode})} />
+                                            <Icon id="timeCodeTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Speed Controls' defaultChecked={selectedTheme.speedControls} onChange={() => setSelectedTheme({...selectedTheme, speedControls: !selectedTheme.speedControls})} />
-                                        <Icon id="speedControlsTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Speed Controls' defaultChecked={selectedTheme.speedControls} onChange={() => setSelectedTheme({...selectedTheme, speedControls: !selectedTheme.speedControls})} />
+                                            <Icon id="speedControlsTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions})} />
-                                        <Icon id="qualityOptionsTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions})} />
+                                            <Icon id="qualityOptionsTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume})} />
-                                        <Icon id="volumeTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume})} />
+                                            <Icon id="volumeTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen})} />
-                                        <Icon id="fullscreenTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen})} />
+                                            <Icon id="fullscreenTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled})} />
-                                        <Icon id="viewCounterTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled})} />
+                                            <Icon id="viewCounterTooltip">info_outlined</Icon>
                                         
-                                    </div>
+                                        </div>
                                     
-                                    {
-                                        selectedTheme.isViewerCounterEnabled ?
-                                            <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)})} />
-                                            : null
-                                    }
-                                    <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
+                                        {
+                                            selectedTheme.isViewerCounterEnabled ?
+                                                <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)})} />
+                                                : null
+                                        }
+                                        <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
                                     
                                     
-                                    <BorderStyle className="p1" />
+                                        <BorderStyle className="p1" />
 
-                                    <TextStyle className="py2" ><Text size={20} weight='med'>Actions</Text></TextStyle>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton})} />
-                                        <Icon id="downloadButtonTooltip">info_outlined</Icon>
+                                        <TextStyle className="py2" ><Text size={20} weight='med'>Actions</Text></TextStyle>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton})} />
+                                            <Icon id="downloadButtonTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing})} />
-                                        <Icon id="socialSharingTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing})} />
+                                            <Icon id="socialSharingTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode})} />
-                                        <Icon id="embedCodeTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode})} />
+                                            <Icon id="embedCodeTooltip">info_outlined</Icon>
                                         
-                                    </div>
+                                        </div>
                                     
-                                    <BorderStyle className="p1" />
+                                        <BorderStyle className="p1" />
 
-                                    <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor})} />
-                                        <Icon id="customColorTooltip">info_outlined</Icon>
+                                        <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor})} />
+                                            <Icon id="customColorTooltip">info_outlined</Icon>
                                         
-                                    </div>
+                                        </div>
                                     
-                                    {
-                                        selectedTheme.hasCustomColor ? 
-                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => setSelectedTheme({...selectedTheme, customColor: value})} />
-                                            : null
-                                    }
-                                    <BorderStyle className="p1" />
+                                        {
+                                            selectedTheme.hasCustomColor ? 
+                                                <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => setSelectedTheme({...selectedTheme, customColor: value})} />
+                                                : null
+                                        }
+                                        <BorderStyle className="p1" />
 
-                                    <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Autoplay' defaultChecked={selectedTheme.autoplay} onChange={() => setSelectedTheme({...selectedTheme, autoplay: !selectedTheme.autoplay})} />
-                                        <Icon id="autoplayTooltip">info_outlined</Icon>
+                                        <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Autoplay' defaultChecked={selectedTheme.autoplay} onChange={() => setSelectedTheme({...selectedTheme, autoplay: !selectedTheme.autoplay})} />
+                                            <Icon id="autoplayTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Start Video Muted' defaultChecked={selectedTheme.startVideoMuted} onChange={() => setSelectedTheme({...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted})} />   
-                                        <Icon id="startMutedTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Start Video Muted' defaultChecked={selectedTheme.startVideoMuted} onChange={() => setSelectedTheme({...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted})} />   
+                                            <Icon id="startMutedTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
-                                        <Icon id="loopingTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping})} />
+                                            <Icon id="loopingTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
-                                        <Icon id="continuousPlayTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay})} />
+                                            <Icon id="continuousPlayTooltip">info_outlined</Icon>
                                         
-                                    </div>
-                                    <div className="flex items-top justify-between">
-                                        <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
-                                        <Icon id="skipVideosTooltip">info_outlined</Icon>
+                                        </div>
+                                        <div className="flex items-top justify-between">
+                                            <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos})} />
+                                            <Icon id="skipVideosTooltip">info_outlined</Icon>
                                         
-                                    </div>
+                                        </div>
                                     </DisabledSection>
                                 </>
                         }
