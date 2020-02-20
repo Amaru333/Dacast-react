@@ -9,7 +9,7 @@ import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Pa
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 
 export interface VodPaywallComponentProps {
-    VodPaywallInfos: VodPaywallPageInfos;
+    vodPaywallInfos: VodPaywallPageInfos;
     getVodPaywallInfos: Function;
     saveVodPaywallInfos: Function;
     createVodPricePreset: Function;
@@ -27,7 +27,7 @@ export interface VodPaywallComponentProps {
 const VodPaywall = (props: VodPaywallComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.VodPaywallInfos) {
+        if(!props.vodPaywallInfos) {
             props.getVodPaywallInfos()
         }
         if(!props.groupsInfos) {
@@ -38,14 +38,14 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         }
     }, [])
 
-    return props.VodPaywallInfos && props.groupsInfos && props.theming ? 
+    return props.vodPaywallInfos && props.groupsInfos && props.theming ? 
         <VodPaywallPage {...props} />
         : <LoadingSpinner size='medium' color='violet' />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        VodPaywallInfos: state.vod.paywall,
+        vodPaywallInfos: state.vod.paywall,
         groupsInfos: state.paywall.groups,
         theming: state.paywall.theming
     };
