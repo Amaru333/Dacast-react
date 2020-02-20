@@ -1,5 +1,6 @@
 export enum ActionTypes {
     GET_VOD_PAYWALL_INFOS = "@@vod_paywall/GET_VOD_PAYWALL_INFOS",
+    SAVE_VOD_PAYWALL_INFOS ="@@vod_paywall/SAVE_VOD_PAYWALL_INFOS",
     CREATE_VOD_PRICE_PRESET = "@@vod_paywall/CREATE_VOD_PRICE_PRESET",
     SAVE_VOD_PRICE_PRESET = "@@vod_paywall/SAVE_VOD_PRICE_PRESET",
     DELETE_VOD_PRICE_PRESET = "@@vod_paywall/DELETE_VOD_PRICE_PRESET",
@@ -48,11 +49,13 @@ export interface VodPaywallPageInfos {
     promos: Promo[];
     enabled: boolean;
     introVodId: string;
+    selectedTheme: string;
 }
 
 export const presetsInitialState: VodPaywallPageInfos = {
     presets: [],
     promos: [],
     enabled: false,
-    introVodId: ''
+    introVodId: '',
+    selectedTheme: null
 }

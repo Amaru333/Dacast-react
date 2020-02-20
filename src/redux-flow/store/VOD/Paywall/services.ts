@@ -1,10 +1,14 @@
 import axios from 'axios';
-import { Preset, Promo } from './types';
+import { Preset, Promo, VodPaywallPageInfos } from './types';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getVodPaywallInfos = () => {
     return axios.get(urlBase + 'vod-paywall');
+}
+
+const saveVodPaywallInfos = (data: VodPaywallPageInfos) => {
+    return axios.post(urlBase + 'vod-paywall', {data: data})
 }
 
 const createVodPricePreset = (data: Preset) => {
@@ -33,6 +37,7 @@ const deleteVodPromoPreset = (data: Promo) => {
 
 export const VodPaywallServices = {
     getVodPaywallInfos,
+    saveVodPaywallInfos,
     createVodPricePreset,
     saveVodPricePreset,
     deleteVodPricePreset,

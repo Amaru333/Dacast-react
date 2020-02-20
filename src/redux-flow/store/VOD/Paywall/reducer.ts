@@ -11,6 +11,11 @@ const reducer: Reducer<VodPaywallPageInfos> = (state = presetsInitialState, acti
                 ...state,
                 ...action.payload
             }
+        case ActionTypes.SAVE_VOD_PAYWALL_INFOS :
+            return {
+                ...state,
+                ...action.payload
+            }
         case ActionTypes.CREATE_VOD_PRICE_PRESET :
             presets = state.presets.slice();
             presets.splice(presets.length, 0, action.payload);

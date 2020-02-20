@@ -10,9 +10,10 @@ import { PricePresetsModal } from '../../Paywall/Presets/PricePresetsModal'
 import { Modal } from '../../../components/Modal/Modal'
 import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
 import { Icon } from '@material-ui/core'
-import { Preset, Promo } from '../../../redux-flow/store/VOD/Paywall'
+import { Preset, Promo, VodPaywallPageInfos } from '../../../redux-flow/store/VOD/Paywall'
 import { VodPaywallComponentProps } from '../../../containers/Videos/Paywall'
 import { BorderStyle, IconContainer } from '../../Paywall/Presets/PresetsStyle'
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 
 export const VodPaywallPage = (props: VodPaywallComponentProps) => {
 
@@ -20,6 +21,11 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
     const [promoPresetsModalOpened, setPromoPresetsModalOpened] = React.useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
+    const [vodPaywallSettings, setVodPaywallSettings] = React.useState<VodPaywallPageInfos>(props.VodPaywallInfos);
+
+    React.useEffect(() => {
+        setVodPaywallSettings(props.VodPaywallInfos)
+    }, [props.VodPaywallInfos])
 
     const pricePresetsTableHeader = () => {
         return [
@@ -143,42 +149,57 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
         <div>
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' className='mt2' label='Paywall Enabled' />
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={vodPaywallSettings.enabled} onChange={() => setVodPaywallSettings({...vodPaywallSettings, enabled: !vodPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
-                <DropdownSingle id='vodPaywallThemesDropdown' className='col col-2 my2' dropdownTitle='Paywall Theme' list={{'theme1': false, 'theme2': false}} />
-                <Text size={16} weight='med'>Intro Video ID</Text>
-                <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
-                
-                <BorderStyle className='my2' />
+                {   vodPaywallSettings.enabled ? 
+                    <>
+                        <DropdownSingle 
+                            id='vodPaywallThemesDropdown' 
+                            className='col col-2 my2' 
+                            dropdownTitle='Paywall Theme' 
+                            dropdownDefaultSelect={props.VodPaywallInfos.selectedTheme}
+                            list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
+                            callback={(value: string) => setVodPaywallSettings({...vodPaywallSettings, selectedTheme: value})}
+                        />
+                        <Text size={16} weight='med'>Intro Video ID</Text>
+                        <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
+                        <Input id='VodPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
+                        
+                        <BorderStyle className='my2' />
 
-                <Text size={20} weight='med'>Prices</Text>
-                {props.VodPaywallInfos.presets.length === 0 ? 
-                    <Table className='my2' id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
-                    :
-                    <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
-                   
+                        <Text size={20} weight='med'>Prices</Text>
+                        {props.VodPaywallInfos.presets.length === 0 ? 
+                            <Table className='my2' id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                            :
+                            <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                        
+                        }
+                        <BorderStyle className='my2' />
+
+                        <Text className="mt1" size={20} weight='med'>Promos</Text>
+                        { props.VodPaywallInfos.promos.length === 0 ?
+                            <Table className='my2' id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                            :
+                            <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                        }
+
+                        <BorderStyle className='my2' />
+
+                        <Text size={20} weight='med'>Associated Group Prices</Text>
+
+                        { props.groupsInfos.prices.length === 0 ?
+                            <Table className='my2' id='associatedGroupPricesEmptyTable' header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
+                            :
+                            <Table className='my2' id='groupPricesTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                        }
+                    </>
+                    : null
                 }
-                 <BorderStyle className='my2' />
-
-                <Text className="mt1" size={20} weight='med'>Promos</Text>
-                { props.VodPaywallInfos.promos.length === 0 ?
-                    <Table className='my2' id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
-                    :
-                    <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
-                }
-
-                 <BorderStyle className='my2' />
-
-                <Text size={20} weight='med'>Associated Group Prices</Text>
-
-                { props.groupsInfos.prices.length === 0 ?
-                    <Table className='my2' id='associatedGroupPricesEmptyTable' header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
-                    :
-                    <Table className='my2' id='groupPricesTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
-                }
-                
             </Card>
+            <div className={'mt2' + (props.VodPaywallInfos === vodPaywallSettings ? ' hide' : '')}>
+                <Button onClick={() => props.saveVodPaywallInfos(vodPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button onClick={() => setVodPaywallSettings(props.VodPaywallInfos)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
+            </div>
             <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={selectedPreset ? props.saveVodPricePreset : props.createVodPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
             </Modal>

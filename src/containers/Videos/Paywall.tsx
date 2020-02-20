@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { VodPaywallPage } from '../../pages/Videos/Paywall/Paywall'
-import { Preset, Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, Promo, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, VodPaywallPageInfos, getVodPaywallInfosAction } from '../../redux-flow/store/VOD/Paywall';
+import { Preset, Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, Promo, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, VodPaywallPageInfos, getVodPaywallInfosAction, saveVodPaywallInfosAction } from '../../redux-flow/store/VOD/Paywall';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
@@ -11,6 +11,7 @@ import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/sto
 export interface VodPaywallComponentProps {
     VodPaywallInfos: VodPaywallPageInfos;
     getVodPaywallInfos: Function;
+    saveVodPaywallInfos: Function;
     createVodPricePreset: Function;
     saveVodPricePreset: Function;
     deleteVodPricePreset: Function;
@@ -19,7 +20,7 @@ export interface VodPaywallComponentProps {
     deleteVodPromoPreset: Function;
     groupsInfos: GroupsPageInfos;
     getGroupsInfos: Function;
-    themes: PaywallThemingData;
+    theming: PaywallThemingData;
     getPaywallThemes: Function;
 }
 
@@ -32,12 +33,12 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if(!props.groupsInfos) {
             props.getGroupsInfos()
         }
-        if(!props.themes) {
+        if(!props.theming) {
             props.getPaywallThemes()
         }
     }, [])
 
-    return props.VodPaywallInfos && props.groupsInfos && props.themes ? 
+    return props.VodPaywallInfos && props.groupsInfos && props.theming ? 
         <VodPaywallPage {...props} />
         : <LoadingSpinner size='medium' color='violet' />
 }
@@ -46,7 +47,7 @@ export function mapStateToProps(state: ApplicationState) {
     return {
         VodPaywallInfos: state.vod.paywall,
         groupsInfos: state.paywall.groups,
-        themes: state.paywall.theming
+        theming: state.paywall.theming
     };
 }
 
@@ -54,6 +55,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodPaywallInfos: () => {
             dispatch(getVodPaywallInfosAction());
+        },
+        saveVodPaywallInfos: (data:VodPaywallPageInfos) => {
+            dispatch(saveVodPaywallInfosAction(data));
         },
         createVodPricePreset: (data: Preset) => {
             dispatch(createVodPricePresetAction(data));
