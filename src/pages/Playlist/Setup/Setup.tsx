@@ -3,8 +3,6 @@ import { FolderTreeNode, FoldersInfos, FolderAsset } from '../../../redux-flow/s
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { getNameFromFullPath } from '../../../utils/utils';
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import { IconStyle } from '../../Folders/FoldersStyle';
@@ -12,6 +10,7 @@ import styled, { css } from 'styled-components';
 import { Icon } from '@material-ui/core';
 import { IconSearch } from '../List/PlaylistList';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
@@ -19,12 +18,6 @@ export interface SetupComponentProps {
     getFolderContent: Function;
     restoreContent: Function;
 }
-
-const folderTreeConst = [
-    'folder1',
-    'folder2',
-    'folder3'
-]
 
 export const SetupPage = (props: SetupComponentProps) => {
 
@@ -40,97 +33,10 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [checkedFolders, setCheckedFolders] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
+    const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
+    const [playlistSettingsOpen, setPlaylistSettingsOpen] = React.useState<boolean>(false);
 
-    /** START IDK WHAT IT IS */
-
-    let children = folderTreeConst.map(path => ({
-        isExpanded: false,
-        subfolders: 2,
-        nbChildren: 64,
-        fullPath: '/' + path + '/',
-        loadingStatus: 'not-loaded',
-        children: {}
-    })).reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
-
-    let rootNode: FolderTreeNode = {
-        isExpanded: true,
-        subfolders: 2,
-        nbChildren: 2,
-        fullPath: '/',
-        loadingStatus: 'loaded',
-        children
-    }
-    
-    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
-
-    const wait = async () => {
-        return new Promise((resolve) => setTimeout(resolve, 1000))
-    }
-
-    const makeNode = (parent: FolderTreeNode, name: string, subfolders: number): FolderTreeNode => {
-        return {
-            children: {},
-            nbChildren: 10,
-            subfolders: subfolders,
-            fullPath: parent.fullPath + name + '/',
-            isExpanded: false,
-            loadingStatus: 'not-loaded'
-        }
-    }
-
-    const getChild = async (node: FolderTreeNode) => {        
-        let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        node.children = {
-            [name1]: makeNode(node, name1, 10),
-            [name2]: makeNode(node, name2, 0)
-        }
-        return node.children;
-    }
-
-
-    const loadChildren = async (node: FolderTreeNode) => {
-        node.loadingStatus = 'loading'
-        setFoldersTree({...foldersTree})
-        node.children = await getChild(node);
-        node.isExpanded = true
-        node.loadingStatus = 'loaded'
-        setFoldersTree({...foldersTree})
-    }
-
-
-    const getNode = async (root: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
-        let pathElements = searchedFolder.split('/').filter(f => f)
-
-        if(pathElements.length === 0) {
-            return root
-        }
-        let currentNode = root
-        while(currentNode.fullPath !== searchedFolder) {
-
-            if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
-                await loadChildren(currentNode)
-            }
-
-            let pathElement = pathElements.shift()
-            let foundChild = currentNode.children[pathElement]
-            if(!foundChild) {
-                throw new Error('path doesnt exist: ' + pathElement + ' (of ' + searchedFolder + ')')
-            }
-            currentNode = foundChild
-        }
-        if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
-            await loadChildren(currentNode)
-        }
-        return currentNode
-    }
-
-    const goToNode = async (searchedFolder: string) => {
-        return await getNode(foldersTree, searchedFolder);
-    }
-
-
-    /** END IDK WHAT IT IS */
+    const [sortSettings, setSortSetttings] = React.useState<string>("Sort");
 
     React.useEffect(() => {
         if(!selectedFolder) {
@@ -139,10 +45,6 @@ export const SetupPage = (props: SetupComponentProps) => {
         } else {
             props.getFolderContent(selectedFolder)
         }
-        // goToNode(selectedFolder)
-        //     .then((node) => {
-        //         setCurrentNode(node);
-        //     })
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {
@@ -306,12 +208,14 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const bulkActions = [
-        { name: 'Name (A-Z)', function: () => console.log("wtv") },
-        { name: 'Name (Z-A)', function: () => console.log("wtv") },
-        { name: 'Date Created (Newest First)', function: () => console.log("wtv") },
-        { name: 'Date Created (Oldest First)', function: () => console.log("wtv") },
-        { name: 'Custom', function: () => console.log("wtv") },
+        { name: 'Name (A-Z)', function: () => setSortSetttings('Name (A-Z)') },
+        { name: 'Name (Z-A)', function: () => setSortSetttings('Name (Z-A)') },
+        { name: 'Date Created (Newest First)', function: () => setSortSetttings('Date Created (Newest First)') },
+        { name: 'Date Created (Oldest First)', function: () => setSortSetttings('Date Created (Oldest First)') },
+        { name: 'Custom', function: () => setSortSetttings('Custom') },
     ]
+
+
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
@@ -330,26 +234,30 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     return (
         <>
-            <div className="inline-flex items-center flex col-7 mb2">
-                <IconSearch>search</IconSearch>
-                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
-            </div>
-            <div className="inline-flex items-center flex col-5 justify-end mb2">
-                <div className="relative">
-                    <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Sort</Button>
-                    <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
-                        {renderList()}
-                    </DropdownList>
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => {setSelectedTab(selectedTab === "content" ? 'folders' : 'content');setSelectedItems([]); }} />
+            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() =>setPlaylistSettingsOpen(false)} />
+            <div className="flex itemns-center">
+                <div className="inline-flex items-center flex col-7 mb2">
+                    <IconSearch>search</IconSearch>
+                    <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
                 </div>
-                <Button  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
-                <Button  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Preview</Button>
+                <div className="inline-flex items-center flex col-5 justify-end mb2">
+                    <div className="relative">
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings}</Button>
+                        <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            {renderList()}
+                        </DropdownList>
+                    </div>  
+                    <Button onClick={() => setPlaylistSettingsOpen(true)}  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
+                    <Button  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
+                </div>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <TabSetupContainer className="clearfix">
-                    <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => {setSelectedTab('folders'); setSelectedItems([]); } }>
+                    <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => {setSwitchTabOpen(true)} }>
                         <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
                     </TabSetupStyle>
-                    <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => {setSelectedTab('content'); setSelectedItems([]); } }>
+                    <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => {setSwitchTabOpen(true)} }>
                         <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
                     </TabSetupStyle>
                 </TabSetupContainer>
@@ -372,10 +280,13 @@ export const SetupPage = (props: SetupComponentProps) => {
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">
-                    <Text color={"gray-1"} size={14} weight='med'>[Account Name]'s Playlist</Text>
+                    <Text color={"gray-1"} size={14} weight='med'>[Playlist name]'s Playlist</Text>
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
+            <Button onClick={() => {} }  buttonColor="blue" className="relative  right" sizeButton="small" typeButton="primary" >Save</Button>
+            <Button onClick={() => {} }  buttonColor="blue" className="relative  right" sizeButton="small" typeButton="tertiary" >Discard</Button>
+
         </>
     )
 }
@@ -407,13 +318,14 @@ export const TabSetupStyle = styled.div<{selected: boolean}>`
 `
 
 export const TabSetupContainer= styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};;
+    border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
 `
 
 export const ItemSetupRow = styled.div<{selected: boolean}>`
     border-top: 1px solid ${props => props.theme.colors['gray-7']};
     height: 64px;
     ${props => props.selected && css`
+        background-color: ${props.theme.colors['violet10']};
     `}
     &:last-child {
         border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
