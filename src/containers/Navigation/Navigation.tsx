@@ -30,7 +30,9 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
                 console.log('found route', route.path)
-                matchingRoute =  {main: route.name, slug: null}
+                if(matchingRoute.main === 'Dashboard') {
+                    matchingRoute =  {main: route.name, slug: null}
+                }
             }
             if(route.slug) {
                 route.slug.map(slug => {
