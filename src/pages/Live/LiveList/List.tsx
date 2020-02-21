@@ -26,6 +26,11 @@ export const LiveListPage = (props: LiveListProps) => {
     const [selectedLiveId, setSelectedLiveId] = React.useState<LiveItem>(null)
 
     React.useEffect(() => {
+        setShowLiveTabs(location.pathname !== '/livestreams')
+
+    }, [location])
+
+    React.useEffect(() => {
 
     }, [selectedLive])
 
@@ -137,7 +142,7 @@ export const LiveListPage = (props: LiveListProps) => {
 
     return (
         showLiveTabs ?
-            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={selectedLiveId.id.toString()} history={props.history} />
+            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={location.pathname === '/livestreams' ? selectedLiveId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
             :
             <>
                 <LivesFiltering />

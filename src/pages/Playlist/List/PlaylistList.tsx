@@ -28,6 +28,10 @@ export const PlaylistListPage = (props: LiveListProps) => {
     const [showPlaylistTabs, setShowPlaylistTabs] = React.useState<boolean>(false)
     const [selectedPlaylistId, setSelectedPlaylistId] = React.useState<PlaylistItem>(null)
 
+    React.useEffect(() => {
+        setShowPlaylistTabs(location.pathname !== '/playlists')
+    }, [location])
+
     React.useEffect(() => { }, [selectedPlaylist])
 
     const liveListHeaderElement = () => {
@@ -150,7 +154,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
 
     return (
         showPlaylistTabs ?
-            <PlaylistsTabs playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
+            <PlaylistsTabs playlistId={location.pathname === '/playlists' ? selectedPlaylistId.id : location.pathname.split('/')[2]} playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
             :
             <>
                 <HeaderPlaylistList className="mb2 flex" >
@@ -165,7 +169,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
                         </div>

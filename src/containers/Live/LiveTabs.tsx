@@ -13,8 +13,10 @@ export const LiveTabs = (props: { live: LiveItem; history: any; liveId: string; 
     const {path} = useRouteMatch();
 
     React.useEffect(() => {
-        updateTitleApp(props.live.title);
-        props.history.push('/livestreams/'+props.liveId+'/general')
+        // updateTitleApp(props.live.title);
+        if(location.pathname === '/livestreams') {
+            props.history.push('/livestreams/'+props.liveId+'/general')
+        }
     }, [])
 
     const handleLiveSubRoutes = () => {

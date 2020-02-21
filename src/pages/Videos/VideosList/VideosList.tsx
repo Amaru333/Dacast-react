@@ -12,6 +12,7 @@ import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
+// import { useLocation} from 'react-router-dom'
 
 export interface VideosListProps {
     items: VodItem[];
@@ -21,9 +22,16 @@ export interface VideosListProps {
 
 export const VideosListPage = (props: VideosListProps) => {
 
+    // let match = useLocation()
+
     const [selectedVod, setSelectedVod] = React.useState<number[]>([]);
     const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
     const [selectedVodId, setSelectedVodId] = React.useState<VodItem>(null);
+
+    React.useEffect(() => {
+        setShowVodTabs(location.pathname !== '/videos')
+
+    }, [location])
 
     React.useEffect(() => {
     }, [selectedVod])
@@ -115,7 +123,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     return (
         showVodTabs ?
-            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={selectedVodId.id.toString()} history={props.history} />
+            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' ? selectedVodId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
             :
             <>
                 <VideosFiltering />

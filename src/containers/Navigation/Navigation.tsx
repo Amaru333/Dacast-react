@@ -59,7 +59,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [location])
 
     const handleMenuToggle = (menuName: string) => {
-        debugger;
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
         }
