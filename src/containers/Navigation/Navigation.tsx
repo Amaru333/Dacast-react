@@ -125,6 +125,14 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         )
     }
 
+    const handleMenuItemClick = (route: string, slug: string) => {
+        setSelectedElement(route) 
+        setSelectedSubElement(slug)
+        if(props.isMobile) {
+            props.setOpen(false)
+        }
+    }
+
     const renderMenu = () => {
 
         return props.routes.map((element, i) => {
@@ -153,7 +161,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         <SubMenu isOpen={element.name === selectedElement && props.isOpen && !toggleSubMenu}>
                             {element.slug.map((subMenuElement, index) => {
                                 return (
-                                    <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {setSelectedElement(element.name), setSelectedSubElement(subMenuElement.name)}}  >
+                                    <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.name, subMenuElement.name)}}  >
                                         <SubMenuElement selected={selectedSubElement === subMenuElement.name}>
                                             <TextStyle selected={selectedSubElement === subMenuElement.name} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                         </SubMenuElement>
@@ -170,7 +178,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             
             else{
                 return (
-                    <Link to={element.path} onClick={() => {setSelectedElement(element.name), setSelectedSubElement('')}} key={'MenuElement'+i} >
+                    <Link to={element.path} onClick={() => {handleMenuItemClick(element.name, '')}} key={'MenuElement'+i} >
                         <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>

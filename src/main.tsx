@@ -21,7 +21,7 @@ import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
+import { updateTitleApp, useMedia } from './utils/utils';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Uploader from './containers/Videos/Uploader';
 
@@ -82,6 +82,8 @@ const returnRouter = (props: Routes[]) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
+    let mobileWidth = useMedia('(max-width:780px');
+
     const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
 
     React.useEffect(() => {
@@ -110,7 +112,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             onMouseEnter={() => menuHoverOpen()} 
                             onMouseLeave={() => menuHoverClose()} 
                             navWidth={currentNavWidth} 
-                            isMobile={isMobile} 
+                            isMobile={isMobile || mobileWidth} 
                             isOpen={isOpen} 
                             setMenuLocked={setMenuLocked} 
                             setOpen={setOpen} 
@@ -118,9 +120,9 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             history={history} 
                             routes={AppRoutes}
                         />
-                        <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
-                            <Content isMobile={isMobile} isOpen={isOpen}>
+                        <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                            <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                                 <Switch>
                                     <Route exact path="/">
                                         <Dashboard />

@@ -64,6 +64,7 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     height:100%;
     position: fixed;
     width: ${props => props.isMobile ? "75%" : props.navWidth};
+    max-width: 300px;
     box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
