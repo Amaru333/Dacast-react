@@ -12,8 +12,10 @@ import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
 import { Icon } from '@material-ui/core'
 import { Preset, Promo, VodPaywallPageInfos } from '../../../redux-flow/store/VOD/Paywall'
 import { VodPaywallComponentProps } from '../../../containers/Videos/Paywall'
-import { BorderStyle, IconContainer } from '../../Paywall/Presets/PresetsStyle'
+import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
+import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const VodPaywallPage = (props: VodPaywallComponentProps) => {
 
@@ -50,7 +52,16 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.price[0].currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.recurrence ? preset.recurrence : preset.duration.amount + ' ' + preset.duration.type}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
-                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deleteVodPricePreset(preset)}}>delete</Icon><Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltipPrice" + preset.id}>
+                            <Icon onClick={() =>  {props.deleteVodPricePreset(preset)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltip" + preset.id}>
+                            <Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }
@@ -77,7 +88,16 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
-                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deleteVodPromoPreset(promo)}}>delete</Icon><Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltipPromo" + promo.id}>
+                            <Icon onClick={() =>  {props.deleteVodPromoPreset(promo)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltipPromo" + promo.id}>
+                            <Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }

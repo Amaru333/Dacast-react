@@ -14,6 +14,7 @@ import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle'
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -46,9 +47,11 @@ const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
             <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
-                <Icon>get_app</Icon>
-                <Icon onClick={() => props.deleteVodSubtitle(value)}>delete</Icon>
-                <Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon>
+                <ActionIcon id={"downloadTooltip" + key}><Icon>get_app</Icon></ActionIcon>
+                <Tooltip target={"downloadTooltip" + key}></Tooltip>
+                <ActionIcon><Icon onClick={() => props.deleteVodSubtitle(value)}>delete</Icon></ActionIcon>
+                <ActionIcon><Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon></ActionIcon>
+                
             </IconContainer>
         ]
     })
@@ -307,15 +310,6 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     )
 
 }
-
-const IconContainer = styled.div`
-    float:right;
-    display:block;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-   `
 
 const SubtitleFile = styled.div`
     display: flex;

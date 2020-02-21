@@ -15,6 +15,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -102,7 +103,16 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value, value.id)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.id}>
+                            <Icon onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.id}>
+                            <Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
+                    </div>,
                 ]
             })
         }
@@ -138,7 +148,6 @@ export const PlaylistListPage = (props: LiveListProps) => {
 
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
-    console.log(props);
     return (
         showPlaylistTabs ?
             <PlaylistsTabs playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />

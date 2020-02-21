@@ -13,6 +13,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { Card } from '../../../components/Card/Card';
 import { PlaylistSecurityContainerProps } from '../../../containers/Playlists/Security';
 import { Icon } from '@material-ui/core';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
 
@@ -56,12 +57,13 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                    <UnlockSettingsIcon id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ? 
                             "lock_open"
                             : "lock"
                         }
                     </UnlockSettingsIcon>
+                    <Tooltip target="unlockSecurityTooltip">{settingsEditable ? "Click to revert Security Settings" : "Click to edit Security Settings"}</Tooltip>
                 </Header>
         
                 <DisabledSection settingsEditable={settingsEditable}>

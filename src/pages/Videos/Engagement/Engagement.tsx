@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Icon } from '@material-ui/core';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, IconContainer, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -15,6 +15,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { VodNewAdModal } from './VodNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
 
 export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
@@ -107,11 +108,17 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <Icon 
-                        onClick={() => {props.deleteVodAd(item)}} 
-                    >delete
-                    </Icon>
-                    <Icon onClick={() => editAd(item)}>edit</Icon> 
+                    <ActionIcon id={"deleteTooltip" + item.id}>
+                        <Icon 
+                            onClick={() => {props.deleteVodAd(item)}} 
+                        >delete
+                        </Icon>
+                    </ActionIcon>
+                    <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
+                   <ActionIcon id={"editTooltip" + item.id}>
+                        <Icon onClick={() => editAd(item)}>edit</Icon>
+                   </ActionIcon>
+                   <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>  
                 </IconContainer>
             ]
         })
@@ -171,7 +178,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <UnlockSettingsIcon id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
-                    <Tooltip target="unlockMailSectionTooltip">{adSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
+                    <Tooltip target="unlockMailSectionTooltip">{mailSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
                     <div className="pb2">
@@ -204,7 +211,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <UnlockSettingsIcon id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
                         {brandSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
-                    <Tooltip target="unlockBrandSectionTooltip">{adSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
+                    <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
@@ -233,7 +240,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <UnlockSettingsIcon id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
                     </UnlockSettingsIcon>
-                    <Tooltip target="unlockEndScreenSectionTooltip">{adSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
+                    <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>

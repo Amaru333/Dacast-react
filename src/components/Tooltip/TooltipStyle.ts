@@ -14,4 +14,5 @@ export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibility: boo
     transition:none;
     max-width: 250px;
     box-shadow: 0px 2px 4px ${props => props.theme.colors.overlay20 };
+    z-index: 10;
 `;

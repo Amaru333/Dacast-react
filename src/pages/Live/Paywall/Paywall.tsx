@@ -12,9 +12,10 @@ import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
 import { Icon } from '@material-ui/core'
 import { Preset, Promo, LivePaywallPageInfos } from '../../../redux-flow/store/Live/Paywall'
 import { LivePaywallComponentProps } from '../../../containers/Live/Paywall'
-import { BorderStyle, IconContainer } from '../../Paywall/Presets/PresetsStyle'
+import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
 
 export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
@@ -51,7 +52,16 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.price[0].currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.recurrence ? preset.recurrence : preset.duration.amount + ' ' + preset.duration.type}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
-                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deleteLivePricePreset(preset)}}>delete</Icon><Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltipPrice" + preset.id}>
+                            <Icon onClick={() =>  {props.deleteLivePricePreset(preset)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltip" + preset.id}>
+                            <Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }
@@ -79,8 +89,14 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
-                        <Icon id={"promoPresetsDeleteTooltip" + key} onClick={() =>  {props.deleteLivePromoPreset(promo)}}>delete</Icon>
-                        <Icon id="promoPresetsEditTooltip" onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                        <ActionIcon id={"deleteTooltipPromo" + promo.id}>
+                            <Icon id={"promoPresetsDeleteTooltip" + key} onClick={() =>  {props.deleteLivePromoPreset(promo)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltipPromo" + promo.id}>
+                            <Icon id="promoPresetsEditTooltip" onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
                 ]
             })

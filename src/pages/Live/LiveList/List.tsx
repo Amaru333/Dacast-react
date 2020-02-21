@@ -11,6 +11,7 @@ import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 
 
 export interface LiveListProps {
@@ -118,7 +119,16 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value, value.id)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.id}>
+                            <Icon onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.id}>
+                            <Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>    
+                    </div>,
                 ]
             })
         }

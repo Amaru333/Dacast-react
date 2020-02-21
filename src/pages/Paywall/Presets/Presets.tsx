@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Table } from '../../../components/Table/Table';
-import { BorderStyle, IconContainer } from './PresetsStyle';
+import { BorderStyle } from './PresetsStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
 import { PricePresetsModal } from './PricePresetsModal';
@@ -10,6 +10,8 @@ import { PromoPresetsModal } from './PromoPresetsModal';
 import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
 import { Icon } from '@material-ui/core';
+import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -41,7 +43,16 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.price[0].currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.recurrence ? preset.recurrence : preset.duration.amount + ' ' + preset.duration.type}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
-                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deletePricePreset(preset)}}>delete</Icon><Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltip" + preset.id}>
+                            <Icon onClick={() =>  {props.deletePricePreset(preset)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + preset.id}>Delete</Tooltip>
+                       <ActionIcon id={"editTooltip" + preset.id}>
+                            <Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon>
+                       </ActionIcon> 
+                       <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }
@@ -68,7 +79,16 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
-                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}><Icon onClick={() =>  {props.deletePromoPreset(promo)}}>delete</Icon><Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltipPromo" + promo.id}>
+                            <Icon onClick={() =>  {props.deletePromoPreset(promo)}}>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltipPromo" + promo.id}>
+                            <Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>   
+                    </IconContainer>
                 ]
             })
         }

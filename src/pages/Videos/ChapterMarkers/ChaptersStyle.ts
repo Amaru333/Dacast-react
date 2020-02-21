@@ -24,12 +24,3 @@ export const PlayerContainer = styled.div`
 export const ButtonsArea = styled.div`
 
 `
-
-export const IconContainer = styled.div`
-    float:right;
-    display:block;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`

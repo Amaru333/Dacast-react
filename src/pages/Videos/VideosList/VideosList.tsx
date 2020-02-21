@@ -11,6 +11,7 @@ import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -96,7 +97,16 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <>{handleFeatures(value, value.id.toString())}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon></div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.id}>
+                            <Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.id}>
+                            <Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>  
+                    </div>,
                 ]
             })
         }
