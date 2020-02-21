@@ -26,19 +26,19 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     let location = useLocation();
 
     const firstSelectedItem = (): {main: string, slug: string} => {
-        let matchingRoute = {main: 'Dashboard', slug: ''};
+        let matchingRoute = {main: '/dashboard', slug: ''};
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
                 console.log('found route', route.path)
-                if(matchingRoute.main === 'Dashboard') {
-                    matchingRoute =  {main: route.name, slug: null}
+                if(matchingRoute.main === '/dashboard') {
+                    matchingRoute.main =  route.path
                 }
             }
             if(route.slug) {
                 route.slug.map(slug => {
                     if(slug.path === location.pathname) {
                         console.log('found slug', slug.path)
-                        matchingRoute =  {main: route.name, slug: slug.name}
+                        matchingRoute.slug =  slug.path
                     }
                 })
             }
@@ -59,6 +59,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [location])
 
     const handleMenuToggle = (menuName: string) => {
+        debugger;
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
         }
@@ -66,7 +67,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             setToggleSubMenu(false)
         }
         setSelectedElement(menuName); 
-        const menuItem = props.routes.filter((item) => item.name === menuName)[0];
+        const menuItem = props.routes.filter((item) => item.path === menuName)[0];
         if(!menuItem.slug) {
             setSelectedSubElement('')
         }
@@ -149,23 +150,23 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <div key={'superkey'+i}>
                         <ElementMenu 
                             isMobile={props.isMobile} 
-                            onClick={() => handleMenuToggle(element.name)} 
+                            onClick={() => handleMenuToggle(element.path)} 
                             key={'MenuElementwithSubsections'+i} 
                             isOpen={props.isOpen}
                             hasSlugs={true} 
-                            active={selectedElement === element.name} 
+                            active={selectedElement === element.path} 
                             icon={element.iconName!}
-                            arrowIcon={selectedElement === element.name && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                            arrowIcon={selectedElement === element.path && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                         >
                             {element.name} 
                         </ElementMenu>
 
-                        <SubMenu isOpen={element.name === selectedElement && props.isOpen && !toggleSubMenu}>
+                        <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
                             {element.slug.map((subMenuElement, index) => {
                                 return (
-                                    <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.name, subMenuElement.name)}}  >
-                                        <SubMenuElement selected={selectedSubElement === subMenuElement.name}>
-                                            <TextStyle selected={selectedSubElement === subMenuElement.name} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                    <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                        <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                            <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                         </SubMenuElement>
                                     </Link>
                                 )
@@ -181,7 +182,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             else{
                 return (
                     <Link to={element.path} onClick={() => {handleMenuItemClick(element.name, '')}} key={'MenuElement'+i} >
-                        <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.name} icon={element.iconName!}>
+                        <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
                             {element.name} 
                         </ElementMenu>
                     </Link>
