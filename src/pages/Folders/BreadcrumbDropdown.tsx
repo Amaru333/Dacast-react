@@ -69,7 +69,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                             { i < optionsLength - 1 || i === 0 ?
                                 <>
                                     <span className='pointer' onClick={() => props.callback(props.options.split(option)[0] + option + '/')}>
-                                        <Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 ? 'All files' : option}</Text>
+                                        <Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 ? 'All folders' : option}</Text>
                                     </span>
                                     <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                                 </>
@@ -93,11 +93,10 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
             }
             else {
                 const options = props.options.split('/');
-                console.log(props.options.split(options[options.length - 2]))
                 return ( 
                     <div className='flex'>
                         <div className='flex items-center'>
-                            <span className='pointer' onClick={() => props.callback('/')}><Text size={14} weight='med' color='dark-violet'>All files</Text></span>
+                            <span className='pointer' onClick={() => props.callback('/')}><Text size={14} weight='med' color='dark-violet'>All folders</Text></span>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                             <div className='relative pointer'>
                                 <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 

@@ -147,10 +147,18 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 
             </Card>
             <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
-                <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
+                {
+                    pricePresetsModalOpened ?
+                        <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
+                        : null
+                }
             </Modal>
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
-                <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
+                {
+                    promoPresetsModalOpened ?
+                        <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
+                        : null
+                }
             </Modal>
         </div>
 

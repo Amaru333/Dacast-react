@@ -19,14 +19,14 @@ const pricesList = [
 const defaultPreset: Preset = {
     id: '-1',
     name: '',
-    type: 'Subscription',
+    type: 'Pay Per View',
     price: pricesList,
     duration: {amount: 90, type: 'Hours'},
     recurrence: 'Weekly',
     startMethod: 'Upon Purchase',
     timezone: null,
     startDate: null,
-    startTime: null
+    startTime: '00:00'
 
 }
 
@@ -48,10 +48,6 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
         }
         setPresetsList({...presetsList, price: tempPrices});
     }   
-
-    React.useEffect(() => {
-        console.log(presetsList.price.length);
-    }, [presetsList.price])
 
     const renderPrices = () => {
         return presetsList.price.map((price, key) => {
@@ -92,7 +88,15 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                 <DropdownSingle id='pricePresetStartMethodDropdown' dropdownDefaultSelect={presetsList.startMethod} className='col col-6 pr1' callback={(value: string) => setPresetsList({...presetsList, startMethod: value})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' />
                 {
                     presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?
-                        <DropdownSingle hasSearch id='pricePresetTimezoneDropdown' className='col col-6 pl1' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
+                        <DropdownSingle 
+                            hasSearch 
+                            id='pricePresetTimezoneDropdown' 
+                            className='col col-6 pl1' 
+                            dropdownTitle='Timezone' 
+                            dropdownDefaultSelect={moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')'}
+                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
+                            
+                        />
                         : null
                 }
             </div>
@@ -100,7 +104,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                 presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?  
                     <div className='col col-12 py2'>
                         <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Start Date' />
-                        <Input className='col col-3 pl1' type='time' label='Start Time' />
+                        <Input className='col col-3 pl1' type='time' defaultValue={presetsList.startTime} label='Start Time' />
                     </div>
                     : null
             }

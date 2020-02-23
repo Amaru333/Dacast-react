@@ -37,7 +37,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
             <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>,
             <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>,
             <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>,
-            <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>
+            <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
 
         ]
     }
@@ -74,7 +74,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
             <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>,
             <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>,
             <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>,
-            <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>
+            <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
 
         ]
     }

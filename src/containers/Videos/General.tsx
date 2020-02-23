@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeLivePosterAction, deleteVodPosterAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeVodPosterAction, deleteVodPosterAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -70,7 +70,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(changeVodSplashscreenAction(data))
         },
         changeVodPoster: (data: PosterUpload) => {
-            dispatch(changeLivePosterAction(data))
+            dispatch(changeVodPosterAction(data))
         },
         deleteVodPoster: () => {
             dispatch(deleteVodPosterAction())
