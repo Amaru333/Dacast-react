@@ -48,10 +48,10 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                             <Icon onClick={() =>  {props.deletePricePreset(preset)}}>delete</Icon>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + preset.id}>Delete</Tooltip>
-                       <ActionIcon id={"editTooltip" + preset.id}>
+                        <ActionIcon id={"editTooltip" + preset.id}>
                             <Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon>
-                       </ActionIcon> 
-                       <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
+                        </ActionIcon> 
+                        <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
                 ]
             })

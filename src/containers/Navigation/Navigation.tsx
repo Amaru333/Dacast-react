@@ -25,7 +25,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
 
-    const firstSelectedItem = (): {main: string, slug: string} => {
+    const firstSelectedItem = (): {main: string; slug: string} => {
         let matchingRoute = {main: '/dashboard', slug: ''};
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {

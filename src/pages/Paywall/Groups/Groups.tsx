@@ -120,11 +120,11 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoGroupsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                        <Icon onClick={() =>  {props.deleteGroupPromo(promo)}}>delete</Icon>
+                            <Icon onClick={() =>  {props.deleteGroupPromo(promo)}}>delete</Icon>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
-                        <Icon onClick={() =>  {setSelectedGroupPromo(promo);setGroupPromosModalOpened(true)}}>edit</Icon>
+                            <Icon onClick={() =>  {setSelectedGroupPromo(promo);setGroupPromosModalOpened(true)}}>edit</Icon>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>

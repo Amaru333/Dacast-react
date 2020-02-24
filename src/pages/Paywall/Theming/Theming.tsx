@@ -114,7 +114,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         />
                         <Text size={16} weight='med'>Button Text Colour</Text>
                         <ColorPicker 
-                            className='my1' 
+                            className='my1 col col-12' 
                             defaultColor={selectedTheme.splashScreen.buttonTextColor} 
                             callback={(color: string) => {
                                 inPlayerPreviewIframeRef.current.contentWindow.postMessage({

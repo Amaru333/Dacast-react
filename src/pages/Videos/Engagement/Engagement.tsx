@@ -115,10 +115,10 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         </Icon>
                     </ActionIcon>
                     <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
-                   <ActionIcon id={"editTooltip" + item.id}>
+                    <ActionIcon id={"editTooltip" + item.id}>
                         <Icon onClick={() => editAd(item)}>edit</Icon>
-                   </ActionIcon>
-                   <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>  
+                    </ActionIcon>
+                    <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>  
                 </IconContainer>
             ]
         })

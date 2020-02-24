@@ -5,7 +5,6 @@ export const ColorPickerHeader = styled.div`
     border: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
     padding: 8px;
-    width: 170px;
     &:hover {
         cursor: pointer;
     }
@@ -22,4 +21,6 @@ export const ColorPickerBlock = styled.div<{opened: boolean}>`
     ${props => !props.opened && css`
         display: none;
     `}
+    position: absolute;
+    z-index: 100;
 `

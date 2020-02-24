@@ -11,12 +11,12 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
     const colorPickerRef = React.useRef<HTMLDivElement>(null);
 
-    useOutsideAlerter(colorPickerRef,() => {
+    useOutsideAlerter(colorPickerRef, () => {
         if(props.callback) {
             props.callback(selectedColor);
         }
         setIsOpened(!isOpened)
-    })
+    });
 
     React.useEffect(() => {
         props.callback(selectedColor.toString());
@@ -32,6 +32,8 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
             <ColorPickerBlock ref={colorPickerRef} opened={isOpened}>
                 <BlockPicker  color={selectedColor} onChangeComplete={(color) => setSelectedColor(color.hex)} colors={["#D14642", "#DE8536", "#FFB75D", "#1E874B", "#2899F6", "#7048E8", "#FC427B"]} triangle="hide" />
             </ColorPickerBlock>
+
+
 
         </div>
     )

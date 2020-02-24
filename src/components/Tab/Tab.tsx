@@ -17,7 +17,7 @@ export const Tab = (props: TabProps) => {
         props.list.map((route) => {
             if(location.pathname === route.path) {
                 console.log('found route', route.path)
-                    matchingRoute =  route.path
+                matchingRoute =  route.path
             }
         })
         return matchingRoute;
