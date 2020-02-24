@@ -22,6 +22,7 @@ import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
+import { HelpPage } from './pages/Help/Help';
 
 // Any additional component props go here.
 interface MainProps {
@@ -121,6 +122,9 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             <Content isMobile={isMobile} isOpen={isOpen}>
                                 <Switch>
                                     {returnRouter(AppRoutes)}
+                                    <Route path="/help">
+                                        <HelpPage></HelpPage>
+                                    </Route>
                                 </Switch>
                             </Content>
                         </FullContent>   
