@@ -9,6 +9,7 @@ import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../public/assets/logo.png');
 const logoSmall = require('../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../utils/utils';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -192,7 +193,9 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     return (
         <>
         {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
+       
         <ContainerStyle isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
+        <Scrollbars>
             <ImageStyle onClick={() => props.history.push('/')} className="mx-auto pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
             <BreakStyle />
             <div>
@@ -207,6 +210,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             <SectionStyle>
                 {renderMenu()}
             </SectionStyle>
+            </Scrollbars>
             <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
             <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
         </ContainerStyle>
