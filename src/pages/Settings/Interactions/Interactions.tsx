@@ -130,7 +130,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return [
             <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>,
             <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>,
-            <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Mail Catcher</Button>
+            <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
 
         ]
     }
@@ -160,7 +160,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex'>
                             <Icon className="mr1">info_outlined</Icon>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                         <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
                         </>
@@ -169,11 +169,11 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card>
 
             <Card className='my2'>
-                <TextStyle className="pb2" > <Text size={20} weight='med'>Mail Catcher</Text></TextStyle>
+                <TextStyle className="pb2" > <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
                     <Icon className="mr1">info_outlined</Icon>
-                    <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                    <Text size={14} weight='reg' color='gray-3'>Need help creating Email Catcher? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 {/* <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
@@ -226,11 +226,19 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Mail Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
-                <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />
+            <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Email Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
+                {
+                    mailCatcherModalOpened ?                 
+                        <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />
+                        : null
+                }
             </Modal>
             <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
+                {
+                    newAdModalOpened ? 
+                        <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
+                        : null
+                }
             </Modal>
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>

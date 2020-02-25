@@ -108,17 +108,17 @@ export const PlansPage = (props: {plans: Plans}) => {
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$21</Text>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> /month</Text>
                                     </div>                                    
                                     <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>100 GB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pm</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/month</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/year</Text>
                                     </div>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -130,7 +130,8 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                    <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.developerPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <Text className='py4 center col col-10' size={12} weight='reg'>Features available for first 6 months</Text>
+                                    <ButtonStyle className='absolute bottom-0' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.developerPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
@@ -140,16 +141,16 @@ export const PlansPage = (props: {plans: Plans}) => {
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$63</Text>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> /month</Text>
                                     </div>                                    <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>5 TB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/year</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/year</Text>
                                     </div>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -162,8 +163,12 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
-                                    <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <div className='flex flex-column absolute bottom-0'>
+                                        <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
+                                        <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    </div>
+
+
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
@@ -173,17 +178,17 @@ export const PlansPage = (props: {plans: Plans}) => {
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$250</Text>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> pm*</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> /month*</Text>
                                     </div>
                                     <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>2 TB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/year</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>1 TB</Text>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>1 TB</Text>
-                                        <Text className={textClassName + ' px1'} size={12} weight='reg' color='gray-5'>pa</Text>
+                                        <Text className={textClassName} size={12} weight='reg' color='gray-5'>/year</Text>
                                     </div>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -196,22 +201,26 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
-                                    <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <Text className='center py35' size={12}>*3 Month Minimum</Text>
+                                    <div className='flex flex-column absolute bottom-0'>
+                                        <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
+                                        <ButtonStyle className='mt1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    </div>
+
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
-                        <PlanContainer className={marginBlocks}>
+                        <PlanContainer style={{maxWidth: 275}} className={marginBlocks}>
                             <Text size={16} weight='reg' color='gray-3'>Custom</Text>
                             <Card backgroundColor='violet10'>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <Text className={textClassName} size={32} weight='med' color='gray-1'>Let's chat</Text>
                                     <div className='flex flex-column mt4 pt4'>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>Do you want a custom plan that is right for you and your company?</Text>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
+                                        <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'>Do you want a custom plan that is right for you and your company?</Text>
+                                        <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
+                                        <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                     </div>
-                                    <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {}}>Contact Us</ButtonStyle>
+                                    <ButtonStyle className='absolute bottom-0' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {}}>Contact Us</ButtonStyle>
 
                                 </PlanInfosContainer>
                             </Card>
@@ -323,7 +332,7 @@ const PlanContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 350px;
+    max-width: 175px;
 `
 
 const PlanInfosContainer = styled.div<{isMobile: boolean}>`
@@ -331,8 +340,8 @@ const PlanInfosContainer = styled.div<{isMobile: boolean}>`
     flex-direction: column;
     position: relative;
     align-items: center;
-    height: 90%;
-    min-height: 750px;
+    height: auto;
+    min-height: 850px;
     ${props => props.isMobile && css`
         min-height: 600px;
     `}
@@ -343,7 +352,5 @@ export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
 `
 
 const ButtonStyle = styled(Button)`
-    position: absolute;
-    bottom: 0;
     width: 95%;
 `

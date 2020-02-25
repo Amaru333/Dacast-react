@@ -55,7 +55,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [checkedItems, setCheckedItems] = React.useState<string[]>([])
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
-    const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename' | 'New Folder'>('New Folder');
+    const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder');
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false);
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
@@ -208,7 +208,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const handleAssetDropdownOptions = (option: string, assetName: string) => {
         switch(option) {
             case 'Rename':
-                setNewFolderModalAction('Rename');
+                setNewFolderModalAction('Rename Folder');
                 setNewFolderModalOpened(true);
                 break;
             case 'Move':
@@ -235,7 +235,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
-                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
+                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status.toUpperCase()} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
                     <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
                     <div className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
@@ -455,7 +455,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 
-            <Modal hasClose={false} size='small' title={newFolderModalAction === 'New Folder' ? newFolderModalAction : newFolderModalAction + getNameFromFullPath(selectedFolder)} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal hasClose={false} size='small' title={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

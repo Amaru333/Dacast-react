@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@material-ui/core';
-import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
+import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { VodItem } from '../../../redux-flow/store/VOD/General/types';
@@ -12,10 +12,18 @@ import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { ThemeBulkForm, PaywallBulkForm, DeleteBulkForm, OnlineBulkForm } from '../../Playlist/List/BulkModals';
+import { IconSearch } from '../../Playlist/List/PlaylistList';
+import { SeparatorHeader } from '../../Folders/FoldersStyle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 // import { useLocation} from 'react-router-dom'
 
 export interface VideosListProps {
     items: VodItem[];
+    themesList: ThemeOptions[];
     getVodList: Function;
     deleteVodList: Function;
 }
@@ -24,9 +32,27 @@ export const VideosListPage = (props: VideosListProps) => {
 
     // let match = useLocation()
 
-    const [selectedVod, setSelectedVod] = React.useState<number[]>([]);
+    const [selectedVod, setSelectedVod] = React.useState<string[]>([]);
     const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
     const [selectedVodId, setSelectedVodId] = React.useState<VodItem>(null);
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
+    const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
+
+    useOutsideAlerter(bulkDropdownRef, () => {
+        setDropdownIsOpened(!dropdownIsOpened)
+    })
+
+    const bulkActions = [
+        { name: 'Online/Offline', function: setBulkOnlineOpen },
+        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Change Theme', function: setBulkThemeOpen },
+        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Delete', function: setBulkDeleteOpen },
+    ]
 
     React.useEffect(() => {
         setShowVodTabs(location.pathname !== '/videos')
@@ -35,6 +61,8 @@ export const VideosListPage = (props: VideosListProps) => {
 
     React.useEffect(() => {
     }, [selectedVod])
+
+
 
     const vodListHeaderElement = () => {
         return [
@@ -120,15 +148,55 @@ export const VideosListPage = (props: VideosListProps) => {
         }
     }
 
+    const renderList = () => {
+        return bulkActions.map((item, key) => {
+            return (
+                <DropdownItem
+                    isSingle
+                    key={item.name}
+                    className={key === 1 ? 'mt1' : ''}
+                    isSelected={false}
+                    onClick={() => item.function(true)}>
+                    <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
+                </DropdownItem>
+            )
+        })
+    }
+
 
     return (
         showVodTabs ?
             <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' ? selectedVodId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
             :
             <>
-                <VideosFiltering />
+            <div className='flex items-center mb2'>
+                <div className="flex-auto items-center flex">
+                    <IconSearch>search</IconSearch>
+                    <InputTags  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={[]}   />
+                </div>
+                <div className="flex items-center" >
+                    {selectedVod.length > 0 ?
+                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedVod.length} items</Text>
+                        : null
+                    }
+                    <div className="relative">
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                        <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            {renderList()}
+                        </DropdownList>
+                    </div>
+                    <SeparatorHeader className="mx2 inline-block" />
+                    <VideosFiltering />                
+                    <Button onClick={() => props.history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                </div>
+            </div>
+
+                
                 <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             </>
 
     )

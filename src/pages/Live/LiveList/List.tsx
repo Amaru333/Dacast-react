@@ -12,10 +12,19 @@ import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
 import { ActionIcon } from '../../../shared/ActionIconStyle';
-
+import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { IconSearch } from '../../Playlist/List/PlaylistList';
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { SeparatorHeader } from '../../Folders/FoldersStyle';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
+import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
+import { UserAccountPrivileges } from '../../../containers/Navigation/NavigationTypes';
 
 export interface LiveListProps {
     liveList: LiveItem[];
+    themesList: ThemeOptions[];
     deleteLiveChannel: Function;
 }
 
@@ -139,15 +148,79 @@ export const LiveListPage = (props: LiveListProps) => {
         }
     }
 
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
+
+    const bulkActions = [
+        { name: 'Online/Offline', function: setBulkOnlineOpen },
+        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Change Theme', function: setBulkThemeOpen },
+        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Delete', function: setBulkDeleteOpen },
+    ]
+
+    const renderList = () => {
+        return bulkActions.map((item, key) => {
+            return (
+                <DropdownItem
+                    isSingle
+                    key={item.name}
+                    className={key === 1 ? 'mt1' : ''}
+                    isSelected={false}
+                    onClick={() => item.function(true)}>
+                    <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
+                </DropdownItem>
+            )
+        })
+    }
+
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+
+
+    /** TO BE REMOVED AND TAKE REAL USER PRIVILEGES */
+    const UserAccountPrivileges: UserAccountPrivileges = {
+        standard: true,
+        compatible: true,
+        premium: true,
+        rewind: true
+    }
 
     return (
         showLiveTabs ?
             <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={location.pathname === '/livestreams' ? selectedLiveId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
             :
             <>
-                <LivesFiltering />
+                <div className='flex items-center mb2'>
+                    <div className="flex-auto items-center flex">
+                        <IconSearch>search</IconSearch>
+                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={[]}   />
+                    </div>
+                    <div className="flex items-center" >
+                        {selectedLive.length > 0 ?
+                            <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedLive.length} items</Text>
+                            : null
+                        }
+                        <div className="relative">
+                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedLive.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                                {renderList()}
+                            </DropdownList>
+                        </div>
+                        <SeparatorHeader className="mx2 inline-block" />
+                        <LivesFiltering />              
+                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                    </div>
+                </div>
+                
                 <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm items={selectedLive} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
             </>
     )
 }

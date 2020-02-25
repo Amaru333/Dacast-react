@@ -26,7 +26,7 @@ export interface VodDetails {
 }
 
 export interface VodItem {
-    id: number;
+    id: string;
     online: boolean;
     title: string;
     size: number;

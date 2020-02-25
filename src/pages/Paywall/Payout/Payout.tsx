@@ -37,6 +37,21 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         }
     }
 
+    const emptyPaymentMethodTableHeader = () => {
+        return [
+            <span key={"emptypaymentMethodTableHeader"}></span>,
+            <Button key='paymentMethodTableHeaderActionButton' className='right mr2' onClick={() => {setDisplayPaymentMethodRequest(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
+        ]
+    }
+
+
+    const emptyPaymentMethodTableBody = (text: string) => {
+        return [[
+            <span key={'emptyPresetTableBody'}></span>,
+            <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]]
+    }
+
     const [withdrawalModalOpened, setWithdrawalModalOpened] = React.useState<boolean>(false);
 
 
@@ -70,6 +85,19 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         }
     }
 
+    const emptyWithdrawalTableHeder = () => {
+        return [
+            <span key={"emptywithdrawalsTableHeader"}></span>,
+        ]
+    }
+
+
+    const emptyWithdrawalTableBody = (text: string) => {
+        return [[
+            <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]]
+    }
+
     return displayPaymentMethodRequest ?
         <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} />
         :
@@ -77,11 +105,19 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             <Card>
                 <Text  size={20} weight='reg'>Withdrawal Method</Text>
                 <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
-                <Table className='my2' id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
+                {
+                    props.payoutInfos.paymentMethodRequests ? 
+                        <Table className='my2' id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
+                        : <Table className='my2' id='paymentMethodEmptyTable' header={emptyPaymentMethodTableHeader()} body={emptyPaymentMethodTableBody('Add a Withdrawal Method so you can withdraw money from your Paywall balance')} />
+                }
                 <BorderStyle className='py2' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
                 <Text className='py2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
-                <Table className='my2' id='payoutWithdrawalTable' header={withdrawalTableHeader()} body={withdrawalTableBody()} />
+                {
+                    props.payoutInfos.withdrawalRequests ?
+                        <Table className='my2' id='payoutWithdrawalTable' header={withdrawalTableHeader()} body={withdrawalTableBody()} />
+                        : <Table className='my2' id='payoutWithdrawalsTable' header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
+                }
             </Card>
             <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 <WithdrawalModal action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />

@@ -152,7 +152,35 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             value={VodDetails.title}
                             onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
                         />
-                        <div className="col col-6 flex flex-column">
+                        <InputTags
+                            className="col col-6"
+                            label="Folders"
+                            placeholder="Type folder name"
+                        />
+
+                        <Input
+                            className="col col-6 pr2 pt2"
+                            label="Description"
+                            value={VodDetails.description}
+                            onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
+                        />
+                        <div className="col col-3 pt2 flex flex-column">
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Video ID</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
+                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey(props.vodDetails.id)}><Icon>file_copy_outlined</Icon></IconButton>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <Divider className="col col-12" />
+                    </div>
+                    <div className='col col-12'>
+                        <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                        <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
+
+                        <div className="col col-6 mt2 pr2 flex flex-column">
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
@@ -162,19 +190,18 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <Input
-                            className="col col-6 pr2 pt2"
-                            label="Description"
-                            value={VodDetails.description}
-                            onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
-                        />
-                        <InputTags
-                            className="col col-6 pt2"
-                            label="Folders"
-                            placeholder="Type folder name"
-                        />
+                        <div className="col col-6 mt2 flex flex-column">
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Share Link</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey("share link here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <Divider className="col col-12" />
                     </div>
-                    <Divider className="col col-12" />
                     <div className="thumbnail col col-12">
                         <Text className="col col-12" size={20} weight="med">Images</Text>
                         <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
@@ -247,8 +274,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <Divider className="col col-12" />
                     <div className="col col-12 advancedVideoLinks">
                         <div onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)}>
-                            <Icon  className="col col-1">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
-                            <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
+                            <Icon  className="col col-1 pointer">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                            <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
                         </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.map((item) => {
@@ -298,7 +325,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ImageModal title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
+                    <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
 
                 </Card>
                 <ButtonContainer>
