@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { Store } from "redux";
-import { Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -24,6 +24,7 @@ import Toasts from './containers/Others/Toasts';
 import { updateTitleApp, useMedia } from './utils/utils';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Uploader from './containers/Videos/Uploader';
+import ReactDOM from 'react-dom';
 
 // Any additional component props go here.
 interface MainProps {
@@ -101,10 +102,22 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         }
     };
 
+    const getUserConfirmation = (message: string, callback) => {
+        const holder = document.getElementById('modal')
+        console.log(message)
+        const confirmAndUnmount = (answer: string) => {
+          ReactDOM.unmountComponentAtNode(holder)
+          callback(answer)
+        }
+        ReactDOM.render((
+          <div>{message}</div>
+        ), holder)
+      }
+
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router  history={history}>
+                <BrowserRouter getUserConfirmation={getUserConfirmation} history={history}>
                     <>
                         <Toasts />
                         <MainMenu 
@@ -135,7 +148,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             </Content>
                         </FullContent>   
                     </>
-                </Router>
+                </BrowserRouter>
             </ThemeProvider>
 
         </Provider>

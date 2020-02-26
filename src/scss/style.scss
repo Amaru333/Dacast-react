@@ -155,3 +155,13 @@ a {
 .control-dots {
     padding-inline-start: unset;
 }
+
+.tableTest {
+    position: relative;
+}
+
+.tableTest > .ScrollbarsCustom-Wrapper {
+    position: relative !important;
+}
+
+

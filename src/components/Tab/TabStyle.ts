@@ -43,6 +43,7 @@ export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
     align-items: center;
     min-width: 84px;
     width: inherit;
+    padding: 0 8px;
     ${props => props.orientation == 'vertical' && css `
         padding-left: 20px;
         align-items: unset;

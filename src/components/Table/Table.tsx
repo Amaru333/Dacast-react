@@ -2,6 +2,8 @@ import * as React from 'react';
 import {TableProps} from './TableTypes'
 import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer, TableFooterContainer, TableFooterRow, TableFooterCell } from './TableStyle';
 import { isMobile } from 'react-device-detect';
+import Scrollbar from 'react-scrollbars-custom';
+import { relative } from 'path';
 
 export const Table = (props: TableProps) => {
 
@@ -47,8 +49,10 @@ export const Table = (props: TableProps) => {
 
 
     return (
-        <WrapperResponsiveContainer isMobile={isMobile}  {...props}>
-            <TableContainer>
+        <WrapperResponsiveContainer>
+            <Scrollbar className='tableTest' contentProps={{style: {position: 'relative'}}} scrollerProps={{style: {position: 'relative'}}} wrapperProps={{style: {position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}}>
+            <TableContainer  {...props}>
+
                 {props.header ? 
                     <TableHeaderContainer>
                         <TableHeaderRow>
@@ -71,7 +75,8 @@ export const Table = (props: TableProps) => {
                         </TableFooterRow>
                     </TableFooterContainer> : null
                 }
-            </TableContainer>
+            </TableContainer>                
+            </Scrollbar>
         </WrapperResponsiveContainer>
     );
 }

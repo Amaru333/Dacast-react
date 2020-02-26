@@ -12,20 +12,7 @@ export const TableContainer = styled.table<{}>`
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div<TableProps & {isMobile: boolean}>`
-    overflow-x: auto;
-    ${props => props.isMobile && css`
-        overflow-x: scroll;
-        ::-webkit-scrollbar {
-            -webkit-appearance: none;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background-color: rgba(0, 0, 0, .5);
-            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-        }
-    `}
+export const WrapperResponsiveContainer = styled.div`
     border: 1px solid ${props => props.theme.colors["gray-8"]};
 `;
 

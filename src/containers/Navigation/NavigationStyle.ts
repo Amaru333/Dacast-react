@@ -68,7 +68,8 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
-    overflow-y: scroll;
+    overflow-y: auto;
+
     z-index: 9997;
     ${props => props.isMobile && css`
         margin-top: 58px;

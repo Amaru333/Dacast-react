@@ -15,6 +15,7 @@ import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton,
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle'
+import { Prompt } from 'react-router';
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -332,6 +333,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
                     <Button typeButton="secondary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
+                <Prompt when={VodDetails !== props.vodDetails} message='you rock baby' />
             </React.Fragment>
             : null
     )

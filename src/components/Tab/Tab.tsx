@@ -16,7 +16,6 @@ export const Tab = (props: TabProps) => {
         let matchingRoute = props.list[0].path;
         props.list.map((route) => {
             if(location.pathname === route.path) {
-                console.log('found route', route.path)
                 matchingRoute =  route.path
             }
         })
@@ -44,11 +43,11 @@ export const Tab = (props: TabProps) => {
         const dropdownList: DropdownListType = {}
         list.forEach((item) => dropdownList[item.name] = false )
         return mobile && !props.callback ?
-            <DropdownSingle defaultValue={selectedTab} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
+            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
             : !mobile && !props.callback ?
                 list.map((tab, i) => {
                     return (
-                        <Link to={tab.path} key={tab.name+i.toString()}>
+                        <Link style={{textDecoration: 'none' }}to={tab.path} key={tab.name+i.toString()}>
                             <TabStyle                               
                                 orientation={orientation} 
                                 selected={selectedTab === tab.path} 
@@ -88,8 +87,8 @@ export const Tab = (props: TabProps) => {
     }
 
     return (
-        <TabContainer mobile={mobile}>
-            <TabHeaderContainer mobile={mobile} {...props}>
+        <TabContainer className={mobile ? 'col col-12' : ''} mobile={mobile}>
+            <TabHeaderContainer className={mobile ? 'col col-12' : ''}  mobile={mobile} {...props}>
                 {renderTabs()}
             </TabHeaderContainer>
             <TabBody>

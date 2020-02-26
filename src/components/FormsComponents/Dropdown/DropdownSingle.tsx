@@ -54,11 +54,13 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     React.useEffect(() => filterList(filteringList), [filteringList])
 
     const renderList = () => {
+        console.log(itemsList)
+
         return (
             Object.keys(itemsList).map((name, key) => {
                 return (
                     props.isNavigation ? 
-                        <Link to={name} key={props.id + '_' + name} >
+                        <Link to={name.toLowerCase()} key={props.id + '_' + name} >
                             <DropdownItem  
                                 isSingle                          
                                 id={props.id + '_' + name} 
