@@ -129,7 +129,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <Icon>lock</Icon> or edit your Advertising Settings </Bubble>
             <Card className='my2'>
-                <Header className="mb2">
+                <Header className="mb25">
                     <TextStyle>
                         <Text size={20} weight='med'>Advertising</Text>
                     </TextStyle>
@@ -148,7 +148,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     {
                         engagementSettings.adEnabled ?
                         <>
-                        <div className="py2">
+                        <div className="pb2">
                             <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         </div>
                         
@@ -156,7 +156,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                             <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                         </div>
-                        <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
                         </>
                             : null
                     }

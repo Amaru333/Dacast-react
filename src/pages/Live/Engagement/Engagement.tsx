@@ -163,7 +163,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                             <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                         </div>
-                        <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
                         </>
                             : null
                     }

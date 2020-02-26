@@ -41,10 +41,10 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
     return (
         <div>
             <Text size={14}  weight="reg" color="gray-1">Select how much Data to buy each time your allowance reaches zero.</Text>
-            <div className='col col-12'>
+            <div className='clearfix'>
                 <DropdownSingle
                     isInModal   
-                    className='col col-6 pb2'                   
+                    className='pb2 col col-6'                  
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}
                     id='amountDropdown'

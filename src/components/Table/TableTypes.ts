@@ -10,6 +10,7 @@ interface TableSpecificProps {
     body?: ReactElement[][];
     footer?: ReactElement[];
     id: string;
+    hasContainer?: boolean;
 }
 
 export type TableProps = TableSpecificProps & React.HTMLAttributes<HTMLTableElement>;

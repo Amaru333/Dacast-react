@@ -61,12 +61,12 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             <div>
                 <Card>
                     <Text size={20} weight='med'>Paywall Theming</Text>
-                    <Text size={14} weight='reg'>configure the look and feel of your payment</Text>
+                    <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your payment</Text>
                     <div className='flex item-center my2'>
-                        <Icon>info_outlined</Icon>
+                        <Icon style={{marginRight: 10}}>info_outlined</Icon>
                         <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the Knowledge Base</Text>
                     </div>
-                    <Table className='col col-12 my2' id='paywallThemingTable' header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
+                    <Table className='col col-12' id='paywallThemingTable' header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
                 </Card>
             </div>
         )

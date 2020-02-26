@@ -75,8 +75,8 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
     return (
         <div>
             <Text size={14} weight='reg' color='gray-3'>If you want to edit the amount of your Allowances please do so here.</Text>
-            <Table className='my2' id='stepperFirstStepTableAllowances' body={AllowancesBodyTable()} />
-            <Table className='my2' id='firstStepFooterTotalPrice' footer={totalPriceTableFooter()} />
+            <Table id='stepperFirstStepTableAllowances' body={AllowancesBodyTable()} />
+            <Table id='firstStepFooterTotalPrice' footer={totalPriceTableFooter()} />
             <Text size={12} weight='reg' color='gray-3'>*Billed anually</Text>
 
             {
@@ -130,8 +130,8 @@ export const PlanStepperSecondStep = (stepperData: Plan, setStepperData: Functio
     return (
         <div>
             <Text size={14} weight='reg' color='gray-3'>Add additional Features:</Text>
-            <Table className='my2' id='secondStepFeatureTable' body={featuresTableBody()} />
-            <Table className='my2' id='secondStepTotalTable' footer={secondStepTableFooterElement()} />
+            <Table id='secondStepFeatureTable' body={featuresTableBody()} />
+            <Table id='secondStepTotalTable' footer={secondStepTableFooterElement()} />
         </div>
     )
 }
@@ -202,7 +202,7 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
     return (
         <div>
             <Table id='thirdStep' body={cartTableBodyElement()} /> 
-            <Table className='mt2' id='thirdStepTotal' body={cartDropdownOption()} footer={cartTableFooterElement()} />
+            <Table id='thirdStepTotal' body={cartDropdownOption()} footer={cartTableFooterElement()} />
             
         </div>
     )
@@ -237,8 +237,8 @@ export const PlanStepperFourthStep = (stepperData: Plan, setStepperData: Functio
     }
     return (
         <div>
-            <Table className='my2' id='extraStepperStep2TotalTable' header={step2header()}/>
-            <Table className='my2' id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+            <Table id='extraStepperStep2TotalTable' header={step2header()}/>
+            <Table id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={stepperData.termsAndConditions}  onChange={() => {setStepperData({...stepperData, termsAndConditions: !stepperData.termsAndConditions})}} />

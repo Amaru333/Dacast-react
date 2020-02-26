@@ -107,16 +107,16 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 {
                     props.payoutInfos.paymentMethodRequests ? 
-                        <Table className='my2' id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
-                        : <Table className='my2' id='paymentMethodEmptyTable' header={emptyPaymentMethodTableHeader()} body={emptyPaymentMethodTableBody('Add a Withdrawal Method so you can withdraw money from your Paywall balance')} />
+                        <Table id='paywallPaymentMethodTable' header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
+                        : <Table id='paymentMethodEmptyTable' header={emptyPaymentMethodTableHeader()} body={emptyPaymentMethodTableBody('Add a Withdrawal Method so you can withdraw money from your Paywall balance')} />
                 }
-                <BorderStyle className='py2' />
+                <BorderStyle className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
                 <Text className='py2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
                 {
                     props.payoutInfos.withdrawalRequests ?
-                        <Table className='my2' id='payoutWithdrawalTable' header={withdrawalTableHeader()} body={withdrawalTableBody()} />
-                        : <Table className='my2' id='payoutWithdrawalsTable' header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
+                        <Table id='payoutWithdrawalTable' header={withdrawalTableHeader()} body={withdrawalTableBody()} />
+                        : <Table id='payoutWithdrawalsTable' header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
                 }
             </Card>
             <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>

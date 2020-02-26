@@ -174,7 +174,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                         <Text size={20} weight="med">Not Encoded</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
-                        <Table id="notEncodedRenditionsTable" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
+                        <Table hasContainer id="notEncodedRenditionsTable" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
                      
                 </div>
@@ -191,7 +191,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                         <Text size={20} weight="med">Encoded</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
-                        <Table id="EncodedRenditionsTable" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
+                        <Table hasContainer id="EncodedRenditionsTable" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
                      
                 </div>

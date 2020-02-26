@@ -162,7 +162,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                             <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
-                        <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
                         </>
                         : null
                 }
@@ -178,7 +178,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 {/* <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
                 </div> */}
-                <Table className='my2' id='mailCatcherTable' header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
+                <Table id='mailCatcherTable' header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
             </Card>
 
             <Card className='my2'>

@@ -142,7 +142,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
-                <Table className='my2' id='groupPricessTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                <Table id='groupPricessTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Groups Promo</Text>
@@ -151,7 +151,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                <Table className='my2' id='groupPromosTable' header={groupPromosTableHeader()} body={groupPromosTableBody()} />
+                <Table id='groupPromosTable' header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} title='Create Promo Code Group' opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} />

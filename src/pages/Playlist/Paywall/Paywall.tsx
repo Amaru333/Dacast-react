@@ -189,18 +189,18 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
 
                         <Text size={20} weight='med'>Prices</Text>
                         {props.playlistPaywallInfos.presets.length === 0 ? 
-                            <Table className='my2' id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                            <Table id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                             :
-                            <Table className='my2' id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                            <Table id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                         
                         }
                         <BorderStyle className='my2' />
 
                         <Text className="mt1" size={20} weight='med'>Promos</Text>
                         { props.playlistPaywallInfos.promos.length === 0 ?
-                            <Table className='my2' id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                            <Table id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                             :
-                            <Table className='my2' id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                            <Table id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                         }
 
                         <BorderStyle className='my2' />
@@ -208,9 +208,9 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                         <Text size={20} weight='med'>Associated Group Prices</Text>
 
                         { props.groupsInfos.prices.length === 0 ?
-                            <Table className='my2' id='associatedGroupPricesEmptyTable' header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
+                            <Table id='associatedGroupPricesEmptyTable' header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
                             :
-                            <Table className='my2' id='groupPricesTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                            <Table id='groupPricesTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                         }
                     </>
                     : null

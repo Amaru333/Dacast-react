@@ -250,7 +250,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <Icon className="mr1">info_outlined</Icon> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
-                <Table className='my2' id='themesListTable' header={themingTableHeader()} body={themingTableBody()} />
+                <Table id='themesListTable' header={themingTableHeader()} body={themingTableBody()} />
             </Card>
         )
     }

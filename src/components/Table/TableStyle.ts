@@ -12,8 +12,10 @@ export const TableContainer = styled.table<{}>`
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div`
+export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean}>`
     border: 1px solid ${props => props.theme.colors["gray-8"]};
+    margin: ${props => props.hasContainer ? "0"  : "16px 0" };
+    
 `;
 
 export const TableHeaderRow = styled.tr<{}>`

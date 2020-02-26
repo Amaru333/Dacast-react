@@ -49,10 +49,10 @@ export const Table = (props: TableProps) => {
 
 
     return (
-        <WrapperResponsiveContainer>
-            <Scrollbar className='tableTest' contentProps={{style: {position: 'relative'}}} scrollerProps={{style: {position: 'relative'}}} wrapperProps={{style: {position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}}>
+        <WrapperResponsiveContainer hasContainer={props.hasContainer}>
+           <Scrollbar className='tableTest' contentProps={{style: {position: 'relative',  display: "inline-table"}}} scrollerProps={{style: {position: 'relative'}}} wrapperProps={{style: {position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}}>
             <TableContainer  {...props}>
-
+            
                 {props.header ? 
                     <TableHeaderContainer>
                         <TableHeaderRow>
@@ -74,9 +74,9 @@ export const Table = (props: TableProps) => {
                             {renderTableFooter()}
                         </TableFooterRow>
                     </TableFooterContainer> : null
-                }
+                }               
             </TableContainer>                
-            </Scrollbar>
+            </Scrollbar> 
         </WrapperResponsiveContainer>
     );
 }

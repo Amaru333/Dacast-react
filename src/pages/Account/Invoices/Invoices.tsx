@@ -38,14 +38,14 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     }
     return (
         <div>
-            <div className='flex mb2 col col-12'>
+            <div className='flex mb2'>
                 <div className='flex items-center flex-auto'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />   
                 </div>
                 <InvoicesFiltering />
             </div>
-            <Table className='mb2' id='invoicesTable' header={invoicesTableHeader()} body={invoicesTableBody()} />
+            <Table id='invoicesTable' header={invoicesTableHeader()} body={invoicesTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )
