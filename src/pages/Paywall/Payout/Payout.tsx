@@ -12,6 +12,8 @@ import { Label } from '../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../styled/types';
 import { Icon } from '@material-ui/core';
 import styled from 'styled-components';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
@@ -31,7 +33,16 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 return [
                     <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item}</Text>,
                     <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>lol</Text>,
-                    <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}><Icon onClick={() =>  {props.deletePaymentMethodRequest(item)}}>delete</Icon><Icon onClick={() =>  {}}>edit</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
+                        <ActionIcon>
+                            <Icon id={"deleteTooltip" + i} onClick={() =>  {props.deletePaymentMethodRequest(item)}}>delete</Icon>
+                            <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <Icon id={"editTooltip" + i} onClick={() =>  {}}>edit</Icon>
+                            <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
+                        </ActionIcon>
+                    </IconContainer>
                 ]
             })
         }
@@ -79,7 +90,12 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                     <Text key={'withdrawalRequestTableBodyRequestDate' + i} size={14} weight='reg' color='gray-3'>{item.requestDate}</Text>,
                     <Text key={'withdrawalRequestTableBodyTransferDate' + i} size={14} weight='reg' color='gray-3'>{item.transferDate}</Text>,
                     <Label color={color} backgroundColor={BackgroundColor} label={item.status} />,
-                    <IconContainer className="iconAction" key={'withdrawalRequestTableBodyDeleteButton' + i}><Icon onClick={() =>  {}}>delete</Icon></IconContainer>
+                    <IconContainer className="iconAction" key={'withdrawalRequestTableBodyDeleteButton' + i}>
+                        <ActionIcon>
+                            <Icon id={"deleteTooltip" + i} onClick={() =>  {}}>delete</Icon>
+                            <Tooltip target={"deleteTooltip" + i}></Tooltip>
+                        </ActionIcon>
+                    </IconContainer>
                 ]
             })
         }

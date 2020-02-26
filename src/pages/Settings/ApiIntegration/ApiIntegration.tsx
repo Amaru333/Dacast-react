@@ -14,6 +14,8 @@ import { DateTime } from 'luxon';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Label } from '../../../components/FormsComponents/Label/Label';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -80,7 +82,16 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
                     <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer className="iconAction right" key={key + value.clientId}><Icon>delete</Icon><Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key + value.clientId}>
+                        <ActionIcon id={"deleteTooltip" + key}>
+                            <Icon>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip> 
+                        <ActionIcon id={"editTooltip" + key}>
+                            <Icon onClick={() => { editApiKeyItem(value) }} >edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }
@@ -104,7 +115,16 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{value.encoder}</Text>,
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
-                    <IconContainer className="iconAction right" key={key + value.created}><Icon >delete</Icon><Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={key + value.created}>
+                        <ActionIcon id={"deleteEncoderTooltip" + key}>
+                            <Icon>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteEncoderTooltip" + key}>Delete</Tooltip>
+                        <ActionIcon id={"editEncoderTooltip" + key}>
+                            <Icon onClick={() => { editEncoderKeyItem(value) }}>edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editEncoderTooltip" + key}>Edit</Tooltip> 
+                    </IconContainer>
                 ]
             })
         }
@@ -124,7 +144,16 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 return [
                     <Text key={key + value.url} size={14} weight="reg" color="gray-1">{value.url}</Text>,
                     <Text key={key + value.url} size={14} weight="reg" color="gray-1">{value.method}</Text>,
-                    <IconContainer className="iconAction right" key={key + value.url}><Icon>delete</Icon><Icon onClick={() => { editWebHookItem(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key + value.url}>
+                        <ActionIcon id={"deleteWebhookTooltip" + key}>
+                            <Icon>delete</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"deleteWebhookTooltip" + key}>Delete</Tooltip>
+                        <ActionIcon id={"editWebhookTooltip" + key}>
+                            <Icon onClick={() => { editWebHookItem(value) }} >edit</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"editWebhookTooltip" + key}>Edit</Tooltip>
+                    </IconContainer>
                 ]
             })
         }
@@ -146,7 +175,15 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <Text key={key + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                     <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{ Date.now() > value.expires ? <Label label="Expired" size={14} weight="reg" color="red" backgroundColor="red20"  /> : tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
-                    <IconContainer className="iconAction right" key={key + "buttonEdit"}><Icon>get_app</Icon><Icon>delete</Icon><Icon onClick={() => { editS3KeyIten(value) }} >edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction right" key={key + "buttonEdit"}>
+                        <ActionIcon id={"downloadS3KeyTooltip" + key}>
+                            <Icon>get_app</Icon>
+                        </ActionIcon>
+                        <Tooltip target={"downloadS3KeyTooltip" + key}></Tooltip>
+                        <ActionIcon></ActionIcon>
+                        <Icon>delete</Icon>
+                        <Icon onClick={() => { editS3KeyIten(value) }} >edit</Icon> 
+                    </IconContainer>
                 ]
             })
         }

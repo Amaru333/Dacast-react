@@ -15,6 +15,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { PlaylistNewAdModal } from './PlaylistNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 
 export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) => {
 
@@ -107,11 +108,19 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <Icon 
-                        onClick={() => {props.deletePlaylistAd(item)}} 
-                    >delete
-                    </Icon>
-                    <Icon onClick={() => editAd(item)}>edit</Icon> 
+                    <ActionIcon>
+                        <Icon 
+                            onClick={() => {props.deletePlaylistAd(item)}}
+                            id={"deleteTooltip" + i} 
+                        >delete
+                        </Icon>
+                        <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <Icon id={"editTooltip" + i} onClick={() => editAd(item)}>edit</Icon>
+                        <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
+                    </ActionIcon>
+                     
                 </IconContainer>
             ]
         })

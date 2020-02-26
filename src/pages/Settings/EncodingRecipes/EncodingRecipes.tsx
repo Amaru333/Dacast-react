@@ -14,6 +14,8 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -54,9 +56,14 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                             )}
                         </div>,
                         <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
-                    
-                            <Icon onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
-                            <Icon onClick={() => editRecipe(value)}>edit</Icon> 
+                            <ActionIcon>
+                                <Icon id={"deleteTooltip" + key} onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
+                                <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                            </ActionIcon>
+                           <ActionIcon>
+                                <Icon id={"editTooltip" + key} onClick={() => editRecipe(value)}>edit</Icon>
+                                <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                           </ActionIcon>                            
                         </IconContainer>
                     ]
             )

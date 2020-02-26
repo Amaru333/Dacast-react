@@ -14,6 +14,8 @@ import { PaywallTheme } from '../../../redux-flow/store/Paywall/Theming';
 import { PaywallThemingComponentProps } from '../../../containers/Paywall/Theming';
 import { IconContainer } from '../../../shared/Theming/ThemingStyle';
 import styled from 'styled-components';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
@@ -51,7 +53,21 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                 return [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
                     theme.isDefault ? <Icon key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
-                    <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
+                        <ActionIcon>
+                            <Icon id={"copyTooltip" + key}>file_copy</Icon>
+                            <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <Icon id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</Icon>
+                            <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <Icon id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon>
+                            <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                        </ActionIcon>
+                         
+                    </IconContainer>
 
                 ]
             })
