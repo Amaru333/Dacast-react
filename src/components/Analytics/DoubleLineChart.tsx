@@ -22,11 +22,11 @@ export const DoubleLineChart = (props: any) => {
     }
     if (noDecimals) {
         ticks.stepSize = 1,
-            ticks.callback = (tickValue, index, ticks) => {
-                if (!(index % parseInt(ticks.length / 5))) {
-                    return tickValue;
-                }
+        ticks.callback = (tickValue, index, ticks) => {
+            if (!(index % parseInt(ticks.length / 5))) {
+                return tickValue;
             }
+        }
     }
     let options = {
         // tooltips: {
