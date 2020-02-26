@@ -24,7 +24,11 @@ import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
-import { DashboardAnalytics } from '../pages/Analytics/Dashboard';
+import { RealTimeAnalytics } from '../pages/Analytics/RealTime';
+import Viewership from '../containers/Analytics/Viewership';
+import Revenue from '../containers/Analytics/Revenue';
+import DashboardAnalytics from '../containers/Analytics/Dashboard';
+import RealTime from '../containers/Analytics/RealTime';
 
 /** TO DO: Remove the functional components and import the real one when they're built */
 
@@ -80,17 +84,17 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/analytics/realtime',
                 name: 'Real Time',
-                component: functionTest2
+                component: RealTime
             },
             {
                 path: '/analytics/viewership',
                 name: 'Viewership',
-                component: functionTest2
+                component: Viewership
             },
             {
                 path: '/analytics/revenue',
                 name: 'Revenue',
-                component: functionTest2
+                component: Revenue
             }
         ]
     },

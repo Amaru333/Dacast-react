@@ -10,6 +10,7 @@ import { TitleReducer } from './Title/logic';
 import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
 import { FoldersState, foldersInitialState } from './Folders/types';
 import { FoldersReducer } from './Folders/reducer';
+import { AnalyticsState, analyticsInitialState, AnalyticsReducer } from './Analytics';
 
 
 export interface ApplicationState {
@@ -23,6 +24,7 @@ export interface ApplicationState {
     paywall: PaywallState;
     folders: FoldersState;
     title: string;
+    analytics: AnalyticsState;
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -35,7 +37,8 @@ export const globalDefaultState: ApplicationState = {
     live: liveInitialState,
     paywall: paywallInitialState,
     folders: foldersInitialState,
-    title: ""
+    title: "",
+    analytics: analyticsInitialState
 };
 
 export const createRootReducer = () =>
@@ -49,6 +52,7 @@ export const createRootReducer = () =>
         title: TitleReducer,
         playlist: PlaylistReducer,
         paywall: PaywallReducer,
-        folders: FoldersReducer
+        folders: FoldersReducer,
+        analytics: AnalyticsReducer
     },
     );

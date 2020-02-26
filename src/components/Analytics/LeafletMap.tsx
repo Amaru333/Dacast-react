@@ -26,7 +26,7 @@ const LeafletMap = (props: any) => {
         if (leafletMap === null) {
             //bounds of the entire planet 
             let bounds = new L.LatLngBounds(new L.LatLng(-90, -180), new L.LatLng(90, 180));
-            var map = L.map("mapTest", {
+            var map = L.map(props.idMap ? props.idMap : "defaultMapId", {
                 center: bounds.getCenter(),
                 maxBounds: bounds,
                 maxBoundsViscosity: 1.0
@@ -101,7 +101,7 @@ const LeafletMap = (props: any) => {
 
 
     return (
-        <div style={{ height: props.height ? props.height : '100%', width: props.width ? props.width : '100%' }} id="mapTest" ref={getDivRef}></div>
+        <div style={{ height: props.height ? props.height : '100%', width: props.width ? props.width : '100%' }} id={props.idMap ? props.idMap : "defaultMapId"} ref={getDivRef}></div>
     );
 
 }

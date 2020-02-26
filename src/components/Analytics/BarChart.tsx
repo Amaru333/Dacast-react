@@ -4,6 +4,9 @@ import { displayBytesForHumans, displayTimeForHumans } from '../../utils/utils';
 
 export const BarChart = (props: any) => {
 
+    if(props.hidden) {
+        return<></>;
+    }
     const {
         title,
         labels,
@@ -88,7 +91,7 @@ export const BarChart = (props: any) => {
 
     console.log(line);
     return (
-        <Bar {...other} data = { line } options = { options } />
+        <Bar hidden={props.hidden} {...other} data = { line } options = { options } />
     )
 
 }
