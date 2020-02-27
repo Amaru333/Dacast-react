@@ -95,16 +95,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const ThemingOptions = () => {
         return (
             <>
-                <Heading className='my2'>
-                    <Button onClick={() => {setCurrentPage('list');setShowAdvancedPanel(false)}} sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-                    <Text size={20} weight='med' className='pl1'>
-                        {
-                            selectedTheme.id === "-1" ?
-                                "New Theme"
-                                : "Edit theme"
-                        }
-                    </Text>
-                </Heading>
                 <ThemingContainer>
                     <div className='col col-12 md-col-4 mr2 flex flex-column' >
                         <ControlsCard className='col col-12'>
@@ -113,7 +103,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     {
                                         selectedTheme.id === "-1" ?
                                             "New Theme"
-                                            : "Edit theme"
+                                            : "Edit Theme"
                                     }
                                 </Text>
                                 <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
@@ -144,7 +134,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 </>
                                     :
                                 <>
-                                    <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
+                                    <Input className='mb2' label='Theme Name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
@@ -158,7 +148,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => {setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions});setSettingsEdited(true)}} />
                                     <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => {setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume});setSettingsEdited(true)}} />
                                     <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => {setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen});setSettingsEdited(true)}} />
-                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});setSettingsEdited(true)}}} />
+                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Left': false, 'Right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});setSettingsEdited(true)}}} />
                                     <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => {setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled});setSettingsEdited(true)}} />
                                     {
                                         selectedTheme.isViewerCounterEnabled ?
@@ -204,9 +194,9 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                             : props.saveTheme(selectedTheme)
                                     };setCurrentPage('list')}
                                 }>
-                            save
+                            Save
                             </Button>
-                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>cancel</Button>
+                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>Cancel</Button>
                         </div>
                     </div>
                     <PlayerSection className='col col-12 md-col-8 mr2'>

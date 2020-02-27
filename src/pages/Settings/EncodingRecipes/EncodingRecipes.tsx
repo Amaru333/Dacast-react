@@ -60,10 +60,10 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                                 <Icon id={"deleteTooltip" + key} onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
                                 <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
                             </ActionIcon>
-                           <ActionIcon>
+                            <ActionIcon>
                                 <Icon id={"editTooltip" + key} onClick={() => editRecipe(value)}>edit</Icon>
                                 <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
-                           </ActionIcon>                            
+                            </ActionIcon>                            
                         </IconContainer>
                     ]
             )

@@ -72,7 +72,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <div className='col col-12 mb1'>
                         <Toggle 
                             id="passwordProtectedVideosToggle" 
-                            label='Password Protected Videos' 
+                            label='Password Protection' 
                             onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
                         />
                         <ToggleTextInfo>

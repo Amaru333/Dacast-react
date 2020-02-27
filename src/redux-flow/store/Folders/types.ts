@@ -28,7 +28,7 @@ export interface FolderAsset {
     created: string;
     duration: string;
     features: FolderAssetFeature;
-    status: 'deleted' | 'offline' | 'online';
+    status: 'Deleted' | 'Offline' | 'Online';
 
 }
 

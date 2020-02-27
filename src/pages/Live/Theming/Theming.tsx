@@ -73,7 +73,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                 <div className='col col-12 md-col-4 mr2 flex flex-column'>
                     <ControlsCard className='col col-12'>
                         <TitleSection>
-                            <Text size={20} weight='med'>Edit theme</Text>
+                            <Text size={20} weight='med'>Edit Theme</Text>
                             <Button 
                                 className='right mb2 flex' 
                                 sizeButton='large' 
@@ -185,7 +185,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                                             <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)})} />
                                             : null
                                     }
-                                    <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
+                                    <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Left': false, 'Right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
                                     
                                     
                                     <BorderStyle className="p1" />

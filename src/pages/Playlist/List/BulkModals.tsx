@@ -18,7 +18,7 @@ interface PropsBulkModal {
 
 const DeleteBulkForm = (props: PropsBulkModal) => {    
     return (
-        <Modal icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} title={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} title={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
             <form>
                 <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Are you sure you want to deleted "+ props.items.length +" selected items?"}</Text>
                 <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
@@ -33,7 +33,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[] }) => {
     const [selectedTheme, setSelectedTheme] = React.useState<string>(null);
 
     return (
-        <Modal toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <form>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
                 <DropdownSingle className="mb3"
@@ -52,7 +52,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[] }) => {
 
 const OnlineBulkForm = (props: PropsBulkModal) => {
     return (
-        <Modal toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <form>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for "+ props.items.length +" selected items?"}</Text>
                 <Toggle label="Online" className="mb3" />
@@ -66,12 +66,14 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
 
 const PaywallBulkForm = (props: PropsBulkModal) => {
     return (
-        <Modal toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false} toggle={() => props.toggle(!props.open)} title={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <form>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Paywall Status for "+ props.items.length +" selected items?"}</Text>
-                <Toggle label="Online" className="mb3" />
-                <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
-                <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Turn off Paywall Status for "+ props.items.length +" selected items?"}</Text>
+                <div className='mt2'>
+                    <Button sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                </div>
+
             </form>
         </Modal>
     )

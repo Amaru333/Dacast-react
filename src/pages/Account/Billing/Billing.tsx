@@ -85,14 +85,18 @@ export const BillingPage = (props: BillingComponentProps) => {
     }
 
     const creditCardTableHeaderElement = () => {
-        return [
+        return props.billingInfos.creditCard ? [
             <Text  key={"creditCardTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>,
             <Text  key={"creditCardTableCardHolder"} size={14}  weight="med" color="gray-1">Card Holder</Text>,
             <Text  key={"creditCardTableCardNumber"} size={14}  weight="med" color="gray-1">Card Number</Text>,
             <Text  key={"creditCardTableExpiry"} size={14}  weight="med" color="gray-1">Expiry</Text>,
             <Text  key={"creditCardTableActive"} size={14}  weight="med" color="gray-1">Active</Text>,
             <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>
-        ]
+        ] : 
+            [
+                <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>
+
+            ]
     }
 
     const creditCardBodyElement= () => {
@@ -124,10 +128,12 @@ export const BillingPage = (props: BillingComponentProps) => {
     }
 
     const protectionTableHeaderElement = () => {
-        return [
+        return props.billingInfos.playbackProtection ? [
             <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Enabled</Text>,
             <Text  key={"protectionTableAmount"} size={14}  weight="med" color="gray-1">Amount</Text>,
             <Text  key={"protectionTablePrice"} size={14}  weight="med" color="gray-1">Price</Text>,
+            <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>
+        ] : [
             <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>
         ]
     }
@@ -139,6 +145,12 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
                 <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
                 <IconContainer className="iconAction" key={'protectionTableActionButtons'}><Icon onClick={(event) => {event.preventDefault();props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection)}}>delete</Icon><Icon onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</Icon> </IconContainer>
+            ]]
+        } else {
+            return [[
+                <div className='center'>
+                    <Text  size={14} weight='reg' color='gray-3'>Enable Playback Protection to ensure your content never stops playing</Text>
+                </div>
             ]]
         }
     }
@@ -194,7 +206,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                         : props.billingInfos.creditCard ?                
                             <Table className="col-12" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
                             : 
-                            <Table className="col-12" id="paymentMethodTable" header={creditCardTableHeaderElement()} />
+                            <Table className="col-12" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={disabledTableBody('Add a Payment Method so you can purchase Plans, Allowences and Enable Playback Protection')} />
 
 
                 }
@@ -218,7 +230,7 @@ export const BillingPage = (props: BillingComponentProps) => {
             <Modal hasClose={false} title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
                 <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
             </Modal>
-            <Modal hasClose={false} title='Enable protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+            <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} />
             </Modal>
             <CustomStepper 

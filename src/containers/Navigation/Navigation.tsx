@@ -210,9 +210,9 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <SectionStyle>
                         {renderMenu()}
                     </SectionStyle>
-                    </Scrollbar>
-                    <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
-                    <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
+                </Scrollbar>
+                <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
+                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
            
                   
             </ContainerStyle>

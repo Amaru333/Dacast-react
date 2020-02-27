@@ -5,7 +5,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
   min-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
-  border: ${props => (props.typeButton == "secondary") ? `1px solid ${props.theme.colors[props.colorObject!.color]}` : "none"};
+  border: ${props => (props.typeButton == "secondary") ? `1px solid ${props.theme.colors[props.colorObject!.borderColor ? props.colorObject!.borderColor : props.colorObject!.color]}` : "none"};
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 500;

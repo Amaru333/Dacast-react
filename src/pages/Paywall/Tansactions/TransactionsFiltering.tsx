@@ -63,9 +63,13 @@ export const TransactionsFiltering = (props: {}) => {
     return (
         <>
             <div className="right clearfix">
-                <Button buttonColor="blue" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
+                <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
-                    <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
+                    {
+                        activeFilter > 0 ?
+                            <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
+                            : null
+                    }
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >

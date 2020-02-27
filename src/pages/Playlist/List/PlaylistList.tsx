@@ -174,7 +174,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                             </DropdownList>
                         </div>
                         <SeparatorHeader className="ml2 inline-block" />
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
+                        <Button buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
                         <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Playlist</Button>
                     </div>
                 </HeaderPlaylistList>

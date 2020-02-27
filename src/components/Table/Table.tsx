@@ -50,32 +50,32 @@ export const Table = (props: TableProps) => {
 
     return (
         <WrapperResponsiveContainer hasContainer={props.hasContainer}>
-           <Scrollbar className='tableTest' contentProps={{style: {position: 'relative',  display: "inline-table"}}} scrollerProps={{style: {position: 'relative'}}} wrapperProps={{style: {position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}}>
-            <TableContainer  {...props}>
+            <Scrollbar className='tableTest' contentProps={{style: {position: 'relative',  display: "inline-table"}}} scrollerProps={{style: {position: 'relative'}}} wrapperProps={{style: {position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}}>
+                <TableContainer  {...props}>
             
-                {props.header ? 
-                    <TableHeaderContainer>
-                        <TableHeaderRow>
-                            {renderTableHeader()}
-                        </TableHeaderRow>
-                    </TableHeaderContainer> : null
-                }
-                {
-                    props.body ?
-                        <TableBodyContainer>
-                            {renderTableBody()}
-                        </TableBodyContainer>
-                        : null
-                }
+                    {props.header ? 
+                        <TableHeaderContainer>
+                            <TableHeaderRow>
+                                {renderTableHeader()}
+                            </TableHeaderRow>
+                        </TableHeaderContainer> : null
+                    }
+                    {
+                        props.body ?
+                            <TableBodyContainer>
+                                {renderTableBody()}
+                            </TableBodyContainer>
+                            : null
+                    }
 
-                {props.footer ? 
-                    <TableFooterContainer>
-                        <TableFooterRow>
-                            {renderTableFooter()}
-                        </TableFooterRow>
-                    </TableFooterContainer> : null
-                }               
-            </TableContainer>                
+                    {props.footer ? 
+                        <TableFooterContainer>
+                            <TableFooterRow>
+                                {renderTableFooter()}
+                            </TableFooterRow>
+                        </TableFooterContainer> : null
+                    }               
+                </TableContainer>                
             </Scrollbar> 
         </WrapperResponsiveContainer>
     );

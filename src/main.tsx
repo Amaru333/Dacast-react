@@ -25,6 +25,9 @@ import { updateTitleApp, useMedia } from './utils/utils';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Uploader from './containers/Videos/Uploader';
 import ReactDOM from 'react-dom';
+import { Modal } from './components/Modal/Modal';
+import { Text } from './components/Typography/Text';
+import { Button } from './components/FormsComponents/Button/Button';
 
 // Any additional component props go here.
 interface MainProps {
@@ -101,18 +104,43 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
             setOpen(false)
         }
     };
+    /** TO DO: Figure out a way to implement the styled components */
+    const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
 
-    const getUserConfirmation = (message: string, callback) => {
-        const holder = document.getElementById('modal')
+        const [isOpen, setIsOpen] = React.useState<boolean>(true);
+
+        // <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} title='Unsaved Changes' opened={isOpen} toggle={() => setIsOpen(!isOpen)}>
+        //     <Text size={14} weight='reg'>{props.message}</Text>
+        //     <Text className='pt2' size={14} weight='med'>Please note any unsaved changes will be lost.</Text>
+        //     <div className='mt2'>
+        //         <Button onClick={() => props.callback(false)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' >Stay</Button>
+        //         <Button onClick={() => props.callback(true)} typeButton='tertiary' sizeButton='large' buttonColor='blue' >Leave</Button>
+        //     </div>
+        // </Modal>
+        return (
+            <div>
+                <span>{props.message}</span>
+                <span className='pt2'>Please note any unsaved changes will be lost.</span>
+                <div className='mt2'>
+                    <button onClick={() => props.callback(false)} >Stay</button>
+                    <button onClick={() => props.callback(true)} >Leave</button>
+                </div>
+            </div>
+        )
+    }
+
+
+    const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
+        const holder = document.getElementById('navigationConfirmationModal')
         console.log(message)
-        const confirmAndUnmount = (answer: string) => {
-          ReactDOM.unmountComponentAtNode(holder)
-          callback(answer)
+        const confirmAndUnmount = (answer: boolean) => {
+            ReactDOM.unmountComponentAtNode(holder)
+            callback(answer)
         }
         ReactDOM.render((
-          <div>{message}</div>
-        ), holder)
-      }
+            <NavigationConfirmationModal callback={confirmAndUnmount} message={message} />
+        ), document.getElementById('navigationConfirmationModal'))
+    }
 
     return (
         <Provider store={store}>
@@ -133,6 +161,8 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             history={history} 
                             routes={AppRoutes}
                         />
+                        
+
                         <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
                             <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                             <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
@@ -146,6 +176,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                                     </Route>
                                 </Switch>
                             </Content>
+                            <div id="navigationConfirmationModal"></div>
                         </FullContent>   
                     </>
                 </BrowserRouter>

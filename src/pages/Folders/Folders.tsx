@@ -72,7 +72,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
-        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Paywall Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
         { name: 'Move To', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },
@@ -196,7 +196,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const handleMoreActions = (item: FolderAsset): string[] => {
-        if(item.status === 'deleted') {
+        if(item.status === 'Deleted') {
             return ['Restore']
         }
         if(item.contentType === 'folder') {
@@ -235,7 +235,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
-                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status.toUpperCase()} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
+                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
                     <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
                     <div className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>

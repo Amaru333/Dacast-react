@@ -74,7 +74,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                 <div className='col col-12 md-col-4 mr2 flex flex-column'>
                     <ControlsCard className='col col-12'>
                         <TitleSection>
-                            <Text size={20} weight='med'>Edit theme</Text>
+                            <Text size={20} weight='med'>Edit Theme</Text>
                             <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                         </TitleSection>
                         {
@@ -188,7 +188,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                                                 <Input id='viewerCounterInput' type='number' className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)})} />
                                                 : null
                                         }
-                                        <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
+                                        <DropdownSingle className="mt25" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Left': false, 'Right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {setSelectedTheme({...selectedTheme, thumbnailPosition: value})}} />
                                     
                                     
                                         <BorderStyle className="p1" />

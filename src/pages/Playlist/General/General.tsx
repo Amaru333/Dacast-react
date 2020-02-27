@@ -200,7 +200,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
             </Card>
             <ButtonContainer>
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
-                <Button typeButton="secondary" onClick={() => setNewPlaylistDetails(props.playlistDetails)}>Discard</Button>
+                <Button typeButton="tertiary" onClick={() => setNewPlaylistDetails(props.playlistDetails)}>Discard</Button>
             </ButtonContainer>
         </React.Fragment>
     )

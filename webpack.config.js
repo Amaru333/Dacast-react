@@ -6,7 +6,7 @@ const SRC = path.resolve(__dirname, 'public/assets/');
 
 module.exports = {
     entry: {
-        app: ['./src/index.tsx'],
+        app: ['@babel/polyfill', './src/index.tsx'],
         vendor: ['react', 'react-dom']
     },
     output: {
@@ -26,6 +26,19 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: 'babel-loader',
+                options: {
+                    presets: [
+                        [
+                            "@babel/preset-env",
+                            {
+                                "targets": {
+                                    "browsers": ["last 2 versions", "ie >= 11"],
+                                },
+                            }
+                        ],
+                        "@babel/preset-react"
+                    ]
+                }
             },
             {
                 test: /\.js$/,

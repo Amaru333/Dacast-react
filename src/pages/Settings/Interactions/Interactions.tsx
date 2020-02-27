@@ -197,7 +197,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""} 
                         onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                 </div>
-                <Toggle className='' label='Use video title as brand text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => {setInteractionsInfos({...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                <Toggle className='' label='Use content title as Brand Text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => {setInteractionsInfos({...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle});setSettingsEdited(true)}} />
             </Card>
 
             <Card className='my2'>

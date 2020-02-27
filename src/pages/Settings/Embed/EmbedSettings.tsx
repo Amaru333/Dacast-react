@@ -84,7 +84,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     inputOptions === props.embedSettingsOption ? null :
                         <ButtonContainer>
                             <ButtonStyle typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
-                            <ButtonStyle typeButton="secondary">Discard</ButtonStyle>
+                            <ButtonStyle typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>
         </React.Fragment>

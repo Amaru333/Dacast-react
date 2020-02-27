@@ -159,7 +159,7 @@ export const AppRoutes: Routes[] = [
             },
             {
                 path: '/settings/apiintegrations',
-                name: 'API & Integration',
+                name: 'API & Integrations',
                 component: ApiIntegration
             },
 
