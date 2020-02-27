@@ -39,11 +39,11 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                     }
 
                 </div>
-                    <div className="mt3 mb1">
-                        <Text size={16} weight='med'>Custom Terms of Services</Text>
-                    </div>
-                    <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
-                    <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
+                <div className="mt3 mb1">
+                    <Text size={16} weight='med'>Custom Terms of Services</Text>
+                </div>
+                <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
+                <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
             </Card>
             <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
             <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos)}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>

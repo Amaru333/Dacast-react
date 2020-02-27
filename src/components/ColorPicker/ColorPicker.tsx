@@ -27,7 +27,7 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
         <div>
             <ColorPickerHeader className={props.className } onClick={() => setIsOpened(!isOpened)}>
                 <div className="flex"><SelectedColor selectedColor={selectedColor.toString()} />
-                <Text size={14} weight='reg'>{selectedColor}</Text></div>
+                    <Text size={14} weight='reg'>{selectedColor}</Text></div>
                 
                 <div><Icon style={{color: Theme.colors["gray-5"]}}>{isOpened ?'arrow_drop_up' : 'arrow_drop_down'}</Icon></div>
             </ColorPickerHeader>

@@ -36,8 +36,6 @@ export const StartTextStyle = styled.div<{text: boolean; isSingle: boolean}>`
         background-color: ${props => props.theme.colors["gray-7"]};
     `}
     padding: 2px;
-    position: absolute;
-    bottom: 4px;
 
 `
 

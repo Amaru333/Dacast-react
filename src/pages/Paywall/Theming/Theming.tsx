@@ -152,7 +152,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>   
                         <div>        
                             <ColorPickerLabel>
-                            <Text size={14} weight='med'>Button Colour</Text>
+                                <Text size={14} weight='med'>Button Colour</Text>
                             </ColorPickerLabel>
                             <ColorPicker 
                                 className='mb1' 

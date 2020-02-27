@@ -19,7 +19,7 @@ const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
 }
 
 
-export const  Datepicker = () => {
+export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -63,7 +63,7 @@ export const  Datepicker = () => {
     });
 
     return (
-        <DatepickerStyle ref={datepickerRef} isSingle={false}>
+        <DatepickerStyle ref={datepickerRef} isSingle={false} className={props.className}>
             <DatepickerContext.Provider
                 value={{
                     focusedDate,
