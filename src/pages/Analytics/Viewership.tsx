@@ -33,6 +33,7 @@ interface ViewershipAnalyticsProps {
 export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
 
 
+    //Basically the same as Revenue but there's Tabs for some analytics here
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
 
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);

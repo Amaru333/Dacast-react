@@ -132,7 +132,7 @@ export function displayBytesForHumans(mbAmount, fromGB = false) {
  * lerpColor('#000000', '#ffffff', 0.5)
  * @returns {String}
  */
-export const lerpColor = (a, b, amount) =>{ 
+export const lerpColor = (a, b, amount) => {
 
     var ah = parseInt(a.replace(/#/g, ''), 16),
         ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
@@ -145,7 +145,7 @@ export const lerpColor = (a, b, amount) =>{
     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 }
 
-export const logScale= (value, minp, maxp, minv, maxv) => {
+export const logScale = (value, minp, maxp, minv, maxv) => {
     var minv = Math.log(minv);
     var maxv = Math.log(maxv);
 
@@ -157,4 +157,50 @@ export const logScale= (value, minp, maxp, minv, maxv) => {
 
 export const mapMarkerNameTranformBytesFromGB = (name, value, datasetName) => {
     return name + ': ' + displayBytesForHumans(value, true);
+}
+
+//SOOOO this thing is working, THOOOOO we might need an extra deepth cause at one point converting the map i got some {{objetc, object}}
+//Might remove the Class / static function if we don;t need anyting else related to CSV in the app
+// I dion't know if we either update the data in the components to fit with this function need or update this function to fix with every need
+// Also, we need to find a way to convert timestamp to date, either in this function or in the component. Knowing that this function accept Date object tho
+export class CsvService {
+    static exportToCsv(filename: string, rows: object[]) {
+        if (!rows || !rows.length) {
+            return;
+        }
+        const separator = ',';
+        const keys = Object.keys(rows[0]);
+        const csvContent =
+            keys.join(separator) +
+            '\n' +
+            rows.map(row => {
+                return keys.map(k => {
+                    let cell = row[k] === null || row[k] === undefined ? '' : row[k];
+                    cell = cell instanceof Date
+                        ? cell.toLocaleString()
+                        : cell.toString().replace(/"/g, '""');
+                    if (cell.search(/("|,|\n)/g) >= 0) {
+                        cell = `"${cell}"`;
+                    }
+                    return cell;
+                }).join(separator);
+            }).join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { 
+            //This is to support fucking IE 
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
 }

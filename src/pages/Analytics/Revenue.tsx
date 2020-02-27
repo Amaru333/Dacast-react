@@ -32,16 +32,19 @@ interface RevenueAnalyticsProps {
 
 export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
 
-
+    //Only for selected Folder things, not really interesting 
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
 
+    //every selected items
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
+    //every checked items in the  selected items tab (right one)
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
 
+    //every checked contents in the  content tabs (left one) ps: there's no folder tab in this context
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
 
-
+    //Fuck this shit we need to put it in a shared folder
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.contentType) {
             case 'playlist':
@@ -56,13 +59,10 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
         }
     }
 
+    //Every function is related to Contents picker, should make it a React hooks but lack of time and also the thing is that there all kind of different in a way 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
         setCheckedContents([]);
-    }
-
-    const handleMoveFoldersToSelected = () => {
-        setSelectedItems([...selectedItems, ...checkedFolders]);
     }
 
     const handleMoveContentsToSelected = () => {
@@ -137,7 +137,10 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
         })
     }
 
-    //First Chart
+    //Dummies data, there's actually a call but no redux flow for that
+    // The reason why is that the mockup is pretty fucked up. There's a pie chart for "Plays and Viewers per Time" which doesnt make sense
+    // So nothing really hard to do, need to fugure out what is what aand change the chart accordingly
+    // Keep the same type for every chart (follow the Dashboard and realtime components, they're what we need basically)
     var data = [28, 31, 45, 67, 78, 82];
 
     var labels = [1578528000000, 1578528000000, 1578528000000, 1578528000000, 1578528000000, 1578528000000];
@@ -145,7 +148,6 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
 
     //Second Chart
     var data1 = [12, 45, 78, 12, 35, 78];
-    var data2 = [45, 67, 123, 34, 56, 98];
 
     //Third chart
     var labelsDevice = ["iphone", 'pc', 'whatever'];
@@ -180,6 +182,8 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
         }
     ]
 
+
+    //End of dummies data here, that's the renderMap, might expoert it in a shared file, I wasnt sure tall map was the same but it seems like they are
     const renderMap = (dataRepo: any) => {
         let mapMin: any = Math.min(...dataRepo.map(m => m.consumedMB));
         if (isFinite(mapMin)) {
@@ -213,6 +217,7 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
     }
 
 
+    //That's the content selector too
     const renderContentsList = () => {
         return props.folderData.requestedContent.map((row) => {
             if (row.contentType === "playlist" || selectedItems.includes(row)) {

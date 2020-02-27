@@ -6,17 +6,20 @@ import { Icon } from '@material-ui/core';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
-import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB } from '../../utils/utils';
+import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, CsvService } from '../../utils/utils';
 import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
+import { Button } from '../../components/FormsComponents/Button/Button';
 
 export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
-    console.log(props);
 
     //Map header accesseur match data
+    // Only for ReactTable (table for some analytics like Top COntents)
+    // accesor must match the object attribut for sort by columns and stuff
+    // The pagination is automatically done, you need to send all the data to the table
     const COLUMNS_TOP_CONTENT = [   
         {
             Header: 'Content',
@@ -40,8 +43,12 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
         }
     ]
 
+    //Just to turn timestamp into locale Date, might need update for some analytics that required hours instead of Day 
     const labelsFormate = (labels: number[]) => {return labels.map(number => tsToLocaleDate(number))};
 
+    //Function to create the Map
+    //I know its a bit of a mess with Typescript, I didn;t have the time to set the right type so everything is Any
+    // dataRepo should follow the following structure tho [{ "city": "San Francisco (California)", "position": { "latitude": 37.7484, "longitude": -122.4156 }, "consumedMB": 36.8285 }, ...otherItems...]
     const renderMap = (dataRepo: any) => {
         let mapMin: any = Math.min(...dataRepo.map(m => m.consumedMB));
         if (isFinite(mapMin)) {
@@ -77,11 +84,20 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
+                {
+                    //Here's the funny part with the DatePicker that we gonna need to update 
+                }
                 <Datepicker className="col-3 right" />
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Per Time">
+                    {
+                        //So get to the Analytics Card components to understand how it works there's some comments down their
+                    }
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Per Time">
+                        {
+                            //Classic Bar Chart, data is an array of value, labels is also an array. Data is for the height of bars ofc and labels are date most of the time (or timestanp in our case)
+                        }
                         <BarChart
                             datasetName="GBytes"
                             displayBytesFromGB={true}
@@ -92,7 +108,10 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
+                        {
+                            //Line chart, here's a double line (plays AND views)pretty much the same as Bar Chart
+                        }
                         <DoubleLineChart
                             datasetName="Hits"
                             noDecimals={false}
@@ -106,7 +125,11 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                        {
+                            //Cheese chart is the easiest one
+                            //Data in an array of number and labels array of string
+                        }
                         <CheeseChart
                             displayBytesFromGB={true}
                             data={props.consumptionPerDevice.data}
@@ -116,7 +139,11 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                        {
+                            //This is taken from a package named ReactTable, you can have a look at the doc its well explained
+                            // Just columns need to match element in the data (for this one check out the TopContent Type in types.ts for dashboard redux flow)
+                        }
                         <ReactTable
                             data={props.topContents.data}
                             columns={COLUMNS_TOP_CONTENT}
@@ -125,7 +152,10 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Location">
+                        {
+                            //Check out the renderMap function there's some comments up here
+                        }
                         {renderMap(props.consumptionPerLocation.data)}
                     </AnalyticsCard>
                 </div>
@@ -137,7 +167,16 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 }
 
 
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string }) => {
+// Basics Card components, infoText = what's in the information icon tooltip; title = The title of the card; 
+// Data= data that will be csv export (play around to fogure out not that fificult)
+// Data name = name of the file to register the csv might delete later 
+// the chart is in the children state
+// Its used in every file so might need to get it out of here at one point
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data: any; dataName: string}) => {
+
+    const exportCsvAnalytics = (data: any) => {
+        CsvService.exportToCsv(props.dataName+".csv", Object.values(data));
+    };
 
     return (
         <AnalyticsCardStyle className={props.className}>
@@ -146,6 +185,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                 <div>
                     <Icon id={"tooltip" + props.id}>info_outlined</Icon>
                     <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
+                    <Icon onClick={() => {exportCsvAnalytics(props.data)} } >get_app</Icon>
                 </div>
             </AnalyticsCardHeader>
             {props.children}
