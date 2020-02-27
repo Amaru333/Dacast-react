@@ -25,15 +25,15 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         isDefault: false,
         createdDate: '',
         themeType: 'vod',
-        bigPlayButton: false,
-        playPause: false,
-        scrubber: false,
+        bigPlayButton: true,
+        playPause: true,
+        scrubber: true,
         scrubbingThumbnail: false,
-        timeCode: false,
-        speedControls: false,
-        qualityOptions: false,
-        volume: false,
-        fullscreen: false,
+        timeCode: true,
+        speedControls: true,
+        qualityOptions: true,
+        volume: true,
+        fullscreen: true,
         thumbnailPosition: 'left',
         isViewerCounterEnabled: false,
         viewerCounterLimit: 100,
@@ -48,7 +48,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         looping: false,
         continuousPlay: false,
         skipVideos: false,
-        offlineMessage: '',
+        offlineMessage: 'Sorry this media is offline',
         deliveryMethod: 'compatible',
         regionSettings: 'standard'
     };
@@ -99,13 +99,15 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <div className='col col-12 md-col-4 mr2 flex flex-column' >
                         <ControlsCard className='col col-12'>
                             <TitleSection>
-                                <Text size={20} weight='med'>
-                                    {
-                                        selectedTheme.id === "-1" ?
-                                            "New Theme"
-                                            : "Edit Theme"
-                                    }
-                                </Text>
+                                <div style={{marginTop: 5}}>
+                                    <Text size={20} weight='med'>
+                                        {
+                                            selectedTheme.id === "-1" ?
+                                                "New Theme"
+                                                : "Edit Theme"
+                                        }
+                                    </Text>
+                                </div>
                                 <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                             </TitleSection>
                             {
@@ -224,7 +226,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
             return props.themingList.themes.map((theme, key) => {
                 return [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                    theme.isDefault ? <Icon key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
+                    theme.isDefault ? <Icon style={{color: "green"}} key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
                     <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
 
