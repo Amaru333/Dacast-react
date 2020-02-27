@@ -296,7 +296,7 @@ export const ContainerHalfSelector = styled.div<{}>`
     overflow-x: scroll;
 `
 
-const HeaderBorder = styled.div<{}>`
+export const HeaderBorder = styled.div<{}>`
     height:52px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
     box-sizing: border-box;
@@ -314,7 +314,18 @@ export const TabSetupStyle = styled.div<{selected: boolean}>`
         color: ${props.theme.colors["dark-violet"]};
     `}
 `
-
+export const TabSetupStyles = styled.div<{selected: boolean}>`
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    float:left;
+    text-align:center;
+    height: 38px;
+    padding: 7px 0;
+    ${props => props.selected && css`
+        background-color: ${props.theme.colors["violet20"]} !important;
+        color: ${props.theme.colors["dark-violet"]};
+    `}
+`
 export const TabSetupContainer= styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
 `
