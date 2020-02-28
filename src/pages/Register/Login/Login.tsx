@@ -37,7 +37,7 @@ export const LoginPage = (props: LoginComponentProps) => {
     )
 }
 
-const ImageStyle = styled.img`
+export const ImageStyle = styled.img`
     width: 307.5px;
     display: block;
     box-sizing: border-box;
