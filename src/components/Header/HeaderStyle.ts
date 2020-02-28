@@ -24,5 +24,6 @@ export const IconContainerStyle = styled.div`
 export const HeaderIconStyle = styled.div`
     top: 50%;
     padding: 8px;
-    color: ${props => props.theme.colors["gray-1"]}
+    color: ${props => props.theme.colors["gray-1"]};
+    cursor: pointer;
 `

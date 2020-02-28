@@ -98,7 +98,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
 
                                     <TitleSection className="my2">
                                         <Text size={20} weight='med'>Region Settings</Text>
-                                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue'>
+                                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href="/help"}>
                                             Contact Us
                                         </Button>
 
