@@ -89,7 +89,6 @@
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
     "countries-list": "^2.5.0",
-    "country-list": "^2.2.0",
     "luxon": "^1.21.1",
     "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",

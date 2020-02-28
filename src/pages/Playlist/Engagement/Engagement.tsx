@@ -154,21 +154,16 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                         defaultChecked={engagementSettings.adEnabled} 
                         onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
                     />
-                    {
-                        engagementSettings.adEnabled ?
-                        <>
-                        <div className="pb2">
-                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                        </div>
-                        
-                        <div className='flex'>
-                            <Icon className="mr1">info_outlined</Icon>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                        </div>
-                        <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
-                        </>
-                            : null
-                    }
+
+                    <div className="pb2">
+                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    </div>
+                    
+                    <div className='flex'>
+                        <Icon className="mr1">info_outlined</Icon>
+                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                    </div>
+                    <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
                 </DisabledSection>
             </Card>
 

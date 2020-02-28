@@ -41,8 +41,8 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         socialSharing: false,
         embedCode: false,
         playerTransparency: false,
-        hasCustomColor: false,
-        customColor: '',
+        customMenuColor: '',
+        customOverlayColor: '',
         autoplay: false,
         startVideoMuted: false,
         looping: false,
@@ -166,12 +166,14 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => {setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor});setSettingsEdited(true)}} />
-                                    {
-                                        selectedTheme.hasCustomColor ? 
-                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customColor: value});setSettingsEdited(true)}} />
-                                            : null
-                                    }
+                                        <div className='relative'>
+                                            <Text className='pb1' size={14} weight='med'>Overlay Color</Text>
+                                            <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customOverlayColor: value});setSettingsEdited(true)}} />
+                                        </div>
+                                        <div className='my2 relative'>
+                                            <Text className='pb1' size={14} weight='med'>Menu Color</Text>
+                                            <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customMenuColor: value});setSettingsEdited(true)}} />
+                                        </div>
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>

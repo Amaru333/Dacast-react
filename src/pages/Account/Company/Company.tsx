@@ -9,7 +9,7 @@ import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
-const {getNames} = require('country-list')
+import { countries } from 'countries-list';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -51,7 +51,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
-        setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
+        setDefaultCountryValue(countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name)
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
@@ -285,7 +285,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             {...handleValidationProps('zipCode', validations)}
                     
                         />
-                        <DropdownSingle hasSearch defaultValue={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1 my1" id='country' dropdownTitle='Country' list={getNames().reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{})} />
+                        <DropdownSingle hasSearch dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
 
                     </div>
                 </form>

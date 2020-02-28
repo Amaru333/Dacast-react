@@ -203,17 +203,21 @@ export const PlaylistThemingPage = (props: PlaylistThemingComponentProps) => {
                                         <BorderStyle className="p1" />
 
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                        <div className="flex items-top justify-between relative">
-                                            <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor})} />
-                                            <Icon id="customColorTooltip">info_outlined</Icon>
-                                        
+
+                                        <div className='relative'>
+                                            <div className='flex'>
+                                                <Text className='pb1' size={14} weight='med'>Overlay Color</Text>
+                                                <Icon className='right' id="customColorTooltip">info_outlined</Icon>
+                                            </div>                               
+                                            <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customOverlayColor: value})}} />
                                         </div>
-                                    
-                                        {
-                                            selectedTheme.hasCustomColor ? 
-                                                <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => setSelectedTheme({...selectedTheme, customColor: value})} />
-                                                : null
-                                        }
+                                        <div className='my2 relative'>
+                                            <div className='flex'>
+                                                <Text className='pb1' size={14} weight='med'>Overlay Color</Text>
+                                                <Icon className='right' id="customColorTooltip">info_outlined</Icon>
+                                            </div>   
+                                            <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customMenuColor: value})}} />
+                                        </div>
                                         <BorderStyle className="p1" />
 
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>

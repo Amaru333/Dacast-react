@@ -4,7 +4,6 @@ import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
 import { Icon } from '@material-ui/core';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
-import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
 import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, CsvService } from '../../utils/utils';
 import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
@@ -12,7 +11,6 @@ import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { Button } from '../../components/FormsComponents/Button/Button';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 
 export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {

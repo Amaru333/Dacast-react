@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { formSubmit, handleValidationProps, ValueInput } from '../../../utils/hooksFormSubmit';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
 import { Icon } from '@material-ui/core';
@@ -162,14 +162,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             startDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <div className='col col-4 md-col-3 mb2'>
-                                                        <DateSinglePicker
-                                                            className='mt2'
-                                                            id="startDate"
-                                                            callback={(startDateValue: string) => { value = { ...value, ['startDate']: { value: startDateValue } } }}
-                                                        />
-                                                    </div>
-
+                                                    <DateSinglePickerWrapper className='col col-4 md-col-3 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
@@ -190,13 +183,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             endDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <div className='col col-4 md-col-3 mb2' >
-                                                        <DateSinglePicker
-                                                            className='mt2'
-                                                            id="endDate"
-                                                            callback={(endDateValue: string) => { value = { ...value, ['endDate']: { value: endDateValue } } }}
-                                                        />
-                                                    </div>
+                                                    <DateSinglePickerWrapper className='col col-4 md-col-3 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
