@@ -30,7 +30,8 @@ const Header = (props: HeaderProps) => {
                 <Breadcrumb isNavigation options={location.pathname + '/'} callback={() => {}}/>
             </div>          
             <IconContainerStyle>
-                <HeaderIconStyle><Icon>help</Icon></HeaderIconStyle>
+                <HeaderIconStyle><Icon>notifications</Icon></HeaderIconStyle>
+                <HeaderIconStyle onClick={() => {location.href="/help"}}><Icon>help</Icon></HeaderIconStyle>
                 <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
             </IconContainerStyle>
         </HeaderStyle>

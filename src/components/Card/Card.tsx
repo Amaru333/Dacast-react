@@ -8,7 +8,7 @@ export const Card = (props: React.HTMLAttributes<HTMLDivElement> & {backgroundCo
     const {className, backgroundColor,  ...other} = props;
 
     return (
-        <CardStyle backgroundColor={backgroundColor} isMobile={isMobile} className={className+" p25"} {...other}>
+        <CardStyle backgroundColor={backgroundColor} isMobile={isMobile} className={className} {...other}>
             {props.children}
         </CardStyle>
     )

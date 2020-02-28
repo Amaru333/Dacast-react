@@ -28,6 +28,7 @@ import ReactDOM from 'react-dom';
 import { Modal } from './components/Modal/Modal';
 import { Text } from './components/Typography/Text';
 import { Button } from './components/FormsComponents/Button/Button';
+import { HelpPage } from './pages/Help/Help';
 
 // Any additional component props go here.
 interface MainProps {
@@ -173,6 +174,9 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                                     {returnRouter(AppRoutes)}
                                     <Route path="/uploader">
                                         <Uploader postVodDemo={() => {}} />
+                                    </Route>
+                                    <Route path="/help">
+                                        <HelpPage></HelpPage>
                                     </Route>
                                 </Switch>
                             </Content>
