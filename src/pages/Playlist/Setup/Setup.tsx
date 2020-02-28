@@ -235,7 +235,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         <>
             <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => {setSelectedTab(selectedTab === "content" ? 'folders' : 'content');setSelectedItems([]); }} />
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() =>setPlaylistSettingsOpen(false)} />
-            <div className="flex itemns-center">
+            <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb2">
                     <IconSearch>search</IconSearch>
                     <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />

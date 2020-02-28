@@ -13,6 +13,7 @@ import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
 import { Button } from '../../components/FormsComponents/Button/Button';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 
 export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 
@@ -81,13 +82,15 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
         )
     }
 
+
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
                 {
                     //Here's the funny part with the DatePicker that we gonna need to update 
                 }
-                <Datepicker className="col-3 right" />
+                <DateRangePickerWrapper />
+
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">

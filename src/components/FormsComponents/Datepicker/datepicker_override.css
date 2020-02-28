@@ -1,0 +1,82 @@
+
+
+.CalendarDay:hover {
+  background: #DBE1FC;
+  color: #284CEB;
+  /* border-radius: 50%; */
+  border: none;
+}
+
+.CalendarDay {
+  border: none;
+  margin: 0.5rem 0;
+}
+
+.CalendarDay__selected_span {
+  background: #EDF0FE; 
+  color: #222F3E; 
+  border: none;
+}
+
+.CalendarDay__selected {
+  background: #4967EE;
+  color: white;
+  border: none;  
+  /* border-radius: 50%; */
+}
+
+.CalendarDay__selected:hover {
+  background: #DBE1FC;
+  color: #4967EE;
+  border: none;
+}
+
+.CalendarDay__selected_end {
+  background: linear-gradient(90deg, '#DBE1FC' 50%, '#FFFFF' 50%);
+}
+
+.CalendarDay__today {
+  border: 1px solid #222F3E;
+  /* border-radius: 50%; */
+}
+
+/* .CalendarDay__firstDayOfWeek {
+  border-bottom-left-radius: 40px;
+  border-top-left-radius: 40px;
+}
+
+.CalendarDay__lastDayOfWeek {
+  border-bottom-right-radius: 40px;
+  border-top-right-radius: 40px;
+} */
+
+.CalendarDay__hovered_span:hover,
+.CalendarDay__hovered_span {
+  background: #DBE1FC;
+  color: #284CEB;
+  border: none;
+}
+
+.DayPickerNavigation_button__default {
+  border: none;
+}
+
+.DateRangePickerInput__withBorder {
+  background: #F5F7FA;
+  border: 1px solid #C8D1E0;
+}
+
+
+.DateInput_input {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  background: #F5F7FA;
+  width: 85%;
+}
+
+.DateInput_input__focused {
+  border-bottom: 2px solid #284CEB;
+}

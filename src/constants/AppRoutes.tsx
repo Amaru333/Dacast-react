@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
@@ -23,21 +22,11 @@ import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
-import { SpinnerContainer } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import Groups from '../containers/Paywall/Groups';
-import { RealTimeAnalytics } from '../pages/Analytics/RealTime';
 import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
-
-/** TO DO: Remove the functional components and import the real one when they're built */
-
-const functionTest2 = () => {
-    return (
-        <SpinnerContainer><LoadingSpinner size="large" color="red" /></SpinnerContainer>
-    )
-}
 
 export const AppRoutes: Routes[] = [   
     {
