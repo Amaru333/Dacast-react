@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { ModalCard, ModalFooter, ModalContent } from '../../../components/Modal/ModalCard';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 
 const logo = require('../../../../public/assets/logo.png');
 
@@ -36,14 +36,3 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     )
 }
-
-export const ImageStyle = styled.img`
-    width: 307.5px;
-    display: block;
-    box-sizing: border-box;
-`
-
-export const LoginContainer = styled.div`
-    width:auto;
-    background: #EBEFF5;
-`

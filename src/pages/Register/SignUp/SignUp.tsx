@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoginContainer, ImageStyle } from '../Login/Login'
+import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 import { ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { ModalCard } from '../../../components/Modal/ModalCard';
 import { Input } from '../../../components/FormsComponents/Input/Input';
