@@ -34,7 +34,7 @@ const Setup = (props: FoldersComponentProps) => {
     return (
         props.folderData ? 
             <SetupPage {...props} />
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

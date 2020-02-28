@@ -29,7 +29,7 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
     return (
         props.vodSecuritySettings && props.globalSecuritySettings ? 
             <VodSecurityPage {...props}/>
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

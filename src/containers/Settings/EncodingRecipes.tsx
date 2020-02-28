@@ -20,7 +20,7 @@ const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
     return (
         !props.encodingRecipeData ?
-            <SpinnerContainer><LoadingSpinner size='large' color='blue80' /></SpinnerContainer>
+            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             :
             <EncodingRecipesPage {...props} />
     )

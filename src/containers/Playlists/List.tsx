@@ -32,7 +32,7 @@ const PlaylistList = (props: PlaylistListContainerProps) => {
     console.log(props);
     if (!props.playlistList || !props.themeList) {
         return (
-            <SpinnerContainer><LoadingSpinner size="large" color="violet" /></SpinnerContainer>
+            <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
         )
     } else {
         return (

@@ -41,7 +41,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
 
     return props.vodPaywallInfos && props.groupsInfos && props.theming ? 
         <VodPaywallPage {...props} />
-        : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {

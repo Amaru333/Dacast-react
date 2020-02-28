@@ -23,7 +23,7 @@ const EmbedSettings = (props: EmbedSettingsComponentProps) => {
 
     return (
         !props.embedSettingsOption ? 
-            <SpinnerContainer><LoadingSpinner size='large' color='blue80' /></SpinnerContainer>
+            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             :
             <EmbedSettingsPage {...props} />
     )

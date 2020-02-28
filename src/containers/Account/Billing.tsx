@@ -27,7 +27,7 @@ const Billing = (props: BillingContainerProps) => {
     return (
         props.billingInfos ?
             <BillingPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='coral' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

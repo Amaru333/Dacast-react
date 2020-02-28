@@ -25,7 +25,7 @@ export const Theming = (props: ThemingComponentProps) => {
     return (
         props.themingList ?
             <ThemingPage {...props} />
-            : <SpinnerContainer><LoadingSpinner color='violet80' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

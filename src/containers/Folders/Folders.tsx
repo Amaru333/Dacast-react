@@ -32,7 +32,7 @@ const Folders = (props: FoldersComponentProps) => {
     return (
         props.folderData ? 
             <FoldersPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='green80' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

@@ -29,7 +29,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     return (
         props.vodEngagementSettings ?
             <VodEngagementPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='overlay70' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

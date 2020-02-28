@@ -34,7 +34,7 @@ const GeneralPlaylist = (props: GeneralProps) => {
             (
                 <PlaylistGeneralPage {...props} />
             )
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 
 }

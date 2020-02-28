@@ -24,7 +24,7 @@ const Transactions = (props: TransactionsComponentProps) => {
     return (
         props.transactionsInfos ?     
             <TransactionsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='yellow80' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

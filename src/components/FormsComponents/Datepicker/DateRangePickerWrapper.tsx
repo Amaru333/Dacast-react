@@ -11,7 +11,7 @@ export const DateRangePickerWrapper = () => {
     let mobile = useMedia('(max-width: 780px)')
 
     return (
-        <div className='right'>
+        <div>
             <DateRangePicker  
                 showDefaultInputIcon={false}
                 showClearDates

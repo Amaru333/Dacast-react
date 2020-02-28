@@ -29,7 +29,7 @@ const Payout = (props: PayoutComponentProps) => {
     return (
         props.payoutInfos ?
             <PayoutPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='orange' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

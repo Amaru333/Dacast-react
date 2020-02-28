@@ -58,8 +58,8 @@ export const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
                 socialSharing: props.theme.selectedTheme.socialSharing,
                 embedCode: props.theme.selectedTheme.embedCode,
                 playerTransparency: props.theme.selectedTheme.playerTransparency,
-                hasCustomColor: props.theme.selectedTheme.hasCustomColor,
-                customColor: props.theme.selectedTheme.customColor,
+                customMenuColor: props.theme.selectedTheme.customMenuColor,
+                customOverlayColor: props.theme.selectedTheme.customOverlayColor,
                 autoplay: props.theme.selectedTheme.autoplay,
                 startVideoMuted: props.theme.selectedTheme.startVideoMuted,
                 looping: props.theme.selectedTheme.looping,
@@ -79,7 +79,7 @@ export const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
     return (
         props.theme && customThemeList ?
             <PlaylistThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

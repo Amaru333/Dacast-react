@@ -29,7 +29,7 @@ const Company = (props: CompanyContainerProps) => {
         props.CompanyInfos ? 
             <CompanyPage CompanyPageDetails={props.CompanyInfos} {...props} />
             : 
-            <SpinnerContainer><LoadingSpinner size='large' color='dark-violet' /></SpinnerContainer>
+            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 
 }

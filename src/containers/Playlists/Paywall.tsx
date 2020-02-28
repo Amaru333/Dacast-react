@@ -41,7 +41,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
 
     return props.playlistPaywallInfos && props.groupsInfos && props.theming ? 
         <PlaylistPaywallPage {...props} />
-        : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {

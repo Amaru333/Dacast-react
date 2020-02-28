@@ -8,6 +8,7 @@ import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, del
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { ViewershipAnalytics } from '../../pages/Analytics/ViewerShip';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -33,7 +34,7 @@ const Viewership = (props: ViewershipComponentProps) => {
     return (
         props.folderData ? 
             <ViewershipAnalytics {...props} />
-            : <LoadingSpinner size='large' color='green80' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

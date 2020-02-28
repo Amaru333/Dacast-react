@@ -22,7 +22,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <ApiIntegrationPage {...props} />
         )
     } else {
-        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="large" color="violet" /></SpinnerContainer>
+        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     }
 
 }

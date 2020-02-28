@@ -31,7 +31,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
     return (
         props.interactionsInfos ?
             <InteractionsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='overlay70' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

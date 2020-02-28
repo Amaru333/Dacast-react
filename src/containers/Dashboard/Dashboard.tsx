@@ -81,7 +81,7 @@ const Dashboard = (props: DashboardProps) => {
                     {renderDashboard()}
                     <div className="clearfix"></div>
                 </> :
-                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="large" color="violet" /></SpinnerContainer>
+                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
                     
             }
         </>

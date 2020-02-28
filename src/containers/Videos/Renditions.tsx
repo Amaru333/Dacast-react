@@ -29,7 +29,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
             (
                 <VodRenditionsPage {...props} />
             )
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

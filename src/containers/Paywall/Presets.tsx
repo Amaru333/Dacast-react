@@ -29,7 +29,7 @@ const Presets = (props: PresetsComponentProps) => {
     return (
         props.presetsInfos ?
             <PresetsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='blue' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

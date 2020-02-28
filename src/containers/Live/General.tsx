@@ -33,7 +33,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
             (
                 <LiveGeneralPage {...props} />
             )
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

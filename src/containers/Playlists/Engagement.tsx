@@ -29,7 +29,7 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
     return (
         props.playlistEngagementSettings ?
             <PlaylistEngagementPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='overlay70' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

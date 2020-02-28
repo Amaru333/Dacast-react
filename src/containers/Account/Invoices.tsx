@@ -23,7 +23,7 @@ const Invoices = (props: InvoicesComponentProps) => {
     return (
         props.invoices ?
             <InvoicesPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='blue60' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

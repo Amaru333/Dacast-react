@@ -17,7 +17,7 @@ const VideosList = (props: VideosListProps) => {
     }, [])
 
     if (!props.items) {
-        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="large" color="violet" /></SpinnerContainer>
+        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
             <VideosListPage {...props} />

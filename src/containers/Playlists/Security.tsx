@@ -31,7 +31,7 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
     return (
         props.playlistSecuritySettings && props.globalSecuritySettings ? 
             <PlaylistSecurityPage {...props}/>
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

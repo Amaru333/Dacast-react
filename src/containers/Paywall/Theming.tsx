@@ -26,7 +26,7 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
     return (
         props.paywallThemes ?
             <PaywallThemingPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='green20' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

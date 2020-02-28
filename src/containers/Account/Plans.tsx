@@ -166,7 +166,7 @@ const Plans = () => {
         value ? 
             <PlansPage plans={value}/>
             : 
-            <SpinnerContainer><LoadingSpinner size='large' color='dark-violet' /></SpinnerContainer>
+            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

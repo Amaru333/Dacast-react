@@ -29,7 +29,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
     return (
         props.liveEngagementSettings ?
             <LiveEngagementPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='overlay70' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

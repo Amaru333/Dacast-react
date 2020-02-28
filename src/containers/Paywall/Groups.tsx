@@ -42,7 +42,7 @@ const Groups = (props: GroupsComponentProps) => {
     return (
         props.groupsInfos && props.folderData ?
             <GroupsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner color='dark-violet' size='large' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

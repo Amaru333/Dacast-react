@@ -25,7 +25,7 @@ export const PendingOrders = (props: PendingOrdersComponentProps) => {
     return (
         props.pendingOrders ?
             <PendingOrdersPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='large' color='blue60' /></SpinnerContainer>
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 
