@@ -25,6 +25,7 @@ import { isLoggedIn } from './utils/token';
 import { NotFound } from './containers/404page';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
+import { SignUp } from './containers/Register/SignUp/SignUp';
 
 // Any additional component props go here.
 interface MainProps {
@@ -124,6 +125,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                             <Switch>
                                 <Route exact path='/'><Login history={history} /></Route>
                                 <Route path='/login'><Login history={history} /></Route>
+                                <Route path='/signup'><SignUp/></Route>
                                 {returnRouter(AppRoutes)}
                                 <Route path='*' ><NotFound /></Route>
                             </Switch>

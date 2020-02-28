@@ -26,7 +26,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                 <ModalContent className="clearfix">
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" value={username} onChange={event => setUsername(event.currentTarget.value)} />
                     <Input type="password" className="col col-12" label="Password" icon="visibility_off" placeholder="Password" value={password} onChange={event => setPassword(event.currentTarget.value)}/>
-                    <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="#">Sign up</a></Text>
+                    <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
@@ -43,7 +43,7 @@ const ImageStyle = styled.img`
     box-sizing: border-box;
 `
 
-const LoginContainer = styled.div`
+export const LoginContainer = styled.div`
     width:auto;
     background: #EBEFF5;
 `
