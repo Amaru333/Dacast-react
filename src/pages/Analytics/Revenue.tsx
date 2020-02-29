@@ -22,6 +22,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { IconStyle } from '../Folders/FoldersStyle';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 
 interface RevenueAnalyticsProps {
     folderData: FoldersInfos;
@@ -252,6 +253,9 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
+                <div className="col col-12 mb25">
+                    <DateRangePickerWrapper />
+                </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
                         <IconSearch>search</IconSearch>

@@ -4,6 +4,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 import './datepicker_override.css'
 import { useMedia } from '../../../utils/utils';
+import { Icon } from '@material-ui/core';
 
 export const DateRangePickerWrapper = () => {
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
@@ -11,8 +12,10 @@ export const DateRangePickerWrapper = () => {
     let mobile = useMedia('(max-width: 780px)')
 
     return (
-        <div>
+        <div className='noTransition'>
             <DateRangePicker  
+                navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
+                navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}
                 showClearDates
                 orientation={mobile ? 'vertical' : 'horizontal'}

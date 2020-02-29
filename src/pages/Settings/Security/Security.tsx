@@ -115,7 +115,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protected Videos' onChange={() => { setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)} />
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtectedVideo.enabled} {...handleValidationProps('Password Protected Videos', validations)} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo ?
@@ -157,7 +157,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo ?
                                 <>
                                     <div className='col col-12 flex items-center'>
-                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableStart" dropdownTitle="Available" list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
+                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.videoScheduling.startDate ? 'Set Date and Time' : 'Always' } list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
 
                                         {
                                             startDateTime === "Set Date and Time" ?
@@ -178,7 +178,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     </div>
 
                                     <div className='col col-12 flex items-center'>
-                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Until" list={{ Forever: false, "Set Date and Time": false }} callback={(value: string) => { setEndDateTime(value) }} />
+                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.videoScheduling.endDate ? 'Set Date and Time' : 'Forever' } list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setEndDateTime(value) }} />
 
                                         {
                                             endDateTime === "Set Date and Time" ?
@@ -229,12 +229,20 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     : null
             }
 
-            <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create') + ' Geo-restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
-                <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
+            <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create') + ' Geo-Restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
+                {
+                    geoRestrictionModalOpened ?
+                        <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.saveGeoRestrictionGroup} />
+                        : null
+                }
             </Modal>
 
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Create') + ' Domain Group'} toggle={() => setDomainControlModalOpened(!domainControlModalOpened)} size='small' opened={domainControlModalOpened}>
-                <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
+                {
+                    domainControlModalOpened ? 
+                        <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.saveDomainControlGroup} />
+                        : null
+                }
             </Modal>
 
         </div>

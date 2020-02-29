@@ -84,9 +84,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
-                {
-                    //Here's the funny part with the DatePicker that we gonna need to update 
-                }
+
                 <DateRangePickerWrapper />
 
             </div>
@@ -95,7 +93,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     {
                         //So get to the Analytics Card components to understand how it works there's some comments down their
                     }
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Per Time">
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Time">
                         {
                             //Classic Bar Chart, data is an array of value, labels is also an array. Data is for the height of bars ofc and labels are date most of the time (or timestanp in our case)
                         }
@@ -109,7 +107,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                         {
                             //Line chart, here's a double line (plays AND views)pretty much the same as Bar Chart
                         }
@@ -126,7 +124,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                         {
                             //Cheese chart is the easiest one
                             //Data in an array of number and labels array of string
@@ -140,7 +138,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
                         {
                             //This is taken from a package named ReactTable, you can have a look at the doc its well explained
                             // Just columns need to match element in the data (for this one check out the TopContent Type in types.ts for dashboard redux flow)
@@ -153,7 +151,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
                             //Check out the renderMap function there's some comments up here
                         }

@@ -22,6 +22,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { IconStyle } from '../Folders/FoldersStyle';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 
 interface ViewershipAnalyticsProps {
     folderData: FoldersInfos;
@@ -246,6 +247,11 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
+                <div className="col col-12 mb25">
+
+                    <DateRangePickerWrapper />
+
+                </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
                         <IconSearch>search</IconSearch>
@@ -276,7 +282,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Domain">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Domain">
                         <BarChart
                             datasetName="GBytes"
                             displayBytesFromGB={true}
@@ -287,7 +293,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Device">
                         <DoubleLineChart
                             datasetName="Hits"
                             noDecimals={false}
@@ -301,7 +307,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers By Time">
                         <CheeseChart
                             displayBytesFromGB={true}
                             data={dataCheese}
