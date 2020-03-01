@@ -13,6 +13,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { VodThemingComponentProps } from '../../../containers/Videos/Theming';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { usePlayer } from '../../../utils/player';
 
 export const VodThemingPage = (props: VodThemingComponentProps) => {
     
@@ -22,43 +23,10 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
 
     const togglePadding = 'py1';
 
-    const [player, setPlayer] = React.useState<any>(null);
+
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
-
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        } console.log(props.themeList.themes)
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        } 
-    }, [player])
+    let player = usePlayer(playerRef);
 
     const handleThemeSave = () => {
         if(selectedTheme.themeName === "Custom Theme") {

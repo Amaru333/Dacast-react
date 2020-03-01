@@ -13,6 +13,7 @@ import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
+import { usePlayer } from '../../../utils/player';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -52,45 +53,13 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         deliveryMethod: 'compatible',
         regionSettings: 'standard'
     };
-    let playerRef = React.useRef<HTMLDivElement>(null);
-    const [player, setPlayer] = React.useState<any>(null);
+
     const togglePadding = 'py1';
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
+    let playerRef = React.useRef<HTMLDivElement>(null);
 
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        }
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        } 
-    }, [player])
+    let player = usePlayer(playerRef);
 
     const ThemingOptions = () => {
         return (

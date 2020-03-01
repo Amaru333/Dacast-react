@@ -14,6 +14,7 @@ import { SettingsInteractionComponentProps } from '../../../containers/Settings/
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
+import { usePlayer } from '../../../utils/player';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -55,45 +56,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         setSelectedMailCatcher(mailCatcher);
         setMailCatcherModalOpened(true);
     }
-
-    const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
-
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        }
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        }
-    }, [player])
+    let player = usePlayer(playerRef);
 
 
     React.useEffect(() => {
