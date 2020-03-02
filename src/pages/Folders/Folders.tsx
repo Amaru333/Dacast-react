@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoldersTreeSection, ContentSection, IconStyle, FolderRow, SeparatorHeader, IconGreyContainer } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from './FoldersStyle';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
@@ -22,6 +22,7 @@ import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../components/Badge/Badge';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
+import { IconStyle, IconGreyContainer } from '../../shared/Lists/ListStyle';
 
 const folderTreeConst = [
     'folder1',

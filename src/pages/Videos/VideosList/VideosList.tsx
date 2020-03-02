@@ -6,7 +6,6 @@ import { Text } from '../../../components/Typography/Text';
 import { VodItem } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import styled from "styled-components";
 import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination';
@@ -19,6 +18,7 @@ import { IconSearch } from '../../Playlist/List/PlaylistList';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
+import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
 // import { useLocation} from 'react-router-dom'
 
 export interface VideosListProps {
@@ -79,7 +79,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>,
             <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>,
             <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>,
-            <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created</Text>,
+            <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>,
             <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>,
             <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>,
             <div style={{ width: "80px" }} ></div>,
@@ -204,28 +204,3 @@ export const VideosListPage = (props: VideosListProps) => {
 }
 
 
-export const IconStyle = styled(Icon)`
-    margin: auto;
-    font-size: 16px !important;
-    
-`
-
-const IconGreyContainer = styled.div<{}>`
-    position: relative;
-    z-index: 1;
-    color :  ${props => props.theme.colors["gray-3"]} ;
-    display: inline-flex;
-    height: 24px;
-    width: 24px;
-    align-items: center;
-    &:before {
-        content: '';
-        display: inline-block;
-        width: 24px;
-        z-index: -1;
-        height: 24px;
-        position: absolute;
-        border-radius: 12px;
-        background-color: ${props => props.theme.colors["gray-8"]} ;
-    }
-`

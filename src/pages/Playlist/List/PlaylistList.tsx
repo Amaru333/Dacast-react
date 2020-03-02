@@ -16,6 +16,7 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -53,7 +54,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
             />,
             <></>,
             <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created</Text>,
+            <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created Date</Text>,
             <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>,
             <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>,
             <div style={{ width: "80px" }} ></div>,
@@ -189,11 +190,6 @@ export const PlaylistListPage = (props: LiveListProps) => {
     )
 }
 
-const IconStyle = styled(Icon)`
-    margin: auto;
-    font-size: 16px !important;
-`
-
 export const IconSearch = styled(Icon)`
     color: ${props => props.theme.colors["gray-3"]} ;
 `
@@ -211,24 +207,4 @@ const SeparatorHeader = styled.div<{}>`
 
 const invisibleInput = styled.input<{}>`
 
-`
-
-const IconGreyContainer = styled.div<{}>`
-    position: relative;
-    z-index: 1;
-    color :  ${props => props.theme.colors["gray-3"]} ;
-    display: inline-flex;
-    height: 24px;
-    width: 24px;
-    align-items: center;
-    &:before {
-        content: '';
-        display: inline-block;
-        width: 24px;
-        z-index: -1;
-        height: 24px;
-        position: absolute;
-        border-radius: 12px;
-        background-color: ${props => props.theme.colors["gray-8"]} ;
-    }
 `

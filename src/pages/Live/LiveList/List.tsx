@@ -21,6 +21,7 @@ import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { UserAccountPrivileges } from '../../../containers/Navigation/NavigationTypes';
+import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
 
 export interface LiveListProps {
     liveList: LiveItem[];
@@ -63,7 +64,7 @@ export const LiveListPage = (props: LiveListProps) => {
             />,
             <></>,
             <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created</Text>,
+            <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>,
             <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>,
             <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>,
             <div style={{ width: "80px" }} ></div>,
@@ -224,29 +225,3 @@ export const LiveListPage = (props: LiveListProps) => {
             </>
     )
 }
-
-export const IconStyle = styled(Icon)`
-    margin: auto;
-    font-size: 16px !important;
-    
-`
-
-const IconGreyContainer = styled.div<{}>`
-    position: relative;
-    z-index: 1;
-    color :  ${props => props.theme.colors["gray-3"]} ;
-    display: inline-flex;
-    height: 24px;
-    width: 24px;
-    align-items: center;
-    &:before {
-        content: '';
-        display: inline-block;
-        width: 24px;
-        z-index: -1;
-        height: 24px;
-        position: absolute;
-        border-radius: 12px;
-        background-color: ${props => props.theme.colors["gray-8"]} ;
-    }
-`
