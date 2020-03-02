@@ -50,7 +50,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
     const handleBillingPeriod = () => {
         if( (props.plan as DashboardPayingPlan).nextBill ) {
-            return <Text className="ml-auto" size={14} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
+            return <Text className="ml-auto" size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
         }
     }
 
@@ -93,7 +93,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         {handleButtonToPurchase(encoding.percentage)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {encoding.left}</Text><Text size={16} weight="reg" color="gray-4" >/{encoding.limit} Mins</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{encoding.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> {encoding.left}</Text><Text size={16} weight="reg" color="gray-4" >/{encoding.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{encoding.percentage}%</Text>
                     </div>
                     <ProgressBarDashboard percentage={encoding.percentage} widget="encoding" />
                 </WidgetElement>
@@ -138,7 +138,7 @@ const ProgressBarDashboard = (props: { percentage: number; widget: 'bandwidth' |
                 return <Text size={12} weight="reg" color="red"> Upgrade before you run out of {props.widget}</Text>
             } else {
                 if(props.overage && props.overage.enabled) {
-                    return <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg" color="red"> {props.overage.value}GB Playback Protection enabled</Text><Icon>settings</Icon></div>
+                    return <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg"> Playback Protection enabled</Text><Icon>settings</Icon></div>
                 } else {
                     return <><Text size={12} weight="reg" color="red"> Upgrade before you run out of data</Text><Icon>settings</Icon></>
                 }

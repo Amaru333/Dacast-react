@@ -29,7 +29,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
             <div className="flex items-baseline mb1">
                 <IconGray1 className="mr1 self-center">play_arrow</IconGray1>
                 <Text size={24} weight="reg" className="mt0 inline-block">
-                    Video
+                    Videos
                 </Text>
             </div>
 

@@ -22,7 +22,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
             <div className="flex items-baseline mb1">
                 <IconGray1 className="mr1 self-center">videocam</IconGray1>
                 <Text size={24} weight="reg" className="mt0 inline-block">
-                    Live Channels
+                    Live Streams
                 </Text>
             </div>
 
