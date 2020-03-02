@@ -1,13 +1,14 @@
 import React from 'react';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
-import { IconStyle, ModalItemFolderRow } from './FoldersStyle';
+import { ModalItemFolderRow } from './FoldersStyle';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { getNameFromFullPath } from '../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
+import { IconStyle } from '../../shared/Lists/ListStyle';
 
 export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
 

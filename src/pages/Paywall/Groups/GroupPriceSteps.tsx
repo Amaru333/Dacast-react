@@ -10,9 +10,9 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Text } from '../../../components/Typography/Text';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
-import { IconStyle } from '../../Folders/FoldersStyle';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
 import { GroupStepperData } from './Groups';
+import { IconStyle } from '../../../shared/Lists/ListStyle';
 
 var moment = require('moment-timezone');
 

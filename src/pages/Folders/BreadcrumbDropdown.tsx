@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from '../../components/Typography/Text';
-import { IconStyle } from './FoldersStyle';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter } from '../../utils/utils';
+import { IconStyle } from '../../shared/Lists/ListStyle';
 
 export const BreadcrumbDropdown = (props: {options: string; callback: Function; dropdownOptions: string[]; dropdownCallback: Function}) => {
 
