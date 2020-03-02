@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Icon from '@material-ui/core/Icon';
+import { Text } from '../../../components/Typography/Text'
 
 
 export const CompanyPageContainer = styled.div<{}>`
@@ -48,4 +49,36 @@ export const LinkStyle = styled.span<{}>`
 
 export const ButtonsArea = styled.div<{}>`
 
+`
+
+export const AccountIdLabel = styled.label`
+    display: flex;
+    height:auto;
+    margin: 0 0 4px 8px;
+    align-items: center;
+`
+
+export const AccountIdContainer = styled.div`
+display: flex;
+margin: 0 8px 8px; 
+height: 40px;
+background-color: ${props => props.theme.colors["gray-10"]};
+border: 1px solid ${props => props.theme.colors["gray-7"]};
+align-items: center;
+justify-content: space-between;
+&:hover > button{
+        display: block;
+    }
+`
+
+export const AccountIdText = styled(Text)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`
+
+export const IconButton = styled.button`
+display: block;
+border: none;
+background-color: inherit;
 `
