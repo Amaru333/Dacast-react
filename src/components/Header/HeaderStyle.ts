@@ -19,11 +19,16 @@ export const IconContainerStyle = styled.div`
     width: 100px;
     align-items: center;
     justify-content: center;
-    padding-right: 24px;
 `
 export const HeaderIconStyle = styled.div`
     top: 50%;
     padding: 8px;
     color: ${props => props.theme.colors["gray-1"]};
     cursor: pointer;
+`
+
+export const VerticalDivider = styled.div`
+    border-left: 1px solid ${props => props.theme.colors["gray-7"]};
+    margin: 4px 16px 4px 0;
+    height: 80%;
 `

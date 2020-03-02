@@ -1,12 +1,13 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, VerticalDivider } from './HeaderStyle';
 import Burger from '../../containers/Navigation/Burger';
 import { Text } from '../../components/Typography/Text';
 import { ApplicationState } from '../../redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Breadcrumb } from '../../pages/Folders/Breadcrumb';
+import { Button } from '../FormsComponents/Button/Button';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -30,10 +31,11 @@ const Header = (props: HeaderProps) => {
                 <Breadcrumb isNavigation options={location.pathname + '/'} callback={() => {}}/>
             </div>          
             <IconContainerStyle>
-                <HeaderIconStyle><Icon>notifications</Icon></HeaderIconStyle>
                 <HeaderIconStyle onClick={() => {location.href="/help"}}><Icon>help</Icon></HeaderIconStyle>
                 <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
             </IconContainerStyle>
+            <VerticalDivider />
+            <Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
         </HeaderStyle>
     )
 }
