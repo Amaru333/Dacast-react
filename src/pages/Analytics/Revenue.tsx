@@ -19,10 +19,10 @@ import { DropdownList } from '../../components/FormsComponents/Dropdown/Dropdown
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyle, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { IconStyle } from '../Folders/FoldersStyle';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
+import { IconStyle } from '../../shared/Lists/ListStyle';
 
 interface RevenueAnalyticsProps {
     folderData: FoldersInfos;

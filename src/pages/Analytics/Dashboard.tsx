@@ -171,7 +171,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 // Data name = name of the file to register the csv might delete later 
 // the chart is in the children state
 // Its used in every file so might need to get it out of here at one point
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data: any; dataName: string}) => {
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data: any; dataName: string; realTime?: boolean}) => {
 
     const exportCsvAnalytics = (data: any) => {
         CsvService.exportToCsv(props.dataName+".csv", Object.values(data));
@@ -181,10 +181,12 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
         <AnalyticsCardStyle className={props.className}>
             <AnalyticsCardHeader>
                 <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
-                <div>
-                    <Icon id={"tooltip" + props.id}>info_outlined</Icon>
-                    <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
-                    <Icon onClick={() => {exportCsvAnalytics(props.data)} } >get_app</Icon>
+                <div className="flex">
+                    <div>
+                        <Icon id={"tooltip" + props.id}>info_outlined</Icon>
+                        <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
+                    </div>
+                    { !props.realTime ? <Icon className="ml2" onClick={() => {exportCsvAnalytics(props.data)} } >get_app</Icon> : null}   
                 </div>
             </AnalyticsCardHeader>
             {props.children}

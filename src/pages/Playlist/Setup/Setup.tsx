@@ -5,12 +5,12 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
-import { IconStyle } from '../../Folders/FoldersStyle';
 import styled, { css } from 'styled-components';
 import { Icon } from '@material-ui/core';
 import { IconSearch } from '../List/PlaylistList';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
+import { IconStyle } from '../../../shared/Lists/ListStyle';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
