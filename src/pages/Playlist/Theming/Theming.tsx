@@ -24,7 +24,7 @@ export const PlaylistThemingPage = (props: PlaylistThemingComponentProps) => {
 
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef);
+    let player = usePlayer(playerRef, '1552_f_297509');
 
     const handleThemeSave = () => {
         if(selectedTheme.themeName === "Custom Theme") {

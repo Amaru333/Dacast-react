@@ -54,8 +54,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     React.useEffect(() => filterList(filteringList), [filteringList])
 
     const renderList = () => {
-        console.log(itemsList)
-
         return (
             Object.keys(itemsList).map((name, key) => {
                 return (

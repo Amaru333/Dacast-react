@@ -38,7 +38,6 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderOptions = () => {
         if(props.options) {
             const optionsLength = props.options.split('/').filter(f => f).length; 
-            console.log(props.options)
             if(optionsLength <= 3) {
                 return props.options.split('/').filter(f => f).map((option, i) => {
                     return i < optionsLength ? (

@@ -146,7 +146,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <BrowserRouter getUserConfirmation={getUserConfirmation} history={history}>
+                <BrowserRouter getUserConfirmation={getUserConfirmation}>
                     <>
                         <Toasts />
                         <MainMenu 

@@ -159,7 +159,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         var folderElement = []
         if (item.features.paywall) {
             folderElement.push(
-                <IconGreyContainer className="mr1" >
+                <IconGreyContainer key={'featureIconPaywall' + id} className="mr1" >
                     <IconStyle id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
                     <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
                 </IconGreyContainer>
@@ -167,28 +167,28 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
         if (item.features.recording) {
             folderElement.push(
-                <IconGreyContainer className="mr1" >
+                <IconGreyContainer key={'featureIconRecording' + id} className="mr1" >
                     <IconStyle id={"recordingTooltip" + id} coloricon='gray-3'>videocam</IconStyle>
                     <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
                 </IconGreyContainer>)
         }
         if (item.features.playlist) {
             folderElement.push(
-                <IconGreyContainer className="mr1" >
+                <IconGreyContainer key={'featureIconPlaylist' + id} className="mr1" >
                     <IconStyle id={"playlistTooltip" + id} coloricon='gray-3'>video_library</IconStyle>
                     <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
                 </IconGreyContainer>)
         }
         if (item.features.rewind) {
             folderElement.push(
-                <IconGreyContainer className="mr1" >
+                <IconGreyContainer key={'featureIconRewind' + id} className="mr1" >
                     <IconStyle id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
                     <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
                 </IconGreyContainer>)
         }
         if (item.features.advertising) {
             folderElement.push(
-                <IconGreyContainer className="mr1" >
+                <IconGreyContainer key={'featureIconAdvertising' + id} className="mr1" >
                     <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>font_download</IconStyle>
                     <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
                 </IconGreyContainer>)
@@ -236,9 +236,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
-                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
+                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableNoStatus' + row.id}></span>,
                     <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
-                    <div className='right mr2'>
+                    <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
                             <Icon>more_vert</Icon>
                         </DropdownCustom>

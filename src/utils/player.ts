@@ -1,44 +1,42 @@
 import React from 'react';
 
 
-export const usePlayer = (playerRef: any) => {
-
+export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, contentId: string) => {
     const [player, setPlayer] = React.useState<any>(null);
+
+    const initPlayer = () => {
+        console.log('init player')
+        let player = dacast(contentId, playerRef.current, {
+            height: 341,
+            width: '100%',
+            autoplay: false
+        })
+        setPlayer(player)
+    }
 
     React.useEffect(() => {
         if(playerRef && playerRef.current)
         {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
-    
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-    
-            })
+            let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
+            .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
+            if(!existingPlayerTag) {
+                const playerScript = document.createElement('script');
+                playerScript.src = "https://player.dacast.com/js/player.js?contentId=" + contentId;
+                playerRef.current.appendChild(playerScript);
+                playerScript.addEventListener('load', initPlayer)
+            } else {
+                initPlayer()
+            }
         }
-        return () => player ? player.dispose() : null;
+        return () => {
+            // Investigate later why the state variable is null when trying to unmount 
+            let player = dacast.players[contentId]
+            if(player) {
+                console.log('calling dispose onplauyer')
+                player.dispose()
+            }
+        };
     }, [])
-    
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-    
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        } 
-    }, [player])
     return player;
 }
 

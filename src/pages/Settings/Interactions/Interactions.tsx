@@ -59,7 +59,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef);
+    let player = usePlayer(playerRef, '1552_f_297509');
 
 
     React.useEffect(() => {

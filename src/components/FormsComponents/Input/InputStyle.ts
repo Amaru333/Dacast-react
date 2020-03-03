@@ -123,19 +123,19 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; di
         &:after{
             font-family: Material Icons;
             content: "check";
-            color: ${props => props.theme.colors["white"]};
+            color: ${props.theme.colors["white"]};
         }
         border: none;
-        background: ${props => props.theme.colors["violet"]};
+        background: ${props.theme.colors["violet"]};
     `}
     ${props => (props.indeterminate) && css`
         &:after{
             font-family: Material Icons;
             content: "remove";
-            color: ${props => props.theme.colors["white"]};
+            color: ${props.theme.colors["white"]};
         }
         border: none;
-        background: ${props => props.theme.colors["violet"]};
+        background: ${props.theme.colors["violet"]};
     `}
     ${props => ((props.disabled) || (props.checkbox.current && props.checkbox.current.disabled)) && css`
         opacity: 0.5;

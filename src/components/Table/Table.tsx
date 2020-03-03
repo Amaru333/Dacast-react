@@ -21,14 +21,13 @@ export const Table = (props: TableProps) => {
         } else {
             setSortApplied({name: sort, sortDesc: true})
         }
-        console.log(sortApplied)
     }
 
     const renderTableHeader = () => {
         return props.header.data ? 
             props.header.data.map((headerCell, i) => {
                 return (
-                    <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={sortApplied.name === headerCell.sort} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
+                    <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined'} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
                         <div className='flex items-center'>
                             {headerCell.cell}
                             {

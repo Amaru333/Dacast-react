@@ -41,7 +41,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
     cursor: not-allowed;
 
     ${props => (props.typeButton == "secondary") && css`
-        background: ${props => props.theme.colors.white};
+        background: ${props.theme.colors.white};
         color: ${props.theme.colors[props.colorObject!.disabledTextColor]};
         opacity: 0.5;
     `}
@@ -49,7 +49,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
 
     ${props => (props.typeButton == "tertiary") && css`
         background: white;
-        color: ${props => props.theme.colors["gray-5"]};
+        color: ${props.theme.colors["gray-5"]};
     `};
     }
 `;

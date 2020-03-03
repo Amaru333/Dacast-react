@@ -26,7 +26,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
 
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef);
+    let player = usePlayer(playerRef, '104301_f_713989');
 
     const handleThemeSave = () => {
         if(selectedTheme.themeName === "Custom Theme") {

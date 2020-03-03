@@ -29,7 +29,7 @@ export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boole
         border: 1px solid ${props => props.theme.colors["violet"]};
     }
     ${props => props.isOpened && css`
-        border: 1px solid ${props => props.theme.colors["violet"]};
+        border: 1px solid ${props.theme.colors["violet"]};
     `}
 `;
 
@@ -98,8 +98,8 @@ export const DropdownItem = styled.li<{isSelected: boolean; isSingle: boolean}>`
         cursor: pointer;
     }
     ${props => props.isSelected && css `
-        background-color: ${props => props.theme.colors["violet10"]};
-        color: ${props => props.theme.colors["dark-violet"]};
+        background-color: ${props.theme.colors["violet10"]};
+        color: ${props.theme.colors["dark-violet"]};
         transition: none;
     `}
 `;
