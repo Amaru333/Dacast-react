@@ -60,22 +60,22 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     }, [props])
 
     const groupPricesTableHeader = () => {
-        return [
-            <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>,
-            <Text key='groupPricesTableHeaderType' size={14} weight='med'>Type</Text>,
-            <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>,
-            <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>,
-            <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>,
-            <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>,
-            <Button key='groupPricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Group</Button>
+        return {data: [
+            {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>},
+            {cell: <Text key='groupPricesTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
+            {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
+            {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
+            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Group</Button>}
 
-        ]
+        ]}
     }
 
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
             return props.groupsInfos.prices.map((price, key) => {
-                return [
+                return {data: [
                     <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
                     <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price[0].amount}</Text>,
@@ -92,27 +92,27 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
                     </IconContainer>
-                ]
+                ]}
             })
         }
     }
 
     const groupPromosTableHeader = () => {
-        return [
-            <Text key='promoGroupsTableHeaderName' size={14} weight='med'>Name</Text>,
-            <Text key='promoGroupsTableHeaderType' size={14} weight='med'>Type</Text>,
-            <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>,
-            <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>,
-            <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>,
-            <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Group</Button>
+        return {data: [
+            {cell: <Text key='promoGroupsTableHeaderName' size={14} weight='med'>Name</Text>},
+            {cell: <Text key='promoGroupsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
+            {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
+            {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
+            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Group</Button>}
 
-        ]
+        ]}
     }
 
     const groupPromosTableBody = () => {
         if(props.groupsInfos.promos) {
             return props.groupsInfos.promos.map((promo, key) => {
-                return [
+                return {data: [
                     <Text key={'promoGroupsTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
@@ -128,7 +128,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
-                ]
+                ]}
             })
         }
     }
@@ -142,7 +142,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
-                <Table id='groupPricessTable' header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Groups Promo</Text>
@@ -151,7 +151,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                <Table id='groupPromosTable' header={groupPromosTableHeader()} body={groupPromosTableBody()} />
+                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} title='Create Promo Code Group' opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} />

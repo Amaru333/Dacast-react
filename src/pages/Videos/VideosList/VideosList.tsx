@@ -65,8 +65,8 @@ export const VideosListPage = (props: VideosListProps) => {
 
 
     const vodListHeaderElement = () => {
-        return [
-            <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.length} defaultChecked={selectedVod.length === props.items.length} id="globalCheckboxVodList"
+        return {data: [
+            {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.length} defaultChecked={selectedVod.length === props.items.length} id="globalCheckboxVodList"
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedVod = props.items.map(item => { return item.id })
@@ -74,16 +74,16 @@ export const VideosListPage = (props: VideosListProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedVod([])
                     }
-                }} />,
-            <></>,
-            <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>,
-            <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>,
-            <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>,
-            <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>,
-            <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>,
-            <div style={{ width: "80px" }} ></div>,
-        ]
+                }} />},
+            {cell: <></>},
+            {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
+            {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
+            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
+            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
+            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
+            {cell: <div style={{ width: "80px" }} ></div>},
+        ], defaultSort: 'Created Date'}
     }
 
     const handleFeatures = (item: VodItem, id: string) => {
@@ -116,7 +116,7 @@ export const VideosListPage = (props: VideosListProps) => {
     const vodListBodyElement = () => {
         if (props.items) {
             return props.items.map((value) => {
-                return [
+                return {data: [
                     <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkboxVod" + value.id.toString()} onChange={(event) => {
                         if (event.currentTarget.checked && selectedVod.length < props.items.length) {
                             setSelectedVod([...selectedVod, value.id])
@@ -143,7 +143,10 @@ export const VideosListPage = (props: VideosListProps) => {
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>  
                     </div>,
-                ]
+                ], 
+                callback: (value: VodItem) => {setSelectedVodId(value); setShowVodTabs(true) },
+                callbackData: value
+            }
             })
         }
     }
@@ -192,7 +195,7 @@ export const VideosListPage = (props: VideosListProps) => {
             </div>
 
                 
-                <Table className="col-12" id="apiKeysTable" header={vodListHeaderElement()} body={vodListBodyElement()} />
+                <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />

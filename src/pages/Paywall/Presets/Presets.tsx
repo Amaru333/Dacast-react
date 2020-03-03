@@ -21,22 +21,22 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
 
     const pricePresetsTableHeader = () => {
-        return [
-            <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>,
-            <Text key='pricePresetsTableHeaderType' size={14} weight='med'>Type</Text>,
-            <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>,
-            <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>,
-            <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>,
-            <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>,
-            <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>
+        return {data: [
+            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>},
+            {cell: <Text key='pricePresetsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>},
+            {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
+            {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
+            {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
 
-        ]
+        ]}
     }
 
     const pricePresetsTableBody = () => {
         if(props.presetsInfos.presets) {
             return props.presetsInfos.presets.map((preset, key) => {
-                return [
+                return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.type}</Text>,
                     <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.price[0].amount}</Text>,
@@ -53,27 +53,27 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         </ActionIcon> 
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
-                ]
+                ]}
             })
         }
     }
 
     const promoPresetsTableHeader = () => {
-        return [
-            <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>,
-            <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>,
-            <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>,
-            <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>,
-            <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>,
-            <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>
+        return {data: [
+            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
+            {cell: <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
+            {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
+            {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
 
-        ]
+        ]}
     }
 
     const promoPresetsTableBody = () => {
         if(props.presetsInfos.promos) {
             return props.presetsInfos.promos.map((promo, key) => {
-                return [
+                return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
@@ -89,31 +89,31 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>   
                     </IconContainer>
-                ]
+                ]}
             })
         }
     }
 
     const emptyPricePresetTableHeader = () => {
-        return [
-            <span key={"emptyPricePresetTableHeader"}></span>,
-            <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>
-        ]
+        return {data: [
+            {cell: <span key={"emptyPricePresetTableHeader"}></span>},
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+        ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
-        return [
-            <span key={"emptyPromoPresetTableHeader"}></span>,
-            <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>
-        ]
+        return {data: [
+            {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+        ]}
     }
 
 
     const emptyPresetTableBody = (text: string) => {
-        return [[
+        return [{data: [
             <span key={'emptyPresetTableBody'}></span>,
             <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-        ]]
+        ]}]
     }
 
     return (
@@ -126,9 +126,9 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 {props.presetsInfos.presets.length === 0 ? 
-                    <Table id='pricePresetsEmptyTable' header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
-                    <Table id='pricePresetsTable' header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                    <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                    
                 }
                 <BorderStyle className='my2' />
@@ -140,9 +140,9 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 { props.presetsInfos.promos.length === 0 ?
-                    <Table id='promoPresetsEmptyTable' header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
-                    <Table id='promoPresetsTable' header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                    <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                 }
                 
             </Card>

@@ -96,8 +96,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const foldersContentTableHeader = () => {
-        return [
-            <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
+        return {data: [
+            {cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
                 indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.length}
                 defaultChecked={checkedItems.length === props.folderData.requestedContent.length}
                 onChange={(event) => {
@@ -117,26 +117,26 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     }
                 }
                 } 
-            />,
-            <span key='tableHeaderEmptyCell1'></span>,
-            <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>,
-            <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>,
-            <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created</Text>,
-            <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>,
-            <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>,
-            <span key='tableHeaderEmptyCell2'></span>
-        ]
+            />},
+            {cell: <span key='tableHeaderEmptyCell1'></span>},
+            {cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'Name'},
+            {cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>},
+            {cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>},
+            {cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>},
+            {cell: <span key='tableHeaderEmptyCell2'></span>}
+        ], defaultSort: 'Created Date'}
     }
 
-    const handleCheckboxChange = (item: string, event: React.FormEvent<HTMLInputElement>) => {
+    const handleCheckboxChange = (item: string, isChecked: boolean) => {
         if(checkedItems.includes(item)) {
             setCheckedItems(checkedItems.filter(option => {return option !== item}));
         } else {
             setCheckedItems([...checkedItems, item]);
         }
-        if(event.currentTarget.checked && item.includes('folder')) {
+        if(isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected + 1)
-        } else if(!event.currentTarget.checked && item.includes('folder')) {
+        } else if(!isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected > 0 ? folderAssetSelected - 1 : 0)
         }
     }
@@ -230,8 +230,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const foldersContentTableBody = () => {
         if(props.folderData.requestedContent) {
             return props.folderData.requestedContent.map((row) => {
-                return [
-                    <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event)} />,
+                return {data: [
+                    <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />,
                     handleRowIconType(row),
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
@@ -243,7 +243,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <Icon>more_vert</Icon>
                         </DropdownCustom>
                     </div>
-                ]
+                ], callback: (row: FolderAsset) => {handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType))}
+                , callbackData: row
+            }
             })
         }
 
@@ -452,7 +454,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
+                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 

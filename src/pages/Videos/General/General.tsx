@@ -29,11 +29,11 @@ interface GeneralComponentProps {
 }
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
-    return [
-        <Text size={14} weight="med">Subtitles</Text>,
-        <Text size={14} weight="med">Language</Text>,
-        <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>
-    ]
+    return {data: [
+        {cell: <Text size={14} weight="med">Subtitles</Text>},
+        {cell: <Text size={14} weight="med">Language</Text>},
+        {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+    ]}
 };
 
 const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
@@ -44,7 +44,7 @@ const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, set
 
 const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
     return vodDetails.subtitles.map((value, key) => {
-        return [
+        return {data: [
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
             <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
@@ -54,22 +54,22 @@ const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails
                 <ActionIcon><Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon></ActionIcon>
                 
             </IconContainer>
-        ]
+        ]}
     })
 };
 
 const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
-    return [
-        <span key={'disabledTableHeader'}></span>,
-        <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>
-    ]
+    return {data: [
+        {cell: <span key={'disabledTableHeader'}></span>},
+        {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+    ]}
 }
 
 const disabledSubtitlesTableBody = (text: string) => {
-    return [[
+    return [{data: [
         <span key={'disabledTableBody'}></span>,
         <div className=' center'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
-    ]]
+    ]}]
 }
 
 
@@ -269,8 +269,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
                     </div>
                     {(props.vodDetails.subtitles.length === 0) ?
-                        <Table className="col col-12" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
-                        : <Table className="col col-12" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
+                        <Table className="col col-12" headerBackgroundColor="gray-10" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
+                        : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
                     }
                     <Divider className="col col-12" />
                     <div className="col col-12 advancedVideoLinks">

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { TooltipProps } from './TooltipTypes';
 
-export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibility: boolean; top: number; left: number}>`
+export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibilityProp: boolean; top: number; left: number}>`
     background-color: ${props => props.theme.colors["gray-10"] };
     border: 1px solid ${props => props.theme.colors["gray-7"] };
     border-radius: ${props => props.theme.borderRadius };
     display: inline-block;
-    visibility: ${props => props.visibility ? "visible" : "hidden"};
+    visibility: ${props => props.visibilityProp ? "visible" : "hidden"};
     padding: 4px 8px;
     position:absolute;
     top: ${props => props.top }px;

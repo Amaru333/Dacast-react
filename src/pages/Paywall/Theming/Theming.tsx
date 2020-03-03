@@ -41,16 +41,16 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     const PaywallThemingList = () => {
 
         const paywallThemingTableHeader = () => {
-            return [
-                <Text key='paywallThemingTableHeaderName' size={14} weight='med'>Name</Text>,
-                <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>Default</Text>,
-                <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Paywall Theme</Button>
-            ]
+            return {data: [
+                {cell: <Text key='paywallThemingTableHeaderName' size={14} weight='med'>Name</Text>},
+                {cell: <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
+                {cell: <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Paywall Theme</Button>}
+            ]}
         }
 
         const paywallThemingTableBody = () => {
             return props.paywallThemes.themes.map((theme, key) => {
-                return [
+                return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
                     theme.isDefault ? <Icon style={{color:"green"}} key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
                     <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
@@ -69,7 +69,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                          
                     </IconContainer>
 
-                ]
+                ]}
             })
         }
 
@@ -82,7 +82,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         <Icon style={{marginRight: 10}}>info_outlined</Icon>
                         <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
-                    <Table className='col col-12' id='paywallThemingTable' header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
+                    <Table className='col col-12' id='paywallThemingTable' headerBackgroundColor="gray-10" header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
                 </Card>
             </div>
         )

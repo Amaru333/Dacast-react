@@ -185,23 +185,23 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     const ThemingList = () => {
         const themingTableHeader = () => {
-            return [
-                <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>,
-                <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>,
-                <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created</Text>,
-                <Button className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
-            ]
+            return {data: [
+                {cell: <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>},
+                {cell: <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
+                {cell: <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created Date</Text>},
+                {cell: <Button className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>}
+            ]}
         }
 
         const themingTableBody = () => {
             return props.themingList.themes.map((theme, key) => {
-                return [
+                return {data: [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                     theme.isDefault ? <Icon style={{color: "green"}} key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
                     <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
 
-                ]
+                ]}
             })
         }
 
@@ -213,7 +213,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <Icon className="mr1">info_outlined</Icon> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
-                <Table id='themesListTable' header={themingTableHeader()} body={themingTableBody()} />
+                <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />
             </Card>
         )
     }

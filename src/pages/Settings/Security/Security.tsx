@@ -72,21 +72,21 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     }
 
     const tableHeaderElement = (tableType: string) => {
-        return [
-            <Text className='col col-2' key={"groupTable" + tableType} size={14} weight="med" color="gray-1">Group</Text>,
-            <Text className='col col-2' key={"DefaultTable" + tableType} size={14} weight="med" color="gray-1">Default</Text>,
-            <Button className={"right mr2 " + (smScreen ? 'hide' : '')} key={"actionTable" + tableType} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
-        ]
+        return {data: [
+            {cell: <Text className='col col-2' key={"groupTable" + tableType} size={14} weight="med" color="gray-1">Group</Text>},
+            {cell: <Text className='col col-2' key={"DefaultTable" + tableType} size={14} weight="med" color="gray-1">Default</Text>},
+            {cell: <Button className={"right mr2 " + (smScreen ? 'hide' : '')} key={"actionTable" + tableType} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>}
+        ]}
     }
 
     const geoRestrictionBodyElement = () => {
         if (props.securityDetails.geoRestriction) {
             return props.securityDetails.geoRestriction.map((value, key) => {
-                return [
+                return {data: [
                     <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                     value.isDefault ? <IconCheck><Icon key={key.toString() + value.name}>checked</Icon></IconCheck> : <></>,
                     <IconContainer className="iconAction" key={key.toString() + value.name}><Icon onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</Icon> </IconContainer>
-                ]
+                ]}
             })
         }
     }
@@ -94,11 +94,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const domainControlBodyElement = () => {
         if (props.securityDetails.domainControl) {
             return props.securityDetails.domainControl.map((value, key) => {
-                return [
+                return {data: [
                     <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                     value.isDefault ? <IconCheck><Icon key={key.toString() + value.name}>checked</Icon></IconCheck> : <></>,
                     <IconContainer className="iconAction" key={key.toString() + value.name}><Icon onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</Icon> </IconContainer>
-                ]
+                ]}
             })
         }
     }
@@ -209,7 +209,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
                     <Button className={"left mb2 " + (smScreen ? '' : 'hide')} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setGeoRestrictionModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
 
-                    <Table className="col-12" id="geoRestrictionTable" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
+                    <Table className="col-12" id="geoRestrictionTable" headerBackgroundColor="gray-10" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
 
                     <BorderStyle className="py1" />
 
@@ -217,7 +217,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></TextStyle>
                     <Button className={"left mb2 " + (smScreen ? '' : 'hide')} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
-                    <Table className="col-12 " id="domainControlTable" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
+                    <Table className="col-12 " id="domainControlTable" headerBackgroundColor="gray-10" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
                 </form>
             </Card>
             {

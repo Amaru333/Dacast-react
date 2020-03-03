@@ -57,20 +57,20 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }, [props.vodEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        return [
-            <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>,
-            <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>,
-            <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
-            <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+        return {data: [
+            {cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>},
+            {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
+            {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
+            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
                 <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                 <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-            </div>
-        ]
+            </div>}
+        ]}
     }
 
     const advertisingTableBody = () => {
         return props.vodEngagementSettings.engagementSettings.adList.map((item, i) => {
-            return [
+            return {data: [
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
@@ -87,7 +87,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     </ActionIcon>
                     <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>  
                 </IconContainer>
-            ]
+            ]}
         })
     }
 
@@ -128,7 +128,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         <Icon className="mr1">info_outlined</Icon>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
-                    <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
+                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
 
                 </DisabledSection>
             </Card>

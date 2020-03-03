@@ -13,27 +13,27 @@ import { Pagination } from '../../../components/Pagination/Pagination';
 export const InvoicesPage = (props: InvoicesComponentProps) => {
 
     const invoicesTableHeader = () => {
-        return [
-            <Text key='invoicesTableHeaderRef' size={14} weight='med' color='gray-1'>Ref</Text>,
-            <Text key='invoicesTableHeaderDate' size={14} weight='med' color='gray-1'>Date</Text>,
-            <Text key='invoicesTableHeaderTotal' size={14} weight='med' color='gray-1'>Total</Text>,
-            <Text key='invoicesTableHeaderStatus' size={14} weight='med' color='gray-1'>Status</Text>,
-            <span key='invoicesTableEmptyCell'></span>
-        ]
+        return {data: [
+            {cell: <Text key='invoicesTableHeaderRef' size={14} weight='med' color='gray-1'>Ref</Text>},
+            {cell: <Text key='invoicesTableHeaderDate' size={14} weight='med' color='gray-1'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='invoicesTableHeaderTotal' size={14} weight='med' color='gray-1'>Total</Text>},
+            {cell: <Text key='invoicesTableHeaderStatus' size={14} weight='med' color='gray-1'>Status</Text>},
+            {cell: <span key='invoicesTableEmptyCell'></span>}
+        ], defaultSort: 'Created Date'}
     }
 
     const invoicesTableBody = () => {
         return props.invoices.map((item, i) => {
             const color = item.status === 'Paid' ? 'green' : item.status === 'Failed' ? 'red' : 'yellow';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
-            return [
+            return {data: [
                 <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{item.date}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
                 <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status}  />,
                 <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >print</Icon><a href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><Icon>get_app</Icon></a> </IconContainer>
 
-            ]
+            ]}
         })
     }
     return (
@@ -45,7 +45,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 </div>
                 <InvoicesFiltering />
             </div>
-            <Table id='invoicesTable' header={invoicesTableHeader()} body={invoicesTableBody()} />
+            <Table id='invoicesTable' headerBackgroundColor="white" header={invoicesTableHeader()} body={invoicesTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )

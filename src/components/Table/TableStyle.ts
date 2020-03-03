@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import {TableProps} from './TableTypes';
+import { ColorsApp } from '../../styled/types';
 
 export const TableContainer = styled.table<{}>`
     height: auto;
@@ -18,16 +19,19 @@ export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean}>`
     
 `;
 
-export const TableHeaderRow = styled.tr<{}>`
+export const TableHeaderRow = styled.tr<{backgroundColor: ColorsApp}>`
     width: auto;
     height: 52px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: ${props => props.theme.colors[props.backgroundColor]};
     padding-left: 16px;
 `;
 
-export const TableHeaderCell = styled.td<{}>`
+export const TableHeaderCell = styled.td<{sortApplied: boolean}>`
     padding-left: 16px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+    ${props => props.sortApplied && css `
+        border-bottom: 2px solid ${props.theme.colors["dark-violet"]};
+    `}
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -54,7 +58,7 @@ export const TableBodyRow = styled.tr<{}>`
 
 export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
-    max-width: 150px;
+    min-width: 100px;
 `;
 
 export const TableFooterContainer = styled.tfoot<{}>`

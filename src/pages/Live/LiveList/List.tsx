@@ -45,8 +45,8 @@ export const LiveListPage = (props: LiveListProps) => {
     }, [selectedLive])
 
     const liveListHeaderElement = () => {
-        return [
-            <InputCheckbox
+        return {data: [
+            {cell: <InputCheckbox
                 className="inline-flex"
                 key="checkboxLiveListBulkAction"
                 indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length}
@@ -61,14 +61,14 @@ export const LiveListPage = (props: LiveListProps) => {
                     }
                 }
                 }
-            />,
-            <></>,
-            <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>,
-            <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>,
-            <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>,
-            <div style={{ width: "80px" }} ></div>,
-        ]
+            />},
+            {cell: <></>},
+            {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
+            {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
+            {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
+            {cell: <div style={{ width: "80px" }} ></div>},
+        ], defaultSort: 'Created Date'}
     }
 
     const handleFeatures = (item: LiveItem, id: string) => {
@@ -119,7 +119,7 @@ export const LiveListPage = (props: LiveListProps) => {
     const liveListBodyElement = () => {
         if (props.liveList) {
             return props.liveList.map((value) => {
-                return [
+                return {data: [
                     <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
                         if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
                             setSelectedLive([...selectedLive, value.id])
@@ -144,7 +144,7 @@ export const LiveListPage = (props: LiveListProps) => {
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>    
                     </div>,
-                ]
+                ]}
             })
         }
     }
@@ -216,7 +216,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     </div>
                 </div>
                 
-                <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+                <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />

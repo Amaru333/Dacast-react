@@ -43,7 +43,7 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
     const AllowancesBodyTable = () => {
         return stepperData ? (
             Object.keys(stepperData.firstStep.custom).map((item, key) => {
-                return( [
+                return( {data: [
                     <Text key={'test'+ key.toString()} size={14} weight='reg' color='gray-3'>{item}</Text>,
                     <div key={'test22'+ key.toString()} className='col-right col-5'>
                         <Button className='mr2' disabled={stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === 0 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {handleDencreaseButtonClick(item)}}>
@@ -54,7 +54,7 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
                             +
                         </Button>
                     </div>
-                ]
+                ]}
                 
                 )})
         
@@ -75,8 +75,8 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
     return (
         <div>
             <Text size={14} weight='reg' color='gray-3'>If you want to edit the amount of your Allowances please do so here.</Text>
-            <Table id='stepperFirstStepTableAllowances' body={AllowancesBodyTable()} />
-            <Table id='firstStepFooterTotalPrice' footer={totalPriceTableFooter()} />
+            <Table id='stepperFirstStepTableAllowances' headerBackgroundColor="gray-10" body={AllowancesBodyTable()} />
+            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
             <Text size={12} weight='reg' color='gray-3'>*Billed anually</Text>
 
             {
@@ -96,12 +96,12 @@ export const PlanStepperSecondStep = (stepperData: Plan, setStepperData: Functio
     const featuresTableBody = () => {
         
         return stepperData ? Object.keys(stepperData.secondStep.custom).map((item: string) => {
-            return [
+            return {data: [
                 
                 <InputCheckbox id={'chekbox'+ item} key={'secondStepCheckbox'+item} defaultChecked={stepperData.secondStep.custom[item].checked}  onChange={() => {setStepperData({...stepperData, secondStep: {...stepperData.secondStep, custom: {...stepperData.secondStep.custom, [item]: {...stepperData.secondStep.custom[item], checked: !stepperData.secondStep.custom[item].checked}}}})}} />,
                 <Text key={'secondStepText' + item} size={14} weight='reg' color='gray-3'>{item}</Text>,
                 <Text key={'secondStepPrice' + item} size={14} weight='reg' color={'gray-3'}>{'$' + stepperData.secondStep.custom[item].price.toLocaleString()}</Text>
-            ]
+            ]}
         })
             : null
 
@@ -130,8 +130,8 @@ export const PlanStepperSecondStep = (stepperData: Plan, setStepperData: Functio
     return (
         <div>
             <Text size={14} weight='reg' color='gray-3'>Add additional Features:</Text>
-            <Table id='secondStepFeatureTable' body={featuresTableBody()} />
-            <Table id='secondStepTotalTable' footer={secondStepTableFooterElement()} />
+            <Table id='secondStepFeatureTable' headerBackgroundColor="gray-10" body={featuresTableBody()} />
+            <Table id='secondStepTotalTable' headerBackgroundColor="gray-10" footer={secondStepTableFooterElement()} />
         </div>
     )
 }
@@ -151,31 +151,31 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
 
     const cartTableBodyElement = () => {
         return stepperData.action === 'custom' ? [
-            [
+            {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[stepperData.name]}</Text>,
                 <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${stepperData.firstStep.included.price.toLocaleString()}</Text>
-            ],
-            [
+            ]},
+            {data: [
                 <Text  key="cartTableCutomAllowancesHeading" size={14}  weight="reg" color="gray-1">Allowances</Text>,
                 <Text className='right pr2' key="cartTableCutomAllowancesTotal" size={14}  weight="reg" color="gray-1">${stepperData.firstStep.total.toLocaleString()}</Text>
-            ],
-            [
+            ]},
+            {data: [
                 <Text  key="cartTableFeaturesHeading" size={14}  weight="reg" color="gray-1">Features</Text>,
                 <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">${stepperData.secondStep.total.toLocaleString()}</Text>
-            ],
+            ]}
         ]
             :
-            [
+            [{data: 
                 [
                     <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[stepperData.name]}</Text>,
                     <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${stepperData.firstStep.included.price.toLocaleString()}</Text>
-                ]
+                ]}
             ]
     }
 
     const cartDropdownOption = () => {
         return [
-            [
+            {data: [
                 <Text  key="cartTableBilled" size={14}  weight="med" color="gray-1">Billed</Text>,
                 stepperData.name === 'scale' ? 
                 <>
@@ -188,7 +188,7 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
                 </>
                     :
                     <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
-            ]
+            ]}
         ]
     }
 
@@ -201,8 +201,8 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
     }
     return (
         <div>
-            <Table id='thirdStep' body={cartTableBodyElement()} /> 
-            <Table id='thirdStepTotal' body={cartDropdownOption()} footer={cartTableFooterElement()} />
+            <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} /> 
+            <Table id='thirdStepTotal' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} />
             
         </div>
     )
@@ -216,29 +216,29 @@ export const PlanStepperFourthStep = (stepperData: Plan, setStepperData: Functio
 
     const step2header = () => {
         const total: string = stepperData.action === 'custom' ? (stepperData.firstStep.included.price + stepperData.firstStep.total + stepperData.secondStep.total).toLocaleString() : stepperData.firstStep.included.price.toLocaleString();
-        return  [
-            <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
-            <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + total}</Text>
-        ]
+        return  {data: [
+            {cell: <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
+            {cell: <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + total}</Text>}
+        ]}
     }
 
     const step2CreditCardTableHeader = () => {
-        return [
-            <Text  key={"step2PCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>,
-            <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} />
-        ]
+        return {data: [
+            {cell: <Text  key={"step2PCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>},
+            {cell: <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} />}
+        ]}
     }
     const step2CreditCardTableBody = () => {
-        return [[
+        return [{data: [
             <Text  key={"step2PCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
             <Text  className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>,
 
-        ]]
+        ]}]
     }
     return (
         <div>
-            <Table id='extraStepperStep2TotalTable' header={step2header()}/>
-            <Table id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+            <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
+            <Table id='extraStepperStep2PaymentMethodTable' headerBackgroundColor="gray-10" header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={stepperData.termsAndConditions}  onChange={() => {setStepperData({...stepperData, termsAndConditions: !stepperData.termsAndConditions})}} />

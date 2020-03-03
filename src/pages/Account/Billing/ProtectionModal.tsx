@@ -24,10 +24,10 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
 
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
-            return [
+            return {data: [
                 <Text  key={"protectionModalTable" + value.label + key.toString()} size={14}  weight="reg" color="gray-1">{value.label}</Text>,
                 <Text  key={"protectionModalTable" + selectedValue + key.toString()} size={14}  weight="reg" color="gray-1">{selectedValue}</Text>
-            ]
+            ]}
         }) 
     }
 
@@ -56,7 +56,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
             {
                 selectedValue !== 'Select' ? 
                 <>
-                <Table id='protectionModalTable' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
+                <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
 
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of storage.</Text>
                 </>

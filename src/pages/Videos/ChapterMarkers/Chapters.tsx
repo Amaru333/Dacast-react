@@ -32,11 +32,11 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
     let player = usePlayer(playerRef);
 
     const tableHeaderElement = () => {
-        return[
-            <Text  key={"chapterTitleTableHeader"} size={14}  weight="med" color="gray-1">Title</Text>,
-            <Text  key={"chapterStartTimeTableHeader"} size={14}  weight="med" color="gray-1">Start Time</Text>, 
-            <Text size={14} weight='med' color='gray-10' key={"MatchingColumn"}>Buttons placeholder</Text>
-        ]
+        return {data: [
+            {cell: <Text  key={"chapterTitleTableHeader"} size={14}  weight="med" color="gray-1">Title</Text>},
+            {cell: <Text  key={"chapterStartTimeTableHeader"} size={14}  weight="med" color="gray-1">Start Time</Text>}, 
+            {cell: <Text size={14} weight='med' color='gray-10' key={"MatchingColumn"}>Buttons placeholder</Text>}
+        ]}
     }
 
     const handleClickNextFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,7 +60,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
 
     const chapterBodyElement = () => {
         return props.chapterPageDetails.chapterMarkers.map((value, key) => {
-            return [
+            return {data: [
                 <Text key={key.toString() +value.name} size={14}  weight="reg" color="gray-1">{value.name}</Text>,
                 <Text key={key.toString() +value.time} size={14}  weight="reg" color="gray-1">{value.time}</Text>,
                 <IconContainer className="iconAction" key={key.toString()+value.name}>
@@ -73,7 +73,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                     </ActionIcon>
                     <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>     
                 </IconContainer>
-            ]
+            ]}
         })
     }
 
@@ -92,7 +92,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                     </ButtonsArea>
                 </PlayerSection>
                 <TableContainer className='col col-12 md-col-6'>
-                    <Table id='chapterTable' header={tableHeaderElement()} body={chapterBodyElement()} />
+                    <Table id='chapterTable' headerBackgroundColor="white" header={tableHeaderElement()} body={chapterBodyElement()} />
                 </TableContainer>
 
             </ChaptersContainer>

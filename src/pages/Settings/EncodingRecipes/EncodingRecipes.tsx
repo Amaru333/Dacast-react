@@ -31,7 +31,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
         
             return (
                 key === 0 ? 
-                    [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
+                    {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
                         <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
                         <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
                             {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
@@ -42,10 +42,8 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                             )}
                         </div>,
                         <IconContainer key={"encodingRecipesPage_iconContainer_default"}></IconContainer>
-                    ]
-                
-                    :
-                    [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
+                    ]}              
+                    : {data: [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
                         <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
                         <div key={"encodingRecipesPage_labelContainer_" + key}>
                             {    value.recipePresets.map((recipe, key) => {
@@ -65,19 +63,19 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                                 <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
                             </ActionIcon>                            
                         </IconContainer>
-                    ]
+                    ]}
             )
         })
     )
 }
 
 const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
-    return[
-        <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>,
-        <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>,
-        <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>,
-        <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-    ]
+    return {data: [
+        {cell: <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>},
+        {cell: <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>},
+        {cell: <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>},
+        {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
+    ]}
 }
 
 const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
@@ -134,7 +132,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                <RecipesTable isMobile={isMobile} className="col-12" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
+                <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}

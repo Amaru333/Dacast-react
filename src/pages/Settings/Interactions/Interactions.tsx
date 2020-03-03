@@ -67,20 +67,20 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }, [props.interactionsInfos])
 
     const advertisingTableHeader = () => {
-        return [
-            <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>,
-            <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>,
-            <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
-            <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+        return {data: [
+            {cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>},
+            {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
+            {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
+            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
                 <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                 <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-            </div>
-        ]
+            </div>}
+        ]}
     }
 
     const advertisingTableBody = () => {
         return props.interactionsInfos.adList.map((item, i) => {
-            return [
+            return {data: [
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
@@ -88,27 +88,26 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Icon onClick={(event) => {props.deleteAd(item)}} >delete</Icon>
                     <Icon onClick={() => editAd(item)}>edit</Icon> 
                 </IconContainer>
-            ]
+            ]}
         })
     }
 
     const mailCatcherTableHeader = () => {
-        return [
-            <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>,
-            <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>,
-            <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
-
-        ]
+        return {data: [
+            {cell: <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>},
+            {cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>}
+        ]}
     }
 
     const mailCatcherTableBody = () => {
         return props.interactionsInfos.mailCatcher.map((row, i) => {
-            return [
+            return {data: [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <Icon style={{color:"green"}} key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
                 <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={() => editMailCatcher(row)}>edit</Icon> </IconContainer>
             
-            ]
+            ]}
         })
     }
 
@@ -128,7 +127,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                             <Icon className="mr1">info_outlined</Icon>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
-                        <Table id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
                         </>
                         : null
                 }
@@ -144,7 +143,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 {/* <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
                 </div> */}
-                <Table id='mailCatcherTable' header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
+                <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
             </Card>
 
             <Card className='my2'>

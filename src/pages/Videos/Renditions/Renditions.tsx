@@ -30,8 +30,8 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     }, [props.renditions.encodedRenditions])
 
     const notEncodedRenditionsTableHeader = () => {
-        return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
+        return {data: [
+            {cell: <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.id })
@@ -39,16 +39,16 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedNotEncodedRendition([])
                     }
-                }} />,
-            <Text size={14} weight="med">Rendition</Text>,
-            <Text size={14} weight="med">Size (px)</Text>,
-            <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>
-        ]
+                }} />},
+            {cell: <Text size={14} weight="med">Rendition</Text>},
+            {cell: <Text size={14} weight="med">Size (px)</Text>},
+            {cell: <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>}
+        ]}
     }
 
     const notEncodedRenditionsTableBody = () => {
         return notEncodedRenditions.map((value) => {
-            return [
+            return {data: [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedEncodedRendition.length > 0}
                     defaultChecked={selectedNotEncodedRendition.includes(value.id)}
                     onChange={(event) => {
@@ -63,13 +63,13 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <Text key={value.rendition} size={14} weight="reg">{value.rendition}</Text>,
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
                 <Text key={"bitrate" + value.bitrateCap} size={14} weight="reg">{value.bitrateCap}</Text>,
-            ]
+            ]}
         })
     }
 
     const EncodedRenditionsTableHeader = () => {
-        return [
-            <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
+        return {data: [
+            {cell: <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
@@ -77,17 +77,17 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedEncodedRendition([])
                     }
-                }} />,
-            <Text size={14} weight="med">Rendition</Text>,
-            <Text size={14} weight="med">Size (px)</Text>,
-            <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>,
-            <Text size={14} weight="med">Status</Text>
-        ]
+                }} />},
+            {cell: <Text size={14} weight="med">Rendition</Text>},
+            {cell: <Text size={14} weight="med">Size (px)</Text>},
+            {cell: <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>},
+            {cell: <Text size={14} weight="med">Status</Text>}
+        ]}
     }
 
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
-            return [
+            return {data: [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
                     defaultChecked={selectedEncodedRendition.includes(value.id)}
                     onChange={(event) => {
@@ -105,7 +105,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
-            ]
+            ]}
         })
     }
 
@@ -174,7 +174,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                         <Text size={20} weight="med">Not Encoded</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
-                        <Table hasContainer id="notEncodedRenditionsTable" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
+                        <Table hasContainer id="notEncodedRenditionsTable" headerBackgroundColor="white" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
                      
                 </div>
@@ -191,7 +191,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                         <Text size={20} weight="med">Encoded</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
-                        <Table hasContainer id="EncodedRenditionsTable" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
+                        <Table hasContainer id="EncodedRenditionsTable" headerBackgroundColor="white" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
                      
                 </div>
