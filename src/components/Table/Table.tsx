@@ -7,7 +7,7 @@ import { Icon } from '@material-ui/core';
 
 export const Table = (props: TableProps) => {
 
-    const [sortApplied, setSortApplied] = React.useState<{name: string; sortDesc: boolean;}>(props.header ? {name:props.header.defaultSort, sortDesc: true} : null)
+    const [sortApplied, setSortApplied] = React.useState<{name: string; sortDesc: boolean}>(props.header ? {name:props.header.defaultSort, sortDesc: true} : null)
 
     React.useEffect(() => {
         if(!sortApplied && props.header) {
@@ -34,7 +34,7 @@ export const Table = (props: TableProps) => {
                             {
                                 headerCell.sort ? 
                                     <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
-                                : null
+                                    : null
                             }
                         </div>
 

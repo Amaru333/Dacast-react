@@ -11,14 +11,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
 
     const transactionsTableHeader = () => {
         return {data: [
-        {cell: <Text key='transactionsTableHeaderType' size={14} weight='med'>Type</Text>},
-        {cell: <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>},
-        {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
-        {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>},
-        {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>},
-        {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
-        {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>},
-        {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>},
+            {cell: <Text key='transactionsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>},
+            {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>},
+            {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>},
         ], defaultSort: 'Created Date'}
     }
 

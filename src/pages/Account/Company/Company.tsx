@@ -154,15 +154,15 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
                     <div className="col col-12 flex flex-column">
-                            <AccountIdLabel>
-                                <Text size={14} weight="med">Account ID</Text>
-                            </AccountIdLabel>
-                            <AccountIdContainer className="col col-3">
-                                <AccountIdText size={14} weight="reg"></AccountIdText>
-                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey("copied")}><Icon>file_copy_outlined</Icon></IconButton>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
-                            </AccountIdContainer>
-                        </div>
+                        <AccountIdLabel>
+                            <Text size={14} weight="med">Account ID</Text>
+                        </AccountIdLabel>
+                        <AccountIdContainer className="col col-3">
+                            <AccountIdText size={14} weight="reg"></AccountIdText>
+                            <IconButton id="copyEmbedTooltip" onClick={() => copyKey("copied")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </AccountIdContainer>
+                    </div>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 

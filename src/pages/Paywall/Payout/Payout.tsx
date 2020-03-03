@@ -50,7 +50,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const emptyPaymentMethodTableHeader = () => {
         return {data: [
-        {cell: <span key={"emptypaymentMethodTableHeader"}></span>},
+            {cell: <span key={"emptypaymentMethodTableHeader"}></span>},
             {cell: <Button key='paymentMethodTableHeaderActionButton' className='right mr2' onClick={() => {setDisplayPaymentMethodRequest(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>}
         ]}
     }

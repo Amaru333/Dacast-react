@@ -6,25 +6,25 @@ interface TableRow {
     isCollapsable: boolean;
 }
 
-interface bodyTable {
+interface BodyTable {
     data: ReactElement[];
-    callback?: Function
+    callback?: Function;
     callbackData?: any;
 }
 
-interface headerCell {
+interface HeaderCell {
     cell: ReactElement;
     sort?: string;
 }
 
-interface headerRow {
-    data: headerCell[];
+interface HeaderRow {
+    data: HeaderCell[];
     defaultSort?: string;
 }
 
 interface TableSpecificProps {
-    header?: headerRow;
-    body?: bodyTable[];
+    header?: HeaderRow;
+    body?: BodyTable[];
     footer?: ReactElement[];
     id: string;
     hasContainer?: boolean;

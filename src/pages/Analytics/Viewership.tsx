@@ -382,7 +382,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                 </div>
                 <div className="col col-4 px1">
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
-                    <TabSetupContainer className="clearfix">
+                        <TabSetupContainer className="clearfix">
                             <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "device"} onClick={() => { setSelectedTabPlayback("device") }}>
                                 <Text color={selectedTabPlayback === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
                             </TabSetupStyles>

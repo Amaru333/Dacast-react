@@ -245,7 +245,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     </div>
                 ], callback: (row: FolderAsset) => {handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType))}
                 , callbackData: row
-            }
+                }
             })
         }
 

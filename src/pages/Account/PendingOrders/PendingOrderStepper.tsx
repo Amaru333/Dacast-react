@@ -46,14 +46,14 @@ export const PaymentStep = (stepperData: PendingOrder, updateStepperData: Functi
 
     const paymentStepheader = () => {
         return  {data: [
-        {cell: <Text  key={"paymentStepheaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
+            {cell: <Text  key={"paymentStepheaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
             {cell: <Text  key={"paymentStepheaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + stepperData.price}</Text>}
         ]}
     }
 
     const paymentStepCreditCardTableHeader = () => {
         return {data: [
-        {cell: <Text  key={"paymentStepPCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>},
+            {cell: <Text  key={"paymentStepPCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>},
             {cell: <img key={"paymentStepCardTableHeaderImg"} className='right mr2' src={CardLogo} />}
         ]}
     }

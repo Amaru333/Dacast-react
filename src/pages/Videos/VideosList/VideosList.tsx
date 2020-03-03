@@ -146,7 +146,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 ], 
                 callback: (value: VodItem) => {setSelectedVodId(value); setShowVodTabs(true) },
                 callbackData: value
-            }
+                }
             })
         }
     }

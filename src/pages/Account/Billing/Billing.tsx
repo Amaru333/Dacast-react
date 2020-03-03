@@ -64,10 +64,10 @@ export const BillingPage = (props: BillingComponentProps) => {
 
     const paypalTableHeaderElement = () => {
         return {data: [
-        {cell: <Text  key={"paypalTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>},
-        {cell: <Text  key={"paypalTableBillingId"} size={14}  weight="med" color="gray-1">Billing ID</Text>},
-        {cell: <Text  key={"paypalTableEmailAddress"} size={14}  weight="med" color="gray-1">Email Address</Text>},
-        {cell: <Text  key={"paypalTableActive"} size={14}  weight="med" color="gray-1">Active</Text>},
+            {cell: <Text  key={"paypalTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>},
+            {cell: <Text  key={"paypalTableBillingId"} size={14}  weight="med" color="gray-1">Billing ID</Text>},
+            {cell: <Text  key={"paypalTableEmailAddress"} size={14}  weight="med" color="gray-1">Email Address</Text>},
+            {cell: <Text  key={"paypalTableActive"} size={14}  weight="med" color="gray-1">Active</Text>},
             {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"paypalTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>}
         ]}
     }
@@ -93,7 +93,7 @@ export const BillingPage = (props: BillingComponentProps) => {
             {cell: <Text  key={"creditCardTableActive"} size={14}  weight="med" color="gray-1">Active</Text>},
             {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>}
         ]} 
-        : {data: [
+            : {data: [
                 {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>}
 
             ]}
@@ -115,7 +115,7 @@ export const BillingPage = (props: BillingComponentProps) => {
 
     const disabledTableHeader = () => {
         return {data: [
-           {cell: <span key={'disabledTableHeader'}></span>}
+            {cell: <span key={'disabledTableHeader'}></span>}
         ]}
     }
 

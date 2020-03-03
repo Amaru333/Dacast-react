@@ -130,14 +130,14 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
     const emptyPricePresetTableHeader = () => {
         return {data: [
-        {cell: <span key={"emptyPricePresetTableHeader"}></span>},
+            {cell: <span key={"emptyPricePresetTableHeader"}></span>},
             {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
-        {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
+            {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
             {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
         ]}
     }
@@ -145,7 +145,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
     const emptyGroupPriceTableHeader = () => {
         return {data: [
-        {cell: <span key={"emptygroupPriceTableHeader"}></span>},
+            {cell: <span key={"emptygroupPriceTableHeader"}></span>},
             
         ]}
     }
