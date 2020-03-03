@@ -19,7 +19,7 @@ const ProtectionModalTableData = [
     } 
 ]
 
-export const ProtectionModal = (props: {toggle: Function; actionButton: Function}) => {
+export const ProtectionModal = (props: {toggle: Function; actionButton: Function, setPlaybackProtectionEnabled: Function}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
     const protectionModalTableBodyElement = () => {
@@ -65,7 +65,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
 
 
             <div className='col col-12 py1'>
-                <Button sizeButton="large" disabled={selectedValue === 'Select'} onClick={() => {props.actionButton({enabled: true, price: '2$', amount: selectedValue}); props.toggle(false)}} typeButton="primary" buttonColor="blue" >Enable</Button>
+                <Button sizeButton="large" disabled={selectedValue === 'Select'} onClick={() => {props.actionButton({enabled: true, price: '2$', amount: selectedValue}); props.toggle(false); props.setPlaybackProtectionEnabled(true)}} typeButton="primary" buttonColor="blue" >Enable</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             

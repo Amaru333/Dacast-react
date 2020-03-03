@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from '../../../components/Table/Table';
-import { Modal } from '../../../components/Modal/Modal';
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../components/Card/Card';
@@ -29,6 +29,8 @@ export const BillingPage = (props: BillingComponentProps) => {
     const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
+    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false )
+    const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
@@ -128,11 +130,11 @@ export const BillingPage = (props: BillingComponentProps) => {
     }
 
     const protectionTableHeaderElement = () => {
-        return props.billingInfos.playbackProtection ? {data: [
+        return playbackProtectionEnabled ? {data: [
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Enabled</Text>},
             {cell: <Text  key={"protectionTableAmount"} size={14}  weight="med" color="gray-1">Amount</Text>},
             {cell: <Text  key={"protectionTablePrice"} size={14}  weight="med" color="gray-1">Price</Text>},
-            {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>}
+            {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setDisableProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Disable Protection </Button>}
         ]} : {data: [
             {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>}
         ]}
@@ -217,7 +219,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                
                 {
-                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') ?
+                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') && !playbackProtectionEnabled ?
                         <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Enablind Playback Protection')} />
                         :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                     
@@ -231,7 +233,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
             </Modal>
             <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} />
+                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} />
             </Modal>
             <CustomStepper 
                 opened={extrasModalOpened}
@@ -247,6 +249,18 @@ export const BillingPage = (props: BillingComponentProps) => {
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
             />
+            <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} title="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened}>
+                <ModalContent>
+                    <div className="mt1">
+                        <Text size={14} weight="reg">This means you won’t have any protection if you run out of data or stuff</Text>
+                    </div>
+                    
+                </ModalContent>
+                <ModalFooter>
+                    <Button onClick={() => {props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection);setDisableProtectionModalOpened(false);setPlaybackProtectionEnabled(false)}}>Confirm</Button>
+                    <Button typeButton="tertiary" onClick={()=> setDisableProtectionModalOpened(false)}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
 
         </div>
 

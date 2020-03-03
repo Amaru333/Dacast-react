@@ -78,6 +78,13 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                         required={false}
                     />
                     <Input 
+                        data-recurly="cvv"
+                        className='col col-3 pr2'
+                        label="CVV"
+                        type='text'
+                        required={false}
+                    />
+                    <Input 
                         data-recurly="month"
                         className='col col-1 '
                         label="Month"
@@ -86,15 +93,8 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                     />
                     <Input 
                         data-recurly="year"
-                        className='col col-1 '
+                        className='col col-1 ml2'
                         label="Year"
-                        type='text'
-                        required={false}
-                    />
-                    <Input 
-                        data-recurly="cvv"
-                        className='col col-3 px2'
-                        label="CVV"
                         type='text'
                         required={false}
                     />
@@ -136,21 +136,22 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                 <div className='col col-12 px2 pb2 pt1'>
                     <Input 
                         data-recurly="city"
-                        className='col col-3 pr2 pl1'
+                        className='col col-4 pr2 pl1'
                         label="Town/City"
                         type='text'
                         required={false}
                     />
                     <Input 
                         data-recurly="state"
-                        className='col col-3 pr2'
+                        className='col col-4 pr2'
                         label="State/Province"
                         type='text'
+                        indicationLabel='Optional'
                         required={false}
                     />
                     <Input 
                         data-recurly="postal_code"
-                        className='col col-3 pr2'
+                        className='col col-4 pr2'
                         label="Zip/Postal Code"
                         type='text'
                         required={false}
@@ -164,9 +165,12 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                 <img src={PaypalLogo} />
             </RadioButtonContainer>
             <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
-                <Text className='px2' size={14} weight='reg' color='gray-1'>
+                <div className='m2'>
+                <Text  size={14} weight='reg' color='gray-1'>
                     When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                 </Text>
+                </div>
+                
             </RadioButtonOption>
             <div id='#threeDSecureComponent'></div>
             <div className='col col-12 pt3 pb1'>
