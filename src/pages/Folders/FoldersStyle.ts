@@ -21,7 +21,7 @@ export const ContentSection = styled.div`
 `
 
 export const ModalItemFolderRow = styled.div<{selected: boolean}>`
-    border: 1px solid ${props => props.theme.colors['gray-7']};
+    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     ${props => props.selected && css`
         background-color: ${props.theme.colors['violet10']};
     `}
@@ -31,4 +31,10 @@ export const SeparatorHeader = styled.div<{}>`
     width:1px;
     height: 33px;
     background-color: ${props => props.theme.colors["gray-7"]} ;
+`
+
+export const MoveFoldersContainer = styled.div`
+    height: 235px;
+    overflow-y: auto;
+    border: 1px solid ${props => props.theme.colors['gray-7']};
 `

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
-import { ModalItemFolderRow } from './FoldersStyle';
+import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { getNameFromFullPath } from '../../utils/utils';
@@ -9,6 +9,7 @@ import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 import { IconStyle } from '../../shared/Lists/ListStyle';
+import { Tooltip } from '../../components/Tooltip/Tooltip';
 
 export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
 
@@ -55,7 +56,12 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
                         {
                             childNode.loadingStatus === 'loading' ?
                                 <LoadingSpinner size='small' color='red'/> 
-                                : <IconStyle className={childNode.subfolders === 0 ? 'hide' : ''} onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                : 
+                                <div>
+                                    <IconStyle id={"subfolderTooltip" + i} className={childNode.subfolders === 0 ? 'hide' : ''} onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                    <Tooltip target={"subfolderTooltip" + i}>Go to {getNameFromFullPath(childNode.fullPath)}</Tooltip>
+                                </div>
+                                
                         }
                     </div>
                     
@@ -67,7 +73,9 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
     return (
         <div>
             <Breadcrumb options={selectedModalFolder} callback={(value: string) => setSelectedModalFolder(value)} />
-            {renderModalNode()}
+            <MoveFoldersContainer className="col col-12">
+                {renderModalNode()}
+            </MoveFoldersContainer>
             <div className='col col-12 my2'>
                 <InputTags   
                     className='col col-12'            
@@ -79,7 +87,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
             <div className='mt2'>
                 <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
-                <Button onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
+                <Button style={{marginTop: 8}}onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>
         </div>
     )
