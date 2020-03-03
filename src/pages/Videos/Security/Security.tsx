@@ -106,10 +106,10 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <div className='col col-12'>
                         <Toggle 
                             id="videoScheduling" 
-                            label='Video Scheduling' 
+                            label='Content Scheduling' 
                             onChange={() => {setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, enabled:!selectedSettings.videoScheduling.enabled}})}} defaultChecked={selectedSettings.videoScheduling.enabled}
                         />
-                        <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The video will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
                         { toggleSchedulingVideo ? 
                         <>

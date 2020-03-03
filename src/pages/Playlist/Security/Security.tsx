@@ -76,7 +76,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                             onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
                         />
                         <ToggleTextInfo>
-                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
+                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text>
                         </ToggleTextInfo>
                         { togglePasswordProtectedVideo ? 
                             <div className='col col-12'>
