@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
 
 export const TextStyle = styled.span<{}>`
     display: block;
@@ -26,8 +25,4 @@ opacity: 0.5;
 export const Header = styled.div`
 display: flex;
 align-items: center;
-`
-
-export const UnlockSettingsIcon = styled(Icon)`
-cursor: pointer;
 `

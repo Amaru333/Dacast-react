@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
@@ -14,11 +14,10 @@ import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ThemeBulkForm, PaywallBulkForm, DeleteBulkForm, OnlineBulkForm } from '../../Playlist/List/BulkModals';
-import { IconSearch } from '../../Playlist/List/PlaylistList';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
+import { IconGreyContainer } from '../../../shared/Lists/ListStyle';
 // import { useLocation} from 'react-router-dom'
 
 export interface VideosListProps {
@@ -135,11 +134,11 @@ export const VideosListPage = (props: VideosListProps) => {
                     <>{handleFeatures(value, value.id.toString())}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
-                            <Icon onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</Icon>
+                            <IconStyle onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <Icon onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</Icon>
+                            <IconStyle onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>  
                     </div>,
@@ -174,7 +173,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <>
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
-                    <IconSearch>search</IconSearch>
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={[]}   />
                 </div>
                 <div className="flex items-center" >

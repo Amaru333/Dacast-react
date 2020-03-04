@@ -3,9 +3,9 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, IconContainer, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -76,15 +76,15 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon>
-                        <Icon 
+                        <IconStyle 
                             onClick={() => {props.deletePlaylistAd(item)}}
                             id={"deleteTooltip" + i} 
                         >delete
-                        </Icon>
+                        </IconStyle>
                         <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
                     </ActionIcon>
                     <ActionIcon>
-                        <Icon id={"editTooltip" + i} onClick={() => editAd(item)}>edit</Icon>
+                        <IconStyle id={"editTooltip" + i} onClick={() => editAd(item)}>edit</IconStyle>
                         <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
                     </ActionIcon>
                      
@@ -103,15 +103,15 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <Icon>lock</Icon> or edit your Advertising Settings </Bubble>
+            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
             <Card className='my2'>
                 <Header className="mb25">
                     <TextStyle>
                         <Text size={20} weight='med'>Advertising</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
                         {adSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={adSectionEditable}>
@@ -127,7 +127,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     </div>
                     
                     <div className='flex'>
-                        <Icon className="mr1">info_outlined</Icon>
+                        <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
@@ -139,9 +139,9 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <TextStyle>
                         <Text size={20} weight='med'>Mail Catcher</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockMailSectionTooltip">{mailSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
@@ -150,7 +150,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     </div>
                 
                     <div className='flex'>
-                        <Icon className="mr1">info_outlined</Icon>
+                        <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle
@@ -172,9 +172,9 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
                         {brandSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
@@ -201,9 +201,9 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>

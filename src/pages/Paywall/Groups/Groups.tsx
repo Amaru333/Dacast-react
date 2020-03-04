@@ -5,14 +5,14 @@ import { Table } from '../../../components/Table/Table';
 import { BorderStyle } from './GroupsStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
-import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface GroupStepperSecondStepProps {
@@ -84,11 +84,11 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                            <Icon onClick={() =>  {props.deleteGroupPrice(price)}}>delete</Icon>
+                            <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPrice" + price.id}>
-                            <Icon onClick={() =>  {setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</Icon>
+                            <IconStyle onClick={() =>  {setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
                     </IconContainer>
@@ -120,11 +120,11 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoGroupsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <Icon onClick={() =>  {props.deleteGroupPromo(promo)}}>delete</Icon>
+                            <IconStyle onClick={() =>  {props.deleteGroupPromo(promo)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
-                            <Icon onClick={() =>  {setSelectedGroupPromo(promo);setGroupPromosModalOpened(true)}}>edit</Icon>
+                            <IconStyle onClick={() =>  {setSelectedGroupPromo(promo);setGroupPromosModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
@@ -139,7 +139,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Text size={20} weight='med'>Group Prices</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Group content into a single Price Group that can be purchased together.</Text>
                 <div className="flex col col-12 mt2">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
@@ -148,7 +148,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Text className="mt1" size={20} weight='med'>Groups Promo</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Allow a promo to be used to purchase content in a Price Group.</Text>
                 <div className="flex col col-12 mt2">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';

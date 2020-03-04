@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import styled, { css } from 'styled-components';
 import { Card } from '../../../components/Card/Card';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { PlanStepperFirstStep, PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep } from './PlanStepper';
@@ -346,11 +346,6 @@ const PlanInfosContainer = styled.div<{isMobile: boolean}>`
         min-height: 600px;
     `}
 `
-
-export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
-    color: ${props => props.theme.colors[props.coloricon]};
-`
-
 const ButtonStyle = styled(Button)`
     width: 95%;
 `

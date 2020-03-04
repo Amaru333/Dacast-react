@@ -2,7 +2,7 @@ import React from 'react';
 import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { FolderAsset } from '../../../redux-flow/store/Folders/types';
@@ -12,7 +12,6 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
 import { GroupStepperData } from './Groups';
-import { IconStyle } from '../../../shared/Lists/ListStyle';
 
 var moment = require('moment-timezone');
 
@@ -48,7 +47,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
                     {
                         key === stepperData.firststep.price.length - 1 ? 
                             <Button onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className='mx2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>+</Button> 
-                            : <Icon onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</Icon>
+                            : <IconStyle onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
                     }
                 </div>
             )
@@ -231,7 +230,7 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
     return (
         <>
             <div className="inline-flex items-center flex col-12 mb2">
-                <Icon>search</Icon>
+                <IconStyle>search</IconStyle>
                 <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'inherit'}} defaultTags={[]}   />
             </div>
             <ContainerHalfSelector className="col col-5" >
@@ -241,8 +240,8 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
                 {renderContentsList()} 
             </ContainerHalfSelector>
             <div className="col col-2" style={{marginTop: 180}}>
-                <Button onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                <Button onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, UnlockSettingsIcon, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,7 +12,7 @@ import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Setting
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
 import { PlaylistSecurityContainerProps } from '../../../containers/Playlists/Security';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
@@ -42,13 +42,13 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
         
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<Icon>lock</Icon>&nbsp;Padlock to override these settings.
+                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
                     </BubbleContent>
                 </Bubble>
                 :
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<Icon>lock_open</Icon>&nbsp;Padlock to revert to global settings.
+                        These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock_open</IconStyle>&nbsp;Padlock to revert to global settings.
                     </BubbleContent>     
                 </Bubble> 
             }
@@ -57,12 +57,12 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                    <IconStyle className='pointer' id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ? 
                             "lock_open"
                             : "lock"
                         }
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockSecurityTooltip">{settingsEditable ? "Click to revert Security Settings" : "Click to edit Security Settings"}</Tooltip>
                 </Header>
         

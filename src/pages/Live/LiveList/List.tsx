@@ -3,10 +3,9 @@ import { Table } from '../../../components/Table/Table';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
 import { tsToLocaleDate, readableBytes } from '../../../utils/utils';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
-import styled from 'styled-components';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../components/Pagination/Pagination'
@@ -15,13 +14,12 @@ import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { IconSearch } from '../../Playlist/List/PlaylistList';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { UserAccountPrivileges } from '../../../containers/Navigation/NavigationTypes';
-import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
+import { IconGreyContainer } from '../../../shared/Lists/ListStyle';
 
 export interface LiveListProps {
     liveList: LiveItem[];
@@ -136,11 +134,11 @@ export const LiveListPage = (props: LiveListProps) => {
                     <>{handleFeatures(value, value.id)}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
-                            <Icon onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</Icon>
+                            <IconStyle onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon>
+                            <IconStyle onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>    
                     </div>,
@@ -196,7 +194,7 @@ export const LiveListPage = (props: LiveListProps) => {
             <>
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={[]}   />
                     </div>
                     <div className="flex items-center" >

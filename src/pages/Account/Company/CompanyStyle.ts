@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Icon from '@material-ui/core/Icon';
 import { Text } from '../../../components/Typography/Text'
 
 
@@ -15,17 +14,6 @@ export const ButtonStyle = styled.div<{}>`
 export const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
-`
-export const IconStyle = styled.div<{}>`
-    display: block;
-    color: ${props => props.theme.colors['dark-violet']};
-    width: fit-content;
-    margin: auto;
-    padding-top: 32px;
-`
-
-export const BigIcon = styled(Icon)`
-    font-size: 40px !important;
 `
 
 export const ImageStyle = styled.img<{}>`
@@ -75,10 +63,4 @@ export const AccountIdText = styled(Text)`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-`
-
-export const IconButton = styled.button`
-display: block;
-border: none;
-background-color: inherit;
 `

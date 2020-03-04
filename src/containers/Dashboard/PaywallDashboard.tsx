@@ -1,9 +1,10 @@
 import React from 'react'
-import { IconGray1, classContainer, classItemHalfWidthContainer, WidgetHeader } from './DashboardStyles'
+import { classContainer, classItemHalfWidthContainer, WidgetHeader } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../components/Typography/Text';
 import { numberFormatter } from '../../utils/utils';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
+import { IconStyle } from '../../shared/Common/Icon'
 
 interface PaywallDashboardProps {
     balance: number;
@@ -19,7 +20,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     return (
         <section className={classTopContainer}>
             <div className="flex items-baseline mb1">
-                <IconGray1 className="mr1 self-center">attach_money</IconGray1>
+                <IconStyle className="mr1 self-center">attach_money</IconStyle>
                 <Text size={24} weight="reg" className="mt0 inline-block">
                     Paywall
                 </Text>
@@ -29,7 +30,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
-                        <IconGray1 id="balanceTooltip" className="ml-auto">info_outline</IconGray1>
+                        <IconStyle id="balanceTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="balanceTooltip">Your current paywall balance as of today</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
@@ -40,7 +41,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
-                        <IconGray1 id="revenueTooltip" className="ml-auto">info_outline</IconGray1>
+                        <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="revenueTooltip">The paywall revenue you have earned since the start of the current billing period</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">

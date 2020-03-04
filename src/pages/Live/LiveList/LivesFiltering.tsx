@@ -4,9 +4,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Badge } from '../../../components/Badge/Badge';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
-import { Input } from '../../../components/FormsComponents/Input/Input';
 
 export const LivesFiltering = (props: {}) => {
 
@@ -74,7 +73,7 @@ export const LivesFiltering = (props: {}) => {
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >
-                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><Icon className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</Icon></div>
+                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                 <div className="mb3" id="vodFilterStatus">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
                     <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}

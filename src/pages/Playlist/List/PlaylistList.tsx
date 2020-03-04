@@ -3,7 +3,7 @@ import { Table } from '../../../components/Table/Table';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
 import { tsToLocaleDate } from '../../../utils/utils';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import styled from 'styled-components';
 import { Pagination } from '../../../components/Pagination/Pagination'
@@ -16,7 +16,7 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
-import { IconGreyContainer, IconStyle } from '../../../shared/Lists/ListStyle';
+import { IconGreyContainer } from '../../../shared/Lists/ListStyle';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -110,11 +110,11 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     <>{handleFeatures(value, value.id)}</>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
-                            <Icon onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</Icon>
+                            <IconStyle onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon>
+                            <IconStyle onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
                     </div>,
@@ -160,7 +160,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
             <>
                 <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags  noBorder={true} placeholder="Search Playlists..." style={{display: "inline-block"}} defaultTags={[]}   />
                     </div>
                     <div className="flex items-center" >
@@ -189,11 +189,6 @@ export const PlaylistListPage = (props: LiveListProps) => {
             </>
     )
 }
-
-export const IconSearch = styled(Icon)`
-    color: ${props => props.theme.colors["gray-3"]} ;
-`
-
 const HeaderPlaylistList = styled.div<{}>`
     position:relative;
     width: 100%;

@@ -9,8 +9,8 @@ import { PricePresetsModal } from './PricePresetsModal';
 import { PromoPresetsModal } from './PromoPresetsModal';
 import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
-import { Icon } from '@material-ui/core';
-import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
@@ -45,11 +45,11 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltip" + preset.id}>
-                            <Icon onClick={() =>  {props.deletePricePreset(preset)}}>delete</Icon>
+                            <IconStyle onClick={() =>  {props.deletePricePreset(preset)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
-                            <Icon onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</Icon>
+                            <IconStyle onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon> 
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
@@ -81,11 +81,11 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <Icon onClick={() =>  {props.deletePromoPreset(promo)}}>delete</Icon>
+                            <IconStyle onClick={() =>  {props.deletePromoPreset(promo)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
-                            <Icon onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</Icon>
+                            <IconStyle onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>   
                     </IconContainer>
@@ -122,7 +122,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 <Text size={20} weight='med'>Price Presets</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
                 <div className="flex col col-12 mt2">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 {props.presetsInfos.presets.length === 0 ? 
@@ -136,7 +136,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 <Text className="mt1" size={20} weight='med'>Promo Presets</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
                 <div className="flex col col-12 mt2">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 { props.presetsInfos.promos.length === 0 ?

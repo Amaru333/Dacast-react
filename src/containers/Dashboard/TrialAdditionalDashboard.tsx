@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text } from '../../components/Typography/Text';
-import { ListItem, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle, classItemFullWidthContainer, SupportCard, CloseCross, IconStyle, ListStyle } from "./DashboardStyles"
+import { ListItem, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle, classItemFullWidthContainer, SupportCard, ListStyle } from "./DashboardStyles"
 import { WidgetElement } from "./WidgetElement";
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/FormsComponents/Button/Button';
@@ -115,7 +115,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     <SupportCard className="dashboardCard">
                         <WidgetHeader className="flex">
                             <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
-                            <CloseCross className="ml-auto">close</CloseCross>
+                            <IconStyle coloricon='gray-3' className="ml-auto">close</IconStyle>
                         </WidgetHeader>
                         <div className=" flex row justify-between items-center ">
                             <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
@@ -136,7 +136,7 @@ const TodoList = (props: { items: ItemTodo[] }) => {
             return (
                 <ListItem key={key+"_"+value} checked={value.isChecked} >
                     <a target="_blank" rel="noopener noreferrer" href={value.href} >
-                        <IconStyle checked={value.isChecked}> <Icon>check</Icon> </IconStyle>
+                            <IconStyle className='px1 py2' coloricon={value.isChecked ? 'violet' : 'gray-8'}>check</IconStyle>
                         <Text color={value.isChecked ? "gray-6" : "gray-1"} size={14} weight="reg" >{value.name}</Text>
                     </a>
                 </ListItem>

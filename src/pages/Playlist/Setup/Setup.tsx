@@ -6,11 +6,9 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
-import { IconSearch } from '../List/PlaylistList';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
-import { IconStyle } from '../../../shared/Lists/ListStyle';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
@@ -237,7 +235,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() =>setPlaylistSettingsOpen(false)} />
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb2">
-                    <IconSearch>search</IconSearch>
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
@@ -274,8 +272,8 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </div>
             </ContainerHalfSelector>
             <div className="col col-2" style={{marginTop: 180}}>
-                <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">

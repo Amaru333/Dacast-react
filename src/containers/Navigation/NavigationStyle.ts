@@ -18,39 +18,24 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         }
     }
     ${props => props.active && css`
-        background: ${props => props.theme.colors["violet20"]} !important;
-        color: ${props => props.theme.colors["dark-violet"]};
+        background: ${props.theme.colors["violet20"]} !important;
+        color: ${props.theme.colors["dark-violet"]};
 
         ${!props.hasSlugs && css`
-          border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+          border-left: 4px solid ${props.theme.colors["dark-violet"]};
         `}
 
         ${!props.isOpen && css`
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]} ;
+        border-left: 4px solid ${props.theme.colors["dark-violet"]} ;
         `}
         
         span{
-            color: ${props => props.theme.colors["dark-violet"]};
+            color: ${props.theme.colors["dark-violet"]};
             font-weight: 500;
         }
     `}
 `;
-export const IconStyle = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin-right: 19px;
-    color: ${props => props.theme.colors["gray-1"]};
-`;
-export const ArrowIconStyle = styled.div<{hidden: boolean}>`
-    display: flex;
-    ${props => props.hidden && css`
-        display: none;
-    `}
-    flex-direction: row;
-    position: absolute;
-    right: 22px;
-    color: ${props => props.theme.colors["gray-7"]};
-`
+
 export const SectionTitle = styled(Text)`
     margin-left:16px;
     margin-bottom: 16px;
@@ -152,9 +137,9 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
     color: ${props => props.theme.colors["black"]};
     align-items: unset;
     ${props => props.selected && css`
-        background-color: ${props => props.theme.colors["violet20"]} !important;
-        color: ${props => props.theme.colors["dark-violet"]} !important;
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+        background-color: ${props.theme.colors["violet20"]} !important;
+        color: ${props.theme.colors["dark-violet"]} !important;
+        border-left: 4px solid ${props.theme.colors["dark-violet"]};
     `}
     &:hover {
         cursor: pointer;
@@ -188,8 +173,8 @@ export const StreamTypeSelector = styled.div<{selected: boolean}>`
         margin-left: 16px;
     }
     ${props => props.selected && css`
-        background-color: ${props => props.theme.colors["violet10"]};
-        border: 1px solid ${props => props.theme.colors["dark-violet"]};
+        background-color: ${props.theme.colors["violet10"]};
+        border: 1px solid ${props.theme.colors["dark-violet"]};
     `}
 `
 export const StreamTypeSelectorContents = styled.div`

@@ -3,7 +3,7 @@ import {TableProps} from './TableTypes'
 import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, TableBodyContainer, TableBodyRow, TableBodyCell, WrapperResponsiveContainer, TableFooterContainer, TableFooterRow, TableFooterCell } from './TableStyle';
 import { isMobile } from 'react-device-detect';
 import Scrollbar from 'react-scrollbars-custom';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 
 export const Table = (props: TableProps) => {
 
@@ -34,7 +34,7 @@ export const Table = (props: TableProps) => {
                             headerCell.sort ? 
                                 <div className='flex items-center col col-12'>
                                     {headerCell.cell}
-                                    <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
+                                    <IconStyle>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</IconStyle>
                                 </div>
                                 : headerCell.cell
                         }

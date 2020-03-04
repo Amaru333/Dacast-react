@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Text } from '../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Link, useLocation } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './NavigationTypes'
-import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, IconStyle, OverlayMobileStyle, SubMenuElement, SubMenu, ArrowIconStyle, TextStyle} from './NavigationStyle'
+import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../public/assets/logo.png');
@@ -15,9 +15,9 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
     return (
         <ContainerElementStyle className='my1' {...props} >
-            <IconStyle className="noTransition"><Icon className="noTransition">{props.icon}</Icon></IconStyle>
+            <IconStyle className="noTransition flex pr2">{props.icon}</IconStyle>
             <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
-            <ArrowIconStyle hidden={!props.isOpen && !props.isMobile}><Icon className="noTransition">{props.arrowIcon}</Icon></ArrowIconStyle>
+            <IconStyle style={{right:22}} className={"noTransition flex absolute" + (!props.isOpen && !props.isMobile ? ' hide' : '')} coloricon='gray-7'>{props.arrowIcon}</IconStyle>
         </ContainerElementStyle>
     )
 }
@@ -209,7 +209,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         {renderMenu()}
                     </SectionStyle>
                 </Scrollbar>
-                <Icon onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</Icon>
+                <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
                 <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
            
                   

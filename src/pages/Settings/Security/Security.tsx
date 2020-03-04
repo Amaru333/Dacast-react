@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToggleTextInfo, TextStyle, BorderStyle, IconContainer, IconCheck } from './SecurityStyle';
+import { ToggleTextInfo, TextStyle, BorderStyle } from './SecurityStyle';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
@@ -8,12 +8,12 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Modal } from '../../../components/Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
-import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../../redux-flow/store/Settings/Security/types';
+import { DomainControl, GeoRestriction } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { useMedia } from '../../../utils/utils';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -84,8 +84,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             return props.securityDetails.geoRestriction.map((value, key) => {
                 return {data: [
                     <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
-                    value.isDefault ? <IconCheck><Icon key={key.toString() + value.name}>checked</Icon></IconCheck> : <></>,
-                    <IconContainer className="iconAction" key={key.toString() + value.name}><Icon onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</Icon> </IconContainer>
+                    value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle>: <></>,
+                    <IconContainer className="iconAction" key={key.toString() + value.name}><IconStyle onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</IconStyle> </IconContainer>
                 ]}
             })
         }
@@ -96,8 +96,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             return props.securityDetails.domainControl.map((value, key) => {
                 return {data: [
                     <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
-                    value.isDefault ? <IconCheck><Icon key={key.toString() + value.name}>checked</Icon></IconCheck> : <></>,
-                    <IconContainer className="iconAction" key={key.toString() + value.name}><Icon onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</Icon> </IconContainer>
+                    value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
+                    <IconContainer className="iconAction" key={key.toString() + value.name}><IconStyle onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</IconStyle> </IconContainer>
                 ]}
             })
         }

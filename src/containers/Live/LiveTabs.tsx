@@ -3,7 +3,7 @@ import { Tab } from '../../components/Tab/Tab';
 import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { LiveSubRoutes } from '../../constants/LiveSubRoutes';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { LiveItem } from '../../redux-flow/store/Live/General/types';
@@ -52,7 +52,7 @@ export const LiveTabs = (props: { live: LiveItem; history: any; liveId: string; 
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/livestreams');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/livestreams');props.setShowLiveTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><IconStyle>keyboard_arrow_left</IconStyle></Button>
                 <Tab orientation='horizontal' list={handleLiveSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>

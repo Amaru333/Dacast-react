@@ -3,8 +3,8 @@ import { Card } from '../../../components/Card/Card';
 import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
-import { Icon } from '@material-ui/core';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
@@ -80,7 +80,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconButton id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -104,7 +104,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
                                 <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
@@ -127,7 +127,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
-                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
                                 <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
@@ -149,7 +149,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer>
                             <div className="flex flex-center">
-                                <Text className="mr1" size={16} weight="med">Poster</Text>  <Icon id="posterTooltip">info_outlined</Icon>
+                                <Text className="mr1" size={16} weight="med">Poster</Text>  <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                 <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
@@ -174,7 +174,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedLinks">
                     <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
-                        <Icon className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                        <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
                     </div>                 
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
@@ -186,7 +186,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconButton id={item.id} onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>

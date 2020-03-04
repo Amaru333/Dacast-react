@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -52,18 +52,18 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             return props.paywallThemes.themes.map((theme, key) => {
                 return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
-                    theme.isDefault ? <Icon style={{color:"green"}} key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
+                    theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
                         <ActionIcon>
-                            <Icon id={"copyTooltip" + key}>file_copy</Icon>
+                            <IconStyle id={"copyTooltip" + key}>file_copy</IconStyle>
                             <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
-                            <Icon id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</Icon>
+                            <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</IconStyle>
                             <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
-                            <Icon id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon>
+                            <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
                             <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
                         </ActionIcon>
                          
@@ -79,7 +79,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     <Text size={20} weight='med'>Paywall Theming</Text>
                     <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your payment</Text>
                     <div className='flex item-center mt2'>
-                        <Icon style={{marginRight: 10}}>info_outlined</Icon>
+                        <IconStyle style={{marginRight: 10}}>info_outlined</IconStyle>
                         <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
                     <Table className='col col-12' id='paywallThemingTable' headerBackgroundColor="gray-10" header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />

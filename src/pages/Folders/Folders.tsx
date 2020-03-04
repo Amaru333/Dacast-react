@@ -3,7 +3,7 @@ import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from '
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Label } from '../../components/FormsComponents/Label/Label';
 import { Table } from '../../components/Table/Table';
 import { Pagination } from '../../components/Pagination/Pagination';
@@ -22,7 +22,7 @@ import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../components/Badge/Badge';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
-import { IconStyle, IconGreyContainer } from '../../shared/Lists/ListStyle';
+import { IconGreyContainer } from '../../shared/Lists/ListStyle';
 
 const folderTreeConst = [
     'folder1',
@@ -240,7 +240,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
                     <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
-                            <Icon>more_vert</Icon>
+                            <IconStyle>more_vert</IconStyle>
                         </DropdownCustom>
                     </div>
                 ], callback: (row: FolderAsset) => {handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType))}
@@ -392,7 +392,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 flex items-center'>
                 <div className='col col-10 flex items-center'>
                     <div className={(foldersTreeHidden ? '' : 'col col-2 mr3 ') + 'flex items-center'}>
-                        <Icon onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
+                        <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
                         <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
                             New Folder
                         </Button>

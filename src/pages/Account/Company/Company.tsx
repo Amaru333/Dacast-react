@@ -7,10 +7,10 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../components/Card/Card';
 import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
-import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText, IconButton} from './CompanyStyle';
+import {CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface CompanyComponentProps {
@@ -130,7 +130,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </>
                             :
                         <>
-                        <IconStyle><BigIcon>cloud_upload</BigIcon></IconStyle>
+                        <IconStyle className='pt3 center' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
@@ -159,7 +159,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-3">
                             <AccountIdText size={14} weight="reg"></AccountIdText>
-                            <IconButton id="copyEmbedTooltip" onClick={() => copyKey("copied")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>

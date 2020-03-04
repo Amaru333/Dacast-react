@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab } from '../../../components/Tab/Tab';
 import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../../shared/TabsStyle';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
@@ -50,7 +50,7 @@ export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/playlists');props.setShowPlaylistTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><Icon>keyboard_arrow_left</Icon></Button>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/playlists');props.setShowPlaylistTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><IconStyle>keyboard_arrow_left</IconStyle></Button>
                 <Tab orientation='horizontal' list={handlePlaylistSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>

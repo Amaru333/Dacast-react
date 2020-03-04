@@ -1,12 +1,12 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
@@ -77,7 +77,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                         }
                                     </Text>
                                 </div>
-                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle>keyboard_arrow_left</IconStyle><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                             </TitleSection>
                             {
                                 showAdvancedPanel ?
@@ -197,9 +197,9 @@ export const ThemingPage = (props: ThemingComponentProps) => {
             return props.themingList.themes.map((theme, key) => {
                 return {data: [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                    theme.isDefault ? <Icon style={{color: "green"}} key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
+                    theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
-                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><IconStyle onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle><IconStyle onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle> </IconContainer>
 
                 ]}
             })
@@ -210,7 +210,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 <Text className='py2' size={20} weight='med'>Themes</Text>
                 <TextStyle className='py2'><Text size={14} weight='reg'>Some information about Theming</Text></TextStyle>
                 <div className='my2 flex'>
-                    <Icon className="mr1">info_outlined</Icon> 
+                    <IconStyle className="mr1">info_outlined</IconStyle> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
                 <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />

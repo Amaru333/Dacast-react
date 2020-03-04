@@ -4,7 +4,7 @@ import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
 
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
@@ -13,7 +13,6 @@ import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
-import { IconSearch } from '../Playlist/List/PlaylistList';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 import { DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyles, TabSetupStyle, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
@@ -22,7 +21,6 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
-import { IconStyle } from '../../shared/Lists/ListStyle';
 import { presets } from '../../constants/DatepickerPresets';
 
 interface ViewershipAnalyticsProps {
@@ -256,7 +254,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                 </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                     </div>
                 </div>

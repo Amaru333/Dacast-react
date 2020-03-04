@@ -2,11 +2,10 @@ import React from 'react';
 import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
 import { Preset } from '../../../redux-flow/store/Paywall/Presets/types';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
-import { IconStyle } from './PresetsStyle';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 
 var moment = require('moment-timezone');
@@ -65,7 +64,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                     {
                         key === presetsList.price.length - 1 ? 
                             <div onClick={() => setPresetsList({...presetsList, price: [...presetsList.price, {amount: NaN, currency: 'USD'}]})} className={'pointer col col-5 mx1 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div> 
-                            : <Icon onClick={() => setPresetsList({...presetsList, price: presetsList.price.filter((item, index) => {return index !== key})})} className={key === 0 ? 'px1 pt3' : 'px1'}>close</Icon>
+                            : <IconStyle onClick={() => setPresetsList({...presetsList, price: presetsList.price.filter((item, index) => {return index !== key})})} className={key === 0 ? 'px1 pt3' : 'px1'}>close</IconStyle>
                     }
                 </div>
             )

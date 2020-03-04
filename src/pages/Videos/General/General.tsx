@@ -6,15 +6,15 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import styled from 'styled-components';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle'
+import { ActionIcon } from '../../../shared/ActionIconStyle'
 import { Prompt } from 'react-router';
 
 interface GeneralComponentProps {
@@ -48,10 +48,10 @@ const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
             <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
-                <ActionIcon id={"downloadTooltip" + key}><Icon>get_app</Icon></ActionIcon>
+                <ActionIcon id={"downloadTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
                 <Tooltip target={"downloadTooltip" + key}></Tooltip>
-                <ActionIcon><Icon onClick={() => props.deleteVodSubtitle(value)}>delete</Icon></ActionIcon>
-                <ActionIcon><Icon onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</Icon></ActionIcon>
+                <ActionIcon><IconStyle onClick={() => props.deleteVodSubtitle(value)}>delete</IconStyle></ActionIcon>
+                <ActionIcon><IconStyle onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</IconStyle></ActionIcon>
                 
             </IconContainer>
         ]}
@@ -171,7 +171,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
-                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey(props.vodDetails.id)}><Icon>file_copy_outlined</Icon></IconButton>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -187,7 +187,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -197,7 +197,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                                <IconButton id="copyEmbedTooltip" onClick={() => copyKey("share link here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -210,7 +210,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                    <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                    <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
                                     <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
@@ -228,7 +228,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <ImageContainer className="mr2">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Thumbnail</Text>
-                                    <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                    <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
                                     <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
@@ -240,7 +240,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <ImageContainer className="">
                                 <div className="flex flex-center">
                                     <Text className="mr1" size={16} weight="med">Poster</Text>  
-                                    <Icon id="posterTooltip">info_outlined</Icon>
+                                    <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                     <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
@@ -275,7 +275,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <Divider className="col col-12" />
                     <div className="col col-12 advancedVideoLinks">
                         <div onClick={() => setAdvancedVideoLinksExpanded(!advancedVideoLinksExpanded)}>
-                            <Icon  className="col col-1 pointer">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                            <IconStyle  className="col col-1 pointer">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                             <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
                         </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
@@ -287,7 +287,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                            <IconButton id={item.id} onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                            <IconStyle className='pointer' id={item.id} onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                                             <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                         </LinkBox>
                                     </LinkBoxContainer>
@@ -315,7 +315,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                     <SubtitleFile className="col mt1">
                                         <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
                                         <button style={{ border: "none", backgroundColor: "inherit" }}>
-                                            <Icon onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: "" })} style={{ fontSize: "14px", display: "flex", alignItems: "center" }}>close</Icon>
+                                            <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: "" })} className='flex items-center' customsize={14}>close</IconStyle>
                                         </button>
                                     </SubtitleFile>
                                 }

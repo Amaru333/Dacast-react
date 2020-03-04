@@ -2,13 +2,13 @@ import React from 'react';
 import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Modal } from '../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
 import { intToTime, useMedia } from '../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
-import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 
@@ -65,11 +65,11 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 <Text key={key.toString() +value.time} size={14}  weight="reg" color="gray-1">{value.time}</Text>,
                 <IconContainer className="iconAction" key={key.toString()+value.name}>
                     <ActionIcon id={"deleteTooltip" + value.id}>
-                        <Icon onClick={(event) => {event.preventDefault;props.deleteVodChapterMarker(value)}} >delete</Icon>
+                        <IconStyle onClick={(event) => {event.preventDefault;props.deleteVodChapterMarker(value)}} >delete</IconStyle>
                     </ActionIcon>
                     <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
                     <ActionIcon id={"editTooltip" + value.id}>
-                        <Icon onClick={() => {setSelectedItem(value.id);  setChapterMarkerModalOpened(true) }}>edit</Icon>   
+                        <IconStyle onClick={() => {setSelectedItem(value.id);  setChapterMarkerModalOpened(true) }}>edit</IconStyle>   
                     </ActionIcon>
                     <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>     
                 </IconContainer>

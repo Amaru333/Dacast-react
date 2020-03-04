@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { RenditionsWidget, RenditionsTable, ButtonContainer } from './RenditionsStyle';
 import { Table } from '../../../components/Table/Table';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
@@ -130,7 +130,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
             </div>
             <div className="flex mt1">
-                <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                 <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
             <div className="widgets flex items-baseline mt25">

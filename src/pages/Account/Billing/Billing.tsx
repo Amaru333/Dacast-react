@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../components/Card/Card';
 import styled from 'styled-components';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { useMedia } from '../../../utils/utils';
 import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
@@ -80,7 +80,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
                 <Text key={'paypalTable' + props.billingInfos.paypal.billingId} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.billingId}</Text>,
                 <Text key={'paypalTable' + props.billingInfos.paypal.emailAddress} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.emailAddress}</Text>,
-                <IconCheck key={'paypalTableActiveField'}><Icon >checked</Icon></IconCheck>,
+                <IconStyle key={'paypalTableActiveField'} coloricon='green' >checked</IconStyle>,
                 <span key={'paypalTableBodyEmptyCell'}></span>
             ]}]
         }
@@ -108,7 +108,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.firstName + props.billingInfos.creditCard.lastName}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.cardNumber} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.cardNumber}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.creditCard.month} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.month + '/' + props.billingInfos.creditCard.year}</Text>,
-                <IconCheck key={'creditCardTableActive'}><Icon >checked</Icon></IconCheck>,
+                <IconStyle key={'creditCardTableActive'} coloricon='green'>checked</IconStyle>,
                 <span key={'creditCardTableBodyEmptyCell'}></span>
             ]}
             ]
@@ -143,10 +143,10 @@ export const BillingPage = (props: BillingComponentProps) => {
     const protectionBodyElement= () => {
         if(props.billingInfos.playbackProtection) {
             return [{data:[
-                <IconCheck key={'playbackProtectionEnabledValue'}><Icon >{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</Icon></IconCheck>,
+                <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
                 <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
-                <IconContainer className="iconAction" key={'protectionTableActionButtons'}><Icon onClick={(event) => {event.preventDefault();props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection)}}>delete</Icon><Icon onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</Icon> </IconContainer>
+                <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection)}}>delete</IconStyle><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
             return [{data:[
@@ -280,17 +280,4 @@ export const TextStyle = styled.span<{}>`
 export const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
-`
-
-export const IconContainer = styled.div`
-    float:right;
-    display:none;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`
-
-export const IconCheck = styled.span`
-    color:  ${props => props.theme.colors["green"]};
 `

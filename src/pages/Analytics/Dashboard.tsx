@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { BarChart } from '../../components/Analytics/BarChart';
 import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, CsvService } from '../../utils/utils';
@@ -184,10 +184,10 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                 <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
                 <div className="flex">
                     <div>
-                        <Icon id={"tooltip" + props.id}>info_outlined</Icon>
+                        <IconStyle id={"tooltip" + props.id}>info_outlined</IconStyle>
                         <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
                     </div>
-                    { !props.realTime ? <Icon className="ml2" onClick={() => {exportCsvAnalytics(props.data)} } >get_app</Icon> : null}   
+                    { !props.realTime ? <IconStyle className="ml2" onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle> : null}   
                 </div>
             </AnalyticsCardHeader>
             {props.children}

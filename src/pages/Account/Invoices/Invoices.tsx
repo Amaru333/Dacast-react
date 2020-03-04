@@ -3,8 +3,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../styled/types';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
-import styled from 'styled-components';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { InvoicesFiltering } from './InvoicesFiltering';
@@ -31,7 +30,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{item.date}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
                 <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status}  />,
-                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><Icon onClick={(event) => {event.preventDefault()}} >print</Icon><a href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><Icon>get_app</Icon></a> </IconContainer>
+                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><IconStyle>get_app</IconStyle></a> </IconContainer>
 
             ]}
         })
@@ -50,15 +49,3 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
         </div>
     )
 }
-
-export const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`
-
-export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
-    color: ${props => props.theme.colors[props.coloricon]};
-`

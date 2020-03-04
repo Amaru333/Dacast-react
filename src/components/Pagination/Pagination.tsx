@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import styled, { css } from 'styled-components';
 import { Text } from '../Typography/Text';
 import { isMobile } from 'react-device-detect'
@@ -47,12 +47,12 @@ export const Pagination = (props: PaginationProps) => {
                 />
                 <Text size={14} weight='reg'>of {props.totalResults} results</Text>
             </div>
-            <div className={'flex items-baseline my2' + (isMobile || smallScreen ? ' order-0' : '')}>
-                <IconContainer disabled={currentPage === 1}><Icon onClick={currentPage !== 1 ? () => {setCurrentPage(1)} : null}>first_page</Icon></IconContainer>
-                <IconContainer disabled={currentPage === 1}><Icon onClick={currentPage !== 1 ? () => {setCurrentPage(currentPage - 1)} : null}>keyboard_arrow_left</Icon></IconContainer>
+            <div className={'flex items-baseline my2' + (isMobile || smallScreen ? ' order-0 mx-auto' : '')}>
+                <IconStyle coloricon={currentPage === 1 ? 'gray-7' : 'gray-3'} disabled={currentPage === 1} onClick={currentPage !== 1 ? () => {setCurrentPage(1)} : null}>first_page</IconStyle>
+                <IconStyle coloricon={currentPage === 1 ? 'gray-7' : 'gray-3'} disabled={currentPage === 1} onClick={currentPage !== 1 ? () => {setCurrentPage(currentPage - 1)} : null}>keyboard_arrow_left</IconStyle>
                 {renderPaginationButtons()}
-                <IconContainer disabled={currentPage === props.totalResults / displayedOptions}><Icon onClick={currentPage !== props.totalResults / displayedOptions ? () => {setCurrentPage(currentPage + 1)} : null}>keyboard_arrow_right</Icon></IconContainer>
-                <IconContainer disabled={currentPage === props.totalResults / displayedOptions}><Icon onClick={currentPage !== props.totalResults / displayedOptions ? () => {setCurrentPage(props.totalResults / displayedOptions)}: null}>last_page</Icon></IconContainer>
+                <IconStyle coloricon={currentPage === props.totalResults / displayedOptions ? 'gray-7' : 'gray-3'} disabled={currentPage === props.totalResults / displayedOptions} onClick={currentPage !== props.totalResults / displayedOptions ? () => {setCurrentPage(currentPage + 1)} : null}>keyboard_arrow_right</IconStyle>
+                <IconStyle coloricon={currentPage === props.totalResults / displayedOptions ? 'gray-7' : 'gray-3'} disabled={currentPage === props.totalResults / displayedOptions} onClick={currentPage !== props.totalResults / displayedOptions ? () => {setCurrentPage(props.totalResults / displayedOptions)}: null}>last_page</IconStyle>
             </div>
         </div>
     )
@@ -68,11 +68,4 @@ const PaginationButton = styled.button<{currentPage: boolean}>`
     border-radius: 4px;
     align-self: flex-start;
     cursor: pointer;
-`
-
-const IconContainer = styled.div<{disabled: boolean}>`
-    color: ${props => props.disabled ? props.theme.colors['gray-7'] : props.theme.colors['gray-3']};
-    ${props => props.disabled && css`
-        cursor: not-allowed;
-    `}
 `

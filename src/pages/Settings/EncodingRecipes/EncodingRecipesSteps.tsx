@@ -5,7 +5,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
 
@@ -96,7 +96,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                         <WatermarkFile className="col lg-col-6 md-col-6  mt1">
                             <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                             <WatermarkDeleteButton>
-                                <Icon style={{ fontSize: "14px" }}>close</Icon>
+                                <IconStyle style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
@@ -132,7 +132,7 @@ export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: F
             </Text>
             <Table className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
             <div className="flex col col-12 mt3">
-                <Icon style={{ marginRight: "10px" }}>info_outlined</Icon>
+                <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
                 <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
         </StepContent>

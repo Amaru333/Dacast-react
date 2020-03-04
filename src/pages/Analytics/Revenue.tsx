@@ -13,7 +13,6 @@ import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
-import { IconSearch } from '../Playlist/List/PlaylistList';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 import { DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyle, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
@@ -22,7 +21,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
-import { IconStyle } from '../../shared/Lists/ListStyle';
+import { IconStyle } from '../../shared/Common/Icon';
 import { presets } from '../../constants/DatepickerPresets';
 
 interface RevenueAnalyticsProps {

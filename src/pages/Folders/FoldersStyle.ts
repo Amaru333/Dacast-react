@@ -1,6 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
-import { ColorsApp } from '../../styled/types';
 
 export const FoldersTreeSection = styled.div`
     display: flex;

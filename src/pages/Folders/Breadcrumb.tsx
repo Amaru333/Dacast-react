@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '../../components/Typography/Text';
 import { useOutsideAlerter } from '../../utils/utils';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
-import { IconStyle } from '../../shared/Lists/ListStyle';
+import { IconStyle } from '../../shared/Common/Icon';
 
 export const Breadcrumb = (props: {options: string; callback: Function; isNavigation?: boolean}) => {
 

@@ -1,20 +1,10 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
-import { IconProps } from '@material-ui/core/Icon';
 import { Card } from '../../components/Card/Card';
 
 export const classContainer = "clearfix mxn2";
 export const classItemFullWidth = "col col-12 px2 mb3";
 export const classItemHalfWidthContainer = "col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3";
 export const classItemFullWidthContainer = "col lg-col-3 md-col-6 sm-col-12 col-12 px2 mb3";
-
-export const CloseCross = styled(Icon)`
-    color: ${props => props.theme.colors['gray-3']};
-`;
-
-export const IconGray1 = styled(Icon) <IconProps>`
-    color: ${props => props.theme.colors['gray-1']};
-`;
 
 export const SupportCard = styled(Card)`
     background-color: ${props => props.theme.colors['violet20']};

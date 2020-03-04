@@ -10,7 +10,7 @@ import { WithdrawalModal } from './WithdrawalModal';
 import { PayoutComponentProps } from '../../../containers/Paywall/Payout';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../styled/types';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
@@ -35,11 +35,11 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                     <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>lol</Text>,
                     <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                         <ActionIcon>
-                            <Icon id={"deleteTooltip" + i} onClick={() =>  {props.deletePaymentMethodRequest(item)}}>delete</Icon>
+                            <IconStyle id={"deleteTooltip" + i} onClick={() =>  {props.deletePaymentMethodRequest(item)}}>delete</IconStyle>
                             <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
-                            <Icon id={"editTooltip" + i} onClick={() =>  {}}>edit</Icon>
+                            <IconStyle id={"editTooltip" + i} onClick={() =>  {}}>edit</IconStyle>
                             <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
                         </ActionIcon>
                     </IconContainer>
@@ -92,7 +92,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                     <Label color={color} backgroundColor={BackgroundColor} label={item.status} />,
                     <IconContainer className="iconAction" key={'withdrawalRequestTableBodyDeleteButton' + i}>
                         <ActionIcon>
-                            <Icon id={"deleteTooltip" + i} onClick={() =>  {}}>delete</Icon>
+                            <IconStyle id={"deleteTooltip" + i} onClick={() =>  {}}>delete</IconStyle>
                             <Tooltip target={"deleteTooltip" + i}></Tooltip>
                         </ActionIcon>
                     </IconContainer>

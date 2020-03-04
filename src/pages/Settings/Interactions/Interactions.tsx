@@ -3,13 +3,13 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { Modal } from '../../../components/Modal/Modal';
 import { MailCatcherModal } from  './MailCatcherModal';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { TextStyle, IconContainer } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
@@ -85,8 +85,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <Icon onClick={(event) => {props.deleteAd(item)}} >delete</Icon>
-                    <Icon onClick={() => editAd(item)}>edit</Icon> 
+                    <IconStyle onClick={(event) => {props.deleteAd(item)}} >delete</IconStyle>
+                    <IconStyle onClick={() => editAd(item)}>edit</IconStyle> 
                 </IconContainer>
             ]}
         })
@@ -104,8 +104,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.mailCatcher.map((row, i) => {
             return {data: [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
-                row.isDefault ? <Icon style={{color:"green"}} key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</Icon> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><Icon onClick={() => {props.deleteMailCatcher(row)}} >delete</Icon><Icon onClick={() => editMailCatcher(row)}>edit</Icon> </IconContainer>
+                row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><IconStyle onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle><IconStyle onClick={() => editMailCatcher(row)}>edit</IconStyle> </IconContainer>
             
             ]}
         })
@@ -124,7 +124,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <>
                         <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex'>
-                            <Icon className="mr1">info_outlined</Icon>
+                            <IconStyle className="mr1">info_outlined</IconStyle>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                         <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
@@ -137,7 +137,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <TextStyle className="pb2" > <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex'>
-                    <Icon className="mr1">info_outlined</Icon>
+                    <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Email Catcher? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 {/* <div className='my2'>   

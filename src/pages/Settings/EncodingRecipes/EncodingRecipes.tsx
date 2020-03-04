@@ -3,7 +3,7 @@ import { Card } from '../../../components/Card/Card';
 import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
@@ -32,7 +32,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
             return (
                 key === 0 ? 
                     {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
-                        <Icon key={'encodingRecipesPage_isDefaultIcon'} style={{color:"green"}}>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</Icon>,
+                        <IconStyle key={'encodingRecipesPage_isDefaultIcon'} coloricon='green'>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</IconStyle>,
                         <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
                             {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
                                 return (
@@ -44,7 +44,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                         <IconContainer key={"encodingRecipesPage_iconContainer_default"}></IconContainer>
                     ]}              
                     : {data: [<Text key={'encodingRecipesPage_' + value.name + key} size={14} weight="reg">{value.name}</Text>,
-                        <Icon key={'encodingRecipesPage_isDefaultIcon' + key} style={{color:"green"}}>{value.isDefault ? "check" : null}</Icon>,
+                        <IconStyle key={'encodingRecipesPage_isDefaultIcon' + key} coloricon='green'>{value.isDefault ? "check" : null}</IconStyle>,
                         <div key={"encodingRecipesPage_labelContainer_" + key}>
                             {    value.recipePresets.map((recipe, key) => {
                                 return (
@@ -55,11 +55,11 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
                         </div>,
                         <IconContainer key={ 'encodingRecipesPage_actionIcons' + key} className="iconAction">
                             <ActionIcon>
-                                <Icon id={"deleteTooltip" + key} onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</Icon>
+                                <IconStyle id={"deleteTooltip" + key} onClick={() => {setDeleteWarningModalOpen(true);setDeletedRecipe(value)}}>delete</IconStyle>
                                 <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
                             </ActionIcon>
                             <ActionIcon>
-                                <Icon id={"editTooltip" + key} onClick={() => editRecipe(value)}>edit</Icon>
+                                <IconStyle id={"editTooltip" + key} onClick={() => editRecipe(value)}>edit</IconStyle>
                                 <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
                             </ActionIcon>                            
                         </IconContainer>
@@ -129,7 +129,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                 </HeaderStyle>
                 <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
                 <div className="flex col col-12 mt2 mb25">
-                    <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
@@ -166,15 +166,6 @@ display: flex;
 align-content: center;
 margin-bottom: 16px;
 `
-
-const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-   ` 
-
 const RenditionLabel = styled(Label)`
     margin: 14px 4px;
 `

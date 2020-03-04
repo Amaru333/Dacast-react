@@ -5,7 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -96,7 +96,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconButton id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -120,7 +120,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                <Icon id="splashscreenTooltip">info_outlined</Icon>
+                                <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
                                 <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
@@ -144,7 +144,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         <ImageContainer className="mr2">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>
-                                <Icon id="thumbnailTooltip">info_outlined</Icon>
+                                <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
                                 <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
@@ -168,7 +168,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <div className="flex flex-center">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Poster</Text>
-                                    <Icon id="posterTooltip">info_outlined</Icon>
+                                    <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                     <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                                 </div>
                             </div>
@@ -249,7 +249,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedVideoLinks">
                     <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
-                        <Icon className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</Icon>
+                        <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
                     </div>    
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
@@ -261,7 +261,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconButton id={item.id} onClick={() => copyKey("embed code here")}><Icon>file_copy_outlined</Icon></IconButton>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>
@@ -282,7 +282,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                    <IconStyle className='pointer' onClick={() => copyKey("JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className="col col-6">
@@ -291,7 +291,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                    <IconStyle className='pointer' onClick={() => copyKey("JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className="col col-6">
@@ -300,7 +300,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                    <IconStyle className='pointer' onClick={() => copyKey("JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className="col col-6">
@@ -309,7 +309,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                    <IconStyle className='pointer' onClick={() => copyKey("JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className="col col-6">
@@ -318,12 +318,12 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconButton onClick={() => copyKey("JS here")}><Icon>file_copy</Icon></IconButton>
+                                    <IconStyle className='pointer' onClick={() => copyKey("JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>   
                         </div>
                         <div className="flex col col-12 mt2 mb25">
-                            <Icon style={{marginRight: "10px"}}>info_outlined</Icon>
+                            <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                             <Text  size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                     </ModalContent>

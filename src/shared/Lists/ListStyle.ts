@@ -1,13 +1,4 @@
 import styled from 'styled-components';
-import { Icon } from '@material-ui/core';
-import { ColorsApp } from '../../styled/types';
-
-export const IconStyle = styled(Icon)<{coloricon: ColorsApp}>`
-    margin: auto;
-    font-size: 20px !important;
-    color: ${props => props.theme.colors[props.coloricon]};
-    
-`
 
 export const IconGreyContainer = styled.div<{}>`
     position: relative;

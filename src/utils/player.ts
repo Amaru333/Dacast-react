@@ -5,7 +5,6 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
     const [player, setPlayer] = React.useState<any>(null);
 
     const initPlayer = () => {
-        console.log('init player')
         let player = dacast(contentId, playerRef.current, {
             height: 341,
             width: '100%',
@@ -32,7 +31,6 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
             // Investigate later why the state variable is null when trying to unmount 
             let player = dacast.players[contentId]
             if(player) {
-                console.log('calling dispose onplauyer')
                 player.dispose()
             }
         };

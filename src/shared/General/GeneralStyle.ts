@@ -41,12 +41,6 @@ export const LinkText = styled(Text)`
     white-space: nowrap;
 `
 
-export const IconButton = styled.button`
-display: block;
-border: none;
-background-color: inherit;
-`
-
 export const ImagesContainer = styled.div`
 flex-direction: row;
 flex-wrap: wrap;

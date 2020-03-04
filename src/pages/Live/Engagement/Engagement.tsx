@@ -3,9 +3,9 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -15,7 +15,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveNewAdModal } from './LiveNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { IconContainer, ActionIcon } from '../../../shared/ActionIconStyle';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
 
 export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
@@ -76,14 +76,14 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon id={"deleteTooltip" + item.id}>
-                        <Icon 
+                        <IconStyle 
                             onClick={(event) => {props.deleteLiveAd(item)}} 
                         >delete
-                        </Icon>
+                        </IconStyle>
                     </ActionIcon>
                     <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
                     <ActionIcon id={"editTooltip" + item.id}>
-                        <Icon onClick={() => editAd(item)}>edit</Icon>
+                        <IconStyle onClick={() => editAd(item)}>edit</IconStyle>
                     </ActionIcon>
                     <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>   
                 </IconContainer>
@@ -101,15 +101,15 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <Icon>lock</Icon> or edit your Advertising Settings </Bubble>
+            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
             <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
                         <Text size={20} weight='med'>Advertising</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
                         {adSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={adSectionEditable}>
@@ -125,7 +125,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     </div>
                     
                     <div className='flex'>
-                        <Icon className="mr1">info_outlined</Icon>
+                        <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
@@ -138,9 +138,9 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>Email Catcher</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockMailSectionTooltip">{adSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
@@ -149,7 +149,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     </div>
                 
                     <div className='flex'>
-                        <Icon>info_outlined</Icon>
+                        <IconStyle>info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle
@@ -169,9 +169,9 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
                         {brandSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockBrandSectionTooltip">{adSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
@@ -198,9 +198,9 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
                     <Tooltip target="unlockEndScreenSectionTooltip">{adSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
