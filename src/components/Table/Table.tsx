@@ -49,7 +49,7 @@ export const Table = (props: TableProps) => {
         return props.body ?
             props.body.map((bodyRow, i) => {
                 return (
-                    <TableBodyRow onClick={(event) => {console.log(event.currentTarget);bodyRow.callback(bodyRow.callbackData)}} key={props.id+"tableBodyRow"+i.toString()}>
+                    <TableBodyRow onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                         {
                             bodyRow.data.map((bodyCell: any, item) => {
                                 return (

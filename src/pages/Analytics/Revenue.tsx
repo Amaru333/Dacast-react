@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
-
-import { Icon } from '@material-ui/core';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
@@ -258,7 +256,7 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
                 </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                     </div>
                 </div>
@@ -274,8 +272,8 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
                     {renderContentsList()}
                 </ContainerHalfSelector>
                 <div className="col col-2" style={{ marginTop: 180 }}>
-                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
                 <ContainerHalfSelector className="col col-5" >
                     <HeaderBorder className="p2">

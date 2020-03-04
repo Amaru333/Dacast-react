@@ -31,7 +31,7 @@ export const DateRangePickerWrapper = (props: {presets?: any}) => {
                 })}
             </div>
         )
-        : null;
+            : null;
     }
 
     return (

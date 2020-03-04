@@ -265,8 +265,8 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                     {renderContentsList()}
                 </AnalyticsContainerHalfSelector>
                 <div className="col col-2" style={{ marginTop: 70 }}>
-                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
                 <AnalyticsContainerHalfSelector className="col col-5" >
                     <HeaderBorder className="p2">
