@@ -149,7 +149,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
             case 'live':
             case 'vod': 
-                return <img key={"thumbnail" + item.id} width={70} height={42} src={item.thumbnail} ></img>
+                return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
             default:
                 return
         }

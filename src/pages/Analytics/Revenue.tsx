@@ -307,7 +307,7 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales per Country">
                         {renderMap(mapData)}
                     </AnalyticsCard>
                 </div>

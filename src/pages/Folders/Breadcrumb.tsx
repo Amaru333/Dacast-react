@@ -42,7 +42,7 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
                 return props.options.split('/').filter(f => f).map((option, i) => {
                     return i < optionsLength ? (
                         <div key={'breadcrumbOption' + option + i} className='flex items-center'>
-                            <span onClick={() => props.callback(props.options.split(option)[0] + option + '/')}><Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 && !props.isNavigation ? 'All files' : option}</Text></span>
+                            <span onClick={() => props.callback(props.options.split(option)[0] + option + '/')}><Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 && !props.isNavigation ? 'All folders' : option}</Text></span>
                             <Text className={i >= optionsLength  - 1 ? 'hide' : ''} size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                         </div>
                     )   : null

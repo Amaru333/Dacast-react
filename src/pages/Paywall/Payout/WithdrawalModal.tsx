@@ -40,7 +40,7 @@ export const WithdrawalModal = (props: {action: Function; toggle: Function}) => 
             <Text size={12} weight='reg' color='gray-3'>*Your first payment request will be delayed at least 35 days</Text>
             <Input className='col col-12 my2' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
             <div className='flex col col-12 my2'>
-                <Button onClick={() => props.action(withdrawalRequest)} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
+                <Button onClick={() => {props.action(withdrawalRequest);props.toggle(false)}} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
                 <Button onClick={() => {props.toggle(false)}} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

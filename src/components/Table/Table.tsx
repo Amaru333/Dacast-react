@@ -27,7 +27,7 @@ export const Table = (props: TableProps) => {
         return props.header.data ? 
             props.header.data.map((headerCell, i) => {
                 return (
-                    <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined'} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
+                    <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={ headerCell.sort ? sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined': false} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
 
                             
                         {

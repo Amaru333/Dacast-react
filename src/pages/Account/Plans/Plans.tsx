@@ -24,6 +24,12 @@ export const PlansPage = (props: {plans: Plans}) => {
     const [stepList, setStepList] = React.useState(fullSteps);
 
     React.useEffect(() => {}, [stepperData, stepList]);
+
+    const purchasePlan = () => {
+        setStepperPlanOpened(false);
+        console.log("plan purchased")
+    }
+
     return (
         <PlansPageContainer isMobile={isMobile}>
             {
@@ -311,7 +317,7 @@ export const PlansPage = (props: {plans: Plans}) => {
                 stepperData={stepperData}
                 updateStepperData={(value: Plan) => setStepperData(value)}
                 functionCancel={setStepperPlanOpened}
-                finalFunction={() => {console.log('yes')}}
+                finalFunction={() => purchasePlan()}
             />
         </PlansPageContainer>
     )
