@@ -18,7 +18,7 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         if(playerRef && playerRef.current)
         {
             let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
-            .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
+                .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
             if(!existingPlayerTag) {
                 const playerScript = document.createElement('script');
                 playerScript.src = "https://player.dacast.com/js/player.js?contentId=" + contentId;

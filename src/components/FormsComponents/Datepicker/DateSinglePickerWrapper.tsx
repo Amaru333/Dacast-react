@@ -20,8 +20,8 @@ export const DateSinglePickerWrapper = (props: {className?: string; callback?: F
         <div className={props.className}>
             {
                 props.datepickerTitle ? 
-                <Text size={14} weight='med'>{props.datepickerTitle}</Text>
-                : null
+                    <Text size={14} weight='med'>{props.datepickerTitle}</Text>
+                    : null
             }
             <SingleDatePicker
                 placeholder='Select date'

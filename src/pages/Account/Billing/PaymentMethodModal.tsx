@@ -166,9 +166,9 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
             </RadioButtonContainer>
             <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
                 <div className='m2'>
-                <Text  size={14} weight='reg' color='gray-1'>
+                    <Text  size={14} weight='reg' color='gray-1'>
                     When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
-                </Text>
+                    </Text>
                 </div>
                 
             </RadioButtonOption>

@@ -30,14 +30,14 @@ export const Table = (props: TableProps) => {
                     <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined'} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
 
                             
-                            {
-                                headerCell.sort ? 
-                                    <div className='flex items-center col col-12'>
-                                        {headerCell.cell}
-                                        <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
-                                    </div>
-                                    : headerCell.cell
-                            }
+                        {
+                            headerCell.sort ? 
+                                <div className='flex items-center col col-12'>
+                                    {headerCell.cell}
+                                    <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
+                                </div>
+                                : headerCell.cell
+                        }
 
 
                     </TableHeaderCell>

@@ -7,7 +7,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
 import { Icon } from '@material-ui/core';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveDetails } from '../../../redux-flow/store/Live/General/types';
@@ -217,7 +217,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                         <div 
                                             className='col col-4 md-col-3 mr2'
                                         >
-                                            <DateSinglePicker 
+                                            <DateSinglePickerWrapper 
                                                 className='mt25'
                                                 id="startDate"
                                             />

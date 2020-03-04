@@ -12,25 +12,25 @@ export const presets = [{
     text: 'Tomorrow',
     start: tomorrow,
     end: tomorrow,
-  },
-  {
+},
+{
     text: 'Last 7 days',
     start: today,
     end: moment().subtract(1, 'week'),
-  },
-  {
+},
+{
     text: 'Last 30 days',
     start: today,
     end: moment().subtract(1, 'month'),
-  },
-  {
+},
+{
     text: 'Last year',
     start: today,
     end: moment().subtract(1, 'year'),
-  },
-  {
+},
+{
     text: 'This Year',
     start: today,
     end: moment().add(1, 'year'),
-  }
+}
 ]

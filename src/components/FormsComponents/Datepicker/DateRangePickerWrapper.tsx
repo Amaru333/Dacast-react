@@ -7,35 +7,37 @@ import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = (props: {presets: any;}) => {
+export const DateRangePickerWrapper = (props: {presets?: any}) => {
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')
 
     const renderDatePresets = () => {    
-        return (
-          <div>
-            {props.presets.map(({ text, start, end }) => {
-              return (
-                <Button
-                  key={text}
-                  className='mx1 mb2'
-                  typeButton='secondary'
-                  buttonColor='blue'
-                  sizeButton='small'
-                  onClick={() => setDates({ startDate: start, endDate: end })}
-                >
-                  {text}
-                </Button>
-              );
-            })}
-          </div>
-        );
-      }
+        return props.presets ?(
+            <div>
+                {props.presets.map(({ text, start, end }) => {
+                    return (
+                        <Button
+                            key={text}
+                            className='mx1 mb2'
+                            typeButton='secondary'
+                            buttonColor='blue'
+                            sizeButton='small'
+                            onClick={() => setDates({ startDate: start, endDate: end })}
+                        >
+                            {text}
+                        </Button>
+                    );
+                })}
+            </div>
+        )
+        : null;
+    }
 
     return (
         <div className='noTransition'>
-            <DateRangePicker  
+            <DateRangePicker 
+                isOutsideRange={() => false} 
                 navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}

@@ -161,7 +161,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         
                                 <>
                                 <div className='col col-4 md-col-3 mb2' >
-                                    <DateSinglePicker
+                                    <DateSinglePickerWrapper
                                         className='mt2' 
                                         id="endDate"
                                         callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}

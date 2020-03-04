@@ -23,6 +23,7 @@ import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheck
 import { AnalyticsCard } from './Dashboard';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 import { IconStyle } from '../../shared/Lists/ListStyle';
+import { presets } from '../../constants/DatepickerPresets';
 
 interface RevenueAnalyticsProps {
     folderData: FoldersInfos;
@@ -254,7 +255,7 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
         <React.Fragment>
             <div className="col col-12 mb25">
                 <div className="col col-12 mb25">
-                    <DateRangePickerWrapper />
+                    <DateRangePickerWrapper presets={presets} />
                 </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
