@@ -38,6 +38,7 @@ export const DateRangePickerWrapper = (props: {presets?: any}) => {
         <div className='noTransition'>
             <DateRangePicker 
                 isOutsideRange={() => false} 
+                isDayHighlighted= {() => false}
                 navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}

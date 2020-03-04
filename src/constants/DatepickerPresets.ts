@@ -15,18 +15,18 @@ export const presets = [{
 },
 {
     text: 'Last 7 days',
-    start: today,
-    end: moment().subtract(1, 'week'),
+    start: moment().subtract(1, 'week'),
+    end: today,
 },
 {
     text: 'Last 30 days',
-    start: today,
-    end: moment().subtract(1, 'month'),
+    start: moment().subtract(1, 'month'),
+    end: today,
 },
 {
     text: 'Last year',
-    start: today,
-    end: moment().subtract(1, 'year'),
+    start: moment().subtract(1, 'year'),
+    end: today,
 },
 {
     text: 'This Year',

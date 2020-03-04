@@ -16,7 +16,7 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
-import { IconGreyContainer } from '../../../shared/Lists/ListStyle';
+import { handleFeatures } from '../../../shared/Common/Features';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -59,35 +59,6 @@ export const PlaylistListPage = (props: LiveListProps) => {
             {cell: <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>},
             {cell: <div style={{ width: "80px" }} ></div>},
         ], defaultSort: 'Created Date'}
-    }
-
-    const handleFeatures = (item: PlaylistItem, id: string) => {
-        var playlistElement = []
-        if (item.features.paywall) {
-            playlistElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
-                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
-                </IconGreyContainer>
-            )
-        }
-        if (item.features.playlist) {
-            playlistElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
-                    <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
-                </IconGreyContainer>
-            )
-        }
-        if (item.features.advertising) {
-            playlistElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"advertisingTooltip" + id}>font_download</IconStyle>
-                    <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
-                </IconGreyContainer>
-            )
-        }
-        return playlistElement;
     }
 
     const liveListBodyElement = () => {

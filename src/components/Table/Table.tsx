@@ -34,7 +34,7 @@ export const Table = (props: TableProps) => {
                             headerCell.sort ? 
                                 <div className='flex items-center col col-12'>
                                     {headerCell.cell}
-                                    <IconStyle>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</IconStyle>
+                                    <IconStyle className='pl1' customsize={18}>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</IconStyle>
                                 </div>
                                 : headerCell.cell
                         }

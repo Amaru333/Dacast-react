@@ -1,3 +1,5 @@
+import { FeaturesList } from '../../../../shared/Common/Features';
+
 export enum ActionTypes {
     GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS",
     GET_LIVE_LIST = "@@live_general/GET_LIVE_LIST",
@@ -30,15 +32,7 @@ export interface LiveItem {
     title: string;
     created: number;
     thumbnail: string;
-    features: LiveFeaturesList;
-}
-
-export interface LiveFeaturesList {
-    recording: boolean;
-    rewind: boolean;
-    paywall: boolean;
-    playlist: boolean;
-    advertising: boolean;
+    features: FeaturesList;
 }
 
 interface LiveStreamCountdown {

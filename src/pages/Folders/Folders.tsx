@@ -21,8 +21,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../components/Badge/Badge';
-import { Tooltip } from '../../components/Tooltip/Tooltip';
-import { IconGreyContainer } from '../../shared/Lists/ListStyle';
+import { handleFeatures } from '../../shared/Common/Features';
 
 const folderTreeConst = [
     'folder1',
@@ -153,47 +152,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             default:
                 return
         }
-    }
-
-    const handleFeatures = (item: FolderAsset, id: string): JSX.Element[] => {
-        var folderElement = []
-        if (item.features.paywall) {
-            folderElement.push(
-                <IconGreyContainer key={'featureIconPaywall' + id} className="mr1" >
-                    <IconStyle id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
-                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
-                </IconGreyContainer>
-            )
-        }
-        if (item.features.recording) {
-            folderElement.push(
-                <IconGreyContainer key={'featureIconRecording' + id} className="mr1" >
-                    <IconStyle id={"recordingTooltip" + id} coloricon='gray-3'>videocam</IconStyle>
-                    <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
-                </IconGreyContainer>)
-        }
-        if (item.features.playlist) {
-            folderElement.push(
-                <IconGreyContainer key={'featureIconPlaylist' + id} className="mr1" >
-                    <IconStyle id={"playlistTooltip" + id} coloricon='gray-3'>video_library</IconStyle>
-                    <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
-                </IconGreyContainer>)
-        }
-        if (item.features.rewind) {
-            folderElement.push(
-                <IconGreyContainer key={'featureIconRewind' + id} className="mr1" >
-                    <IconStyle id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
-                    <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
-                </IconGreyContainer>)
-        }
-        if (item.features.advertising) {
-            folderElement.push(
-                <IconGreyContainer key={'featureIconAdvertising' + id} className="mr1" >
-                    <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>font_download</IconStyle>
-                    <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
-                </IconGreyContainer>)
-        }
-        return folderElement;
     }
 
     const handleMoreActions = (item: FolderAsset): string[] => {

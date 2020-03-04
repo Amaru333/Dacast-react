@@ -1,3 +1,5 @@
+import { FeaturesList } from '../../../../shared/Common/Features';
+
 export enum ActionTypes {
     GET_VOD_DETAILS = "@@vod_general/GET_VOD_DETAILS",
     POST_VOD = "@@vod_general/POST_VOD",
@@ -34,12 +36,6 @@ export interface VodItem {
     thumbnail: string;
     created: number;
     features: FeaturesList;
-}
-
-export interface FeaturesList {
-    paywall: boolean;
-    folder: boolean;
-    playlist: boolean;
 }
 
 export interface SubtitleInfo {

@@ -28,8 +28,19 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, '104301_f_713989');
+    // const [player, setPlayer] = React.useState<any>(null)
+    let player = null
+    React.useEffect(() => {
+        console.log(document.getElementById('vzvd-104301_f_713989'))
+        if(!player) {
+            let newPlayer = new vzPlayer('vzvd-104301_f_713989')
+            newPlayer.ready(() => {
+                player =  newPlayer
+            })
+           
+        }
+    }, [])
+    // let player = usePlayer(playerRef, '104301_f_713989');
 
     const tableHeaderElement = () => {
         return {data: [
@@ -41,18 +52,25 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
 
     const handleClickNextFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
-        if(!player || !player.getPlayerInstance()){
+        if(!player){
             return;
         }
-        player.getPlayerInstance().currentTime += 1/24.0;
+        console.log(player)
+        player.getTime((currentTime: number) => { 
+            console.log(currentTime);
+            player.seekTo(currentTime + 1/24.0)
+        })
     }
 
     const handleClickPrevFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
-        if(!player || !player.getPlayerInstance()){
+        if(!player){
             return;
         }
-        player.getPlayerInstance().currentTime -= 1/24.0;
+        player.getTime((currentTime: number) => {
+            player.seekTo(currentTime - 1/24.0)
+            debugger;
+        })
 
     }
 
@@ -83,12 +101,13 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 <PlayerSection className='col col-12 md-col-6 mr2 mb2'>
                     <PlayerContainer>
                         <div ref={playerRef}>
+                            <iframe id="vzvd-104301_f_713989" name="vzvd-104301_f_713989" title="video player" class="video-player" type="text/html" width="100%" height="341" frameborder="0" allowFullScreen allowTransparency="true" src="https://iframe.dacast.com/b/104301/f/713989/" allow= "autoplay"></iframe>
                         </div>
                     </PlayerContainer>
                     <ButtonsArea className='my2'>
                         <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
                         <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
-                        <Button onClick={() => {setSelectedItem(null);setMarker(player.getPlayerInstance().currentTime); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Marker</Button>
+                        <Button onClick={(event) => {event.preventDefault();setSelectedItem(null);player.getTime((currentTime: number) => {setMarker(currentTime)}); setChapterMarkerModalOpened(true)}} className="right" sizeButton="xs" typeButton="primary" buttonColor="blue">Add Chapter Marker</Button>
                     </ButtonsArea>
                 </PlayerSection>
                 <TableContainer className='col col-12 md-col-6'>

@@ -17,7 +17,7 @@ import { ThemeBulkForm, PaywallBulkForm, DeleteBulkForm, OnlineBulkForm } from '
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { IconGreyContainer } from '../../../shared/Lists/ListStyle';
+import { handleFeatures } from '../../../shared/Common/Features';
 // import { useLocation} from 'react-router-dom'
 
 export interface VideosListProps {
@@ -83,33 +83,6 @@ export const VideosListPage = (props: VideosListProps) => {
             {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
             {cell: <div style={{ width: "80px" }} ></div>},
         ], defaultSort: 'Created Date'}
-    }
-
-    const handleFeatures = (item: VodItem, id: string) => {
-        var vodElement = []
-        if (item.features.paywall) {
-            vodElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"paywallTooltip" + id}>attach_money</IconStyle>
-                    <Tooltip target={"paywallTooltip" + id}>Paywall</Tooltip>
-                </IconGreyContainer>
-            )
-        }
-        if (item.features.folder) {
-            vodElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"folderTooltip" + id}>folder</IconStyle>
-                    <Tooltip target={"folderTooltip" + id}></Tooltip>
-                </IconGreyContainer>)
-        }
-        if (item.features.playlist) {
-            vodElement.push(
-                <IconGreyContainer className="mr1" >
-                    <IconStyle id={"playlistTooltip" + id}>video_library</IconStyle>
-                    <Tooltip target={"playlistTooltip" + id}>Playlist</Tooltip>
-                </IconGreyContainer>)
-        }
-        return vodElement;
     }
 
     const vodListBodyElement = () => {
