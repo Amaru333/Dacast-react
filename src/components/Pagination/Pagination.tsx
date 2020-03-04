@@ -2,7 +2,9 @@ import React from 'react';
 import { Icon } from '@material-ui/core';
 import styled, { css } from 'styled-components';
 import { Text } from '../Typography/Text';
+import { isMobile } from 'react-device-detect'
 import { DropdownButton } from '../FormsComponents/Dropdown/DropdownButton';
+import { useMedia } from '../../utils/utils';
 
 interface PaginationProps { 
     totalResults: number;
@@ -15,6 +17,8 @@ export const Pagination = (props: PaginationProps) => {
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [displayedOptions, setDisplayedOptions] = React.useState<number>(props.displayedItemsOptions[0]);
     
+    let smallScreen = useMedia('(max-width: 780px)')
+
     React.useEffect(() => {
         props.callback(currentPage, displayedOptions)
     }, [currentPage, displayedOptions])
@@ -32,8 +36,8 @@ export const Pagination = (props: PaginationProps) => {
     }
 
     return (    
-        <div className='flex my2'>
-            <div className=' flex items-baseline flex-auto'>
+        <div className={isMobile || smallScreen ? 'flex flex-column mx-auto' : 'flex'}>
+            <div className={'flex items-baseline flex-auto my2' + (isMobile || smallScreen ? ' order-1 mx-auto' : '')}>
                 <Text size={14} weight='reg'>Showing </Text>
                 <DropdownButton
                     className='mx1'
@@ -43,7 +47,7 @@ export const Pagination = (props: PaginationProps) => {
                 />
                 <Text size={14} weight='reg'>of {props.totalResults} results</Text>
             </div>
-            <div className='flex items-baseline'>
+            <div className={'flex items-baseline my2' + (isMobile || smallScreen ? ' order-0' : '')}>
                 <IconContainer disabled={currentPage === 1}><Icon onClick={currentPage !== 1 ? () => {setCurrentPage(1)} : null}>first_page</Icon></IconContainer>
                 <IconContainer disabled={currentPage === 1}><Icon onClick={currentPage !== 1 ? () => {setCurrentPage(currentPage - 1)} : null}>keyboard_arrow_left</Icon></IconContainer>
                 {renderPaginationButtons()}

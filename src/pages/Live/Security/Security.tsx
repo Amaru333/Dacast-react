@@ -6,7 +6,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { SecuritySettings, LiveSecuritySettings } from '../../../redux-flow/store/Live/Security/types';
@@ -125,7 +125,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                 selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
                                 <>        
                                 <div className='col col-4 md-col-3 mb2'>
-                                    <DateSinglePicker 
+                                    <DateSinglePickerWrapper 
                                         className='mt2'
                                         id="startDate"
                                         callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}

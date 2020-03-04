@@ -5,7 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { Preset } from '../../../redux-flow/store/Paywall/Presets/types';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from './PresetsStyle';
 import { Text } from '../../../components/Typography/Text';
 
@@ -110,7 +110,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             {  
                 presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?  
                     <div className='col col-12 py1'>
-                        <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Start Date' />
+                        <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-3 pl1' type='time' defaultValue={presetsList.startTime} label='Start Time' />
                     </div>
                     : null

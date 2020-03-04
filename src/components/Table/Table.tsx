@@ -28,14 +28,17 @@ export const Table = (props: TableProps) => {
             props.header.data.map((headerCell, i) => {
                 return (
                     <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined'} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
-                        <div className='flex items-center'>
-                            {headerCell.cell}
+
+                            
                             {
                                 headerCell.sort ? 
-                                    <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
-                                    : null
+                                    <div className='flex items-center col col-12'>
+                                        {headerCell.cell}
+                                        <Icon>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</Icon>
+                                    </div>
+                                    : headerCell.cell
                             }
-                        </div>
+
 
                     </TableHeaderCell>
                 )
@@ -46,7 +49,7 @@ export const Table = (props: TableProps) => {
         return props.body ?
             props.body.map((bodyRow, i) => {
                 return (
-                    <TableBodyRow onClick={() => {bodyRow.callback(bodyRow.callbackData)}} key={props.id+"tableBodyRow"+i.toString()}>
+                    <TableBodyRow onClick={(event) => {console.log(event.currentTarget);bodyRow.callback(bodyRow.callbackData)}} key={props.id+"tableBodyRow"+i.toString()}>
                         {
                             bodyRow.data.map((bodyCell: any, item) => {
                                 return (

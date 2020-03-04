@@ -8,13 +8,14 @@ export const TableContainer = styled.table<{}>`
     border-collapse: collapse;
     width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
+    border: 1px solid ${props => props.theme.colors["gray-8"]};
 `;
 
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
 export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean}>`
-    border: 1px solid ${props => props.theme.colors["gray-8"]};
+    
     margin: ${props => props.hasContainer ? "0"  : "16px 0" };
     
 `;
@@ -28,6 +29,7 @@ export const TableHeaderRow = styled.tr<{backgroundColor: ColorsApp}>`
 
 export const TableHeaderCell = styled.td<{sortApplied: boolean}>`
     padding-left: 16px;
+    max-width: 150px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
     ${props => props.sortApplied && css `
         border-bottom: 2px solid ${props.theme.colors["dark-violet"]};

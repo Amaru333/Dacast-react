@@ -3,7 +3,7 @@ import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../../components/Typography/Text';
 import { GroupPromo } from '../../../redux-flow/store/Paywall/Groups';
 var moment = require('moment-timezone');
@@ -43,11 +43,11 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
                 <DropdownSingle id='groupPromoRateTypeDropdown' dropdownDefaultSelect={groupPromo.rateType} className='col col-6 pl1 pt1' dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             <div className='col col-12 py2'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code Start Date' />
+                <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Promo Code Start Date' />
                 <Input type='time' label='Start Time' value={groupPromo.startTime} className='col col-3 pl1' onChange={(event) => setGroupPromo({...groupPromo, startTime: event.currentTarget.value})} />
             </div>
             <div className='col col-12 py2'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code End Date' />
+                <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Promo Code End Date' />
                 <Input type='time' label='End Time' value={groupPromo.endTime} className='col col-3 pl1' onChange={(event) => setGroupPromo({...groupPromo, endTime: event.currentTarget.value})} />
             </div>
             <div className=' col col-12 py2'>

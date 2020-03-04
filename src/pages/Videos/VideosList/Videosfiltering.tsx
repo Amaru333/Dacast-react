@@ -2,7 +2,7 @@ import React from 'react';
 import { Filtering } from '../../../components/Filtering/Filtering';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Badge } from '../../../components/Badge/Badge';
 import { Icon } from '@material-ui/core';
 import { Text } from '../../../components/Typography/Text';
@@ -105,11 +105,11 @@ export const VideosFiltering = (props: {}) => {
                 </div>
                 <div className="mb3" id="vodFilterAfter">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                    <DateSinglePicker callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
                 </div>
                 <div className="mb3" id="vodFilterBefore">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                    <DateSinglePicker callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
                 </div>
                 <div className="mb3" id="vodFilterSize">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>

@@ -3,7 +3,7 @@ import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../../components/Typography/Text';
 import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 var moment = require('moment-timezone');
@@ -43,11 +43,11 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                 <DropdownSingle id='promoPresetRateTypeDropdown' dropdownDefaultSelect={promoPreset.rateType} className='col col-6 pl1' dropdownTitle='Rate Type' callback={(value: string) => setPromoPreset({...promoPreset, rateType: value})} list={{'Pay Per View': false, 'Subscription': false}} />
             </div>
             <div className='col col-12 py1'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code Start Date' />
+                <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Promo Code Start Date' />
                 <Input type='time' label='Start Time' value={promoPreset.startTime} className='col col-3 pl1' onChange={(event) => setPromoPreset({...promoPreset, startTime: event.currentTarget.value})} />
             </div>
             <div className='col col-12 py1'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code End Date' />
+                <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Promo Code End Date' />
                 <Input type='time' label='End Time' value={promoPreset.endTime} className='col col-3 pl1' onChange={(event) => setPromoPreset({...promoPreset, endTime: event.currentTarget.value})} />
             </div>
             <div className=' col col-12 py1'>

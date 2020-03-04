@@ -12,6 +12,7 @@ import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
 import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
+import { presets } from '../../constants/DatepickerPresets';
 
 export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 
@@ -85,7 +86,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
         <React.Fragment>
             <div className="col col-12 mb25">
 
-                <DateRangePickerWrapper />
+                <DateRangePickerWrapper presets={presets} />
 
             </div>
             <div className="clearfix mxn1 mb2">

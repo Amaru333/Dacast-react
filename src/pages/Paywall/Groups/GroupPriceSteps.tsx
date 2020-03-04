@@ -4,7 +4,7 @@ import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/Dropd
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Icon } from '@material-ui/core';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { FolderAsset } from '../../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
@@ -85,7 +85,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
             {  
                 stepperData.firststep.startMethod === 'Schedule' && stepperData.firststep.type === 'Pay Per View' ?  
                     <div className='col col-12 py2'>
-                        <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Start Date' />
+                        <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
                     : null

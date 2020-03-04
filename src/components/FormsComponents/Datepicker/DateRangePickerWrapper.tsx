@@ -5,11 +5,33 @@ import { DateRangePicker } from 'react-dates';
 import './datepicker_override.css'
 import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
+import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = () => {
+export const DateRangePickerWrapper = (props: {presets: any;}) => {
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')
+
+    const renderDatePresets = () => {    
+        return (
+          <div>
+            {props.presets.map(({ text, start, end }) => {
+              return (
+                <Button
+                  key={text}
+                  className='mx1 mb2'
+                  typeButton='secondary'
+                  buttonColor='blue'
+                  sizeButton='small'
+                  onClick={() => setDates({ startDate: start, endDate: end })}
+                >
+                  {text}
+                </Button>
+              );
+            })}
+          </div>
+        );
+      }
 
     return (
         <div className='noTransition'>
@@ -18,6 +40,7 @@ export const DateRangePickerWrapper = () => {
                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}
                 showClearDates
+                renderCalendarInfo={() => renderDatePresets()}
                 orientation={mobile ? 'vertical' : 'horizontal'}
                 withFullScreenPortal={mobile}
                 inputIconPosition='after'

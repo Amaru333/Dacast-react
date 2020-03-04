@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security/types';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
@@ -124,7 +124,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
                                 <>        
                                 <div className='col col-4 md-col-3 mb2'>
-                                    <DateSinglePicker 
+                                    <DateSinglePickerWrapper 
                                         className='mt2'
                                         id="startDate"
                                         callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
@@ -160,7 +160,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         
                                 <>
                                 <div className='col col-4 md-col-3 mb2' >
-                                    <DateSinglePicker
+                                    <DateSinglePickerWrapper
                                         className='mt2' 
                                         id="endDate"
                                         callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}

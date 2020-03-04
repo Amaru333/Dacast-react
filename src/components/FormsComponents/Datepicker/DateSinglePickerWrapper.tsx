@@ -3,14 +3,26 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import {SingleDatePicker} from 'react-dates';
 import './datepicker_override.css';
+import { Text } from '../../Typography/Text'
 
-export const DateSinglePickerWrapper = (props: {className: string}) => {
+export const DateSinglePickerWrapper = (props: {className?: string; callback?: Function; id?: string; datepickerTitle?: string}) => {
 
-    const [date, setDate] = React.useState<{startDate: any; endDate: any}>(null)
+    const [date, setDate] = React.useState<any>(null)
     const [focusedInput, setFocusedInput] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        if(props.callback && date) {
+            props.callback(date.toString())
+        }
+    }, [date])
 
     return (
         <div className={props.className}>
+            {
+                props.datepickerTitle ? 
+                <Text size={14} weight='med'>{props.datepickerTitle}</Text>
+                : null
+            }
             <SingleDatePicker
                 placeholder='Select date'
                 showDefaultInputIcon
