@@ -6,7 +6,6 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { BorderStyle } from './PayoutStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { PayoutPaymentMethods } from '../../../redux-flow/store/Paywall/Payout';
-import { TabSetupContainer, TabSetupStyles } from '../../Playlist/Setup/Setup';
 import { Tab } from '../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 
@@ -17,15 +16,17 @@ enum PaymentMethod {
     PayPal = 'PayPal'
 }
 
-const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods) => {
+const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods, paymentMethodRecipientType: string) => {
     return (
-        <div className='my2 flex flex-column'>
+        <div className='flex flex-column'>
             <Text size={20} weight='reg'>Account Details</Text>
-            <Input className='col col-3 pr1' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, routingNumber: event.currentTarget.value}})} />
+             
+                <Input className='col col-3 pr1 mt2' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, routingNumber: event.currentTarget.value}})} />
+            
             <div className='col col-9 my2'>
-                <Input className='col col-4 pr1' id='firstName' label='First Name' indicationLabel='Optional' placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, firstName: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='lastName' label='Last Name' indicationLabel='Optional' placeholder='Last Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, lastName: event.currentTarget.value}})} />
-                <Input className='col col-4 pl1' id='accountName' label='Account Name' placeholder='Account Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, accountName: event.currentTarget.value}})} />
+                <Input className='col col-4 pr1' id='firstName' label="Account Holder's First Name" indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, firstName: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='lastName' label="Account Holder's Last Name" indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='Last Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, lastName: event.currentTarget.value}})} />
+                <Input className='col col-4 pl1' id='accountName' label='Account Name' indicationLabel={paymentMethodRecipientType === "Personal" ? 'Optional' : null} placeholder='Account Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, accountName: event.currentTarget.value}})} />
             </div>
             <div className='col col-9 my2'>
                 <Input className='col col-7 pr1' id='address' label='Address' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, address: event.currentTarget.value}})} />
@@ -38,7 +39,7 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutP
             </div>
 
             <BorderStyle className='my2' />
-            <Text className='my2' size={20} weight='reg'>Bank Details</Text>
+            <Text size={20} weight='reg'>Bank Details</Text>
             <div className='col col-12 my2'>
                 <Input className='col col-4 pr1' id='bankName' label='Bank Name' placeholder='Bank Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankName: event.currentTarget.value}})} />
             </div>
@@ -56,18 +57,18 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutP
 } 
 
 
-const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods) => {
+const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods, paymentMethodRecipientType: string) => {
     return (
-        <div className='my2 flex flex-column'>
+        <div className='flex flex-column'>
             <Text className='col col-12' size={20} weight='reg'>Account Details</Text>
-            <div className='col col-9'>
+            <div className='col col-9 mt2'>
                 <Input className='col col-4 pr1' id='swiftBic' label='SWIFT/BIC' placeholder='SWIFT/BIC' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, swift: event.currentTarget.value}})} />
                 <Input className='col col-4 pl1' id='iban' label='IBAN' indicationLabel='Optional' placeholder='IBAN' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, iban: event.currentTarget.value}})}/>
             </div>
             <div className='col col-9 my2'>
-                <Input className='col col-4 pr1' id='firstName' label='First Name' placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, firstName: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='lastName' label='Last Name' placeholder='Last Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, lastName: event.currentTarget.value}})}/>
-                <Input className='col col-4 pl1' id='accountName' label='Account Name' indicationLabel='Optional' placeholder='Account Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, accountName: event.currentTarget.value}})} />
+                <Input className='col col-4 pr1' id='firstName' label='First Name' indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, firstName: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='lastName' label='Last Name' indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='Last Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, lastName: event.currentTarget.value}})}/>
+                <Input className='col col-4 pl1' id='accountName' label='Account Name' indicationLabel={paymentMethodRecipientType === "Personal" ? 'Optional' : null} placeholder='Account Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, accountName: event.currentTarget.value}})} />
             </div>
             <div className='col col-9 my2'>
                 <Input className='col col-7 pr1' id='address' label='Address' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, address: event.currentTarget.value}})} />
@@ -81,7 +82,7 @@ const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodDa
             </div>
 
             <BorderStyle className='my2' />
-            <Text className='my2' size={20} weight='reg'>Bank Details</Text>
+            <Text size={20} weight='reg'>Bank Details</Text>
             <div className='col col-12 my2'>
                 <Input className='col col-4 pr1' id='bankName' label='Bank Name' placeholder='Bank Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankName: event.currentTarget.value}})} />
             </div>
@@ -101,7 +102,7 @@ const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodDa
 
 const Check = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods) => {
     return (
-        <div className='my2'>
+        <div>
             <Text className='col col-12' size={20} weight='reg'>Check Details</Text>
             <div className='col col-9 my2'>
                 <Input className='col col-7 pr1' id='payee' label='Payee' placeholder='Payee' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, payee: event.currentTarget.value}})}/>
@@ -123,7 +124,7 @@ const Check = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMe
 
 const PayPal = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMethods) => {
     return (
-        <div className='my2'>
+        <div>
             <Text size={20} weight='reg'>PayPal Details</Text>
             <div className='col col-12 my2'>
                 <Input className='col col-4 pr1' id='emailAddress' label='Email Address' placeholder='Email Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, paypal: {...paymentMethodData.paypal, emailAddress: event.currentTarget.value}})} />
@@ -144,13 +145,14 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
         check: null,
         paypal: null,
     });
-    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<string>('business')
+    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<string>('Business')
+
     const renderPaymentMethod = () => {
         switch(selectedPaymentMethod) {
             case PaymentMethod.BankAccountUS: 
-                return BankAccountUS(setPaymentMethodData, paymentMethodData);
+                return BankAccountUS(setPaymentMethodData, paymentMethodData, paymentMethodRecipientType);
             case PaymentMethod.BankAccountInternational:
-                return BankAccountInternational(setPaymentMethodData, paymentMethodData);
+                return BankAccountInternational(setPaymentMethodData, paymentMethodData, paymentMethodRecipientType);
             case PaymentMethod.Check: 
                 return Check(setPaymentMethodData, paymentMethodData);
             case PaymentMethod.PayPal:
@@ -179,11 +181,11 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
     const tabsList: Routes[] = [
         {
             name: "Business",
-            path: 'business'
+            path: 'Business'
         },
         {
             name: 'Personal',
-            path: 'personal'
+            path: 'Personal'
         }
 
     ]
@@ -191,10 +193,15 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
     return (
         <div>
             <Card>
-                <Text size={20} weight='reg'>New payment method</Text>
-                <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
+                <Text size={20} weight='reg'>New Withdrawl Method</Text>
+                <div className="mt2">
+                    <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
+                </div>
                 <div className='my2 flex flex-center'>
-                    <Input className='col col-3 pr1' id='paymentMethodNameInput' label='Name' placeholder='Payout Method Name' />
+                    <div className=' flex flex-column col col-3 pr1'>
+                        <Input className="mb1" id='paymentMethodNameInput' label='Name' placeholder='Payout Method Name' />
+                        <Text size={12} weight="reg">If you have multiple payout methods of the same type, this name will help you </Text>
+                    </div>
                     <DropdownSingle 
                         isInModal
                         className='col col-3 px1'
@@ -204,13 +211,12 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
                         callback={(value: string) => setSelectedPaymentMethod(value)}
                         dropdownDefaultSelect='Bank Account (US)'
                     />
-                    <div style={{marginTop: 2}} className="col col-4 ml1">
-                        <Tab className='col col-12' orientation='horizontal' history={null} list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
-                    </div>
-                    
-                    
-                    
-                    
+                    {
+                        selectedPaymentMethod === 'Bank Account (US)' || selectedPaymentMethod === 'Bank Account (International)' ?  
+                            <div style={{marginTop: 2}} className="col col-4 ml1">
+                                <Tab className='col col-12' orientation='horizontal' history={null} list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
+                            </div> : null
+                    }   
                 </div>
 
                 <BorderStyle className='my2' />
