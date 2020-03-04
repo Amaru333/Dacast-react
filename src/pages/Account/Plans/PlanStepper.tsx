@@ -45,7 +45,7 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
             Object.keys(stepperData.firstStep.custom).map((item, key) => {
                 return( {data: [
                     <Text key={'test'+ key.toString()} size={14} weight='reg' color='gray-3'>{item}</Text>,
-                    <div key={'test22'+ key.toString()} className='col-right col-5'>
+                    <div key={'test22'+ key.toString()} className='col-right col-5 flex mr2'>
                         <Button className='mr2' disabled={stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === 0 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {handleDencreaseButtonClick(item)}}>
                             -
                         </Button>
@@ -74,7 +74,7 @@ export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function
 
     return (
         <div>
-            <Text size={14} weight='reg' color='gray-3'>If you want to edit the amount of your Allowances please do so here.</Text>
+            <Text size={14} weight='reg' color='gray-3'>Add extra Data, Encoding or Storage to your Scale Plan:</Text>
             <Table id='stepperFirstStepTableAllowances' headerBackgroundColor="gray-10" body={AllowancesBodyTable()} />
             <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
             <Text size={12} weight='reg' color='gray-3'>*Billed anually</Text>

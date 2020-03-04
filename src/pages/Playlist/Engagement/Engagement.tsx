@@ -137,7 +137,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
             <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
-                        <Text size={20} weight='med'>Mail Catcher</Text>
+                        <Text size={20} weight='med'>Email Catcher</Text>
                     </TextStyle>
                     <IconStyle className='pointer' id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
@@ -156,7 +156,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <DropdownSingle
                         className="col col-3 mt2" 
                         id="playlistMailCatcherList"
-                        dropdownTitle="Mail Catcher"
+                        dropdownTitle="Email Catcher"
                         dropdownDefaultSelect={engagementSettings.selectedMailCatcher}
                         list={props.playlistEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
                         callback={
@@ -192,7 +192,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                             value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""} 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                     </div>
-                    <Toggle className='' label='Use video title as brand text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
                 </DisabledSection>
             </Card>
 

@@ -155,7 +155,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <DropdownSingle
                         className="col col-3 mt2" 
                         id="LiveMailCatcherList"
-                        dropdownTitle="Mail Catcher"
+                        dropdownTitle="Email Catcher"
                         list={props.liveEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
                         callback={
                             (selectedMailCatcher: string) => {
@@ -189,7 +189,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                             value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""} 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                     </div>
-                    <Toggle className='' label='Use video title as brand text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
                 </DisabledSection>
             </Card>
 
