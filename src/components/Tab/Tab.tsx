@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import { Text } from '../Typography/Text';
 import { TabProps } from './TabTypes';
-import { TabContainer, TabHeaderContainer, TabStyle, TabBody, TabContentStyle } from './TabStyle';
+import { TabContainer, TabHeaderContainer, TabStyle, TabBody, TabContentStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
 import { useMedia } from '../../utils/utils';
@@ -88,6 +88,11 @@ export const Tab = (props: TabProps) => {
 
     return (
         <TabContainer className={mobile ? 'col col-12' : ''} mobile={mobile}>
+            {props.label ? 
+                <TabsLabel>
+                    <Text size={14} weight="med" >{props.label}</Text>
+                </TabsLabel> : null
+            }
             <TabHeaderContainer className={mobile ? 'col col-12' : ''}  mobile={mobile} {...props}>
                 {renderTabs()}
             </TabHeaderContainer>

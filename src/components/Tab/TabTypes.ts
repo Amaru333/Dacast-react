@@ -5,6 +5,7 @@ interface TabSpecificProps {
     orientation: string;
     history: any;
     callback?: Function;
+    label?: string;
 }
 
 export type TabProps = TabSpecificProps & React.HTMLAttributes<HTMLDivElement>;

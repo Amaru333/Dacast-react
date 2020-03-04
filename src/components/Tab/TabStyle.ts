@@ -76,3 +76,7 @@ export const TabContentStyle = styled.div<{isDisplayed: boolean}>`
         flex-direction: column;
     `}
 `;
+
+export const TabsLabel = styled.div`
+    margin-bottom: 4px;
+`

@@ -6,6 +6,9 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { BorderStyle } from './PayoutStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { PayoutPaymentMethods } from '../../../redux-flow/store/Paywall/Payout';
+import { TabSetupContainer, TabSetupStyles } from '../../Playlist/Setup/Setup';
+import { Tab } from '../../../components/Tab/Tab';
+import { Routes } from '../../../containers/Navigation/NavigationTypes';
 
 enum PaymentMethod {
     BankAccountUS = 'Bank Account (US)',
@@ -134,12 +137,14 @@ const PayPal = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentM
 
 export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMethodRequest: Function}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>('Bank Account (US)');
-    const [paymentMethodData, setPaymentMethodData] = React.useState<PayoutPaymentMethods>({
+    const [paymentMethodData, setPaymentMethodData] = React.useState<PayoutPaymentMethods>
+    ({
         bankAccountInternational: null,
         bankAccountUS: null,
         check: null,
         paypal: null,
     });
+    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<string>('business')
     const renderPaymentMethod = () => {
         switch(selectedPaymentMethod) {
             case PaymentMethod.BankAccountUS: 
@@ -171,12 +176,24 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
 
     }
 
+    const tabsList: Routes[] = [
+        {
+            name: "Business",
+            path: 'business'
+        },
+        {
+            name: 'Personal',
+            path: 'personal'
+        }
+
+    ]
+
     return (
         <div>
             <Card>
                 <Text size={20} weight='reg'>New payment method</Text>
                 <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
-                <div className='my2 flex'>
+                <div className='my2 flex flex-center'>
                     <Input className='col col-3 pr1' id='paymentMethodNameInput' label='Name' placeholder='Payout Method Name' />
                     <DropdownSingle 
                         isInModal
@@ -187,6 +204,13 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
                         callback={(value: string) => setSelectedPaymentMethod(value)}
                         dropdownDefaultSelect='Bank Account (US)'
                     />
+                    <div style={{marginTop: 2}} className="col col-4 ml1">
+                        <Tab className='col col-12' orientation='horizontal' history={null} list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
+                    </div>
+                    
+                    
+                    
+                    
                 </div>
 
                 <BorderStyle className='my2' />
