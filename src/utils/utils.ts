@@ -5,7 +5,7 @@ import { showToastNotification } from '../redux-flow/store/Toasts';
 import { updateTitle } from '../redux-flow/store/Title/logic';
 import { store } from '..';
 
-export function numberFormatter(num: number, format: 'k' | 'comma'): string {
+export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
     switch (format) {
         case 'k':
@@ -13,6 +13,9 @@ export function numberFormatter(num: number, format: 'k' | 'comma'): string {
             break;
         case 'comma':
             formatNumeral = '0,0'
+            break;
+        case 'twoDecimalPlace':
+            formatNumeral = '0.00'
             break;
     }
     return numeral(num).format(formatNumeral);
