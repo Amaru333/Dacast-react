@@ -390,7 +390,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             : null 
                     }                     
        
-                    <FoldersFiltering />
+                    <FoldersFiltering setCheckedItems={setCheckedItems} />
                     {
                         selectedFolder === 'Trash' ?
                             <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>

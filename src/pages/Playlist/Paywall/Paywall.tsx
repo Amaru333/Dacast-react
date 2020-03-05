@@ -171,8 +171,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                 <Text size={20} weight='med'>Settings</Text>
                 <Toggle id='PlaylistPaywallEnabledToggle' defaultChecked={playlistPaywallSettings.enabled} onChange={() => setPlaylistPaywallSettings({...playlistPaywallSettings, enabled: !playlistPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
-                {   playlistPaywallSettings.enabled ? 
-                    <>
+                
                         <DropdownSingle 
                             id='PlaylistPaywallThemesDropdown' 
                             className='col col-2 my2' 
@@ -212,9 +211,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                             :
                             <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                         }
-                    </>
-                    : null
-                }
+                   
             </Card>
             <div className={'mt2' + (props.playlistPaywallInfos === playlistPaywallSettings ? ' hide' : '')}>
                 <Button onClick={() => props.savePlaylistPaywallInfos(playlistPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
