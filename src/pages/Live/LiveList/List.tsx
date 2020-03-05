@@ -60,7 +60,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 }
                 }
             />},
-            {cell: <></>},
+            // {cell: <></>},
             {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
             {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
@@ -73,16 +73,18 @@ export const LiveListPage = (props: LiveListProps) => {
         if (props.liveList) {
             return props.liveList.map((value) => {
                 return {data: [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
-                        if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
-                            setSelectedLive([...selectedLive, value.id])
-                        } else {
-                            const editedselectedLive = selectedLive.filter(item => item !== value.id)
-                            setSelectedLive(editedselectedLive);
+                    <div key={"checkbox" + value.id} className='flex items-center'> 
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
+                                setSelectedLive([...selectedLive, value.id])
+                            } else {
+                                const editedselectedLive = selectedLive.filter(item => item !== value.id)
+                                setSelectedLive(editedselectedLive);
+                            }
                         }
-                    }
-                    } />,
-                    <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>,
+                        } />
+                        <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>
+                    </div>,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,

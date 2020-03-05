@@ -117,7 +117,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 }
                 } 
             />},
-            {cell: <span key='tableHeaderEmptyCell1'></span>},
+            // {cell: <span key='tableHeaderEmptyCell1'></span>},
             {cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'Name'},
             {cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>},
             {cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
@@ -189,8 +189,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         if(props.folderData.requestedContent) {
             return props.folderData.requestedContent.map((row) => {
                 return {data: [
-                    <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />,
-                    handleRowIconType(row),
+                    <div key={'foldersTableInputCheckbox' + row.id}  className='flex items-center'>
+                        <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
+                        {handleRowIconType(row)}
+                    </div>,
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,

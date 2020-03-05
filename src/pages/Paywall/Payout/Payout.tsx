@@ -107,9 +107,9 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             {cell: <Button key='withdrawalTableHeaderActionButton' className='right mr2' onClick={() => setWithdrawalModalOpened(true)} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>}
         ]} :
             {data: [
-            {cell: <span key={"emptywithdrawalsTableHeader"}></span>}]
+                {cell: <span key={"emptywithdrawalsTableHeader"}></span>}]
 
-    }}
+            }}
 
 
     const emptyWithdrawalTableBody = (text: string) => {

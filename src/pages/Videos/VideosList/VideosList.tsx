@@ -74,7 +74,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         setSelectedVod([])
                     }
                 }} />},
-            {cell: <></>},
+            // {cell: <></>},
             {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
             {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
             {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
@@ -89,16 +89,18 @@ export const VideosListPage = (props: VideosListProps) => {
         if (props.items) {
             return props.items.map((value) => {
                 return {data: [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedVod.includes(value.id)} id={"checkboxVod" + value.id.toString()} onChange={(event) => {
-                        if (event.currentTarget.checked && selectedVod.length < props.items.length) {
-                            setSelectedVod([...selectedVod, value.id])
-                        } else {
-                            const editedSelectedVod = selectedVod.filter(item => item !== value.id)
-                            setSelectedVod(editedSelectedVod);
+                    <div key={"checkbox" + value.id} className='flex items-center'>
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedVod.includes(value.id)} id={"checkboxVod" + value.id.toString()} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedVod.length < props.items.length) {
+                                setSelectedVod([...selectedVod, value.id])
+                            } else {
+                                const editedSelectedVod = selectedVod.filter(item => item !== value.id)
+                                setSelectedVod(editedSelectedVod);
+                            }
                         }
-                    }
-                    } />,
-                    <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>,
+                        } />
+                        <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>
+                    </div>,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"size" + value.id} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
                     <Text key={"views" + value.id} size={14} weight="reg" color="gray-1">{value.views}</Text>,

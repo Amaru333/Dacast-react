@@ -52,7 +52,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     }
                 }}
             />},
-            {cell: <></>},
+            // {cell: <></>},
             {cell: <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
             {cell: <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
             {cell: <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>},
@@ -65,16 +65,20 @@ export const PlaylistListPage = (props: LiveListProps) => {
         if (props.playlistItems) {
             return props.playlistItems.map((value, key) => {
                 return {data: [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedPlaylist.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
-                        if (event.currentTarget.checked && selectedPlaylist.length < props.playlistItems.length) {
-                            setSelectedPlaylist([...selectedPlaylist, value.id])
-                        } else {
-                            const editedselectedLive = selectedPlaylist.filter(item => item !== value.id)
-                            setSelectedPlaylist(editedselectedLive);
+                    <div key={"checkbox" + value.id}  className='flex items-center'>
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedPlaylist.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedPlaylist.length < props.playlistItems.length) {
+                                setSelectedPlaylist([...selectedPlaylist, value.id])
+                            } else {
+                                const editedselectedLive = selectedPlaylist.filter(item => item !== value.id)
+                                setSelectedPlaylist(editedselectedLive);
+                            }
                         }
-                    }
-                    } />,
-                    <img className="p1" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>,
+                        } />
+                        <img key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>
+                    </div>
+
+                    ,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,

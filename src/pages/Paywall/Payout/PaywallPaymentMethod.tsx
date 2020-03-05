@@ -21,7 +21,7 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutP
         <div className='flex flex-column'>
             <Text size={20} weight='reg'>Account Details</Text>
              
-                <Input className='col col-3 pr1 mt2' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, routingNumber: event.currentTarget.value}})} />
+            <Input className='col col-3 pr1 mt2' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, routingNumber: event.currentTarget.value}})} />
             
             <div className='col col-9 my2'>
                 <Input className='col col-4 pr1' id='firstName' label="Account Holder's First Name" indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, firstName: event.currentTarget.value}})} />

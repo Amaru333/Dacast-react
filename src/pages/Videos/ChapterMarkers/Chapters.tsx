@@ -101,7 +101,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 <PlayerSection className='col col-12 md-col-6 mr2 mb2'>
                     <PlayerContainer>
                         <div ref={playerRef}>
-                            <iframe id="vzvd-104301_f_713989" name="vzvd-104301_f_713989" title="video player" className="video-player" type="text/html" width="100%" height="341" frameborder="0" allowFullScreen allowTransparency={true} src="https://iframe.dacast.com/b/104301/f/713989/" allow= "autoplay"></iframe>
+                            <iframe id="vzvd-104301_f_713989" name="vzvd-104301_f_713989" title="video player" className="video-player" type="text/html" width="100%" height="341" frameBorder="0" allowFullScreen allowTransparency={true} src="https://iframe.dacast.com/b/104301/f/713989/" allow= "autoplay"></iframe>
                         </div>
                     </PlayerContainer>
                     <ButtonsArea className='my2'>
