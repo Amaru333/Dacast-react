@@ -171,8 +171,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 <Text size={20} weight='med'>Settings</Text>
                 <Toggle id='vodPaywallEnabledToggle' defaultChecked={vodPaywallSettings.enabled} onChange={() => setVodPaywallSettings({...vodPaywallSettings, enabled: !vodPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
-                {   vodPaywallSettings.enabled ? 
-                    <>
+                
                         <DropdownSingle 
                             id='vodPaywallThemesDropdown' 
                             className='col col-2 my2' 
@@ -212,9 +211,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                             :
                             <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                         }
-                    </>
-                    : null
-                }
+                   
             </Card>
             <div className={'mt2' + (props.vodPaywallInfos === vodPaywallSettings ? ' hide' : '')}>
                 <Button onClick={() => props.saveVodPaywallInfos(vodPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>

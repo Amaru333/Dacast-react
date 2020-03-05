@@ -42,6 +42,7 @@ const Dashboard = (props: DashboardProps) => {
                         <LiveDashboard profile={props.infos.isLive} />
                         <VodDashboard profile={props.infos.isVod} rightSide={true} fullWidth={false} />
                         <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} />
+                        <TrialAdditionalDashboard />
                     </>
                 )
             } else if(props.infos.isLive && props.infos.isPaywall) {

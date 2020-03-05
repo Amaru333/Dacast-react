@@ -32,8 +32,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     } 
     const encoding = {
         percentage: getPercentage(props.profile.encoding.limit-props.profile.encoding.consumed, props.profile.encoding.limit),
-        left: numberFormatter(props.profile.encoding.limit-props.profile.encoding.consumed, 'k'),
-        limit: numberFormatter(props.profile.encoding.limit, 'k'),
+        left: numberFormatter(props.profile.encoding.limit-props.profile.encoding.consumed, 'twoDecimalPlace'),
+        limit: numberFormatter(props.profile.encoding.limit, 'twoDecimalPlace'),
     } 
 
     const handleButtonToPurchase = (percentage: number) => {

@@ -170,8 +170,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                 <Text size={20} weight='med'>Settings</Text>
                 <Toggle id='LivePaywallEnabledToggle' defaultChecked={livePaywallSettings.enabled} onChange={() => setLivePaywallSettings({...livePaywallSettings, enabled: !livePaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
-                {   livePaywallSettings.enabled ? 
-                    <>
+                
                         <DropdownSingle 
                             id='LivePaywallThemesDropdown' 
                             className='col col-2 my2' 
@@ -211,9 +210,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                             :
                             <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                         }
-                    </>
-                    : null
-                }
+                    
             </Card>
             <div className={'mt2' + (props.livePaywallInfos === livePaywallSettings ? ' hide' : '')}>
                 <Button onClick={() => props.saveLivePaywallInfos(livePaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>

@@ -154,7 +154,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} title='Create Promo Code Group' opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
-                <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} />
+                <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices} />
             </Modal>
             <CustomStepper
                 opened={groupPricesStepperOpened}

@@ -4,7 +4,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
-import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle } from './StepperStyles';
+import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle, StepperNextButton } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
@@ -61,9 +61,9 @@ export const CustomStepper = (props: StepperProps) => {
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
-                    <Button {...props.nextButtonProps} disabled={!stepValidated} onClick={nextStep}>
+                    <StepperNextButton {...props.nextButtonProps} disabled={!stepValidated} onClick={nextStep}>
                         {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
-                    </Button>
+                    </StepperNextButton>
                     {stepIndex !== 0 ?
                         <Button {...props.backButtonProps}  onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
                     }

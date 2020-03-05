@@ -7,7 +7,7 @@ import { Badge } from '../../components/Badge/Badge';
 import { IconStyle } from '../../shared/Common/Icon';
 import { Text } from '../../components/Typography/Text';
 
-export const FoldersFiltering = (props: {}) => {
+export const FoldersFiltering = (props: {setCheckedItems: Function}) => {
 
 
     interface FilteringState {
@@ -120,7 +120,7 @@ export const FoldersFiltering = (props: {}) => {
                     <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
                 </div>
                 <div className="flex" id="folderFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setCheckedItems([]) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
                     <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">

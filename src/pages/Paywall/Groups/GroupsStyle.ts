@@ -50,3 +50,8 @@ export const ItemSetupRow = styled.div<{selected: boolean}>`
         background-color: ${props => props.theme.colors['violet10']};
     }
 `
+
+export const GroupPromoDateContainer = styled.div`
+    display: flex;
+    align-items: flex-end;
+`

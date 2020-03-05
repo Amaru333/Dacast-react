@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Button } from '../FormsComponents/Button/Button';
 
 export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean}>`
     box-sizing: border-box;
@@ -89,4 +90,11 @@ margin-top: 32px;
 `
 export const StepperHeaderStyle = styled.div`
 text-align: center;
+`
+
+export const StepperNextButton = styled(Button)`
+&:focus {
+    background: ${props => props.theme.colors["violet"]};
+    outline: none;
+  };
 `
