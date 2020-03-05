@@ -4,7 +4,7 @@ import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, IconButton, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';

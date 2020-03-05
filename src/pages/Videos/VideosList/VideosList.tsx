@@ -104,7 +104,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"views" + value.id} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <>{handleFeatures(value, value.id.toString())}</>,
+                    <div className='flex'>{handleFeatures(value, value.id.toString())}</div>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
                             <IconStyle onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</IconStyle>

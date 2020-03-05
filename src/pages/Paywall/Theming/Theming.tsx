@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
-import { IconStyle } from '../../../shared/Common/Icon';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,7 +12,6 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { PaywallTheme } from '../../../redux-flow/store/Paywall/Theming';
 import { PaywallThemingComponentProps } from '../../../containers/Paywall/Theming';
-import { IconContainer } from '../../../shared/Theming/ThemingStyle';
 import styled from 'styled-components';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
