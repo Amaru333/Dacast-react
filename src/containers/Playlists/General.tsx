@@ -1,11 +1,12 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getPlaylistDetailsAction, changePlaylistThumbnailAction, editPlaylistDetailsAction, changePlaylistSplashscreenAction, changeLivePosterAction } from '../../redux-flow/store/Playlists/General/actions';
+import { Action, getPlaylistDetailsAction, changePlaylistThumbnailAction, editPlaylistDetailsAction, changePlaylistSplashscreenAction, changePlaylistPosterAction, deletePlaylistThumbnailAction, deletePlaylistSplashscreenAction, deletePlaylistPosterAction } from '../../redux-flow/store/Playlists/General/actions';
 import { connect } from 'react-redux';
 import { PlaylistDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/Playlists/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PlaylistGeneralPage } from '../../pages/Playlist/General/General';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 interface GeneralProps {
@@ -13,8 +14,11 @@ interface GeneralProps {
     editPlaylistDetails: Function;
     getPlaylistDetails: Function;
     changePlaylistThumbnail: Function;
+    deletePlaylistThumbnail: Function;
     changePlaylistSplashscreen: Function;
+    deletePlaylistSplashscreen: Function;
     changePlaylistPoster: Function;
+    deletePlaylistPoster: Function;
 }
 
 const GeneralPlaylist = (props: GeneralProps) => {
@@ -30,7 +34,7 @@ const GeneralPlaylist = (props: GeneralProps) => {
             (
                 <PlaylistGeneralPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 
 }
@@ -52,11 +56,20 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         changePlaylistThumbnail: (data: ThumbnailUpload) => {
             dispatch(changePlaylistThumbnailAction(data))
         },
+        deletePlaylistThumbnail: () => {
+            dispatch(deletePlaylistThumbnailAction())
+        },
         changePlaylistSplashscreen: (data: SplashscreenUpload) => {
             dispatch(changePlaylistSplashscreenAction(data))
         },
+        deletePlaylistSplashscreen: () => {
+            dispatch(deletePlaylistSplashscreenAction())
+        },
         changePlaylistPoster: (data: PosterUpload) => {
-            dispatch(changeLivePosterAction(data))
+            dispatch(changePlaylistPosterAction(data))
+        },
+        deletePlaylistPoster: () => {
+            dispatch(deletePlaylistPosterAction())
         },
     };
 }

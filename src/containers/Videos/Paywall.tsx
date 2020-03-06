@@ -7,6 +7,7 @@ import { Preset, Action, createVodPricePresetAction, saveVodPricePresetAction, d
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface VodPaywallComponentProps {
     vodPaywallInfos: VodPaywallPageInfos;
@@ -40,7 +41,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
 
     return props.vodPaywallInfos && props.groupsInfos && props.theming ? 
         <VodPaywallPage {...props} />
-        : <LoadingSpinner size='medium' color='violet' />
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {

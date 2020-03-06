@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {Datepicker} from '../components/FormsComponents/Datepicker/DateRangePicker';
-import {DateSinglePicker} from '../components/FormsComponents/Datepicker/DateSinglePicker';
+import {DateSinglePickerWrapper} from '../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { withKnobs } from '@storybook/addon-knobs';
 import styled from 'styled-components';
 import "../scss/style.scss";
@@ -24,7 +24,7 @@ stories.add('Date Single picker', () => {
     return(
         <React.Fragment>
             <StorybookDropdownContainerStyle>
-                <DateSinglePicker />
+                <DateSinglePickerWrapper />
             </StorybookDropdownContainerStyle>
         </React.Fragment>
     )

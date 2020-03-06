@@ -1,0 +1,21 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "S3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {},
+            "DeletionPolicy": "Retain"
+        }
+    },
+    "Outputs": {
+        "S3Bucket": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "S3Bucket",
+                    "Arn"
+                ]
+            },
+            "Description": "Name of S3 bucket to hold the state files"
+        }
+    }
+}

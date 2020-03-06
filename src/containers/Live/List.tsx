@@ -6,6 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action, getLiveListAction, deleteLiveChannelAction } from '../../redux-flow/store/Live/General/actions';
 import { LiveItem } from '../../redux-flow/store/Live/General/types';
 import { connect } from 'react-redux';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface LiveListContainerProps {
     liveList: LiveItem[];
@@ -24,7 +25,7 @@ export const LiveList = (props: LiveListContainerProps) => {
     }, [])
 
     if (!props.liveList) {
-        return <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
+        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
             <LiveListPage {...props}/>

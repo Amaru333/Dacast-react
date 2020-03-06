@@ -49,6 +49,11 @@ export interface ChangeVodPoster {
     payload: {poster: string};
 }
 
+export interface DeleteVodPoster {
+    type: ActionTypes.DELETE_VOD_POSTER;
+    payload: {poster: string};
+}
+
 export interface PostVod {
     type: ActionTypes.POST_VOD;
     payload: {};
@@ -172,7 +177,7 @@ export const changeVodSplashscreenAction = (data: SplashscreenUpload): ThunkDisp
     };
 }
 
-export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangeVodPoster> => {
+export const changeVodPosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangeVodPoster> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeVodPoster>) => {
         await VodGeneralServices.changeVodPosterService(data)
             .then(response => {
@@ -185,4 +190,17 @@ export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promis
     };
 }
 
-export type Action = GetVodDetails | EditVodDetails | AddVodSubtitle | EditVodSubtitle | DeleteVodSubtitle | ChangeVodThumbnail | ChangeVodSplashscreen| ChangeVodPoster| GetVodList | PostVod | DeleteVod
+export const deleteVodPosterAction = (): ThunkDispatch<Promise<void>, {}, DeleteVodPoster> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodPoster>) => {
+        await VodGeneralServices.deleteVodPosterService()
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_VOD_POSTER, payload: response.data });
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = GetVodDetails | EditVodDetails | AddVodSubtitle | EditVodSubtitle | DeleteVodSubtitle | ChangeVodThumbnail | ChangeVodSplashscreen| ChangeVodPoster| DeleteVodPoster | GetVodList | PostVod | DeleteVod

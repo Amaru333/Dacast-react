@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getAnalyticsRealTimeDetailsAction, Action, AnalyticsRealTimeState } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface RealTimePageProps {
@@ -25,7 +26,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             (
                 <RealTimeAnalyticsPage {...props.realTimeAnalytics.data} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 
 }

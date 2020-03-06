@@ -7,9 +7,11 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../components/Card/Card';
 import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
-import {CompanyPageContainer, ButtonStyle, BorderStyle, IconStyle, BigIcon, ImageStyle, TextStyle, LinkStyle, ButtonsArea} from './CompanyStyle';
+import {CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
-const {getNames} = require('country-list')
+import { countries } from 'countries-list';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -51,7 +53,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
 
     React.useEffect(() => {
-        setDefaultCountryValue(getNames().filter((item: string) => {return item.includes(CompanyPageDetails.country)})[0])
+        setDefaultCountryValue(countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name)
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
@@ -104,7 +106,15 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         }
     }
 
-
+    const copyKey = (value: string) => {
+        var textArea = document.createElement("textarea");
+        textArea.value = value;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+    }
+    
     return (
         <CompanyPageContainer>
             <Card className='clearfix p2'>
@@ -120,7 +130,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </>
                             :
                         <>
-                        <IconStyle><BigIcon>cloud_upload</BigIcon></IconStyle>
+                        <IconStyle className='pt3 center' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
@@ -139,10 +149,20 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 </div>
 
                 {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
-                <div className="m1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
+                <div className="mb25 ml1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
                 <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
+                    <div className="col col-12 flex flex-column">
+                        <AccountIdLabel>
+                            <Text size={14} weight="med">Account ID</Text>
+                        </AccountIdLabel>
+                        <AccountIdContainer className="col col-3">
+                            <AccountIdText size={14} weight="reg"></AccountIdText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("copied")}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </AccountIdContainer>
+                    </div>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
@@ -162,7 +182,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="businessName" 
                             label="Business Name" 
-                            placeholder="Business Name" 
+                            placeholder="Business Name"
+                            indicationLabel='Optional'
                             required
                             {...handleValidationProps('businessName', validations)} 
                         />
@@ -212,7 +233,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="vatNumber" 
                             label="VAT Number" 
                             placeholder="VAT Number" 
-                            indicationLabel='optional'
+                            indicationLabel='Optional'
                             required={false}
                             {...handleValidationProps('vatNumber', validations)}
                         />
@@ -220,7 +241,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
                     <BorderStyle className="p1 mx1" />
 
-                    <TextStyle className="px1 py2" ><Text size={20} weight='med'>Address</Text></TextStyle>
+                    <TextStyle className="px1 pt2 pb1" >
+                        <Text size={20} weight='med'>Address</Text>
+                        <Text color='gray-4' size={12} weight='reg'>Optional</Text>
+                    </TextStyle>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
@@ -242,7 +266,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="addressLine2" 
                             label="Address line 2" 
                             placeholder="Address line 2" 
-                            indicationLabel='optional'
                             required={false}
                             {...handleValidationProps('addressLine2', validations)}
                         />
@@ -255,7 +278,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
                             label="State" 
-                            indicationLabel='optional'
                             placeholder="State" 
                             required={false}
                             {...handleValidationProps('state', validations)}
@@ -285,7 +307,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             {...handleValidationProps('zipCode', validations)}
                     
                         />
-                        <DropdownSingle hasSearch defaultValue={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1 my1" id='country' dropdownTitle='Country' list={getNames().reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{})} />
+                        <DropdownSingle hasSearch dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
 
                     </div>
                 </form>

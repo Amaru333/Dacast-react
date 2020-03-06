@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
@@ -24,19 +23,10 @@ import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
-import { RealTimeAnalytics } from '../pages/Analytics/RealTime';
 import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
-
-/** TO DO: Remove the functional components and import the real one when they're built */
-
-const functionTest2 = () => {
-    return (
-        <LoadingSpinner size="small" color="red" />
-    )
-}
 
 export const AppRoutes: Routes[] = [   
     {
@@ -120,8 +110,8 @@ export const AppRoutes: Routes[] = [
                 component: Transactions
             },
             {
-                path: '/paywall/payout',
-                name: 'Payout',
+                path: '/paywall/withdrawals',
+                name: 'Withdrawals',
                 component: Payout
             },
             {
@@ -163,7 +153,7 @@ export const AppRoutes: Routes[] = [
             },
             {
                 path: '/settings/apiintegrations',
-                name: 'API & Integration',
+                name: 'API & Integrations',
                 component: ApiIntegration
             },
 

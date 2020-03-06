@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { Store } from "redux";
-import { Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -21,7 +21,13 @@ import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
+import { updateTitleApp, useMedia } from './utils/utils';
+import Dashboard from './containers/Dashboard/Dashboard';
+import Uploader from './containers/Videos/Uploader';
+import ReactDOM from 'react-dom';
+import { Modal } from './components/Modal/Modal';
+import { Text } from './components/Typography/Text';
+import { Button } from './components/FormsComponents/Button/Button';
 import { HelpPage } from './pages/Help/Help';
 
 // Any additional component props go here.
@@ -81,6 +87,8 @@ const returnRouter = (props: Routes[]) => {
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
+    let mobileWidth = useMedia('(max-width:780px');
+
     const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
 
     React.useEffect(() => {
@@ -97,11 +105,48 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
             setOpen(false)
         }
     };
+    /** TO DO: Figure out a way to implement the styled components */
+    const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
+
+        const [isOpen, setIsOpen] = React.useState<boolean>(true);
+
+        // <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} title='Unsaved Changes' opened={isOpen} toggle={() => setIsOpen(!isOpen)}>
+        //     <Text size={14} weight='reg'>{props.message}</Text>
+        //     <Text className='pt2' size={14} weight='med'>Please note any unsaved changes will be lost.</Text>
+        //     <div className='mt2'>
+        //         <Button onClick={() => props.callback(false)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' >Stay</Button>
+        //         <Button onClick={() => props.callback(true)} typeButton='tertiary' sizeButton='large' buttonColor='blue' >Leave</Button>
+        //     </div>
+        // </Modal>
+        return (
+            <div>
+                <span>{props.message}</span>
+                <span className='pt2'>Please note any unsaved changes will be lost.</span>
+                <div className='mt2'>
+                    <button onClick={() => props.callback(false)} >Stay</button>
+                    <button onClick={() => props.callback(true)} >Leave</button>
+                </div>
+            </div>
+        )
+    }
+
+
+    const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
+        const holder = document.getElementById('navigationConfirmationModal')
+        console.log(message)
+        const confirmAndUnmount = (answer: boolean) => {
+            ReactDOM.unmountComponentAtNode(holder)
+            callback(answer)
+        }
+        ReactDOM.render((
+            <NavigationConfirmationModal callback={confirmAndUnmount} message={message} />
+        ), document.getElementById('navigationConfirmationModal'))
+    }
 
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
-                <Router  history={history}>
+                <BrowserRouter getUserConfirmation={getUserConfirmation}>
                     <>
                         <Toasts />
                         <MainMenu 
@@ -109,7 +154,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             onMouseEnter={() => menuHoverOpen()} 
                             onMouseLeave={() => menuHoverClose()} 
                             navWidth={currentNavWidth} 
-                            isMobile={isMobile} 
+                            isMobile={isMobile || mobileWidth} 
                             isOpen={isOpen} 
                             setMenuLocked={setMenuLocked} 
                             setOpen={setOpen} 
@@ -117,19 +162,28 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             history={history} 
                             routes={AppRoutes}
                         />
-                        <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
-                            <Content isMobile={isMobile} isOpen={isOpen}>
+                        
+
+                        <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                            <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                                 <Switch>
+                                    <Route exact path="/">
+                                        <Dashboard />
+                                    </Route>
                                     {returnRouter(AppRoutes)}
+                                    <Route path="/uploader">
+                                        <Uploader postVodDemo={() => {}} />
+                                    </Route>
                                     <Route path="/help">
                                         <HelpPage></HelpPage>
                                     </Route>
                                 </Switch>
                             </Content>
+                            <div id="navigationConfirmationModal"></div>
                         </FullContent>   
                     </>
-                </Router>
+                </BrowserRouter>
             </ThemeProvider>
 
         </Provider>

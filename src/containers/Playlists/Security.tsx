@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { PlaylistSecuritySettings, SecuritySettings } from '../../redux-flow/store/Playlists/Security';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistSecurityContainerProps {
     playlistSecuritySettings: PlaylistSecuritySettings;
@@ -30,7 +31,7 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
     return (
         props.playlistSecuritySettings && props.globalSecuritySettings ? 
             <PlaylistSecurityPage {...props}/>
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

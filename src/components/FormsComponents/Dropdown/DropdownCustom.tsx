@@ -45,7 +45,7 @@ export const DropdownCustom: React.FC<DropdownButtonProps> = (props: DropdownBut
             <ButtonContainer style={{border: 0}} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 {props.children}
             </ButtonContainer>
-            <DropdownList  style={{width: 100, left: -68}} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList hasSearch={false} style={{width: 100, left: -68}} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

@@ -10,42 +10,55 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
     const transactionsTableHeader = () => {
-        return [
-            <Text key='transactionsTableHeaderType' size={14} weight='med'>Type</Text>,
-            <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>,
-            <Text key='transactionsTableHeaderDate' size={14} weight='med'>Date(UTC)</Text>,
-            <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>,
-            <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Viewer Currency</Text>,
-            <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>,
-            <Text key='transactionsTableHeaderUSDBalance' size={14} weight='med'>USD Balance</Text>
-        ]
+        return {data: [
+            {cell: <Text key='transactionsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>},
+            {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>},
+            {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>},
+            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>},
+        ], defaultSort: 'Created Date'}
+    }
+
+    const handleCurrencySymbol = (currency: string) => {
+        switch(currency) {
+            case 'USD':
+                return '$'
+            case 'AUD':
+                return 'AU$'
+            case 'GBP': 
+                return '£'
+            default:
+                return
+        }
     }
 
     const transactionsTableBody = () => {
         if(props.transactionsInfos) {
             return props.transactionsInfos.map((transaction, i) => {
-                return [
+                return {data: [
                     <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
-                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{transaction.price}</Text>,
-                    <Text key='transactionsTableHeaderUSDBalance' size={14} weight='reg'>USD Balance</Text>,
-                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />
-                ]
+                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
+                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />,
+                    <span></span>
+                ]}
             })
         }
     }
     return (
         <div className='flex flex-column'>
-            <div>
+            <div className='col col-12 mb2 flex justify-end'>
+                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='blue'>Export </Button>
                 <TransactionsFiltering />
-                <Button className='mr4 mb2' sizeButton='small' typeButton='secondary' buttonColor='blue'>Export </Button>
-
             </div>
 
-            <Table id='transactionTable' header={transactionsTableHeader()} body={transactionsTableBody()} />
+            <Table id='transactionTable' headerBackgroundColor="white" header={transactionsTableHeader()} body={transactionsTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[10, 30, 40]} callback={() => {}} />
         </div>
     )

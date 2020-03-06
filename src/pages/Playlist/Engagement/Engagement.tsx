@@ -3,9 +3,9 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, IconContainer, Header, UnlockSettingsIcon, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -14,6 +14,9 @@ import { PlaylistEngagementComponentProps } from '../../../containers/Playlists/
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { PlaylistNewAdModal } from './PlaylistNewAdModal';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { usePlayer } from '../../../utils/player';
 
 export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) => {
 
@@ -43,44 +46,10 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
         setNewAdModalOpened(true);
     }
 
-    const [player, setPlayer] = React.useState<any>(null);
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
-
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        }
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        }
-    }, [player])
+    let player = usePlayer(playerRef, '1552_f_297509');
 
 
     React.useEffect(() => {
@@ -88,31 +57,39 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
     }, [props.playlistEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        return [
-            <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>,
-            <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>,
-            <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>,
-            <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+        return {data: [
+            {cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>},
+            {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
+            {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
+            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
                 <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                 <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-            </div>
-        ]
+            </div>}
+        ]}
     }
 
     const advertisingTableBody = () => {
         return props.playlistEngagementSettings.engagementSettings.adList.map((item, i) => {
-            return [
+            return {data: [
                 <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <Icon 
-                        onClick={() => {props.deletePlaylistAd(item)}} 
-                    >delete
-                    </Icon>
-                    <Icon onClick={() => editAd(item)}>edit</Icon> 
+                    <ActionIcon>
+                        <IconStyle 
+                            onClick={() => {props.deletePlaylistAd(item)}}
+                            id={"deleteTooltip" + i} 
+                        >delete
+                        </IconStyle>
+                        <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={"editTooltip" + i} onClick={() => editAd(item)}>edit</IconStyle>
+                        <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
+                    </ActionIcon>
+                     
                 </IconContainer>
-            ]
+            ]}
         })
     }
 
@@ -126,15 +103,16 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <Icon>lock</Icon> or edit your Advertising Settings </Bubble>
+            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
             <Card className='my2'>
-                <Header className="mb2">
+                <Header className="mb25">
                     <TextStyle>
                         <Text size={20} weight='med'>Advertising</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
                         {adSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
+                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={adSectionEditable}>
                     <Toggle
@@ -143,32 +121,28 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                         defaultChecked={engagementSettings.adEnabled} 
                         onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
                     />
-                    {
-                        engagementSettings.adEnabled ?
-                        <>
-                        <div className="py2">
-                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                        </div>
-                        
-                        <div className='flex'>
-                            <Icon className="mr1">info_outlined</Icon>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                        </div>
-                        <Table className="my2" id='advertisingTable' header={advertisingTableHeader()} body={advertisingTableBody()} />
-                        </>
-                            : null
-                    }
+
+                    <div className="pb2">
+                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    </div>
+                    
+                    <div className='flex'>
+                        <IconStyle className="mr1">info_outlined</IconStyle>
+                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                    </div>
+                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
                 </DisabledSection>
             </Card>
 
             <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
-                        <Text size={20} weight='med'>Mail Catcher</Text>
+                        <Text size={20} weight='med'>Email Catcher</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setMailSectionEditable(!mailSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
+                    <Tooltip target="unlockMailSectionTooltip">{mailSectionEditable ? "Click to revert Email Catcher Settings" : "Click to edit Email Catcher Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
                     <div className="pb2">
@@ -176,13 +150,13 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     </div>
                 
                     <div className='flex'>
-                        <Icon>info_outlined</Icon>
+                        <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle
                         className="col col-3 mt2" 
                         id="playlistMailCatcherList"
-                        dropdownTitle="Mail Catcher"
+                        dropdownTitle="Email Catcher"
                         dropdownDefaultSelect={engagementSettings.selectedMailCatcher}
                         list={props.playlistEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
                         callback={
@@ -198,9 +172,10 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
                         {brandSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
+                    <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
@@ -217,7 +192,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                             value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""} 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
                     </div>
-                    <Toggle className='' label='Use video title as brand text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
                 </DisabledSection>
             </Card>
 
@@ -226,9 +201,10 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
-                    </UnlockSettingsIcon>
+                    </IconStyle>
+                    <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>

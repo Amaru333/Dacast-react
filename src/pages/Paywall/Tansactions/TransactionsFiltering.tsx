@@ -2,9 +2,9 @@ import React from 'react';
 import { Filtering } from '../../../components/Filtering/Filtering';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Badge } from '../../../components/Badge/Badge';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 
 export const TransactionsFiltering = (props: {}) => {
@@ -62,14 +62,18 @@ export const TransactionsFiltering = (props: {}) => {
 
     return (
         <>
-            <div className="mb2 clearfix">
-                <Button buttonColor="blue" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
+            <div className="right clearfix">
+                <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
-                    <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
+                    {
+                        activeFilter > 0 ?
+                            <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
+                            : null
+                    }
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >
-                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><Icon className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</Icon></div>
+                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                 <div className="mb3" id="transactionsFilterType">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>
                     <InputCheckbox className="mb2" defaultChecked={filteringState.type.requestPayment}
@@ -99,11 +103,11 @@ export const TransactionsFiltering = (props: {}) => {
                 </div>
                 <div className="mb3" id="transactionFilterStartDate">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Start Date</Text>
-                    <DateSinglePicker callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
+                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
                 </div>
                 <div className="mb3" id="transactionFilterEndDate">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >End Date</Text>
-                    <DateSinglePicker callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
+                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
                 </div>
                 <div className="flex" id="vodFilterbuttons">
                     <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">

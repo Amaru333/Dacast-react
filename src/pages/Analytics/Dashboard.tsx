@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
-import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
 import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, CsvService } from '../../utils/utils';
 import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
@@ -12,7 +11,8 @@ import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { Button } from '../../components/FormsComponents/Button/Button';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
+import { presets } from '../../constants/DatepickerPresets';
 
 export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 
@@ -81,20 +81,20 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
         )
     }
 
+
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
-                {
-                    //Here's the funny part with the DatePicker that we gonna need to update 
-                }
-                <Datepicker className="col-3 right" />
+
+                <DateRangePickerWrapper presets={presets} />
+
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
                     {
                         //So get to the Analytics Card components to understand how it works there's some comments down their
                     }
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Per Time">
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Time">
                         {
                             //Classic Bar Chart, data is an array of value, labels is also an array. Data is for the height of bars ofc and labels are date most of the time (or timestanp in our case)
                         }
@@ -108,7 +108,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                         {
                             //Line chart, here's a double line (plays AND views)pretty much the same as Bar Chart
                         }
@@ -125,7 +125,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                         {
                             //Cheese chart is the easiest one
                             //Data in an array of number and labels array of string
@@ -139,7 +139,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
                         {
                             //This is taken from a package named ReactTable, you can have a look at the doc its well explained
                             // Just columns need to match element in the data (for this one check out the TopContent Type in types.ts for dashboard redux flow)
@@ -152,7 +152,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
                             //Check out the renderMap function there's some comments up here
                         }
@@ -172,7 +172,7 @@ export const DashboardAnalyticsPage = (props: AnalyticsDashboardInfos) => {
 // Data name = name of the file to register the csv might delete later 
 // the chart is in the children state
 // Its used in every file so might need to get it out of here at one point
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data: any; dataName: string}) => {
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data: any; dataName: string; realTime?: boolean}) => {
 
     const exportCsvAnalytics = (data: any) => {
         CsvService.exportToCsv(props.dataName+".csv", Object.values(data));
@@ -182,10 +182,12 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
         <AnalyticsCardStyle className={props.className}>
             <AnalyticsCardHeader>
                 <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
-                <div>
-                    <Icon id={"tooltip" + props.id}>info_outlined</Icon>
-                    <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
-                    <Icon onClick={() => {exportCsvAnalytics(props.data)} } >get_app</Icon>
+                <div className="flex">
+                    <div>
+                        <IconStyle id={"tooltip" + props.id}>info_outlined</IconStyle>
+                        <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
+                    </div>
+                    { !props.realTime ? <IconStyle className="ml2" onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle> : null}   
                 </div>
             </AnalyticsCardHeader>
             {props.children}

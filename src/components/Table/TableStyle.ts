@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import {TableProps} from './TableTypes';
+import { ColorsApp } from '../../styled/types';
 
 export const TableContainer = styled.table<{}>`
     height: auto;
@@ -7,38 +8,32 @@ export const TableContainer = styled.table<{}>`
     border-collapse: collapse;
     width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
+    border: 1px solid ${props => props.theme.colors["gray-8"]};
 `;
 
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div<TableProps & {isMobile: boolean}>`
-    overflow-x: auto;
-    ${props => props.isMobile && css`
-        overflow-x: scroll;
-        ::-webkit-scrollbar {
-            -webkit-appearance: none;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background-color: rgba(0, 0, 0, .5);
-            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-        }
-    `}
-    border: 1px solid ${props => props.theme.colors["gray-8"]};
+export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean}>`
+    
+    margin: ${props => props.hasContainer ? "0"  : "16px 0" };
+    
 `;
 
-export const TableHeaderRow = styled.tr<{}>`
+export const TableHeaderRow = styled.tr<{backgroundColor: ColorsApp}>`
     width: auto;
     height: 52px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: ${props => props.theme.colors[props.backgroundColor]};
     padding-left: 16px;
 `;
 
-export const TableHeaderCell = styled.td<{}>`
+export const TableHeaderCell = styled.td<{sortApplied: boolean}>`
     padding-left: 16px;
+    max-width: 150px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+    ${props => props.sortApplied && css `
+        border-bottom: 2px solid ${props.theme.colors["dark-violet"]};
+    `}
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
@@ -65,7 +60,7 @@ export const TableBodyRow = styled.tr<{}>`
 
 export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
-    max-width: 150px;
+    min-width: 100px;
 `;
 
 export const TableFooterContainer = styled.tfoot<{}>`

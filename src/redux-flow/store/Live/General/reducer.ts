@@ -18,15 +18,27 @@ const reducer: Reducer<LiveDetails> = (state = initialLiveGeneralState, action: 
                 ...state,
                 ...action.payload
             };
+        case ActionTypes.DELETE_LIVE_THUMBNAIL:
+            return {
+                ...state, thumbnail: ""
+            };
         case ActionTypes.CHANGE_LIVE_SPLASHSCREEN:
             return {
                 ...state,
                 ...action.payload
             };
+        case ActionTypes.DELETE_LIVE_SPLASHSCREEN:
+            return {
+                ...state, splashscreen: ""
+            };
         case ActionTypes.CHANGE_LIVE_POSTER:
             return {
                 ...state,
                 ...action.payload
+            };
+        case ActionTypes.DELETE_LIVE_POSTER:
+            return {
+                ...state, poster: ""
             };
         default:
             return state;

@@ -5,7 +5,8 @@ export const ColorPickerHeader = styled.div`
     border: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
     padding: 8px;
-    width: 170px;
+    margin-bottom: 4px;
+    justify-content: space-between;
     &:hover {
         cursor: pointer;
     }
@@ -16,10 +17,13 @@ export const SelectedColor = styled.div<{selectedColor: string}>`
     height: 24px;
     border-radius: 4px;
     background-color: ${props => props.selectedColor};
+    margin-right: 8px;
 `
 
 export const ColorPickerBlock = styled.div<{opened: boolean}>`
     ${props => !props.opened && css`
         display: none;
     `}
+    position: absolute;
+    z-index: 100;
 `

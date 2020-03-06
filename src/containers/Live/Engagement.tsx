@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { LiveEngagementSettings } from "../../redux-flow/store/Live/Engagement/types"
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: LiveEngagementSettings;
@@ -28,7 +29,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
     return (
         props.liveEngagementSettings ?
             <LiveEngagementPage {...props} />
-            : <LoadingSpinner size='medium' color='overlay70' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

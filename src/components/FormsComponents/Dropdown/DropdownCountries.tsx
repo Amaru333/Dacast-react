@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton } from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton, SelectAllItem } from './DropdownStyle';
 import { dropdownIcons, ContinentListType, DropdownCountriesProps} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -291,7 +291,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                             null
                                     }
                                 </SearchItem>
-                                    <DropdownItem isSingle={false} key={key.toString()+"selectAllcountries"} isSelected={false}> 
+                                    <SelectAllItem isSingle={false} key={key.toString()+"selectAllcountries"} isSelected={false}> 
                                         <InputCheckbox 
                                             id={props.id + '_SelectAll'} 
                                             label={"Select All"}
@@ -299,11 +299,11 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                             indeterminate={selectAllState === 'undeterminate'}
                                             defaultChecked={selectAllState === 'checked'}
                                             onChange={() => handleSelectAllChange()}/> 
-                                    </DropdownItem>
+                                    </SelectAllItem>
                                     <BorderItem key={key.toString()+"borderItem"} />
                                 </>
                                 : null}
-                            <DropdownItem isSingle={false} style={{paddingLeft: '4px'}} key={props.id + '_' + continent + key.toString()} isSelected={false}  >
+                            <DropdownItem isSingle={false} style={{paddingLeft: '4px'}} key={props.id + '_' + continent + key.toString()} isSelected={false} className={key === 0 ? 'mt1' : ''} >
                                 <ContinentContainer isDisplayed={Object.keys(checkedContinents[continent].countries).filter(country => !checkedContinents[continent].countries[country].isFiltered).length === 0}>
                                     <ButtonIconStyle onClick={() => setToggleContinent({...toggleContinent, [continent]: !toggleContinent[continent]})}>
                                         <Icon>{toggleContinent[continent] ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}</Icon>

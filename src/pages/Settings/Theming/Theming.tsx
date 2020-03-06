@@ -1,18 +1,19 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, IconContainer, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../components/Card/Card';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
+import { usePlayer } from '../../../utils/player';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -25,15 +26,15 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         isDefault: false,
         createdDate: '',
         themeType: 'vod',
-        bigPlayButton: false,
-        playPause: false,
-        scrubber: false,
+        bigPlayButton: true,
+        playPause: true,
+        scrubber: true,
         scrubbingThumbnail: false,
-        timeCode: false,
-        speedControls: false,
-        qualityOptions: false,
-        volume: false,
-        fullscreen: false,
+        timeCode: true,
+        speedControls: true,
+        qualityOptions: true,
+        volume: true,
+        fullscreen: true,
         thumbnailPosition: 'left',
         isViewerCounterEnabled: false,
         viewerCounterLimit: 100,
@@ -41,82 +42,42 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         socialSharing: false,
         embedCode: false,
         playerTransparency: false,
-        hasCustomColor: false,
-        customColor: '',
+        customMenuColor: '',
+        customOverlayColor: '',
         autoplay: false,
         startVideoMuted: false,
         looping: false,
         continuousPlay: false,
         skipVideos: false,
-        offlineMessage: '',
+        offlineMessage: 'Sorry this media is offline',
         deliveryMethod: 'compatible',
         regionSettings: 'standard'
     };
-    let playerRef = React.useRef<HTMLDivElement>(null);
-    const [player, setPlayer] = React.useState<any>(null);
+
     const togglePadding = 'py1';
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
+    let playerRef = React.useRef<HTMLDivElement>(null);
 
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        }
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    player.play();
-                }
-            })
-        } 
-    }, [player])
+    let player = usePlayer(playerRef, '1552_f_297509');
 
     const ThemingOptions = () => {
         return (
             <>
-                <Heading className='my2'>
-                    <Button onClick={() => {setCurrentPage('list');setShowAdvancedPanel(false)}} sizeButton='xs' typeButton='secondary' buttonColor='blue'><Icon>keyboard_arrow_left</Icon></Button>
-                    <Text size={20} weight='med' className='pl1'>
-                        {
-                            selectedTheme.id === "-1" ?
-                                "New Theme"
-                                : "Edit theme"
-                        }
-                    </Text>
-                </Heading>
                 <ThemingContainer>
                     <div className='col col-12 md-col-4 mr2 flex flex-column' >
                         <ControlsCard className='col col-12'>
                             <TitleSection>
-                                <Text size={20} weight='med'>
-                                    {
-                                        selectedTheme.id === "-1" ?
-                                            "New Theme"
-                                            : "Edit theme"
-                                    }
-                                </Text>
-                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><Icon>keyboard_arrow_left</Icon><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                                <div style={{marginTop: 5}}>
+                                    <Text size={20} weight='med'>
+                                        {
+                                            selectedTheme.id === "-1" ?
+                                                "New Theme"
+                                                : "Edit Theme"
+                                        }
+                                    </Text>
+                                </div>
+                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle>keyboard_arrow_left</IconStyle><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                             </TitleSection>
                             {
                                 showAdvancedPanel ?
@@ -144,7 +105,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 </>
                                     :
                                 <>
-                                    <Input className='mb2' label='Theme name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
+                                    <Input className='mb2' label='Theme Name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
@@ -158,7 +119,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <Toggle className={togglePadding} label='Quality Options' defaultChecked={selectedTheme.qualityOptions} onChange={() => {setSelectedTheme({...selectedTheme, qualityOptions: !selectedTheme.qualityOptions});setSettingsEdited(true)}} />
                                     <Toggle className={togglePadding} label='Volume' defaultChecked={selectedTheme.volume} onChange={() => {setSelectedTheme({...selectedTheme, volume: !selectedTheme.volume});setSettingsEdited(true)}} />
                                     <Toggle className={togglePadding} label='Fullscreen' defaultChecked={selectedTheme.fullscreen} onChange={() => {setSelectedTheme({...selectedTheme, fullscreen: !selectedTheme.fullscreen});setSettingsEdited(true)}} />
-                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'left': false, 'right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});setSettingsEdited(true)}}} />
+                                    <DropdownSingle dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Left': false, 'Right': false}} isInModal={true} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});setSettingsEdited(true)}}} />
                                     <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => {setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled});setSettingsEdited(true)}} />
                                     {
                                         selectedTheme.isViewerCounterEnabled ?
@@ -174,12 +135,14 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
-                                    <Toggle className={togglePadding} label='Custom Color' defaultChecked={selectedTheme.hasCustomColor} onChange={() => {setSelectedTheme({...selectedTheme, hasCustomColor: !selectedTheme.hasCustomColor});setSettingsEdited(true)}} />
-                                    {
-                                        selectedTheme.hasCustomColor ? 
-                                            <ColorPicker defaultColor={selectedTheme.customColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customColor: value});setSettingsEdited(true)}} />
-                                            : null
-                                    }
+                                        <div className='relative'>
+                                            <Text className='pb1' size={14} weight='med'>Overlay Color</Text>
+                                            <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customOverlayColor: value});setSettingsEdited(true)}} />
+                                        </div>
+                                        <div className='my2 relative'>
+                                            <Text className='pb1' size={14} weight='med'>Menu Color</Text>
+                                            <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customMenuColor: value});setSettingsEdited(true)}} />
+                                        </div>
                                     <BorderStyle className="p1" />
 
                                     <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
@@ -204,9 +167,9 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                             : props.saveTheme(selectedTheme)
                                     };setCurrentPage('list')}
                                 }>
-                            save
+                            Save
                             </Button>
-                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>cancel</Button>
+                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>Cancel</Button>
                         </div>
                     </div>
                     <PlayerSection className='col col-12 md-col-8 mr2'>
@@ -222,23 +185,23 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     const ThemingList = () => {
         const themingTableHeader = () => {
-            return [
-                <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>,
-                <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>,
-                <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created</Text>,
-                <Button className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
-            ]
+            return {data: [
+                {cell: <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>},
+                {cell: <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
+                {cell: <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created Date</Text>},
+                {cell: <Button className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>}
+            ]}
         }
 
         const themingTableBody = () => {
             return props.themingList.themes.map((theme, key) => {
-                return [
+                return {data: [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                    theme.isDefault ? <Icon key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
+                    theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
-                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</Icon><Icon onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
+                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><IconStyle onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle><IconStyle onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle> </IconContainer>
 
-                ]
+                ]}
             })
         }
 
@@ -247,10 +210,10 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 <Text className='py2' size={20} weight='med'>Themes</Text>
                 <TextStyle className='py2'><Text size={14} weight='reg'>Some information about Theming</Text></TextStyle>
                 <div className='my2 flex'>
-                    <Icon className="mr1">info_outlined</Icon> 
+                    <IconStyle className="mr1">info_outlined</IconStyle> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
-                <Table className='my2' id='themesListTable' header={themingTableHeader()} body={themingTableBody()} />
+                <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />
             </Card>
         )
     }

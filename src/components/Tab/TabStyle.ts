@@ -41,8 +41,9 @@ export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
     height: 40px;
     justify-content: center;
     align-items: center;
-    min-width: 84px;
+    /* min-width: 84px; */
     width: inherit;
+    padding: 0 16px;
     ${props => props.orientation == 'vertical' && css `
         padding-left: 20px;
         align-items: unset;
@@ -75,3 +76,7 @@ export const TabContentStyle = styled.div<{isDisplayed: boolean}>`
         flex-direction: column;
     `}
 `;
+
+export const TabsLabel = styled.div`
+    margin-bottom: 4px;
+`

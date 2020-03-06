@@ -6,6 +6,7 @@ import { TransactionsPage } from '../../pages/Paywall/Tansactions/Transactions';
 import { getTransactionsAction, Action } from '../../redux-flow/store/Paywall/Transactions/actions';
 import { TransactionsInfos } from '../../redux-flow/store/Paywall/Transactions/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface TransactionsComponentProps {
     transactionsInfos: TransactionsInfos;
@@ -23,7 +24,7 @@ const Transactions = (props: TransactionsComponentProps) => {
     return (
         props.transactionsInfos ?     
             <TransactionsPage {...props} />
-            : <LoadingSpinner size='large' color='yellow80' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 
