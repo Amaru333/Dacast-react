@@ -4,7 +4,7 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../components/Typography/Text';
 import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate } from '../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate, useMedia } from '../../utils/utils';
 import { IconStyle } from '../../shared/Common/Icon';
 import { Label } from '../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
@@ -19,6 +19,8 @@ interface PlanType {
 }
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: DashboardPayingPlan | DashboardTrial; profile: DashboardGeneral}) => {
+
+    let smallScreen = useMedia('(max-width: 40em)')
 
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
@@ -50,14 +52,14 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
     const handleBillingPeriod = () => {
         if( (props.plan as DashboardPayingPlan).nextBill ) {
-            return <Text className="ml-auto" size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
+            return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
         }
     }
 
     return (
         <section className="col col-12">
-            <div className="flex items-baseline mb1">
-                <Text size={24} weight="reg" className="mt0 mb3 inline-block">
+            <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
+                <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb3 inline-block"}>
                     Dashboard
                 </Text>
                 {handleBillingPeriod()}
