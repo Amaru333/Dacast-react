@@ -212,7 +212,7 @@ export const PlanStepperFourthStep = (stepperData: Plan, setStepperData: Functio
 
     React.useEffect(() => {
         setStepValidated(stepperData.termsAndConditions)
-    }, [stepperData])
+    }, [stepperData.termsAndConditions])
 
     const step2header = () => {
         const total: string = stepperData.action === 'custom' ? (stepperData.firstStep.included.price + stepperData.firstStep.total + stepperData.secondStep.total).toLocaleString() : stepperData.firstStep.included.price.toLocaleString();

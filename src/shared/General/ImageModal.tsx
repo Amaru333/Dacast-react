@@ -16,7 +16,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef, '')
+    let player = usePlayer(playerRef, '104301_f_713989')
 
     React.useEffect(() => {
         if (uploadedImage) {
