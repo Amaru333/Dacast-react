@@ -5,19 +5,19 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from "../../../components/Typography/Text"
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
 
 //TABLE ELEMENTS
 export const createRecipeHeaderElement = () => {
-    return [
-        <></>,
-        <Text key={'encodingRecipesPage_Present'} size={14} weight="med">Rendition</Text>,
-        <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>,
-        <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>,
-        <Text key={'encodingRecipesPage_MPX'} size={14} weight="med">MPX (16:9)</Text>
-    ]
+    return {data: [
+        {cell: <></>},
+        {cell: <Text key={'encodingRecipesPage_Present'} size={14} weight="med">Rendition</Text>},
+        {cell: <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>},
+        {cell: <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>},
+        {cell: <Text key={'encodingRecipesPage_MPX'} size={14} weight="med">MPX (16:9)</Text>}
+    ]}
 }
 
 export const recipePresets = [
@@ -40,7 +40,7 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
 
     return recipePresets.map((value, key) => {
 
-        return [
+        return {data: [
             <InputCheckbox key={key + value.id} defaultChecked={stepperData.recipePresets.includes(value.id)} id={value.id} onChange={(event) => {
                 if (event.currentTarget.checked && stepperData.recipePresets.length < 6) {
                     setSelectedRecipe({ ...stepperData }, stepperData.recipePresets.push(value.id))
@@ -58,7 +58,7 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
             <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
             <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>,
             <Text key={'encodingRecipesPage_' + value.mpx + key} size={14} weight="reg">{value.mpx}</Text>
-        ]
+        ]}
     })
 }
 
@@ -96,7 +96,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                         <WatermarkFile className="col lg-col-6 md-col-6  mt1">
                             <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                             <WatermarkDeleteButton>
-                                <Icon style={{ fontSize: "14px" }}>close</Icon>
+                                <IconStyle style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
@@ -130,9 +130,9 @@ export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: F
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
+            <Table className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
             <div className="flex col col-12 mt3">
-                <Icon style={{ marginRight: "10px" }}>info_outlined</Icon>
+                <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
                 <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
         </StepContent>

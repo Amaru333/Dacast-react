@@ -1,3 +1,5 @@
+import { FeaturesList } from '../../../../shared/Common/Features';
+
 export enum ActionTypes {
     GET_PLAYLIST_LIST = "@@playlists/GET_PLAYLIST_LIST",
 }
@@ -17,10 +19,4 @@ export interface PlaylistListState {
 
 export const playlistDefaultState: PlaylistListState = {
     items: []
-}
-
-export interface FeaturesList {
-    paywall: boolean;
-    playlist: boolean;
-    advertising: boolean;
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeLivePosterAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeVodPosterAction, deleteVodPosterAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 interface GeneralProps {
@@ -18,6 +19,7 @@ interface GeneralProps {
     changeVodThumbnail: Function;
     changeVodSplashscreen: Function;
     changeVodPoster: Function;
+    deleteVodPoster: Function;
 }
 
 const General = (props: GeneralProps) => {
@@ -33,7 +35,7 @@ const General = (props: GeneralProps) => {
             (
                 <GeneralPage {...props} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 
 }
@@ -68,8 +70,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(changeVodSplashscreenAction(data))
         },
         changeVodPoster: (data: PosterUpload) => {
-            dispatch(changeLivePosterAction(data))
+            dispatch(changeVodPosterAction(data))
         },
+        deleteVodPoster: () => {
+            dispatch(deleteVodPosterAction())
+        }
     };
 }
 

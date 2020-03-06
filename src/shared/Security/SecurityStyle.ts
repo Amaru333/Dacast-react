@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
 
 export const TextStyle = styled.span<{}>`
     display: block;
@@ -7,7 +6,7 @@ export const TextStyle = styled.span<{}>`
     `
 
 export const ToggleTextInfo = styled.p<{}>`
-    margin-top: 0px;
+    margin-top: 8px;
     margin-block-end: 8px;
     display: inline-flex;
 `
@@ -31,6 +30,7 @@ display: flex;
 align-items: center;
 `
 
-export const UnlockSettingsIcon = styled(Icon)`
-cursor: pointer;
+export const BubbleContent = styled.div`
+display: flex;
+align-items: center;
 `

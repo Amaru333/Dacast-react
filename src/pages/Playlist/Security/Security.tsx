@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, UnlockSettingsIcon, DisabledSection, Header } from '../../../shared/Security/SecurityStyle';
+import { TextStyle, ToggleTextInfo, BorderStyle, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,6 +12,8 @@ import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Setting
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
 import { PlaylistSecurityContainerProps } from '../../../containers/Playlists/Security';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
 
@@ -38,21 +40,30 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
         <div >
             {  !settingsEditable ? 
         
-                <Bubble type='info' className='my2'>          
-        This page is disabled because the settings are in a different place, so if you choose to overide these settings, do so at your own demise 
-                </Bubble> : null
+                <Bubble type='info' className='my2'>
+                    <BubbleContent>         
+                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
+                    </BubbleContent>
+                </Bubble>
+                :
+                <Bubble type='info' className='my2'>
+                    <BubbleContent>         
+                        These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock_open</IconStyle>&nbsp;Padlock to revert to global settings.
+                    </BubbleContent>     
+                </Bubble> 
             }
             <Card>
-                <Header className="pb2">
+                <Header className="pb25">
                     <TextStyle>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </TextStyle>
-                    <UnlockSettingsIcon onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
+                    <IconStyle className='pointer' id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ? 
                             "lock_open"
                             : "lock"
                         }
-                    </UnlockSettingsIcon>
+                    </IconStyle>
+                    <Tooltip target="unlockSecurityTooltip">{settingsEditable ? "Click to revert Security Settings" : "Click to edit Security Settings"}</Tooltip>
                 </Header>
         
                 <DisabledSection settingsEditable={settingsEditable}>
@@ -61,31 +72,18 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <div className='col col-12 mb1'>
                         <Toggle 
                             id="passwordProtectedVideosToggle" 
-                            label='Password Protected Videos' 
+                            label='Password Protection' 
                             onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
                         />
                         <ToggleTextInfo>
-                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password. </Text>
+                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text>
                         </ToggleTextInfo>
                         { togglePasswordProtectedVideo ? 
                             <div className='col col-12'>
                                 <Input 
-                                    type='time' 
-                                    defaultValue={props.playlistSecuritySettings.securitySettings. passwordProtectedVideo.promptTime ? props.playlistSecuritySettings.securitySettings.passwordProtectedVideo.promptTime : '00:00:00'}
-                                    className='col col-3 md-col-2 mb1'
-                                    disabled={false} 
-                                    id='promptTime' 
-                                    label='Prompt Time' 
-                                    required
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    step='1'
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, promptTime: event.currentTarget.value}})}
-                                />
-
-                                <Input 
                                     type='text'
                                     defaultValue={props.playlistSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.playlistSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
-                                    className='col col-4 md-col-3 px1 mb1'
+                                    className='col col-4 md-col-3 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 
@@ -100,16 +98,16 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <BorderStyle className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 mb2 mr1' 
+                            className='col col-4 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.playlistSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -120,16 +118,16 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <BorderStyle className="p1" />
                 
                     <div>
-                        <TextStyle className="py2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 
-                        <TextStyle className="py2" >
-                            <Text size={14} weight='reg' color='gray-1'>Text tbd</Text>
+                        <TextStyle className="pt2" >
+                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
                         <div className="col col-12 pb2">
                             <DropdownSingle 
-                                className="col col-3" 
+                                className="col col-3 my2" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.playlistSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

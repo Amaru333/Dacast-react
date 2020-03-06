@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getAnalyticsDashboardDetailsAction, Action, AnalyticsDashboardState } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface DashboardPageProps {
@@ -25,7 +26,7 @@ const DashboardAnalytics = (props: DashboardPageProps) => {
             (
                 <DashboardAnalyticsPage {...props.dashboardAnalytics.data} />
             )
-            : <LoadingSpinner color='dark-violet' size='large' />
+            :<SpinnerContainer> <LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 
 }

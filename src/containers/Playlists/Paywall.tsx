@@ -7,6 +7,7 @@ import { Preset, Action, createPlaylistPricePresetAction, savePlaylistPricePrese
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistPaywallComponentProps {
     playlistPaywallInfos: PlaylistPaywallPageInfos;
@@ -40,7 +41,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
 
     return props.playlistPaywallInfos && props.groupsInfos && props.theming ? 
         <PlaylistPaywallPage {...props} />
-        : <LoadingSpinner size='medium' color='violet' />
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {

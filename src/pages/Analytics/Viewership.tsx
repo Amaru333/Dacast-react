@@ -4,7 +4,7 @@ import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
 
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
@@ -13,15 +13,15 @@ import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
-import { IconSearch } from '../Playlist/List/PlaylistList';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 import { DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyles, TabSetupStyle, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { IconStyle } from '../Folders/FoldersStyle';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
+import { presets } from '../../constants/DatepickerPresets';
 
 interface ViewershipAnalyticsProps {
     folderData: FoldersInfos;
@@ -43,6 +43,7 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
 
     const [selectedTabConsumption, setSelectedTabConsumption] = React.useState<string>('time');
     const [selectedTabViewing, setSelectedTabViewing] = React.useState<string>('device');
+    const [selectedTabPlayback, setSelectedTabPlayback] = React.useState<string>('map')
 
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.contentType) {
@@ -246,37 +247,37 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
+                <div className="col col-12 mb25">
+
+                    <DateRangePickerWrapper presets={presets} />
+
+                </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                     </div>
                 </div>
-                <ContainerHalfSelector className="col col-5" >
-                    <TabSetupContainer className="clearfix">
-                        <TabSetupStyle className="pointer" selected={true} >
-                            <Text color={"dark-violet"} size={14} weight='reg'>Content</Text>
-                        </TabSetupStyle>
-                    </TabSetupContainer>
-                    <div className="pl1 pr1">
+                <AnalyticsContainerHalfSelector className="col col-5" >
+                    <BreadcrumbContainer className="pl1 pr1">
                         <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                    </div>
+                    </BreadcrumbContainer>
                     {renderContentsList()}
-                </ContainerHalfSelector>
-                <div className="col col-2" style={{ marginTop: 180 }}>
-                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                </AnalyticsContainerHalfSelector>
+                <div className="col col-2" style={{ marginTop: 70 }}>
+                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
-                <ContainerHalfSelector className="col col-5" >
+                <AnalyticsContainerHalfSelector className="col col-5" >
                     <HeaderBorder className="p2">
                         <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
-                </ContainerHalfSelector>
+                </AnalyticsContainerHalfSelector>
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Domain">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Domain">
                         <BarChart
                             datasetName="GBytes"
                             displayBytesFromGB={true}
@@ -287,7 +288,15 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption per Device">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Device">
+                        <CheeseChart
+                            displayBytesFromGB={true}
+                            data={dataCheese}
+                            labels={labelsDevice} />
+                    </AnalyticsCard>
+                </div>
+                <div className="col col-4 px1">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers By Time">
                         <DoubleLineChart
                             datasetName="Hits"
                             noDecimals={false}
@@ -298,14 +307,6 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                             data1={data1}
                             data2={data2}
                             labels={labelsFormate} />
-                    </AnalyticsCard>
-                </div>
-                <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers per Time">
-                        <CheeseChart
-                            displayBytesFromGB={true}
-                            data={dataCheese}
-                            labels={labelsDevice} />
                     </AnalyticsCard>
                 </div>
             </div>
@@ -380,7 +381,37 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
                 </div>
                 <div className="col col-4 px1">
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
-                        {renderMap(mapData, "idMapPlayback")}
+                        <TabSetupContainer className="clearfix">
+                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "device"} onClick={() => { setSelectedTabPlayback("device") }}>
+                                <Text color={selectedTabPlayback === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
+                            </TabSetupStyles>
+                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "content"} onClick={() => { setSelectedTabPlayback("content") }}>
+                                <Text color={selectedTabPlayback === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                            </TabSetupStyles>
+                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "map"} onClick={() => { setSelectedTabPlayback("map") }}>
+                                <Text color={selectedTabPlayback === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
+                            </TabSetupStyles>
+                        </TabSetupContainer>
+                        <BarChart
+                            datasetName="GBytes"
+                            displayBytesFromGB={true}
+                            beginAtZero={true}
+                            data={data}
+                            yAxesName="GB"
+                            labels={labelsFormate}
+                            hidden={selectedTabPlayback !== "device"} />
+                        <BarChart
+                            datasetName="GBytes"
+                            displayBytesFromGB={true}
+                            beginAtZero={true}
+                            data={data}
+                            yAxesName="GB"
+                            labels={labelsFormate}
+                            hidden={selectedTabPlayback !== "content"} />
+                        <div hidden={selectedTabPlayback !== "map"}>
+                            {renderMap(mapData, "idMapPlayback")}
+                        </div>
+                        
                     </AnalyticsCard>
                 </div>
             </div>
@@ -388,3 +419,14 @@ export const ViewershipAnalytics = (props: ViewershipAnalyticsProps) => {
         </React.Fragment>
     )
 }
+
+export const AnalyticsContainerHalfSelector = styled.div<{}>`
+    background-color: white;
+    border: 1px solid ${props => props.theme.colors["gray-7"]};;
+    height: 256px; 
+    overflow-x: scroll;
+`
+
+export const BreadcrumbContainer = styled.div`
+min-height: 52px;
+`

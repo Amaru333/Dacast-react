@@ -9,7 +9,7 @@ import { formSubmit, handleValidationProps, ValueInput } from '../../../utils/ho
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo } from './ProfileStyle'
+import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { ProfilePageInfos } from '../../../redux-flow/store/Account/Profile/types';
 
 var moment = require('moment-timezone');
@@ -113,7 +113,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     </div>
                     <BorderStyle className="p1 mx1" />
 
-                    <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
+                    <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
 
                     <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {props.ProfilePageDetails.lastChangedPassword}</Text></p>
 
@@ -123,21 +123,22 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         
                     <BorderStyle className="p1 mx1"/>
 
-                    <TextStyle className="px1 py2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
+                    <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 
-                    <Toggle id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
-                    <Toggle id="lowDataToggle" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when the data is below a certain percentage or something.</Text></ToggleTextInfo>
+                    <ToggleContainer>
+                        <Toggle id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
+                    </ToggleContainer>
 
-                    <Toggle id="uploadToggle" label='Upload' defaultChecked={props.ProfilePageDetails.upload} {...handleValidationProps('uploadToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>An email will be sent when an upoload has been completed from anyone in your account.</Text></ToggleTextInfo>
-
-                    <Toggle id="weeklyAnalyticsToggle" label='Weekly Analytics' defaultChecked={props.ProfilePageDetails.weeklyAnalytics} {...handleValidationProps('weeklyAnalyticsToggle', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>A weekly email will be sent to you to update you on analytics.</Text></ToggleTextInfo>
-
-                    <Toggle id="apiPingbackNotificationsToggle" label='API Pingback Notifications' defaultChecked={props.ProfilePageDetails.apiPingbackNotifications} {...handleValidationProps('apiPingbackNotificationsToggle', validations)} />
-                    <ToggleTextInfo className="mx3"><Text className="mx2" size={12} weight='reg' color='gray-3'>Send a pingback to notify me if my encoding has completed or failed.</Text></ToggleTextInfo>
+                    <ToggleContainer className="mt25">
+                        <Toggle id="lowDataToggle" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when the your remaining Data falls below 10%.</Text></ToggleTextInfo>
+                    </ToggleContainer>
+                    
+                    <ToggleContainer className="mt25">
+                        <Toggle id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.upload} {...handleValidationProps('uploadToggle', validations)}/>
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
+                    </ToggleContainer>    
                 </form>
 
             </Card>

@@ -19,12 +19,24 @@ const changeLiveThumbnailService = (data: ThumbnailUpload) => {
     return axios.put(urlBase + 'live/thumbnail', {...data})
 }
 
+const deleteLiveThumbnailService = () => {
+    return axios.delete(urlBase + 'live/thumbnail')
+}
+
 const changeLiveSplashscrenService = (data: SplashscreenUpload) => {
     return axios.put(urlBase + 'live/splashscreen', {...data})
 }
 
+const deleteLiveSplashscrenService = () => {
+    return axios.delete(urlBase + 'live/splashscreen')
+}
+
 const changeLivePosterService = (data: PosterUpload) => {
     return axios.put(urlBase + 'live/poster', {...data})
+}
+
+const deleteLivePosterService = () => {
+    return axios.delete(urlBase + 'live/poster')
 }
 
 const deleteLiveChannelService = (data: string) => {
@@ -36,7 +48,10 @@ export const LiveGeneralServices = {
     getLiveList,
     saveLiveDetailsService,
     changeLiveThumbnailService,
+    deleteLiveThumbnailService,
     changeLiveSplashscrenService,
+    deleteLiveSplashscrenService,
     changeLivePosterService,
+    deleteLivePosterService,
     deleteLiveChannelService
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { readableBytes, updateClipboard } from '../../../utils/utils';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export type UploaderItemStates = 'completed' | 'queue' | 'progress' | 'paused' | 'failed' | 'veryfing';
@@ -87,9 +87,9 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                 <Text className="relative ml1 nowrap" size={14} weight="reg" color="gray-3" >{readableBytes(props.size)}</Text>
                 <ProgressItemEndInfos>
                     {renderEndItem()}
-                    <CloseIcon onClick={() => props.actionFunction()} id={"closeIcon" + props.idItem}>{
+                    <IconStyle className='pointer' coloricon='gray-3' onClick={() => props.actionFunction()} id={"closeIcon" + props.idItem}>{
                         props.currentState==='paused' ? "play_for_work" : "close"
-                    }</CloseIcon>
+                    }</IconStyle>
                     <Tooltip target={"closeIcon" + props.idItem} >{handleTooltipCloseText()}</Tooltip>
                 </ProgressItemEndInfos>
             </UploaderItemStyle>
@@ -120,29 +120,29 @@ export const UploaderItemLabel = styled.div<{}>`
 export const ProgressItem = styled.div<{ progress: number; currentState: UploaderItemStates }>`
     width: ${props => props.progress}%;
     ${props => props.currentState === "completed" && css`
-        background-color: ${props => props.theme.colors["green10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["green"]};
+        background-color: ${props.theme.colors["green10"]};
+        border-bottom: 4px solid ${props.theme.colors["green"]};
     `}
-    ${props => props.currentState === "queue" && css`
+    ${props => props.currentState == "queue" && css`
         /** Mmmh nto sure this one is very useful */
-        background-color: ${props => props.theme.colors["yellow10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["yellow"]};
+        background-color: ${props.theme.colors["yellow10"]};
+        border-bottom: 4px solid ${props.theme.colors["yellow"]};
     `}
-    ${props => props.currentState === "progress" && css`
-        background-color: ${props => props.theme.colors["violet10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["violet"]};
+    ${props => props.currentState == "progress" && css`
+        background-color: ${props.theme.colors["violet10"]};
+        border-bottom: 4px solid ${props.theme.colors["violet"]};
     `}
-    ${props => props.currentState === "paused" && css`
-        background-color: ${props => props.theme.colors["yellow10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["yellow"]};
+    ${props => props.currentState == "paused" && css`
+        background-color: ${props.theme.colors["yellow10"]};
+        border-bottom: 4px solid ${props.theme.colors["yellow"]};
     `}
-    ${props => props.currentState === "veryfing" && css`
-        background-color: ${props => props.theme.colors["violet10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["violet"]};
+    ${props => props.currentState == "veryfing" && css`
+        background-color: ${props.theme.colors["violet10"]};
+        border-bottom: 4px solid ${props.theme.colors["violet"]};
     `}
-    ${props => props.currentState === "failed" && css`
-        background-color: ${props => props.theme.colors["red10"]};
-        border-bottom: 4px solid ${props => props.theme.colors["red"]};
+    ${props => props.currentState == "failed" && css`
+        background-color: ${props.theme.colors["red10"]};
+        border-bottom: 4px solid ${props.theme.colors["red"]};
     `}
     position: absolute;
     top: 0;
@@ -162,11 +162,6 @@ export const UploaderItemStyle = styled.div<UploaderItemProps>`
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     flex-wrap: wrap;
     min-width: 260px;
-`
-
-export const CloseIcon = styled(Icon)`
-    color: ${props => props.theme.colors["gray-3"]};
-    cursor: pointer;
 `
 
 export {UploaderItem};

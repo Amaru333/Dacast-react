@@ -1,10 +1,11 @@
 import React from 'react';
-import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
-import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Modal, ModalContent, ModalFooter } from '../../components/Modal/Modal';
+import { Button } from '../../components/FormsComponents/Button/Button';
 import styled, { css } from 'styled-components';
-import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
-import { Text } from "../../../components/Typography/Text"
-import { Icon } from '@material-ui/core';
+import { InputRadio } from '../../components/FormsComponents/Input/InputRadio';
+import { Text } from "../../components/Typography/Text"
+import { IconStyle } from '../../shared/Common/Icon';
+import { usePlayer } from '../../utils/player';
 
 export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
 
@@ -12,8 +13,24 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
 
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [uploadedImage, setUploadedImage] = React.useState<string>("")
-    const [player, setPlayer] = React.useState<any>(null)
+    const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     let playerRef = React.useRef<HTMLDivElement>(null);
+
+    let player = usePlayer(playerRef, '')
+
+    React.useEffect(() => {
+        if (uploadedImage) {
+            setIsSaveDisabled(false)
+        }
+    }, [uploadedImage])
+
+    React.useEffect(() => {
+        if (selectedOption === "frame" || uploadedImage !== "") {
+            setIsSaveDisabled(false)
+        } else { 
+            setIsSaveDisabled(true) 
+        }
+    }, [selectedOption])
 
     const handleClickNextFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
@@ -31,40 +48,6 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
         player.getPlayerInstance().currentTime -= 1/24.0;
     }
 
-    React.useEffect(() => {
-        if(playerRef && playerRef.current)
-        {
-            const playerScript = document.createElement('script');
-            playerScript.src = "https://player.dacast.com/js/player.js";
-            playerRef.current.appendChild(playerScript);
-            playerScript.addEventListener('load', () => {
-
-                setPlayer(dacast('104301_f_769886', playerRef.current, {
-                    player: 'theo',
-                    height: 341,
-                    width: '100%'
-                }))
-
-            })
-        }
-        return () => player ? player.dispose() : null;
-    }, [])
-
-    React.useEffect(() => {
-        if(player) {
-            player.onReady(() => {
-                if(player.getPlayerInstance().autoplay){
-                    let onPlay = () => {
-                        player.getPlayerInstance().pause()
-                        player.getPlayerInstance().removeEventListener('loadedmetadata', onPlay);
-                    };
-                    player.getPlayerInstance().addEventListener('loadedmetadata', onPlay);
-                    
-                }
-            })
-        }
-    }, [player])
-
     const handleSubmit = (ImageModalFunction: Function) => {
         event.preventDefault();
         if (selectedOption === "upload") {
@@ -78,19 +61,19 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     return (
         <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
-                <RadioButtonContainer className="col col-12" isSelected={selectedOption === "upload"}>
+                <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
                 </RadioButtonContainer>
-                <RadioButtonOption className="col col-12 px2 py2" isOpen={selectedOption === "upload"}>
+                <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
                         <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
-                        <Button className="col col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { uploadedImage === "" ? null :
                             <ThumbnailFile className="col col-6 mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
-                                    <Icon onClick={() => setUploadedImage(testThumbnail)} style={{fontSize: "14px"}}>close</Icon>
+                                    <IconStyle onClick={() => setUploadedImage(testThumbnail)} customsize={14}>close</IconStyle>
                                 </button>   
                             </ThumbnailFile>
                         }
@@ -116,7 +99,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                 </RadioButtonOption>
             </ModalContent>
             <ModalFooter>
-                <Button onClick={() => handleSubmit(props.submit)}>Save</Button>
+                <Button disabled={isSaveDisabled} onClick={() => handleSubmit(props.submit)}>Save</Button>
                 <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
             </ModalFooter>
         </Modal>
@@ -128,7 +111,7 @@ const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 8px 24px;
+    padding: 12px 24px;
     background-color: ${props => props.isSelected ? props.theme.colors['violet10'] : props.theme.colors['white'] };
     border: 1px solid ${props => props.theme.colors['gray-7']};
     margin-bottom: 0px;
@@ -141,7 +124,7 @@ const RadioButtonOption = styled.div<{isOpen: boolean}>`
         display: flex;
         flex-direction: column;
         position: relative;
-        border: 1px solid ${props => props.theme.colors['gray-7']};
+        border: 1px solid ${props.theme.colors['gray-7']};
         border-top: none;
     `}
 `

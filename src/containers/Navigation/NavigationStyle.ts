@@ -18,39 +18,24 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         }
     }
     ${props => props.active && css`
-        background: ${props => props.theme.colors["violet20"]} !important;
-        color: ${props => props.theme.colors["dark-violet"]};
+        background: ${props.theme.colors["violet20"]} !important;
+        color: ${props.theme.colors["dark-violet"]};
 
         ${!props.hasSlugs && css`
-          border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+          border-left: 4px solid ${props.theme.colors["dark-violet"]};
         `}
 
         ${!props.isOpen && css`
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]} ;
+        border-left: 4px solid ${props.theme.colors["dark-violet"]} ;
         `}
         
         span{
-            color: ${props => props.theme.colors["dark-violet"]};
+            color: ${props.theme.colors["dark-violet"]};
             font-weight: 500;
         }
     `}
 `;
-export const IconStyle = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin-right: 19px;
-    color: ${props => props.theme.colors["gray-1"]};
-`;
-export const ArrowIconStyle = styled.div<{hidden: boolean}>`
-    display: flex;
-    ${props => props.hidden && css`
-        display: none;
-    `}
-    flex-direction: row;
-    position: absolute;
-    right: 22px;
-    color: ${props => props.theme.colors["gray-7"]};
-`
+
 export const SectionTitle = styled(Text)`
     margin-left:16px;
     margin-bottom: 16px;
@@ -63,14 +48,16 @@ export const ContainerStyle = styled.div<{isOpen: boolean} & MainMenuProps>`
     flex-direction: column;
     height:100%;
     position: fixed;
-    width: ${props => props.isMobile ? "235px" : props.navWidth};
+    width: ${props => props.isMobile ? "75%" : props.navWidth};
+    max-width: 300px;
     box-sizing: border-box;
     background: ${props => props.theme.colors["white"]};
     border-right: 1px solid ${props => props.theme.colors["gray-7"]};
-    overflow-y: scroll;
+    overflow-y: auto;
+
     z-index: 9997;
     ${props => props.isMobile && css`
-        margin-top: 57px;
+        margin-top: 58px;
         transform: translate( ${props.isOpen ? 0: "-100%"} );
         transition: transform .2s linear ;
     `}
@@ -104,9 +91,13 @@ export const BreakStyle = styled.hr`
     margin-bottom: 15px;
     margin-top:0;
 `;
-export const ButtonMenuStyle = styled(Button)`
+export const ButtonMenuStyle = styled(Button)<{ menuOpen: boolean }>`
     width: 90%;
     margin-bottom: 15px;
+    margin-left: 11px;
+    ${props => !props.menuOpen && css`
+        margin-left: 3px;
+    `}
 `;
 
 export const BurgerStyle = styled.div`
@@ -146,9 +137,9 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
     color: ${props => props.theme.colors["black"]};
     align-items: unset;
     ${props => props.selected && css`
-        background-color: ${props => props.theme.colors["violet20"]} !important;
-        color: ${props => props.theme.colors["dark-violet"]} !important;
-        border-left: 4px solid ${props => props.theme.colors["dark-violet"]};
+        background-color: ${props.theme.colors["violet20"]} !important;
+        color: ${props.theme.colors["dark-violet"]} !important;
+        border-left: 4px solid ${props.theme.colors["dark-violet"]};
     `}
     &:hover {
         cursor: pointer;
@@ -159,10 +150,38 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
     }
 `
 
-export const TextStyle = styled(Text) <{selected: boolean}>`
+export const TextStyle = styled(Text)<{selected: boolean}>`
     ${props => props.selected && css`
         color: ${props.theme.colors['dark-violet']};
         margin-left: -4px;
     `}
+`
+
+export const StreamTypeSelectorContainer = styled.div`
+`
+
+export const StreamTypeSelector = styled.div<{selected: boolean}>`
+    height: 144px;
+    cursor: pointer;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid ${props => props.theme.colors["gray-7"]};
+    background-color: ${props => props.theme.colors["gray-10"]};
+    & + & {
+        margin-left: 16px;
+    }
+    ${props => props.selected && css`
+        background-color: ${props.theme.colors["violet10"]};
+        border: 1px solid ${props.theme.colors["dark-violet"]};
+    `}
+`
+export const StreamTypeSelectorContents = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 30px 35px 24px 35px;
+    justify-content: space-between;
+    align-items: center;
 
 `

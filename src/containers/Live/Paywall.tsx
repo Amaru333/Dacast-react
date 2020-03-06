@@ -7,6 +7,7 @@ import { Preset, Action, createLivePricePresetAction, saveLivePricePresetAction,
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface LivePaywallComponentProps {
     livePaywallInfos: LivePaywallPageInfos;
@@ -40,7 +41,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
 
     return props.livePaywallInfos && props.groupsInfos && props.theming ? 
         <LivePaywallPage {...props} />
-        : <LoadingSpinner size='medium' color='violet' />
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {

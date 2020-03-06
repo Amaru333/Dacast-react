@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import styled, { css } from 'styled-components';
 import { Text } from '../Typography/Text'
 
@@ -26,7 +26,7 @@ export const Bubble = (props: BubbleProps) => {
     }
     return (
         <BubbleContainer {...props} >
-            <Icon>{renderIcon()}</Icon>
+            <IconStyle>{renderIcon()}</IconStyle>
             <TextStyle>
                 <Text color='gray-1' size={16} weight='reg' >
                     {props.children}

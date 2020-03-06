@@ -2,15 +2,14 @@ import React from 'react';
 import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { FolderAsset } from '../../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
-import { IconStyle } from '../../Folders/FoldersStyle';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
 import { GroupStepperData } from './Groups';
 
@@ -48,7 +47,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
                     {
                         key === stepperData.firststep.price.length - 1 ? 
                             <Button onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className='mx2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>+</Button> 
-                            : <Icon onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</Icon>
+                            : <IconStyle onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
                     }
                 </div>
             )
@@ -85,7 +84,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
             {  
                 stepperData.firststep.startMethod === 'Schedule' && stepperData.firststep.type === 'Pay Per View' ?  
                     <div className='col col-12 py2'>
-                        <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Start Date' />
+                        <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
                     : null
@@ -231,7 +230,7 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
     return (
         <>
             <div className="inline-flex items-center flex col-12 mb2">
-                <Icon>search</Icon>
+                <IconStyle>search</IconStyle>
                 <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'inherit'}} defaultTags={[]}   />
             </div>
             <ContainerHalfSelector className="col col-5" >
@@ -241,8 +240,8 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
                 {renderContentsList()} 
             </ContainerHalfSelector>
             <div className="col col-2" style={{marginTop: 180}}>
-                <Button onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                <Button onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">

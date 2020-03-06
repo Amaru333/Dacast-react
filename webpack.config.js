@@ -4,9 +4,13 @@ const path = require('path'),
     CopyWebpackPlugin = require('copy-webpack-plugin');
 const SRC = path.resolve(__dirname, 'public/assets/');
 
+var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
+
+
 module.exports = {
     entry: {
-        app: ['./src/index.tsx'],
+        app: ['@babel/polyfill', './src/index.tsx'],
+        admin: ['@babel/polyfill', './src/index.tsx'],
         vendor: ['react', 'react-dom']
     },
     output: {
@@ -26,6 +30,19 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: 'babel-loader',
+                options: {
+                    presets: [
+                        [
+                            "@babel/preset-env",
+                            {
+                                "targets": {
+                                    "browsers": ["last 2 versions", "ie >= 11"],
+                                },
+                            }
+                        ],
+                        "@babel/preset-react"
+                    ]
+                }
             },
             {
                 test: /\.js$/,
@@ -54,7 +71,18 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') }),
+        // Build html for the client app
+        new HtmlWebpackPlugin({ 
+            template: path.resolve(__dirname, 'src', 'index.html'),
+            excludeAssets: [/admin.*/]
+        }),
+        // Build html for the admin site
+        new HtmlWebpackPlugin({ 
+            filename: 'admin.html',
+            template: path.resolve(__dirname, 'src', 'index.html'),
+            excludeAssets: [/app.*/]
+        }),
+        new HtmlWebpackExcludeAssetsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
             { from: './public/iframe', to: './public/iframe' },

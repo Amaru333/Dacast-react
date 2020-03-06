@@ -1,3 +1,5 @@
+import { FeaturesList } from '../../../shared/Common/Features';
+
 export enum ActionTypes {
     GET_FOLDERS = "@@folders/GET_FOLDERS",
     GET_FOLDER_CONTENT = "@@folders/GET_FOLDER_CONTENT",
@@ -27,18 +29,9 @@ export interface FolderAsset {
     contentType: 'playlist' | 'vod' | 'live' | 'folder';
     created: string;
     duration: string;
-    features: FolderAssetFeature;
-    status: 'deleted' | 'offline' | 'online';
+    features: FeaturesList;
+    status: 'Deleted' | 'Offline' | 'Online';
 
-}
-
-export interface FolderAssetFeature {
-    recording: boolean;
-    rewind: boolean;
-    paywall: boolean;
-    playlist: boolean;
-    advertising: boolean;
-    folder: boolean;
 }
 
 export interface FoldersInfos {

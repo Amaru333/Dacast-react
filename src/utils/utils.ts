@@ -5,7 +5,7 @@ import { showToastNotification } from '../redux-flow/store/Toasts';
 import { updateTitle } from '../redux-flow/store/Title/logic';
 import { store } from '..';
 
-export function numberFormatter(num: number, format: 'k' | 'comma'): string {
+export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
     switch (format) {
         case 'k':
@@ -13,6 +13,9 @@ export function numberFormatter(num: number, format: 'k' | 'comma'): string {
             break;
         case 'comma':
             formatNumeral = '0,0'
+            break;
+        case 'twoDecimalPlace':
+            formatNumeral = '0.00'
             break;
     }
     return numeral(num).format(formatNumeral);
@@ -87,11 +90,11 @@ export const getNameFromFullPath = (fullPath: string): string => {
     return split[split.length - 1]
 }
 
-const roundTo2decimals = (num) => {
+const roundTo2decimals = (num: number) => {
     return Math.round(num * 100) / 100;
 }
 
-export function displayTimeForHumans(seconds) {
+export function displayTimeForHumans(seconds: number) {
     if (seconds === 0) {
         return '0 sec'
     }
@@ -104,7 +107,7 @@ export function displayTimeForHumans(seconds) {
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
 }
 
-export function displayBytesForHumans(mbAmount, fromGB = false) {
+export function displayBytesForHumans(mbAmount: number, fromGB = false) {
     //amount in MB
     let units = ['MB', 'GB', 'TB'];
     if (fromGB) {
@@ -132,7 +135,7 @@ export function displayBytesForHumans(mbAmount, fromGB = false) {
  * lerpColor('#000000', '#ffffff', 0.5)
  * @returns {String}
  */
-export const lerpColor = (a, b, amount) => {
+export const lerpColor = (a: string, b: string, amount: number): string => {
 
     var ah = parseInt(a.replace(/#/g, ''), 16),
         ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
@@ -145,7 +148,7 @@ export const lerpColor = (a, b, amount) => {
     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 }
 
-export const logScale = (value, minp, maxp, minv, maxv) => {
+export const logScale = (value: number, minp: number, maxp: number, minv: number, maxv: number) => {
     var minv = Math.log(minv);
     var maxv = Math.log(maxv);
 
@@ -155,7 +158,7 @@ export const logScale = (value, minp, maxp, minv, maxv) => {
     return Math.exp(minv + scale * (value - minp));
 }
 
-export const mapMarkerNameTranformBytesFromGB = (name, value, datasetName) => {
+export const mapMarkerNameTranformBytesFromGB = (name: string, value: number) => {
     return name + ': ' + displayBytesForHumans(value, true);
 }
 

@@ -3,7 +3,7 @@ import { Table } from '../../../components/Table/Table';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../components/Typography/Text';
 import { tsToLocaleDate } from '../../../utils/utils';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import styled from 'styled-components';
 import { Pagination } from '../../../components/Pagination/Pagination'
@@ -14,6 +14,9 @@ import { DropdownList, DropdownItem, DropdownItemText } from '../../../component
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { handleFeatures } from '../../../shared/Common/Features';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -26,11 +29,15 @@ export const PlaylistListPage = (props: LiveListProps) => {
     const [showPlaylistTabs, setShowPlaylistTabs] = React.useState<boolean>(false)
     const [selectedPlaylistId, setSelectedPlaylistId] = React.useState<PlaylistItem>(null)
 
+    React.useEffect(() => {
+        setShowPlaylistTabs(location.pathname !== '/playlists')
+    }, [location])
+
     React.useEffect(() => { }, [selectedPlaylist])
 
     const liveListHeaderElement = () => {
-        return [
-            <InputCheckbox
+        return {data: [
+            {cell: <InputCheckbox
                 className="inline-flex"
                 key="checkboxLiveListBulkAction"
                 indeterminate={selectedPlaylist.length >= 1 && selectedPlaylist.length < props.playlistItems.length}
@@ -44,50 +51,49 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         setSelectedPlaylist([])
                     }
                 }}
-            />,
-            <></>,
-            <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>,
-            <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created</Text>,
-            <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>,
-            <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>,
-            <div style={{ width: "80px" }} ></div>,
-        ]
-    }
-
-    const handleFeatures = (item: PlaylistItem) => {
-        var playlistElement = []
-        if (item.features.paywall) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>attach_money</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.playlist) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>video_library</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.advertising) {
-            playlistElement.push(<IconGreyContainer className="mr1" ><IconStyle>font_download</IconStyle></IconGreyContainer>)
-        }
-        return playlistElement;
+            />},
+            // {cell: <></>},
+            {cell: <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
+            {cell: <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>},
+            {cell: <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>},
+            {cell: <div style={{ width: "80px" }} ></div>},
+        ], defaultSort: 'Created Date'}
     }
 
     const liveListBodyElement = () => {
         if (props.playlistItems) {
             return props.playlistItems.map((value, key) => {
-                return [
-                    <InputCheckbox className="inline-flex" label="" key={"checkbox" + value.id} defaultChecked={selectedPlaylist.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
-                        if (event.currentTarget.checked && selectedPlaylist.length < props.playlistItems.length) {
-                            setSelectedPlaylist([...selectedPlaylist, value.id])
-                        } else {
-                            const editedselectedLive = selectedPlaylist.filter(item => item !== value.id)
-                            setSelectedPlaylist(editedselectedLive);
+                return {data: [
+                    <div key={"checkbox" + value.id}  className='flex items-center'>
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedPlaylist.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedPlaylist.length < props.playlistItems.length) {
+                                setSelectedPlaylist([...selectedPlaylist, value.id])
+                            } else {
+                                const editedselectedLive = selectedPlaylist.filter(item => item !== value.id)
+                                setSelectedPlaylist(editedselectedLive);
+                            }
                         }
-                    }
-                    } />,
-                    <img className="p1" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>,
+                        } />
+                        <img key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>
+                    </div>
+
+                    ,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <>{handleFeatures(value)}</>,
-                    <div key={"more" + value.id} className="iconAction right mr2" ><Icon onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</Icon><Icon onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</Icon></div>,
-                ]
+                    <div className='flex'>{handleFeatures(value, value.id)}</div>,
+                    <div key={"more" + value.id} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.id}>
+                            <IconStyle onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.id}>
+                            <IconStyle onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
+                    </div>,
+                ]}
             })
         }
     }
@@ -122,15 +128,14 @@ export const PlaylistListPage = (props: LiveListProps) => {
 
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
-    console.log(props);
     return (
         showPlaylistTabs ?
-            <PlaylistsTabs playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
+            <PlaylistsTabs playlistId={location.pathname === '/playlists' ? selectedPlaylistId.id : location.pathname.split('/')[2]} playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
             :
             <>
                 <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags  noBorder={true} placeholder="Search Playlists..." style={{display: "inline-block"}} defaultTags={[]}   />
                     </div>
                     <div className="flex items-center" >
@@ -140,16 +145,16 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
                         </div>
                         <SeparatorHeader className="ml2 inline-block" />
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
+                        <Button buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
                         <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Playlist</Button>
                     </div>
                 </HeaderPlaylistList>
-                <Table className="col-12" id="liveListTable" header={liveListHeaderElement()} body={liveListBodyElement()} />
+                <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => { }} />
                 <OnlineBulkForm items={selectedPlaylist} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
@@ -159,16 +164,6 @@ export const PlaylistListPage = (props: LiveListProps) => {
             </>
     )
 }
-
-const IconStyle = styled(Icon)`
-    margin: auto;
-    font-size: 16px !important;
-`
-
-export const IconSearch = styled(Icon)`
-    color: ${props => props.theme.colors["gray-3"]} ;
-`
-
 const HeaderPlaylistList = styled.div<{}>`
     position:relative;
     width: 100%;
@@ -182,24 +177,4 @@ const SeparatorHeader = styled.div<{}>`
 
 const invisibleInput = styled.input<{}>`
 
-`
-
-const IconGreyContainer = styled.div<{}>`
-    position: relative;
-    z-index: 1;
-    color :  ${props => props.theme.colors["gray-3"]} ;
-    display: inline-flex;
-    height: 24px;
-    width: 24px;
-    align-items: center;
-    &:before {
-        content: '';
-        display: inline-block;
-        width: 24px;
-        z-index: -1;
-        height: 24px;
-        position: absolute;
-        border-radius: 12px;
-        background-color: ${props => props.theme.colors["gray-8"]} ;
-    }
 `

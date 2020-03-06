@@ -34,23 +34,23 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
     }
 
     const pendingOrdersTableHeader = () => {
-        return [
-            <Text key='pendingOrderTableItemCount' size={14} weight='med' color='gray-1'>No. of Items</Text>,
-            <Text key='pendingOrderTableDateCreated' size={14} weight='med' color='gray-1'>Date Created</Text>,
-            <Text key='pendingOrderTablePrice' size={14} weight='med' color='gray-1'>Price</Text>,
-            <Text key='pendingOrderTableCurrency' size={14} weight='med' color='gray-1'>Currency</Text>,
-            <Text key='pendingOrderTableStatus' size={14} weight='med' color='gray-1'>Status</Text>,
-            <Text key='pendingOrderTableType' size={14} weight='med' color='gray-1'>Type</Text>,
-            <span key="pendingOrderTablePurchase"></span>
+        return {data: [
+            {cell: <Text key='pendingOrderTableItemCount' size={14} weight='med' color='gray-1'>No. of Items</Text>},
+            {cell: <Text key='pendingOrderTableDateCreated' size={14} weight='med' color='gray-1'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='pendingOrderTablePrice' size={14} weight='med' color='gray-1'>Price</Text>},
+            {cell: <Text key='pendingOrderTableCurrency' size={14} weight='med' color='gray-1'>Currency</Text>},
+            {cell: <Text key='pendingOrderTableStatus' size={14} weight='med' color='gray-1'>Status</Text>},
+            {cell: <Text key='pendingOrderTableType' size={14} weight='med' color='gray-1'>Type</Text>},
+            {cell: <span key="pendingOrderTablePurchase"></span>}
 
-        ]
+        ], defaultSort: 'Created Date'}
     }
 
     const pendingOrdersTableBody = () => {
         return props.pendingOrders.pendingOrders.map((item, i) => {
             const color = item.status === 'paid' ? 'green' : item.status === 'failed' ? 'red' : item.status === 'unpaid' ? 'yellow' : 'gray-1';
             const BackgroundColor: ColorsApp = item.status === 'cancelled' ? 'gray-8' : color + '20' as ColorsApp;
-            return [
+            return {data: [
                 <Text key={'pendingOrderTableItemCount'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.items.length}</Text>,
                 <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.dateCreated}</Text>,
                 <Text key={'pendingOrderTablePrice'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.price}</Text>,
@@ -60,7 +60,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 item.status === "unpaid" ?
                     <div className="right mr2"><Button sizeButton="xs" onClick={() => handlePurchase(item)}>Purchase</Button></div> : null
                 
-            ]
+            ]}
         })
     }
 
@@ -70,7 +70,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
     
     return (
         <React.Fragment>
-            <Table id="pendingOrdersTable" header={pendingOrdersTableHeader()} body={pendingOrdersTableBody()} />
+            <Table id="pendingOrdersTable" headerBackgroundColor="white" header={pendingOrdersTableHeader()} body={pendingOrdersTableBody()} />
             <Pagination totalResults={props.pendingOrders.pendingOrders.length} displayedItemsOptions={[10, 20, 30]} callback={() => {}}></Pagination>
             <CustomStepper
                 opened={purchaseStepperOpen}

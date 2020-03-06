@@ -4,17 +4,17 @@ import { VideoSubRoutes } from '../../constants/VideoSubRoutes';
 import {useRouteMatch, Switch, Route} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { VodItem } from '../../redux-flow/store/VOD/General/types';
-import { updateTitleApp } from '../../utils/utils';
 
 export const VideoTabs = (props: {video: VodItem; history: any; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
 
     React.useEffect(() => {
-        updateTitleApp(props.video.title);
-        props.history.push('/videos/'+props.videoId+'/general')
+        if(location.pathname === '/videos') {
+            props.history.push('/videos/'+props.videoId+'/general')
+        }
     }, [])
 
     const handleVideoSubRoutes = () => {
@@ -50,7 +50,7 @@ export const VideoTabs = (props: {video: VodItem; history: any; videoId: string;
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><Icon>keyboard_arrow_left</Icon></Button>
+                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><IconStyle>keyboard_arrow_left</IconStyle></Button>
                 <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
             </TabsContainer>
             <Switch>

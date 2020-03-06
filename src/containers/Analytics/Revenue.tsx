@@ -8,6 +8,7 @@ import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, del
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -34,7 +35,7 @@ const Revenue = (props: RevenueComponentProps) => {
     return (
         props.folderData ? 
             <RevenueAnalytics {...props} />
-            : <LoadingSpinner size='large' color='green80' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

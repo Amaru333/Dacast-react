@@ -25,14 +25,14 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                    <Button typeButton="secondary" sizeButton="xs">Visit FAQ</Button>
+                        <Button typeButton="secondary" sizeButton="xs">Visit FAQ</Button>
                     </div> 
                 </SmallHelpCard>
 
                 <SmallHelpCard className="mr2 col col-3 flex p2">
                     <HelpCardHeader className="col col-12">
-                    <Text size={16} weight="med">Knowledge Base</Text>
-                    <HelpPageIcon className="material-icons-two-tone ml2">find_in_page</HelpPageIcon>
+                        <Text size={16} weight="med">Knowledge Base</Text>
+                        <HelpPageIcon className="material-icons-two-tone ml2">find_in_page</HelpPageIcon>
                     </HelpCardHeader>
                     <div className="col col-12 flex mt2">
                         <HelpCardContent>

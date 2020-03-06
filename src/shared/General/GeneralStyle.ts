@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Text } from '../../components/Typography/Text'
+import { Input } from '../../components/FormsComponents/Input/Input';
 
 export const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
@@ -10,7 +11,6 @@ export const LinkBoxContainer = styled.div`
     display: flex;
     flex-direction: column;
     height:auto;
-    padding-top: 16px;
     padding-right: 16px;
 `
 
@@ -41,37 +41,32 @@ export const LinkText = styled(Text)`
     white-space: nowrap;
 `
 
-export const IconButton = styled.button`
-display: none;
-border: none;
-background-color: inherit;
-`
-
 export const ImagesContainer = styled.div`
 flex-direction: row;
 flex-wrap: wrap;
-`
-
-export const ImageContainer = styled.div`
-    
-`
-
-export const ImageArea = styled.div`
-width: 359px;
-height: 176px;
-border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
 `
 
+export const ImageContainer = styled.div`
+    flex-grow: 1;  
+`
+
+export const ImageArea = styled.div`
+height: 176px;
+border: 1px dashed ${props => props.theme.colors["gray-7"]};
+display: flex;
+flex-direction: column;  
+`
+
 export const ImageSection = styled.div`
-width: 80%;
+width: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
 `
 
 export const ButtonSection = styled.div`
-width: 20%;
+width: 100%;
 `
 
 export const SelectedImage = styled.img`
@@ -82,3 +77,11 @@ max-width: 172px;
 export const ButtonContainer = styled.div`
 margin-top: 24px;
 ` 
+
+export const AdvancedLinksContainer = styled.div<{ isExpanded: boolean }>`
+   display: ${props => props.isExpanded ? "block" : "none"};
+   `
+
+export const DescriptionInput = styled(Input)`
+    height: 96px;
+`

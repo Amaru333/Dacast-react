@@ -3,9 +3,10 @@ import {Input} from '../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePicker } from '../../../components/FormsComponents/Datepicker/DateSinglePicker';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../../components/Typography/Text';
-import { GroupPromo } from '../../../redux-flow/store/Paywall/Groups';
+import { GroupPromo, GroupsPageInfos, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
+import { GroupPromoDateContainer } from './GroupsStyle';
 var moment = require('moment-timezone');
 
 const defaultPromo: GroupPromo = {
@@ -23,7 +24,7 @@ const defaultPromo: GroupPromo = {
     discountApplied: 'Once'
 }
 
-export const GroupPromoModal = (props: {action: Function; toggle: Function; groupPromo: GroupPromo}) => {
+export const GroupPromoModal = (props: {action: Function; toggle: Function; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
 
     const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? props.groupPromo : defaultPromo);
 
@@ -31,25 +32,30 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
     }, [props.groupPromo])
 
+    React.useEffect(() => {}, [props.groupList])
+
     return (
         <div>
-            <div className='col col-12 py2'>
+            <div className='col col-12 pt2'>
                 <Input className='col col-6 pr1' value={groupPromo.name} label='Preset name' onChange={(event) => setGroupPromo({...groupPromo, name: event.currentTarget.value})} />
                 <Input className='col col-6 pl1' value={groupPromo.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
             </div>
-            <div className='col col-12 py2'>
+            <div className='col col-12 pt2'>
+                <DropdownSingle id='associatedGroupDropdown' className='col col-6 pt1' dropdownTitle='Associated Group' list={props.groupList.reduce((reduced: DropdownListType, item: GroupPrice)=> {return {...reduced, [item.name]: false }},{})  } />
+                <DropdownSingle id='groupPromoRateTypeDropdown' dropdownDefaultSelect={groupPromo.rateType} className='col col-6 pl2 pt1' dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
+            </div>
+            <div className='col col-12 pt2'>
                 <Input className='col col-3 pr1' value={groupPromo.discount.toString()} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                 <Input className='col col-3 px1' value={groupPromo.limit.toString()} label='Limit' onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
-                <DropdownSingle id='groupPromoRateTypeDropdown' dropdownDefaultSelect={groupPromo.rateType} className='col col-6 pl1 pt1' dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
-            <div className='col col-12 py2'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code Start Date' />
+            <GroupPromoDateContainer className='col col-12 pt2 flex flex-end'>
+                <DateSinglePickerWrapper className='col col-5 pr1' datepickerTitle='Promo Code Start Date' />
                 <Input type='time' label='Start Time' value={groupPromo.startTime} className='col col-3 pl1' onChange={(event) => setGroupPromo({...groupPromo, startTime: event.currentTarget.value})} />
-            </div>
-            <div className='col col-12 py2'>
-                <DateSinglePicker className='col col-6 pr1' DatepickerTitle='Promo Code End Date' />
+            </GroupPromoDateContainer>
+            <GroupPromoDateContainer className='col col-12 pt2 flex flex-end'>
+                <DateSinglePickerWrapper className='col col-5 pr1' datepickerTitle='Promo Code End Date' />
                 <Input type='time' label='End Time' value={groupPromo.endTime} className='col col-3 pl1' onChange={(event) => setGroupPromo({...groupPromo, endTime: event.currentTarget.value})} />
-            </div>
+            </GroupPromoDateContainer>
             <div className=' col col-12 py2'>
                 <DropdownSingle hasSearch id='groupPromoTimezoneDropdown' dropdownDefaultSelect={groupPromo.timezone} className='col col-6 pr1' dropdownTitle='Timezone' callback={(value: string) => setGroupPromo({...groupPromo, timezone: value})} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
                 {

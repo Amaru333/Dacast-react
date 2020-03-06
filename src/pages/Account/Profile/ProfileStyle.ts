@@ -14,8 +14,11 @@ export const AvatarInputContainer = styled.div<{}>`
     flex-direction: row;
 `
 
-export const ToggleTextInfo = styled.p<{}>`
-    margin-top: 0px;
+export const ToggleTextInfo = styled.div<{}>`
     display: inline-flex;
     padding-left: 4px;
+`
+
+export const ToggleContainer = styled.div`
+    padding-left: 8px;
 `

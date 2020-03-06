@@ -1,3 +1,5 @@
+import { FeaturesList } from '../../../../shared/Common/Features';
+
 export enum ActionTypes {
     GET_VOD_DETAILS = "@@vod_general/GET_VOD_DETAILS",
     POST_VOD = "@@vod_general/POST_VOD",
@@ -9,7 +11,8 @@ export enum ActionTypes {
     DELETE_VOD_SUBTITLE = "@@vod_general/DELETE_VOD_SUBTITLE",
     CHANGE_VOD_THUMBNAIL = "@@vod_general/CHANGE_VOD_THUMBNAIL",
     CHANGE_VOD_SPLASHSCREEN = "@@vod_general/CHANGE_VOD_SPLASHSCREEN",
-    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER"
+    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER",
+    DELETE_VOD_POSTER = "@@vod_general/DELETE_VOD_POSTER"
 }
 
 export interface VodDetails {
@@ -25,7 +28,7 @@ export interface VodDetails {
 }
 
 export interface VodItem {
-    id: number;
+    id: string;
     online: boolean;
     title: string;
     size: number;
@@ -33,12 +36,6 @@ export interface VodItem {
     thumbnail: string;
     created: number;
     features: FeaturesList;
-}
-
-export interface FeaturesList {
-    paywall: boolean;
-    folder: boolean;
-    playlist: boolean;
 }
 
 export interface SubtitleInfo {

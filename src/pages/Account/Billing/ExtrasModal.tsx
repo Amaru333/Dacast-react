@@ -27,10 +27,10 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
     
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
-            return [
+            return {data:[
                 <Text  key={"ExtraStepperStep1Table" + value.label + key.toString()} size={14}  weight="reg" color="gray-1">{value.label}</Text>,
                 <Text  key={"ExtraStepperStep1Table" + value.value + key.toString()} size={14}  weight="reg" color="gray-1">{value.value}</Text>
-            ]
+            ]}
         }) 
     }
 
@@ -65,7 +65,7 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
                 />
             </div>
 
-            <Table id='extraStepperStep1Table' body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
+            <Table id='extraStepperStep1Table' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
         </div>
     )
 }
@@ -73,30 +73,30 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
 
 export const ExtrasStepperSecondStepCreditCard = () => {
     const step2header = () => {
-        return  [
-            <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total</Text>,
-            <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>
-        ]
+        return  {data: [
+            {cell: <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total</Text>},
+            {cell: <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>}
+        ]}
     }
 
     const step2CreditCardTableHeader = () => {
-        return [
-            <Text  key={"step2PCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>,
-            <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} />
-        ]
+        return {data: [
+            {cell: <Text  key={"step2PCardTableHeaderText"} size={14}  weight="med" color="gray-1">Paying by Card</Text>},
+            {cell: <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} />}
+        ]}
     }
     const step2CreditCardTableBody = () => {
-        return [[
+        return [{data: [
             <Text  key={"step2PCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
             <Text  className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>,
 
-        ]]
+        ]}]
     }
 
     return (
         <>
-            <Table className='my2' id='extraStepperStep2TotalTable' header={step2header()}/>
-            <Table className='my2' id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+            <Table className='my2' headerBackgroundColor="gray-10" id='extraStepperStep2TotalTable' header={step2header()}/>
+            <Table className='my2' headerBackgroundColor="gray-10" id='extraStepperStep2PaymentMethodTable' header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
         </> 
     )
 

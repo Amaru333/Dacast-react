@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
-import { Icon } from '@material-ui/core';
+import { IconStyle, IconContainer } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -12,8 +12,9 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { PaywallTheme } from '../../../redux-flow/store/Paywall/Theming';
 import { PaywallThemingComponentProps } from '../../../containers/Paywall/Theming';
-import { IconContainer } from '../../../shared/Theming/ThemingStyle';
 import styled from 'styled-components';
+import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
@@ -23,13 +24,13 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         name: '',
         isDefault: false,
         splashScreen: {
-            buttonColor: '',
-            buttonTextColor: ''
+            buttonColor: '#2899F6',
+            buttonTextColor: '#FFFFFF'
         },
         loginScreen: {
-            buttonColor: '',
-            primaryColor: '',
-            headerColor: '',
+            buttonColor: '#2899F6',
+            primaryColor: '#2899F6',
+            headerColor: '#2899F6',
             hasCompanyLogo: false
         }
     }
@@ -39,21 +40,35 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     const PaywallThemingList = () => {
 
         const paywallThemingTableHeader = () => {
-            return [
-                <Text key='paywallThemingTableHeaderName' size={14} weight='med'>Name</Text>,
-                <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>Default</Text>,
-                <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Paywall Theme</Button>
-            ]
+            return {data: [
+                {cell: <Text key='paywallThemingTableHeaderName' size={14} weight='med'>Name</Text>},
+                {cell: <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
+                {cell: <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Paywall Theme</Button>}
+            ]}
         }
 
         const paywallThemingTableBody = () => {
             return props.paywallThemes.themes.map((theme, key) => {
-                return [
+                return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
-                    theme.isDefault ? <Icon key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</Icon> : <></>,
-                    <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}><Icon onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</Icon><Icon onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</Icon> </IconContainer>
+                    theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                    <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
+                        <ActionIcon>
+                            <IconStyle id={"copyTooltip" + key}>file_copy</IconStyle>
+                            <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</IconStyle>
+                            <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
+                            <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                        </ActionIcon>
+                         
+                    </IconContainer>
 
-                ]
+                ]}
             })
         }
 
@@ -61,12 +76,12 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             <div>
                 <Card>
                     <Text size={20} weight='med'>Paywall Theming</Text>
-                    <Text size={14} weight='reg'>configure the look and feel of your payment</Text>
-                    <div className='flex item-center my2'>
-                        <Icon>info_outlined</Icon>
-                        <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the Knowledge Base</Text>
+                    <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your payment</Text>
+                    <div className='flex item-center mt2'>
+                        <IconStyle style={{marginRight: 10}}>info_outlined</IconStyle>
+                        <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
-                    <Table className='col col-12 my2' id='paywallThemingTable' header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
+                    <Table className='col col-12' id='paywallThemingTable' headerBackgroundColor="gray-10" header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
                 </Card>
             </div>
         )
@@ -90,88 +105,106 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         return (
             <div className='flex flex-column col col-4 mr1'>
                 <Card>
-                    <Text size={20} weight='med'>New Paywall Theme</Text>
-                    <Input className='my1' id='paywalThemeNameInput' label='Theme Name' defaultValue={selectedTheme.name} onChange={(event) => setSelectedTheme({...selectedTheme, name: event.currentTarget.value})} />
-                    <InputCheckbox className='my1' id='paywallThemeDefaultInput' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {
+                    <Text size={20} weight='med'>{selectedTheme.id === '-1' ? "New Paywall Theme" : "Edit Paywall Theme"}</Text>
+                    <Input className='mt2' id='paywalThemeNameInput' label='Theme Name' defaultValue={selectedTheme.name} onChange={(event) => setSelectedTheme({...selectedTheme, name: event.currentTarget.value})} />
+                    <InputCheckbox className='mt1' id='paywallThemeDefaultInput' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {
                         setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})
 
                     }} />
-                    <BorderStyle className='my2' />
+                    <BorderStyle className='mt3 mb2' />
                     <Tab className='col col-12 my1' orientation='horizontal' history={null} list={tabsList} callback={setSelectedTab} />
-                    <div className={selectedTab !== 'Splash Screen' ? 'hide' : ''}>
-                        <Text size={16} weight='med'>Button Colour</Text>
-                        <ColorPicker 
-                            className='my1' 
-                            defaultColor={selectedTheme.splashScreen.buttonColor} 
-                            callback={(color: string) => {
-                                inPlayerPreviewIframeRef.current.contentWindow.postMessage({
-                                    action: 'setButtonColor',
-                                    value: { hex: color }
-                                });
-                                setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonColor: color}})
-                            }
-                            } 
-                        />
-                        <Text size={16} weight='med'>Button Text Colour</Text>
-                        <ColorPicker 
-                            className='my1' 
-                            defaultColor={selectedTheme.splashScreen.buttonTextColor} 
-                            callback={(color: string) => {
-                                inPlayerPreviewIframeRef.current.contentWindow.postMessage({
-                                    action: 'setButtonTextColor',
-                                    value: { hex: color }
-                                });
-                                setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonTextColor: color}})
-
-                            }
-                            } 
-                        />
+                    <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
+                        <div>
+                            <ColorPickerLabel>
+                                <Text size={14} weight='med'>Button Colour</Text>
+                            </ColorPickerLabel>
+                            <ColorPicker 
+                                className='mb1' 
+                                defaultColor={selectedTheme.splashScreen.buttonColor} 
+                                callback={(color: string) => {
+                                    inPlayerPreviewIframeRef.current.contentWindow.postMessage({
+                                        action: 'setButtonColor',
+                                        value: { hex: color }
+                                    });
+                                    setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonColor: color}})
+                                }} 
+                            />
+                        </div>
+                        <div className="mt2">
+                            <ColorPickerLabel>
+                                <Text className="mt2" size={14} weight='med'>Button Text Colour</Text>
+                            </ColorPickerLabel>
+                            <ColorPicker 
+                                className='mb1' 
+                                defaultColor={selectedTheme.splashScreen.buttonTextColor}
+                                callback={(color: string) => {
+                                    inPlayerPreviewIframeRef.current.contentWindow.postMessage({
+                                        action: 'setButtonTextColor',
+                                        value: { hex: color }
+                                    });
+                                    setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonTextColor: color}})
+                                }} 
+                            />
+                        </div>
+                        
                     </div>
-                    <div className={selectedTab === 'Splash Screen' ? 'hide' : ''}>
-                        <Text size={16} weight='med'>Button Colour</Text>
-                        <ColorPicker 
-                            className='my1' 
-                            defaultColor={selectedTheme.loginScreen.buttonColor} 
-                            callback={(color: string) => {
-                                inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
-                                    action: 'setButtonColor',
-                                    value: { hex: color }
-                                });
-                                setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, buttonColor: color}})
+                    <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>   
+                        <div>        
+                            <ColorPickerLabel>
+                                <Text size={14} weight='med'>Button Colour</Text>
+                            </ColorPickerLabel>
+                            <ColorPicker 
+                                className='mb1' 
+                                defaultColor={selectedTheme.loginScreen.buttonColor} 
+                                callback={(color: string) => {
+                                    inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
+                                        action: 'setButtonColor',
+                                        value: { hex: color }
+                                    });
+                                    setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, buttonColor: color}})
 
-                            }
-                            } 
-                        />
-                        <Text size={16} weight='med'>Primary Colour</Text>
-                        <ColorPicker 
-                            className='my1' 
-                            defaultColor={selectedTheme.loginScreen.primaryColor} 
-                            callback={(color: string) => {
-                                inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
-                                    action: 'setPrimaryColor',
-                                    value: { hex: color }
-                                });
-                                setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, primaryColor: color}})
+                                }
+                                } 
+                            />
+                        </div>
+                        <div className="mt2">
+                            <ColorPickerLabel>
+                                <Text size={14} weight='med'>Primary Colour</Text></ColorPickerLabel>
+                            <ColorPicker 
+                                className='mb1' 
+                                defaultColor={selectedTheme.loginScreen.primaryColor} 
+                                callback={(color: string) => {
+                                    inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
+                                        action: 'setPrimaryColor',
+                                        value: { hex: color }
+                                    });
+                                    setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, primaryColor: color}})
 
-                            }
-                            } 
-                        />
-                        <Text size={16} weight='med'>Header Colour</Text>
-                        <ColorPicker 
-                            className='my1' 
-                            defaultColor={selectedTheme.loginScreen.headerColor} 
-                            callback={(color: string) => {
-                                inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
-                                    action: 'setHeaderColor',
-                                    value: { hex: color }
-                                });
-                                setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, headerColor: color}})
-                            }
-                            } 
-                        />
+                                }
+                                } 
+                            />
+                        </div>
+                        <div className="mt2">
+                            <ColorPickerLabel>
+                                <Text size={14} weight='med'>Header Colour</Text>
+                            </ColorPickerLabel>
+                            <ColorPicker 
+                                className='mb1' 
+                                defaultColor={selectedTheme.loginScreen.headerColor} 
+                                callback={(color: string) => {
+                                    inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
+                                        action: 'setHeaderColor',
+                                        value: { hex: color }
+                                    });
+                                    setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, headerColor: color}})
+                                }
+                                } 
+                            />
+                        </div>
                         <Toggle 
                             id='companyLogoToggle' 
-                            label='Company Logo' 
+                            label='Company Logo'
+                            className="mt25" 
                             defaultChecked={selectedTheme.loginScreen.hasCompanyLogo} 
                             onChange={() => {
                                 setSelectedTheme({...selectedTheme, loginScreen: {...selectedTheme.loginScreen, hasCompanyLogo: ! selectedTheme.loginScreen.hasCompanyLogo}})
@@ -241,4 +274,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 export const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
+`
+
+export const ColorPickerLabel = styled.div`
+    margin-bottom: 4px;
 `

@@ -88,7 +88,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                     
                     <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
                         <StartTextStyle isSingle text={state.startDate ? true : false}>
-                            <Text size={14} weight='reg' color='gray-1'>
+                            <Text size={14} weight='reg' color='gray-5'>
                                 {state.startDate ? state.startDate.toLocaleDateString() : "Select date"}
                             </Text>
                         </StartTextStyle>

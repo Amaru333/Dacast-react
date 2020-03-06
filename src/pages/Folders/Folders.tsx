@@ -1,9 +1,9 @@
 import React from 'react';
-import { FoldersTreeSection, ContentSection, IconStyle, FolderRow, SeparatorHeader, IconGreyContainer } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from './FoldersStyle';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
-import { Icon } from '@material-ui/core';
+import { IconStyle } from '../../shared/Common/Icon';
 import { Label } from '../../components/FormsComponents/Label/Label';
 import { Table } from '../../components/Table/Table';
 import { Pagination } from '../../components/Pagination/Pagination';
@@ -21,6 +21,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../components/Badge/Badge';
+import { handleFeatures } from '../../shared/Common/Features';
 
 const folderTreeConst = [
     'folder1',
@@ -54,7 +55,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [checkedItems, setCheckedItems] = React.useState<string[]>([])
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
-    const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename' | 'New Folder'>('New Folder');
+    const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder');
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false);
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
@@ -71,7 +72,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
-        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Paywall Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
         { name: 'Move To', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },
@@ -94,8 +95,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const foldersContentTableHeader = () => {
-        return [
-            <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
+        return {data: [
+            {cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
                 indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.length}
                 defaultChecked={checkedItems.length === props.folderData.requestedContent.length}
                 onChange={(event) => {
@@ -115,26 +116,26 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     }
                 }
                 } 
-            />,
-            <span key='tableHeaderEmptyCell1'></span>,
-            <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>,
-            <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>,
-            <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created</Text>,
-            <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>,
-            <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>,
-            <span key='tableHeaderEmptyCell2'></span>
-        ]
+            />},
+            // {cell: <span key='tableHeaderEmptyCell1'></span>},
+            {cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'Name'},
+            {cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>},
+            {cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
+            {cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>},
+            {cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>},
+            {cell: <span key='tableHeaderEmptyCell2'></span>}
+        ], defaultSort: 'Created Date'}
     }
 
-    const handleCheckboxChange = (item: string, event: React.FormEvent<HTMLInputElement>) => {
+    const handleCheckboxChange = (item: string, isChecked: boolean) => {
         if(checkedItems.includes(item)) {
             setCheckedItems(checkedItems.filter(option => {return option !== item}));
         } else {
             setCheckedItems([...checkedItems, item]);
         }
-        if(event.currentTarget.checked && item.includes('folder')) {
+        if(isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected + 1)
-        } else if(!event.currentTarget.checked && item.includes('folder')) {
+        } else if(!isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected > 0 ? folderAssetSelected - 1 : 0)
         }
     }
@@ -147,34 +148,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
             case 'live':
             case 'vod': 
-                return <img key={"thumbnail" + item.id} width={70} height={42} src={item.thumbnail} ></img>
+                return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
             default:
                 return
         }
     }
 
-    const handleFeatures = (item: FolderAsset): JSX.Element[] => {
-        var folderElement = []
-        if (item.features.paywall) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>attach_money</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.recording) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>videocam</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.playlist) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>video_library</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.rewind) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>replay_30</IconStyle></IconGreyContainer>)
-        }
-        if (item.features.advertising) {
-            folderElement.push(<IconGreyContainer className="mr1" ><IconStyle coloricon='gray-3'>font_download</IconStyle></IconGreyContainer>)
-        }
-        return folderElement;
-    }
-
     const handleMoreActions = (item: FolderAsset): string[] => {
-        if(item.status === 'deleted') {
+        if(item.status === 'Deleted') {
             return ['Restore']
         }
         if(item.contentType === 'folder') {
@@ -186,7 +167,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const handleAssetDropdownOptions = (option: string, assetName: string) => {
         switch(option) {
             case 'Rename':
-                setNewFolderModalAction('Rename');
+                setNewFolderModalAction('Rename Folder');
                 setNewFolderModalOpened(true);
                 break;
             case 'Move':
@@ -207,20 +188,24 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const foldersContentTableBody = () => {
         if(props.folderData.requestedContent) {
             return props.folderData.requestedContent.map((row) => {
-                return [
-                    <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event)} />,
-                    handleRowIconType(row),
+                return {data: [
+                    <div key={'foldersTableInputCheckbox' + row.id}  className='flex items-center'>
+                        <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
+                        {handleRowIconType(row)}
+                    </div>,
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                     <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
-                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'}/> : <span key={'foldersTableStatus' + row.id}></span>,
-                    <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row)}</div>,
-                    <div className='right mr2'>
+                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableNoStatus' + row.id}></span>,
+                    <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
+                    <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
                         <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
-                            <Icon>more_vert</Icon>
+                            <IconStyle>more_vert</IconStyle>
                         </DropdownCustom>
                     </div>
-                ]
+                ], callback: (row: FolderAsset) => {handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType))}
+                , callbackData: row
+                }
             })
         }
 
@@ -367,7 +352,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 flex items-center'>
                 <div className='col col-10 flex items-center'>
                     <div className={(foldersTreeHidden ? '' : 'col col-2 mr3 ') + 'flex items-center'}>
-                        <Icon onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</Icon>
+                        <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
                         <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
                             New Folder
                         </Button>
@@ -396,7 +381,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 : null
                             }
                             <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList ref={bulkActionsDropdownListRef} style={{width: 167, left: 138, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                            <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{width: 167, left: 138, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
 
@@ -405,7 +390,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             : null 
                     }                     
        
-                    <FoldersFiltering />
+                    <FoldersFiltering setCheckedItems={setCheckedItems} />
                     {
                         selectedFolder === 'Trash' ?
                             <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
@@ -429,11 +414,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' header={foldersContentTableHeader()} body={foldersContentTableBody()} />
+                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 
-            <Modal hasClose={false} size='small' title={newFolderModalAction === 'New Folder' ? newFolderModalAction : newFolderModalAction + getNameFromFullPath(selectedFolder)} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal hasClose={false} size='small' title={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

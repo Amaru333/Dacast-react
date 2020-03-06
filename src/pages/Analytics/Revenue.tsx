@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Card } from '../../components/Card/Card';
 import { Text } from '../../components/Typography/Text';
 import { Button } from '../../components/FormsComponents/Button/Button';
-
-import { Icon } from '@material-ui/core';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
@@ -13,15 +11,16 @@ import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
-import { IconSearch } from '../Playlist/List/PlaylistList';
 import { InputTags } from '../../components/FormsComponents/Input/InputTags';
 import { DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyle, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { IconStyle } from '../Folders/FoldersStyle';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
 import { AnalyticsCard } from './Dashboard';
+import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
+import { IconStyle } from '../../shared/Common/Icon';
+import { presets } from '../../constants/DatepickerPresets';
 
 interface RevenueAnalyticsProps {
     folderData: FoldersInfos;
@@ -252,9 +251,12 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
+                <div className="col col-12 mb25">
+                    <DateRangePickerWrapper presets={presets} />
+                </div>
                 <div className="flex items-center">
                     <div className="inline-flex items-center flex col-7 mb2">
-                        <IconSearch>search</IconSearch>
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                     </div>
                 </div>
@@ -270,8 +272,8 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
                     {renderContentsList()}
                 </ContainerHalfSelector>
                 <div className="col col-2" style={{ marginTop: 180 }}>
-                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_right</Icon></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><Icon>chevron_left</Icon></Button>
+                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
                 <ContainerHalfSelector className="col col-5" >
                     <HeaderBorder className="p2">
@@ -305,7 +307,7 @@ export const RevenueAnalytics = (props: RevenueAnalyticsProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales per Country">
                         {renderMap(mapData)}
                     </AnalyticsCard>
                 </div>

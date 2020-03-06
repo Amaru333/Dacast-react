@@ -5,14 +5,6 @@ export const BorderStyle = styled.div<{}>`
     display: flex;
 `
 
-export const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`
-
 export const ContainerHalfSelector = styled.div<{}>`
     background-color: white;
     border: 1px solid ${props => props.theme.colors["gray-7"]};;
@@ -57,4 +49,9 @@ export const ItemSetupRow = styled.div<{selected: boolean}>`
         }
         background-color: ${props => props.theme.colors['violet10']};
     }
+`
+
+export const GroupPromoDateContainer = styled.div`
+    display: flex;
+    align-items: flex-end;
 `

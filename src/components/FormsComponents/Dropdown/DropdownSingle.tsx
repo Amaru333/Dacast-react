@@ -58,7 +58,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
             Object.keys(itemsList).map((name, key) => {
                 return (
                     props.isNavigation ? 
-                        <Link to={name} key={props.id + '_' + name} >
+                        <Link to={name.toLowerCase()} key={props.id + '_' + name} >
                             <DropdownItem  
                                 isSingle                          
                                 id={props.id + '_' + name} 
@@ -98,7 +98,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                 isSingle
                                 key={props.id + '_' + name} 
                                 id={props.id + '_' + name} 
-                                className={key === 1 ? 'mt1' : ''}
+                                className={key === 0 ? 'mt1' : ''}
                                 isSelected={selectedItem === name} 
                                 onClick={() => handleClick(name)}> 
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
@@ -115,7 +115,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

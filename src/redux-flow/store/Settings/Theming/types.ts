@@ -32,8 +32,8 @@ export interface ThemeOptions {
     socialSharing: boolean;
     embedCode: boolean;
     playerTransparency: boolean;
-    hasCustomColor: boolean;
-    customColor: string;
+    customOverlayColor: string;
+    customMenuColor: string;
     autoplay: boolean;
     startVideoMuted: boolean;
     looping: boolean;
