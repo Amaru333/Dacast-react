@@ -40,6 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
     "awesome-typescript-loader": "^5.2.1",
+    "aws-sdk": "^2.635.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^5.1.1",
