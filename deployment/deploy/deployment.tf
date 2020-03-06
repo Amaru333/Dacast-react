@@ -108,6 +108,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
 
     enabled = true
+    default_root_object = "index.html"
     is_ipv6_enabled = true
     comment = "distribution for the dacast backoffice assets"
     aliases = ["${var.env_name}.${var.domain_name}"]
