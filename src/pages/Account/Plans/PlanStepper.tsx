@@ -178,14 +178,14 @@ export const PlanStepperThirdStep = (stepperData: Plan, setStepperData: Function
             {data: [
                 <Text  key="cartTableBilled" size={14}  weight="med" color="gray-1">Billed</Text>,
                 stepperData.name === 'scale' ? 
-                <div >
-                    {
-                        stepperData.paymentFrequency === 'Annually' ?
-                            <Label color='green' backgroundColor='green20' label='25% discount' />
-                            : null
-                    }
-                    <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setStepperData({...stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} />
-                </div>
+                    <div >
+                        {
+                            stepperData.paymentFrequency === 'Annually' ?
+                                <Label color='green' backgroundColor='green20' label='25% discount' />
+                                : null
+                        }
+                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setStepperData({...stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} />
+                    </div>
                     :
                     <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
             ]}

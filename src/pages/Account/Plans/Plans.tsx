@@ -62,6 +62,11 @@ export const PlansPage = (props: {plans: Plans}) => {
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>Player SDKs</Text>
                         </div>
                         <div className='flex items-center pointer'>
+                            <IconStyle style={{paddingRight: 10}}  id='iconAds' coloricon='gray-5'>info_outlined</IconStyle>
+                            <Tooltip target='iconAds'>Lorem ipsum</Tooltip>
+                            <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
+                        </div>
+                        <div className='flex items-center pointer'>
                             <IconStyle style={{paddingRight: 10}}  id='iconApi' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconApi'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>API</Text>
@@ -330,7 +335,7 @@ const PlansPageContainer = styled.div<{isMobile: boolean}>`
 `
 const AllowancesList = styled.div`
     display: flex;
-    margin-top: 10%;
+    margin-top: 8.5rem;
     flex-direction: column;
 `
 

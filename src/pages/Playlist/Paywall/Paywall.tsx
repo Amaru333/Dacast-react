@@ -172,45 +172,45 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                 <Toggle id='PlaylistPaywallEnabledToggle' defaultChecked={playlistPaywallSettings.enabled} onChange={() => setPlaylistPaywallSettings({...playlistPaywallSettings, enabled: !playlistPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
                 
-                        <DropdownSingle 
-                            id='PlaylistPaywallThemesDropdown' 
-                            className='col col-2 my2' 
-                            dropdownTitle='Paywall Theme' 
-                            dropdownDefaultSelect={props.playlistPaywallInfos.selectedTheme}
-                            list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
-                            callback={(value: string) => setPlaylistPaywallSettings({...playlistPaywallSettings, selectedTheme: value})}
-                        />
-                        <Text size={16} weight='med'>Intro Video ID</Text>
-                        <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                        <Input id='PlaylistPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
+                <DropdownSingle 
+                    id='PlaylistPaywallThemesDropdown' 
+                    className='col col-2 my2' 
+                    dropdownTitle='Paywall Theme' 
+                    dropdownDefaultSelect={props.playlistPaywallInfos.selectedTheme}
+                    list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
+                    callback={(value: string) => setPlaylistPaywallSettings({...playlistPaywallSettings, selectedTheme: value})}
+                />
+                <Text size={16} weight='med'>Intro Video ID</Text>
+                <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
+                <Input id='PlaylistPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
                         
-                        <BorderStyle className='my2' />
+                <BorderStyle className='my2' />
 
-                        <Text size={20} weight='med'>Prices</Text>
-                        {props.playlistPaywallInfos.presets.length === 0 ? 
-                            <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
-                            :
-                            <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                <Text size={20} weight='med'>Prices</Text>
+                {props.playlistPaywallInfos.presets.length === 0 ? 
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    :
+                    <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                         
-                        }
-                        <BorderStyle className='my2' />
+                }
+                <BorderStyle className='my2' />
 
-                        <Text className="mt1" size={20} weight='med'>Promos</Text>
-                        { props.playlistPaywallInfos.promos.length === 0 ?
-                            <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
-                            :
-                            <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
-                        }
+                <Text className="mt1" size={20} weight='med'>Promos</Text>
+                { props.playlistPaywallInfos.promos.length === 0 ?
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    :
+                    <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                }
 
-                        <BorderStyle className='my2' />
+                <BorderStyle className='my2' />
 
-                        <Text size={20} weight='med'>Associated Group Prices</Text>
+                <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                        { props.groupsInfos.prices.length === 0 ?
-                            <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
-                            :
-                            <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
-                        }
+                { props.groupsInfos.prices.length === 0 ?
+                    <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
+                    :
+                    <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                }
                    
             </Card>
             <div className={'mt2' + (props.playlistPaywallInfos === playlistPaywallSettings ? ' hide' : '')}>
