@@ -17,6 +17,7 @@ import { LiveNewAdModal } from './LiveNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
@@ -239,6 +240,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
+            <Prompt when={engagementSettings !== props.liveEngagementSettings.engagementSettings} message='' />
         </div>
     )
 }

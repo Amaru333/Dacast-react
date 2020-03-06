@@ -14,6 +14,7 @@ import { Card } from '../../../components/Card/Card';
 import { PlaylistSecurityContainerProps } from '../../../containers/Playlists/Security';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
 
@@ -163,6 +164,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
+            <Prompt when={selectedSettings !== props.playlistSecuritySettings.securitySettings} message='' />
         </div>
                     
     )

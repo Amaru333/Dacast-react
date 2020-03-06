@@ -9,6 +9,7 @@ import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/typ
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -202,6 +203,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
                 <Button typeButton="tertiary" onClick={() => setNewPlaylistDetails(props.playlistDetails)}>Discard</Button>
             </ButtonContainer>
+            <Prompt when={newPlaylistDetails !== props.playlistDetails} message='' />
         </React.Fragment>
     )
 }

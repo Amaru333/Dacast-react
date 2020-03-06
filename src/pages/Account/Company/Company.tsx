@@ -12,6 +12,7 @@ import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/type
 import { countries } from 'countries-list';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -51,6 +52,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
+    const [pageEdited, setPageEdited] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setDefaultCountryValue(countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name)
@@ -171,7 +173,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="accountName" 
                             label="Account Name" 
-                            placeholder="Account Name" 
+                            placeholder="Account Name"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('accountName', validations)}
                         />
@@ -183,6 +186,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="businessName" 
                             label="Business Name" 
                             placeholder="Business Name"
+                            onChange={() => setPageEdited(true)}
                             indicationLabel='Optional'
                             required
                             {...handleValidationProps('businessName', validations)} 
@@ -197,6 +201,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="contactNumber" 
                             label="Phone Number" 
                             placeholder="(00) 0000 0000 00" 
+                            onChange={() => setPageEdited(true)}
                             required
                             {...handleValidationProps('contactNumber', validations)}
                         />
@@ -207,7 +212,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="emailAddress" 
                             label="Email Address" 
-                            placeholder="Email Address" 
+                            placeholder="Email Address"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('emailAddress', validations)}
                         />
@@ -221,7 +227,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="companyWebsite"
                             label="Company Website" 
-                            placeholder="Company Website" 
+                            placeholder="Company Website"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('companyWebsite', validations)}
                         />
@@ -232,7 +239,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="vatNumber" 
                             label="VAT Number" 
-                            placeholder="VAT Number" 
+                            placeholder="VAT Number"
+                            onChange={() => setPageEdited(true)} 
                             indicationLabel='Optional'
                             required={false}
                             {...handleValidationProps('vatNumber', validations)}
@@ -253,7 +261,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="addressLine1" 
                             label="Address line 1" 
-                            placeholder="Address line 1" 
+                            placeholder="Address line 1"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('addressLine1', validations)}                      
                         />
@@ -265,7 +274,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="md-col md-col-6 p1" 
                             id="addressLine2" 
                             label="Address line 2" 
-                            placeholder="Address line 2" 
+                            placeholder="Address line 2"
+                            onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('addressLine2', validations)}
                         />
@@ -278,7 +288,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
                             label="State" 
-                            placeholder="State" 
+                            placeholder="State"
+                            onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('state', validations)}
                         />
@@ -290,7 +301,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
                             label="Town" 
-                            placeholder="Town" 
+                            placeholder="Town"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('town', validations)}
                         />
@@ -302,7 +314,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
                             label="Zip/Post Code" 
-                            placeholder="Zip/Post Code" 
+                            placeholder="Zip/Post Code"
+                            onChange={() => setPageEdited(true)} 
                             required
                             {...handleValidationProps('zipCode', validations)}
                     
@@ -316,10 +329,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 displayFormActionButtons ?
                     <ButtonsArea> 
                         <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => setPageEdited(false)}>Discard</Button>
                     </ButtonsArea>
                     : null
-            }          
+            }     
+            <Prompt when={pageEdited} message='' />     
         </CompanyPageContainer>
     )
 }

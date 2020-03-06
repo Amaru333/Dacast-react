@@ -15,6 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../components/Modal/Moda
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -338,6 +339,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
+            <Prompt when={newLiveDetails !== props.liveDetails} message='' />
         </React.Fragment>
     )
 }
