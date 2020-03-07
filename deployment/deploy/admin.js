@@ -1,6 +1,5 @@
 exports.handler = async (event, context, callback) => {
     const request = event.Records[0].cf.request;
-    console.log('request', request, JSON.stringify(request))
     let isAdmin = !!request.headers.host.find(h => h.value.indexOf('admin.dacast.com') !== -1)
     if(isAdmin && (request.uri === '/' || request.uri.startsWith('/#!'))){
         request.uri = '/admin.html'
