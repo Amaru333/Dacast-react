@@ -14,7 +14,8 @@ const CloudFormationStackS3BucketOutputName = 'S3Bucket'
 const CodebuildProjectName = 'dacast-backoffice-deployment'
 // the domains will be {EnvName}-{DomainPrefix}.{DomainName}
 // except for the ProdEnvName which will be {DomainPrefix}.{DomainName}
-const DomainPrefix = 'app'
+const DomainPrefixClient = 'app'
+const DomainPrefixAdmin = 'admin'
 const ProdEnvName = 'prod'
 const DomainName = 'dacast.com'
 const DEFAULT_BRANCH = 'master'
@@ -26,13 +27,15 @@ async function main(){
         console.log('make sure to specify which environment you want to deploy: node deploy [env name]')
         return
     }
-    let envName = env + '-' + DomainPrefix
+    let envNameAdmin = env + '-' + DomainPrefixAdmin
+    let envNameClient = env + '-' + DomainPrefixClient
     if(ProdEnvName === env) {
-        envName = DomainPrefix
+        envNameClient = DomainPrefixClient
+        envNameAdmin = DomainPrefixAdmin
     }
     let stateBucketName
 
-    console.log('Deploying ' + envName)
+    console.log('Deploying ' + envNameClient)
     if(process.argv.indexOf('--with-setup') !== -1){
         stateBucketName = await deployCloudFormation()
         await deployTerraform(stateBucketName)
@@ -41,7 +44,7 @@ async function main(){
         stateBucketName = await retrieveStateBucketName(new AWS.CloudFormation())
     }
 
-    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envName, DomainName, branch, GithubAccessKey)
+    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envNameClient, envNameAdmin, DomainName, branch, GithubAccessKey)
 }
 
 main()
@@ -132,7 +135,7 @@ async function deployTerraform(stateBucketName) {
     }
 }
 
-async function startCodebuildBuild(codebuildProjectName, stateBucketName, envName, domainName, branch, githubToken) {
+async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNameClient, envNameAdmin, domainName, branch, githubToken) {
     console.log('[Build] starting build on codebuild project ' + codebuildProjectName)
     let codebuild = new AWS.CodeBuild()
     let buildInfo = await codebuild.startBuild({
@@ -144,8 +147,13 @@ async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNam
                 type: 'PLAINTEXT'
             },
             {
-                name: 'ENV_NAME',
-                value: envName,
+                name: 'ENV_NAME_CLIENT',
+                value: envNameClient,
+                type: 'PLAINTEXT'
+            },
+            {
+                name: 'ENV_NAME_ADMIN',
+                value: envNameAdmin,
                 type: 'PLAINTEXT'
             },
             {
