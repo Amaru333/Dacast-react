@@ -26,7 +26,7 @@ export const DoughnutCentre = styled.div`
     height: 164px;
     background: white;
 `
-export const Slice = styled.div<DoughnutChartProps & {degreesCalculation: any}>`
+export const Slice = styled.div<DoughnutChartProps & {degreesCalculation: number}>`
     position: absolute;
     top: 0;
     left: 0;
