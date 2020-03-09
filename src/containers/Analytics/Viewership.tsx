@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
-import { ViewershipAnalytics } from '../../pages/Analytics/ViewerShip';
+import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
