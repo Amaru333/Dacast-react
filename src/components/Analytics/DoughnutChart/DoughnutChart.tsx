@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from "../../Typography/Text"
-import { DoughnutBody, DoughnutContainer, DoughnutCentre, FirstSlice, SecondSlice } from './DoughnutChartStyle';
+import { DoughnutBody, DoughnutContainer, DoughnutCentre, Slice } from './DoughnutChartStyle';
 import { DoughnutChartProps } from './DoughnutChartTypes';
 
 export const DoughnutChart = (props: DoughnutChartProps) => {
@@ -24,9 +24,9 @@ export const DoughnutChart = (props: DoughnutChartProps) => {
     return (
         <React.Fragment>
             <DoughnutContainer>
-                <DoughnutBody>
-                    <FirstSlice {...props} degreesCalculation={() => firstDegreesCalculation()}></FirstSlice>
-                    <SecondSlice {...props} degreesCalculation={() => secondDegreesCalculation()}></SecondSlice>
+                <DoughnutBody value={props.value}>
+                    <Slice className="firstSlice" {...props} degreesCalculation={() => firstDegreesCalculation()}></Slice>
+                    <Slice className="secondSlice" {...props} degreesCalculation={() => secondDegreesCalculation()}></Slice>
                     <DoughnutCentre>
                         <Text size={48} weight="reg">{props.value}%</Text>
                     </DoughnutCentre>
