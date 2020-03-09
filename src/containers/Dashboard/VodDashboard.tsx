@@ -5,6 +5,7 @@ import { WidgetElement } from './WidgetElement';
 import { numberFormatter, getPercentage } from '../../utils/utils';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../shared/Common/Icon'
+import { DoughnutChart } from '../../components/Analytics/DoughnutChart/DoughnutChart';
 
 interface VodDashboardProps {
     totalVideos: number;
@@ -73,7 +74,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <Tooltip target="playrateVsImpressionsTooltip">The ratio of people who played your videos against those who did not click play.</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{rateVsImpressions}%</Text>
+                       <DoughnutChart value={rateVsImpressions}/>
                     </div>
                 </WidgetElement>
                 <WidgetElement className={classItemFullWidth}>
