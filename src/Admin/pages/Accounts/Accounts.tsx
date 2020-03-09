@@ -25,9 +25,13 @@ export const AccountsPage = () => {
         ]}
     }
 
+    const accountsTableBody = () => {
+        return 
+    }
+
     return (
         <div>
-            <Table id='accountsTable' headerBackgroundColor='gray-10' header={accountsTableHeader()} />
+            <Table id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} />
         </div>
     )
 }
