@@ -8,10 +8,6 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 
-// const useQuery = () => {
-//     return new URLSearchParams(useLocation().search);
-//   }
-
 
 export const AccountsPage = (props: AccountsComponentProps) => {
 
@@ -19,7 +15,6 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     let query = useHistory()
 
     React.useEffect(() => {
-        console.log(query)
     }, [query])
 
     const accountsTableHeader = () => {
@@ -67,9 +62,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to=''>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to=''>Logs</Link>,
-                    <Link key={'accountsTableBodyAllowancesCell' + key }to=''>Allowances</Link>,
-    
-    
+                    <Link key={'accountsTableBodyAllowancesCell' + key }to=''>Allowances</Link>, 
                 ]}
             })
         }

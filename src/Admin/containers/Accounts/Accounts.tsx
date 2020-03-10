@@ -21,7 +21,6 @@ const Accounts = (props: AccountsComponentProps) => {
     let query = useQuery()
 
     React.useEffect(() => {
-        console.log(query)
         if (query.get('accountId')) {
             props.getAccounts(query.get('accountId'))
         }else if(!props.accounts) {
