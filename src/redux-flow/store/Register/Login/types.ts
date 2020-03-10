@@ -11,10 +11,12 @@ export interface TokenInfos {
     expires: string;
     token: string;
     refresh: string;
+    userId: string;
 }
 
 export const defaultStateLogin: TokenInfos = {
     expires: '',
     token: '',
-    refresh: ''
+    refresh: '',
+    userId: ''
 }

@@ -94,11 +94,12 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                     path={props.path}
                 >
                     <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
-                    <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile} />
-                        <Content isMobile={isMobile} isOpen={isOpen}>
+                    <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                        <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                             <props.component {...props} />
                         </Content>
+                        <div id="navigationConfirmationModal"></div>
                     </FullContent>  
                 </Route>
                 : 
@@ -132,7 +133,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
     /** TO DO: Figure out a way to implement the styled components */
     const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
 
-        const [isOpen, setIsOpen] = React.useState<boolean>(true);
+        //const [isOpen, setIsOpen] = React.useState<boolean>(true);
 
         // <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} title='Unsaved Changes' opened={isOpen} toggle={() => setIsOpen(!isOpen)}>
         //     <Text size={14} weight='reg'>{props.message}</Text>
@@ -172,7 +173,6 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
             <ThemeProvider theme={Theme}>
                 <BrowserRouter getUserConfirmation={getUserConfirmation}>
                     <>                 
- 
                         <Toasts />
                             <Switch>
                                 <Route exact path='/'><Login history={history} /></Route>

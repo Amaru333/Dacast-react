@@ -2,7 +2,7 @@ import { ActionTypes, LoginInfos, TokenInfos } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { loginService } from './services';
-import { showToastNotification } from '../../toasts';
+import { showToastNotification } from '../../Toasts';
 
 export interface Login {
     type: ActionTypes.LOGIN;
