@@ -10,6 +10,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { Toggle } from '../../../components/Toggle/toggle';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -66,38 +67,70 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         <React.Fragment>
             <Card className="col-12 clearfix">
                 <div className="details col col-12">
-                    <header className="flex justify-between">
+                    <header className="flex justify-between mb2">
                         <Text size={20} weight="med">Details</Text>
                     </header>
+                    <Toggle
+                        className="col col-12 pb2"
+                        defaultChecked={newPlaylistDetails.online}
+                        onChange={() => setNewPlaylistDetails({...newPlaylistDetails, online: !newPlaylistDetails.online})}
+                        label="Playlist Online"
+                    />
                     <Input
                         className="col col-6 pr2"
                         label="Title"
                         value={newPlaylistDetails.title}
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["title"]: event.currentTarget.value })}
                     />
-                    <div className="col col-6 flex flex-column">
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Embed Code</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
-                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
-                        </LinkBox>
-                    </div>
+                    <InputTags
+                        className="col col-6"
+                        label="Folders"
+                        placeholder="Type folder name"
+                    />
                     <Input
                         className="col col-6 pr2 pt2"
                         label="Description"
                         value={newPlaylistDetails.description}
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <InputTags
-                        className="col col-6 pt2"
-                        label="Folders"
-                        placeholder="Type folder name"
-                    />
+                    <div className="col col-3 pt2 flex flex-column">
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Content ID</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{props.playlistDetails.id}</LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.playlistDetails.id)}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
                 </div>
                 <Divider className="col col-12" />
+                <div className='col col-12'>
+                        <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                        <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
+
+                        <div className="col col-6 mt2 pr2 flex flex-column">
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Embed Code</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <div className="col col-6 mt2 flex flex-column">
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Share Link</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <Divider className="col col-12" />
+                    </div>
                 <div className="thumbnail col col-12">
                     <Text className="col col-12" size={20} weight="med">Images</Text>
                     <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>

@@ -17,6 +17,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { handleFeatures } from '../../../shared/Common/Features';
+import { PlaylistFiltering } from './PlaylistFilter';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -149,8 +150,8 @@ export const PlaylistListPage = (props: LiveListProps) => {
                                 {renderList()}
                             </DropdownList>
                         </div>
-                        <SeparatorHeader className="ml2 inline-block" />
-                        <Button buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Filter</Button>
+                        <SeparatorHeader className="mx2 inline-block" />
+                        <PlaylistFiltering setSelectedPlaylist={setSelectedPlaylist} />
                         <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Playlist</Button>
                     </div>
                 </HeaderPlaylistList>

@@ -167,7 +167,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         />
                         <div className="col col-3 pt2 flex flex-column">
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Video ID</Text>
+                                <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>

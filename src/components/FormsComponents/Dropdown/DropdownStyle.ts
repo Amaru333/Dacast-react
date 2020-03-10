@@ -12,13 +12,14 @@ export const DropdownLabel = styled.div`
     margin: 4px 0;
 `;
 
-export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined}>`
+export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined; disabled:boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;
     height: 38px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.theme.colors["gray-10"]};
+    pointer-events: ${props => props.disabled ? "none" : "auto"}
     ${props => props.isNavigation && css`
         background-color: ${props.theme.colors.white};
     `}
@@ -41,10 +42,11 @@ export const Title = styled.div`
     overflow: hidden;
 `;
 
-export const IconStyle = styled.div`
+export const IconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 19px;
     top: 17%;
+    color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']}
 `;
 
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch: boolean}>`

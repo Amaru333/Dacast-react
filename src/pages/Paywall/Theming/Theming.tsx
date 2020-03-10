@@ -92,12 +92,12 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     const PaywallThemingInPlayerCustomization = () => {
         const tabsList: Routes[] = [
             {
-                name: "Splash Screen",
-                path: 'splahScreen'
+                name: 'Splash Screen',
+                path: 'Splash Screen'
             },
             {
                 name: 'Login Screen',
-                path: 'loginScreen'
+                path: 'Login Screen'
             }
 
         ]

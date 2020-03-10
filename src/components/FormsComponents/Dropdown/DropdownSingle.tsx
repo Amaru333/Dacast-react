@@ -109,11 +109,11 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     }
     
     return (
-        <ContainerStyle className={props.className}>
+        <ContainerStyle  className={props.className}>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
-            <TitleContainer isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                <Title><Text  size={14} weight='reg'>{selectedItem}</Text></Title>
-                <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
+            <TitleContainer disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+                <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>
+                <IconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
             <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
                 {renderList()}
