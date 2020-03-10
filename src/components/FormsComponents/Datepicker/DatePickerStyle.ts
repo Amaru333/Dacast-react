@@ -16,7 +16,7 @@ export const BoxStyle = styled.div<{isSelected: boolean}>`
     height: 22px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     ${props => props.isSelected && css `
-        border: 1px solid ${props => props.theme.colors["violet"]};
+        border: 1px solid ${props.theme.colors["violet"]};
     `}
     background-color: ${props => props.theme.colors["gray-10"]};
     padding: 0.5em 0;
@@ -26,25 +26,23 @@ export const BoxStyle = styled.div<{isSelected: boolean}>`
 
 export const StartTextStyle = styled.div<{text: boolean; isSingle: boolean}>`
     ${props => !props.isSingle && css`
-        border: 1px solid ${props => props.theme.colors["gray-7"]};
+        border: 1px solid ${props.theme.colors["gray-7"]};
         border-radius: 4px;
     `}
     ${props => !props.isSingle && !props.text && css`
-        background-color: ${props => props.theme.colors["white"]};
+        background-color: ${props.theme.colors["white"]};
     `}
     ${props => props.text && !props.isSingle && css `
-        background-color: ${props => props.theme.colors["gray-7"]};
+        background-color: ${props.theme.colors["gray-7"]};
     `}
     padding: 2px;
-    position: absolute;
-    bottom: 4px;
 
 `
 
 export const EndTextStyle = styled.div<{text: boolean}>`
     background-color: ${props => props.theme.colors["white"]};
     ${props => props.text && css `
-        background-color: ${props => props.theme.colors["gray-7"]};
+        background-color: ${props.theme.colors["gray-7"]};
     `}
     padding: 2px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
@@ -121,7 +119,7 @@ export const DaysContainer = styled.div<{}>`
 
 export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: boolean;isSelectedStartOrEnd: boolean; isLineBeginning: boolean; isLineEnd: boolean; isMonthFirstDay: boolean; isMonthLastDay: boolean;  isFirstDay: boolean; isLastDay: boolean; isSingle: boolean}>`
     ${props => (props.isWithinHoverRange || props.isSelected) && !props.isSingle && css`
-        background-color:${props => props.theme.colors["violet20"]};
+        background-color:${props.theme.colors["violet20"]};
     `}
     ${props => (props.isWithinHoverRange || props.isSelected) && (props.isLineBeginning || props.isMonthFirstDay) && css`
         border-bottom-left-radius: 40px;
@@ -132,10 +130,10 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: b
         border-top-right-radius: 40px;
     `}
     ${props => props.isFirstDay && css`
-        background: linear-gradient(90deg, ${props => props.theme.colors["white"]} 50%, ${props => props.theme.colors["violet20"]} 50%);
+        background: linear-gradient(90deg, ${props.theme.colors["white"]} 50%, ${props.theme.colors["violet20"]} 50%);
     `}
     ${props => props.isLastDay && css`
-        background: linear-gradient(90deg, ${props => props.theme.colors["violet20"]} 50%, ${props => props.theme.colors["white"]} 50%);
+        background: linear-gradient(90deg, ${props.theme.colors["violet20"]} 50%, ${props.theme.colors["white"]} 50%);
     `}
     margin: 5px 0;
     padding: 0 3px;
@@ -157,11 +155,11 @@ export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: 
         outline: none;
     }
     ${props => (props.isWithinHoverRange || props.isSelected) && css`
-        background-color:${props => props.theme.colors["violet20"]};
+        background-color:${props.theme.colors["violet20"]};
     `}
     ${props => props.isSelectedStartOrEnd && css`
-        background-color:${props => props.theme.colors["violet"]};
-        color:${props => props.theme.colors["white"]};
+        background-color:${props.theme.colors["violet"]};
+        color:${props.theme.colors["white"]};
     `}
     ${props => props.isToday && css`
         border: 1px solid ${props.theme.colors["gray-3"]};

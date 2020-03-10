@@ -131,6 +131,10 @@ a {
     margin-right: 1.5rem;
 }
 
+.mb35 { margin-bottom: 2.5rem}
+
+.py35 { padding-top: 2.5rem; padding-bottom: 2.5rem;}
+
 
 /** Carousel override css classes  **/
 
@@ -151,3 +155,23 @@ a {
 .control-dots {
     padding-inline-start: unset;
 }
+
+.tableTest {
+    position: relative;
+}
+
+.tableTest > .ScrollbarsCustom-Wrapper {
+    position: relative !important;
+}
+
+.tableOverflow .ScrollbarsCustom-Wrapper {
+    overflow: visible !important;
+    z-index: 10;
+}
+
+.tableOverflow .ScrollbarsCustom-Scroller {
+    overflow: visible !important;
+    z-index: 10;
+}
+
+

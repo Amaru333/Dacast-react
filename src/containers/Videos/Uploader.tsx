@@ -10,7 +10,7 @@ import { UploaderPage } from '../../pages/Videos/Uploader/Uploader';
 //     // Your props here
 // }
 
-export const Uploader = (props: { postVodDemo: Function }) => {
+const Uploader = (props: { postVodDemo: Function }) => {
 
     return (
         <UploaderPage {...props}  />

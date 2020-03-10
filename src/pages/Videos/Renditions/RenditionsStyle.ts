@@ -6,6 +6,7 @@ height: 104px;
 width: 271px;
 display: flex;
 text-align: center;
+flex-grow: 1;
 `
 
 export const RenditionsTable = styled.div`

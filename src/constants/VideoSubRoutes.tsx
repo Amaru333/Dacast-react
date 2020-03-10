@@ -3,20 +3,9 @@ import VodSecurity from '../containers/Videos/Security';
 import General from '../containers/Videos/General';
 import Chapters from '../containers/Videos/Chapters';
 import VodRenditions from '../containers/Videos/Renditions';
-import React from 'react';
 import VodTheming from '../containers/Videos/Theming';
-
-const VodPaywallPlaceholder = () => {
-    return (
-        <h1>VOD Paywall</h1>
-    )
-}
-
-const VodAdvertisingPlaceholder = () => {
-    return (
-        <h1>VOD Advertising</h1>
-    )
-}
+import VodEngagement from '../containers/Videos/Engagement';
+import VodPaywall from '../containers/Videos/Paywall';
 
 export const VideoSubRoutes: Routes[] = [   
     {
@@ -35,13 +24,13 @@ export const VideoSubRoutes: Routes[] = [
         path: '/paywall',
         name: 'Paywall',
         iconName: null,
-        component: VodPaywallPlaceholder,
+        component: VodPaywall,
     },
     {
-        path: '/advertising',
-        name: 'Advertising',
+        path: '/engagement',
+        name: 'Engagement',
         iconName: null,
-        component: VodAdvertisingPlaceholder,
+        component: VodEngagement,
     },
     {
         path: '/security',

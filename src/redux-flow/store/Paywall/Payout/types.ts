@@ -17,14 +17,14 @@ export interface BankAccountUS {
     state: string;
     town: string;
     zipCode: string;
-    country: string;
+    country: 'US';
     bankName: string;
     bankAddress: string;
     bankAddress2?: string;
     bankState: string;
     bankTown: string;
     bankZipCode: string;
-    bankCountry: string;
+    bankCountry: 'US';
 }
 
 export interface BankAccountInternational {

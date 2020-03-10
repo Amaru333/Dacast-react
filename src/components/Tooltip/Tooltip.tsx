@@ -29,7 +29,7 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
     }, [visibility]);
 
     return (
-        <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibility={visibility} {...props}>
+        <ToolTipContainerStyle ref={tooltip} top={top} left={left} visibilityProp={visibility} {...props}>
             <Text className="noTransition" size={12} weight="reg" > { props.children } </Text>
         </ToolTipContainerStyle>
     )

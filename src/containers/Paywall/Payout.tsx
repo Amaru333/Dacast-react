@@ -6,6 +6,7 @@ import { PayoutPage } from '../../pages/Paywall/Payout/Payout';
 import { Action, getPayoutInfosAction, addPaymentMethodRequestAction, deletePaymentMethodRequestAction, addWithdrawalRequestAction } from '../../redux-flow/store/Paywall/Payout/actions'
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from '../../redux-flow/store/Paywall/Payout';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface PayoutComponentProps {
@@ -28,7 +29,7 @@ const Payout = (props: PayoutComponentProps) => {
     return (
         props.payoutInfos ?
             <PayoutPage {...props} />
-            : <LoadingSpinner size='large' color='orange' />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

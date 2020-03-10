@@ -7,6 +7,7 @@ import React from 'react';
 
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApiIntegrationPage, ApiIntegrationProps } from '../../pages/Settings/ApiIntegration/ApiIntegration';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 const ApiIntegration = (props: ApiIntegrationProps) => {
     
@@ -21,7 +22,7 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
             <ApiIntegrationPage {...props} />
         )
     } else {
-        return <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
+        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     }
 
 }

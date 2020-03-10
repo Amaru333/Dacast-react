@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Button } from '../FormsComponents/Button/Button';
 
 export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean}>`
     box-sizing: border-box;
@@ -9,7 +10,6 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
     width: 600px;
     
     height: auto;
-    min-height: 472px;
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
     overflow: auto;
@@ -90,4 +90,11 @@ margin-top: 32px;
 `
 export const StepperHeaderStyle = styled.div`
 text-align: center;
+`
+
+export const StepperNextButton = styled(Button)`
+&:focus {
+    background: ${props => props.theme.colors["violet"]};
+    outline: none;
+  };
 `

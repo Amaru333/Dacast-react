@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../components/FormsComponents/Progress/Loadin
 import { SecurityPage } from '../../pages/Settings/Security/Security';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../redux-flow/store/Settings/Security/types';
 import { getSettingsSecurityOptionsAction, saveSettingsSecurityOptionsAction, saveGeoRestrictionGroupAction, saveDomainControlGroupAction, deleteDomainControlGroupAction, deleteGeoRestrictionGroupAction, Action } from '../../redux-flow/store/Settings/Security';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
@@ -27,7 +28,7 @@ const Security = (props: SecurityComponentProps) => {
     return (
         props.securityDetails ?
             <SecurityPage {...props} />
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 

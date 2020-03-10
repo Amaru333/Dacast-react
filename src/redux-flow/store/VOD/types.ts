@@ -9,6 +9,9 @@ import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsList } from './Renditions/types';
 import { VodTheme } from './Theming/types';
 import { VodThemingReducer } from './Theming/reducer';
+import { VodEngagementSettings } from './Engagement/types';
+import { VodEngagementReducer } from './Engagement/reducer';
+import { VodPaywallPageInfos, VodPaywallReducer } from './Paywall';
 
 
 export const vodInitialState: VodState = {
@@ -17,7 +20,9 @@ export const vodInitialState: VodState = {
     general: false,
     list: false,
     renditions: false,
-    theming: false
+    theming: false,
+    engagement: false,
+    paywall: false
 };
 
 
@@ -28,6 +33,8 @@ export interface  VodState {
     list: false | VodItem[];
     renditions: false | RenditionsList;
     theming: false | VodTheme;
+    engagement: false | VodEngagementSettings;
+    paywall: false | VodPaywallPageInfos;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({
@@ -36,5 +43,7 @@ export const VodReducer: Reducer<VodState> = combineReducers({
     general: GeneralReducer,
     list: reducerList,
     renditions: RenditionsReducer,
-    theming: VodThemingReducer
+    theming: VodThemingReducer,
+    engagement: VodEngagementReducer,
+    paywall: VodPaywallReducer
 })

@@ -3,18 +3,8 @@ import { Routes } from '../containers/Navigation/NavigationTypes';
 import LiveSecurity from '../containers/Live/Security';
 import LiveGeneral from '../containers/Live/General';
 import LiveTheming from '../containers/Live/Theming';
-
-const paywallPlaceholder = () => {
-    return (
-        <h1>Live Paywall</h1>
-    )
-}
-
-const advertisingPlaceholder = () => {
-    return (
-        <h1>Live Advertising</h1>
-    )
-}
+import LiveEngagement  from '../containers/Live/Engagement';
+import LivePaywall from '../containers/Live/Paywall';
 
 export const LiveSubRoutes: Routes[] = [
     {
@@ -25,12 +15,12 @@ export const LiveSubRoutes: Routes[] = [
     {
         path: '/paywall',
         name: 'Paywall',
-        component: paywallPlaceholder
+        component: LivePaywall
     },
     {
-        path: '/advertising',
-        name: 'Advertising',
-        component: advertisingPlaceholder
+        path: '/engagement',
+        name: 'Engagement',
+        component: LiveEngagement
     },
     {
         path: '/security',

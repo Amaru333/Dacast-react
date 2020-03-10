@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import { LoadingSpinner } from '../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
@@ -10,6 +9,8 @@ import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
+import Folders from '../containers/Folders/Folders';
+import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
 import Plans from '../containers/Account/Plans'
@@ -19,21 +20,13 @@ import Transactions from '../containers/Paywall/Transactions';
 import PlaylistList from '../containers/Playlists/List';
 import PaywallSettings from '../containers/Paywall/Settings';
 import Presets from '../containers/Paywall/Presets';
-
-/** TO DO: Remove the functional components and import the real one when they're built */
-
-
-const functionTest1 = () => {
-    return (
-        <LoadingSpinner size="small" color="dark-violet" />
-    )
-}
-
-const functionTest2 = () => {
-    return (
-        <LoadingSpinner size="small" color="red" />
-    )
-}
+import PaywallTheming from '../containers/Paywall/Theming';
+import PendingOrders from '../containers/Account/PendingOrders';
+import Groups from '../containers/Paywall/Groups';
+import Viewership from '../containers/Analytics/Viewership';
+import Revenue from '../containers/Analytics/Revenue';
+import DashboardAnalytics from '../containers/Analytics/Dashboard';
+import RealTime from '../containers/Analytics/RealTime';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -58,7 +51,7 @@ export const AppRoutes: Routes[] = [
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        component: functionTest1
+        component: Folders
     },
 
     {
@@ -76,22 +69,22 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/analytics/dashboard',
                 name: 'Dashboard',
-                component: functionTest2
+                component: DashboardAnalytics
             },
             {
                 path: '/analytics/realtime',
                 name: 'Real Time',
-                component: functionTest2
+                component: RealTime
             },
             {
                 path: '/analytics/viewership',
                 name: 'Viewership',
-                component: functionTest2
+                component: Viewership
             },
             {
                 path: '/analytics/revenue',
                 name: 'Revenue',
-                component: functionTest2
+                component: Revenue
             }
         ]
     },
@@ -109,7 +102,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/groups',
                 name: 'Groups',
-                component: functionTest2
+                component: Groups
             },
             {
                 path: '/paywall/transactions',
@@ -117,9 +110,14 @@ export const AppRoutes: Routes[] = [
                 component: Transactions
             },
             {
-                path: '/paywall/payout',
-                name: 'Payout',
+                path: '/paywall/withdrawals',
+                name: 'Withdrawals',
                 component: Payout
+            },
+            {
+                path: '/paywall/theming',
+                name: 'Theming',
+                component: PaywallTheming
             },
             {
                 path: '/paywall/settings',
@@ -155,7 +153,7 @@ export const AppRoutes: Routes[] = [
             },
             {
                 path: '/settings/apiintegrations',
-                name: 'API & Integration',
+                name: 'API & Integrations',
                 component: ApiIntegration
             },
 
@@ -198,9 +196,14 @@ export const AppRoutes: Routes[] = [
                 component: Billing
             },
             {
+                path: '/account/pendingorders',
+                name: 'Pending Orders',
+                component: PendingOrders
+            },
+            {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: functionTest1
+                component: Invoices
             }
         ]
     }

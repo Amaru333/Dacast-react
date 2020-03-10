@@ -6,6 +6,7 @@ import { Action } from '../../redux-flow/store/VOD/General/actions';
 import { getVodListAction, deleteVodAction } from '../../redux-flow/store/VOD/General/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { VideosListProps, VideosListPage } from '../../pages/Videos/VideosList/VideosList';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 const VideosList = (props: VideosListProps) => {
 
@@ -16,7 +17,7 @@ const VideosList = (props: VideosListProps) => {
     }, [])
 
     if (!props.items) {
-        return <LoadingSpinner className="mlauto mrauto" size="large" color="violet" />
+        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
             <VideosListPage {...props} />

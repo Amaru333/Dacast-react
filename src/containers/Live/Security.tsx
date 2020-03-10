@@ -6,6 +6,7 @@ import { Action, LiveSecuritySettings, SecuritySettings, getLiveSecuritySettings
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface LiveSecurityProps {
     liveSecuritySettings: LiveSecuritySettings;
@@ -27,7 +28,7 @@ export const LiveSecurity = (props: LiveSecurityProps) => {
     return (
         props.liveSecuritySettings && props.globalSecuritySettings ? 
             <LiveSecurityPage {...props} />
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
     
 }

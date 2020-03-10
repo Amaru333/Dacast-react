@@ -5,7 +5,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
   min-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
-  border: ${props => (props.typeButton == "secondary") ? `1px solid ${props.theme.colors[props.colorObject!.color]}` : "none"};
+  border: ${props => (props.typeButton == "secondary") ? `1px solid ${props.theme.colors[props.colorObject!.borderColor ? props.colorObject!.borderColor : props.colorObject!.color]}` : "none"};
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -41,7 +41,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
     cursor: not-allowed;
 
     ${props => (props.typeButton == "secondary") && css`
-        background: ${props => props.theme.colors.white};
+        background: ${props.theme.colors.white};
         color: ${props.theme.colors[props.colorObject!.disabledTextColor]};
         opacity: 0.5;
     `}
@@ -49,7 +49,7 @@ export const ButtonStyle = styled.button<ButtonProps>`
 
     ${props => (props.typeButton == "tertiary") && css`
         background: white;
-        color: ${props => props.theme.colors["gray-5"]};
+        color: ${props.theme.colors["gray-5"]};
     `};
     }
 `;

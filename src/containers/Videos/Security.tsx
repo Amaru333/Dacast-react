@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { VodSecuritySettings, SecuritySettings } from '../../redux-flow/store/VOD/Security';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
+import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -28,7 +29,7 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
     return (
         props.vodSecuritySettings && props.globalSecuritySettings ? 
             <VodSecurityPage {...props}/>
-            : <LoadingSpinner color='dark-violet' size='large' />
+            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 
