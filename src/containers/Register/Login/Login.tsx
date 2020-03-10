@@ -18,7 +18,7 @@ const Login = (props: LoginContainerProps) => {
 
     const  loginUser = async (username: string, password: string) => {
         await props.login({username: username, password: password})
-        if(props.loginInfos && props.loginInfos.token.length > 0) {
+        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             addToken(props.loginInfos);
             props.history.push('/dashboard');
         }

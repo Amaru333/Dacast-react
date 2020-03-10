@@ -32,6 +32,8 @@ import { Modal } from './components/Modal/Modal';
 import { Text } from './components/Typography/Text';
 import { Button } from './components/FormsComponents/Button/Button';
 import { HelpPage } from './pages/Help/Help';
+import  Signup from './containers/Register/signup/signup';
+import { ConfirmEmail } from './pages/Register/ConfirmEmail/ConfirmEmail';
 
 // Any additional component props go here.
 interface MainProps {
@@ -175,6 +177,8 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                             <Switch>
                                 <Route exact path='/'><Login history={history} /></Route>
                                 <Route path='/login'><Login history={history} /></Route>
+                                <Route path='/signup'><Signup/></Route>
+                                <Route path='/confirm-email'><ConfirmEmail/></Route>
                                 {returnRouter(AppRoutes)}
                                 <Route path='*' ><NotFound /></Route>
                             </Switch>
