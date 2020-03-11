@@ -10,6 +10,7 @@ import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
 import { AccountsPage } from './pages/Accounts/Accounts';
+import EditPlan from './containers/Accounts/EditPlan';
 // Any additional component props go here.
 interface MainProps {
     store: Store<AdminState>;
@@ -51,6 +52,9 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                         <FullContent>
                             <Content>
                                 <Switch>
+                                    <Route path='/accounts/:accountId/plan'>
+                                        <EditPlan />
+                                    </Route>
                                     {returnRouter(AdminRoutes)}
                                     <Route exact path='/'>
                                         <AccountsPage />

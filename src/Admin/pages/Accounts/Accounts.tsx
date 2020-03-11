@@ -6,35 +6,32 @@ import { Link } from 'react-router-dom'
 import { Flag } from '../../redux-flow/store/Accounts'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     const [accountId, setAccountId] = React.useState<string>(null)
     let query = useHistory()
-
-    React.useEffect(() => {
-    }, [query])
+    let {url} = useRouteMatch()
 
     const accountsTableHeader = () => {
         return {data: [
-        {cell: <Text key='accountsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
-        {cell:<Text key='accountsTableHeaderCompanyCell' size={14} weight='med'>Company</Text>},
-        {cell: <Text key='accountsTableHeaderNameCell' size={14} weight='med'>Name</Text>},
-        {cell:<Text key='accountsTableHeaderPhoneCell' size={14} weight='med'>Phone</Text>},
-        {cell:<Text key='accountsTableHeaderEmailCell' size={14} weight='med'>Email</Text>},
-        {cell:<Text key='accountsTableHeaderPlanCell' size={14} weight='med'>Plan</Text>},
-        {cell:<Text key='accountsTableHeader12MonthsCell' size={14} weight='med'>12 Months</Text>},
-        {cell:<Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
-        {cell:<Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data</Text>},
-        {cell:<Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage</Text>},
-        {cell: <Text key='accountsTableHeaderEncodingCell' size={14} weight='med'>Encoding</Text>},
-        {cell:<Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
-        {cell:<Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
-        {cell:<Text key='accountsTableHeaderLogCell' size={14} weight='med'>Log</Text>},
-        {cell:<Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
-
+            {cell: <Text key='accountsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
+            {cell: <Text key='accountsTableHeaderCompanyCell' size={14} weight='med'>Company</Text>},
+            {cell: <Text key='accountsTableHeaderNameCell' size={14} weight='med'>Name</Text>},
+            {cell: <Text key='accountsTableHeaderPhoneCell' size={14} weight='med'>Phone</Text>},
+            {cell: <Text key='accountsTableHeaderEmailCell' size={14} weight='med'>Email</Text>},
+            {cell: <Text key='accountsTableHeaderPlanCell' size={14} weight='med'>Plan</Text>},
+            {cell: <Text key='accountsTableHeader12MonthsCell' size={14} weight='med'>12 Months</Text>},
+            {cell: <Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
+            {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data</Text>},
+            {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage</Text>},
+            {cell: <Text key='accountsTableHeaderEncodingCell' size={14} weight='med'>Encoding</Text>},
+            {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
+            {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
+            {cell: <Text key='accountsTableHeaderLogCell' size={14} weight='med'>Log</Text>},
+            {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
         ]}
     }
 
@@ -53,7 +50,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.userName}</Text>,
                     <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    <Link key={'accountsTableBodyPlanCell' + key } to=''>{account.plan}</Link>,
+                    <Link key={'accountsTableBodyPlanCell' + key } to={`${url}/${account.id}/plan`}>{account.plan}</Link>,
                     <Text key={'accountsTableBody12MonthsCell' + key } size={14}>{account.annualAmount}</Text>,
                     <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data}</Text>,
@@ -66,7 +63,6 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 ]}
             })
         }
-
     }
 
     return (
@@ -76,7 +72,6 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 <Input id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                 <Button disabled={!accountId ? true : false} onClick={() => {props.getAccounts(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
-
             <Table className='mt1 mb2' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             {/* <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} /> */}
         </div>
