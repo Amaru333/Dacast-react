@@ -3,6 +3,7 @@ import { DropdownSingle } from '../../components/FormsComponents/Dropdown/Dropdo
 import { Table } from '../../components/Table/Table';
 import { Text } from '../../components/Typography/Text';
 import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
+import { NewPaymentMethodForm } from '../../shared/Billing/NewPaymentMethodForm';
 const CardLogo = require('../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../public/assets/paypal_logo.svg');
 
@@ -86,10 +87,16 @@ export const PurchaseStepperPaymentStep = (stepperData: string) => {
             <div>
                 <Table id="purchaseStepperPaymentTotalTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentTotalHeader()} />
             </div>
-            <div>
-                <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />
-            </div>
-            <Text size={12}>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+            
+            {
+                stepperData === "none" ? <NewPaymentMethodForm />
+                 : 
+                 <div>
+                    <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />
+                    <Text size={12}>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+                </div>
+            }
+            
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} />
                 <div className='col col-11 flex'>

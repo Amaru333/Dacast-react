@@ -24,7 +24,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
     let smallScreen = useMedia('(max-width: 40em)')
 
-    const mockPaymentMethod = "paypal"
+    const mockPaymentMethod = "none"
 
     const stepList = [PurchaseStepperCartStep, PurchaseStepperPaymentStep]
 
