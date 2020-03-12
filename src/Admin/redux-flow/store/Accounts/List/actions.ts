@@ -1,6 +1,6 @@
 import { ActionTypes, Account } from './types';
 import { ThunkDispatch } from 'redux-thunk';
-import { AdminState } from '..';
+import { AdminState } from '../..';
 import { AccountsServices } from './services';
 
 export interface GetAccounts {

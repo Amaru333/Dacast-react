@@ -1,26 +1,24 @@
-export enum ActionTypes {
-    GET_ACCOUNTS = "@@accounts/GET_ACCOUNTS"
-}
-export type Flag = 'admin' | 'chipped' | 'platinium' | 'partner' | 'banned' | 'paused' | 'suspended' | 'cancelled' | 'test'
-export interface Account {
-    id: string;
-    companyName: string;
-    userName: string;
-    phone: string;
-    email: string;
-    plan: string;
-    annualAmount: number;
-    registeredDate: number;
-    data: string;
-    storage: string;
-    encoding: string;
-    flags: Flag[];
-}
+import { Account } from './List/types';
+import { combineReducers, Reducer } from 'redux';
+import reducer from './List/reducer';
+import { PlanInfo } from './EditPlan/types';
+import { PlanReducer } from './EditPlan';
+
 
 export interface AccountsState {
-    accounts: false | Account[]
+    plan: false | PlanInfo;
+    accountlist: Account[] | false;
+
 }
 
 export const accountsInitialState: AccountsState = {
-    accounts: false
+    plan: false,
+    accountlist: false,
 }
+
+export const AccountsReducer: Reducer<AccountsState> = combineReducers({
+    plan: PlanReducer,
+    accountlist: reducer,
+
+})
+

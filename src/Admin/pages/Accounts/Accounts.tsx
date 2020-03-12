@@ -3,10 +3,11 @@ import { Text } from '../../../components/Typography/Text'
 import { Table } from '../../../components/Table/Table'
 import { AccountsComponentProps } from '../../containers/Accounts/Accounts'
 import { Link } from 'react-router-dom'
-import { Flag } from '../../redux-flow/store/Accounts'
+import { Flag } from '../../redux-flow/store/Accounts/List/types'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { Pagination } from '../../../components/Pagination/Pagination'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
@@ -73,7 +74,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 <Button disabled={!accountId ? true : false} onClick={() => {props.getAccounts(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table className='mt1 mb2' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
-            {/* <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} /> */}
+            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )
 }

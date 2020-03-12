@@ -9,7 +9,7 @@ var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin
 
 module.exports = {
     entry: {
-        app: ['@babel/polyfill', './src/index.tsx'],
+        // app: ['@babel/polyfill', './src/index.tsx'],
         admin: ['@babel/polyfill', './src/Admin/index.tsx'],
         vendor: ['react', 'react-dom']
     },

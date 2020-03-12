@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts'
+import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/List'
 
 export interface AdminState {
     accounts: AccountsState

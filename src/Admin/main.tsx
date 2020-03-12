@@ -12,7 +12,7 @@ import "../scss/style.scss";
 import { AccountsPage } from './pages/Accounts/Accounts';
 import EditPlan from './containers/Accounts/EditPlan';
 // Any additional component props go here.
-interface MainProps {
+interface AdminMainProps {
     store: Store<AdminState>;
 }
 
@@ -41,7 +41,7 @@ const returnRouter = (props: any) => {
 }
 
 // Create an intersection type of the component props and our Redux props.
-const Main: React.FC<MainProps> = ({ store}: MainProps) => {
+const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
 
 
     return (
@@ -89,4 +89,4 @@ const FullContent = styled.div`
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.
 // For an example of a `connect` function without generics, see `./containers/LayoutContainer`.
-export default Main;
+export default AdminMain;

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
-import { getAccountsAction, Account } from '../../redux-flow/store/Accounts';
+import { getAccountsAction} from '../../redux-flow/store/Accounts/List/actions';
+import { Account } from '../../redux-flow/store/Accounts/List/types'
 import { useLocation } from 'react-router-dom'
 
 export interface AccountsComponentProps {
@@ -35,7 +36,7 @@ const Accounts = (props: AccountsComponentProps) => {
 
 export function mapStateToProps(state: AdminState) {
     return {
-        accounts: state.accounts.accounts
+        accounts: state.accounts.list
     };
 }
 
