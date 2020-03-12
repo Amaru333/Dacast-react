@@ -7,18 +7,18 @@ import { PlanReducer } from './EditPlan';
 
 export interface AccountsState {
     plan: false | PlanInfo;
-    accountlist: Account[] | false;
+    list: Account[] | false;
 
 }
 
 export const accountsInitialState: AccountsState = {
     plan: false,
-    accountlist: false,
+    list: false,
 }
 
 export const AccountsReducer: Reducer<AccountsState> = combineReducers({
     plan: PlanReducer,
-    accountlist: reducer,
+    list: reducer,
 
 })
 

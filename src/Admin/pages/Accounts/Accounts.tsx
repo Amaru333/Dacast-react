@@ -58,7 +58,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage}</Text>,
                     <Text key={'accountsTableBodyEncodingCell' + key } size={14}>{account.encoding}</Text>,
                     <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{renderFlags(account.flags)}</div>,
-                    <Link key={'accountsTableBodyEditCell' + key }to=''>Edit</Link>,
+                    <Link key={'accountsTableBodyEditCell' + key }to={`${url}/${account.id}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to=''>Logs</Link>,
                     <Link key={'accountsTableBodyAllowancesCell' + key }to=''>Allowances</Link>, 
                 ]}

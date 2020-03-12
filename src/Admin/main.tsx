@@ -9,26 +9,27 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
-import { AccountsPage } from './pages/Accounts/Accounts';
-import EditPlan from './containers/Accounts/EditPlan';
+import { Routes } from './pages/Accounts/EditPlan';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
 }
 
-const returnRouter = (props: any) => {
+const returnRouter = (props: Routes[]) => {
     return (
-        props.map((route: any, i: number) => {
+        props.map((route: Routes, i: number) => {
             return !route.slug ? <Route key={i}
                 path={route.path}
+                exact={route.exactPath ? true : false}
                 render={props => (
                     // pass the sub-routes down to keep nesting
                     <route.component {...props} routes={route.slug} />
                 )}
             />
-                : route.slug.map((subroute: any, index: number) => {
+                : route.slug.map((subroute: Routes, index: number) => {
                     return <Route key={'subroute'+index}
                         path={subroute.path}
+                        exact={route.exactPath ? true : false}
                         render={props => (
                             // pass the sub-routes down to keep nesting
                             <subroute.component {...props} />
@@ -52,13 +53,7 @@ const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
                         <FullContent>
                             <Content>
                                 <Switch>
-                                    <Route path='/accounts/:accountId/plan'>
-                                        <EditPlan />
-                                    </Route>
                                     {returnRouter(AdminRoutes)}
-                                    <Route exact path='/'>
-                                        <AccountsPage />
-                                    </Route>
                                 </Switch>
                             </Content>
                         </FullContent>   

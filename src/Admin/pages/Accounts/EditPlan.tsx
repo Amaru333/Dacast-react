@@ -20,6 +20,7 @@ export interface Routes {
     arrowIcon?: string;
     component?: any;
     slug?: Routes[];
+    exactPath?: boolean;
 }
 
 
