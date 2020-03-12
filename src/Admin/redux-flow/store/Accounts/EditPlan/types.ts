@@ -1,7 +1,7 @@
 export enum ActionTypes  {
-    GET_ACCOUNT_PLAN = "@@admin/GET_ACCOUNT_PLAN",
-    SAVE_ACCOUNT_PLAN = "@@admin/SAVE_ACCOUNT_PLAN",
-    SWITCH_ACCOUNT_PLAN = "@@admin/SWITCH_ACCOUNT_PLAN"
+    GET_ACCOUNT_PLAN = "@@admin_accounts/GET_ACCOUNT_PLAN",
+    SAVE_ACCOUNT_PLAN = "@@admin_accounts/SAVE_ACCOUNT_PLAN",
+    SWITCH_ACCOUNT_PLAN = "@@admin_accounts/SWITCH_ACCOUNT_PLAN"
 }
 
 export interface PlanInfo {

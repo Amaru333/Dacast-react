@@ -6,16 +6,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { getAccountsAction} from '../../redux-flow/store/Accounts/List/actions';
 import { Account } from '../../redux-flow/store/Accounts/List/types'
-import { useLocation } from 'react-router-dom'
+import { useQuery } from '../../../utils/utils';
 
 export interface AccountsComponentProps {
     accounts: Account[] | false;
     getAccounts: (accountId: string) => void;
 }
-
-const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-  }
 
 const Accounts = (props: AccountsComponentProps) => {
 

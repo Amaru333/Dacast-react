@@ -4,6 +4,7 @@ import { DateTime, LocaleOptions } from 'luxon';
 import { showToastNotification } from '../redux-flow/store/Toasts';
 import { updateTitle } from '../redux-flow/store/Title/logic';
 import { store } from '..';
+import { useLocation } from 'react-router-dom';
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
@@ -207,3 +208,7 @@ export class CsvService {
         }
     }
 }
+
+export const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  }

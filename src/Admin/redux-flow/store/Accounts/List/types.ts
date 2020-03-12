@@ -1,7 +1,7 @@
 export enum ActionTypes {
-    GET_ACCOUNTS = "@@accounts/GET_ACCOUNTS"
+    GET_ACCOUNTS = "@@admin_accounts/GET_ACCOUNTS"
 }
-export type Flag = 'admin' | 'chipped' | 'platinium' | 'partner' | 'banned' | 'paused' | 'suspended' | 'cancelled' | 'test'
+export type Flag = 'admin' | 'adult' | 'chipped' | 'platinium' | 'partner' | 'banned' | 'paused' | 'suspended' | 'cancelled' | 'test'
 
 export interface Account {
     id: string;
