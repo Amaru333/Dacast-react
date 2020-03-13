@@ -42,7 +42,7 @@ export const PurchaseStepperCartStep = () => {
     )
 }
 
-export const PurchaseStepperPaymentStep = (stepperData: string) => {
+export const PurchaseStepperPaymentStep = (stepperData: string, callback: Function) => {
 
     const purchaseStepperPaymentTotalHeader = () => {
                 return  {data: [
@@ -89,7 +89,7 @@ export const PurchaseStepperPaymentStep = (stepperData: string) => {
             </div>
             
             {
-                stepperData === "none" ? <NewPaymentMethodForm />
+                stepperData === "none" ? <NewPaymentMethodForm callback={callback} />
                  : 
                  <div>
                     <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />

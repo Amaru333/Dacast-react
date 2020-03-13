@@ -149,6 +149,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 lastStepButton="Purchase"
                 finalFunction={() => console.log("you bought the thing")}
                 stepperData={mockPaymentMethod}
+                updateStepperData={(value: string) => console.log(value)}
             />
 
             
