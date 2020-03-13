@@ -89,14 +89,14 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
             <WatermarkContainer isMobile={isMobile} className="col col-12">
                 <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button className="lg-col-2 sm-col-6 mt2" sizeButton="xs" typeButton="secondary">Upload File</Button>
+                <Button className="lg-col-2 sm-col-6 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setSelectedRecipe({ ...stepperData, watermarkFile: "cool new watermark" })}>Upload File</Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                 {stepperData.watermarkFile ?
                     <div>
                         <WatermarkFile className="col lg-col-6 md-col-6  mt1">
                             <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
                             <WatermarkDeleteButton>
-                                <IconStyle style={{ fontSize: "14px" }}>close</IconStyle>
+                                <IconStyle onClick={() => setSelectedRecipe({ ...stepperData, watermarkFile: null })} style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>

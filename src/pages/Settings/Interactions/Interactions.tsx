@@ -15,6 +15,7 @@ import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Intera
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -204,6 +205,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
+            <Prompt when={interactionInfos !== props.interactionsInfos} message='' />
         </div>
     )
 }

@@ -54,12 +54,6 @@ export const BillingPage = (props: BillingComponentProps) => {
         }
     }
 
-    React.useEffect(() => {
-        recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
-        checkPaymentMethod()
-        
-    }, [])
-
     React.useEffect(()=> {checkPaymentMethod()}, [props.billingInfos.paypal, props.billingInfos.creditCard])
 
     let smScreen = useMedia('(max-width: 780px)');

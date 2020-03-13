@@ -16,6 +16,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -290,6 +291,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </Modal> :
                 null
             }
+            <Prompt when={currentStateGa !== props.infos.ga} message='' />
         </>
     )
 

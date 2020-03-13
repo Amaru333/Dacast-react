@@ -17,6 +17,7 @@ import { PlaylistNewAdModal } from './PlaylistNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) => {
 
@@ -242,6 +243,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
             <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
+            <Prompt when={engagementSettings !== props.playlistEngagementSettings.engagementSettings} message='' />
         </div>
     )
 }

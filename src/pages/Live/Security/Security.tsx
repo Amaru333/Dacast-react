@@ -14,6 +14,7 @@ import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Setting
 import { Card } from '../../../components/Card/Card';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface LiveSecurityComponentProps {
     liveSecuritySettings: LiveSecuritySettings;
@@ -254,6 +255,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
+            <Prompt when={selectedSettings !== props.liveSecuritySettings.securitySettings} message='' />
         </div>
     )
     
