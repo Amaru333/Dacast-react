@@ -74,7 +74,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <Tooltip target="playrateVsImpressionsTooltip">The ratio of people who played your videos against those who did not click play.</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                       <DoughnutChart value={rateVsImpressions}/>
+                        <DoughnutChart value={rateVsImpressions}/>
                     </div>
                 </WidgetElement>
                 <WidgetElement className={classItemFullWidth}>

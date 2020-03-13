@@ -12,7 +12,7 @@ export const DropdownLabel = styled.div`
     margin: 4px 0;
 `;
 
-export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined; disabled:boolean}>`
+export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined; disabled: boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;

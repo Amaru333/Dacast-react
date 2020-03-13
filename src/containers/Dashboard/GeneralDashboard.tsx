@@ -45,7 +45,12 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         percentage: getPercentage(props.profile.encoding.limit-props.profile.encoding.consumed, props.profile.encoding.limit),
         left: numberFormatter(props.profile.encoding.limit-props.profile.encoding.consumed, 'twoDecimalPlace'),
         limit: numberFormatter(props.profile.encoding.limit, 'twoDecimalPlace'),
-    } 
+    }
+    
+    const handlePurchaseStepper = (purchaseItem: string) => {
+        setSelectedPurchaseItem(purchaseItem);
+        setPurchaseStepperOpened(true);
+    }
 
     const handleButtonToPurchase = (percentage: number, purchaseItem: string) => {
         if(percentage <= 25 ) {
@@ -63,11 +68,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         if( (props.plan as DashboardPayingPlan).nextBill ) {
             return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
         }
-    }
-
-    const handlePurchaseStepper = (purchaseItem: string) => {
-        setSelectedPurchaseItem(purchaseItem);
-        setPurchaseStepperOpened(true);
     }
 
     return (

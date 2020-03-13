@@ -46,7 +46,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
                     <DropdownSingle className={key === 0 ? 'col col-4 pl1 mt3' : 'col col-4 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     {
                         key === stepperData.firststep.price.length - 1 ? 
-                        <div onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx1 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx1 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
                             
                             : <IconStyle onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
                     }

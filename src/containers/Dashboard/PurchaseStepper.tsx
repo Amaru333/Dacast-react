@@ -12,8 +12,8 @@ export const PurchaseStepperCartStep = () => {
     const purchaseStepperCartTableBody = () => {
         return [
             {data: [
-            <Text size={14} weight="reg">GBs</Text>,
-            <Text size={14} weight="reg">60</Text>,
+                <Text size={14} weight="reg">GBs</Text>,
+                <Text size={14} weight="reg">60</Text>,
             ]},
             {data: [
                 <Text size={14} weight="reg">Price per GB</Text>,
@@ -45,10 +45,10 @@ export const PurchaseStepperCartStep = () => {
 export const PurchaseStepperPaymentStep = (stepperData: string, callback: Function) => {
 
     const purchaseStepperPaymentTotalHeader = () => {
-                return  {data: [
-                    {cell: <Text  key={"purchaseStepperPaymentTotalHeaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
-                    {cell: <Text  key={"purchaseStepperPaymentTotalHeaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>}
-                ]}    
+        return  {data: [
+            {cell: <Text  key={"purchaseStepperPaymentTotalHeaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
+            {cell: <Text  key={"purchaseStepperPaymentTotalHeaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">$135</Text>}
+        ]}    
     }
 
     const purchaseStepperPaymentMethodHeader = () => {
@@ -69,10 +69,10 @@ export const PurchaseStepperPaymentStep = (stepperData: string, callback: Functi
     const purchaseStepperPaymentMethodBody = () => {
         switch (stepperData) {
             case "card":
-                    return [{data: [
-                        <Text  key={"step2PCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
-                        <Text  className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>
-                    ]}]
+                return [{data: [
+                    <Text  key={"step2PCreditCardBodyText"} size={14}  weight="med" color="gray-1">Card ending with 0009</Text>,
+                    <Text  className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14}  weight="med" color="gray-1">03/2020</Text>
+                ]}]
             case "paypal":
                 return [{data: [
                     <Text  key={"step2PCreditCardBodyText"} size={14}  weight="reg" color="gray-1">When you click purchase, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.</Text>,
@@ -90,11 +90,11 @@ export const PurchaseStepperPaymentStep = (stepperData: string, callback: Functi
             
             {
                 stepperData === "none" ? <NewPaymentMethodForm callback={callback} />
-                 : 
-                 <div>
-                    <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />
-                    <Text size={12}>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
-                </div>
+                    : 
+                    <div>
+                        <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />
+                        <Text size={12}>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+                    </div>
             }
             
             <div className='py2 col col-12 flex flex-auto'>

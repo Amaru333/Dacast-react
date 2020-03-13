@@ -92,9 +92,9 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["title"]: event.currentTarget.value })}
                     />
                     <InputTags
-                            className="col col-6"
-                            label="Folders"
-                            placeholder="Type folder name"
+                        className="col col-6"
+                        label="Folders"
+                        placeholder="Type folder name"
                     />
                     <Input
                         className="col col-6 pr2 pt2"
@@ -103,44 +103,44 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
                     <div className="col col-3 pt2 flex flex-column">
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Content ID</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.liveDetails.id)}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Content ID</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.liveDetails.id)}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
                 </div>
                 <Divider className="col col-12" />
                 <div className='col col-12'>
-                        <Text className='col col-12' size={20} weight='med'>Sharing</Text>
-                        <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
+                    <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                    <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
-                        <div className="col col-6 mt2 pr2 flex flex-column">
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Embed Code</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
-                        <div className="col col-6 mt2 flex flex-column">
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Share Link</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
-                        <Divider className="col col-12" />
+                    <div className="col col-6 mt2 pr2 flex flex-column">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Embed Code</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </LinkBox>
                     </div>
-                    <div className="settings col col-12">
+                    <div className="col col-6 mt2 flex flex-column">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Share Link</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
+                    <Divider className="col col-12" />
+                </div>
+                <div className="settings col col-12">
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
                         <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
