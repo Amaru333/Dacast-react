@@ -8,7 +8,7 @@ export const BorderStyle = styled.div<{}>`
 export const ContainerHalfSelector = styled.div<{}>`
     background-color: white;
     border: 1px solid ${props => props.theme.colors["gray-7"]};;
-    height: 550px; 
+    height: 430px; 
     overflow-x: scroll;
 `
 

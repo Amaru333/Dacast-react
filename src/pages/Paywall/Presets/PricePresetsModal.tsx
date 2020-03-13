@@ -57,7 +57,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             return( 
                 <div key={'pricePresetPriceSection' + key} className='col col-12 py1 flex items-center'>
                     <div className='col col-6'>
-                        <Input className='col col-6 pr1' defaultValue={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
+                        <Input className={key === 0 ? "col col-6 pr1" : "col col-6 pr1 mt1"} defaultValue={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
                         <DropdownSingle className={key === 0 ? 'col col-6 px1 mt25' : 'col col-6 px1 mb1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     </div>
 
