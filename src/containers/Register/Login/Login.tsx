@@ -14,14 +14,16 @@ interface LoginContainerProps {
 }
 const Login = (props: LoginContainerProps) => {
 
-    React.useEffect(() => {}, [props.loginInfos])
-
-    const  loginUser = async (username: string, password: string) => {
-        await props.login({username: username, password: password})
+    React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
+            
             addToken(props.loginInfos);
             props.history.push('/dashboard');
         }
+    }, [props.loginInfos])
+
+    const  loginUser = async (username: string, password: string) => {
+        await props.login({email: username, password: password})
     }
 
     return (

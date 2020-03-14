@@ -8,5 +8,6 @@ export const ImageStyle = styled.img`
 
 export const LoginContainer = styled.div`
     width:auto;
+    height: 100vh;
     background: #EBEFF5;
 `

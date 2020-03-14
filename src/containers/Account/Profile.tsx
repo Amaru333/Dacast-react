@@ -17,7 +17,7 @@ const Profile = (props: ProfileComponentProps) => {
 
     React.useEffect(() => {
         if(!props.ProfileInfos) {
-            props.getProfilePageDetails();
+            props.getProfilePageDetails(JSON.parse(localStorage.getItem('userToken')).userID);
         }
     }, [])
 
@@ -38,11 +38,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, ProfileAction>) {
     return {
-        getProfilePageDetails: () => {
-            dispatch(getProfilePageDetailsAction());
+        getProfilePageDetails: (accountId: string) => {
+            dispatch(getProfilePageDetailsAction(accountId));
         },
-        saveProfilePageDetails: (data: ProfilePageInfos) => {
-            dispatch(saveProfilePageDetailsAction(data));
+        saveProfilePageDetails: (data: ProfilePageInfos, accountId: string) => {
+            dispatch(saveProfilePageDetailsAction(data, accountId));
         },
         saveProfilePassword: (data: string) => {
             dispatch(saveProfilePasswordAction(data));

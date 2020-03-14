@@ -28,7 +28,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
+    const handleSubmit = () => {
         event.preventDefault();
         props.saveProfilePageDetails({
             firstName: value['firstName'].value,
@@ -38,16 +38,14 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             timezone: "",
             marketing: value['Marketing'].value,
             lowData: value['Low Data'].value,
-            upload: value['Upload'].value,
-            weeklyAnalytics: value['Weekly Analytics'].value,
-            apiPingbackNotifications: value['API Pingback Notifications'].value
-        })
+            videoUpload: value['Video Uploaded'].value
+        }, JSON.parse(localStorage.getItem('userToken')).userID)
     }
 
     return (
         <div>
             <Card>
-                <form id='profilePageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
+                <form id='profilePageForm' ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
                     <div className="md-col md-col-12">
                         <Input 
@@ -136,7 +134,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     </ToggleContainer>
                     
                     <ToggleContainer className="mt25">
-                        <Toggle id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.upload} {...handleValidationProps('uploadToggle', validations)}/>
+                        <Toggle id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.videoUpload} {...handleValidationProps('uploadToggle', validations)}/>
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
                     </ToggleContainer>    
                 </form>
@@ -146,7 +144,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                 <div> 
                     
-                    <Button disabled={!enabledSubmit} form='profilePageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button disabled={!enabledSubmit} onClick={() => handleSubmit()} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
                 : null

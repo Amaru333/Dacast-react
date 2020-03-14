@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
-import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/Company/actions';
+import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl, getUploadLogoUrlAction } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -20,7 +20,7 @@ const Company = (props: CompanyContainerProps) => {
     /** Fetching data using redux and services */
     React.useEffect( () => {
         if(!props.CompanyInfos) {
-            props.getCompanyPageDetails();
+            props.getCompanyPageDetails(JSON.parse(localStorage.getItem('userToken')).userID);
         }
 
     }, [])
@@ -44,14 +44,14 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, CompanyAction>) {
     return {
-        getCompanyPageDetails: () => {
-            dispatch(getCompanyPageDetailsAction());
+        getCompanyPageDetails: (accountId: string) => {
+            dispatch(getCompanyPageDetailsAction(accountId));
         },
-        saveCompanyPageDetails: (data: CompanyPageInfos) => {
-            dispatch(saveCompanyPageDetailsAction(data));
+        saveCompanyPageDetails: (data: CompanyPageInfos, accountId: string) => {
+            dispatch(saveCompanyPageDetailsAction(data, accountId));
         },
         getLogoUrlForUploading: () => {
-            dispatch(getUploadLogoUrl());
+            dispatch(getUploadLogoUrlAction());
         },
         uploadCompanyLogo: (data: File, uploadUrl: string) => {
             dispatch(uploadCompanyLogo(data, uploadUrl));

@@ -26,22 +26,22 @@ export interface UploadCompanyLogo {
 }
 
 
-export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
+export const getCompanyPageDetailsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
-        await CompanyServices.getCompanyPageDetailsService()
+        await CompanyServices.getCompanyPageDetailsService(accountId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
+export const saveCompanyPageDetailsAction = (data: CompanyPageInfos, accountId: string): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
-        await CompanyServices.saveCompanyPageDetailsService(data)
+        await CompanyServices.saveCompanyPageDetailsService(data, accountId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -49,7 +49,7 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
     };
 }
 
-export const getUploadLogoUrl = (): ThunkDispatch<Promise<void>, {}, GetUploadLogoUrl> => {
+export const getUploadLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetUploadLogoUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetUploadLogoUrl> ) => {
         await CompanyServices.getUploadLogoUrlService()
             .then( response => {

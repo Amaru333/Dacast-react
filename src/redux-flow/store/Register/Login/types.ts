@@ -3,7 +3,7 @@ export enum ActionTypes {
 }
 
 export interface LoginInfos {
-    username: string;
+    email: string;
     password: string;
 }
 
