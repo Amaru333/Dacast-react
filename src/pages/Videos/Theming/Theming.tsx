@@ -14,6 +14,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { VodThemingComponentProps } from '../../../containers/Videos/Theming';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const VodThemingPage = (props: VodThemingComponentProps) => {
     
@@ -239,6 +240,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
                     </PlayerContainer>
                 </PlayerSection>
             </ThemingContainer>
+            <Prompt when={selectedTheme !== props.theme.selectedTheme} message='' />
         </React.Fragment>
     )
 }

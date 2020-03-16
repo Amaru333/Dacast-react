@@ -163,7 +163,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         </DropdownList>
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
-                    <VideosFiltering />                
+                    <VideosFiltering setSelectedVod={setSelectedVod} />                
                     <Button onClick={() => props.history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>

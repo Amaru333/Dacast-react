@@ -11,6 +11,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { ProfilePageInfos } from '../../../redux-flow/store/Account/Profile/types';
+import { Prompt } from 'react-router';
 
 var moment = require('moment-timezone');
 
@@ -191,6 +192,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </Modal>
+            {/* Will do real prompt when connected to endpoint */}
+            <Prompt when={true} message='' />
         </div>
     )
 }

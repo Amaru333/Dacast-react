@@ -31,11 +31,11 @@ const Header = (props: HeaderProps) => {
                 <Breadcrumb isNavigation options={location.pathname + '/'} callback={() => {}}/>
             </div>          
             <IconContainerStyle>
-                <HeaderIconStyle onClick={() => {location.href="/help"}}><Icon>help</Icon></HeaderIconStyle>
+                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
             </IconContainerStyle>
             <VerticalDivider />
-            <Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
+            <a href="/account/plans"><Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button></a>
         </HeaderStyle>
     )
 }

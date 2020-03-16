@@ -26,7 +26,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
                 <DropdownSingle className='mr1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, placement: value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} /> 
                 {
                     adData.placement === 'Mid-roll' ?
-                        <Input type='time' className='ml1 col col-6' id='adPosition' label='Position' value={adData.position} />
+                        <Input type='time' className='ml1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, position: event.currentTarget.value})}  />
                         : null
                 }             
             </div>

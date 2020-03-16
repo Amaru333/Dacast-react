@@ -16,6 +16,7 @@ import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 export const VodPaywallPage = (props: VodPaywallComponentProps) => {
 
@@ -223,6 +224,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={selectedPromo ? props.saveVodPromoPreset : props.createVodPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
             </Modal>
+            <Prompt when={vodPaywallSettings !== props.vodPaywallInfos} message='' />
         </div>
     )
 }

@@ -15,6 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../components/Modal/Moda
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -90,7 +91,34 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         value={newLiveDetails.title}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["title"]: event.currentTarget.value })}
                     />
-                    <div className="col col-6 flex flex-column">
+                    <InputTags
+                        className="col col-6"
+                        label="Folders"
+                        placeholder="Type folder name"
+                    />
+                    <Input
+                        className="col col-6 pr2 pt2"
+                        label="Description"
+                        value={newLiveDetails.description}
+                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
+                    />
+                    <div className="col col-3 pt2 flex flex-column">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Content ID</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.liveDetails.id)}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
+                </div>
+                <Divider className="col col-12" />
+                <div className='col col-12'>
+                    <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                    <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
+
+                    <div className="col col-6 mt2 pr2 flex flex-column">
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
@@ -100,17 +128,70 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
-                    <Input
-                        className="col col-6 pr2 pt2"
-                        label="Description"
-                        value={newLiveDetails.description}
-                        onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
-                    />
-                    <InputTags
-                        className="col col-6 pt2"
-                        label="Folders"
-                        placeholder="Type folder name"
-                    />
+                    <div className="col col-6 mt2 flex flex-column">
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Share Link</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
+                    <Divider className="col col-12" />
+                </div>
+                <div className="settings col col-12">
+                    <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
+                    <div className="col col-12">
+                        <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
+                        <ToggleTextInfo className="mt1">
+                            <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
+                        </ToggleTextInfo>
+                        <div>
+                            <Toggle
+                                label="Live Stream Start Countdown" 
+                                onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
+                                defaultChecked={newLiveDetails.countdown.enabled}
+                            ></Toggle>
+                            <ToggleTextInfo className="mt1">
+                                <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
+                            </ToggleTextInfo>
+                    
+                            {
+                                liveStreamCountdownToggle ?
+
+                                    <div className="col col-12">
+                                        <div 
+                                            className='col col-4 md-col-3 mr2'
+                                        >
+                                            <DateSinglePickerWrapper 
+                                                className='mt25'
+                                                id="startDate"
+                                            />
+                                        </div>
+                                        <Input 
+                                            type='time' 
+                                            className='col col-3 md-col-2 mb1 mr1'
+                                            defaultValue={props.liveDetails.countdown.startTime}
+                                            disabled={false} 
+                                            id='promptTime' 
+                                            label='Prompt Time' 
+                                            required
+                                            pattern="[0-9]{2}:[0-9]{2}"
+                                            step='1'
+                                        />
+                                        <DropdownSingle 
+                                            className="md-col md-col-6 p1"
+                                            hasSearch
+                                            dropdownTitle='Timezone'
+                                            defaultValue={props.liveDetails.countdown.timezone}
+                                            id='dropdownTimezone'
+                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                                        />
+                                    </div> : null
+                            }
+                        </div>    
+                    </div> 
                 </div>
                 <Divider className="col col-12" />
                 <div className="thumbnail col col-12">
@@ -193,60 +274,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
 
-                <div className="settings col col-12">
-                    <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
-                    <div className="col col-12">
-                        <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
-                        <ToggleTextInfo className="mt1">
-                            <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
-                        </ToggleTextInfo>
-                        <div>
-                            <Toggle
-                                label="Live Stream Start Countdown" 
-                                onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
-                                defaultChecked={newLiveDetails.countdown.enabled}
-                            ></Toggle>
-                            <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
-                            </ToggleTextInfo>
-                    
-                            {
-                                liveStreamCountdownToggle ?
-
-                                    <div className="col col-12">
-                                        <div 
-                                            className='col col-4 md-col-3 mr2'
-                                        >
-                                            <DateSinglePickerWrapper 
-                                                className='mt25'
-                                                id="startDate"
-                                            />
-                                        </div>
-                                        <Input 
-                                            type='time' 
-                                            className='col col-3 md-col-2 mb1 mr1'
-                                            defaultValue={props.liveDetails.countdown.startTime}
-                                            disabled={false} 
-                                            id='promptTime' 
-                                            label='Prompt Time' 
-                                            required
-                                            pattern="[0-9]{2}:[0-9]{2}"
-                                            step='1'
-                                        />
-                                        <DropdownSingle 
-                                            className="md-col md-col-6 p1"
-                                            hasSearch
-                                            dropdownTitle='Timezone'
-                                            defaultValue={props.liveDetails.countdown.timezone}
-                                            id='dropdownTimezone'
-                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
-                                        />
-                                    </div> : null
-                            }
-                        </div>    
-                    </div> 
-                </div>
-                <Divider className="col col-12" />
+                
+                
                 <div className="col col-12 advancedVideoLinks">
                     <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
@@ -338,6 +367,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
+            <Prompt when={newLiveDetails !== props.liveDetails} message='' />
         </React.Fragment>
     )
 }

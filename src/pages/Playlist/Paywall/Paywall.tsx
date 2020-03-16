@@ -16,6 +16,7 @@ import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
 
@@ -223,6 +224,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={selectedPromo ? props.savePlaylistPromoPreset : props.createPlaylistPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
             </Modal>
+            <Prompt when={playlistPaywallSettings !== props.playlistPaywallInfos} message='' />
         </div>
     )
 }

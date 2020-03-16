@@ -7,6 +7,7 @@ import { Card } from '../../../components/Card/Card';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { PaywallSettingsComponentProps } from '../../../containers/Paywall/Settings';
 import { PaywallSettingsInfos } from '../../../redux-flow/store/Paywall/Settings/types';
+import { Prompt } from 'react-router';
 
 export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
     const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos);
@@ -47,6 +48,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
             </Card>
             <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
             <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos)}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
+            <Prompt when={settingsInfos !== props.paywallSettingsInfos} message='' />
         </div>
     )
 }

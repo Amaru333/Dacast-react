@@ -17,6 +17,7 @@ import { DomainControl, GeoRestriction } from '../../../redux-flow/store/Setting
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { useMedia } from '../../../utils/utils';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Prompt } from 'react-router';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
 
@@ -232,7 +233,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         : null
                 }
             </Modal>
-
+            {/* Needs save prompt adding when connected to endpoint */}
+            <Prompt when={true} message='' />
         </div>
     )
 }

@@ -166,7 +166,7 @@ export const LiveListPage = (props: LiveListProps) => {
                             </DropdownList>
                         </div>
                         <SeparatorHeader className="mx2 inline-block" />
-                        <LivesFiltering />              
+                        <LivesFiltering setSelectedLive={setSelectedLive} />              
                         <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
                     </div>
                 </div>

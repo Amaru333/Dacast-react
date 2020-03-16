@@ -167,7 +167,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         />
                         <div className="col col-3 pt2 flex flex-column">
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Video ID</Text>
+                                <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
@@ -333,7 +333,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
                     <Button typeButton="secondary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
-                <Prompt when={VodDetails !== props.vodDetails} message='you rock baby' />
+                <Prompt when={VodDetails !== props.vodDetails} message='' />
             </React.Fragment>
             : null
     )

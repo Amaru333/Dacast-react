@@ -8,6 +8,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputProps } from '../../../components/FormsComponents/Input/InputTypes';
 import { EmbedSettingsComponentProps } from '../../../containers/Settings/EmbedSettings';
+import { Prompt } from 'react-router';
 
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
@@ -87,6 +88,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                             <ButtonStyle typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>
+            <Prompt when={inputOptions !== props.embedSettingsOption} message='' />
         </React.Fragment>
 
     )

@@ -57,7 +57,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             return( 
                 <div key={'pricePresetPriceSection' + key} className='col col-12 py1 flex items-center'>
                     <div className='col col-6'>
-                        <Input className='col col-6 pr1' defaultValue={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
+                        <Input className={key === 0 ? "col col-6 pr1" : "col col-6 pr1 mt1"} defaultValue={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
                         <DropdownSingle className={key === 0 ? 'col col-6 px1 mt25' : 'col col-6 px1 mb1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     </div>
 
@@ -75,7 +75,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
         <div>
             <div className='col col-12 py1'>
                 <Input className='col col-6 pr1' label='Preset Name' defaultValue={presetsList.name} onChange={(event) => setPresetsList({...presetsList, name: event.currentTarget.value})} />
-                <DropdownSingle id='pricePresetTypeDropdown' className='col col-6 pl1' dropdownTitle='Preset Type' dropdownDefaultSelect={presetsList.type} callback={(value: string) => setPresetsList({...presetsList, type: value})} list={{'Pay Per View': false, 'Subscription': false}} />
+                <DropdownSingle id='pricePresetTypeDropdown' className='col col-6 pl1' dropdownTitle='Preset Type' dropdownDefaultSelect={presetsList.type} callback={(value: string) => setPresetsList({...presetsList, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.startMethod})} list={{'Pay Per View': false, 'Subscription': false}} />
             </div>
             {renderPrices()}
             <div className='col col-6 py1'>
@@ -91,7 +91,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
 
             </div>
             <div className='col col-12 py1'>
-                <DropdownSingle id='pricePresetStartMethodDropdown' dropdownDefaultSelect={presetsList.startMethod} className='col col-6 pr1' callback={(value: string) => setPresetsList({...presetsList, startMethod: value})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' />
+                <DropdownSingle id='pricePresetStartMethodDropdown' dropdownDefaultSelect={presetsList.startMethod} className='col col-6 pr1' callback={(value: string) => setPresetsList({...presetsList, startMethod: value})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}/>
                 {
                     presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?
                         <DropdownSingle 
