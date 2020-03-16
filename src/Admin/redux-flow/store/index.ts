@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/List'
 
 export interface AdminState {
-    accounts: AccountsState
+    accounts: AccountsState;
 }
 
 export const globalDefaultState: AdminState = {
