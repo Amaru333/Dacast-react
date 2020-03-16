@@ -1,4 +1,8 @@
 import { TokenInfos } from '../redux-flow/store/Register/Login';
+import { tsToLocaleDate, intToTime } from './utils';
+import { DateTime, LocaleOptions } from 'luxon';
+import axios from 'axios'
+
 
 export function addToken(data: TokenInfos) {
     if(data) {
@@ -18,4 +22,20 @@ export function addTokenToHeader() {
 
 export function isLoggedIn() {
     return localStorage.getItem('userToken') ? true : false;
+}
+
+export function isTokenExpired() {
+    console.log(localStorage.getItem('userToken'))
+    let token:TokenInfos = JSON.parse(localStorage.getItem('userToken'))
+    if(Math.abs(DateTime.fromSeconds(parseInt(token.expires)).diffNow('minutes').minutes) <= 5) {
+        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/sessions/refresh', {refresh: token.refresh})
+        .then(response => {
+            console.log(response.data)
+            token.token = response.data.data.token
+            token.expires = response.data.data.expires
+            localStorage.removeItem('userToken')
+            localStorage.setItem('userToken', JSON.stringify(token))
+            console.log(localStorage.getItem('userToken'))
+        })
+    }
 }
