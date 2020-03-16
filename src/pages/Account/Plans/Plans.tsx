@@ -10,9 +10,8 @@ import {isMobile} from 'react-device-detect';
 //import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
-import { Plans, Plan } from '../../../containers/Account/Plans';
-import { ColorsApp } from '../../../styled/types';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Plans, Plan } from '../../../redux-flow/store/Account/Plans/types';
 
 export const PlansPage = (props: {plans: Plans}) => {
     const textClassName = 'py1';
