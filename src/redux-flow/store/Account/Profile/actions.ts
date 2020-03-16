@@ -20,9 +20,9 @@ export interface SaveProfilePassword {
 }
 
 
-export const getProfilePageDetailsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetProfilePageDetails> => {
+export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetProfilePageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProfilePageDetails> ) => {
-        await ProfileServices.getProfilePageDetailsService(accountId)
+        await ProfileServices.getProfilePageDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
@@ -32,10 +32,10 @@ export const getProfilePageDetailsAction = (accountId: string): ThunkDispatch<Pr
     };
 }
 
-export const saveProfilePageDetailsAction = (data: ProfilePageInfos, accountId: string): ThunkDispatch<Promise<void>, {}, SaveProfilePageDetails> => {
+export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispatch<Promise<void>, {}, SaveProfilePageDetails> => {
     console.log('reaching the action')
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePageDetails> ) => {
-        await ProfileServices.saveProfilePageDetailsService(data, accountId)
+        await ProfileServices.saveProfilePageDetailsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PROFILE_PAGE_DETAILS, payload: response.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));

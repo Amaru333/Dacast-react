@@ -8,10 +8,12 @@ export function addToken(data: TokenInfos) {
 
 export function addTokenToHeader() {
     if(localStorage.getItem('userToken')) {
-        var tokenObject: string =  JSON.parse(localStorage.getItem('userToken')).token;
-        return tokenObject
+        var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
+        let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
+        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id']}
+
     }
-    return;
+    throw new Error('No user token found')
 }
 
 export function isLoggedIn() {

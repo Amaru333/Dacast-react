@@ -26,9 +26,9 @@ export interface UploadCompanyLogo {
 }
 
 
-export const getCompanyPageDetailsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
+export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
-        await CompanyServices.getCompanyPageDetailsService(accountId)
+        await CompanyServices.getCompanyPageDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data.data} );
             }).catch(() => {
@@ -37,9 +37,9 @@ export const getCompanyPageDetailsAction = (accountId: string): ThunkDispatch<Pr
     };
 }
 
-export const saveCompanyPageDetailsAction = (data: CompanyPageInfos, accountId: string): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
+export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
-        await CompanyServices.saveCompanyPageDetailsService(data, accountId)
+        await CompanyServices.saveCompanyPageDetailsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));

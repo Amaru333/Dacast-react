@@ -39,7 +39,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             marketing: value['Marketing'].value,
             lowData: value['Low Data'].value,
             videoUpload: value['Video Uploaded'].value
-        }, JSON.parse(localStorage.getItem('userToken')).userID)
+        })
     }
 
     return (

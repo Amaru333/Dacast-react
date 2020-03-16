@@ -43,9 +43,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             town: data['town'].value,
             zipCode: data['zipCode'].value,
             country: ""
-        }, 
-        JSON.parse(localStorage.getItem('userToken')).userID)
-
+        })
     }
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
