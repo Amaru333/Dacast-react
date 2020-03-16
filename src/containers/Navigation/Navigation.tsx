@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text } from '../../components/Typography/Text';
 import { IconStyle } from '../../shared/Common/Icon';
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -25,9 +25,13 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
-
+    let history = useHistory()
     const firstSelectedItem = (): {main: string; slug: string} => {
         let matchingRoute = {main: '/dashboard', slug: ''};
+        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
+        if (path) {
+            history.replace(path);
+        }
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
                 if(matchingRoute.main === '/dashboard') {
