@@ -4,28 +4,27 @@ import { PlansPage } from '../../pages/Account/Plans/Plans';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Plans } from '../../redux-flow/store/Account/Plans/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { PlansAction, getPlanDetailsAction } from '../../redux-flow/store/Account/Plans/actions';
+import { PlansAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Plans/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 
 
-interface PlansContainerProps {
+export interface PlansContainerProps {
     planDetails: Plans;
     getPlanDetails: Function;
+    changeActivePlan: Function;
 }
 
 const PlansContainer = (props: PlansContainerProps) => {
-    const [value, setValue] = React.useState(null);
     React.useEffect(() => {
         if(!props.planDetails) {
             props.getPlanDetails();
         }
-        setValue(props.planDetails)
     }, [])
 
     return (
         props.planDetails ? 
-            <PlansPage plans={value}/>
+            <PlansPage {...props}/>
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -41,6 +40,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
+        },
+        changeActivePlan: (data: Plans) => {
+            dispatch(changeActivePlanAction(data))
         }
     }
 }

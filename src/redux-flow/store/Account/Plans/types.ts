@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    GET_PLAN_DETAILS = "@@account_plans/GET_PLAN_DETAILS"
+    GET_PLAN_DETAILS = "@@account_plans/GET_PLAN_DETAILS",
+    CHANGE_ACTIVE_PLAN = "@@account_plans/CHANGE_ACTIVE_PLAN"
 }
 
 export interface CustomAllowance {

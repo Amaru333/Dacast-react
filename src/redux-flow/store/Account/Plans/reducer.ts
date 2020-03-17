@@ -7,6 +7,12 @@ export const reducer = (state = plansInitialState, action: PlansAction) => {
             return {...state, 
                 ...action.payload
             }
+        case ActionTypes.CHANGE_ACTIVE_PLAN:
+            let plans = {...Object.values(state).reduce((reduced, plan) => 
+            ({...reduced, plan: {...reduced.plan, isActive: false}}))}
+            return {...plans,
+                ...action.payload
+            }
         default:
             return state;
     }
