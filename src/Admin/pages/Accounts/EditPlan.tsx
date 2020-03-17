@@ -5,6 +5,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Tab } from '../../../components/Tab/Tab'
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio'
 import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types'
+import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 
 const Plans = [
     'Developer',
@@ -24,7 +25,7 @@ export interface Routes {
 }
 
 
-export const EditPlanPage = () => {
+export const EditPlanPage = (props: EditPlanComponentProps) => {
 
     const makeRoute = (name: string): Routes => {
         return {
@@ -35,7 +36,7 @@ export const EditPlanPage = () => {
 
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)
 
-    const [planData, setPlanData] = React.useState<PlanInfo>(null)
+    const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
 
     const EditPlanContent = () => {
         return (

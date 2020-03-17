@@ -3,10 +3,10 @@ import { Action } from "./actions";
 import { accountsListInitialState, ActionTypes, Account } from './types';
 
 
-const reducer: Reducer<Account[] | false> = (state = false, action: Action) => {
+const reducer: Reducer<Account[] | false> = (state = accountsListInitialState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_ACCOUNTS :
-            return false
+            return action.payload
         default :
             return state
     }

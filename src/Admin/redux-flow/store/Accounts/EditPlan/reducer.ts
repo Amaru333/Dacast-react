@@ -8,6 +8,15 @@ const reducer: Reducer<PlanInfo> = (state = editPlanDefaultState, action: Action
             return {
                 ...action.payload
             }
+        case ActionTypes.SAVE_ACCOUNT_PLAN: 
+            return {
+                ...action.payload
+            }
+        case ActionTypes.SWITCH_ACCOUNT_PLAN: 
+            return {
+                ...state,
+                name: action.payload
+            }
         default:
             return state
     }

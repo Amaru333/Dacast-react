@@ -9,5 +9,5 @@ import "react-table/react-table.css";
 
 const initialState = globalDefaultState;
 export const store = configureStore(initialState);
-
-ReactDOM.render(<AdminMain store={store}  />, document.getElementById("root"));
+console.log('imdex admin')
+ReactDOM.render(<AdminMain store={store}  />, document.getElementById("adminRoot"));
