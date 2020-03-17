@@ -9,6 +9,11 @@ export interface Login {
     payload: TokenInfos;
 }
 
+export interface Logout {
+    type: ActionTypes.LOGOUT;
+    payload: null;
+}
+
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
         await loginService(data)
@@ -21,4 +26,10 @@ export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, 
 
 }
 
-export type Action = Login;
+export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
+    return (dispatch: ThunkDispatch<ApplicationState , {}, Logout>) => {
+        dispatch({type: ActionTypes.LOGOUT, payload: null})
+    }
+}
+
+export type Action = Login | Logout;

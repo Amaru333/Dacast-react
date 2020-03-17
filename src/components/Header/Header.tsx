@@ -5,17 +5,20 @@ import Burger from '../../containers/Navigation/Burger';
 import { Text } from '../../components/Typography/Text';
 import { ApplicationState } from '../../redux-flow/store';
 import { connect } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Breadcrumb } from '../../pages/Folders/Breadcrumb';
 import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter } from '../../utils/utils';
+import { ThunkDispatch } from 'redux-thunk';
+import { LogoutAction, Action } from '../../redux-flow/store/Register/Login';
 
 export interface HeaderProps {
     isOpen: boolean;
     setOpen: Function;
     isMobile: boolean;
     title: string;
+    logout: Function; 
 }
 
 
@@ -23,6 +26,7 @@ export interface HeaderProps {
 const Header = (props: HeaderProps) => {
 
     let location = useLocation()
+    let history = useHistory()
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
     React.useEffect(() => {
@@ -40,19 +44,22 @@ const Header = (props: HeaderProps) => {
     });
 
     const handleLogOut = () => {
-        localStorage.setItem('userToken', "")
+        props.logout()
+        history.push('/login')
     }
 
     const handleClick = (name: string) => {
         setSelectedUserOptionDropdownItem(name);
         switch (name) {
             case "Personal Profile":
-                return location.href="/account/profile"
+                 history.push("/account/profile")
+                 break
             case "Company Profile":
-                return location.href="/account/company"
+                 history.push("/account/company")
+                 break
             case "Log Out":
                 handleLogOut()
-                return location.href="/login"
+                break
             default:
                 return
         }
@@ -85,8 +92,6 @@ const Header = (props: HeaderProps) => {
             </div>          
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
-                <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
-                <HeaderIconStyle><Icon>help</Icon></HeaderIconStyle>
                 <div>
                     <HeaderIconStyle onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)}><Icon>account_circle</Icon></HeaderIconStyle>
                     <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
@@ -106,6 +111,14 @@ export function mapStateToProps( state: ApplicationState) {
     };
 }
 
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
 
+    return {
+        logout: () => {
+            dispatch(LogoutAction());
+        },
+    }
 
-export default connect(mapStateToProps, null)(Header); 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header); 

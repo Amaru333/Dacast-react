@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    LOGIN = '@@register_login/LOGIN'
+    LOGIN = '@@register_login/LOGIN',
+    LOGOUT = '@@register_login/LOGOUT'
 }
 
 export interface LoginInfos {

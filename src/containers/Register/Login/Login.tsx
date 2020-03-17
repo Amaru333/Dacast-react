@@ -6,19 +6,21 @@ import { LoginPage } from '../../../pages/Register/Login/Login';
 import { loginAction, Action } from '../../../redux-flow/store/Register/Login/actions';
 import { addToken } from '../../../utils/token';
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
+import { useHistory } from 'react-router-dom'
 
 interface LoginContainerProps {
     login: Function;
     loginInfos: TokenInfos;
-    history: any;
 }
 const Login = (props: LoginContainerProps) => {
+
+    let history = useHistory()
 
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             
             addToken(props.loginInfos);
-            props.history.push('/dashboard');
+            history.push('/dashboard');
         }
     }, [props.loginInfos])
 
