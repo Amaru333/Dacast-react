@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 export interface SignupContainerProps {
     signup: Function;
-    UserInfo: UserInfo
+    UserInfo: UserInfo;
 }
 
 export const Signup = (props: SignupContainerProps) => {

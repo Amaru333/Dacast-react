@@ -16,6 +16,7 @@ import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { Prompt } from 'react-router';
 
 export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
@@ -222,6 +223,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={selectedPromo ? props.saveLivePromoPreset : props.createLivePromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
             </Modal>
+            <Prompt when={livePaywallSettings !== props.livePaywallInfos} message='' />
         </div>
     )
 }

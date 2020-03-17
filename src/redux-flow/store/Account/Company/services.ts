@@ -17,10 +17,10 @@ const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
     isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.patch('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company',
-    {...data}, 
-    {headers: {
-        'Authorization': token
-    }})
+        {...data}, 
+        {headers: {
+            'Authorization': token
+        }})
 }
 
 const getUploadLogoUrlService = () => {

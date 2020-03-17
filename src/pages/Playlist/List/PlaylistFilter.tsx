@@ -7,7 +7,7 @@ import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 
-export const LivesFiltering = (props: {setSelectedLive: Function}) => {
+export const PlaylistFiltering = (props: {setSelectedPlaylist: Function}) => {
 
 
     interface FilteringState {
@@ -18,9 +18,6 @@ export const LivesFiltering = (props: {setSelectedLive: Function}) => {
         features: {
             paywall: boolean;
             advertising: boolean;
-            playlists: boolean;
-            rewind: boolean;
-            recording: boolean;
         };
         afterDate: number | boolean;
         beforedate: number | boolean;
@@ -91,15 +88,6 @@ export const LivesFiltering = (props: {setSelectedLive: Function}) => {
                     <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
                         onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
                         id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                        id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
-                        id='vodFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
-                        id='vodFilterRecording' label="Recording" labelWeight="reg" />
                 </div>
                 <div className="mb3" id="vodFilterAfter">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
@@ -110,7 +98,7 @@ export const LivesFiltering = (props: {setSelectedLive: Function}) => {
                     <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
                 </div>
                 <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false); props.setSelectedLive([]) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setSelectedPlaylist([]) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
                     <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">

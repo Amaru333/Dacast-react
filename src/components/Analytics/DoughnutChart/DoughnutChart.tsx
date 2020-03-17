@@ -25,8 +25,8 @@ export const DoughnutChart = (props: DoughnutChartProps) => {
         <React.Fragment>
             <DoughnutContainer>
                 <DoughnutBody value={props.value}>
-                    <Slice className="firstSlice" {...props} degreesCalculation={firstDegreesCalculation()}></Slice>
-                    <Slice className="secondSlice" {...props} degreesCalculation={ secondDegreesCalculation()}></Slice>
+                    <Slice className="firstSlice" {...props} degreesCalculation={ firstDegreesCalculation()}></Slice>
+                    <Slice className="secondSlice" {...props} degreesCalculation={secondDegreesCalculation()}></Slice>
                     <DoughnutCentre>
                         <Text size={48} weight="reg">{props.value}%</Text>
                     </DoughnutCentre>

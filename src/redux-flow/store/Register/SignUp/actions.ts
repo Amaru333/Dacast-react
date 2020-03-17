@@ -6,7 +6,7 @@ import { ApplicationState } from '../..';
 
 
 export interface Signup {
-    type: ActionTypes.SIGNUP
+    type: ActionTypes.SIGNUP;
     payload: UserInfo;
 }
 

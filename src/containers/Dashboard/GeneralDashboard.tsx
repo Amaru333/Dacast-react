@@ -8,6 +8,8 @@ import { numberFormatter, getPercentage, tsToLocaleDate, useMedia } from '../../
 import { IconStyle } from '../../shared/Common/Icon';
 import { Label } from '../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
+import { CustomStepper } from '../../components/Stepper/Stepper';
+import { PurchaseStepperCartStep, PurchaseStepperPaymentStep } from './PurchaseStepper';
 
 interface PlanType {
     libelle: string;
@@ -21,6 +23,13 @@ interface PlanType {
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: DashboardPayingPlan | DashboardTrial; profile: DashboardGeneral}) => {
 
     let smallScreen = useMedia('(max-width: 40em)')
+
+    const mockPaymentMethod = "none"
+
+    const stepList = [PurchaseStepperCartStep, PurchaseStepperPaymentStep]
+
+    const [purchaseStepperOpened, setPurchaseStepperOpened] = React.useState<boolean>(false)
+    const [selectedPurchaseItem, setSelectedPurchaseItem] = React.useState<string>(null)
 
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
@@ -36,16 +45,21 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         percentage: getPercentage(props.profile.encoding.limit-props.profile.encoding.consumed, props.profile.encoding.limit),
         left: numberFormatter(props.profile.encoding.limit-props.profile.encoding.consumed, 'twoDecimalPlace'),
         limit: numberFormatter(props.profile.encoding.limit, 'twoDecimalPlace'),
-    } 
+    }
+    
+    const handlePurchaseStepper = (purchaseItem: string) => {
+        setSelectedPurchaseItem(purchaseItem);
+        setPurchaseStepperOpened(true);
+    }
 
-    const handleButtonToPurchase = (percentage: number) => {
+    const handleButtonToPurchase = (percentage: number, purchaseItem: string) => {
         if(percentage <= 25 ) {
             return (
-                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="red" sizeButton="xs" onClick={() => alert('Go to purchase page')}>Buy More</Button> </Text>
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="red" sizeButton="xs" onClick={() => handlePurchaseStepper(purchaseItem)}>Buy More</Button></Text>
             )
         } else {
             return (
-                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <a href="javascript:alert('Go to purchase page')">Buy More</a> </Text>
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button typeButton="tertiary" sizeButton="xs" onClick={() => handlePurchaseStepper(purchaseItem)}>Buy More</Button></Text>
             )
         }
     }
@@ -69,7 +83,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
-                        {handleButtonToPurchase(bandwidth.percentage)}
+                        {handleButtonToPurchase(bandwidth.percentage, "Data")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {bandwidth.left}</Text><Text size={16} weight="reg" color="gray-4" >/{bandwidth.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
@@ -80,7 +94,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        {handleButtonToPurchase(storage.percentage)}
+                        {handleButtonToPurchase(storage.percentage, "Storage")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {storage.left}</Text><Text size={16} weight="reg" color="gray-4" >/{storage.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
@@ -92,7 +106,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Encoding Remaining </Text>
-                        {handleButtonToPurchase(encoding.percentage)}
+                        {handleButtonToPurchase(encoding.percentage, "Encoding")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {encoding.left}</Text><Text size={16} weight="reg" color="gray-4" >/{encoding.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{encoding.percentage}%</Text>
@@ -122,6 +136,23 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         </WidgetElement>
                 }
             </div>
+
+            <CustomStepper
+                opened={purchaseStepperOpened} 
+                stepperHeader={"Buy " + selectedPurchaseItem}
+                stepTitles={['Cart', 'Payment']}
+                stepList={stepList}
+                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                functionCancel={() => setPurchaseStepperOpened(false)}
+                lastStepButton="Purchase"
+                finalFunction={() => console.log("you bought the thing")}
+                stepperData={mockPaymentMethod}
+                updateStepperData={(value: string) => console.log(value)}
+            />
+
+            
         </section>
     )
 

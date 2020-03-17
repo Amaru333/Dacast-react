@@ -14,6 +14,7 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { LiveThemingComponentProps } from '../../../containers/Live/Theming';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const LiveThemingPage = (props: LiveThemingComponentProps) => {
 
@@ -236,6 +237,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                     </PlayerContainer>
                 </PlayerSection>
             </ThemingContainer>
+            <Prompt when={selectedTheme !== props.theme.selectedTheme} message='' />
         </React.Fragment>
     )
 }

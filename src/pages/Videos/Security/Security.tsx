@@ -14,6 +14,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Moda
 import { Card } from '../../../components/Card/Card';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
 
 interface VodSecurityComponentProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -253,6 +254,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
+            <Prompt when={selectedSettings !== props.vodSecuritySettings.securitySettings} message='' />
         </div>
                     
     )

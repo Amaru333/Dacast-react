@@ -47,14 +47,14 @@ const Header = (props: HeaderProps) => {
         setSelectedUserOptionDropdownItem(name);
         switch (name) {
             case "Personal Profile":
-               return location.href="/account/profile"
+                return location.href="/account/profile"
             case "Company Profile":
                 return location.href="/account/company"
             case "Log Out":
-                 handleLogOut()
+                handleLogOut()
                 return location.href="/login"
             default:
-               return
+                return
         }
     }
 
@@ -62,15 +62,15 @@ const Header = (props: HeaderProps) => {
         return (
             userOptionsList.map((name) => {
                 return (
-                            <DropdownItem 
-                                isSingle
-                                key={name} 
-                                id={name} 
-                                className="mt1"
-                                isSelected={selectedUserOptionDropdownItem === name} 
-                                onClick={() => handleClick(name)}> 
-                                <DropdownItemText size={14} weight='reg' color={selectedUserOptionDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
-                            </DropdownItem>
+                    <DropdownItem 
+                        isSingle
+                        key={name} 
+                        id={name} 
+                        className="mt1"
+                        isSelected={selectedUserOptionDropdownItem === name} 
+                        onClick={() => handleClick(name)}> 
+                        <DropdownItemText size={14} weight='reg' color={selectedUserOptionDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                    </DropdownItem>
                 )                
             })
         )
@@ -84,7 +84,7 @@ const Header = (props: HeaderProps) => {
                 <Breadcrumb isNavigation options={location.pathname + '/'} callback={() => {}}/>
             </div>          
             <IconContainerStyle>
-                <HeaderIconStyle onClick={() => {location.href="/help"}}><Icon>help</Icon></HeaderIconStyle>
+                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <HeaderIconStyle><Icon>account_circle</Icon></HeaderIconStyle>
                 <HeaderIconStyle><Icon>help</Icon></HeaderIconStyle>
                 <div>
@@ -95,7 +95,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             </IconContainerStyle>
             <VerticalDivider />
-            <Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
+            <a href="/account/plans"><Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button></a>
         </HeaderStyle>
     )
 }

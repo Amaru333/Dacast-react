@@ -167,7 +167,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 lastStepButton="Create"
                 stepperData={stepperData}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                functionCancel={setGroupPricesStepperOpened}
+                functionCancel={() => {setGroupPricesStepperOpened(false)}}
                 finalFunction={() => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>

@@ -34,6 +34,8 @@ import { Button } from './components/FormsComponents/Button/Button';
 import { HelpPage } from './pages/Help/Help';
 import  Signup from './containers/Register/signup/signup';
 import { ConfirmEmail } from './pages/Register/ConfirmEmail/ConfirmEmail';
+import { Icon } from '@material-ui/core';
+import { fontSize } from '@material-ui/system';
 
 // Any additional component props go here.
 interface MainProps {
@@ -144,14 +146,25 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         //     </div>
         // </Modal>
         return (
-            <div>
-                <span>{props.message}</span>
-                <span className='pt2'>Please note any unsaved changes will be lost.</span>
-                <div className='mt2'>
-                    <button onClick={() => props.callback(false)} >Stay</button>
-                    <button onClick={() => props.callback(true)} >Leave</button>
+            <React.Fragment>
+                <div className="unsavedChangesContainer">
+                    <div className="unsavedChangesTitle">
+                        <Icon className="material-icons-outlined" fontSize="large" style={{color:"red"}}>report_problem</Icon>
+                        <span className="unsavedChangesText-Header">Unsaved Changes</span>
+                    </div>
+                    <div className="unsavedChangesBody">
+                        <span className="unsavedChangesText-Body">Are you sure that you want to leave this page?</span>
+                        <div className="mt2">
+                            <span className="unsavedChangesText-Body-Bold">Please note any unsaved changes will be lost.</span>
+                        </div>
+                    </div>
+                    <div className="unsavedChangesFooter mt3">
+                        <button onClick={() => props.callback(false)} className="unsavedChangesStayButton">Stay</button>
+                        <button onClick={() => props.callback(true)} className="unsavedChangesLeaveButton">Leave</button>
+                    </div>
                 </div>
-            </div>
+                <div className="unsavedChangesOverlay"></div>
+            </React.Fragment>
         )
     }
 

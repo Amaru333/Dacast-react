@@ -13,6 +13,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { PlaylistThemingComponentProps } from '../../../containers/Playlists/Theming';
 import { usePlayer } from '../../../utils/player';
+import { Prompt } from 'react-router';
 
 export const PlaylistThemingPage = (props: PlaylistThemingComponentProps) => {
     
@@ -229,6 +230,7 @@ export const PlaylistThemingPage = (props: PlaylistThemingComponentProps) => {
                     </PlayerContainer>
                 </PlayerSection>
             </ThemingContainer>
+            <Prompt when={selectedTheme !== props.theme.selectedTheme} message='' />
         </React.Fragment>
     )
 }

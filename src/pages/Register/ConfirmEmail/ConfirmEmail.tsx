@@ -22,9 +22,9 @@ export const ConfirmEmail = () => {
                     
                 </ModalContent>
                 <ModalFooter>
-                <div className="mt2">
-                    <Text size={12} weight="reg">Didn’t receive an email? Re-send email confirmation.</Text>
-                </div>
+                    <div className="mt2">
+                        <Text size={12} weight="reg">Didn’t receive an email? Re-send email confirmation.</Text>
+                    </div>
                 </ModalFooter>
             </ModalCard>
         </LoginContainer>

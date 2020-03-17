@@ -11,7 +11,7 @@ export const RegisterInitialState: RegisterState = {
 
 export interface RegisterState {
     login: false | TokenInfos;
-    signup: false | UserInfo
+    signup: false | UserInfo;
 }
 
 export const RegisterReducer: Reducer<RegisterState> = combineReducers({

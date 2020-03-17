@@ -8,7 +8,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 
-export const VideosFiltering = (props: {}) => {
+export const VideosFiltering = (props: {setSelectedVod: Function}) => {
 
 
     interface FilteringState {
@@ -119,7 +119,7 @@ export const VideosFiltering = (props: {}) => {
                     </div>
                 </div>
                 <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setSelectedVod([]) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
                     <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
