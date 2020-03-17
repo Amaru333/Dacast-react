@@ -89,7 +89,6 @@ export const BarChart = (props: any) => {
         ],
     };
 
-    console.log(line);
     return (
         <Bar hidden={props.hidden} {...other} data = { line } options = { options } />
     )

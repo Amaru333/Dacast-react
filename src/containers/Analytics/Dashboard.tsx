@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getAnalyticsDashboardDetailsAction, Action, AnalyticsDashboardState } from '../../redux-flow/store/Analytics/Dashboard';
+import { getAnalyticsDashboardDetailsAction, Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
@@ -24,7 +24,7 @@ const DashboardAnalytics = (props: DashboardPageProps) => {
     return (
         props.dashboardAnalytics ?
             (
-                <DashboardAnalyticsPage {...props.dashboardAnalytics.data} />
+                <DashboardAnalyticsPage getAnalyticsDashboard={props.getAnalyticsDashboardDetailsAction} {...props.dashboardAnalytics.data} />
             )
             :<SpinnerContainer> <LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -39,8 +39,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsDashboardDetailsAction: () => {
-            dispatch(getAnalyticsDashboardDetailsAction());
+        getAnalyticsDashboardDetailsAction: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardDetailsAction(dates));
         }
     };
 }

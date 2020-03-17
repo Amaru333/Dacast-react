@@ -9,6 +9,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { GetAnalyticsViewershipOptions, getAnalyticsViewershipDetailsAction, AnalyticsViewershipState, AnalyticsViewershipInfos } from '../../redux-flow/store/Analytics/Viewership';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -20,6 +21,8 @@ export interface ViewershipComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
+    getAnalyticsViewership: Function;
+    viewershipAnalytics: AnalyticsViewershipState;
 }
 
 const Viewership = (props: ViewershipComponentProps) => {
@@ -31,10 +34,13 @@ const Viewership = (props: ViewershipComponentProps) => {
             }
             wait()
         }
+        if (!props.viewershipAnalytics.data) {
+            props.getAnalyticsViewership();
+        }
     }, [])
     return (
-        props.folderData ? 
-            <ViewershipAnalytics {...props} />
+        props.folderData && props.viewershipAnalytics.data ? 
+            <ViewershipAnalytics {...props} viewershipAnalytics={props.viewershipAnalytics} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
@@ -42,7 +48,8 @@ const Viewership = (props: ViewershipComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders.data
+        folderData: state.folders.data,
+        viewershipAnalytics: state.analytics.viewership
     };
 }
 
@@ -56,6 +63,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         restoreContent: (content: FolderAsset[]) => {
             dispatch(restoreContentAction(content))
+        },
+        getAnalyticsViewership: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipDetailsAction(dates));
         }
     };
 }

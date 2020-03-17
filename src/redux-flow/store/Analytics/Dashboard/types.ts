@@ -2,6 +2,11 @@ export enum ActionTypes {
     GET_ANALYTICS_DASHBOARD_DETAILS = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_DETAILS",
 }
 
+export interface GetAnalyticsDashboardOptions {
+    startDate: number;
+    endDate: number;
+}
+
 export interface AnalyticsDashboardInfos {
     consumptionPerTime: {
         time: number[];

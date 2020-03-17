@@ -87,8 +87,11 @@ export const CheeseChart = (props: any) => {
         ]
     };
 
-    return (
-        <Pie options={options} data={pie} />
-    );
-
+    if(!props.hidden){
+        return (
+            <Pie options={options} data={pie} />
+        );
+    } else{
+        return <></>
+    }
 }
