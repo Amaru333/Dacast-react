@@ -22,7 +22,6 @@ export const Tab = (props: TabProps) => {
             })
             return matchingRoute;
         } else {
-            console.log(props.list[0].name)
             return props.list[0].name
         }
 

@@ -6,6 +6,8 @@ import { Tab } from '../../../components/Tab/Tab'
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio'
 import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types'
 import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
+import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
+import { useParams } from 'react-router-dom'
 
 const Plans = [
     'Developer',
@@ -33,10 +35,15 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
             name: name
         }
     }
-
+    let { accountId } = useParams()
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)
-
+    const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
+
+    const handleSubmit = () => {
+        props.saveAccountPlan(accountId, planData)
+        setOpenConfirmationModal(false)
+    }
 
     const EditPlanContent = () => {
         return (
@@ -85,9 +92,10 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
                 <Text className='py1' size={14} weight='med'>Email Catcher</Text>
                 <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.emailCatcher ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, emailCatcher: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.emailCatcher})}}  />
                 <div className='my1 flex'>
-                    <Button onClick={() => props.saveAccountPlan(planData)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
+                <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
             </div>
         )
     }
