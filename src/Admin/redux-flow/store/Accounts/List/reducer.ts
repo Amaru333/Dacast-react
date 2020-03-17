@@ -12,4 +12,4 @@ const reducer: Reducer<Account[] | false> = (state = accountsListInitialState, a
     }
 }
 
-export default reducer
+export { reducer as ListReducer}

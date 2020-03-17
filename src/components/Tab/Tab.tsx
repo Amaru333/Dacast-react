@@ -13,13 +13,19 @@ export const Tab = (props: TabProps) => {
     let mobile = useMedia('(max-width: 786px)');
     const {list, orientation } = props;
     const firstSelectedItem = (): string => {
-        let matchingRoute = props.list[0].path;
-        props.list.map((route) => {
-            if(location.pathname === route.path) {
-                matchingRoute =  route.path
-            }
-        })
-        return matchingRoute;
+        if(!props.callback) {
+            let matchingRoute = props.list[0].path;
+            props.list.map((route) => {
+                if(location.pathname === route.path) {
+                    matchingRoute =  route.path
+                }
+            })
+            return matchingRoute;
+        } else {
+            console.log(props.list[0].name)
+            return props.list[0].name
+        }
+
     };
 
 

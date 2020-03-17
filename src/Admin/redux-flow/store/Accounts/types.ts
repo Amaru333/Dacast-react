@@ -1,29 +1,28 @@
 import { Account } from './List/types';
 import { combineReducers, Reducer } from 'redux';
-import reducer from './List/reducer';
+import {ListReducer} from './List/reducer';
 import { PlanInfo } from './EditPlan/types';
-import { PlanReducer } from './EditPlan';
+import { PlanReducer } from './EditPlan/reducer';
 import { AccountInfo } from './EditAccount/types';
 import { AccountReducer } from './EditAccount';
 
 
 export interface AccountsState {
-    plan: false | PlanInfo;
     list: Account[] | false;
     account: AccountInfo | false;
+    plan: PlanInfo | false;
 
 }
 
 export const accountsInitialState: AccountsState = {
-    plan: false,
     list: false,
-    account: false
+    account: false,
+    plan: false,
 }
 
 export const AccountsReducer: Reducer<AccountsState> = combineReducers({
+    list: ListReducer,
+    account: AccountReducer,
     plan: PlanReducer,
-    list: reducer,
-    account: AccountReducer
-
 })
 
