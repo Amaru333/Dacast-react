@@ -42,7 +42,7 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
         await CompanyServices.saveCompanyPageDetailsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data} );
-                dispatch(showToastNotification("Data saved!", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -65,6 +65,7 @@ export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<
         await CompanyServices.uploadCompanyLogoService(data, uploadUrl)
             .then( response => {
                 dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: response.data} );
+                dispatch(showToastNotification("Company Logo has been uploaded", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

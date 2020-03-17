@@ -31,6 +31,7 @@ export const saveLiveThemeAction = (data: LiveTheme): ThunkDispatch<Promise<void
         await LiveThemingServices.saveLiveThemeService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_LIVE_THEME, payload: response.data} );
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

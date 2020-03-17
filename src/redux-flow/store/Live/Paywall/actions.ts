@@ -60,6 +60,7 @@ export const saveLivePaywallInfosAction = (data: LivePaywallPageInfos): ThunkDis
         await LivePaywallServices.saveLivePaywallInfos(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_LIVE_PAYWALL_INFOS, payload: response.data});
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -71,6 +72,7 @@ export const createLivePricePresetAction = (data: Preset): ThunkDispatch<Promise
         await LivePaywallServices.createLivePricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_LIVE_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -82,6 +84,7 @@ export const saveLivePricePresetAction = (data: Preset): ThunkDispatch<Promise<v
         await LivePaywallServices.saveLivePricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_LIVE_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -93,6 +96,7 @@ export const deleteLivePricePresetAction = (data: Preset): ThunkDispatch<Promise
         await LivePaywallServices.deleteLivePricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_LIVE_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification("Price have been deleted", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -104,6 +108,7 @@ export const createLivePromoPresetAction = (data: Promo): ThunkDispatch<Promise<
         await LivePaywallServices.createLivePromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_LIVE_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -115,6 +120,7 @@ export const saveLivePromoPresetAction = (data: Promo): ThunkDispatch<Promise<vo
         await LivePaywallServices.saveLivePromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_LIVE_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -126,6 +132,7 @@ export const deleteLivePromoPresetAction = (data: Promo): ThunkDispatch<Promise<
         await LivePaywallServices.deleteLivePromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_LIVE_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification("Promo have been deleted", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })

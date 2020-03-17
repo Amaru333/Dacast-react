@@ -8,7 +8,7 @@ const getPlanDetailsService = () => {
 }
 
 const changeActivePlanService = (data: Plans) => {
-    return axios.post(urlBase + 'account/plans', {...data})
+    return axios.put(urlBase + 'account/plans', {...data})
 }
 
 export const PlansServices = {
