@@ -29,10 +29,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const firstSelectedItem = (): {main: string; slug: string} => {
         let matchingRoute = {main: '/dashboard', slug: ''};
-        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
-        if (path) {
-            history.replace(path);
-        }
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
                 if(matchingRoute.main === '/dashboard') {
@@ -58,6 +54,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
+        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
+        if (path) {
+            history.replace(path);
+        }
         setSelectedElement(firstSelectedItem().main)
         setSelectedSubElement(firstSelectedItem().slug)
     }, [location])
