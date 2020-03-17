@@ -5,7 +5,6 @@ import { Action } from './actions'
 const reducer: Reducer<PlanInfo> = (state = editPlanDefaultState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_ACCOUNT_PLAN: 
-        debugger
             return {
                 ...action.payload
             }
