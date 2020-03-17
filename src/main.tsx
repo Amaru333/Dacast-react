@@ -32,7 +32,7 @@ import { Modal } from './components/Modal/Modal';
 import { Text } from './components/Typography/Text';
 import { Button } from './components/FormsComponents/Button/Button';
 import { HelpPage } from './pages/Help/Help';
-import  Signup from './containers/Register/signup/signup';
+import  Signup from './containers/Register/signUp/signUp';
 import { ConfirmEmail } from './pages/Register/ConfirmEmail/ConfirmEmail';
 import { Icon } from '@material-ui/core';
 import { fontSize } from '@material-ui/system';
