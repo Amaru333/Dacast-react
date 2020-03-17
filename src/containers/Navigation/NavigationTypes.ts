@@ -29,6 +29,9 @@ export interface Routes {
     arrowIcon?: string;
     component?: any;
     slug?: Routes[];
+    isExact?: boolean;
+    isPublic?: boolean;
+    notDisplayedInNavigation?: boolean;
 }
 
 export interface UserAccountPrivileges {

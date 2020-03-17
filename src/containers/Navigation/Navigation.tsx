@@ -98,16 +98,19 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
             case "Vod":
-                return props.history.push('/uploader')
+                history.push('/uploader')
+                break
             case "Stream":
                 setAddDropdownIsOpened(false)
                 if (UserAccountPrivileges.premium === false && UserAccountPrivileges.compatible === false && UserAccountPrivileges.rewind === false ) {
-                    return location.href="/livestreams"
+                    history.push("/livestreams")
                 } else {
-                    return setAddStreamModalOpen(true)
+                    setAddStreamModalOpen(true)
                 }
+                break
             case "Playlist":
-                return location.href="/playlists"
+                history.push("/playlists")
+                break
             default:
                 return
         }
@@ -142,54 +145,56 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const renderMenu = () => {
 
         return props.routes.map((element, i) => {
-            if(element.path === 'break') {
-                return  <BreakStyle key={'breakSection'+i} />
-            }
-            else if(element.path === 'title') {
-                return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
-            }
-            else if(element.slug) {
-                return (
-                    <div key={'superkey'+i}>
-                        <ElementMenu 
-                            isMobile={props.isMobile} 
-                            onClick={() => handleMenuToggle(element.path)} 
-                            key={'MenuElementwithSubsections'+i} 
-                            isOpen={props.isOpen}
-                            hasSlugs={true} 
-                            active={selectedElement === element.path} 
-                            icon={element.iconName!}
-                            arrowIcon={selectedElement === element.path && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-                        >
-                            {element.name} 
-                        </ElementMenu>
+            if(!element.notDisplayedInNavigation) {
+                if(element.path === 'break') {
+                    return  <BreakStyle key={'breakSection'+i} />
+                }
+                else if(element.path === 'title') {
+                    return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
+                }
+                else if(element.slug) {
+                    return (
+                        <div key={'superkey'+i}>
+                            <ElementMenu 
+                                isMobile={props.isMobile} 
+                                onClick={() => handleMenuToggle(element.path)} 
+                                key={'MenuElementwithSubsections'+i} 
+                                isOpen={props.isOpen}
+                                hasSlugs={true} 
+                                active={selectedElement === element.path} 
+                                icon={element.iconName!}
+                                arrowIcon={selectedElement === element.path && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+                            >
+                                {element.name} 
+                            </ElementMenu>
 
-                        <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                            {element.slug.map((subMenuElement, index) => {
-                                return (
-                                    <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
-                                        <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
-                                            <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                        </SubMenuElement>
-                                    </Link>
-                                )
-                            })
+                            <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
+                                {element.slug.map((subMenuElement, index) => {
+                                    return (
+                                        <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                            <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                            </SubMenuElement>
+                                        </Link>
+                                    )
+                                })
 
-                            }
+                                }
 
-                        </SubMenu>
-                    </div>
-                )
-            }
-            
-            else{
-                return (
-                    <Link to={element.path} onClick={() => {handleMenuItemClick(element.name, '')}} key={'MenuElement'+i} >
-                        <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
-                            {element.name} 
-                        </ElementMenu>
-                    </Link>
-                )
+                            </SubMenu>
+                        </div>
+                    )
+                }
+                
+                else{
+                    return (
+                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.name, '')}} key={'MenuElement'+i} >
+                            <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
+                                {element.name} 
+                            </ElementMenu>
+                        </Link>
+                    )
+                }
             }
         })
     }

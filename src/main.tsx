@@ -22,20 +22,13 @@ import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import Login from '../src/containers/Register/Login/Login';
 import { isLoggedIn } from './utils/token';
-import { NotFound } from './containers/404page';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp, useMedia } from './utils/utils';
 import Dashboard from './containers/Dashboard/Dashboard';
-import Uploader from './containers/Videos/Uploader';
+
 import ReactDOM from 'react-dom';
-import { Modal } from './components/Modal/Modal';
-import { Text } from './components/Typography/Text';
-import { Button } from './components/FormsComponents/Button/Button';
-import { HelpPage } from './pages/Help/Help';
-import  Signup from './containers/Register/SignUp/SignUp';
-import { ConfirmEmail } from './pages/Register/ConfirmEmail/ConfirmEmail';
 import { Icon } from '@material-ui/core';
-import { fontSize } from '@material-ui/system';
+
 
 // Any additional component props go here.
 interface MainProps {
@@ -114,11 +107,13 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
-                return !route.slug ? <PrivateRoute key={i.toString()}
-                    path={route.path}
-                    // pass the sub-routes down to keep nesting
-                    component={route.component}
-                />
+                return route.isPublic ? 
+                    <Route key={route.path} path={route.path}><route.component /></Route>
+                    :  !route.slug ? <PrivateRoute key={i.toString()}
+                        path={route.path}
+                        // pass the sub-routes down to keep nesting
+                        component={route.component}
+                    />
                     : route.slug.map((subroute, index) => {
                         return <PrivateRoute key={'subroute'+index}
                             path={subroute.path}
@@ -168,10 +163,8 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         )
     }
 
-
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
-        console.log(message)
         const confirmAndUnmount = (answer: boolean) => {
             ReactDOM.unmountComponentAtNode(holder)
             callback(answer)
@@ -188,12 +181,13 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                     <>                 
                         <Toasts />
                             <Switch>
-                                <Route exact path='/'><Login history={history} /></Route>
-                                <Route path='/login'><Login history={history} /></Route>
-                                <Route path='/signup'><Signup/></Route>
-                                <Route path='/confirm-email'><ConfirmEmail/></Route>
+                                <Route exact path='/'>
+                                    {isLoggedIn() ?
+                                        <Dashboard />
+                                        : <Login />
+                                    }
+                                </Route>                             
                                 {returnRouter(AppRoutes)}
-                                <Route path='*' ><NotFound /></Route>
                             </Switch>
                     </>
                 </BrowserRouter>

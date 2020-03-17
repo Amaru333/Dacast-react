@@ -41,6 +41,7 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
         await CompanyServices.saveCompanyPageDetailsService(data)
             .then( response => {
+                console.log(response.data)
                 dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
             }).catch(() => {
