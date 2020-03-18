@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
-import { showToastNotification } from '../app/redux-flow/store/Toasts'
-import { updateTitle } from '../app/redux-flow/store/Title/logic'
-import { store } from '../app';
+
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
@@ -21,17 +19,7 @@ export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimal
     return numeral(num).format(formatNumeral);
 }
 
-export function updateClipboard(newClip: string): void {
-    navigator.clipboard.writeText(newClip).then(function () {
-        store.dispatch(showToastNotification("Copy in clipboard", 'fixed', "success"));
-    }, function () {
-        store.dispatch(showToastNotification("Failed to copy in clipboard", 'fixed', "error"));
-    });
-}
 
-export function updateTitleApp(title: string): void {
-    store.dispatch(updateTitle(title))
-}
 
 export function readableBytes(size: number): string {
     var i = Math.floor(Math.log(size) / Math.log(1024));

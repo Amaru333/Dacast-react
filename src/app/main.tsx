@@ -22,7 +22,8 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import { isLoggedIn } from './utils/token';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp, useMedia } from '../utils/utils';
+import { updateTitleApp } from './utils/utils';
+import { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
