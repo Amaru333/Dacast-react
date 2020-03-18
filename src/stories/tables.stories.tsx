@@ -4,7 +4,7 @@ import { Table } from '../components/Table/Table';
 import { InputCheckbox } from '../components/FormsComponents/Input/InputCheckbox';
 import { Label } from '../components/FormsComponents/Label/Label';
 import { Text } from '../components/Typography/Text';
-import { ColorsApp } from "../app/styled/types";
+import { ColorsApp } from "../styled/types";
 import { Weight } from '../components/Typography/TextTypes';
 
 

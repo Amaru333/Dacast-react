@@ -7,7 +7,7 @@ import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
-import { Theme } from './styled/themes/dacast-theme';
+import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { ColorsApp } from '../../../styled/types';
+import { ColorsApp } from '../../../../styled/types';
 import { Table } from '../../../../components/Table/Table';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
 import { InvoicesComponentProps } from '../../../containers/Account/Invoices';

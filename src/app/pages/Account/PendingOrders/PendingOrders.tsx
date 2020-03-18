@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
-import { ColorsApp } from '../../../styled/types';
+import { ColorsApp } from '../../../../styled/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';

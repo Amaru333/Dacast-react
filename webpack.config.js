@@ -10,7 +10,7 @@ var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin
 module.exports = {
     entry: {
         app: ['@babel/polyfill', './src/app/index.tsx'],
-        admin: ['@babel/polyfill', './src/Admin/index.tsx'],
+        admin: ['@babel/polyfill', './src/admin/index.tsx'],
         vendor: ['react', 'react-dom']
     },
     output: {
@@ -79,7 +79,7 @@ module.exports = {
         // Build html for the admin site
         new HtmlWebpackPlugin({ 
             filename: 'index.html',
-            template: path.resolve(__dirname, 'src/Admin', 'index.html'),
+            template: path.resolve(__dirname, 'src/admin', 'index.html'),
             excludeAssets: [/app.*/]
         }),
         new HtmlWebpackExcludeAssetsPlugin(),

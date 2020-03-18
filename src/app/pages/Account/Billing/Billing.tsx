@@ -13,7 +13,7 @@ import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './Ext
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { ColorsApp } from '../../../styled/types';
+import { ColorsApp } from '../../../../styled/types';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;
