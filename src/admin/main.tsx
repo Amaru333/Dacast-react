@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import { BrowserRouter, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useHistory, useLocation} from 'react-router-dom';
 import { AdminState } from "./redux-flow/store";
 import { AdminRoutes } from './constants/AdminRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
@@ -43,7 +43,15 @@ const returnRouter = (props: Routes[]) => {
 
 // Create an intersection type of the component props and our Redux props.
 const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
+    let location = useLocation()
+    let history = useHistory()
 
+    React.useEffect(() => {
+        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
+        if (path) {
+            history.replace(path);
+        }
+    }, [location])
 
     return (
         <Provider store={store}>
