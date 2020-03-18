@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { displayBytesForHumans, displayTimeForHumans } from '../../utils/utils';
+import { displayBytesForHumans, displayTimeForHumans } from '../../app/utils/utils';
 
 export const BarChart = (props: any) => {
 

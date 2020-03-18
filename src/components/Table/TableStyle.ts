@@ -1,6 +1,5 @@
 import styled, {css} from "styled-components";
-import {TableProps} from './TableTypes';
-import { ColorsApp } from '../../styled/types';
+import { ColorsApp } from '../../app/styled/types';
 
 export const TableContainer = styled.table<{}>`
     height: auto;

@@ -6,7 +6,7 @@ import { Input } from '../components/FormsComponents/Input/Input';
 import { Text } from '../components/Typography/Text';
 import { Button } from '../components/FormsComponents/Button/Button';
 import { InputCheckbox } from '../components/FormsComponents/Input/InputCheckbox';
-import { formSubmit, ValueInput, ValidationsInputObject, handleValidationProps } from '../utils/hooksFormSubmit';
+import { formSubmit, ValueInput, handleValidationProps } from '../app/utils/hooksFormSubmit';
 import { action } from '@storybook/addon-actions';
 
 const stories = storiesOf('Validations', module);
