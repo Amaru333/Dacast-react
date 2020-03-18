@@ -35,7 +35,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             accountName: data['accountName'].value,
             businessName: data['businessName'].value,
             contactNumber: data['contactNumber'].value,
-            emailAddress: data['emailAddress'].value,
+            companyEmail: data['emailAddress'].value,
             companyWebsite: data['companyWebsite'].value,
             vatNumber: data['vatNumber'].value,
             addressLine1: data['addressLine1'].value,
@@ -207,7 +207,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.emailAddress}
+                            defaultValue={CompanyPageDetails.companyEmail}
                             type="email" 
                             className="md-col md-col-6 p1" 
                             id="emailAddress" 

@@ -10,7 +10,7 @@ export interface CompanyPageInfos {
     accountName: string;
     businessName: string;
     contactNumber: string;
-    emailAddress: string;
+    companyEmail: string;
     companyWebsite: string;
     vatNumber: string;
     addressLine1: string;
@@ -27,7 +27,7 @@ export const companyInitialState: CompanyPageInfos = {
     accountName: "",
     businessName: "",
     contactNumber: "",
-    emailAddress: "",
+    companyEmail: "",
     companyWebsite: "",
     vatNumber: "",
     addressLine1: "",
