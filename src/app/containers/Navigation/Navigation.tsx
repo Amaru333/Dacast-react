@@ -8,7 +8,7 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../component
 import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
-import { useOutsideAlerter } from '../../utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {

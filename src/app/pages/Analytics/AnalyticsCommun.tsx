@@ -1,4 +1,4 @@
-import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../utils/utils';
+import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
 import React from 'react';
 import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';

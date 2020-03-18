@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconStyle } from '../../../../shared/Common/Icon';
-import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../utils/utils';
+import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../../utils/utils';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
 import { VodItem } from '../../../redux-flow/store/VOD/General/types';

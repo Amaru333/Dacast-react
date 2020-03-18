@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Text } from '../Typography/Text';
 import { isMobile } from 'react-device-detect'
 import { DropdownButton } from '../FormsComponents/Dropdown/DropdownButton';
-import { useMedia } from '../../app/utils/utils';
+import { useMedia } from '../../utils/utils';
 
 interface PaginationProps { 
     totalResults: number;

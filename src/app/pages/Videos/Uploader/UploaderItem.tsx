@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
-import { readableBytes, updateClipboard } from '../../../utils/utils';
+import { readableBytes, updateClipboard } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 

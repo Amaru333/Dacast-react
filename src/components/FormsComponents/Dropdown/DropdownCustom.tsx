@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonContainer} from './DropdownStyle';
 import { DropdownButtonProps } from './DropdownTypes';
-import { useOutsideAlerter } from '../../../app/utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 
 export const DropdownCustom: React.FC<DropdownButtonProps> = (props: DropdownButtonProps) => {
 

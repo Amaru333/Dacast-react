@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
-import { showToastNotification } from '../redux-flow/store/Toasts'
-import { updateTitle } from '../redux-flow/store/Title/logic'
-import { store } from '..';
+import { showToastNotification } from '../app/redux-flow/store/Toasts'
+import { updateTitle } from '../app/redux-flow/store/Title/logic'
+import { store } from '../app';
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''

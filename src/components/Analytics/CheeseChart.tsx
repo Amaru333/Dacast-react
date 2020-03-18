@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
-import { displayBytesForHumans, displayTimeForHumans, lerpColor } from '../../app/utils/utils';
+import { displayBytesForHumans, displayTimeForHumans, lerpColor } from '../../utils/utils';
 
 
 const startColor = '#eff3ff';

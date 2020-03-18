@@ -11,7 +11,7 @@ import { FoldersFiltering } from './FoldersFiltering';
 import { Modal } from '../../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
-import { getNameFromFullPath, useOutsideAlerter } from '../../utils/utils';
+import { getNameFromFullPath, useOutsideAlerter } from '../../../utils/utils';
 import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 import { FoldersComponentProps } from '../../containers/Folders/Folders';

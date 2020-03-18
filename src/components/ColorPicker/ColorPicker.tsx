@@ -3,7 +3,7 @@ import { BlockPicker, Color } from 'react-color';
 import { Text } from '../Typography/Text';
 import { ColorPickerHeader, SelectedColor, ColorPickerBlock } from './ColorPickerStyle';
 import { IconStyle } from '../../shared/Common/Icon';
-import { useOutsideAlerter } from '../../app/utils/utils';
+import { useOutsideAlerter } from '../../utils/utils';
 
 export const ColorPicker = (props: {defaultColor: string; callback?: Function; className?: string}) => {
 
