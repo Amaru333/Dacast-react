@@ -40,6 +40,11 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
 
+    React.useEffect(() => {
+        setPlanData(props.accountPlan)
+        console.log(planData)
+    }, [props.accountPlan])
+
     const handleSubmit = () => {
         props.saveAccountPlan(accountId, planData)
         setOpenConfirmationModal(false)
