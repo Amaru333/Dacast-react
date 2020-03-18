@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Pie } from 'react-chartjs-2';
-import { displayBytesForHumans, displayTimeForHumans, lerpColor } from '../../utils/utils';
+import { displayBytesForHumans, displayTimeForHumans, lerpColor } from '../../app/utils/utils';
 
 
 const startColor = '#eff3ff';
@@ -87,8 +87,11 @@ export const CheeseChart = (props: any) => {
         ]
     };
 
-    return (
-        <Pie options={options} data={pie} />
-    );
-
+    if(!props.hidden){
+        return (
+            <Pie options={options} data={pie} />
+        );
+    } else{
+        return <></>
+    }
 }

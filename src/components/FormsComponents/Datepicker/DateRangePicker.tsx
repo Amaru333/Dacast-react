@@ -5,7 +5,7 @@ import Month from "./Month";
 import { Icon } from '@material-ui/core';
 import {DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle, EndTextStyle} from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
-import { useOutsideAlerter } from '../../../utils/utils';
+import { useOutsideAlerter } from '../../../app/utils/utils';
 
 const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
     return (

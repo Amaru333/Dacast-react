@@ -5,7 +5,7 @@ import { TabProps } from './TabTypes';
 import { TabContainer, TabHeaderContainer, TabStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
-import { useMedia } from '../../utils/utils';
+import { useMedia } from '../../app/utils/utils';
 
 export const Tab = (props: TabProps) => {
 

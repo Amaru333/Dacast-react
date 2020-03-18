@@ -1,5 +1,5 @@
-import { TokenInfos } from '../redux-flow/store/Register/Login';
-import { tsToLocaleDate, intToTime } from './utils';
+import { TokenInfos } from '../app/redux-flow/store/Register/Login';
+import { tsToLocaleDate, intToTime } from '../app/utils/utils';
 import { DateTime, LocaleOptions } from 'luxon';
 import axios from 'axios'
 
