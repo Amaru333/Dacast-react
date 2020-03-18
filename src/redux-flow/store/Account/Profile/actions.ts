@@ -24,7 +24,7 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProfilePageDetails> ) => {
         await ProfileServices.getProfilePageDetailsService()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -33,6 +33,7 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
 }
 
 export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispatch<Promise<void>, {}, SaveProfilePageDetails> => {
+    console.log('reaching the action')
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePageDetails> ) => {
         await ProfileServices.saveProfilePageDetailsService(data)
             .then( response => {

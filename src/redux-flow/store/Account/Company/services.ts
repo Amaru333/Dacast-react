@@ -1,15 +1,26 @@
 import axios from 'axios'
 import { CompanyPageInfos } from './types';
+import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
 
 const getCompanyPageDetailsService = () => {
-    return axios.get(urlBase + 'getCompanyPageDetails');
+    isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company', {headers: {
+        'Authorization': token
+    }});
 }
 
 const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
-    return axios.post(urlBase + 'saveCompanyPageDetails', {...data})
+    isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company',
+        {...data}, 
+        {headers: {
+            'Authorization': token
+        }})
 }
 
 const getUploadLogoUrlService = () => {

@@ -13,9 +13,7 @@ export interface ProfilePageInfos {
     timezone: string;
     marketing: boolean;
     lowData: boolean;
-    upload: boolean;
-    weeklyAnalytics: boolean;
-    apiPingbackNotifications: boolean;
+    videoUpload: boolean;
 }
 
 export const profileInitialState = {
@@ -27,7 +25,5 @@ export const profileInitialState = {
     timezone: "",
     marketing: false,
     lowData: false,
-    upload: false,
-    weeklyAnalytics: false,
-    apiPingbackNotifications: false,
+    videoUpload: false
 }

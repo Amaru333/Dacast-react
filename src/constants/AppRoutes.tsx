@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes } from '../containers/Navigation/NavigationTypes';
 import Dashboard from '../containers/Dashboard/Dashboard';
 import Company from '../containers/Account/Company';
@@ -27,8 +26,43 @@ import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
+import Login from '../containers/Register/Login/Login';
+import SignUp from '../containers/Register/SignUp/SignUp';
+import ConfirmEmail from '../containers/Register/ConfirmEmail';
+import { NotFound } from '../containers/404page';
+import { HelpPage } from '../pages/Help/Help';
+import Uploader from '../containers/Videos/Uploader';
+import ResetPassword from '../containers/Register/ResetPassword';
 
 export const AppRoutes: Routes[] = [   
+    {
+        path:'/login',
+        name: 'login',
+        isPublic: true,
+        notDisplayedInNavigation: true,
+        component: Login
+    },
+    {
+        path:'/signup',
+        name: 'signup',
+        isPublic: true,
+        notDisplayedInNavigation: true,
+        component: SignUp
+    },
+    {
+        path:'/confirm-email',
+        name: 'confirm-email',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ConfirmEmail
+    },
+    {
+        path:'/reset-password',
+        name: 'reset-password',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ResetPassword
+    },
     {
         path: '/dashboard',
         name: 'Dashboard',
@@ -38,12 +72,14 @@ export const AppRoutes: Routes[] = [
     {
         path: '/livestreams',
         name: 'Live Streams',
+        isExact: true,
         iconName: 'videocam',
         component: LiveList
     },
     {
         path: '/videos',
         name: 'Videos',
+        isExact: true,
         iconName: 'play_arrow',
         component: VodList,
     },
@@ -57,6 +93,7 @@ export const AppRoutes: Routes[] = [
     {
         path: '/playlists',
         name: 'Playlists',
+        isExact: true,
         iconName: 'playlist_play',
         component: PlaylistList
     },
@@ -206,5 +243,24 @@ export const AppRoutes: Routes[] = [
                 component: Invoices
             }
         ]
-    }
+    },
+    {
+        path: '/help',
+        name: 'Help',
+        notDisplayedInNavigation: true,
+        component: HelpPage
+    },
+    {
+        path: '/uploader',
+        name: 'Uploader',
+        notDisplayedInNavigation: true,
+        component: Uploader
+    },
+    {
+        path:'*',
+        name: '404',
+        isPublic: true,
+        notDisplayedInNavigation: true,
+        component: NotFound
+    },
 ];

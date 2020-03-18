@@ -30,7 +30,7 @@ export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
         await CompanyServices.getCompanyPageDetailsService()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -41,7 +41,8 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
         await CompanyServices.saveCompanyPageDetailsService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data} );
+                console.log(response.data)
+                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: response.data.data} );
                 dispatch(showToastNotification("Data saved!", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -49,7 +50,7 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
     };
 }
 
-export const getUploadLogoUrl = (): ThunkDispatch<Promise<void>, {}, GetUploadLogoUrl> => {
+export const getUploadLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetUploadLogoUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetUploadLogoUrl> ) => {
         await CompanyServices.getUploadLogoUrlService()
             .then( response => {

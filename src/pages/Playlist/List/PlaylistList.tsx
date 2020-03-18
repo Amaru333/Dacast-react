@@ -131,7 +131,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
 
     return (
         showPlaylistTabs ?
-            <PlaylistsTabs playlistId={location.pathname === '/playlists' ? selectedPlaylistId.id : location.pathname.split('/')[2]} playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} history={props.history} />
+            <PlaylistsTabs playlistId={location.pathname === '/playlists' && selectedPlaylistId ? selectedPlaylistId.id : location.pathname.split('/')[2]} playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} />
             :
             <>
                 <HeaderPlaylistList className="mb2 flex" >

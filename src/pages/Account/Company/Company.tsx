@@ -18,7 +18,7 @@ interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
-    getUploadLogoUrl: Function;
+    getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
 }
 
@@ -45,7 +45,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             zipCode: data['zipCode'].value,
             country: ""
         })
-
     }
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
@@ -55,7 +54,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [pageEdited, setPageEdited] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setDefaultCountryValue(countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name)
+        // countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name
+        setDefaultCountryValue('United States')
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
@@ -102,7 +102,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        await props.getUploadLogoUrl();
+        await props.getLogoUrlForUploading();
         if(props.CompanyPageDetails.uploadLogoUrl) {
             props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
         }

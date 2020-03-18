@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
-import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrl } from '../../redux-flow/store/Account/Company/actions';
+import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrlAction } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -12,7 +12,7 @@ interface CompanyContainerProps {
     CompanyInfos: CompanyPageInfos;
     getCompanyPageDetails: Function;
     saveCompanyPageDetails: Function;
-    getUploadLogoUrl: Function;
+    getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
 }
 const Company = (props: CompanyContainerProps) => {
@@ -51,7 +51,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(saveCompanyPageDetailsAction(data));
         },
         getLogoUrlForUploading: () => {
-            dispatch(getUploadLogoUrl());
+            dispatch(getUploadLogoUrlAction());
         },
         uploadCompanyLogo: (data: File, uploadUrl: string) => {
             dispatch(uploadCompanyLogo(data, uploadUrl));

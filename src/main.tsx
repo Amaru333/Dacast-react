@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import { BrowserRouter, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -20,17 +20,15 @@ import "./scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from './components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
+import Login from '../src/containers/Register/Login/Login';
+import { isLoggedIn } from './utils/token';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp, useMedia } from './utils/utils';
 import Dashboard from './containers/Dashboard/Dashboard';
-import Uploader from './containers/Videos/Uploader';
+
 import ReactDOM from 'react-dom';
-import { Modal } from './components/Modal/Modal';
-import { Text } from './components/Typography/Text';
-import { Button } from './components/FormsComponents/Button/Button';
-import { HelpPage } from './pages/Help/Help';
 import { Icon } from '@material-ui/core';
-import { fontSize } from '@material-ui/system';
+
 
 // Any additional component props go here.
 interface MainProps {
@@ -61,31 +59,6 @@ history.listen( (location) =>  {
     updateStateTitle(location.pathname)
 });
 
-
-const returnRouter = (props: Routes[]) => {
-    return (
-        props.map((route: Routes, i: number) => {
-            return !route.slug ? <Route key={i}
-                path={route.path}
-                render={props => (
-                    // pass the sub-routes down to keep nesting
-                    <route.component {...props} routes={route.slug} />
-                )}
-            />
-                : route.slug.map((subroute, index) => {
-                    return <Route key={'subroute'+index}
-                        path={subroute.path}
-                        render={props => (
-                            // pass the sub-routes down to keep nesting
-                            <subroute.component {...props} />
-                        )}
-                    />
-                })
-
-        })
-    )
-}
-
 // Create an intersection type of the component props and our Redux props.
 const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
@@ -101,16 +74,63 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
             setOpen(true)
         }
     };
-
     const menuHoverClose = () => {
         if (isOpen && !menuLocked) {
             setOpen(false)
         }
     };
+
+    const PrivateRoute = (props: {key: string; component: any; path: string}) => {
+
+    
+        return (
+            isLoggedIn() ?
+                <Route 
+                    path={props.path}
+                >
+                    <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                    <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                        <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
+                            <props.component {...props} />
+                        </Content>
+                        <div id="navigationConfirmationModal"></div>
+                    </FullContent>  
+                </Route>
+                : 
+                <Redirect to='/' />
+    
+        )
+    }
+    
+    
+    const returnRouter = (props: Routes[]) => {
+        return (
+            props.map((route: Routes, i: number) => {
+                return route.isPublic ? 
+                    <Route key={route.path} path={route.path}><route.component /></Route>
+                    :  !route.slug ? <PrivateRoute key={i.toString()}
+                        path={route.path}
+                        // pass the sub-routes down to keep nesting
+                        component={route.component}
+                    />
+                    : route.slug.map((subroute, index) => {
+                        return <PrivateRoute key={'subroute'+index}
+                            path={subroute.path}
+                            component={subroute.component}                          
+                        />
+                    })
+            })
+        )
+    }
+
+
+
+
     /** TO DO: Figure out a way to implement the styled components */
     const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
 
-        const [isOpen, setIsOpen] = React.useState<boolean>(true);
+        //const [isOpen, setIsOpen] = React.useState<boolean>(true);
 
         // <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} title='Unsaved Changes' opened={isOpen} toggle={() => setIsOpen(!isOpen)}>
         //     <Text size={14} weight='reg'>{props.message}</Text>
@@ -143,10 +163,8 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         )
     }
 
-
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
-        console.log(message)
         const confirmAndUnmount = (answer: boolean) => {
             ReactDOM.unmountComponentAtNode(holder)
             callback(answer)
@@ -160,41 +178,17 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <BrowserRouter getUserConfirmation={getUserConfirmation}>
-                    <>
+                    <>                 
                         <Toasts />
-                        <MainMenu 
-                            menuLocked={menuLocked} 
-                            onMouseEnter={() => menuHoverOpen()} 
-                            onMouseLeave={() => menuHoverClose()} 
-                            navWidth={currentNavWidth} 
-                            isMobile={isMobile || mobileWidth} 
-                            isOpen={isOpen} 
-                            setMenuLocked={setMenuLocked} 
-                            setOpen={setOpen} 
-                            className="navigation" 
-                            history={history} 
-                            routes={AppRoutes}
-                        />
-                        
-
-                        <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
-                            <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
-                                <Switch>
-                                    <Route exact path="/">
+                            <Switch>
+                                <Route exact path='/'>
+                                    {isLoggedIn() ?
                                         <Dashboard />
-                                    </Route>
-                                    {returnRouter(AppRoutes)}
-                                    <Route path="/uploader">
-                                        <Uploader postVodDemo={() => {}} />
-                                    </Route>
-                                    <Route path="/help">
-                                        <HelpPage></HelpPage>
-                                    </Route>
-                                </Switch>
-                            </Content>
-                            <div id="navigationConfirmationModal"></div>
-                        </FullContent>   
+                                        : <Login />
+                                    }
+                                </Route>                             
+                                {returnRouter(AppRoutes)}
+                            </Switch>
                     </>
                 </BrowserRouter>
             </ThemeProvider>

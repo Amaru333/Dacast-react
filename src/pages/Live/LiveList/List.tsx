@@ -20,6 +20,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { UserAccountPrivileges } from '../../../containers/Navigation/NavigationTypes';
 import { handleFeatures } from '../../../shared/Common/Features';
+import { useLocation } from 'react-router-dom'
 
 export interface LiveListProps {
     liveList: LiveItem[];
@@ -28,6 +29,8 @@ export interface LiveListProps {
 }
 
 export const LiveListPage = (props: LiveListProps) => {
+
+    let location = useLocation()
 
     const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
     const [showLiveTabs, setShowLiveTabs] = React.useState<boolean>(false)
@@ -146,7 +149,7 @@ export const LiveListPage = (props: LiveListProps) => {
 
     return (
         showLiveTabs ?
-            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={location.pathname === '/livestreams' ? selectedLiveId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
+            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={location.pathname === '/livestreams' && selectedLiveId ? selectedLiveId.id.toString() : location.pathname.split('/')[2]} />
             :
             <>
                 <div className='flex items-center mb2'>

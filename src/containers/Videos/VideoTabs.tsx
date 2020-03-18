@@ -1,19 +1,19 @@
 import React from 'react';
 import { Tab } from '../../components/Tab/Tab';
 import { VideoSubRoutes } from '../../constants/VideoSubRoutes';
-import {useRouteMatch, Switch, Route} from "react-router-dom";
+import {useRouteMatch, Switch, Route, useHistory} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { VodItem } from '../../redux-flow/store/VOD/General/types';
 
-export const VideoTabs = (props: {video: VodItem; history: any; videoId: string; setShowVideoTabs: Function}) => {
+export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
-
+    let history = useHistory()
     React.useEffect(() => {
         if(location.pathname === '/videos') {
-            props.history.push('/videos/'+props.videoId+'/general')
+            history.push('/videos/'+props.videoId+'/general')
         }
     }, [])
 
@@ -50,8 +50,8 @@ export const VideoTabs = (props: {video: VodItem; history: any; videoId: string;
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><IconStyle>keyboard_arrow_left</IconStyle></Button>
-                <Tab orientation='horizontal' list={handleVideoSubRoutes()} history={props.history}/>
+                <Button onClick={(event) => {event.preventDefault();history.push('/videos');props.setShowVideoTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary' ><IconStyle>keyboard_arrow_left</IconStyle></Button>
+                <Tab orientation='horizontal' list={handleVideoSubRoutes()} />
             </TabsContainer>
             <Switch>
                 {returnRouter(handleVideoSubRoutes())}
