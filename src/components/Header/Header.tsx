@@ -1,17 +1,16 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
 import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider } from './HeaderStyle';
-import Burger from '../../containers/Navigation/Burger';
-import { Text } from '../../components/Typography/Text';
-import { ApplicationState } from '../../redux-flow/store';
+import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Breadcrumb } from '../../pages/Folders/Breadcrumb';
+import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
 import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
-import { useOutsideAlerter } from '../../utils/utils';
+import { useOutsideAlerter } from '../../app/utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
-import { LogoutAction, Action } from '../../redux-flow/store/Register/Login';
+import { LogoutAction, Action } from '../../app/redux-flow/store/Register/Login';
+import Burger from '../../app/containers/Navigation/Burger';
 
 export interface HeaderProps {
     isOpen: boolean;

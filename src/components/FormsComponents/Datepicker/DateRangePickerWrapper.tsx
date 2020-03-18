@@ -3,7 +3,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 import './datepicker_override.css'
-import { useMedia } from '../../../utils/utils';
+import { useMedia } from '../../../app/utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 

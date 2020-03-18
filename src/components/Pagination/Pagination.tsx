@@ -1,10 +1,10 @@
 import React from 'react';
 import { IconStyle } from '../../shared/Common/Icon';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Text } from '../Typography/Text';
 import { isMobile } from 'react-device-detect'
 import { DropdownButton } from '../FormsComponents/Dropdown/DropdownButton';
-import { useMedia } from '../../utils/utils';
+import { useMedia } from '../../app/utils/utils';
 
 interface PaginationProps { 
     totalResults: number;
