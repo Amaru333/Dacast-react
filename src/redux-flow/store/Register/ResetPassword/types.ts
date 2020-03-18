@@ -3,7 +3,7 @@ export enum ActionTypes {
 }
 
 export interface ResetPasswordInfo {
-    email: string
+    email: string;
 }
 
 export const defaultStateResetPassword: ResetPasswordInfo = null

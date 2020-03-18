@@ -4,7 +4,7 @@ export enum ActionTypes {
 }
 
 export interface ConfirmEmailInfo {
-    email: string
+    email: string;
 }
 
 export const defaultStateConfirmEmail: ConfirmEmailInfo = null

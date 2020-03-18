@@ -52,11 +52,11 @@ const Header = (props: HeaderProps) => {
         setSelectedUserOptionDropdownItem(name);
         switch (name) {
             case "Personal Profile":
-                 history.push("/account/profile")
-                 break
+                history.push("/account/profile")
+                break
             case "Company Profile":
-                 history.push("/account/company")
-                 break
+                history.push("/account/company")
+                break
             case "Log Out":
                 handleLogOut()
                 break

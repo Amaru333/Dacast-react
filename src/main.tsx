@@ -114,12 +114,12 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
                         // pass the sub-routes down to keep nesting
                         component={route.component}
                     />
-                    : route.slug.map((subroute, index) => {
-                        return <PrivateRoute key={'subroute'+index}
-                            path={subroute.path}
-                            component={subroute.component}                          
-                        />
-                    })
+                        : route.slug.map((subroute, index) => {
+                            return <PrivateRoute key={'subroute'+index}
+                                path={subroute.path}
+                                component={subroute.component}                          
+                            />
+                        })
             })
         )
     }
