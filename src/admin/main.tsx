@@ -41,8 +41,7 @@ const returnRouter = (props: Routes[]) => {
     )
 }
 
-// Create an intersection type of the component props and our Redux props.
-const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
+const AdminContent = () => {
     let location = useLocation()
     let history = useHistory()
 
@@ -54,18 +53,23 @@ const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
     }, [location])
 
     return (
+        <FullContent>
+        <Content>
+            <Switch>
+                {returnRouter(AdminRoutes)}
+            </Switch>
+        </Content>
+    </FullContent> 
+    )
+}
+ 
+// Create an intersection type of the component props and our Redux props.
+const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
+    return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <BrowserRouter>
-                    <>  
-                        <FullContent>
-                            <Content>
-                                <Switch>
-                                    {returnRouter(AdminRoutes)}
-                                </Switch>
-                            </Content>
-                        </FullContent>   
-                    </>
+                   <AdminContent />
                 </BrowserRouter>
             </ThemeProvider>
 
