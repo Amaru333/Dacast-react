@@ -4,8 +4,8 @@ import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { useRecurlySubmit, useRecurly } from '../../utils/useRecurlySubmit';
-const CardLogo = require('../../../public/assets/credit_card_logo.svg');
-const PaypalLogo = require('../../../public/assets/paypal_logo.svg');
+const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
+const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 
 export const NewPaymentMethodForm = (props: {callback: Function}) => {
 

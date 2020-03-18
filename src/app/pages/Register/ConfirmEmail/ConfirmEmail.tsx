@@ -5,7 +5,7 @@ import { ModalCard } from '../../../../components/Modal/ModalCard';
 import { Text } from '../../../../components/Typography/Text';
 import { ConfirmEmailComponentProps } from '../../../containers/Register/ConfirmEmail'
 
-const logo = require('../../../../public/assets/logo.png');
+const logo = require('../../../../../public/assets/logo.png');
 
 
 export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {

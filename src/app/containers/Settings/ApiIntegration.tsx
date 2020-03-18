@@ -5,9 +5,9 @@ import { ApplicationState } from "../../redux-flow/store";
 import { Action, getSettingsIntegrationAction} from "../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApiIntegrationPage, ApiIntegrationProps } from '../../pages/Settings/ApiIntegration/ApiIntegration';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 const ApiIntegration = (props: ApiIntegrationProps) => {
     

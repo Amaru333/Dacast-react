@@ -5,7 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 
-const logo = require('../../../../public/assets/logo.png');
+const logo = require('../../../../../public/assets/logo.png');
 
 interface LoginComponentProps {
     login: Function;

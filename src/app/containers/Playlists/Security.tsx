@@ -5,9 +5,9 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action, getPlaylistSecuritySettingsAction, savePlaylistSecuritySettingsAction } from '../../redux-flow/store/Playlists/Security/actions';
 import { connect } from 'react-redux';
 import { PlaylistSecuritySettings, SecuritySettings } from '../../redux-flow/store/Playlists/Security';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistSecurityContainerProps {
     playlistSecuritySettings: PlaylistSecuritySettings;

@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { TransactionsPage } from '../../pages/Paywall/Tansactions/Transactions';
 import { getTransactionsAction, Action } from '../../redux-flow/store/Paywall/Transactions/actions';
 import { TransactionsInfos } from '../../redux-flow/store/Paywall/Transactions/types';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface TransactionsComponentProps {
     transactionsInfos: TransactionsInfos;

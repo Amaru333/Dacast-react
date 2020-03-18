@@ -4,10 +4,10 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LivePaywallPage } from '../../pages/Live/Paywall/Paywall'
 import { Preset, Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, Promo, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, LivePaywallPageInfos, getLivePaywallInfosAction, saveLivePaywallInfosAction } from '../../redux-flow/store/Live/Paywall';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface LivePaywallComponentProps {
     livePaywallInfos: LivePaywallPageInfos;

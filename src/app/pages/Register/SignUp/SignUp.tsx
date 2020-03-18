@@ -9,7 +9,7 @@ import { SignupContainerProps } from '../../../containers/Register/SignUp/SignUp
 import { defaultStateSignup, UserInfo } from '../../../redux-flow/store/Register/SignUp/types';
 import { useHistory } from 'react-router-dom';
 
-const logo = require('../../../../public/assets/logo.png');
+const logo = require('../../../../../public/assets/logo.png');
 
 
 export const SignupPage = (props: SignupContainerProps) => {

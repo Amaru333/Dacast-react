@@ -1,12 +1,12 @@
 import React from 'react';
-import { Modal, ModalContent, ModalFooter } from "../../components/Modal/Modal"
-import { Button } from '../../components/FormsComponents/Button/Button';
+import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Modal"
+import { Button } from '../../../components/FormsComponents/Button/Button';
 import { StreamTypeSelector, StreamTypeSelectorContainer, StreamTypeSelectorContents } from './NavigationStyle';
 import { UserAccountPrivileges, StreamSetupOptions } from './NavigationTypes';
-import { Toggle } from '../../components/Toggle/toggle';
-import { IconStyle } from '../../shared/Common/Icon';
-import { Text } from '../../components/Typography/Text';
-import { Tooltip } from '../../components/Tooltip/Tooltip';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Text } from '../../../components/Typography/Text';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const AddStreamModal = (props: {toggle: () => void; opened: boolean; privileges: UserAccountPrivileges}) => {
 

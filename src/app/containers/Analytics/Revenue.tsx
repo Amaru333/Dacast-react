@@ -1,5 +1,5 @@
 import React from 'react';
-import {LoadingSpinner} from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import {LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -8,7 +8,7 @@ import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, del
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;

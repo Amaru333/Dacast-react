@@ -1,10 +1,10 @@
 import React from 'react';
-import { Tab } from '../../components/Tab/Tab';
+import { Tab } from '../../../components/Tab/Tab';
 import { VideoSubRoutes } from '../../constants/VideoSubRoutes';
 import {useRouteMatch, Switch, Route, useHistory} from "react-router-dom";
 import { Routes } from '../Navigation/NavigationTypes';
-import { Button } from '../../components/FormsComponents/Button/Button';
-import { IconStyle } from '../../shared/Common/Icon';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { VodItem } from '../../redux-flow/store/VOD/General/types';
 

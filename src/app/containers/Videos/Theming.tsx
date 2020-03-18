@@ -7,8 +7,8 @@ import { ApplicationState } from '../../redux-flow/store';
 import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
 import { connect } from 'react-redux';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface VodThemingComponentProps {
     theme: VodTheme;

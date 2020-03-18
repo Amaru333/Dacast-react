@@ -16,7 +16,7 @@ import {
 } from "react-device-detect";
 
 // Import Main styles for this application
-import "./scss/style.scss";
+import "../scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';

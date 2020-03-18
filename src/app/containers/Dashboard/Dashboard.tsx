@@ -5,12 +5,12 @@ import { LiveDashboard } from './LiveDashboard';
 import { GeneralDashboard } from './GeneralDashboard';
 import { TrialAdditionalDashboard } from './TrialAdditionalDashboard';
 import { DashboardInfos, Action, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
 import styled from 'styled-components';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface DashboardProps {
     infos: DashboardInfos;

@@ -1,11 +1,11 @@
 import React from 'react';
-import { DropdownSingle } from '../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Table } from '../../components/Table/Table';
-import { Text } from '../../components/Typography/Text';
-import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Table } from '../../../components/Table/Table';
+import { Text } from '../../../components/Typography/Text';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { NewPaymentMethodForm } from '../../shared/Billing/NewPaymentMethodForm';
-const CardLogo = require('../../../public/assets/credit_card_logo.svg');
-const PaypalLogo = require('../../../public/assets/paypal_logo.svg');
+const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
+const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 
 export const PurchaseStepperCartStep = () => {
 

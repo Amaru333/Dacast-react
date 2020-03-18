@@ -139,7 +139,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
 
     if(props.viewershipAnalytics.data) {
-        var labelsFormate = props.viewershipAnalytics.data.playsViewersPerTime.plays.time.map(number => tsToLocaleDate(number))
+        var labelsFormate = props.viewershipAnalytics.data.playsViewersPerTime.plays.time.map( (number: number) => tsToLocaleDate(number))
         const viewershipAnalytics = props.viewershipAnalytics.data;
         return (
             <React.Fragment>

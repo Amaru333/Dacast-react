@@ -4,8 +4,8 @@ import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { TextStyle, RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing/BillingStyle';
-const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
-const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
+const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
+const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
 
 export const PaymentMethodModal = (props: {toggle: Function; actionButton: Function}) => {

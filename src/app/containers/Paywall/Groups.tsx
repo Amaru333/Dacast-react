@@ -4,10 +4,10 @@ import { GroupPrice, GroupsPageInfos, Action, createGroupPriceAction, saveGroupP
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getFoldersAction, getFolderContentAction, restoreContentAction } from '../../redux-flow/store/Folders/actions';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;

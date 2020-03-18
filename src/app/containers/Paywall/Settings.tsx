@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { PaywallSettingsPage } from '../../pages/Paywall/Settings/Settings';
 import { getPaywallSettingsInfosAction, Action, savePaywallSettingsInfosAction } from '../../redux-flow/store/Paywall/Settings/actions';
 import { PaywallSettingsInfos } from '../../redux-flow/store/Paywall/Settings/types';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PaywallSettingsComponentProps {
     paywallSettingsInfos: PaywallSettingsInfos;

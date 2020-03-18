@@ -4,8 +4,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PresetsPage } from '../../pages/Paywall/Presets/Presets';
 import { getPresetsInfosAction, Action, PresetsPageInfos, createPricePresetAction, Preset, savePricePresetAction, deletePricePresetAction, Promo, createPromoPresetAction, savePromoPresetAction, deletePromoPresetAction } from '../../redux-flow/store/Paywall/Presets';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;

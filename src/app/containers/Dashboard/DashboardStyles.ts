@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Card } from '../../components/Card/Card';
+import { Card } from '../../../components/Card/Card';
 
 export const classContainer = "clearfix mxn2";
 export const classItemFullWidth = "col col-12 px2 mb3";

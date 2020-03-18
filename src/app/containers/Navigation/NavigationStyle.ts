@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { ElementMenuProps, MainMenuProps } from './NavigationTypes'
-import { Button } from '../../components/FormsComponents/Button/Button';
-import { Text } from '../../components/Typography/Text';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Text } from '../../../components/Typography/Text';
 
 export const ContainerElementStyle = styled.div<ElementMenuProps>`
     display: flex;

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { ThunkDispatch } from 'redux-thunk';
 import { Invoice, getInvoicesAction, Action } from '../../redux-flow/store/Account/Invoices';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InvoicesPage } from '../../pages/Account/Invoices/Invoices';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface InvoicesComponentProps {
     invoices: Invoice[];

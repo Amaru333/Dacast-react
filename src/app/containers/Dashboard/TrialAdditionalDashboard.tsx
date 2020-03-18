@@ -1,13 +1,13 @@
 import React from 'react'
-import { Text } from '../../components/Typography/Text';
-import { ListItem, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle, classItemFullWidthContainer, SupportCard, ListStyle } from "./DashboardStyles"
+import { Text } from '../../../components/Typography/Text';
+import { ListItem, classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidthContainer, SupportCard, ListStyle } from "./DashboardStyles"
 import { WidgetElement } from "./WidgetElement";
-import { IconStyle } from '../../shared/Common/Icon';
-import { ProgressBar } from '../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
-import { Card } from '../../components/Card/Card';
-import { Button } from '../../components/FormsComponents/Button/Button';
-const faqIcon = require('../../../public/assets/support-faq.png');
-const supportIcon = require('../../../public/assets/support-widget.png');
+import { IconStyle } from '../../../shared/Common/Icon';
+import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
+import { Card } from '../../../components/Card/Card';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+const faqIcon = require('../../../../public/assets/support-faq.png');
+const supportIcon = require('../../../../public/assets/support-widget.png');
 
 interface ItemTodo { isChecked: boolean; name: string; href: string }
 

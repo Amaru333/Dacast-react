@@ -6,8 +6,8 @@ import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './Navigat
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { AddStreamModal } from "./AddStreamModal"
-const logo = require('../../../public/assets/logo.png');
-const logoSmall = require('../../../public/assets/logo_small.png');
+const logo = require('../../../../public/assets/logo.png');
+const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
 

@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { Action } from '../../redux-flow/store/VOD/General/actions';
 import { getVodListAction, deleteVodAction } from '../../redux-flow/store/VOD/General/actions';
-import { LoadingSpinner } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { VideosListProps, VideosListPage } from '../../pages/Videos/VideosList/VideosList';
-import { SpinnerContainer } from '../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 const VideosList = (props: VideosListProps) => {
 

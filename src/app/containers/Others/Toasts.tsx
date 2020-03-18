@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { hideToast, showToastNotification, ToastAction } from '../../redux-flow/store/Toasts/actions';
 import { ApplicationState } from "../../redux-flow/store";
-import { ToastType, Size, NotificationType } from '../../components/Toast/ToastTypes';
-import { ToastsComponent, ToastStateProps, DispatchToastProps } from '../../components/Toast/Toasts';
+import { ToastType, Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { ToastsComponent, ToastStateProps, DispatchToastProps } from '../../../components/Toast/Toasts';
 import { ThunkDispatch } from 'redux-thunk';
 
 const mapStateToProps = (state: ApplicationState): ToastStateProps => ({
