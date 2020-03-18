@@ -10,6 +10,7 @@ import { DateRangePickerWrapper } from '../../components/FormsComponents/Datepic
 import { GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/Dashboard';
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../components/FormsComponents/Button/Button';
+import { FolderAsset } from '../../redux-flow/store/Folders/types';
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean}) => {
 
