@@ -62,6 +62,13 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedSubElement(firstSelectedItem().slug)
     }, [location])
 
+    React.useEffect(() => {
+        if(location.pathname.indexOf(selectedElement) === -1) {
+            setSelectedElement(firstSelectedItem().main)
+            setSelectedSubElement(firstSelectedItem().slug)
+        }
+    }, [selectedElement])
+
     const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)

@@ -16,7 +16,7 @@ const getProfilePageDetailsService = () => {
 const saveProfilePageDetailsService = (userData: ProfilePageInfos) => {
     isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.patch('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/profile',
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/profile',
         {...userData}, 
         {headers: {
             'Authorization': token

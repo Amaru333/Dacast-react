@@ -18,7 +18,7 @@ import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
-// import { useLocation} from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -29,7 +29,7 @@ export interface VideosListProps {
 
 export const VideosListPage = (props: VideosListProps) => {
 
-    // let match = useLocation()
+    let history = useHistory()
 
     const [selectedVod, setSelectedVod] = React.useState<string[]>([]);
     const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
@@ -143,7 +143,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     return (
         showVodTabs ?
-            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' ? selectedVodId.id.toString() : location.pathname.split('/')[2]} history={props.history} />
+            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' && selectedVodId ? selectedVodId.id.toString() : location.pathname.split('/')[2]} />
             :
             <>
             <div className='flex items-center mb2'>
@@ -164,7 +164,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
                     <VideosFiltering setSelectedVod={setSelectedVod} />                
-                    <Button onClick={() => props.history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                    <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>
 

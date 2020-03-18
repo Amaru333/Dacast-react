@@ -16,7 +16,7 @@ const getCompanyPageDetailsService = () => {
 const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
     isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.patch('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company',
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company',
         {...data}, 
         {headers: {
             'Authorization': token

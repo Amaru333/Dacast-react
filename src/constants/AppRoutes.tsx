@@ -28,10 +28,11 @@ import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import Login from '../containers/Register/Login/Login';
 import SignUp from '../containers/Register/SignUp/SignUp';
-import { ConfirmEmail } from '../pages/Register/ConfirmEmail/ConfirmEmail';
+import ConfirmEmail from '../containers/Register/ConfirmEmail';
 import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
 import Uploader from '../containers/Videos/Uploader';
+import ResetPassword from '../containers/Register/ResetPassword';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -54,6 +55,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ConfirmEmail
+    },
+    {
+        path:'/reset-password',
+        name: 'reset-password',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ResetPassword
     },
     {
         path: '/dashboard',

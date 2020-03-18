@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab } from '../../../components/Tab/Tab';
-import {useRouteMatch, Switch, Route} from "react-router-dom";
+import {useRouteMatch, Switch, Route, useHistory} from "react-router-dom";
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../../shared/TabsStyle';
@@ -8,12 +8,13 @@ import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
 import { PlaylistSubRoutes } from '../../../constants/PlaylistSubRoutes';
 
-export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem; history: any; setShowPlaylistTabs: Function}) => {
+export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem; setShowPlaylistTabs: Function}) => {
     const {path} = useRouteMatch();
+    let history = useHistory()
 
     React.useEffect(() => {
         if(location.pathname === '/playlists') {
-            props.history.push('/playlists/'+props.playlistId+'/general')
+            history.push('/playlists/'+props.playlistId+'/general')
         }
     }, [])
 
@@ -50,8 +51,8 @@ export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem
     return (
         <div>
             <TabsContainer>
-                <Button onClick={(event) => {event.preventDefault();props.history.push('/playlists');props.setShowPlaylistTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><IconStyle>keyboard_arrow_left</IconStyle></Button>
-                <Tab orientation='horizontal' list={handlePlaylistSubRoutes()} history={props.history}/>
+                <Button onClick={(event) => {event.preventDefault();history.push('/playlists');props.setShowPlaylistTabs(false);}} className='mx2' sizeButton='xs' typeButton='secondary'><IconStyle>keyboard_arrow_left</IconStyle></Button>
+                <Tab orientation='horizontal' list={handlePlaylistSubRoutes()} />
             </TabsContainer>
             <Switch>
                 {returnRouter(handlePlaylistSubRoutes())}

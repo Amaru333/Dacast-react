@@ -7,16 +7,20 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { SignupContainerProps } from '../../../containers/Register/SignUp/SignUp';
 import { defaultStateSignup, UserInfo } from '../../../redux-flow/store/Register/SignUp/types';
+import { useHistory } from 'react-router-dom';
 
 const logo = require('../../../../public/assets/logo.png');
 
 
 export const SignupPage = (props: SignupContainerProps) => {
 
+    let history = useHistory()
+
     const [userInfo, setUserInfo] = React.useState<UserInfo>(defaultStateSignup)
 
     const submitSignup = (userInfo: UserInfo) => {
         props.signup(userInfo)
+        history.push('/confirm-email')
     }
 
     return (<LoginContainer>
