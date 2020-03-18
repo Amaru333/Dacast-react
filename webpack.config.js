@@ -79,7 +79,7 @@ module.exports = {
         }),
         // Build html for the admin site
         new HtmlWebpackPlugin({ 
-            filename: 'index.html',
+            filename: 'admin.html',
             template: path.resolve(__dirname, 'src/admin', 'admin.html'),
             excludeAssets: [/app.*/]
         }),
