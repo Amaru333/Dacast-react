@@ -73,12 +73,13 @@ module.exports = {
     plugins: [
         // Build html for the client app
         new HtmlWebpackPlugin({ 
+            filename: 'index.html',
             template: path.resolve(__dirname, 'src/app', 'index.html'),
             excludeAssets: [/admin.*/]
         }),
         // Build html for the admin site
         new HtmlWebpackPlugin({ 
-            filename: 'admin.html',
+            filename: 'index.html',
             template: path.resolve(__dirname, 'src/admin', 'admin.html'),
             excludeAssets: [/app.*/]
         }),
