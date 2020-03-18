@@ -3,7 +3,7 @@ import { Modal } from '../../../components/Modal/Modal'
 import { Text } from '../../../components/Typography/Text'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 
-export const ConfirmationModal  = (props:{submit: Function; toggle: Function; isOpened: boolean}) => {
+export const ConfirmationModal  = (props: {submit: Function; toggle: Function; isOpened: boolean}) => {
     return (
         <Modal hasClose={false} toggle={() => props.toggle(!props.isOpened)} opened={props.isOpened} title='Confirm changes' >
             <Text size={14}>Are you sure you want to save these changes?</Text>

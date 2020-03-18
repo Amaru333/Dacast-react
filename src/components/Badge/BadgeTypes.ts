@@ -1,4 +1,4 @@
-import { ColorsApp } from '../../styled/types';
+import { ColorsApp } from '../../app/styled/types';
 
 export interface BadgeCustomProps {
     number: number;

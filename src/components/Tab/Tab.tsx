@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import { Text } from '../Typography/Text';
 import { TabProps } from './TabTypes';
-import { TabContainer, TabHeaderContainer, TabStyle, TabBody, TabContentStyle, TabsLabel } from './TabStyle';
+import { TabContainer, TabHeaderContainer, TabStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
-import { useMedia } from '../../utils/utils';
+import { useMedia } from '../../app/utils/utils';
 
 export const Tab = (props: TabProps) => {
 
@@ -41,6 +41,9 @@ export const Tab = (props: TabProps) => {
         }
         if(props.callback) {
             props.callback(selectedTab)
+        }
+        if(location.pathname.indexOf(selectedTab) === -1) {
+            setSelectedTab(firstSelectedItem())
         }
     }, [selectedTab])
 
@@ -79,18 +82,6 @@ export const Tab = (props: TabProps) => {
                 })
     }
 
-    const renderTabsContent = () => {
-        return ( <div></div>
-        // props.list.map((tabContent: any, i) => {
-        //     return (
-        //         <TabContentStyle key={props.list[i].name + "content"+i.toString()} isDisplayed={props.list[i].name === selectedTab}>
-        //             <tabContent.component />
-        //         </TabContentStyle>
-        //     )
-        // })
-        )
-    }
-
     return (
         <TabContainer className={mobile ? 'col col-12' : ''} mobile={mobile}>
             {props.label ? 
@@ -101,9 +92,6 @@ export const Tab = (props: TabProps) => {
             <TabHeaderContainer className={mobile ? 'col col-12' : ''}  mobile={mobile} {...props}>
                 {renderTabs()}
             </TabHeaderContainer>
-            <TabBody>
-                {renderTabsContent()}
-            </TabBody>
         </TabContainer>
 
     );

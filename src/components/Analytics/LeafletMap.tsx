@@ -1,10 +1,8 @@
-import React, { Component, useEffect } from 'react';
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react';
 // import * as Leaflet from 'leaflet';
-import { Row, Col, Container } from 'reactstrap';
-import JSInjector from '../../utils/JSInjector';
-import CSSInjector from '../../utils/CSSInjector';
-import { lerpColor, logScale } from '../../utils/utils';
+import JSInjector from '../../app/utils/JSInjector';
+import CSSInjector from '../../app/utils/CSSInjector';
+import { lerpColor, logScale } from '../../app/utils/utils';
 
 const LeafletMap = (props: any) => {
 

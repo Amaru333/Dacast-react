@@ -95,6 +95,7 @@
     "moment-timezone": "^0.5.27",
     "numeral": "^2.0.6",
     "prop-types": "^15.7.2",
+    "qs": "^6.9.1",
     "react": "^16.8.6",
     "react-chartjs-2": "^2.9.0",
     "react-color": "^2.18.0",

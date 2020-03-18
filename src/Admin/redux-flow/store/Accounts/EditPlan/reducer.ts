@@ -9,7 +9,7 @@ const reducer: Reducer<PlanInfo> = (state = editPlanDefaultState, action: Action
                 ...action.payload
             }
         case ActionTypes.SAVE_ACCOUNT_PLAN: 
-        console.log(action.payload)
+            console.log(action.payload)
             return {
                 ...state,
                 ...action.payload

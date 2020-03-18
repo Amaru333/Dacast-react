@@ -2,7 +2,7 @@ import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonContainer} from './DropdownStyle';
 import { dropdownIcons, DropdownButtonProps } from './DropdownTypes';
-import { useOutsideAlerter } from '../../../utils/utils';
+import { useOutsideAlerter } from '../../../app/utils/utils';
 
 export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownButtonProps) => {
 
