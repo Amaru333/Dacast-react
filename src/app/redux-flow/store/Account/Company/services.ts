@@ -13,6 +13,14 @@ const getCompanyPageDetailsService = () => {
     }});
 }
 
+const getCompanyPageLogoUrlService = () => {
+    isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company/logo-url', {headers: {
+        'Authorization': token
+    }});
+}
+
 const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
     isTokenExpired()
     let {token, userId} = addTokenToHeader();
@@ -24,15 +32,25 @@ const saveCompanyPageDetailsService = (data: CompanyPageInfos) => {
 }
 
 const getUploadLogoUrlService = () => {
-    return axios.get(urlBase + 'getUploadLogoUrl');
+    isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart',
+    {'parameters': {
+            'userID': userId
+        }, 
+    'type': 'company-logo'},
+    {headers: {
+        'Authorization': token
+    }});
 }
 
 const uploadCompanyLogoService = (data: File, uploadUrl: string) => {
-    return axios.post(uploadUrl, data)
+    return axios.put(uploadUrl, data)
 }
 
 export const CompanyServices = {
     getCompanyPageDetailsService,
+    getCompanyPageLogoUrlService,
     saveCompanyPageDetailsService,
     getUploadLogoUrlService,
     uploadCompanyLogoService

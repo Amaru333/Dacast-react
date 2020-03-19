@@ -100,13 +100,19 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         setUploadedFileUrl(null);
     }
 
-    const handleUpload = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        await props.getLogoUrlForUploading();
+        props.getLogoUrlForUploading();
+        console.log('waiting')
+       
+    }
+
+    React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
+            console.log('uploading at the url', props.CompanyPageDetails.uploadLogoUrl)
             props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
         }
-    }
+    }, [props.CompanyPageDetails.uploadLogoUrl])
 
     const copyKey = (value: string) => {
         var textArea = document.createElement("textarea");
