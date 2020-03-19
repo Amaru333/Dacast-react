@@ -1,89 +1,46 @@
 export enum ActionTypes {
-    GET_ANALYTICS_REVENUE_DETAILS = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_DETAILS",
+    GET_ANALYTICS_REVENUE_SALES_BY_TIME = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_SALES_BY_TIME",
+    GET_ANALYTICS_REVENUE_REVENUE_BY_TIME = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_REVENUE_BY_TIME",
+    GET_ANALYTICS_REVENUE_SALES_PER_COUNTRY = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_SALES_PER_COUNTRY",
 }
 
 export interface AnalyticsRevenueInfos {
-    consumptionPerDomain: {
-        domain: string[]; 
-        value: number[];
-    };
-    consumptionPerDevices: {
-        labels: string[];
-        data: number[];
-    };
-    playsViewersPerTime: {
-        plays: {
-            time: number[];
-            data: number[];
-        };
-        viewers: {
-            time: number[];
-            data: number[];
-        };
-    };
-    consumptionBreakdown: {
-        time: {
-            time: number[];
-            data: number[];
-        };
-        content: {
-            labels: string[];
-            data: number[];
-        };
-        map: {
-            city: string;
-            position: {
-                latitude: number;
-                longitude: number;
-            };
-            consumedMB: number;
-        }[];
-    };
-    viewingTimeBreakdown: {
-        content: {
-            labels: string[];
-            data: number[];
-        };
-        map: {
-            city: string;
-            position: {
-                latitude: number;
-                longitude: number;
-            };
-            consumedMB: number;
-        }[];
-        device: {
-            labels: string[];
-            data: number[];
-        };
-    };
-    concurrentPlaybackDevice: {
-        content: {
-            labels: string[];
-            data: number[];
-        };
-        map: {
-            city: string;
-            position: {
-                latitude: number;
-                longitude: number;
-            };
-            consumedMB: number;
-        }[];
-        device: {
-            labels: string[];
-            data: number[];
-        };
-    };
+    salesByTime: AnalyticsRevenueSalesByTime | false;
+    revenueByTime: AnalyticsRevenueRevenueByTime | false;
+    salesPerCountry: AnalyticsRevenueSalesPerCountry | false;
 }
 
+export interface AnalyticsRevenueSalesByTime {
+    data: number[];
+    time: number[];
+};
+
+export interface AnalyticsRevenueRevenueByTime {
+    data: number[];
+    time: number[];
+};
+
+export interface AnalyticsRevenueSalesPerCountry {
+    data: {
+        city: string;
+        position: {
+            latitude: number;
+            longitude: number;
+        };
+        consumedMB: number;
+    }[];
+};
 
 export const AnalyticsRevenueInitialState: AnalyticsRevenueState = {
-    data: false,
+    data: {
+        salesByTime: false,
+        revenueByTime: false,
+        salesPerCountry: false
+    },
 };
 
 export interface AnalyticsRevenueState {
-    readonly data: false | AnalyticsRevenueInfos;
+    readonly data: AnalyticsRevenueInfos;
 }
 
 export interface GetAnalyticsRevenueOptions {

@@ -11,7 +11,7 @@ import {  TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
@@ -306,14 +306,3 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
     
 }
-
-export const AnalyticsContainerHalfSelector = styled.div<{}>`
-    background-color: white;
-    border: 1px solid ${props => props.theme.colors["gray-7"]};;
-    height: 256px; 
-    overflow-x: scroll;
-`
-
-export const BreadcrumbContainer = styled.div`
-min-height: 52px;
-`

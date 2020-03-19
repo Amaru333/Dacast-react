@@ -17,6 +17,7 @@ interface DropdownCustomProps {
     dropdownDefaultSelect?: string;
     isInModal?: boolean;
     disabled?: boolean;
+    isWhiteBackground?: boolean;
 }
 
 export interface ContinentListType {
