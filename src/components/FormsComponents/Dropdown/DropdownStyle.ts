@@ -12,14 +12,14 @@ export const DropdownLabel = styled.div`
     margin: 4px 0;
 `;
 
-export const TitleContainer = styled.div<{isOpened: boolean; isNavigation: boolean | undefined; disabled: boolean}>`
+export const TitleContainer = styled.div<{isWhiteBackground: boolean; isOpened: boolean; isNavigation: boolean | undefined; disabled: boolean}>`
     display: flex;
     flex-direction: row;
     position: relative;
     height: 38px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
-    background-color: ${props => props.theme.colors["gray-10"]};
-    pointer-events: ${props => props.disabled ? "none" : "auto"}
+    background-color: ${props => props.isWhiteBackground ? props.theme.colors["white"] : props.theme.colors["gray-10"] };
+    pointer-events: ${props => props.disabled ? "none" : "auto"};
     ${props => props.isNavigation && css`
         background-color: ${props.theme.colors.white};
     `}

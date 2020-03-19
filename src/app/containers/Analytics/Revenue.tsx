@@ -9,6 +9,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { AnalyticsRevenueState, getAnalyticsRevenueRevenueTimeAction, GetAnalyticsRevenueOptions, getAnalyticsRevenueSalesTimeAction, getAnalyticsRevenueSalesCountryAction } from '../../redux-flow/store/Analytics/Revenue';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -19,6 +20,10 @@ export interface RevenueComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
+    analyticsRevenueData: AnalyticsRevenueState;
+    getRevenueByTime: Function;
+    getSalesByTime: Function;
+    getSalesPerCountry: Function;
 }
 
 const Revenue = (props: RevenueComponentProps) => {
@@ -30,7 +35,16 @@ const Revenue = (props: RevenueComponentProps) => {
             }
             wait()
         }
-        console.log(props.folderData);
+        console.log(props);
+        if(!props.analyticsRevenueData.data.revenueByTime) {
+            props.getRevenueByTime();
+        }
+        if(!props.analyticsRevenueData.data.salesByTime) {
+            props.getSalesByTime();
+        }
+        if(!props.analyticsRevenueData.data.salesPerCountry) {
+            props.getSalesPerCountry();
+        }
     }, [])
     return (
         props.folderData ? 
@@ -42,7 +56,8 @@ const Revenue = (props: RevenueComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders.data
+        folderData: state.folders.data,
+        analyticsRevenueData: state.analytics.revenue
     };
 }
 
@@ -56,7 +71,16 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         restoreContent: (content: FolderAsset[]) => {
             dispatch(restoreContentAction(content))
-        }
+        },
+        getRevenueByTime: (options: GetAnalyticsRevenueOptions) => {
+            dispatch(getAnalyticsRevenueRevenueTimeAction(options))
+        },
+        getSalesByTime: (options: GetAnalyticsRevenueOptions) => {
+            dispatch(getAnalyticsRevenueSalesTimeAction(options))
+        },
+        getSalesPerCountry: (options: GetAnalyticsRevenueOptions) => {
+            dispatch(getAnalyticsRevenueSalesCountryAction(options))
+        },
     };
 }
 

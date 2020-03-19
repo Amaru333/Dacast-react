@@ -51,7 +51,6 @@ const LeafletMap = (props: any) => {
         setMarkers([]);
 
         var newMarkersTable = [];
-        console.log(markers);
         for (let i = 0; i < props.markers.length; i++) {
             let propMarker = props.markers[i];
             if (propMarker.consumedMB === 0 || !propMarker.position.latitude || !propMarker.position.longitude) {
