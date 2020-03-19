@@ -3,7 +3,7 @@ import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton} from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
-import { useOutsideAlerter } from '../../../utils/utils';
+import { useOutsideAlerter } from '../../../app/utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
 

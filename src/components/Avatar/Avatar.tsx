@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text } from "../Typography/Text";
 import styled from 'styled-components';
 import { AvatarProps } from './AvatarTypes';
-import { AvatarColorsArray } from '../../styled/types';
+import { AvatarColorsArray } from '../../app/styled/types';
 
 const getInitials = (name: string) => {
     var names = name.split(' '),

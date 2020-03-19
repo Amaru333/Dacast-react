@@ -6,15 +6,18 @@ import { IconStyle } from '../../shared/Common/Icon';
 import { Tooltip } from '../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../components/Analytics/BarChart';
-import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB } from '../../utils/utils';
+
 import DoubleLineChart from '../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import LeafletMap from '../../components/Analytics/LeafletMap';
-import { AnalyticsRealTimeInfos } from '../../redux-flow/store/Analytics/RealTime';
-import { AnalyticsCard } from './Dashboard';
+
+
 import { DropdownSingle } from '../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../components/FormsComponents/Button/Button';
+import { displayBytesForHumans, mapMarkerNameTranformBytesFromGB, tsToLocaleDate } from '../../app/utils/utils';
+import { AnalyticsRealTimeInfos } from '../../app/redux-flow/store/Analytics/RealTime/types';
+import { AnalyticsCard } from '../../app/pages/Analytics/AnalyticsCommun';
 
 export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
     

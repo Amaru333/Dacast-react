@@ -1,4 +1,4 @@
-import { ColorsApp } from '../../styled/types';
+import { ColorsApp } from '../../app/styled/types';
 
 export type Size = 48 | 40 | 32 | 24 | 20 | 16 | 14 | 12 | 10;
 export type Weight = 'reg' | 'med';

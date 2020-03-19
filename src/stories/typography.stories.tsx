@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Text } from '../components/Typography/Text';
 import { withKnobs, select } from '@storybook/addon-knobs';
-import { ColorsApp, ColorsAppArray } from '../styled/types';
+import { ColorsApp, ColorsAppArray } from '../app/styled/types';
 
 
 const stories = storiesOf('Typo', module);
