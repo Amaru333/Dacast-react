@@ -3,6 +3,8 @@ import { Table } from '../../../components/Table/Table'
 import { Tab } from '../../../components/Tab/Tab'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../components/Typography/Text'
+import { AccountLogsComponentProps } from '../../containers/Accounts/Logs'
+import { Pagination } from '../../../components/Pagination/Pagination'
 
 export interface Routes {
     path: string;
@@ -14,8 +16,7 @@ export interface Routes {
     exactPath?: boolean;
 }
 
-
-export const AccountLogsPage = () => {
+export const AccountLogsPage = (props: AccountLogsComponentProps) => {
 
     const makeRoute = (name: string): Routes => {
         return {
@@ -35,6 +36,23 @@ export const AccountLogsPage = () => {
         }      
     }
 
+    const accountLogsTableBody = () => {
+        if(props.accountLogs) {
+            return props.accountLogs.map((log, key) => {
+                return {
+                    data: [
+                        <Text key={'accountLogsTableBodyDateCell' + key } size={14}>{log.date}</Text>,
+                        <Text key={'accountLogsTableBodyEmailCell' + key } size={14}>{log.email}</Text>,
+                        <Text key={'accountLogsTableBodySourceCell' + key } size={14}>{log.source}</Text>,
+                        <Text key={'accountLogsTableBodyEventCell' + key } size={14}>{log.event}</Text>,
+
+                    ]
+                }
+            })
+        }
+
+    }
+
     return (
         <div>
             <div className='flex'>
@@ -42,7 +60,8 @@ export const AccountLogsPage = () => {
                 <Tab list={[makeRoute('All'), makeRoute('Staff'), makeRoute('Customer')]} orientation='horizontal' callback={() => {}} />
             </div>
 
-            <Table className='my2' id='accountLogsTable' headerBackgroundColor='white' header={accountLogsTableHeader()} />
+            <Table className='my2' id='accountLogsTable' headerBackgroundColor='white' header={accountLogsTableHeader()} body={accountLogsTableBody()} />
+            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )
 }
