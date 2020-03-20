@@ -30,6 +30,11 @@ export interface UploadCompanyLogo {
     payload: File;
 }
 
+export interface DeleteCompanyLogo {
+    type: ActionTypes.DELETE_COMPANY_LOGO;
+    payload: File;
+}
+
 
 export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
@@ -88,6 +93,17 @@ export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<
     };
 }
 
+export const deleteCompanyLogo = (): ThunkDispatch<Promise<void>, {}, DeleteCompanyLogo> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteCompanyLogo> ) => {
+        await CompanyServices.deleteCompanyLogoService()
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_COMPANY_LOGO, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
 
 export type CompanyAction = 
 GetCompanyPageDetails 
@@ -95,3 +111,4 @@ GetCompanyPageDetails
 | GetUploadLogoUrl 
 | UploadCompanyLogo
 | GetCompanyLogoUrl
+| DeleteCompanyLogo

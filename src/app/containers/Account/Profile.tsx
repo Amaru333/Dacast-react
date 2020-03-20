@@ -44,8 +44,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveProfilePageDetails: (data: ProfilePageInfos) => {
             dispatch(saveProfilePageDetailsAction(data));
         },
-        saveProfilePassword: (data: string) => {
-            dispatch(saveProfilePasswordAction(data));
+        saveProfilePassword: (currentPassword: string, newPassword: string) => {
+            dispatch(saveProfilePasswordAction(currentPassword, newPassword));
         },
     };
 }

@@ -23,8 +23,18 @@ const saveProfilePageDetailsService = (userData: ProfilePageInfos) => {
         }})
 }
 
-const saveProfilePasswordService = (data: string) => {
-    return axios.post(urlBase + 'saveProfilePassword', {data})
+const saveProfilePasswordService = (currentPassword: string, newPassword: string) => {
+    isTokenExpired()
+    let {token, userId, accessToken} = addTokenToHeader();
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/change-password',
+        {'accessToken': accessToken,
+        'currentPassword': currentPassword,
+        'newPassword': newPassword
+        }, 
+        {headers: {
+            'Authorization': token
+        }}
+        )
 }
 
 export const ProfileServices = {

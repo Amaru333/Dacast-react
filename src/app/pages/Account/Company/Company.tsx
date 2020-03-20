@@ -20,6 +20,7 @@ interface CompanyComponentProps {
     saveCompanyPageDetails: Function;
     getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
+    deleteCompanyLogo: Function;
 }
 
 export const CompanyPage = (props: CompanyComponentProps) => {
@@ -98,6 +99,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
+        props.deleteCompanyLogo();
     }
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

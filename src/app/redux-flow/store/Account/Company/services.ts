@@ -48,10 +48,19 @@ const uploadCompanyLogoService = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, data)
 }
 
+const deleteCompanyLogoService = () => {
+    isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company/logo', {headers: {
+        'Authorization': token
+    }});
+}
+
 export const CompanyServices = {
     getCompanyPageDetailsService,
     getCompanyPageLogoUrlService,
     saveCompanyPageDetailsService,
     getUploadLogoUrlService,
-    uploadCompanyLogoService
+    uploadCompanyLogoService,
+    deleteCompanyLogoService
 } 
