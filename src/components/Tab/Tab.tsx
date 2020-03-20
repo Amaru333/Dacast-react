@@ -42,7 +42,7 @@ export const Tab = (props: TabProps) => {
         if(props.callback) {
             props.callback(selectedTab)
         }
-        if(location.pathname.indexOf(selectedTab) === -1) {
+        if(location.pathname.indexOf(selectedTab) === -1 && !props.callback) {
             setSelectedTab(firstSelectedItem())
         }
     }, [selectedTab])

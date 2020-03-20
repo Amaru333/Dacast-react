@@ -7,6 +7,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types'
 import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
+import { useHistory } from 'react-router'
 
 const Plans = [
     'Developer',
@@ -34,6 +35,8 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
             name: name
         }
     }
+    
+    let history = useHistory()
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
@@ -96,7 +99,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.emailCatcher ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, emailCatcher: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.emailCatcher})}}  />
                 <div className='my1 flex'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
+                    <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
             </div>
         )

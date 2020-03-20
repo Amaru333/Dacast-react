@@ -22,15 +22,15 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
             <Text size={16} weight='med'>Allowances for Account</Text>
             <div className='flex my1'>
                 <Text size={14} weight='reg'>Data</Text>
-                <Text size={14} weight='reg'>{props.accountAllowances.data} GB</Text>
+                <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.data.toString() : ''} GB</Text>
             </div>
             <div className='flex my1'>
                 <Text size={14} weight='reg'>Encoding</Text>
-                <Text size={14} weight='reg'>{props.accountAllowances.encoding} GB</Text>
+                <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.encoding.toString() : ''} GB</Text>
             </div>
             <div className='flex my1'>
                 <Text size={14} weight='reg'>Storage</Text>
-                <Text size={14} weight='reg'>{props.accountAllowances.storage} GB</Text>
+                <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.storage.toString() : ''} GB</Text>
             </div>
             <DropdownSingle className='my1' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(value: string) => setSelectedAllowance(value)} dropdownTitle='Allowance' list={{'Data': false, 'Encoding': false, 'Storage': false}} />
             <Input className='my1' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />

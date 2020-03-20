@@ -8,11 +8,13 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { EditAccountComponentProps } from '../../containers/Accounts/EditAccount'
 import { AccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
+import { useHistory } from 'react-router'
 
 const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
 
 export const EditAccountPage = (props: EditAccountComponentProps) => {
 
+    let history = useHistory()
     const [accountInfo, setAccountInfo] = React.useState<AccountInfo>(props.accountInfo)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     
@@ -84,7 +86,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
             <div className='my1 flex'>
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => {history.push('/accounts')}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
             <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
 

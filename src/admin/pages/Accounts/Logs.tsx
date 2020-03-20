@@ -5,6 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../components/Typography/Text'
 import { AccountLogsComponentProps } from '../../containers/Accounts/Logs'
 import { Pagination } from '../../../components/Pagination/Pagination'
+import { useHistory } from 'react-router'
 
 export interface Routes {
     path: string;
@@ -17,6 +18,8 @@ export interface Routes {
 }
 
 export const AccountLogsPage = (props: AccountLogsComponentProps) => {
+
+    let history = useHistory()
 
     const makeRoute = (name: string): Routes => {
         return {
@@ -56,7 +59,7 @@ export const AccountLogsPage = (props: AccountLogsComponentProps) => {
     return (
         <div>
             <div className='flex'>
-                <Button typeButton='secondary' sizeButton='small' buttonColor='gray'>Back</Button>
+                <Button className='mr2' onClick={() => {history.push('/accounts')}} typeButton='secondary' sizeButton='small' buttonColor='gray'>Back</Button>
                 <Tab list={[makeRoute('All'), makeRoute('Staff'), makeRoute('Customer')]} orientation='horizontal' callback={() => {}} />
             </div>
 
