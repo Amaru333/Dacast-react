@@ -60,7 +60,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`${url}/${account.id}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to={`${url}/${account.id}/logs`}>Logs</Link>,
-                    <Link key={'accountsTableBodyAllowancesCell' + key }to=''>Allowances</Link>, 
+                    <Link key={'accountsTableBodyAllowancesCell' + key }to={`${url}/${account.id}/allowances`}>Allowances</Link>, 
                 ]}
             })
         }

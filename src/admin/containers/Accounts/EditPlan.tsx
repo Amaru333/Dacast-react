@@ -25,7 +25,7 @@ const EditPlan = (props: EditPlanComponentProps) => {
         }
     }, [])
     return props.accountPlan ?
-        <EditPlanPage {...props} /> 
+        <EditPlanPage {...props} accountId={accountId} /> 
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }
 

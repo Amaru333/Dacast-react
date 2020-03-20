@@ -7,7 +7,6 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types'
 import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
-import { useParams } from 'react-router-dom'
 
 const Plans = [
     'Developer',
@@ -27,7 +26,7 @@ export interface Routes {
 }
 
 
-export const EditPlanPage = (props: EditPlanComponentProps) => {
+export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}) => {
 
     const makeRoute = (name: string): Routes => {
         return {
@@ -35,18 +34,17 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
             name: name
         }
     }
-    let { accountId } = useParams()
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
-
+    const [selectedPlan, setSelectedPlan] = React.useState<string>(props.accountPlan.name)
     React.useEffect(() => {
         setPlanData(props.accountPlan)
         console.log(planData)
     }, [props.accountPlan])
 
     const handleSubmit = () => {
-        props.saveAccountPlan(accountId, planData)
+        props.saveAccountPlan(props.accountId, planData)
         setOpenConfirmationModal(false)
     }
 
@@ -65,50 +63,54 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
                 <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditions.toString()} onChange={(event) => setPlanData({...planData, renditions: parseInt(event.currentTarget.value)})}  />
                 
                 <Text className='py1' size={14} weight='med'>Live Streams</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.liveStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, liveStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.liveStreams})}} />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.liveStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, liveStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.liveStreams})}} />
                 <Text className='py1' size={14} weight='med'>Compatible Streams</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.compatibleStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, compatibleStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.compatibleStreams})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.compatibleStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, compatibleStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.compatibleStreams})}}  />
                 <Text className='py1' size={14} weight='med'>China Streams</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.chinaStremas ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, chinaStremas: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.chinaStremas})}}  />
+                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.chinaStremas ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, chinaStremas: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.chinaStremas})}}  />
                 <Text className='py1' size={14} weight='med'>DVR</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.dvr ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, dvr: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.dvr})}}  />
+                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.dvr ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, dvr: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.dvr})}}  />
                 <Text className='py1' size={14} weight='med'>Recording</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
+                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
                 <Text className='py1' size={14} weight='med'>VOD</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
                 <Text className='py1' size={14} weight='med'>Folders</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.folders ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, folders: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.folders})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.folders ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, folders: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.folders})}}  />
                 <Text className='py1' size={14} weight='med'>Playlists</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.playlists ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, playlists: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.playlists})}}  />
+                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.playlists ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, playlists: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.playlists})}}  />
                 <Text className='py1' size={14} weight='med'>AES</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.aes ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, aes: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.aes})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.aes ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, aes: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.aes})}}  />
                 <Text className='py1' size={14} weight='med'>Signed Keys</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.signedKeys ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, signedKeys: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.signedKeys})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.signedKeys ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, signedKeys: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.signedKeys})}}  />
                 <Text className='py1' size={14} weight='med'>API</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.api ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, api: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.api})}} />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.api ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, api: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.api})}} />
                 <Text className='py1' size={14} weight='med'>Web Download</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.webDownload ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, webDownload: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.webDownload})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.webDownload ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, webDownload: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.webDownload})}}  />
                 <Text className='py1' size={14} weight='med'>Player Download</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.playerDownload ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, playerDownload: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.playerDownload})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.playerDownload ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, playerDownload: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.playerDownload})}}  />
                 <Text className='py1' size={14} weight='med'>Paywall</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.paywall ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, paywall: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.paywall})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.paywall ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, paywall: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.paywall})}}  />
                 <Text className='py1' size={14} weight='med'>Advertising</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.advertising ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, advertising: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.advertising})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.advertising ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, advertising: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.advertising})}}  />
                 <Text className='py1' size={14} weight='med'>Email Catcher</Text>
-                <Tab className='my1 col col-2' history={null} orientation='horizontal' list={[makeRoute(props.accountPlan.emailCatcher ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, emailCatcher: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.emailCatcher})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.emailCatcher ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, emailCatcher: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.emailCatcher})}}  />
                 <div className='my1 flex'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
-                <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
             </div>
         )
+    }
+
+    const handleSwitchPlan = () => {
+        props.switchAccountPlan(selectedPlan)
+        setShowSwitchPlan(false)
     }
 
     const SwitchPlanContent = () => {
         const renderPlans = () => {
             return Plans.map(plan => {
-                return <InputRadio key={plan} className='col col-12 my1' label={plan} name='plan' value={plan} />
+                return <InputRadio key={plan} className='col col-12 my1' defaultChecked={plan === selectedPlan} onChange={() => setSelectedPlan(plan)} label={plan} name='plan' value={plan} />
             })
         }
         return (
@@ -116,14 +118,20 @@ export const EditPlanPage = (props: EditPlanComponentProps) => {
                 <Text size={14} weight='med'>Switching Plan for Account </Text>
                 {renderPlans()}
                 <div className='my1 flex'>
-                    <Button onClick={() => {setShowSwitchPlan(false)}} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => setShowSwitchPlan(false)} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
             </div>
         )
     }
 
-    return showSwitchPlan ? 
-        SwitchPlanContent()
-        : EditPlanContent()
+    return(
+        <div>
+            {showSwitchPlan ? 
+                SwitchPlanContent()
+                : EditPlanContent()
+            }
+            <ConfirmationModal submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+        </div>
+    ) 
 }

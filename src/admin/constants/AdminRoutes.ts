@@ -2,6 +2,7 @@ import Accounts from '../containers/Accounts/Accounts'
 import EditPlan from '../containers/Accounts/EditPlan'
 import EditAccount from '../containers/Accounts/EditAccount'
 import Logs from '../containers/Accounts/Logs'
+import Allowances from '../containers/Accounts/Allowances'
 
 export const AdminRoutes = [
     {
@@ -24,8 +25,14 @@ export const AdminRoutes = [
     },
     {
         path: "/accounts/:accountId/logs",
-        name: 'Edit Account',
+        name: 'Logs',
         component: Logs,
+        exactPath: true
+    },
+    {
+        path: "/accounts/:accountId/allowances",
+        name: 'Allowances',
+        component: Allowances,
         exactPath: true
     },
 ]
