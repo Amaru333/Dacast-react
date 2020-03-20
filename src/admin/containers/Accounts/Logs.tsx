@@ -3,8 +3,8 @@ import { AccountLogsPage } from '../../pages/Accounts/Logs'
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { AdminState } from '../../redux-flow/store';
-import { getAccountLogsAction, Action } from '../../redux-flow/store/Accounts/Logs/actions';
-import { Logs } from '../../redux-flow/store/Accounts/Logs/types';
+import { getAccountLogsAction, Action } from '../../redux-flow/store/Accounts/AccountLogs/actions';
+import { Logs } from '../../redux-flow/store/Accounts/AccountLogs/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { useParams } from 'react-router-dom';

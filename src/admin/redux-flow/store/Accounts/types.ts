@@ -5,8 +5,8 @@ import { PlanInfo } from './EditPlan/types';
 import { PlanReducer } from './EditPlan/reducer';
 import { AccountInfo } from './EditAccount/types';
 import { AccountReducer } from './EditAccount';
-import { Logs } from './Logs/types';
-import { AccountLogsReducer } from './Logs/reducer';
+import { Logs } from './AccountLogs/types';
+import { AccountLogsReducer } from './AccountLogs/reducer';
 import { Allowances } from './Allowances/types';
 import { AccountAllowancesReducer } from './Allowances/reducer';
 
