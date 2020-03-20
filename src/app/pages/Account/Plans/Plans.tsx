@@ -13,7 +13,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { PlansContainerProps } from '../../../containers/Account/Plans';
 
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Plan } from '../../../../redux-flow/store/Account/Plans/types';
+import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';

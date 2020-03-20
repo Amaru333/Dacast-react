@@ -1,9 +1,9 @@
 import React from 'react';
 import { LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { PlansPage } from '../../pages/Account/Plans/Plans';
-import { Plans } from '../../../redux-flow/store/Account/Plans/types';
+import { Plans } from '../../redux-flow/store/Account/Plans/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { PlansAction, getPlanDetailsAction, changeActivePlanAction } from '../../../redux-flow/store/Account/Plans/actions';
+import { PlansAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Plans/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';

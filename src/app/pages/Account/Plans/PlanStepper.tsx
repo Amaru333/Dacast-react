@@ -7,7 +7,7 @@ import { InputCheckbox } from '../../../../components/FormsComponents/Input/Inpu
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { Plan } from '../../../../redux-flow/store/Account/Plans/types';
+import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 
 export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function, setStepValidated: Function) => {
 

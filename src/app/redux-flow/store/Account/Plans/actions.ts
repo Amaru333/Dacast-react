@@ -1,8 +1,8 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { Plans, ActionTypes } from './types'
 import { PlansServices } from './services'
-import { ApplicationState } from '../../../../app/redux-flow/store';
-import { showToastNotification } from '../../../../app/redux-flow/store/Toasts/actions';
+import { ApplicationState } from '../..';
+import { showToastNotification } from '../../Toasts/actions';
 
 
 export interface GetPlanDetails {
