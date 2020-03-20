@@ -38,10 +38,6 @@ export const ContentPricePresetsModal = (props: {action: Function; toggle: Funct
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
-    React.useEffect(() => {
-        console.log(newPricePreset)
-    }, [newPricePreset])
-
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = newPricePreset.price;
         if(inputChange === 'amount') {

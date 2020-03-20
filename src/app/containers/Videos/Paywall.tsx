@@ -70,11 +70,9 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 startDate: null,
                 startTime: '00:00'
             };
-            let pricePresetList = props.globalPresets.presets
-            pricePresetList.push(customPricePreset)
-            setCustomPricePresetList(pricePresetList)
+            setCustomPricePresetList([...props.globalPresets.presets, customPricePreset])
         }
-    }, [props.globalPresets.presets])
+    }, [props.globalPresets.presets, props.vodPaywallInfos])
 
     return props.vodPaywallInfos && props.groupsInfos && customPricePresetList && props.theming ? 
         <VodPaywallPage {...props} customPricePresetList={customPricePresetList} />
