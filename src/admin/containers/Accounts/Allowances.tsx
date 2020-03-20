@@ -4,11 +4,11 @@ import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, getAccountAllowancesAction, saveAccountAllowancesAction } from '../../redux-flow/store/Accounts/Allowances/actions';
-import { AccountAllowances } from '../../redux-flow/store/Accounts/Allowances/types';
+import { Allowances } from '../../redux-flow/store/Accounts/Allowances/types';
 import { useParams } from 'react-router-dom';
 
 export interface AccountAllowancesComponentProps {
-    accountAllowances: AccountAllowances;
+    accountAllowances: Allowances;
     getAccountAllowances: Function;
     saveAccountAllowances: Function;
 }

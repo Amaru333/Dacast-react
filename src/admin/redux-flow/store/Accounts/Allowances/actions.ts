@@ -1,16 +1,16 @@
-import { ActionTypes, AccountAllowances } from './types';
+import { ActionTypes, Allowances } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { AccountAllowancesServices } from './service';
 
 export interface GetAccountAllowances {
     type: ActionTypes.GET_ACCOUNT_ALLOWANCES;
-    payload: AccountAllowances;
+    payload: Allowances;
 }
 
 export interface SaveAccountAllowances {
     type: ActionTypes.SAVE_ACCOUNT_ALLOWANCES;
-    payload: AccountAllowances;
+    payload: Allowances;
 }
 
 export const getAccountAllowancesAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetAccountAllowances> => {

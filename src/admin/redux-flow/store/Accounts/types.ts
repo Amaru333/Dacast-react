@@ -5,9 +5,9 @@ import { PlanInfo } from './EditPlan/types';
 import { PlanReducer } from './EditPlan/reducer';
 import { AccountInfo } from './EditAccount/types';
 import { AccountReducer } from './EditAccount';
-import { AccountLogs } from './Logs/types';
+import { Logs } from './Logs/types';
 import { AccountLogsReducer } from './Logs/reducer';
-import { AccountAllowances } from './Allowances/types';
+import { Allowances } from './Allowances/types';
 import { AccountAllowancesReducer } from './Allowances/reducer';
 
 
@@ -15,8 +15,8 @@ export interface AccountsState {
     list: Account[] | false;
     account: AccountInfo | false;
     plan: PlanInfo | false;
-    logs: AccountLogs[] | false;
-    allowances: AccountAllowances | false
+    logs: Logs[] | false;
+    allowances: Allowances | false
 }
 
 export const accountsInitialState: AccountsState = {

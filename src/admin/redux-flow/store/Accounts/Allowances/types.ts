@@ -3,10 +3,10 @@ export enum ActionTypes {
     SAVE_ACCOUNT_ALLOWANCES = "@@admin_account/SAVE_ACCOUNT_ALLOWANCES"
 }
 
-export interface AccountAllowances {
+export interface Allowances {
     data: number;
     encoding: number;
     storage: number;
 }
 
-export const accountAllowancesDefaultState: AccountAllowances | false = false
+export const accountAllowancesDefaultState: Allowances | false = false

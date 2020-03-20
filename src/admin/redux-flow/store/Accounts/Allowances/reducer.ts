@@ -1,8 +1,8 @@
 import { Reducer } from 'redux'
-import { ActionTypes, accountAllowancesDefaultState, AccountAllowances } from './types'
+import { ActionTypes, accountAllowancesDefaultState, Allowances } from './types'
 import { Action } from './actions'
 
-const reducer: Reducer<AccountAllowances | false> = (state = accountAllowancesDefaultState, action: Action) => {
+const reducer: Reducer<Allowances | false> = (state = accountAllowancesDefaultState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_ACCOUNT_ALLOWANCES: 
             return {

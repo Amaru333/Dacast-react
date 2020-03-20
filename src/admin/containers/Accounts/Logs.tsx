@@ -4,13 +4,13 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { AdminState } from '../../redux-flow/store';
 import { getAccountLogsAction, Action } from '../../redux-flow/store/Accounts/Logs/actions';
-import { AccountLogs } from '../../redux-flow/store/Accounts/Logs/types';
+import { Logs } from '../../redux-flow/store/Accounts/Logs/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { useParams } from 'react-router-dom';
 
 export interface AccountLogsComponentProps {
-    accountLogs: AccountLogs[] | false;
+    accountLogs: Logs[] | false;
     getAccountLogs: Function;
 }
 
