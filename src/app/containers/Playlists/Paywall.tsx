@@ -8,7 +8,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPresetsInfosAction, createPricePresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+var moment = require('moment-timezone');
 
 export interface PlaylistPaywallComponentProps {
     playlistPaywallInfos: PlaylistPaywallPageInfos;
@@ -28,6 +29,8 @@ export interface PlaylistPaywallComponentProps {
     getPresetsInfo: Function
     customPricePresetList: Preset[]
     createPricePreset: Function;
+    customPromoPresetList: Promo[]
+    createPromoPreset: Function;
 }
 
 const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
@@ -48,6 +51,8 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
+
+    const [customPromoPresetList, setCustomPromoPresetList] = React.useState<Promo[]>(null)
 
     React.useEffect(() => {
         if (props.playlistPaywallInfos && props.globalPresets) {
@@ -70,12 +75,27 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 startDate: null,
                 startTime: '00:00'
             };
+            let customPromoPreset: Promo = {
+                id: 'custom',
+                name: 'Custom Preset',
+                alphanumericCode: '',
+                discount: NaN,
+                limit: NaN,
+                rateType: 'Pay Per View',
+                startDate: null,
+                startTime: null,
+                endDate: null,
+                endTime: null,
+                timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
+                discountApplied: 'Once'
+            }
             setCustomPricePresetList([...props.globalPresets.presets, customPricePreset])
+            setCustomPromoPresetList([...props.globalPresets.promos, customPromoPreset])
         }
     }, [props.globalPresets.presets, props.playlistPaywallInfos])
 
     return props.playlistPaywallInfos && props.groupsInfos && customPricePresetList && props.theming ? 
-        <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} />
+        <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
         : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
@@ -125,6 +145,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));
+        },
+        createPromoPreset: (data: Promo) => {
+            dispatch(createPromoPresetAction(data));
         }
     }
 }
