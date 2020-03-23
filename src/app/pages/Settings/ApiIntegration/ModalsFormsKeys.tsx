@@ -4,6 +4,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
 const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
     
@@ -44,10 +45,20 @@ const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
 
 
 const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
-    
+    const [selectedValue, setSelectedValue] = React.useState<string>('');
+
+    console.log(selectedValue);
     return (
         <form>
-            <Input defaultValue={ props.item? props.item.encoder : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb3" label="Name" placeholder="Name"  />
+            <DropdownSingle
+                isInModal   
+                className='mb2 col col-12'                  
+                dropdownTitle='Encoder'
+                list={{'Dacast OBS Studio': false, ' Telestream WireCast': false, 'Other': false}}
+                id='amountDropdown'
+                callback={setSelectedValue}
+            />
+            <Input defaultValue={ props.item? props.item.encoder : ""} disabled={false} required id="encoder" type="text" className={(selectedValue !== 'Other' ? 'display-none ' : '')+" col col-12 mb3"} label="Name" placeholder="Name"  />
             <Button sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
             <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2"  typeButton="tertiary" buttonColor="blue" >Cancel</Button>
         </form>

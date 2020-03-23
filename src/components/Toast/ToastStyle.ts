@@ -13,8 +13,8 @@ export const ToastContainer = styled.div`
 `;
 
 export const ToastStyle = styled.div<ToastProps>`
-    width: 400px;
-    height: 40px;
+    max-width: 400px;
+    min-height: 40px;
     margin: auto;
     border: none;
     padding: 8px 16px;
