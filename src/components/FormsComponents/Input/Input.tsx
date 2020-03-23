@@ -9,7 +9,7 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
     var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, ...other } = props;
 
     return (
-        <ContainerStyle className={className} >
+        <ContainerStyle hidden={props.hidden} className={className} >
             {
                 label ?
                     <LabelStyle disabled={props.disabled ? true : false} >

@@ -1,5 +1,5 @@
 import { ActionTypes} from "./types";
-import { ToastType, Size, NotificationType } from '../../../components/Toast/ToastTypes'
+import { ToastType, Size, NotificationType } from '../../../../components/Toast/ToastTypes'
 
 export interface ToastHideAction {
     type: ActionTypes.SHOW_TOAST | ActionTypes.HIDE_TOAST;
