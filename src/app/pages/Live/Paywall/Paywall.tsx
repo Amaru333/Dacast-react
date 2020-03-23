@@ -17,7 +17,7 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Prompt } from 'react-router';
-import { ContentPricePresetsModal } from '../../../../shared/Paywall/ContentPricePresetModal';
+import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
 
 export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 

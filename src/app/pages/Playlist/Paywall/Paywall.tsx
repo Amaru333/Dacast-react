@@ -17,7 +17,7 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { ContentPricePresetsModal } from '../../../../shared/Paywall/ContentPricePresetModal';
+import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
 
 export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
 

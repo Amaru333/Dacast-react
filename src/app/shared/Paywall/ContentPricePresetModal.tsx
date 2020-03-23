@@ -1,13 +1,13 @@
 import React from 'react';
-import {Input} from '../../components/FormsComponents/Input/Input';
-import {DropdownSingle} from '../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Button } from '../../components/FormsComponents/Button/Button';
-import { Preset, PresetsPageInfos } from '../../app/redux-flow/store/Paywall/Presets/types';
-import { DropdownListType } from '../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
-import { IconStyle } from '../../shared/Common/Icon';
-import { Text } from '../../components/Typography/Text';
-import { InputCheckbox } from '../../components/FormsComponents/Input/InputCheckbox';
+import {Input} from '../../../components/FormsComponents/Input/Input';
+import {DropdownSingle} from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Preset, PresetsPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Text } from '../../../components/Typography/Text';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 
 var moment = require('moment-timezone');

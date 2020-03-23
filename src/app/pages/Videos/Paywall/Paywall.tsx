@@ -16,7 +16,7 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { ContentPricePresetsModal } from '../../../../shared/Paywall/ContentPricePresetModal';
+import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
 import { PricePresetsModal } from '../../Paywall/Presets/PricePresetsModal';
 
 export const VodPaywallPage = (props: VodPaywallComponentProps) => {
