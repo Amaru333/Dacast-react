@@ -8,6 +8,7 @@ import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types'
 import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
+import { makeRoute } from '../../utils/utils'
 
 const Plans = [
     'Developer',
@@ -16,25 +17,7 @@ const Plans = [
     'Custom'
 ]
 
-export interface Routes {
-    path: string;
-    name: string;
-    iconName?: string;
-    arrowIcon?: string;
-    component?: any;
-    slug?: Routes[];
-    exactPath?: boolean;
-}
-
-
 export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}) => {
-
-    const makeRoute = (name: string): Routes => {
-        return {
-            path: null,
-            name: name
-        }
-    }
     
     let history = useHistory()
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)

@@ -5,7 +5,6 @@ export enum ActionTypes {
 
 export interface Allowances {
     data: number;
-    encoding: number;
     storage: number;
 }
 

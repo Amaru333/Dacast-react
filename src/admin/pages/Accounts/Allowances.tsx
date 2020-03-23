@@ -25,15 +25,11 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
                 <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.data.toString() : ''} GB</Text>
             </div>
             <div className='flex my1'>
-                <Text size={14} weight='reg'>Encoding</Text>
-                <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.encoding.toString() : ''} GB</Text>
-            </div>
-            <div className='flex my1'>
                 <Text size={14} weight='reg'>Storage</Text>
                 <Text size={14} weight='reg'>{props.accountAllowances ? props.accountAllowances.storage.toString() : ''} GB</Text>
             </div>
-            <DropdownSingle className='my1' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(value: string) => setSelectedAllowance(value)} dropdownTitle='Allowance' list={{'Data': false, 'Encoding': false, 'Storage': false}} />
-            <Input className='my1' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />
+            <DropdownSingle className='my1 col col-3' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(value: string) => setSelectedAllowance(value)} dropdownTitle='Allowance' list={{'Data': false, 'Encoding': false, 'Storage': false}} />
+            <Input className='my1 col col-3' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />
             <Button className='my1' onClick={() => setOpenConfirmationModal(true)} typeButton='primary' sizeButton='large' buttonColor='blue'>Submit</Button>
             <Text size={14}>A positive Amount adds the allowance</Text>
             <Text size={14}>whereas a negative Amount susbtracts from it.</Text>

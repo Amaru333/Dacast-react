@@ -6,6 +6,12 @@ import AccountAllowances from '../containers/Accounts/Allowances'
 
 export const AdminRoutes = [
     {
+        path: '/',
+        name: 'root',
+        component: Accounts,
+        exactPath: true
+    },
+    {
         path: '/accounts',
         name: 'Accounts',
         component: Accounts,

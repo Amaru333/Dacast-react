@@ -9,7 +9,7 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
-import { Routes } from './pages/Accounts/EditPlan';
+import { Routes } from './utils/utils';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;

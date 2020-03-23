@@ -6,27 +6,11 @@ import { Text } from '../../../components/Typography/Text'
 import { AccountLogsComponentProps } from '../../containers/Accounts/Logs'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { useHistory } from 'react-router'
-
-export interface Routes {
-    path: string;
-    name: string;
-    iconName?: string;
-    arrowIcon?: string;
-    component?: any;
-    slug?: Routes[];
-    exactPath?: boolean;
-}
+import { makeRoute } from '../../utils/utils'
 
 export const AccountLogsPage = (props: AccountLogsComponentProps) => {
 
     let history = useHistory()
-
-    const makeRoute = (name: string): Routes => {
-        return {
-            path: null,
-            name: name
-        }
-    }
 
     const accountLogsTableHeader = () => {
         return {
