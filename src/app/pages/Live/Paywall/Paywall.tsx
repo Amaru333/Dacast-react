@@ -17,10 +17,12 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Prompt } from 'react-router';
+import { ContentPricePresetsModal } from '../../../../shared/Paywall/ContentPricePresetModal';
 
 export const LivePaywallPage = (props: LivePaywallComponentProps) => {
 
-    const [pricePresetsModalOpened, setPricePresetsModalOpened] = React.useState<boolean>(false);
+    const [editPricePresetsModalOpened, setEditPricePresetsModalOpened] = React.useState<boolean>(false);
+    const [newPricePresetsModalOpened, setNewPricePresetsModalOpened] = React.useState<boolean>(false);
     const [promoPresetsModalOpened, setPromoPresetsModalOpened] = React.useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
@@ -38,7 +40,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
         ]}
     }
 
@@ -58,7 +60,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
-                            <IconStyle onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</IconStyle>
+                            <IconStyle onClick={() =>  {setSelectedPreset(preset);setEditPricePresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
@@ -132,7 +134,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
         ]}
     }
 
@@ -217,8 +219,11 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                 <Button onClick={() => props.saveLivePaywallInfos(livePaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => setLivePaywallSettings(props.livePaywallInfos)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
-                <PricePresetsModal action={selectedPreset ? props.saveLivePricePreset : props.createLivePricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
+            <Modal hasClose={false} title='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
+                <ContentPricePresetsModal action={ props.createLivePricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
+            </Modal>
+            <Modal hasClose={false} title='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
+                <PricePresetsModal action={props.saveLivePricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
             </Modal>
             <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={selectedPromo ? props.saveLivePromoPreset : props.createLivePromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
