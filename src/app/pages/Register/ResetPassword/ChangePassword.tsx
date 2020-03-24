@@ -11,10 +11,10 @@ export const ChangePassword = (props: any) => {
     React.useEffect(() => {
         // request to get the token
         axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: 'jean.bernardo@dacast.com'})
-        .then(response => {
-            debugger
-            setEmail(response.data.data)
-        })
+            .then(response => {
+                debugger
+                setEmail(response.data.data)
+            })
     }, [])
 
     const [newPassword, setNewPassword] = React.useState<string>(null)
@@ -25,34 +25,34 @@ export const ChangePassword = (props: any) => {
     }
     return (
         <ModalCard size="small" title="Reset Password">
-        <ModalContent>
-            <Input 
-                disabled={false} 
-                defaultValue={''}
-                onChange={(event) => setNewPassword(event.currentTarget.value)}
-                type="password" 
-                className="col col-12" 
-                id="newPassword" 
-                label="New Password" 
-                placeholder="New Password" 
-                help='Must contain more than 6 characters'
-                required
-            />
-            <Input 
-                disabled={false} 
-                defaultValue={''}
-                onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
-                type="password" 
-                className="col col-12" 
-                id="confirmPassword" 
-                label="Confirm Password" 
-                placeholder="Confirm Password" 
-                required
-            />
-            <Button disabled={newPassword !== confirmNewPassword} onClick={() => handleChangePassword(newPassword)} sizeButton="large" typeButton="primary">Change Password</Button>
-        </ModalContent>
+            <ModalContent>
+                <Input 
+                    disabled={false} 
+                    defaultValue={''}
+                    onChange={(event) => setNewPassword(event.currentTarget.value)}
+                    type="password" 
+                    className="col col-12" 
+                    id="newPassword" 
+                    label="New Password" 
+                    placeholder="New Password" 
+                    help='Must contain more than 6 characters'
+                    required
+                />
+                <Input 
+                    disabled={false} 
+                    defaultValue={''}
+                    onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
+                    type="password" 
+                    className="col col-12" 
+                    id="confirmPassword" 
+                    label="Confirm Password" 
+                    placeholder="Confirm Password" 
+                    required
+                />
+                <Button disabled={newPassword !== confirmNewPassword} onClick={() => handleChangePassword(newPassword)} sizeButton="large" typeButton="primary">Change Password</Button>
+            </ModalContent>
         
-        {/* <ModalFooter>
+            {/* <ModalFooter>
             
         </ModalFooter> */}
         </ModalCard>

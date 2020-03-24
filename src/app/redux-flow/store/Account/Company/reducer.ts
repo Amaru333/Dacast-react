@@ -9,15 +9,15 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
                 ...action.payload
             }
         case ActionTypes.GET_COMPANY_LOGO_URL:
-                return {...state, 
-                    logoUrl: action.payload.data.url
-                }
+            return {...state, 
+                logoUrl: action.payload.data.url
+            }
         case ActionTypes.SAVE_COMPANY_PAGE_DETAILS:
             return {...state,
                 ...action.payload
             }
         case ActionTypes.GET_UPLOAD_LOGO_URL:   
-        console.log(action.payload.data.presignedURL)  
+            console.log(action.payload.data.presignedURL)  
             return {
                 ...state,
                 uploadLogoUrl: action.payload.data.presignedURL
@@ -27,9 +27,9 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
                 ...state,
             }
         case ActionTypes.DELETE_COMPANY_LOGO:
-                return {
-                    ...state,
-                }
+            return {
+                ...state,
+            }
         default:
             return state;
     }

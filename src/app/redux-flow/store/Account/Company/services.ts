@@ -35,13 +35,13 @@ const getUploadLogoUrlService = () => {
     isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart',
-    {'parameters': {
+        {'parameters': {
             'userID': userId
         }, 
-    'type': 'company-logo'},
-    {headers: {
-        'Authorization': token
-    }});
+        'type': 'company-logo'},
+        {headers: {
+            'Authorization': token
+        }});
 }
 
 const uploadCompanyLogoService = (data: File, uploadUrl: string) => {
