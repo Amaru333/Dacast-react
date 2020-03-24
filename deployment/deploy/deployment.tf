@@ -175,6 +175,18 @@ resource "aws_cloudfront_distribution" "s3_distribution_client" {
     }
 }
 
+data "archive_file" "zip_code_redirect" {
+    type = "zip"
+    source_file = "redirect.js"
+    output_path = "redirect.zip"
+}
+
+data "archive_file" "zip_code_admin" {
+    type = "zip"
+    source_file = "admin.js"
+    output_path = "admin.zip"
+}
+
 resource "aws_lambda_function" "redirect_lambda" {
     filename = "redirect.zip"
     function_name = "${var.env_name_client}-dacast-backoffice-redirect"
@@ -184,7 +196,7 @@ resource "aws_lambda_function" "redirect_lambda" {
     // enable versioning
     publish = true
 
-    source_code_hash = "${filebase64sha256("redirect.zip")}"
+    source_code_hash = "${data.archive_file.zip_code_redirect.output_base64sha256}"
 }
 
 resource "aws_lambda_function" "admin_lambda" {
@@ -196,7 +208,7 @@ resource "aws_lambda_function" "admin_lambda" {
     // enable versioning
     publish = true
 
-    source_code_hash = "${filebase64sha256("admin.zip")}"
+    source_code_hash = "${data.archive_file.zip_code_admin.output_base64sha256}"
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
