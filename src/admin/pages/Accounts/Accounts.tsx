@@ -70,7 +70,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex my1'>
-                <Input id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                <Input className='mr2' id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                 <Button disabled={!accountId ? true : false} onClick={() => {props.getAccounts(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table className='mt1 mb2' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />

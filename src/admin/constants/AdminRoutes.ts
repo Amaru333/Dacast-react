@@ -3,6 +3,7 @@ import EditPlan from '../containers/Accounts/EditPlan'
 import EditAccount from '../containers/Accounts/EditAccount'
 import AccountLogs from '../containers/Accounts/Logs'
 import AccountAllowances from '../containers/Accounts/Allowances'
+import Withdrawals from '../containers/Withdrawals/Withdrawals'
 
 export const AdminRoutes = [
     {
@@ -39,6 +40,12 @@ export const AdminRoutes = [
         path: "/accounts/:accountId/allowances",
         name: 'Allowances',
         component: AccountAllowances,
+        exactPath: true
+    },
+    {
+        path: '/withdrawals',
+        name: 'Withdrawals',
+        component: Withdrawals,
         exactPath: true
     },
 ]
