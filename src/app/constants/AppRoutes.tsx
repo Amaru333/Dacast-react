@@ -33,6 +33,7 @@ import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
 import Uploader from '../containers/Videos/Uploader';
 import ResetPassword from '../containers/Register/ResetPassword';
+import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -62,6 +63,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ResetPassword
+    },
+    {
+        path:'/change-password',
+        name: 'change-password',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ChangePassword
     },
     {
         path: '/dashboard',
