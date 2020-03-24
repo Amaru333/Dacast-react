@@ -6,6 +6,6 @@ const EditStatus = () => {
     return (
         <EditStatusPage />
     )
- }
+}
 
- export default EditStatus
+export default EditStatus

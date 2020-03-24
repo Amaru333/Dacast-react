@@ -11,7 +11,7 @@ export interface Withdrawal {
     completedDate: number;
     method: string;
     recurlyId: string;
-    status: Status
+    status: Status;
 }
 
 export const withdrawalsListInitialState: Withdrawal[] | false = false

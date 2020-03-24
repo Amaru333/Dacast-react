@@ -26,9 +26,9 @@ const AccountAllowances = (props: AccountAllowancesComponentProps) => {
     return (
         <AccountAllowancesPage {...props} accountId={accountId} />
     )
- }
+}
 
- export function mapStateToProps(state: AdminState) {
+export function mapStateToProps(state: AdminState) {
     return {
         accountInfo: state.accounts.account
     };

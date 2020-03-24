@@ -54,12 +54,12 @@ const AdminContent = () => {
 
     return (
         <FullContent>
-        <Content>
-            <Switch>
-                {returnRouter(AdminRoutes)}
-            </Switch>
-        </Content>
-    </FullContent> 
+            <Content>
+                <Switch>
+                    {returnRouter(AdminRoutes)}
+                </Switch>
+            </Content>
+        </FullContent> 
     )
 }
  
@@ -69,7 +69,7 @@ const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <BrowserRouter>
-                   <AdminContent />
+                    <AdminContent />
                 </BrowserRouter>
             </ThemeProvider>
 

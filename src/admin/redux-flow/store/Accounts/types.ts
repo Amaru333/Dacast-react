@@ -16,7 +16,7 @@ export interface AccountsState {
     account: AccountInfo | false;
     plan: PlanInfo | false;
     logs: Logs[] | false;
-    allowances: Allowances | false
+    allowances: Allowances | false;
 }
 
 export const accountsInitialState: AccountsState = {
