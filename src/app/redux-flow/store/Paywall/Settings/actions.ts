@@ -30,6 +30,7 @@ export const savePaywallSettingsInfosAction = (data: PaywallSettingsInfos): Thun
         await PaywallSettingsServices.savePaywallSettingsInfos(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_PAYWALL_SETTINGS_INFOS, payload: response.data});
+                dispatch(showToastNotification("Changes have been saved", 'fixed', 'success'));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })

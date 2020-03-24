@@ -144,7 +144,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                 <div>
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.savePlaylistSecuritySettings(selectedSettings)}>Save</Button>
-                    <Button type="button" form="playlistSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
+                    <Button type="button" form="playlistSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {handleReset();props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
                 </div>}
             <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>

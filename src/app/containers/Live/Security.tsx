@@ -7,6 +7,8 @@ import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Setting
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 interface LiveSecurityProps {
     liveSecuritySettings: LiveSecuritySettings;
@@ -14,6 +16,7 @@ interface LiveSecurityProps {
     getLiveSecuritySettings: Function;
     saveLiveSecuritySettings: Function;
     getSettingsSecurityOptions: Function;
+    showDiscardToast: Function;
 }
 
 export const LiveSecurity = (props: LiveSecurityProps) => {
@@ -51,6 +54,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
+        showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     }
 }
 

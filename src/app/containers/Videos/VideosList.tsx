@@ -7,6 +7,8 @@ import { getVodListAction, deleteVodAction } from '../../redux-flow/store/VOD/Ge
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { VideosListProps, VideosListPage } from '../../pages/Videos/VideosList/VideosList';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 const VideosList = (props: VideosListProps) => {
 
@@ -39,6 +41,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteVodList: (name: string) => {
             dispatch(deleteVodAction(name));
         },
+        showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     };
 }
 

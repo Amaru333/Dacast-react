@@ -9,6 +9,8 @@ import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Pa
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 var moment = require('moment-timezone');
 
 export interface LivePaywallComponentProps {
@@ -31,6 +33,7 @@ export interface LivePaywallComponentProps {
     createPricePreset: Function;
     customPromoPresetList: Promo[]
     createPromoPreset: Function;
+    showToast: Function;
 }
 
 const LivePaywall = (props: LivePaywallComponentProps) => {
@@ -148,6 +151,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         createPromoPreset: (data: Promo) => {
             dispatch(createPromoPresetAction(data));
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         }
     }
 }

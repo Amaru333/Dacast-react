@@ -25,6 +25,7 @@ export interface VideosListProps {
     themesList: ThemeOptions[];
     getVodList: Function;
     deleteVodList: Function;
+    showVodDeletedToast: Function;
 }
 
 export const VideosListPage = (props: VideosListProps) => {
@@ -113,7 +114,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <IconStyle onClick={() => { props.deleteVodList(value.title) }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { props.deleteVodList(value.title);props.showVodDeletedToast(`${value.title} has been deleted`, 'flexible', "success") }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>  
                     </div>,

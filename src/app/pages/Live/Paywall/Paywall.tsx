@@ -219,7 +219,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
             </Card>
             <div className={'mt2' + (props.livePaywallInfos === livePaywallSettings ? ' hide' : '')}>
                 <Button onClick={() => props.saveLivePaywallInfos(livePaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button onClick={() => setLivePaywallSettings(props.livePaywallInfos)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
+                <Button onClick={() => {setLivePaywallSettings(props.livePaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
             <Modal hasClose={false} title='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
                 <ContentPricePresetsModal action={ props.createLivePricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />

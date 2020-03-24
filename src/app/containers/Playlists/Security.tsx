@@ -8,6 +8,8 @@ import { PlaylistSecuritySettings, SecuritySettings } from '../../redux-flow/sto
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PlaylistSecurityContainerProps {
     playlistSecuritySettings: PlaylistSecuritySettings;
@@ -15,6 +17,7 @@ export interface PlaylistSecurityContainerProps {
     getPlaylistSecuritySettings: Function;
     savePlaylistSecuritySettings: Function;
     getSettingsSecurityOptions: Function;
+    showToast: Function;
 }
 
 const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
@@ -53,6 +56,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     }
 }
 

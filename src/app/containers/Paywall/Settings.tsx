@@ -7,11 +7,14 @@ import { getPaywallSettingsInfosAction, Action, savePaywallSettingsInfosAction }
 import { PaywallSettingsInfos } from '../../redux-flow/store/Paywall/Settings/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PaywallSettingsComponentProps {
     paywallSettingsInfos: PaywallSettingsInfos;
     getPaywallSettingsInfos: Function;
     savePaywallSettingsInfos: Function;
+    showDiscardToast: Function;
 }
 const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
@@ -41,6 +44,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         savePaywallSettingsInfos: (data: PaywallSettingsInfos) => {
             dispatch(savePaywallSettingsInfosAction(data));
+        },
+        showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         }
     }
 }
