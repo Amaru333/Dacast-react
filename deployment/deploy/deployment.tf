@@ -184,7 +184,7 @@ resource "aws_lambda_function" "redirect_lambda" {
     // enable versioning
     publish = true
 
-    source_code_hash = "${filebase64sha256("redirect.zip")}"
+    source_code_hash = "${filebase64sha256("redirect.js")}"
 }
 
 resource "aws_lambda_function" "admin_lambda" {
@@ -196,7 +196,7 @@ resource "aws_lambda_function" "admin_lambda" {
     // enable versioning
     publish = true
 
-    source_code_hash = "${filebase64sha256("admin.zip")}"
+    source_code_hash = "${filebase64sha256("admin.js")}"
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
