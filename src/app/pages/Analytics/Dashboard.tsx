@@ -6,14 +6,12 @@ import { CheeseChart } from '../../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
 import { AnalyticsCard, renderMap, DateFilteringAnalytics } from './AnalyticsCommun';
+import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
-export const DashboardAnalyticsPage = (props: {getAnalyticsDashboard: Function} & AnalyticsDashboardInfos) => {
+export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
-    //Map header accesseur match data
-    // Only for ReactTable (table for some analytics like Top COntents)
-    // accesor must match the object attribut for sort by columns and stuff
-    // The pagination is automatically done, you need to send all the data to the table
-    const COLUMNS_TOP_CONTENT = [   
+    const COLUMNS_TOP_CONTENT = [
         {
             Header: 'Content',
             accessor: 'content'
@@ -36,83 +34,94 @@ export const DashboardAnalyticsPage = (props: {getAnalyticsDashboard: Function} 
         }
     ]
 
-    //Just to turn timestamp into locale Date, might need update for some analytics that required hours instead of Day 
-    const labelsFormate = (labels: number[]) => {return labels.map(number => tsToLocaleDate(number))};
-    
+    const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
+
+    const refreshData = (dates: any) => {
+        props.getAnalyticsDashboardConsumptionDevice(dates);
+        props.getAnalyticsDashboardConsumptionLocation(dates);
+        props.getAnalyticsDashboardConsumptionTime(dates);
+        props.getAnalyticsDashboardPlaysViewersTime(dates);
+        props.getAnalyticsDashboardTopContents(dates);
+    }
+
+    console.log(props);
     return (
         <React.Fragment>
-            <DateFilteringAnalytics refreshData={props.getAnalyticsDashboard} />
+            <DateFilteringAnalytics refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
-                    {
-                        //So get to the Analytics Card components to understand how it works there's some comments down their
-                    }
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.consumptionPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Time">
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Time">
                         {
-                            //Classic Bar Chart, data is an array of value, labels is also an array. Data is for the height of bars ofc and labels are date most of the time (or timestanp in our case)
+                            props.dashboardAnalytics.data.consumptionPerTime ?
+                                <BarChart
+                                    datasetName="GBytes"
+                                    displayBytesFromGB={true}
+                                    beginAtZero={true}
+                                    data={props.dashboardAnalytics.data.consumptionPerTime.data}
+                                    yAxesName="GB"
+                                    labels={labelsFormate(props.dashboardAnalytics.data.consumptionPerTime.time)} />
+                                :
+                                <LoadingSpinner center size='medium' color='violet' />
                         }
-                        <BarChart
-                            datasetName="GBytes"
-                            displayBytesFromGB={true}
-                            beginAtZero={true}
-                            data={props.consumptionPerTime.data}
-                            yAxesName="GB"
-                            labels={labelsFormate(props.consumptionPerTime.time)} />
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="playsViewersPerTime" data={props.playsViewersPerTime.plays} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                         {
-                            //Line chart, here's a double line (plays AND views)pretty much the same as Bar Chart
+                            props.dashboardAnalytics.data.playsViewersPerTime ?
+                                <DoubleLineChart
+                                    datasetName="Hits"
+                                    noDecimals={false}
+                                    beginAtZero={true}
+                                    yAxesName="Plays and viewers"
+                                    datasetName1="plays"
+                                    datasetName2="viewers"
+                                    data1={props.dashboardAnalytics.data.playsViewersPerTime.plays.data}
+                                    data2={props.dashboardAnalytics.data.playsViewersPerTime.viewers.data}
+                                    labels={labelsFormate(props.dashboardAnalytics.data.playsViewersPerTime.plays.time)} /> :
+                                <LoadingSpinner center size='medium' color='violet' />
                         }
-                        <DoubleLineChart
-                            datasetName="Hits"
-                            noDecimals={false}
-                            beginAtZero={true}
-                            yAxesName="Plays and viewers"
-                            datasetName1="plays"
-                            datasetName2="viewers"
-                            data1={props.playsViewersPerTime.plays.data}
-                            data2={props.playsViewersPerTime.viewers.data}
-                            labels={labelsFormate(props.playsViewersPerTime.plays.time)} />
+
                     </AnalyticsCard>
                 </div>
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="consumptionPerDevice" data={props.consumptionPerDevice} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
+                    <AnalyticsCard dataName="consumptionPerDevice" data={props.dashboardAnalytics.data.consumptionPerDevice ? props.dashboardAnalytics.data.consumptionPerDevice : false} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                         {
-                            //Cheese chart is the easiest one
-                            //Data in an array of number and labels array of string
+                            props.dashboardAnalytics.data.consumptionPerDevice ?
+                                <CheeseChart
+                                    displayBytesFromGB={true}
+                                    data={props.dashboardAnalytics.data.consumptionPerDevice.data}
+                                    labels={props.dashboardAnalytics.data.consumptionPerDevice.labels} /> :
+                                <LoadingSpinner center size='medium' color='violet' />
                         }
-                        <CheeseChart
-                            displayBytesFromGB={true}
-                            data={props.consumptionPerDevice.data}
-                            labels={props.consumptionPerDevice.labels} />
+
                     </AnalyticsCard>
                 </div>
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="topContents" data={props.topContents.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
+                    <AnalyticsCard dataName="topContents" data={props.dashboardAnalytics.data.topContents ? props.dashboardAnalytics.data.topContents.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
                         {
-                            //This is taken from a package named ReactTable, you can have a look at the doc its well explained
-                            // Just columns need to match element in the data (for this one check out the TopContent Type in types.ts for dashboard redux flow)
+                            props.dashboardAnalytics.data.topContents ?
+                                <ReactTable
+                                    data={props.dashboardAnalytics.data.topContents.data}
+                                    columns={COLUMNS_TOP_CONTENT}
+                                    pageSizeOptions={[5, 10, 20, 25]}
+                                    defaultPageSize={10} /> :
+                                <LoadingSpinner center size='medium' color='violet' />
                         }
-                        <ReactTable
-                            data={props.topContents.data}
-                            columns={COLUMNS_TOP_CONTENT}
-                            pageSizeOptions={[5, 10, 20, 25]}
-                            defaultPageSize={10} />
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
-                            //Check out the renderMap function there's some comments up here
+                            props.dashboardAnalytics.data.consumptionPerLocation ?
+                                renderMap(props.dashboardAnalytics.data.consumptionPerLocation.data, 'dashbordMapConsumptionPerLocation') :
+                                <LoadingSpinner center size='medium' color='violet' />
                         }
-                        {renderMap(props.consumptionPerLocation.data, 'dashbordMapConsumptionPerLocation')}
                     </AnalyticsCard>
                 </div>
-                
+
             </div>
 
         </React.Fragment>

@@ -28,12 +28,20 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     border-width: 5px;
     width: 48px;
     height: 48px;
-  `}
+  `}    
+  
+  ${props => (props.center) && css`
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+  `}  
+
   ${props => (props.size == "small") && css`
     border-width: 3px;
     width: 32px;
     height: 32px;
   `}
+
   &:before, &:after {
     content: '';
     width: 7px;

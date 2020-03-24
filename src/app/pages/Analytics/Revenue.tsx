@@ -11,6 +11,8 @@ import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, An
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
@@ -128,72 +130,82 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     }
 
     const updateData = (dates: any) => {
-        let options = {...dates, selectedContents: selectedItems.map(e => e.id) };
+        let options = { ...dates, selectedContents: selectedItems.map(e => e.id) };
         props.getRevenueByTime(options);
         props.getSalesByTime(options);
         props.getSalesPerCountry(options);
     }
 
-    if(props.analyticsRevenueData.data.revenueByTime  && props.analyticsRevenueData.data.salesByTime && props.analyticsRevenueData.data.salesPerCountry) {
-        var labelsFormate = props.analyticsRevenueData.data.revenueByTime.time.map(number => tsToLocaleDate(number));
-        return (
-            <React.Fragment>
-                <div className="col col-12 mb25">
-                    <DateFilteringAnalytics refreshData={updateData} />
-                    <div className="flex items-center col col-12">
-                        <div className="inline-flex items-center flex col-7 mb2">
-                            <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
-                        </div>
-                    </div>
-                    <AnalyticsContainerHalfSelector className="col col-5" >
-                        <BreadcrumbContainer className="pl1 pr1">
-                            <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                        </BreadcrumbContainer>
-                        {renderContentsList()}
-                    </AnalyticsContainerHalfSelector>
-                    <div className="col col-2" style={{ marginTop: 70 }}>
-                        <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                        <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
-                    </div>
-                    <AnalyticsContainerHalfSelector className="col col-5" >
-                        <HeaderBorder className="p2">
-                            <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
-                        </HeaderBorder>
-                        {renderSelectedItems()}
-                    </AnalyticsContainerHalfSelector>
-                </div>
-                <div className="clearfix mxn1 mb2">
-                    <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Time">
-                            <BarChart
-                                datasetName="Sales"
-                                beginAtZero={true}
-                                data={props.analyticsRevenueData.data.salesByTime.data}
-                                yAxesName="Sales"
-                                labels={labelsFormate} />
-                        </AnalyticsCard>
-                    </div>
-                    <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Revenue by Time">
-                            <BarChart
-                                datasetName="Revenue ($)"
-                                beginAtZero={true}
-                                data={props.analyticsRevenueData.data.revenueByTime.data}
-                                yAxesName="Revenue"
-                                labels={labelsFormate} />
-                        </AnalyticsCard>
-                    </div>
-                    <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales per Country">
-                            {renderMap(props.analyticsRevenueData.data.salesPerCountry, 'revenueAnalyticsDevices')}
-                        </AnalyticsCard>
+    console.log(props);
+    return (
+        <React.Fragment>
+            <div className="col col-12 mb25">
+                <DateFilteringAnalytics refreshData={updateData} />
+                <div className="flex items-center col col-12">
+                    <div className="inline-flex items-center flex col-7 mb2">
+                        <IconStyle coloricon='gray-3'>search</IconStyle>
+                        <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                     </div>
                 </div>
-            </React.Fragment >
-        )
-    } else {
-        return <></>;
-    }
-    
+                <AnalyticsContainerHalfSelector className="col col-5" >
+                    <BreadcrumbContainer className="pl1 pr1">
+                        <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
+                    </BreadcrumbContainer>
+                    {renderContentsList()}
+                </AnalyticsContainerHalfSelector>
+                <div className="col col-2" style={{ marginTop: 70 }}>
+                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                </div>
+                <AnalyticsContainerHalfSelector className="col col-5" >
+                    <HeaderBorder className="p2">
+                        <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
+                    </HeaderBorder>
+                    {renderSelectedItems()}
+                </AnalyticsContainerHalfSelector>
+            </div>
+            <div className="clearfix mxn1 mb2">
+                <div className="col col-4 px1">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Time">
+                        {
+                            props.analyticsRevenueData.data.salesByTime ?
+                                <BarChart
+                                    datasetName="Sales"
+                                    beginAtZero={true}
+                                    data={props.analyticsRevenueData.data.salesByTime.data}
+                                    yAxesName="Sales"
+                                    labels={props.analyticsRevenueData.data.salesByTime.time.map(number => tsToLocaleDate(number))} /> :
+                                <LoadingSpinner center size='medium' color='violet' />
+                        }
+
+                    </AnalyticsCard>
+                </div>
+                <div className="col col-4 px1">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Revenue by Time">
+                        {
+                            props.analyticsRevenueData.data.revenueByTime ?
+                                <BarChart
+                                    datasetName="Revenue ($)"
+                                    beginAtZero={true}
+                                    data={props.analyticsRevenueData.data.revenueByTime.data}
+                                    yAxesName="Revenue"
+                                    labels={props.analyticsRevenueData.data.revenueByTime.time.map(number => tsToLocaleDate(number))} /> :
+                                <LoadingSpinner center size='medium' color='violet' />
+                        }
+
+                    </AnalyticsCard>
+                </div>
+                <div className="col col-4 px1">
+                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales per Country">
+                        {
+                            props.analyticsRevenueData.data.salesPerCountry ?
+                                renderMap(props.analyticsRevenueData.data.salesPerCountry, 'revenueAnalyticsDevices') :
+                                <LoadingSpinner center size='medium' color='violet' />
+                        }
+                    </AnalyticsCard>
+                </div>
+            </div>
+        </React.Fragment >
+    )
+
 }

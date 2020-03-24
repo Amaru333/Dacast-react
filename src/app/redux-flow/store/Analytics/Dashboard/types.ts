@@ -1,5 +1,10 @@
 export enum ActionTypes {
-    GET_ANALYTICS_DASHBOARD_DETAILS = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_DETAILS",
+    GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME",
+    GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME",
+    GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE",
+    GET_ANALYTICS_DASHBOARD_TOP_CONTENTS = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_TOP_CONTENTS",
+    GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION",
+
 }
 
 export interface GetAnalyticsDashboardOptions {
@@ -7,40 +12,50 @@ export interface GetAnalyticsDashboardOptions {
     endDate: number;
 }
 
-export interface AnalyticsDashboardInfos {
-    consumptionPerTime: {
+
+export interface AnalyticsDashboardConsumptionPerTime {
+    time: number[];
+    data: number[];
+};
+
+export interface AnalyticsDashboardPlaysViewersPerTime {
+    plays: {
         time: number[];
         data: number[];
     };
-    playsViewersPerTime:
-    {
-        plays: {
-            time: number[];
-            data: number[];
-        };
-        viewers: {
-            time: number[];
-            data: number[];
-        };
-    };
-    consumptionPerDevice: {
-        labels: string[];
+    viewers: {
+        time: number[];
         data: number[];
     };
-    topContents: {
-        data: TopContentData[];
-    };
-    consumptionPerLocation:
-    {
-        data: {
-            city: string;
-            position: {
-                latitude: number;
-                longitude: number;
-            };
-            consumedMB: number;
-        }[];
-    };
+};
+
+export interface AnalyticsDashboardConsumptionPerDevice {
+    labels: string[];
+    data: number[];
+};
+
+export interface AnalyticsDashboardTopContents {
+    data: TopContentData[];
+};
+
+export interface AnalyticsDashboardConsumptionPerLocation {
+    data: {
+        city: string;
+        position: {
+            latitude: number;
+            longitude: number;
+        };
+        consumedMB: number;
+    }[];
+};
+
+
+export interface AnalyticsDashboardInfos {
+    consumptionPerTime: AnalyticsDashboardConsumptionPerTime | false;
+    playsViewersPerTime: AnalyticsDashboardPlaysViewersPerTime | false;
+    consumptionPerDevice: AnalyticsDashboardConsumptionPerDevice | false;
+    topContents: AnalyticsDashboardConsumptionPerDevice | false;
+    consumptionPerLocation: AnalyticsDashboardConsumptionPerLocation | false;
 }
 
 interface TopContentData {
@@ -53,11 +68,15 @@ interface TopContentData {
 
 
 export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
-    data: false,
+    data: {
+        consumptionPerTime: false,
+        playsViewersPerTime: false,
+        consumptionPerDevice: false,
+        topContents: false,
+        consumptionPerLocation: false
+    },
 };
 
 export interface AnalyticsDashboardState {
-    readonly data: false | AnalyticsDashboardInfos;
+    readonly data: AnalyticsDashboardInfos;
 }
-
-

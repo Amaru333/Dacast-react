@@ -3,31 +3,43 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getAnalyticsDashboardDetailsAction, Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/Dashboard';
+import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardConsumptionLocationAction, getAnalyticsDashboardTopContentsAction, getAnalyticsDashboardConsumptionDeviceAction, getAnalyticsDashboardPlaysViewersTimeAction, getAnalyticsDashboardConsumptionTimeAction } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardState;
-    getAnalyticsDashboardDetailsAction: Function;
+    getAnalyticsDashboardConsumptionLocation: Function;
+    getAnalyticsDashboardTopContents: Function;
+    getAnalyticsDashboardConsumptionDevice: Function;
+    getAnalyticsDashboardPlaysViewersTime: Function;
+    getAnalyticsDashboardConsumptionTime: Function;
+
 }
 
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        if (!props.dashboardAnalytics) {
-            props.getAnalyticsDashboardDetailsAction();
+        if(!props.dashboardAnalytics.data.consumptionPerLocation) {
+            props.getAnalyticsDashboardConsumptionLocation();
+        }
+        if(!props.dashboardAnalytics.data.topContents) {
+            props.getAnalyticsDashboardTopContents();
+        }
+        if(!props.dashboardAnalytics.data.consumptionPerDevice) {
+            props.getAnalyticsDashboardConsumptionDevice();
+        }
+        if(!props.dashboardAnalytics.data.playsViewersPerTime) {
+            props.getAnalyticsDashboardPlaysViewersTime();
+        }
+        if(!props.dashboardAnalytics.data.consumptionPerTime) {
+            props.getAnalyticsDashboardConsumptionTime();
         }
     }, [])
+    
 
-    return (
-        props.dashboardAnalytics ?
-            (
-                <DashboardAnalyticsPage getAnalyticsDashboard={props.getAnalyticsDashboardDetailsAction} {...props.dashboardAnalytics.data} />
-            )
-            :<SpinnerContainer> <LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-    )
+    return <DashboardAnalyticsPage {...props} />
 
 }
 
@@ -39,9 +51,21 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsDashboardDetailsAction: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardDetailsAction(dates));
-        }
+        getAnalyticsDashboardConsumptionLocation: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardConsumptionLocationAction(dates));
+        },
+        getAnalyticsDashboardTopContents: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardTopContentsAction(dates));
+        },
+        getAnalyticsDashboardConsumptionDevice: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardConsumptionDeviceAction(dates));
+        },
+        getAnalyticsDashboardPlaysViewersTime: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardPlaysViewersTimeAction(dates));
+        },
+        getAnalyticsDashboardConsumptionTime: (dates: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardConsumptionTimeAction(dates));
+        },
     };
 }
 
