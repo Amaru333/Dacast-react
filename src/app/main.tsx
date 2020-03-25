@@ -84,7 +84,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
     
         return (
-            isLoggedIn() ?
+            true ?
                 <Route 
                     path={props.path}
                 >
