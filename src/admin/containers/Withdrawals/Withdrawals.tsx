@@ -31,7 +31,7 @@ const Withdrawals = (props: WithdrawalsComponentsProps) => {
 
 export function mapStateToProps(state: AdminState) {
     return {
-        Withdrawals: state.withdrawals.list
+        withdrawals: state.withdrawals.list
     };
 }
 

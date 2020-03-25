@@ -5,9 +5,11 @@ import { makeRoute } from '../../utils/utils'
 import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
+
+    let {url} = useRouteMatch()
 
     const withdrawalsTableHeader = () => {
         return {data: [
@@ -33,7 +35,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.completedDate}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method}</Text>,
                     <Link key={'withdrawalsTableBodyRecurlyIdCell' + key }to=''>{withdrawal.recurlyId}</Link>,
-                    <Link key={'withdrawalsTableBodyStatusCell' + key }to=''>{withdrawal.status}</Link>,
+                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status}</Link>,
                 ]}
             })
         }

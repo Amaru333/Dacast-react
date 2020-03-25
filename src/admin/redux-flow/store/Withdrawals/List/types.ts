@@ -4,6 +4,7 @@ export enum ActionTypes {
 export type Status = 'completed' | 'pending' | 'cancelled'
 
 export interface Withdrawal {
+    id: string;
     accountId: string;
     amount: number;
     requestedDate: number;

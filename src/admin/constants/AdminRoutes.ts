@@ -4,6 +4,7 @@ import EditAccount from '../containers/Accounts/EditAccount'
 import AccountLogs from '../containers/Accounts/Logs'
 import AccountAllowances from '../containers/Accounts/Allowances'
 import Withdrawals from '../containers/Withdrawals/Withdrawals'
+import EditStatus from '../containers/Withdrawals/EditStatus'
 
 export const AdminRoutes = [
     {
@@ -46,6 +47,12 @@ export const AdminRoutes = [
         path: '/withdrawals',
         name: 'Withdrawals',
         component: Withdrawals,
+        exactPath: true
+    },
+    {
+        path: '/withdrawals/:withdrawalId/edit',
+        name: 'EditStatus',
+        component: EditStatus,
         exactPath: true
     },
 ]
