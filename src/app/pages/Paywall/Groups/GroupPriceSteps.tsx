@@ -59,7 +59,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
         <div>
             <div className='col col-12 py2'>
                 <Input className='col col-6 pr1 mt1' label='Price Group Name' defaultValue={stepperData.firststep.name} onChange={(event) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, name: event.currentTarget.value}})} />
-                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={stepperData.firststep.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, type: value}})} list={{'Subscription': false, 'Pay Per View': false}} />
+                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={stepperData.firststep.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : stepperData.firststep.startMethod}})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             {renderPrices()}
             <div className='col col-6 py2'>
@@ -75,7 +75,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
 
             </div>
             <div className='col col-12 py2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={stepperData.firststep.startMethod} className='col col-6 pr1' callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, startMethod: value}})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={stepperData.firststep.startMethod} className='col col-6 pr1' callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, startMethod: value}})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={stepperData.firststep.type === 'Subscription'} />
                 {
                     stepperData.firststep.startMethod === 'Schedule' && stepperData.firststep.type === 'Pay Per View' ?
                         <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
