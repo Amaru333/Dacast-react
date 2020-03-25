@@ -5,6 +5,8 @@ import AccountLogs from '../containers/Accounts/Logs'
 import AccountAllowances from '../containers/Accounts/Allowances'
 import Withdrawals from '../containers/Withdrawals/Withdrawals'
 import EditStatus from '../containers/Withdrawals/EditStatus'
+import Balances from '../containers/Paywall/Balances'
+import Chargebacks from '../containers/Paywall/Chargebacks'
 
 export const AdminRoutes = [
     {
@@ -53,6 +55,18 @@ export const AdminRoutes = [
         path: '/withdrawals/:withdrawalId/edit',
         name: 'EditStatus',
         component: EditStatus,
+        exactPath: true
+    },
+    {
+        path: '/balances',
+        name: 'Balances',
+        component: Balances,
+        exactPath: true
+    },
+    {
+        path: '/chargebacks',
+        name: 'Chargebacks',
+        component: Chargebacks,
         exactPath: true
     },
 ]
