@@ -28,7 +28,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
 
         ]}
     }
@@ -65,7 +65,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
 
         ]}
     }
@@ -97,14 +97,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
         ]}
     }
 
@@ -146,14 +146,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 }
                 
             </Card>
-            <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} title={selectedPreset ? 'Edit Price Preset' : 'Create Price Preset'} opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 {
                     pricePresetsModalOpened ?
                         <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} title={selectedPromo ? 'Edit Promo Preset' : 'Create Promo Preset'} opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 {
                     promoPresetsModalOpened ?
                         <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />

@@ -67,7 +67,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
 
         ]}
     }
@@ -104,7 +104,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Group</Button>}
+            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
 
         ]}
     }
@@ -153,12 +153,12 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 </div>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
-            <Modal hasClose={false} title='Create Promo Code Group' opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
+            <Modal hasClose={false} title={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices} />
             </Modal>
             <CustomStepper
                 opened={groupPricesStepperOpened}
-                stepperHeader='Create Price Group'
+                stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
                 stepList={groupPriceSteps}
                 nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
                 backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 

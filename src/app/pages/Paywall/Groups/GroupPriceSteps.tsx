@@ -42,11 +42,13 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
         return stepperData.firststep.price.map((price, key) => {
             return( 
                 <div key={'groupPriceSection' + key} className='col col-9 py1 flex items-center'>
-                    <Input className='col col-4 pr1 mt1' defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
-                    <DropdownSingle className={key === 0 ? 'col col-4 pl1 mt3' : 'col col-4 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
+                    <div className='col col-6'>
+                    <Input className='col col-6 pr1 mt1' defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
+                    <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
+                    </div>
                     {
                         key === stepperData.firststep.price.length - 1 ? 
-                            <div onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx1 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx2 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
                             
                             : <IconStyle onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
                     }
