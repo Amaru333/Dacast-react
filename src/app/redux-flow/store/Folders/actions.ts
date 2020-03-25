@@ -72,6 +72,7 @@ export const moveItemsToFolderAction = (foldersPath: string[], items: FolderAsse
         await FoldersServices.moveItemsToFolder(foldersPath, items)
             .then( response => {
                 dispatch( {type: ActionTypes.MOVE_ITEMS_TO_FOLDER, payload: response.data} );
+                dispatch(showToastNotification(`${foldersPath.length} items moved successfully`, 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -83,6 +84,7 @@ export const addFolderAction = (foldersPath: string): ThunkDispatch<Promise<void
         await FoldersServices.addFolder(foldersPath)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_FOLDER, payload: response.data} );
+                dispatch(showToastNotification(`${foldersPath} has been added`, 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -127,6 +129,7 @@ export const renameFolderAction = (foldersPath: string, newName: string): ThunkD
         await FoldersServices.renameFolder(foldersPath, newName)
             .then( response => {
                 dispatch( {type: ActionTypes.RENAME_FOLDER, payload: response.data} );
+                dispatch(showToastNotification(`${newName} has been saved`, 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

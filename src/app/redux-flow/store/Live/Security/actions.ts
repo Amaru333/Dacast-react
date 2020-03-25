@@ -31,6 +31,7 @@ export const saveLiveSecuritySettingsAction = (data: SecuritySettings): ThunkDis
         await LiveSecurityServices.saveLiveSecuritySettingsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: response.data} );
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

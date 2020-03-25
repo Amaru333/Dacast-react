@@ -5,9 +5,9 @@ import { Table } from '../../../../components/Table/Table';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
-import { Plan } from '../../../containers/Account/Plans';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
+import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 
 export const PlanStepperFirstStep = (stepperData: Plan, setStepperData: Function, setStepValidated: Function) => {
 

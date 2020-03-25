@@ -6,13 +6,17 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { ProfilePage } from '../../pages/Account/Profile/Profile';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts';
 
 interface ProfileComponentProps {
     ProfileInfos: ProfilePageInfos;
     getProfilePageDetails: Function;
     saveProfilePageDetails: Function;
     saveProfilePassword: Function;
+    showDiscardToast: Function;
 }
+
 const Profile = (props: ProfileComponentProps) => {
 
     React.useEffect(() => {
@@ -47,6 +51,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveProfilePassword: (data: string) => {
             dispatch(saveProfilePasswordAction(data));
         },
+        showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
+        
     };
 }
 

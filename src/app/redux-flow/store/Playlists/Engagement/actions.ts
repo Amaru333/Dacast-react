@@ -58,7 +58,7 @@ export const savePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {},
         await playlistEngagementServices.savePlaylistAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PLAYLIST_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -70,7 +70,7 @@ export const createPlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {
         await playlistEngagementServices.createPlaylistAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_PLAYLIST_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad created", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -82,7 +82,7 @@ export const deletePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {
         await playlistEngagementServices.deletePlaylistAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_PLAYLIST_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

@@ -40,6 +40,7 @@ export const addPaymentMethodRequestAction = (data: PaymentMethodRequest): Thunk
         await PayoutServices.addPaymentMethodRequest(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_PAYMENT_METHOD_REQUEST, payload: response.data});
+                dispatch(showToastNotification(`Withdrawl Method has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -51,6 +52,7 @@ export const deletePaymentMethodRequestAction = (data: string): ThunkDispatch<Pr
         await PayoutServices.deletePaymentMethodRequest(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_PAYMENT_METHOD_REQUEST, payload: response.data});
+                dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -63,6 +65,7 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: response.data});
+                dispatch(showToastNotification(`New Withdrawl Request submitted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })

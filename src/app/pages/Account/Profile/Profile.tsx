@@ -20,6 +20,7 @@ interface ProfileComponentProps {
     getProfilePageDetails: Function;
     saveProfilePageDetails: Function;
     saveProfilePassword: Function;
+    showDiscardToast: Function;
 }
 
 export const ProfilePage = (props: ProfileComponentProps) => {
@@ -146,7 +147,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 <div> 
                     
                     <Button disabled={!enabledSubmit} onClick={() => handleSubmit()} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button type='reset' form="profilePageForm" onClick={() => {}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    <Button type='reset' form="profilePageForm" onClick={() => props.showDiscardToast("Changes have been discarded", 'flexible', "success")} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
                 : null
             }

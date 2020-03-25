@@ -6,7 +6,6 @@ import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Toggle } from '../../../../components/Toggle/toggle'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Table } from '../../../../components/Table/Table'
-import { PricePresetsModal } from '../../Paywall/Presets/PricePresetsModal'
 import { Modal } from '../../../../components/Modal/Modal'
 import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon'
@@ -17,11 +16,16 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
+import { PricePresetsModal } from '../../Paywall/Presets/PricePresetsModal';
+import { ContentPromoPresetsModal } from '../../../shared/Paywall/ContentPromoPresetModal';
 
 export const VodPaywallPage = (props: VodPaywallComponentProps) => {
 
-    const [pricePresetsModalOpened, setPricePresetsModalOpened] = React.useState<boolean>(false);
-    const [promoPresetsModalOpened, setPromoPresetsModalOpened] = React.useState<boolean>(false);
+    const [editPricePresetsModalOpened, setEditPricePresetsModalOpened] = React.useState<boolean>(false);
+    const [newPricePresetsModalOpened, setNewPricePresetsModalOpened] = React.useState<boolean>(false);
+    const [editPromoPresetsModalOpened, setEditPromoPresetsModalOpened] = React.useState<boolean>(false);
+    const [newPromoPresetsModalOpened, setNewPromoPresetsModalOpened] = React.useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
     const [vodPaywallSettings, setVodPaywallSettings] = React.useState<VodPaywallPageInfos>(props.vodPaywallInfos);
@@ -38,7 +42,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
 
         ]}
     }
@@ -59,7 +63,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
-                            <IconStyle onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</IconStyle>
+                            <IconStyle onClick={() =>  {setSelectedPreset(preset);setEditPricePresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
@@ -75,7 +79,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
 
         ]}
     }
@@ -95,7 +99,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</IconStyle>
+                            <IconStyle onClick={() =>  {setSelectedPromo(promo);setEditPromoPresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
@@ -133,14 +137,14 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
         ]}
     }
 
@@ -218,11 +222,17 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 <Button onClick={() => props.saveVodPaywallInfos(vodPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => setVodPaywallSettings(props.vodPaywallInfos)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal hasClose={false} title='Create Price Preset' opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
-                <PricePresetsModal action={selectedPreset ? props.saveVodPricePreset : props.createVodPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
+            <Modal hasClose={false} title='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
+                <ContentPricePresetsModal action={ props.createVodPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
             </Modal>
-            <Modal hasClose={false} title='Create Promo Code Preset' opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
-                <PromoPresetsModal action={selectedPromo ? props.saveVodPromoPreset : props.createVodPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
+            <Modal hasClose={false} title='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
+                <PricePresetsModal action={props.saveVodPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
+            </Modal>
+            <Modal hasClose={false} title='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
+                <ContentPromoPresetsModal action={ props.createVodPromoPreset} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
+            </Modal>
+            <Modal hasClose={false} title='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
+                <PromoPresetsModal action={props.saveVodPromoPreset} promo={selectedPromo} toggle={setEditPromoPresetsModalOpened} />
             </Modal>
             <Prompt when={vodPaywallSettings !== props.vodPaywallInfos} message='' />
         </div>

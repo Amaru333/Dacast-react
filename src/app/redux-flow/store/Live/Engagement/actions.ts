@@ -46,7 +46,7 @@ export const saveLiveEngagementSettingsAction = (data: LiveEngagementSettings): 
         await liveEngagementServices.saveLiveEngagementSettings(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_LIVE_ENGAGEMENT_SETTINGS, payload: response.data} );
-                dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
+                dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -58,7 +58,7 @@ export const saveLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Sav
         await liveEngagementServices.saveLiveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_LIVE_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -70,7 +70,7 @@ export const createLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, C
         await liveEngagementServices.createLiveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_LIVE_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -82,7 +82,7 @@ export const deleteLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, D
         await liveEngagementServices.deleteLiveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_LIVE_AD, payload: response.data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

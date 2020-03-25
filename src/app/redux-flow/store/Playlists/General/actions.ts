@@ -59,6 +59,7 @@ export const editPlaylistDetailsAction = (data: PlaylistDetails): ThunkDispatch<
         await PlaylistGeneralServices.editPlaylistDetailsService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.EDIT_PLAYLIST_DETAILS, payload: response.data });
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -72,6 +73,7 @@ export const changePlaylistThumbnailAction = (data: ThumbnailUpload): ThunkDispa
         await PlaylistGeneralServices.changePlaylistThumbnailService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_PLAYLIST_THUMBNAIL, payload: response.data });
+                dispatch(showToastNotification("Thumbnail have been saved", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -85,6 +87,7 @@ export const deletePlaylistThumbnailAction = (): ThunkDispatch<Promise<void>, {}
         await PlaylistGeneralServices.deletePlaylistThumbnailService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_PLAYLIST_THUMBNAIL, payload: response.data });
+                dispatch(showToastNotification("Thumbnail have been deleted", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -97,6 +100,7 @@ export const changePlaylistSplashscreenAction = (data: SplashscreenUpload): Thun
         await PlaylistGeneralServices.changePlaylistSplashscrenService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_PLAYLIST_SPLASHSCREEN, payload: response.data });
+                dispatch(showToastNotification("Splashscreen have been saved", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -110,6 +114,7 @@ export const deletePlaylistSplashscreenAction = (): ThunkDispatch<Promise<void>,
         await PlaylistGeneralServices.deletePlaylistSplashscrenService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_PLAYLIST_SPLASHSCREEN, payload: response.data });
+                dispatch(showToastNotification("Splashscreen have been deleted", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -123,6 +128,7 @@ export const changePlaylistPosterAction = (data: PosterUpload): ThunkDispatch<Pr
         await PlaylistGeneralServices.changePlaylistPosterService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_PLAYLIST_POSTER, payload: response.data });
+                dispatch(showToastNotification("Poster have been saved", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -136,6 +142,7 @@ export const deletePlaylistPosterAction = (): ThunkDispatch<Promise<void>, {}, D
         await PlaylistGeneralServices.deletePlaylistPosterService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_PLAYLIST_POSTER, payload: response.data });
+                dispatch(showToastNotification("Poster have been deleted", 'fixed', "success"));
             })
             .catch((error) => {
                 console.log(error)
