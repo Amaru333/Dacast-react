@@ -37,4 +37,5 @@ phases:
       - echo $ENV_NAME_CLIENT
       - echo $ENV_NAME_ADMIN
       - aws s3 sync . s3://$ARTIFACT_BUCKET --delete
+      - sleep 15
       - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID_CLIENT --paths "/*"
