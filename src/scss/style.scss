@@ -80,6 +80,14 @@ a {
     }
 }
 
+#folderContentTable {
+    tbody{
+        tr{
+            height: 64px;
+        }
+    }
+}
+
 .iconAction {
     visibility: hidden;
     transition: none;

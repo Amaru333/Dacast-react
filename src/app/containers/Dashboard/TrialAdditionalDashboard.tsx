@@ -137,7 +137,7 @@ const TodoList = (props: { items: ItemTodo[] }) => {
                 <ListItem key={key+"_"+value} checked={value.isChecked} >
                     <a target="_blank" rel="noopener noreferrer" href={value.href} >
                         <IconStyle className='px1 py2' coloricon={value.isChecked ? 'violet' : 'gray-8'}>check</IconStyle>
-                        <Text color={value.isChecked ? "gray-6" : "gray-1"} size={14} weight="reg" >{value.name}</Text>
+                        <Text className='line-through' color={value.isChecked ? "gray-6" : "gray-1"} size={14} weight="reg" >{value.name}</Text>
                     </a>
                 </ListItem>
             )

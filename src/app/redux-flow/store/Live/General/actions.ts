@@ -73,7 +73,6 @@ export const getLiveListAction = (): ThunkDispatch<Promise<void>, {}, GetLiveLis
         await LiveGeneralServices.getLiveList()
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_LIST, payload: response.data });
-                dispatch(showToastNotification("Success Success Success Success Success Success Success Success  ", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
