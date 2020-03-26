@@ -6,7 +6,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Datepicker } from '../../../components/FormsComponents/Datepicker/DateRangePicker';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB } from '../../utils/utils';
+import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB } from '../../../utils/utils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";

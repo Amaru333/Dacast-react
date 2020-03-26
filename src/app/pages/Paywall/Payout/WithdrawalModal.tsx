@@ -4,7 +4,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
-import { ColorsApp } from '../../../styled/types';
+import { ColorsApp } from '../../../../styled/types';
 import { WithdrawalRequest } from '../../../redux-flow/store/Paywall/Payout';
 
 export const WithdrawalModal = (props: {action: Function; toggle: Function}) => {

@@ -6,13 +6,29 @@ const SRC = path.resolve(__dirname, 'public/assets/');
 
 var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
+console.log('app env', process.env.APP_ENV)
+
+const entries = {
+    app: ['@babel/polyfill', './src/app/index.tsx'],
+    admin: ['@babel/polyfill', './src/admin/index.tsx'],
+    vendor: ['react', 'react-dom']
+}
+
+const plugins = {
+    app: { 
+        filename: 'index.html',
+        template: path.resolve(__dirname, 'src/app', 'index.html'),
+        excludeAssets: [/admin.*/]
+    },
+    admin: { 
+        filename: 'index.html',
+        template: path.resolve(__dirname, 'src/admin', 'admin.html'),
+        excludeAssets: [/app.*/]
+    }
+}
 
 module.exports = {
-    entry: {
-        app: ['@babel/polyfill', './src/app/index.tsx'],
-        // admin: ['@babel/polyfill', './src/index.tsx'],
-        vendor: ['react', 'react-dom']
-    },
+    entry: entries[process.env.APP_ENV],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].bundle.js',
@@ -71,17 +87,7 @@ module.exports = {
         ]
     },
     plugins: [
-        // Build html for the client app
-        new HtmlWebpackPlugin({ 
-            template: path.resolve(__dirname, 'src/app', 'index.html'),
-            excludeAssets: [/admin.*/]
-        }),
-        // Build html for the admin site
-        // new HtmlWebpackPlugin({ 
-        //     filename: 'admin.html',
-        //     template: path.resolve(__dirname, 'src', 'index.html'),
-        //     excludeAssets: [/app.*/]
-        // }),
+        new HtmlWebpackPlugin({...plugins[process.env.APP_ENV]}),
         new HtmlWebpackExcludeAssetsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([

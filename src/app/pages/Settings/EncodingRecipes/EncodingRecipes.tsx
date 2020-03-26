@@ -9,7 +9,7 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { settingsStep, presetStep } from './EncodingRecipesSteps';
-import { useMedia } from '../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';

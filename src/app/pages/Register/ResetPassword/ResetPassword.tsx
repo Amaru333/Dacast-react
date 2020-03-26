@@ -5,10 +5,12 @@ import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../../components/Typography/Text'
 import { ResetPasswordComponentProps } from '../../../containers/Register/ResetPassword'
+import { useHistory } from 'react-router'
 
 export const ResetPasswordPage = (props: ResetPasswordComponentProps) => {
 
     const [email, setEmail] = React.useState<string>(null)
+    let history = useHistory()
 
     return (
         <div>
@@ -18,7 +20,7 @@ export const ResetPasswordPage = (props: ResetPasswordComponentProps) => {
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" onChange={(event) => setEmail(event.currentTarget.value)} />   
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => props.resetPassword(email)} sizeButton="large" typeButton="primary">Reset Password</Button>
+                    <Button onClick={() => {props.resetPassword(email); history.push('/change-password')}} sizeButton="large" typeButton="primary">Reset Password</Button>
                     <Button sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </ModalCard>

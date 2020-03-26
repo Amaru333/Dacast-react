@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../../components/Typography/Text';
-import { tsToLocaleDate } from '../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';

@@ -2,12 +2,12 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory} from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
-import { Theme } from './styled/themes/dacast-theme';
+import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
@@ -22,7 +22,8 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
 import { isLoggedIn } from './utils/token';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp, useMedia } from './utils/utils';
+import { updateTitleApp } from './utils/utils';
+import { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -60,7 +61,17 @@ history.listen( (location) =>  {
 });
 
 // Create an intersection type of the component props and our Redux props.
-const Main: React.FC<MainProps> = ({ store}: MainProps) => {
+
+const AppContent = () => { 
+    let location = useLocation()
+    let history = useHistory()
+
+    React.useEffect(() => {
+        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
+        if (path) {
+            history.replace(path);
+        }
+    }, [location])
 
     let mobileWidth = useMedia('(max-width:780px');
 
@@ -124,8 +135,22 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         )
     }
 
-
-
+    return (
+        <>                 
+        <Toasts />
+            <Switch>
+                <Route exact path='/'>
+                    {isLoggedIn() ?
+                        <Dashboard />
+                        : <Login />
+                    }
+                </Route>                             
+                {returnRouter(AppRoutes)}
+            </Switch>
+    </>
+    )
+}
+const Main: React.FC<MainProps> = ({ store}: MainProps) => {
 
     /** TO DO: Figure out a way to implement the styled components */
     const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
@@ -178,18 +203,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <BrowserRouter getUserConfirmation={getUserConfirmation}>
-                    <>                 
-                        <Toasts />
-                            <Switch>
-                                <Route exact path='/'>
-                                    {isLoggedIn() ?
-                                        <Dashboard />
-                                        : <Login />
-                                    }
-                                </Route>                             
-                                {returnRouter(AppRoutes)}
-                            </Switch>
-                    </>
+                    <AppContent />
                 </BrowserRouter>
             </ThemeProvider>
 
