@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from 'styled-components';
-import { ColorsApp } from '../../app/styled/types';
+import { ColorsApp } from '../../styled/types';
 
 export interface CustomStatusProps {color: ColorsApp}
 export type StatusProps = CustomStatusProps & React.HTMLAttributes<HTMLDivElement>

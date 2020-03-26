@@ -7,11 +7,10 @@ import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { upload, MIN_CHUNK_SIZE } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
-// export interface UploaderProps {
-//     // Your props here
-// }
+import { UploaderProps } from '../../../containers/Videos/Uploader';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
-export const UploaderPage = (props: { postVodDemo: Function }) => {
+export const UploaderPage = (props: UploaderProps) => {
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
 
@@ -176,8 +175,28 @@ export const UploaderPage = (props: { postVodDemo: Function }) => {
     React.useEffect(() => {
     }, [uploadingList]);
 
+    var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item)=> {return {...reduced, [props.encodingRecipe.recipes[item].name]: false}},{})
     return (
         <UploaderContainer>
+            <div className="flex space-between">
+                <div className="col col-8 flex items-center">
+                    <DropdownSingle 
+                        style={{background: "#fff"}}
+                        className='col col-5 mr1 pb2 '
+                        dropdownTitle='Encoding Recipe'
+                        list={list}
+                        isWhiteBackground={true}
+                        id='dropdownUploaderEncoding'
+                        callback={(value: string) => { console.log(value)}}
+                    />
+                    <Icon className="inline-block mt1" color="disabled">create</Icon>
+                    <Icon className="inline-block mt1" color="disabled">info</Icon>
+                </div>  
+                <div className="col col-4 flex items-center justify-end">
+                    <Button sizeButton="small" typeButton="secondary" color="blue"> FTP/S3 Uploader </Button>
+                </div>
+            </div>
+            
             <Prompt
                 when={uploadingList.filter((value, index) => value.currentState === "progress").length > 0}
                 message={"Are you sure you want to leave? " + uploadingList.filter((value, index) => value.currentState === "progress").length + "item(s) still uploading"}
@@ -196,7 +215,13 @@ export const UploaderPage = (props: { postVodDemo: Function }) => {
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
-            <div className=" mt2 right">
+            <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
+                Choose an Encoding Recipe then upload your videos
+            </Text>
+            <Text weight="reg" color="gray-3" size={16} className="block center">
+                Note: this will consume Encoding Credits
+            </Text>
+            <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
                 <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' >Pause All</Button>
             </div>

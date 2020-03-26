@@ -6,14 +6,14 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia } from '../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
 import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { ColorsApp } from '../../../styled/types';
+import { ColorsApp } from '../../../../styled/types';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;

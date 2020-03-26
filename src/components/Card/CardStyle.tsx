@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components';
-import { ColorsApp } from '../../app/styled/types';
+import { ColorsApp } from '../../styled/types';
 
 export const CardStyle = styled.div<{isMobile: boolean; backgroundColor: ColorsApp}>`
     box-sizing: border-box;

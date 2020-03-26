@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { ColorsApp } from '../../app/styled/types';
+import { ColorsApp } from '../../styled/types';
 
 interface TableRow {
     Cells: ReactElement[];

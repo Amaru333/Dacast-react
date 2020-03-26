@@ -1,4 +1,4 @@
-import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../utils/utils';
+import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
 import React from 'react';
 import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
@@ -90,6 +90,17 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
         </div>
     )
 }
+
+export const AnalyticsContainerHalfSelector = styled.div<{}>`
+    background-color: white;
+    border: 1px solid ${props => props.theme.colors["gray-7"]};;
+    height: 256px; 
+    overflow-x: scroll;
+`
+
+export const BreadcrumbContainer = styled.div`
+min-height: 52px;
+`
 
 export const handleRowIconType = (item: FolderAsset) => {
     switch (item.contentType) {

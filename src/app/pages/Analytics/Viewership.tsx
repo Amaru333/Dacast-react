@@ -4,14 +4,14 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate } from '../../utils/utils';
+import { tsToLocaleDate } from '../../../utils/utils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart';import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import {  TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
@@ -306,14 +306,3 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
     
 }
-
-export const AnalyticsContainerHalfSelector = styled.div<{}>`
-    background-color: white;
-    border: 1px solid ${props => props.theme.colors["gray-7"]};;
-    height: 256px; 
-    overflow-x: scroll;
-`
-
-export const BreadcrumbContainer = styled.div`
-min-height: 52px;
-`

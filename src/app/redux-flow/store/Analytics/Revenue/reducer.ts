@@ -4,10 +4,17 @@ import { ActionTypes, AnalyticsRevenueInitialState, AnalyticsRevenueState } from
 
 const reducer: Reducer<AnalyticsRevenueState> = (state = AnalyticsRevenueInitialState, action: Action) => {
     switch (action.type) {
-        case ActionTypes.GET_ANALYTICS_REVENUE_DETAILS :
+        case ActionTypes.GET_ANALYTICS_REVENUE_SALES_BY_TIME :
             return {
-                ...state,
-                data: action.payload
+                data: { ...state.data, salesByTime:  action.payload}
+            }
+        case ActionTypes.GET_ANALYTICS_REVENUE_REVENUE_BY_TIME :
+            return {
+                data: { ...state.data, revenueByTime:  action.payload}
+            }
+        case ActionTypes.GET_ANALYTICS_REVENUE_SALES_PER_COUNTRY :
+            return {
+                data: { ...state.data, salesPerCountry:  action.payload}
             }
         default:
             return state;

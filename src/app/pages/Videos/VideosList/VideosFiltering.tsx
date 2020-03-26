@@ -24,8 +24,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
         };
         afterDate: number | boolean;
         beforedate: number | boolean;
-        sizeStart: number | boolean;
-        sizeEnd: number | boolean;
+        sizeStart: string;
+        sizeEnd: string;
     }
 
     var filteringDefault = {
@@ -114,8 +114,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                 <div className="mb3" id="vodFilterSize">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                     <div className="mxn2 clearfix">
-                        <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart ? filteringState.sizeStart.toString() : ""} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: parseInt(event.currentTarget.value) } })} />
-                        <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd ? filteringState.sizeEnd.toString() : ""} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: parseInt(event.currentTarget.value) } })} />
+                        <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: event.currentTarget.value } })} />
+                        <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: event.currentTarget.value } })} />
                     </div>
                 </div>
                 <div className="flex" id="vodFilterbuttons">

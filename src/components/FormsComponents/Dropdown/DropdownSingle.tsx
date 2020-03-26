@@ -3,7 +3,7 @@ import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton} from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
-import { useOutsideAlerter } from '../../../app/utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
 
@@ -111,7 +111,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     return (
         <ContainerStyle  className={props.className}>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
-            <TitleContainer disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <TitleContainer isWhiteBackground={props.isWhiteBackground} disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>

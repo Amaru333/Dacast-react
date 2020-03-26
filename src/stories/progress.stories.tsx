@@ -4,7 +4,7 @@ import {LoadingSpinner} from '../components/FormsComponents/Progress/LoadingSpin
 import {ProgressBar} from '../components/FormsComponents/Progress/ProgressBar/ProgressBar'
 import styled from 'styled-components';
 import { withKnobs, select } from '@storybook/addon-knobs';
-import { ColorsApp, ColorsAppArray } from '../app/styled/types';
+import { ColorsApp, ColorsAppArray } from '../styled/types';
 import "../scss/style.scss";
 
 const stories = storiesOf('Progress', module);

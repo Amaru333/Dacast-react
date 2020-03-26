@@ -29,6 +29,10 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     
     let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
+    const [currentPassword, setCurrentPassword] = React.useState<string>(null)
+    const [newPassword, setNewPassword] = React.useState<string>(null)
+    const [confirmNewPassword, setConfirmNewPassword] = React.useState<string>(null)
+    const [timezone, setTimezone] = React.useState<string>(null)
 
     const handleSubmit = () => {
         event.preventDefault();
@@ -37,7 +41,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             lastName: value['lastName'].value,
             phoneNumber: value['phoneNumber'].value,
             emailAddress: value['emailAddress'].value,
-            timezone: "",
+            timezone: timezone,
             marketing: value['Marketing'].value,
             lowData: value['Low Data'].value,
             videoUpload: value['Video Uploaded'].value
@@ -106,8 +110,10 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Timezone'
+                            dropdownDefaultSelect={props.ProfilePageDetails.timezone}
                             defaultValue={props.ProfilePageDetails.timezone}
                             id='dropdownTimezone'
+                            callback={(value: string) => setTimezone(value)}
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
                         />
                     </div>
@@ -161,6 +167,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         className="col col-12" 
                         id="currentPassword" 
                         label="Current Password" 
+                        onChange={(event) => setCurrentPassword(event.currentTarget.value)}
                         placeholder="Current Password" 
                         required
                     />
@@ -171,6 +178,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         className="col col-12" 
                         id="newPassword" 
                         label="New Password" 
+                        onChange={(event) => setNewPassword(event.currentTarget.value)}
                         placeholder="New Password" 
                         help='Must contain more than 6 characters'
                         required
@@ -181,13 +189,14 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         type="password" 
                         className="col col-12" 
                         id="confirmPassword" 
+                        onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
                         label="Confirm Password" 
                         placeholder="Confirm Password" 
                         required
                     />
                 </ModalContent>
                 <ModalFooter>
-                    <Button sizeButton="large" typeButton="primary">Change Password</Button>
+                    <Button disabled={newPassword !== confirmNewPassword} sizeButton="large" onClick={() => {props.saveProfilePassword(currentPassword, newPassword);setPasswordModalToggle(false)}} typeButton="primary">Change Password</Button>
                     <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </Modal>

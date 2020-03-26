@@ -1,4 +1,4 @@
-import { ColorsApp } from '../../../../app/styled/types';
+import { ColorsApp } from '../../../../styled/types';
 
 type Size = "large" | "small";
 

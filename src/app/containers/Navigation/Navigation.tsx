@@ -8,8 +8,9 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../component
 import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
-import { useOutsideAlerter } from '../../utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
+import { AppRoutes } from '../../constants/AppRoutes';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -26,9 +27,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
     let history = useHistory()
-
     const firstSelectedItem = (): {main: string; slug: string} => {
         let matchingRoute = {main: '/dashboard', slug: ''};
+        const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
+        if (path) {
+            history.replace(path);
+        }
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
                 if(matchingRoute.main === '/dashboard') {
@@ -63,7 +67,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [location])
 
     // React.useEffect(() => {
-    //     if(location.pathname.indexOf(selectedElement) === -1) {
+    //     console.log(AppRoutes.filter( route => route.path === location.pathname)[0])
+    //     if(location.pathname.indexOf(selectedElement) === -1 && typeof AppRoutes.filter( route => location.pathname.indexOf(route.path) !== -1 )[0] !== 'undefined') {
     //         setSelectedElement(firstSelectedItem().main)
     //         setSelectedSubElement(firstSelectedItem().slug)
     //     }
@@ -195,7 +200,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 
                 else{
                     return (
-                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.name, '')}} key={'MenuElement'+i} >
+                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '')}} key={'MenuElement'+i} >
                             <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
                                 {element.name} 
                             </ElementMenu>

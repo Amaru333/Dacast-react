@@ -5,7 +5,7 @@ import { TabProps } from './TabTypes';
 import { TabContainer, TabHeaderContainer, TabStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
-import { useMedia } from '../../app/utils/utils';
+import { useMedia } from '../../utils/utils';
 
 export const Tab = (props: TabProps) => {
 
@@ -13,13 +13,18 @@ export const Tab = (props: TabProps) => {
     let mobile = useMedia('(max-width: 786px)');
     const {list, orientation } = props;
     const firstSelectedItem = (): string => {
-        let matchingRoute = props.list[0].path;
-        props.list.map((route) => {
-            if(location.pathname === route.path) {
-                matchingRoute =  route.path
-            }
-        })
-        return matchingRoute;
+        if(!props.callback) {
+            let matchingRoute = props.list[0].path;
+            props.list.map((route) => {
+                if(location.pathname === route.path) {
+                    matchingRoute =  route.path
+                }
+            })
+            return matchingRoute;
+        } else {
+            return props.list[0].name
+        }
+
     };
 
 
@@ -37,7 +42,7 @@ export const Tab = (props: TabProps) => {
         if(props.callback) {
             props.callback(selectedTab)
         }
-        if(location.pathname.indexOf(selectedTab) === -1) {
+        if(location.pathname.indexOf(selectedTab) === -1 && !props.callback) {
             setSelectedTab(firstSelectedItem())
         }
     }, [selectedTab])

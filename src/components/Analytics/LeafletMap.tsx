@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 // import * as Leaflet from 'leaflet';
-import JSInjector from '../../app/utils/JSInjector';
-import CSSInjector from '../../app/utils/CSSInjector';
-import { lerpColor, logScale } from '../../app/utils/utils';
+import JSInjector from '../../utils/JSInjector';
+import CSSInjector from '../../utils/CSSInjector';
+import { lerpColor, logScale } from '../../utils/utils';
 
 const LeafletMap = (props: any) => {
 
@@ -51,7 +51,6 @@ const LeafletMap = (props: any) => {
         setMarkers([]);
 
         var newMarkersTable = [];
-        console.log(markers);
         for (let i = 0; i < props.markers.length; i++) {
             let propMarker = props.markers[i];
             if (propMarker.consumedMB === 0 || !propMarker.position.latitude || !propMarker.position.longitude) {
