@@ -19,7 +19,7 @@ export interface VodDetails {
     id: string;
     online: boolean;
     title: string;
-    folder: string;
+    folder: string[];
     description: string;
     thumbnail: string;
     splashscreen: string;

@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
-import { AnalyticsDashboardReducer, AnalyticsDashboardState } from './Dashboard';
+import { AnalyticsDashboardReducer, AnalyticsDashboardState, AnalyticsDashboardInitialState } from './Dashboard';
 import { AnalyticsRealTimeState, AnalyticsRealTimeReducer } from './RealTime';
 import { AnalyticsViewershipReducer, AnalyticsViewershipState } from './Viewership';
 import { AnalyticsRevenueState, AnalyticsRevenueReducer, AnalyticsRevenueInitialState } from './Revenue';
@@ -12,7 +12,7 @@ export interface  AnalyticsState {
 }
 
 export const analyticsInitialState: AnalyticsState = {
-    dashboard: false,
+    dashboard: AnalyticsDashboardInitialState,
     realTime: false,
     viewership: false,
     revenue: AnalyticsRevenueInitialState

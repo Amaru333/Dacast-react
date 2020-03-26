@@ -95,7 +95,7 @@ const AppContent = () => {
 
     
         return (
-            isLoggedIn() ?
+            isLoggedIn()  ?
                 <Route 
                     path={props.path}
                 >

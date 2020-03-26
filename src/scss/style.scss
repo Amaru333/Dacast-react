@@ -80,14 +80,25 @@ a {
     }
 }
 
+#liveListTable, #videosListTable, #playlistListTable, #folderContentTable {
+    tbody{
+        tr{
+            height: 64px;
+        }
+    }
+}
+
 .iconAction {
     visibility: hidden;
     transition: none;
+    * {
+        transition: none;
+    }
 }
 
 @media screen and (max-width: 780px) {
     .iconAction {
-      display:block;
+      visibility:visible;
     }
   }
 

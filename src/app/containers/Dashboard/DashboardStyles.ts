@@ -59,7 +59,7 @@ export const ListItem = styled.div<{ checked: boolean }>`
     align-items: center;
     height: 48px;
     ${props => props.checked && css`
-        a {
+        .line-through {
             text-decoration: line-through;
         }
     `}

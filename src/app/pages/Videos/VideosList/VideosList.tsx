@@ -19,6 +19,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
 export interface VideosListProps {
     items: VodItem[];
@@ -100,12 +101,12 @@ export const VideosListPage = (props: VideosListProps) => {
                             }
                         }
                         } />
-                        <img className="p2" key={"thumbnail" + value.id} width={70} height={42} src={value.thumbnail} ></img>
+                        <img className="pl2" key={"thumbnail" + value.id} width={50} height={42} src={value.thumbnail} />
                     </div>,
                     <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"size" + value.id} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
                     <Text key={"views" + value.id} size={14} weight="reg" color="gray-1">{value.views}</Text>,
-                    <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
+                    <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
                     <div className='flex'>{handleFeatures(value, value.id.toString())}</div>,
                     <div key={"more" + value.id} className="iconAction right mr2" >

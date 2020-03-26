@@ -35,7 +35,6 @@ const Revenue = (props: RevenueComponentProps) => {
             }
             wait()
         }
-        console.log(props);
         if(!props.analyticsRevenueData.data.revenueByTime) {
             props.getRevenueByTime();
         }

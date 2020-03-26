@@ -25,6 +25,11 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
     }, [props])
 
     React.useEffect(() => {
+        setCurrentNode({
+            ...currentNode,
+            loadingStatus: 'loading',
+            children: {}
+        });
         props.goToNode(selectedModalFolder)
             .then((node) => {
                 setCurrentNode(node);
@@ -46,7 +51,10 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
     }
 
     const renderModalNode = () => {
-        return currentNode ? Object.values(currentNode.children).map((childNode, i) => {
+        if(currentNode && currentNode.loadingStatus === 'loading') {
+            return <LoadingSpinner center size='medium' className="mx-auto block" color='blue'/> 
+        }
+        return currentNode ? Object.values(currentNode.children).map((childNode, i) => {            
             return (
                 <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center p2 pointer'>
                     <InputCheckbox id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} className='col col-1' onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />

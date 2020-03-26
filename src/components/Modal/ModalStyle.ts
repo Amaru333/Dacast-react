@@ -44,7 +44,7 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     `};
     position: fixed;
     left: 50%;
-    top: 50%;
+    top: 50vh;
     transform: translate(-50%, -50%);
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;

@@ -17,7 +17,7 @@ export interface LiveDetails {
     id: string;
     streamOnline: boolean;
     title: string;
-    folder: string;
+    folder: string[];
     description: string;
     thumbnail: string;
     splashscreen: string;

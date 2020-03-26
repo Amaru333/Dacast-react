@@ -9,6 +9,8 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { CartStep, PaymentStep } from './PendingOrderStepper';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
+import { tsToLocaleDate } from '../../../../utils/utils';
+import { DateTime } from 'luxon';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
@@ -52,7 +54,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
             const BackgroundColor: ColorsApp = item.status === 'cancelled' ? 'gray-8' : color + '20' as ColorsApp;
             return {data: [
                 <Text key={'pendingOrderTableItemCount'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.items.length}</Text>,
-                <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.dateCreated}</Text>,
+                <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.dateCreated, DateTime.DATETIME_SHORT)}</Text>,
                 <Text key={'pendingOrderTablePrice'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.price}</Text>,
                 <Text key={'pendingOrderTableCurrency'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.currency.toUpperCase()}</Text>,
                 <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)} />,

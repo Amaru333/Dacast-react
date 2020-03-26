@@ -67,6 +67,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [location])
 
     // React.useEffect(() => {
+    //     if(location.pathname.indexOf(selectedElement) === -1) {
     //     console.log(AppRoutes.filter( route => route.path === location.pathname)[0])
     //     if(location.pathname.indexOf(selectedElement) === -1 && typeof AppRoutes.filter( route => location.pathname.indexOf(route.path) !== -1 )[0] !== 'undefined') {
     //         setSelectedElement(firstSelectedItem().main)
@@ -216,7 +217,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
        
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
                 <Scrollbar removeTracksWhenNotUsed removeTrackYWhenNotUsed={false} minimalThumbYSize={6} trackYProps={{style: {backgroundColor: 'inherit'}}}>
-                    <ImageStyle onClick={() => props.history.push('/')} className="mx-auto pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
+                    <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
                         <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>

@@ -130,7 +130,7 @@ export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: F
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
+            <Table tableHeight={300} className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
             <div className="flex col col-12 mt3">
                 <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
                 <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>

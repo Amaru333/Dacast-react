@@ -14,7 +14,7 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
             <Input defaultValue={ props.item? props.item.label : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="Name" placeholder="Name"  />
             <Text size={14} weight="med" className='inline-block mb1' >Access Type</Text>
             <div className="mb3">
-                <InputRadio defaultChecked={props.item && props.item.type == 'rw'} className="col col-6" value="rw" name="type" label="Read-Write"></InputRadio>
+                <InputRadio defaultChecked={(props.item && props.item.type == 'rw') || !props.item} className="col col-6" value="rw" name="type" label="Read-Write"></InputRadio>
                 <InputRadio defaultChecked={props.item && props.item.type == 'ro'} className="col col-6" value="ro" name="type" label="Read-Only"></InputRadio>
                 <div className="clearfix"></div>
             </div>
@@ -32,7 +32,7 @@ const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
             <Input defaultValue={ props.item? props.item.url : ""} disabled={false} required id="encoder" type="text" className="col col-12 mb2" label="URL" placeholder="URL"  />
             <Text size={14} weight="med" className='inline-block mb1' >Method</Text>
             <div className="mb3">
-                <InputRadio defaultChecked={props.item && props.item.method == 'GET'} className="col col-6" value="GET" name="type" label="GET"></InputRadio>
+                <InputRadio defaultChecked={(props.item && props.item.method == 'GET') || !props.item} className="col col-6" value="GET" name="type" label="GET"></InputRadio>
                 <InputRadio defaultChecked={props.item && props.item.method == 'POST'} className="col col-6" value="POST" name="type" label="POST"></InputRadio>
                 <div className="clearfix"></div>
             </div>
