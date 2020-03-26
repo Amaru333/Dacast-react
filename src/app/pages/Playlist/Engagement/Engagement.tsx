@@ -233,7 +233,7 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                         >
                                 Save
                         </Button>
-                        <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => {revertSettings();props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
                     </div> : null
             }
 

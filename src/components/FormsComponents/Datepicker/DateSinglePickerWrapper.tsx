@@ -18,10 +18,14 @@ export const DateSinglePickerWrapper = (props: {className?: string; callback?: F
 
     return (
         <div className={props.className}>
+            <div className="flex flex-column">
             {
-                props.datepickerTitle ? 
+                props.datepickerTitle ?
+                <div style={{marginTop: 4, marginBottom: 4}}>
                     <Text size={14} weight='med'>{props.datepickerTitle}</Text>
-                    : null
+                    
+                </div> : null
+                    
             }
             <SingleDatePicker
                 placeholder='Select date'
@@ -35,6 +39,7 @@ export const DateSinglePickerWrapper = (props: {className?: string; callback?: F
                 numberOfMonths={1}
                 keepOpenOnDateSelect={false}
             />
+            </div>
         </div>
 
     )

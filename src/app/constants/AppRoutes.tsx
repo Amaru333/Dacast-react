@@ -12,7 +12,7 @@ import Folders from '../containers/Folders/Folders';
 import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
-import Plans from '../containers/Account/Plans'
+import PlansContainer from '../containers/Account/Plans'
 import LiveList from '../containers/Live/List';
 import Payout from '../containers/Paywall/Payout';
 import Transactions from '../containers/Paywall/Transactions';
@@ -223,7 +223,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plans',
                 name: 'Plans',
-                component: Plans
+                component: PlansContainer
             },
             {
                 path: '/account/profile',

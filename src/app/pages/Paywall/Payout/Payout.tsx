@@ -113,17 +113,22 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
 
     const emptyWithdrawalTableBody = (text: string) => {
-        return [{data: [
+        return props.payoutInfos.paymentMethodRequests ? [{data: [
+            <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>,
+            <div key={'emptyWithdrawalsTableBody'} className='center'></div>
+        ]}] :
+        [{data: [
             <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-        ]}]
-    }
+        ]
+
+    }]}
 
     return displayPaymentMethodRequest ?
         <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} />
         :
         <div>
             <Card>
-                <Text  size={20} weight='reg'>Withdrawal Method</Text>
+                <Text  size={20} weight='reg'>New Payment Method</Text>
                 <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 {
                     props.payoutInfos.paymentMethodRequests ? 

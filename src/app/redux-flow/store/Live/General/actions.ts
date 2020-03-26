@@ -86,6 +86,7 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
         await LiveGeneralServices.saveLiveDetailsService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.SAVE_LIVE_DETAILS, payload: response.data });
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -98,6 +99,7 @@ export const changeLiveThumbnailAction = (data: ThumbnailUpload): ThunkDispatch<
         await LiveGeneralServices.changeLiveThumbnailService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_LIVE_THUMBNAIL, payload: response.data });
+                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -110,6 +112,7 @@ export const deleteLiveThumbnailAction = (): ThunkDispatch<Promise<void>, {}, De
         await LiveGeneralServices.deleteLiveThumbnailService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_THUMBNAIL, payload: response.data });
+                dispatch(showToastNotification(`Thumbnail has been deleted`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -122,6 +125,7 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
         await LiveGeneralServices.deleteLiveChannelService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: response.data });
+                dispatch(showToastNotification("Channel has been deleted", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -134,6 +138,7 @@ export const changeLiveSplashscreenAction = (data: SplashscreenUpload): ThunkDis
         await LiveGeneralServices.changeLiveSplashscrenService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_LIVE_SPLASHSCREEN, payload: response.data });
+                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -147,6 +152,7 @@ export const deleteLiveSplashscreenAction = (): ThunkDispatch<Promise<void>, {},
         await LiveGeneralServices.deleteLiveSplashscrenService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_SPLASHSCREEN, payload: response.data });
+                dispatch(showToastNotification(`Splashscreen has been deleted`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -160,6 +166,7 @@ export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promis
         await LiveGeneralServices.changeLivePosterService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.CHANGE_LIVE_POSTER, payload: response.data });
+                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)
@@ -173,6 +180,7 @@ export const deleteLivePosterAction = (): ThunkDispatch<Promise<void>, {}, Delet
         await LiveGeneralServices.deleteLivePosterService()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_POSTER, payload: response.data });
+                dispatch(showToastNotification(`Poster has been deleted`, 'flexible', "success"));
             })
             .catch((error) => {
                 console.log(error)

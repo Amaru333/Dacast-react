@@ -7,6 +7,8 @@ import { PlaylistDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } fr
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PlaylistGeneralPage } from '../../pages/Playlist/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 
 interface GeneralProps {
@@ -19,6 +21,7 @@ interface GeneralProps {
     deletePlaylistSplashscreen: Function;
     changePlaylistPoster: Function;
     deletePlaylistPoster: Function;
+    showToast: Function;
 }
 
 const GeneralPlaylist = (props: GeneralProps) => {
@@ -71,6 +74,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deletePlaylistPoster: () => {
             dispatch(deletePlaylistPosterAction())
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     };
 }
 

@@ -21,6 +21,7 @@ interface LiveSecurityComponentProps {
     globalSecuritySettings: SecuritySettings;
     getSettingsSecurityOptions: Function;
     saveLiveSecuritySettings: Function;
+    showDiscardToast: Function;
 }
 
 export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
@@ -235,7 +236,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                 <div>
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveLiveSecuritySettings(selectedSettings)}>Save</Button>
-                    <Button type="button" form="liveSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
+                    <Button type="button" form="liveSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {handleReset();props.showDiscardToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
                 </div>}
             <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>

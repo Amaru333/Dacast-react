@@ -8,6 +8,8 @@ import { PlaylistEngagementSettings } from "../../redux-flow/store/Playlists/Eng
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettings: PlaylistEngagementSettings;
@@ -16,6 +18,7 @@ export interface PlaylistEngagementComponentProps {
     savePlaylistAd: Function;
     createPlaylistAd: Function;
     deletePlaylistAd: Function;
+    showToast: Function;
 }
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
@@ -55,6 +58,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deletePlaylistAd: (data: Ad) => {
             dispatch(deletePlaylistAdAction(data))
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         }
     };
 }

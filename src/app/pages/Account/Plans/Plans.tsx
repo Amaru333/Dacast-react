@@ -10,10 +10,12 @@ import {isMobile} from 'react-device-detect';
 //import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
-import { Plans, Plan } from '../../../containers/Account/Plans';
-import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { PlansContainerProps } from '../../../containers/Account/Plans';
 
-export const PlansPage = (props: {plans: Plans}) => {
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { Plan } from '../../../redux-flow/store/Account/Plans/types';
+
+export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx2';
     const fullSteps = [PlanStepperFirstStep, PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep];
@@ -21,13 +23,18 @@ export const PlansPage = (props: {plans: Plans}) => {
     const [stepperPlanOpened, setStepperPlanOpened] = React.useState<boolean>(false);
     const [stepperData, setStepperData] = React.useState<Plan>(null);
     const [stepList, setStepList] = React.useState(fullSteps);
+    const [currentPlan, setCurrentPlan] = React.useState<string>(null)
 
     React.useEffect(() => {}, [stepperData, stepList]);
 
     const purchasePlan = () => {
         setStepperPlanOpened(false);
-        console.log("plan purchased")
+        setCurrentPlan(stepperData.name)
     }
+
+    React.useEffect(() => {
+        props.changeActivePlan({...stepperData, isActive: true})
+    }, [currentPlan])
 
     return (
         <PlansPageContainer isMobile={isMobile}>
@@ -114,7 +121,7 @@ export const PlansPage = (props: {plans: Plans}) => {
                     <>
                         <PlanContainer className={marginBlocks}>
                             <Text size={16} weight='reg' color='gray-3'>Developer</Text>
-                            <Card>
+                            <PlanCard isSelected={currentPlan === 'developer'}>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$21</Text>
@@ -141,13 +148,16 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <Text className='py4 center col col-10' size={12} weight='reg'>Features available for first 6 months</Text>
-                                    <ButtonStyle className='absolute bottom-0' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.developerPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    {currentPlan === 'event' || currentPlan === 'scale' ? 
+                                        <ButtonStyle className='absolute bottom-0' disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle>  :
+                                        <ButtonStyle className='absolute bottom-0' disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developerPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                    }
                                 </PlanInfosContainer>
-                            </Card>
+                            </PlanCard>
                         </PlanContainer>
                         <PlanContainer className={marginBlocks}>
                             <Text size={16} weight='reg' color='gray-3'>Event</Text>
-                            <Card>
+                            <PlanCard isSelected={currentPlan === 'event'}>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$63</Text>
@@ -174,17 +184,22 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <div className='flex flex-column absolute bottom-0'>
-                                        <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
-                                        <ButtonStyle typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.eventPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                        { currentPlan === 'scale' ? 
+                                            <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
+                                            <div className="col col-12 flex flex-column">
+                                                 <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
+                                                <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                            </div>
+                                        }
                                     </div>
 
 
                                 </PlanInfosContainer>
-                            </Card>
+                            </PlanCard>
                         </PlanContainer>
                         <PlanContainer className={marginBlocks}>
                             <Text size={16} weight='reg' color='gray-3'>Scale</Text>
-                            <Card>
+                            <PlanCard isSelected={currentPlan === "scale"}>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
                                         <Text className={textClassName} size={32} weight='med' color='gray-1'>$250</Text>
@@ -213,12 +228,12 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
                                     <Text className='center py35' size={12}>*3 Month Minimum</Text>
                                     <div className='flex flex-column absolute bottom-0'>
-                                        <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
-                                        <ButtonStyle className='mt1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.plans.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                        <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button>
+                                        <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                     </div>
 
                                 </PlanInfosContainer>
-                            </Card>
+                            </PlanCard>
                         </PlanContainer>
                         <PlanContainer style={{maxWidth: 275}} className={marginBlocks}>
                             <Text size={16} weight='reg' color='gray-3'>Custom</Text>
@@ -249,7 +264,7 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>20 GB</Text>
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>500 Min</Text>
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>24/7 Chat Support</Text>
-                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.plans.developerPlan);setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.planDetails.developerPlan);setStepList(purchaseSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
@@ -266,7 +281,7 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>24/7 Phone support</Text>
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>API</Text>
-                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.plans.eventPlan);setStepList(fullSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.planDetails.eventPlan);setStepList(fullSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
@@ -286,7 +301,7 @@ export const PlansPage = (props: {plans: Plans}) => {
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>AES</Text>
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                                     <Text className={textClassName} size={14} weight='med' color='gray-1'>China</Text>
-                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.plans.scalePlan);setStepList(fullSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
+                                    <ButtonStyle className='mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.planDetails.scalePlan);setStepList(fullSteps);setStepperPlanOpened(true)}}>Purchase</ButtonStyle>
                                 </PlanInfosContainer>
                             </Card>
                         </PlanContainer>
@@ -343,6 +358,12 @@ const PlanContainer = styled.div`
     flex-direction: column;
     align-items: center;
     max-width: 175px;
+`
+
+const PlanCard = styled(Card)<{isSelected?: boolean}>`
+    ${props => props.isSelected && css`
+        border: solid 1px blue;
+    `}
 `
 
 const PlanInfosContainer = styled.div<{isMobile: boolean}>`

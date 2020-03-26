@@ -66,6 +66,7 @@ export const savePricePresetAction = (data: Preset): ThunkDispatch<Promise<void>
         await PresetsServices.savePricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -77,6 +78,7 @@ export const deletePricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
         await PresetsServices.deletePricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -99,6 +101,7 @@ export const savePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void>,
         await PresetsServices.savePromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -110,6 +113,7 @@ export const deletePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
         await PresetsServices.deletePromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })

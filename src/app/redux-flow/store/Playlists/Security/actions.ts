@@ -31,6 +31,7 @@ export const savePlaylistSecuritySettingsAction = (data: SecuritySettings): Thun
         await PlaylistSecurityServices.savePlaylistSecuritySettingsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PLAYLIST_SECURITY_SETTINGS, payload: response.data} );
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

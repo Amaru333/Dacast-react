@@ -8,6 +8,8 @@ import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveThemingComponentProps {
     theme: LiveTheme;
@@ -16,6 +18,7 @@ export interface LiveThemingComponentProps {
     saveLiveTheme: Function;
     getThemingList: Function;
     setCustomThemeList: Function;
+    showDiscardToast: Function;
 }
 
 export const LiveTheming = (props: LiveThemingComponentProps) => {
@@ -99,6 +102,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getThemingList: () => {
             dispatch(getThemingListAction())
+        },
+        showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         }
     }
 }
