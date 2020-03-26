@@ -156,7 +156,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <InputTags
                             className="col col-6"
                             label="Folders"
-                            placeholder="Type folder name"
+                            disabled
+                            defaultTags={props.vodDetails.folder} 
                         />
 
                         <Input

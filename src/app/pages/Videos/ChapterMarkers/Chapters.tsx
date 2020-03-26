@@ -24,22 +24,20 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
     const [chapterMarkerModalOpened, setChapterMarkerModalOpened] = React.useState<boolean>(false);
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [marker, setMarker] = React.useState<number>(0);
+    const [player, setPlayer] = React.useState<any>(null);
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-    // const [player, setPlayer] = React.useState<any>(null)
-    let player: any = null
     React.useEffect(() => {
         console.log(document.getElementById('vzvd-104301_f_713989'))
-        if(!player) {
+        if(!player || player === null) {
             let newPlayer = new vzPlayer('vzvd-104301_f_713989')
             newPlayer.ready(() => {
-                player =  newPlayer
+                setPlayer(newPlayer);
             })
            
         }
     }, [])
-    // let player = usePlayer(playerRef, '104301_f_713989');
 
     const tableHeaderElement = () => {
         return {data: [
@@ -94,6 +92,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
         })
     }
 
+    console.log(player)
     return (
         <div>
             <ChaptersContainer mobile={isMobile} className='col col-12'>
@@ -112,7 +111,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 <TableContainer className='col col-12 md-col-6'>
                     <Table id='chapterTable' headerBackgroundColor="white" header={tableHeaderElement()} body={chapterBodyElement()} />
                 </TableContainer>
-
+ 
             </ChaptersContainer>
             <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} size='small' opened={chapterMarkerModalOpened}>
                 <ChapterMarkerForm item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {name: '', time: intToTime(marker)}} toggle={setChapterMarkerModalOpened} submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker} />

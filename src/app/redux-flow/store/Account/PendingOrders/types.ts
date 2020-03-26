@@ -6,7 +6,7 @@ export enum ActionTypes {
 export interface PendingOrder {
     id: string;
     items: PendingOrderItem[];
-    dateCreated: string;
+    dateCreated: number;
     price: number;
     currency: string;
     status: string;

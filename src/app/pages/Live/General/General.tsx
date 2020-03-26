@@ -94,7 +94,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <InputTags
                         className="col col-6"
                         label="Folders"
-                        placeholder="Type folder name"
+                        disabled
+                        defaultTags={props.liveDetails.folder} 
                     />
                     <Input
                         className="col col-6 pr2 pt2"

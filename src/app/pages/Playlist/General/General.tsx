@@ -86,7 +86,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     <InputTags
                         className="col col-6"
                         label="Folders"
-                        placeholder="Type folder name"
+                        disabled
+                        defaultTags={props.playlistDetails.folder} 
                     />
                     <Input
                         className="col col-6 pr2 pt2"

@@ -11,7 +11,7 @@ import { FoldersFiltering } from './FoldersFiltering';
 import { Modal } from '../../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
-import { getNameFromFullPath, useOutsideAlerter } from '../../../utils/utils';
+import { getNameFromFullPath, useOutsideAlerter, tsToLocaleDate } from '../../../utils/utils';
 import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 import { FoldersComponentProps } from '../../containers/Folders/Folders';
@@ -22,6 +22,7 @@ import { EmptyTrashModal } from './EmptyTrashModal';
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom';
 import { Badge } from '../../../components/Badge/Badge';
 import { handleFeatures } from '../../shared/Common/Features';
+import { DateTime } from 'luxon';
 
 const folderTreeConst = [
     'folder1',
@@ -195,7 +196,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     </div>,
                     <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                     <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                    <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{row.created}</Text>,
+                    <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.created, DateTime.DATETIME_SHORT)}</Text>,
                     row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableNoStatus' + row.id}></span>,
                     <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
                     <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>

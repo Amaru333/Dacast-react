@@ -8,7 +8,7 @@ export interface TransactionInfos {
     id: string;
     type: string;
     contentName: string;
-    date: DateTime;
+    date: number | null;
     purchaser: string;
     currency: string;
     price: number;
