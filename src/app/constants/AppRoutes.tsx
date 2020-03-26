@@ -34,6 +34,7 @@ import { HelpPage } from '../pages/Help/Help';
 import Uploader from '../containers/Videos/Uploader';
 import ResetPassword from '../containers/Register/ResetPassword';
 import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
+import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -56,6 +57,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ConfirmEmail
+    },
+    {
+        path:'/account-activated',
+        name: 'account-activated',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ActivatedAccountPage
     },
     {
         path:'/reset-password',

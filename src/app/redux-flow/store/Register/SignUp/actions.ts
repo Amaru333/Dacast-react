@@ -14,7 +14,7 @@ export const signupAction = (data: UserInfo): ThunkDispatch<Promise<void>, {}, S
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Signup> ) => {
         await signupService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SIGNUP, payload: response.data});
+                dispatch( {type: ActionTypes.SIGNUP, payload: {...data}});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
