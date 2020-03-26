@@ -91,13 +91,13 @@ const AppContent = () => {
         }
     };
 
-    const PrivateRoute = (props: {key: string; component: any; path: string}) => {
+    const PrivateRoute = (props: {key: string; component: any; path: string, exact?: boolean}) => {
 
-    
         return (
             isLoggedIn()  ?
                 <Route 
                     path={props.path}
+                    exact={props.exact ? true : false}
                 >
                     <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
                     <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
@@ -139,12 +139,14 @@ const AppContent = () => {
         <>                 
         <Toasts />
             <Switch>
+                {isLoggedIn() ?
+                <PrivateRoute key='/' component={Dashboard} exact path='/' />                
+
+                :
                 <Route exact path='/'>
-                    {isLoggedIn() ?
-                        <Dashboard />
-                        : <Login />
-                    }
-                </Route>                             
+                    <Login />
+                </Route>
+                }                           
                 {returnRouter(AppRoutes)}
             </Switch>
     </>
