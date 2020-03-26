@@ -14,6 +14,8 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { ColorPicker } from '../../../../components/ColorPicker/ColorPicker';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { usePlayer } from '../../../utils/player';
+import { tsToLocaleDate } from '../../../../utils/utils';
+import { DateTime } from 'luxon';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -198,7 +200,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 return {data: [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                     theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
-                    <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{theme.createdDate}</Text>,
+                    <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
                     <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><IconStyle onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle><IconStyle onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle> </IconContainer>
 
                 ]}

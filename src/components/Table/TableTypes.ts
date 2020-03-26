@@ -30,6 +30,7 @@ interface TableSpecificProps {
     hasContainer?: boolean;
     headerBackgroundColor: ColorsApp;
     customClassName?: string;
+    tableHeight? : numnber;
 }
 
 export type TableProps = TableSpecificProps & React.HTMLAttributes<HTMLTableElement>;

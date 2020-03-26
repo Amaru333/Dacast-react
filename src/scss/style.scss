@@ -80,7 +80,7 @@ a {
     }
 }
 
-#folderContentTable {
+#liveListTable, #videosListTable, #playlistListTable, #folderContentTable {
     tbody{
         tr{
             height: 64px;
@@ -91,6 +91,9 @@ a {
 .iconAction {
     visibility: hidden;
     transition: none;
+    * {
+        transition: none;
+    }
 }
 
 @media screen and (max-width: 780px) {

@@ -4,7 +4,7 @@ export enum ActionTypes {
 
 export interface Invoice {
     id: string;
-    date: string;
+    date: number;
     total: number;
     status: 'Pending' | 'Failed' | 'Paid';
 }

@@ -27,7 +27,7 @@ export interface FolderAsset {
     name: string;
     thumbnail?: string;
     contentType: 'playlist' | 'vod' | 'live' | 'folder';
-    created: string;
+    created: number;
     duration: string;
     features: FeaturesList;
     status: 'Deleted' | 'Offline' | 'Online';

@@ -6,6 +6,8 @@ import { Pagination } from '../../../../components/Pagination/Pagination';
 import { TransactionsComponentProps } from '../../../containers/Paywall/Transactions';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { tsToLocaleDate } from '../../../../utils/utils';
+import { DateTime } from 'luxon';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -41,7 +43,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 return {data: [
                     <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
-                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
+                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date ? tsToLocaleDate(transaction.date, DateTime.DATETIME_SHORT) : ""}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,

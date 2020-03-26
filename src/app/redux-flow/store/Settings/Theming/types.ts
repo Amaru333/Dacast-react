@@ -14,7 +14,7 @@ export interface ThemeOptions {
     id: string;
     themeName: string;
     isDefault: boolean;
-    createdDate: string;
+    createdDate: number;
     themeType: ThemeType;
     bigPlayButton: boolean;
     playPause: boolean;
