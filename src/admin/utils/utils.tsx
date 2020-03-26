@@ -8,6 +8,8 @@ export interface Routes {
     component?: any;
     slug?: Routes[];
     exactPath?: boolean;
+    isPublic?: boolean;
+    displayedInHeadertab?: boolean;
 }
 
 

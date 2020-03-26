@@ -7,19 +7,15 @@ import Withdrawals from '../containers/Withdrawals/Withdrawals'
 import EditStatus from '../containers/Withdrawals/EditStatus'
 import Balances from '../containers/Paywall/Balances'
 import Chargebacks from '../containers/Paywall/Chargebacks'
+import Login from '../containers/Register/Login'
 
 export const AdminRoutes = [
-    {
-        path: '/',
-        name: 'root',
-        component: Accounts,
-        exactPath: true
-    },
     {
         path: '/accounts',
         name: 'Accounts',
         component: Accounts,
-        exactPath: true
+        exactPath: true,
+        displayedInHeadertab: true
     },
     {
         path: '/accounts/:accountId/plan',
@@ -49,7 +45,8 @@ export const AdminRoutes = [
         path: '/withdrawals',
         name: 'Withdrawals',
         component: Withdrawals,
-        exactPath: true
+        exactPath: true,
+        displayedInHeadertab: true
     },
     {
         path: '/withdrawals/:withdrawalId/edit',
@@ -61,12 +58,21 @@ export const AdminRoutes = [
         path: '/balances',
         name: 'Balances',
         component: Balances,
-        exactPath: true
+        exactPath: true,
+        displayedInHeadertab: true
     },
     {
         path: '/chargebacks',
         name: 'Chargebacks',
         component: Chargebacks,
-        exactPath: true
+        exactPath: true,
+        displayedInHeadertab: true
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        exactPath: true,
+        isPublic: true
     },
 ]

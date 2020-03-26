@@ -2,41 +2,52 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import { BrowserRouter, Switch, Route, useHistory, useLocation} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useHistory, useLocation, Redirect} from 'react-router-dom';
 import { AdminState } from "./redux-flow/store";
 import { AdminRoutes } from './constants/AdminRoutes';
-import styled, { ThemeProvider, css } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
 import { Routes } from './utils/utils';
+import { isLoggedIn } from './utils/token';
+import Login from './containers/Register/Login';
+import Accounts from './containers/Accounts/Accounts';
+import Header from './shared/header/Header';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
+}
+const PrivateRoute = (props: {key: string; component: any; path: string}) => {
+
+    
+    return (
+        isLoggedIn() ?
+            <Route 
+                path={props.path}
+            >
+                <div className='flex flex-column px2'>
+                    <Header />
+                    <props.component {...props} />
+                </div> 
+
+            </Route>
+            : 
+            <Redirect to='/' />
+
+    )
 }
 
 const returnRouter = (props: Routes[]) => {
     return (
         props.map((route: Routes, i: number) => {
-            return !route.slug ? <Route key={i}
-                path={route.path}
-                exact={route.exactPath ? true : false}
-                render={props => (
+            return route.isPublic ? 
+                <Route key={route.path} path={route.path}><route.component /></Route>
+                :  <PrivateRoute key={i.toString()}
+                    path={route.path}
                     // pass the sub-routes down to keep nesting
-                    <route.component {...props} routes={route.slug} />
-                )}
-            />
-                : route.slug.map((subroute: Routes, index: number) => {
-                    return <Route key={'subroute'+index}
-                        path={subroute.path}
-                        exact={route.exactPath ? true : false}
-                        render={props => (
-                            // pass the sub-routes down to keep nesting
-                            <subroute.component {...props} />
-                        )}
-                    />
-                })
-
+                    component={route.component}
+                />
         })
     )
 }
@@ -53,13 +64,17 @@ const AdminContent = () => {
     }, [location])
 
     return (
-        <FullContent>
-            <Content>
+            <div>
                 <Switch>
+                <Route exact path='/'>
+                    {isLoggedIn() ?
+                        <Accounts />
+                        : <Login />
+                    }
+                </Route>  
                     {returnRouter(AdminRoutes)}
                 </Switch>
-            </Content>
-        </FullContent> 
+            </div>
     )
 }
  
@@ -76,22 +91,6 @@ const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
         </Provider>
     );
 };
-
-const Content = styled.div`
-    position: relative;
-    height: auto;
-    min-height: 100vh;
-    padding: 24px;
-    overflow: auto;
-    padding-top: 81px;
-`
-
-const FullContent = styled.div`
-    background: rgb(245, 247, 250);
-    position: relative;
-    padding: 0;
-    min-width: 240px;
-`
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.
