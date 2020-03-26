@@ -2,11 +2,13 @@ import * as React from "react";
 import { Text } from '../../Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
-import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IconStyle, IndicationLabelStyle, AddonStyle } from './InputStyle';
+import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle } from './InputStyle';
+import { Tooltip } from '../../Tooltip/Tooltip';
+import { IconStyle } from '../../../shared/Common/Icon';
 
 export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
 
-    var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, ...other } = props;
+    var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, tooltip, ...other } = props;
 
     return (
         <ContainerStyle hidden={props.hidden} className={className} >
@@ -16,6 +18,14 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                         <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight="med" >
                             {props.label}
                         </Text>
+                        {
+                            tooltip ? 
+                            <div>
+                                <IconStyle id={tooltip}>info_outlined</IconStyle>
+                                <Tooltip target={tooltip}>{tooltip}</Tooltip>
+                            </div> : null
+                            
+                        }
                         {
                             indicationLabel ?
                                 <IndicationLabelStyle>

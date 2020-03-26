@@ -35,7 +35,7 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
         <div>
             <div className='col col-12 py1'>
                 <Input className='col col-6 pr1' value={promoPreset.name} label='Preset name' onChange={(event) => setPromoPreset({...promoPreset, name: event.currentTarget.value})} />
-                <Input className='col col-6 pl1' value={promoPreset.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setPromoPreset({...promoPreset, alphanumericCode: event.currentTarget.value})} />
+                <Input className='col col-6 pl1' value={promoPreset.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setPromoPreset({...promoPreset, alphanumericCode: event.currentTarget.value})} tooltip="Minimum 5 Characters" />
             </div>
             <div className='col col-12 py1'>
                 <Input className='col col-3 pr1' value={promoPreset.discount ? promoPreset.discount.toString() : ''} label='Discount' onChange={(event) => setPromoPreset({...promoPreset, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
