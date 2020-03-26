@@ -10,6 +10,11 @@ export interface GetCompanyPageDetails {
     payload: CompanyPageInfos;
 }
 
+export interface GetCompanyLogoUrl {
+    type: ActionTypes.GET_COMPANY_LOGO_URL;
+    payload: {data: {url: string}};
+}
+
 export interface SaveCompanyPageDetails {
     type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS;
     payload: CompanyPageInfos;
@@ -17,11 +22,16 @@ export interface SaveCompanyPageDetails {
 
 export interface GetUploadLogoUrl {
     type: ActionTypes.GET_UPLOAD_LOGO_URL;
-    payload: string;
+    payload: {data: {presignedURL: string}};
 }
 
 export interface UploadCompanyLogo {
     type: ActionTypes.UPLOAD_COMPANY_LOGO;
+    payload: File;
+}
+
+export interface DeleteCompanyLogo {
+    type: ActionTypes.DELETE_COMPANY_LOGO;
     payload: File;
 }
 
@@ -31,6 +41,17 @@ export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
         await CompanyServices.getCompanyPageDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyLogoUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyLogoUrl> ) => {
+        await CompanyServices.getCompanyPageLogoUrlService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -72,9 +93,22 @@ export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<
     };
 }
 
+export const deleteCompanyLogo = (): ThunkDispatch<Promise<void>, {}, DeleteCompanyLogo> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteCompanyLogo> ) => {
+        await CompanyServices.deleteCompanyLogoService()
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_COMPANY_LOGO, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
 
 export type CompanyAction = 
 GetCompanyPageDetails 
 | SaveCompanyPageDetails 
 | GetUploadLogoUrl 
 | UploadCompanyLogo
+| GetCompanyLogoUrl
+| DeleteCompanyLogo

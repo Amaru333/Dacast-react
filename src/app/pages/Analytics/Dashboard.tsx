@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate } from '../../utils/utils';
+import { tsToLocaleDate } from '../../../utils/utils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";

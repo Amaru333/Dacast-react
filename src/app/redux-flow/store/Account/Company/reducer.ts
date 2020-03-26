@@ -8,16 +8,25 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
             return {...state, 
                 ...action.payload
             }
+        case ActionTypes.GET_COMPANY_LOGO_URL:
+            return {...state, 
+                logoUrl: action.payload.data.url
+            }
         case ActionTypes.SAVE_COMPANY_PAGE_DETAILS:
             return {...state,
                 ...action.payload
             }
-        case ActionTypes.GET_UPLOAD_LOGO_URL:     
+        case ActionTypes.GET_UPLOAD_LOGO_URL:   
+            console.log(action.payload.data.presignedURL)  
             return {
                 ...state,
-                uploadLogoUrl:action.payload
+                uploadLogoUrl: action.payload.data.presignedURL
             }
         case ActionTypes.UPLOAD_COMPANY_LOGO:
+            return {
+                ...state,
+            }
+        case ActionTypes.DELETE_COMPANY_LOGO:
             return {
                 ...state,
             }

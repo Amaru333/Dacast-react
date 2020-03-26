@@ -15,7 +15,7 @@ import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
 import { DomainControl, GeoRestriction } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../../components/Bubble/Bubble';
-import { useMedia } from '../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Prompt } from 'react-router';
 

@@ -3,7 +3,7 @@ import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
 import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
-import { useOutsideAlerter } from '../../app/utils/utils';
+import { useOutsideAlerter } from '../../utils/utils';
 import {isMobile} from "react-device-detect";
 
 export const Modal = (props: ModalProps) => {

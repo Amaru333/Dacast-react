@@ -3,11 +3,11 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 import './datepicker_override.css'
-import { useMedia } from '../../../app/utils/utils';
+import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = (props: {presets?: any, callBack?: Function} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Function} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')

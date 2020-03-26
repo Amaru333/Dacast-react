@@ -4,7 +4,7 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate, useMedia } from '../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate, useMedia } from '../../../utils/utils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';

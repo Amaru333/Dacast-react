@@ -7,7 +7,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
 import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
-import { useOutsideAlerter } from '../../app/utils/utils';
+import { useOutsideAlerter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
 import { LogoutAction, Action } from '../../app/redux-flow/store/Register/Login';
 import Burger from '../../app/containers/Navigation/Burger';

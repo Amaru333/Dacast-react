@@ -13,7 +13,7 @@ export function addTokenToHeader() {
     if(localStorage.getItem('userToken')) {
         var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
         let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
-        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id']}
+        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken}
 
     }
     throw new Error('No user token found')

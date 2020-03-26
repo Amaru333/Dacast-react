@@ -4,7 +4,7 @@ import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem } from './DropdownStyle';
 import { DropdownProps, DropdownListType , dropdownIcons} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
-import { useOutsideAlerter } from '../../../app/utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 
 export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) => {
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
-import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrlAction } from '../../redux-flow/store/Account/Company/actions';
+import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrlAction, getCompanyPageLogoUrlAction, deleteCompanyLogo } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -14,6 +14,8 @@ interface CompanyContainerProps {
     saveCompanyPageDetails: Function;
     getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
+    getCompanyPageLogoUrl: Function;
+    deleteCompanyLogo: Function;
 }
 const Company = (props: CompanyContainerProps) => {
 
@@ -21,6 +23,7 @@ const Company = (props: CompanyContainerProps) => {
     React.useEffect( () => {
         if(!props.CompanyInfos) {
             props.getCompanyPageDetails();
+            props.getCompanyPageLogoUrl()
         }
 
     }, [])
@@ -47,6 +50,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getCompanyPageDetails: () => {
             dispatch(getCompanyPageDetailsAction());
         },
+        getCompanyPageLogoUrl: () => {
+            dispatch(getCompanyPageLogoUrlAction());
+        },
         saveCompanyPageDetails: (data: CompanyPageInfos) => {
             dispatch(saveCompanyPageDetailsAction(data));
         },
@@ -55,6 +61,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         uploadCompanyLogo: (data: File, uploadUrl: string) => {
             dispatch(uploadCompanyLogo(data, uploadUrl));
+        },
+        deleteCompanyLogo: () => {
+            dispatch(deleteCompanyLogo());
         },
     };
 }

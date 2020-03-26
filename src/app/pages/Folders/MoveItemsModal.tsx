@@ -4,7 +4,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { getNameFromFullPath } from '../../utils/utils';
+import { getNameFromFullPath } from '../../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
