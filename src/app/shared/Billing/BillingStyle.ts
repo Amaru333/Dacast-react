@@ -9,7 +9,7 @@ export const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 8px 24px;
+    padding: 16px;
     ${props => props.isSelected && css`
         background-color: ${props => props.theme.colors['violet10']};   
     `}

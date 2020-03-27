@@ -24,13 +24,15 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
 `;
 
-export const LabelStyle = styled.label<{disabled: boolean}>`
+export const LabelStyle = styled.label<{disabled: boolean, tooltip?: string}>`
     display: flex;
     height:auto;
     margin-bottom: 4px;
     margin-top:4px;
     align-items: center;
-    justify-content: space-between;
+    ${props => props.tooltip && css`
+        justify-content: space-between;
+    `}
 `;
 
 export const IndicationLabelStyle = styled.label<{}>`

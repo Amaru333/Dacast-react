@@ -415,7 +415,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} />
+                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} hasContainer />
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 

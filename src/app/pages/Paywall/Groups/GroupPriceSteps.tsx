@@ -12,6 +12,7 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
 import { GroupStepperData } from './Groups';
+import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 
 var moment = require('moment-timezone');
 
@@ -41,7 +42,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
     const renderPrices = () => {
         return stepperData.firststep.price.map((price, key) => {
             return( 
-                <div key={'groupPriceSection' + key} className='col col-9 py1 flex items-center'>
+                <div key={'groupPriceSection' + key} className='col col-12 py1 flex items-center'>
                     <div className='col col-6'>
                     <Input className='col col-6 pr1 mt1' defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
                     <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
@@ -71,7 +72,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
                         :
                         <>
                             <Input className='col col-6 pr1' label='Duration' defaultValue={stepperData.firststep.duration.amount.toString()} onChange={(event) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, duration: {...stepperData.firststep.duration, amount: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt3' dropdownDefaultSelect={stepperData.firststep.duration.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, duration: {...stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt25' dropdownDefaultSelect={stepperData.firststep.duration.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, duration: {...stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
                         </>
                 }
 
@@ -243,8 +244,8 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
                 {renderContentsList()} 
             </ContainerHalfSelector>
             <div className="col col-2" style={{marginTop: 180}}>
-                <Button onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle fontSize="small">chevron_right</IconStyle></ArrowButton>
+                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle fontSize="small">chevron_left</IconStyle></ArrowButton>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">
