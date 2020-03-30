@@ -93,7 +93,7 @@ const AppContent = () => {
 
     const PrivateRoute = (props: {key: string; component: any; path: string}) => {
 
-    
+        var isMobile = true;
         return (
             isLoggedIn()  ?
                 <Route 
@@ -216,7 +216,7 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    overflow: auto;
+    overflow: hidden;
     ${props => props.isMobile && css`
         overflow-x: hidden;
         padding: 16px;

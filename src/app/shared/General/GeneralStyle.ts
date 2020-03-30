@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text'
 import { Input } from '../../../components/FormsComponents/Input/Input';
 
+export const ClassHalfXsFullMd = "col lg-col-6 md-col-6 sm-col-12 col-12 xs-no-gutter ";
+
 export const Divider = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
     margin: 32px 24px 24px 0;

@@ -72,9 +72,9 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
     const advertisingTableBody = () => {
         return props.liveEngagementSettings.engagementSettings.adList.map((item, i) => {
             return {data: [
-                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
-                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
-                <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
+                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='reg'>{item.placement}</Text>,
+                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='reg'>{item.position}</Text>,
+                <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='reg'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon id={"deleteTooltip" + item.id}>
                         <IconStyle 
@@ -120,11 +120,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                         defaultChecked={engagementSettings.adEnabled} 
                         onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
                     />
-
-                    <div className="py2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    </div>
-                    
+                    <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>

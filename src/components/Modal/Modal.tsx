@@ -12,7 +12,7 @@ export const Modal = (props: ModalProps) => {
 
     let modalRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(modalRef, () => props.toggle());
-
+    var isMobile= true;
     return (
         <React.Fragment>
             <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>

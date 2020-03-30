@@ -34,7 +34,7 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     `};
     ${props => props.isMobile && css`
         padding: 16px;
-        width: 300px;
+        width: 80%;
     `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);

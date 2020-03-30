@@ -32,6 +32,15 @@ body {
 input:focus, textarea:focus, select:focus{
     outline: none;
 }
+
+.mt-auto {
+    margin-top: auto;
+}
+
+.my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
+}
 /* unvisited link */
 a:link {
     color: #284CEB;
@@ -149,6 +158,11 @@ a {
 .mb35 { margin-bottom: 2.5rem}
 
 .py35 { padding-top: 2.5rem; padding-bottom: 2.5rem;}
+
+/** Singe Date Picker override **/
+.DateInput {
+    width: auto;
+}
 
 
 /** Carousel override css classes  **/
@@ -280,4 +294,51 @@ a {
 }
 
     
+/**  Responsive stuff */ 
 
+.xs-show {
+    display: none;
+}
+
+.sm-show {
+    display:none;
+}
+
+/** XS custom class */ 
+@media (max-width: 40em) {
+    .xs-no-gutter {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .xs-mb1 {
+        margin-bottom: 1em;
+    }
+    .xs-mb2 {
+        margin-bottom: 1rem;
+    }
+    .xs-mr0 {
+        margin-right: 0;
+    }
+    .xs-mb25 {
+        margin-bottom: 1.5em;
+    }
+    .xs-show {
+        display: initial;
+    }
+}
+
+/** SM custom class */ 
+@media (min-width: 40em) {
+    .sm-pr1 {
+        padding-right: 1em;
+    }
+    .sm-py1 {
+        padding-top: var(--space-1); padding-bottom: var(--space-1)
+    }
+    .sm-pl1 {
+        padding-left: 1em;
+    }
+    .sm-show {
+        display:initial;
+    }
+}
