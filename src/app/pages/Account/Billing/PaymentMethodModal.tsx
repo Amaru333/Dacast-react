@@ -3,7 +3,9 @@ import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { TextStyle, RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing/BillingStyle';
+import { TextStyle, RadioButtonContainer, RadioButtonOption,  RecurlyElementStyle } from '../../../shared/Billing/BillingStyle';
+import { useRecurly, CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement } from '@recurly/react-recurly';
+import { Theme } from '../../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 
@@ -13,38 +15,44 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
 
     let formRef = React.useRef<HTMLFormElement>(null);
+    const recurly = useRecurly()
+
+    // recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) =>  {
         event.preventDefault();
-        props.actionButton();
-        props.toggle(false);
+        // props.actionButton();
+        // props.toggle(false);
         if(selectedOption === 'paypal') {
 
         }else {
             let form = formRef.current
             recurly.token(form,(err: any, token: any) => {
                 if (err) {
+                    console.log(err)
                 } 
                 else {
-                    
-                    var risk = recurly.Risk();
-                    var threeDSecure = risk.ThreeDSecure({
-                        actionTokenId: token.id
-                    });
-                    threeDSecure.on('token', function () {
-                    });
+                    event.preventDefault();
+                    console.log(token)
+                    debugger
+                    // var risk = recurly.Risk();
+                    // var threeDSecure = risk.ThreeDSecure({
+                    //     actionTokenId: token.id
+                    // });
+                    // threeDSecure.on('token', function () {
+                    // });
                       
-                    threeDSecure.on('error', function () {
-                    });
-                    threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                    form.submit();
+                    // threeDSecure.on('error', function () {
+                    // });
+                    // threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
+                    // form.submit();
                 }
             });
         }
     }
 
     return (
-
+        
         <form ref={formRef} onSubmit={event => submitForm(event)}>
             <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
             <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
@@ -53,6 +61,7 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
             </RadioButtonContainer>
             <RadioButtonOption isOpen={selectedOption === 'creditCard'} className='mb2'>
                 <div className='col col-12 pt2 px2'>
+                    
                     <Input
                         data-recurly="first_name"
                         className='col col-6 pr2 pl1'
@@ -68,16 +77,51 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                         required={false}
                     />
                 </div>
- 
+                
                 <div className='col col-12 pt1 px2'>
-                    <Input 
-                        data-recurly="number"
+
+                    {/* <Input 
+                        
                         className='col col-6 pr2 pl1'
                         label="Card Number"
                         type='text'
                         required={false}
-                    />
-                    <Input 
+                    /> */}
+                    <div className="flex">
+                        <div className="flex flex-column ml1">
+                        <Text size={14} weight="med">Number</Text>
+                        <RecurlyElementStyle>
+                        <CardNumberElement style={{fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px'}} />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                        
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">CVV</Text>
+                        <RecurlyElementStyle>
+                        <CardCvvElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                       
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">Month</Text>
+                        <RecurlyElementStyle>
+                        <CardMonthElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                        
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">Year</Text>
+                        <RecurlyElementStyle>
+                        <CardYearElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                    </div>
+                    
+                    {/* <Input 
                         data-recurly="cvv"
                         className='col col-3 pr2'
                         label="CVV"
@@ -97,7 +141,7 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                         label="Year"
                         type='text'
                         required={false}
-                    />
+                    /> */}
                 </div>
                     
                 <div className='col col-12 pt1 px2'>
@@ -177,6 +221,6 @@ export const PaymentMethodModal = (props: {toggle: Function; actionButton: Funct
                 <Button sizeButton="large" type='submit' typeButton="primary" buttonColor="blue" >Add</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
-        </form>
+        </form>    
     )
 }
