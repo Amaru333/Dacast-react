@@ -8,6 +8,7 @@ import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly } from '@recurly/react-recurly';
+import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 
 export const NewPaymentMethodForm = (props: {callback: Function; actionButton?: Function}) => {
 
@@ -17,21 +18,7 @@ export const NewPaymentMethodForm = (props: {callback: Function; actionButton?: 
 
     const recurly = useRecurly()
 
-    React.useEffect(() => {
-        // document.getElementById('stepperNextButton').setAttribute('type', 'submit')
-        // document.getElementById('stepperNextButton').setAttribute('form', 'paymentMethodForm')
-        document.getElementById('stepperNextButton').addEventListener('click', () => {
-            useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, )   
-        })
-
-        return () => {
-            document.getElementById('stepperNextButton').removeEventListener('click', () => {
-                useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton)
-                
-            })
-        }
-
-    }, [])
+    useStepperFinalStepAction('stepperNextButton', useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()

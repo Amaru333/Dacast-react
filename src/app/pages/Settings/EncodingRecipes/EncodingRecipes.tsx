@@ -16,6 +16,7 @@ import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -79,6 +80,7 @@ const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
 }
 
 const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
+    debugger
     if(selectedRecipe) {
         if (selectedRecipe.id) {
             saveEncodingRecipe(selectedRecipe)
@@ -88,10 +90,11 @@ const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe
         }
         FunctionRecipe(false)
     }
-
+    console.log('submitting')
 }
 
 const stepList = [settingsStep, presetStep]
+
 
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
@@ -119,6 +122,9 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
     }
+
+    useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))
+
     return(
         !props.encodingRecipeData? 
             <LoadingSpinner size='large' color='blue80' />

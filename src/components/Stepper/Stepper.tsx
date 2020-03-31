@@ -33,11 +33,6 @@ export const CustomStepper = (props: StepperProps) => {
             setStepIndex(stepIndex + 1)
             setStepValidated(true)
         }
-        else {
-            // setStepIndex(props.stepList.length - 1)
-            // props.finalFunction()
-            
-        }
     }
 
     const previousStep = () => {

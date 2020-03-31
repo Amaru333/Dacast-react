@@ -14,6 +14,7 @@ import { PlansContainerProps } from '../../../containers/Account/Plans';
 
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
@@ -35,6 +36,9 @@ export const PlansPage = (props: PlansContainerProps) => {
     React.useEffect(() => {
         props.changeActivePlan({...stepperData, isActive: true})
     }, [currentPlan])
+
+    useStepperFinalStepAction('stepperNextButton', () => purchasePlan())
+
 
     return (
         <PlansPageContainer isMobile={isMobile}>
@@ -322,7 +326,6 @@ export const PlansPage = (props: PlansContainerProps) => {
                         </PlanContainer>
                     </Carousel>
             }
-
          
             <CustomStepper 
                 opened={stepperPlanOpened}
