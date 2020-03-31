@@ -28,6 +28,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
     let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
+    const [selectedCountry, setSelectedCountry] = React.useState<string>(props.CompanyPageDetails.country)
 
     let {CompanyPageDetails} = props;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
@@ -44,7 +45,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             state: data['state'].value,
             town: data['town'].value,
             zipCode: data['zipCode'].value,
-            country: ""
+            country: selectedCountry
         })
     }
 
@@ -168,7 +169,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-3">
-                            <AccountIdText size={14} weight="reg"></AccountIdText>
+                    <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
                             <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
@@ -328,7 +329,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             {...handleValidationProps('zipCode', validations)}
                     
                         />
-                        <DropdownSingle hasSearch dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
+                        <DropdownSingle hasSearch callback={(value: string) => setSelectedCountry(value)} dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
 
                     </div>
                 </form>

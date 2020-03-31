@@ -9,6 +9,7 @@ export enum ActionTypes {
 
 
 export interface CompanyPageInfos {
+    id: string;
     accountName: string;
     businessName: string;
     contactNumber: string;
@@ -26,6 +27,7 @@ export interface CompanyPageInfos {
 }
 
 export const companyInitialState: CompanyPageInfos = {
+    id: "",
     accountName: "",
     businessName: "",
     contactNumber: "",

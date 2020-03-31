@@ -6,6 +6,7 @@ import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
 import { Link, useRouteMatch } from 'react-router-dom'
+import { DateTime } from 'luxon'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -29,24 +30,24 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             return props.withdrawals.map((withdrawal, key) => {
                 return {data: [
                     <Link key={'withdrawalsTableBodyAccountIdCell' + key }to=''>{withdrawal.accountId}</Link>,
-                    <Text key={'withdrawalsTableBodyAmountCell' + key } size={14}>{withdrawal.amount}</Text>,
-                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{withdrawal.requestedDate}</Text>,
-                    <Text key={'withdrawalsTableBodyPreviousDateCell' + key } size={14}>{withdrawal.previous}</Text>,
-                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.completedDate}</Text>,
-                    <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method}</Text>,
-                    <Link key={'withdrawalsTableBodyRecurlyIdCell' + key }to=''>{withdrawal.recurlyId}</Link>,
-                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status}</Link>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?accountId=${withdrawal.id}`}>{withdrawal.amount}</Link>,
+                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.requestedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                    <Text key={'withdrawalsTableBodyPreviousDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.previous).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.completedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                    <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
+                    <Link key={'withdrawalsTableBodyRecurlyIdCell' + key }to={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</Link>,
+                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
                 ]}
             })
         }
     }
 
     return (
-        <div>
+        <div className='flex flex-column'>
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
-            <Tab className='my1' orientation='horizontal' callback={() => {}} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
+            <Tab className='my1 col col-3' orientation='horizontal' callback={() => {}} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
             <Table className='my1' id='withdrawalsTable' headerBackgroundColor='white' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
-            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
 
         </div>
     )

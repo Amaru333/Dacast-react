@@ -22,6 +22,12 @@ export const NewPaymentMethodForm = (props: {callback: Function}) => {
             useRecurlySubmit(formRef.current, selectedOption, props.callback)
         })
 
+        return () => {
+            document.getElementById('stepperNextButton').removeEventListener('click', () => {
+                useRecurlySubmit(formRef.current, selectedOption, props.callback)
+            })
+        }
+
     }, [])
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {

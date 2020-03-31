@@ -10,12 +10,13 @@ interface PaginationProps {
     totalResults: number;
     displayedItemsOptions: number[];
     callback: Function;
+    defaultDisplayedOption?: number;
 }
 
 export const Pagination = (props: PaginationProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<number>(1);
-    const [displayedOptions, setDisplayedOptions] = React.useState<number>(props.displayedItemsOptions[0]);
+    const [displayedOptions, setDisplayedOptions] = React.useState<number>(props.defaultDisplayedOption ? props.defaultDisplayedOption : props.displayedItemsOptions[0]);
     
     let smallScreen = useMedia('(max-width: 780px)')
 
@@ -42,6 +43,7 @@ export const Pagination = (props: PaginationProps) => {
                 <DropdownButton
                     className='mx1'
                     id='paginationDropdown'
+                    dropdownDefaultSelect={props.defaultDisplayedOption ? props.defaultDisplayedOption.toString() : null}
                     list={props.displayedItemsOptions.map(item => item.toString())}
                     callback={(value: string) => {setDisplayedOptions(parseInt(value))}}
                 />
