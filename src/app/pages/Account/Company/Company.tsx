@@ -13,6 +13,7 @@ import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { updateClipboard } from '../../../utils/utils';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -131,16 +132,18 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
-                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
+                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>
-                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                        <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                        <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Upload</Button>
+                        <div className="p1 absolute" style={{top:0, right:0}} >
+                            <Button sizeButton='xs' typeButton='secondary' className="mr1" buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Change</Button>
+                            <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
+                        </div>
+                        <ImageStyle src={uploadedFileUrl}></ImageStyle>  
                         </>
                             :
                         <>
-                        <IconStyle className='pt3 center' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
@@ -169,7 +172,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-3">
                             <AccountIdText size={14} weight="reg"></AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("copied")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer m1' id="copyEmbedTooltip" onClick={() => updateClipboard("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
