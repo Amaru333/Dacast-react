@@ -187,6 +187,11 @@ export const BillingPage = (props: BillingComponentProps) => {
             ]}})    
     }
 
+    const onSubmitFunctions = () => {
+        props.saveBillingPagePaymentMethod();
+        setPaypaylModalOpened(false)
+    }
+
     return (
         <div> 
             <Card>
@@ -224,12 +229,16 @@ export const BillingPage = (props: BillingComponentProps) => {
 
             
             </Card>
-            <RecurlyProvider publicKey="ewr1-Q41rGVpgRgI2uLRM9kgivS"> 
-            <Elements>
-            <Modal hasClose={false} title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
-                <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
-            </Modal>
-            </Elements>
+            <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
+                <Elements>
+                    <Modal 
+                        hasClose={false} 
+                        title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
+                        toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' 
+                        opened={paypalModalOpened}>
+                            <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
+                    </Modal>
+                </Elements>
             </RecurlyProvider>
             <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} />

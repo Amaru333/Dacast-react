@@ -1,12 +1,12 @@
-import React from 'react';
 
-export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: string, callback: Function ) => {
+export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: string, callback: Function, recurly: any, actionButton: Function ) => {
+    
     console.log('entering recurly hook', formRef)
 
-
+    
     if(selectedOption === 'paypal') {
 
-    }else {
+    }else { 
         console.log('requesting token')
         recurly.token(formRef,(err: any, token: any) => {
             console.log(token, err)
@@ -14,6 +14,7 @@ export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: strin
                 console.log(err)
             } 
             else {
+                actionButton();
                 console.log('sucees token', token.id)
                 var risk = recurly.Risk();
                 var threeDSecure = risk.ThreeDSecure({
@@ -30,15 +31,10 @@ export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: strin
                 threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
                 callback(token.id)
                 formRef.submit();
+                
             }
         });
+        
         console.log('end recurly')
     }
-}
-
-export const useRecurly = () => {
-    React.useEffect(() => {
-        recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
-        console.log('setting the config')
-    }, [])
 }
