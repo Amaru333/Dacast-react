@@ -201,7 +201,7 @@ export const LivePaywallPage = (props: LivePaywallComponentProps) => {
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
-                <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
+                <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show m2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
                 { props.livePaywallInfos.promos.length === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :

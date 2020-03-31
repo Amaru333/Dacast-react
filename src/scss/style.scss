@@ -16,7 +16,7 @@ img {
 }
 
 input[type=time]::-webkit-datetime-edit-ampm-field {
-    display: none;
+    //display: none;
 }
 
 .minContentDash {
@@ -160,11 +160,19 @@ a {
 .py35 { padding-top: 2.5rem; padding-bottom: 2.5rem;}
 
 /** Singe Date Picker override **/
+
 .DateInput {
     width: auto;
 }
 
+.SingleDatePickerInput_calendarIcon {
+    position: absolute;
+    right: 0px;
+}
 
+.SingleDatePickerInput {
+    width:100%;
+}
 /** Carousel override css classes  **/
 
 .carousel .slide {
@@ -311,7 +319,7 @@ a {
         padding-right: 0;
     }
     .xs-mb1 {
-        margin-bottom: 1em;
+        margin-bottom: .5em;
     }
     .xs-mb2 {
         margin-bottom: 1rem;
@@ -325,20 +333,41 @@ a {
     .xs-show {
         display: initial;
     }
+    .xs-mr1 {
+        margin-right: .5em;
+    }
+    .xs-pr1 {
+        padding-right: .5em;
+    }
+    .xs-pl1 {
+        padding-left: .5em;
+    }
+    .xs-mt2 {
+        margin-top: 1rem;
+    }
 }
 
 /** SM custom class */ 
 @media (min-width: 40em) {
     .sm-pr1 {
-        padding-right: 1em;
+        padding-right: .5em;
     }
     .sm-py1 {
         padding-top: var(--space-1); padding-bottom: var(--space-1)
     }
     .sm-pl1 {
-        padding-left: 1em;
+        padding-left: .5em;
     }
     .sm-show {
         display:initial;
+    }
+    .sm-mr1 {
+        margin-right: .5em;
+    }
+    .sm-flex {
+        display:flex;
+    }
+    .sm-mt-auto {
+        margin-top: auto;
     }
 }
