@@ -10,9 +10,9 @@ const logo = require('../../../../../public/assets/logo.png');
 
 export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
 
-    React.useEffect(() => {
-        props.confirmEmail(props.email)
-    }, [])
+    // React.useEffect(() => {
+    //     //props.confirmEmail(props.email)
+    // }, [])
     
     return(
         <LoginContainer>
@@ -29,7 +29,7 @@ export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
                 </ModalContent>
                 <ModalFooter>
                     <div className="mt2">
-                        <Text size={12} weight="reg">Didn’t receive an email? <a onClick={() => props.confirmEmail(props.email)}>Re-send email confirmation.</a></Text>
+                        <Text size={12} weight="reg">Didn’t receive an email? <a href='#' onClick={() => props.confirmEmail(props.email)}>Re-send email confirmation.</a></Text>
                     </div>
                 </ModalFooter>
             </ModalCard>

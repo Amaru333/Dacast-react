@@ -45,7 +45,7 @@ export const SignupPage = (props: SignupContainerProps) => {
             </ModalContent>
             <ModalFooter>
                 <Button sizeButton="large" typeButton="primary" onClick={() => submitSignup(userInfo)}>Sign Up</Button>
-                <Button sizeButton="large" typeButton="tertiary" onClick={() => location.href="/login"}>Cancel</Button>
+                <Button sizeButton="large" typeButton="tertiary" onClick={() => history.push("/login")}>Cancel</Button>
             </ModalFooter>
         </ModalCard>
     </LoginContainer>);
