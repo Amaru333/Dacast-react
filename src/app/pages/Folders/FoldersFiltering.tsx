@@ -77,48 +77,51 @@ export const FoldersFiltering = (props: {setCheckedItems: Function}) => {
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >
-                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
-                <div className="mb3" id="folderFilterStatus">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.online } } }) }}
-                        id='folderFilterOnline' label="Online" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.offline}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
-                        id='folderFilterOffline' label="Offline" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.processing } } }) }}
-                        id='folderFilterProcessing' label="Processing" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.deleted}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, deleted: !prevState.status.deleted } } }) }}
-                        id='folderFilterDeleted' label="Deleted" labelWeight="reg" />
+                <div>
+                    <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
+                    <div className="mb3" id="folderFilterStatus">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.online } } }) }}
+                            id='folderFilterOnline' label="Online" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.offline}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
+                            id='folderFilterOffline' label="Offline" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.processing } } }) }}
+                            id='folderFilterProcessing' label="Processing" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.deleted}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, deleted: !prevState.status.deleted } } }) }}
+                            id='folderFilterDeleted' label="Deleted" labelWeight="reg" />
+                    </div>
+                    <div className="mb3" id="folderFilterFeatures">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
+                            id='folderFilterPaywall' label="Paywall" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
+                            id='folderFilterAdvertising' label="Advertising" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
+                            id='folderFilterPlaylists' label="Playlists" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
+                            id='folderFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
+                            id='folderFilterRecording' label="Recording" labelWeight="reg" />
+                    </div>
+                    <div className="mb3" id="folderFilterAfter">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                    </div>
+                    <div className="mb3" id="folderFilterBefore">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                    </div>
                 </div>
-                <div className="mb3" id="folderFilterFeatures">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
-                        id='folderFilterPaywall' label="Paywall" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                        id='folderFilterAdvertising' label="Advertising" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                        id='folderFilterPlaylists' label="Playlists" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
-                        id='folderFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
-                        id='folderFilterRecording' label="Recording" labelWeight="reg" />
-                </div>
-                <div className="mb3" id="folderFilterAfter">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
-                </div>
-                <div className="mb3" id="folderFilterBefore">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
-                </div>
+                
                 <div className="flex" id="folderFilterbuttons">
                     <Button onClick={() => { setOpenFilters(false); props.setCheckedItems([]) }} className="mr1" typeButton="primary">
                         Apply

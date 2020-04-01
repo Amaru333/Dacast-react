@@ -11,6 +11,10 @@
   transition: none;
 }
 
+.SingleDatePickerInput_calendarIcon {
+  float: right;
+}
+
 .CalendarDay {
   border: none;
   margin: 0.5rem 0;
@@ -60,6 +64,13 @@
   border: 1px solid #C8D1E0;
 }
 
+.SingleDatePickerInput {
+  width: 100%;
+}
+
+.DateInput {
+  width: auto;
+}
 
 .DateInput_input {
   font-family: Roboto;
@@ -67,7 +78,6 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
-  background: #FFFFFF;
   width: 85%;
 }
 

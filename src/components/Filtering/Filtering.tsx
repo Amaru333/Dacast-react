@@ -28,6 +28,9 @@ export const Filtering = (props: FilteringProps & React.HTMLAttributes<HTMLDivEl
 
 const ContainerFilters = styled.div<{ isOpen: boolean }>`
     width: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;
     position: fixed;
     padding: 24px;

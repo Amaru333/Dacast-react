@@ -60,27 +60,30 @@ export const InvoicesFiltering = (props: {}) => {
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >
-                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
-                <div className="mb3" id="folderFilterStatus">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.paid}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.paid } } }) }}
-                        id='folderFilterPaid' label="Paid" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.pending}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.pending } } }) }}
-                        id='folderFilterPending' label="Pending" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.failed}
-                        onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.failed } } }) }}
-                        id='folderFilterFailed' label="Failed" labelWeight="reg" />
+                <div>
+                    <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
+                    <div className="mb3" id="folderFilterStatus">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.paid}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, paid: !prevState.status.paid } } }) }}
+                            id='folderFilterPaid' label="Paid" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.pending}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, pending: !prevState.status.pending } } }) }}
+                            id='folderFilterPending' label="Pending" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.failed}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, failed: !prevState.status.failed } } }) }}
+                            id='folderFilterFailed' label="Failed" labelWeight="reg" />
+                    </div>
+                    <div className="mb3" id="folderFilterAfter">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                    </div>
+                    <div className="mb3" id="folderFilterBefore">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                    </div>
                 </div>
-                <div className="mb3" id="folderFilterAfter">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
-                </div>
-                <div className="mb3" id="folderFilterBefore">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
-                </div>
+                
                 <div className="flex" id="folderFilterbuttons">
                     <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
                         Apply
