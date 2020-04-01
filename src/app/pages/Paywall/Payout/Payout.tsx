@@ -67,7 +67,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const emptyPaymentMethodTableBody = (text: string) => {
         return [{data: [
             <span key={'emptyPresetTableBody'}></span>,
-            <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+            <div className='left'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
         ]}]
     }
 
@@ -124,7 +124,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const emptyWithdrawalTableBody = (text: string) => {
         return props.payoutInfos.paymentMethodRequests ? [{data: [
-            <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>,
+            <div key={'emptyWithdrawalsTableBody'} className='right'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>,
             <div key={'emptyWithdrawalsTableBody'} className='center'></div>
         ]}] :
         [{data: [
@@ -139,7 +139,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         <div>
             <Card>
                 <Text  size={20} weight='reg'>New Payment Method</Text>
-                <Text className='py2' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
+                <Text className='pt2 pb1' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 {
                     props.payoutInfos.paymentMethodRequests ? 
                         <Table id='paywallPaymentMethodTable' headerBackgroundColor="gray-10" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
@@ -147,7 +147,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 }
                 <BorderStyle className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
-                <Text className='py2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
+                <Text className='pt2 py1' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
                 {
                     props.payoutInfos.withdrawalRequests ?
                         <Table id='payoutWithdrawalTable' headerBackgroundColor="gray-10" header={withdrawalTableHeader()} body={withdrawalTableBody()} />

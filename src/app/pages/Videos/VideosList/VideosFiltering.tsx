@@ -78,44 +78,46 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                 </Button>
             </div>
             <Filtering isOpen={openFilters} >
-                <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
-                <div className="mb3" id="vodFilterStatus">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.online } } }) }}
-                        id='vodFilterOnline' label="Online" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.offline}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
-                        id='vodFilterOffline' label="Offline" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.processing } } }) }}
-                        id='vodFilterProcessing' label="Processing" labelWeight="reg" />
-                </div>
-                <div className="mb3" id="vodFilterFeatures">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
-                        id='vodFilterPaywall' label="Paywall" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                        id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />
-                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
-                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                        id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />
-                </div>
-                <div className="mb3" id="vodFilterAfter">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
-                </div>
-                <div className="mb3" id="vodFilterBefore">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                    <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
-                </div>
-                <div className="mb3" id="vodFilterSize">
-                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
-                    <div className="mxn2 clearfix">
-                        <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: event.currentTarget.value } })} />
-                        <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: event.currentTarget.value } })} />
+                <div>
+                    <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
+                    <div className="mb3" id="vodFilterStatus">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.online } } }) }}
+                            id='vodFilterOnline' label="Online" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.offline}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
+                            id='vodFilterOffline' label="Offline" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, processing: !prevState.status.processing } } }) }}
+                            id='vodFilterProcessing' label="Processing" labelWeight="reg" />
+                    </div>
+                    <div className="mb3" id="vodFilterFeatures">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
+                            id='vodFilterPaywall' label="Paywall" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
+                            id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
+                            id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />
+                    </div>
+                    <div className="mb3" id="vodFilterAfter">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                    </div>
+                    <div className="mb3" id="vodFilterBefore">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                    </div>
+                    <div className="mb3" id="vodFilterSize">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
+                        <div className="mxn2 clearfix">
+                            <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: event.currentTarget.value } })} />
+                            <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: event.currentTarget.value } })} />
+                        </div>
                     </div>
                 </div>
                 <div className="flex" id="vodFilterbuttons">
