@@ -50,7 +50,6 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     z-index: 9999;
     ${props => props.isMobile && css`
         max-height: 90%;
-        overflow-y: auto;
     `}; 
 `;
 export const ModalTitleStyle = styled.div`

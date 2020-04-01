@@ -30,7 +30,6 @@ export const LabelStyle = styled.label<{disabled: boolean}>`
     margin-bottom: 4px;
     margin-top:4px;
     align-items: center;
-    justify-content: space-between;
 `;
 
 export const IndicationLabelStyle = styled.label<{}>`

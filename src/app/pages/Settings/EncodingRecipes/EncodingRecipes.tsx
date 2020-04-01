@@ -74,7 +74,7 @@ const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
         {cell: <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>},
         {cell: <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>},
         {cell: <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>},
-        {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
+        {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 sm-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
     ]}
 }
 
@@ -119,6 +119,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
     }
+    var isMobile = true;
     return(
         !props.encodingRecipeData? 
             <LoadingSpinner size='large' color='blue80' />
@@ -132,6 +133,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
+                <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
                 <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}

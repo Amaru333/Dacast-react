@@ -41,6 +41,7 @@ export const CustomStepper = (props: StepperProps) => {
         }
     }
 
+    var isMobile=true;
     return (
         <React.Fragment>
             <StepperContainerStyle opened={props.opened} isMobile={isMobile}>
