@@ -7,6 +7,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
+import { DateTime } from 'luxon'
 
 
 export const BalancesPage = (props: BalancesComponentProps) => {
@@ -28,7 +29,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
         if(props.balanceInfo) {
             return props.balanceInfo.operations.map((balance, key) => {
                 return {data: [
-                    <Link key={'balancesTableBodyDateCell' + key }to=''>{balance.date}</Link>,
+                    <Link key={'balancesTableBodyDateCell' + key }to=''>{DateTime.fromSeconds(balance.date).toFormat("yyyy-LL-dd HH:mm")}</Link>,
                     <Text key={'balancesTableBodyTypeCell' + key } size={14}>{balance.type}</Text>,
                     <Text key={'balancesTableBodyCreditCell' + key } size={14}>{balance.credit}</Text>,
                     <Text key={'balancesTableBodyDebitCell' + key } size={14}>{balance.debit}</Text>,
@@ -44,10 +45,10 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             <div className='flex my1'>
                 <Input className='mr2' id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                 <Button disabled={!accountId ? true : false} onClick={() => {props.getBalances(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
-                <Text size={14} weight='med'>Balances: ${props.balanceInfo ? props.balanceInfo.accountBalance : ''}</Text>
+                <Text size={14} weight='med'>{props.balanceInfo ? 'Balance: $' + props.balanceInfo.accountBalance : ''}</Text>
             </div>
             <Table className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
-            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
         </div>
     )
 }

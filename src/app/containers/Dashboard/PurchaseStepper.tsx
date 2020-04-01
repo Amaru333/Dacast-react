@@ -6,6 +6,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { NewPaymentMethodForm } from '../../shared/Billing/NewPaymentMethodForm';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
+import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 
 export const PurchaseStepperCartStep = () => {
 
@@ -42,7 +43,7 @@ export const PurchaseStepperCartStep = () => {
     )
 }
 
-export const PurchaseStepperPaymentStep = (stepperData: string, callback: Function) => {
+export const PurchaseStepperPaymentStep = (stepperData: string, callback: Function, placeholder: Function, finalFunction: Function) => {
 
     const purchaseStepperPaymentTotalHeader = () => {
         return  {data: [
@@ -89,7 +90,12 @@ export const PurchaseStepperPaymentStep = (stepperData: string, callback: Functi
             </div>
             
             {
-                stepperData === "none" ? <NewPaymentMethodForm callback={callback} />
+                stepperData === "none" ? 
+                <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
+                    <Elements>
+                    <NewPaymentMethodForm callback={callback} actionButton={finalFunction} />
+                    </Elements>
+                </RecurlyProvider>              
                     : 
                     <div>
                         <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />

@@ -1,28 +1,24 @@
 import * as React from 'react';
-import { TextStyle, RadioButtonContainer, RadioButtonOption } from './BillingStyle';
+import { TextStyle, RadioButtonContainer, RadioButtonOption, RecurlyElementStyle } from './BillingStyle';
 import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { useRecurlySubmit, useRecurly } from '../../utils/useRecurlySubmit';
+import { useRecurlySubmit } from '../../utils/useRecurlySubmit';
+import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
+import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly } from '@recurly/react-recurly';
+import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 
-export const NewPaymentMethodForm = (props: {callback: Function}) => {
+export const NewPaymentMethodForm = (props: {callback: Function; actionButton?: Function}) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
 
     let formRef = React.useRef<HTMLFormElement>(null);
 
-    useRecurly()
+    const recurly = useRecurly()
 
-    React.useEffect(() => {
-        // document.getElementById('stepperNextButton').setAttribute('type', 'submit')
-        // document.getElementById('stepperNextButton').setAttribute('form', 'paymentMethodForm')
-        document.getElementById('stepperNextButton').addEventListener('click', () => {
-            useRecurlySubmit(formRef.current, selectedOption, props.callback)
-        })
-
-    }, [])
+    useStepperFinalStepAction('stepperNextButton', useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -54,36 +50,39 @@ export const NewPaymentMethodForm = (props: {callback: Function}) => {
                     />
                 </div>
  
-                <div className='col col-12 pt1 px2'>
-                    <Input 
-                        data-recurly="number"
-                        className='col col-6 pr2 pl1'
-                        label="Card Number"
-                        type='text'
-                        required={false}
-                    />
-                    <Input 
-                        data-recurly="cvv"
-                        className='col col-3 pr2'
-                        label="CVV"
-                        type='text'
-                        required={false}
-                    />
-                    <Input 
-                        data-recurly="month"
-                        className='col col-1 '
-                        label="Month"
-                        type='text'
-                        required={false}
-                    />
-                    <Input 
-                        data-recurly="year"
-                        className='col col-1 ml2'
-                        label="Year"
-                        type='text'
-                        required={false}
-                    />
-                </div>
+                <div className="flex ml2 mt1">
+                        <div className="flex flex-column ml1">
+                        <Text size={14} weight="med">Number</Text>
+                        <RecurlyElementStyle>
+                        <CardNumberElement style={{fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px'}} />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                        
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">CVV</Text>
+                        <RecurlyElementStyle>
+                        <CardCvvElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                       
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">Month</Text>
+                        <RecurlyElementStyle>
+                        <CardMonthElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                        
+                        <div className="flex flex-column ml2">
+                        <Text size={14} weight="med">Year</Text>
+                        <RecurlyElementStyle>
+                        <CardYearElement />
+                        </RecurlyElementStyle>
+                        
+                        </div>
+                    </div>
                     
                 <div className='col col-12 pt1 px2'>
                     <Input 

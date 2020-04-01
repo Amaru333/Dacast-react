@@ -14,6 +14,7 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
+import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;
@@ -186,8 +187,13 @@ export const BillingPage = (props: BillingComponentProps) => {
             ]}})    
     }
 
+    const onSubmitFunctions = () => {
+        props.saveBillingPagePaymentMethod();
+        setPaypaylModalOpened(false)
+    }
+
     return (
-        <div>   
+        <div> 
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
@@ -223,9 +229,17 @@ export const BillingPage = (props: BillingComponentProps) => {
 
             
             </Card>
-            <Modal hasClose={false} title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
-                <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
-            </Modal>
+            <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
+                <Elements>
+                    <Modal 
+                        hasClose={false} 
+                        title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
+                        toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' 
+                        opened={paypalModalOpened}>
+                            <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
+                    </Modal>
+                </Elements>
+            </RecurlyProvider>
             <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} />
             </Modal>

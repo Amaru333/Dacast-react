@@ -112,7 +112,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const emptyPresetTableBody = (text: string) => {
         return [{data: [
             <span key={'emptyPresetTableBody'}></span>,
-            <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+            <div className='left'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
         ]}]
     }
 

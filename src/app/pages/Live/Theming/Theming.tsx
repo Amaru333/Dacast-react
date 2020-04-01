@@ -24,6 +24,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
     const togglePadding = 'py1';
 
     let playerRef = React.useRef<HTMLDivElement>(null);
+    
 
     let player = usePlayer(playerRef, '1552_f_297509');
 

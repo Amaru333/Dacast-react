@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { ConfirmEmailPage } from '../../pages/Register/ConfirmEmail/ConfirmEmail';
 import { ConfirmEmailInfo } from '../../redux-flow/store/Register/ConfirmEmail/types';
 import { UserInfo } from '../../redux-flow/store/Register/SignUp/types';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface ConfirmEmailComponentProps {
     confirmEmail: Function;
@@ -16,13 +18,14 @@ export interface ConfirmEmailComponentProps {
 const ConfirmEmail = (props: ConfirmEmailComponentProps) => {
     let email: string = null
     React.useEffect(() => {
-        if(props.userInfos) {
-            email = props.userInfos.email
-        }
-    }, [])
-    return(
-        <ConfirmEmailPage {...props} email={email} />
-    )
+        // if(props.userInfos) {
+        //     console.log('user info', props.userInfos)
+        //     email = props.userInfos.email
+        // }
+    }, [props.userInfos])
+    return props.userInfos && props.userInfos.email ?
+        <ConfirmEmailPage {...props} email={props.userInfos.email} />
+        :<SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 
 export function mapStateToProps( state: ApplicationState) {

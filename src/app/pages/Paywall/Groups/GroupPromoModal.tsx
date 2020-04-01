@@ -46,7 +46,7 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
             </div>
             <div className='col col-12 pt2'>
                 <Input className='col col-3 pr1' value={groupPromo.discount.toString()} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                <Input className='col col-3 px1' value={groupPromo.limit.toString()} label='Limit' onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
+                <Input className='col col-3 px1' value={groupPromo.limit.toString()} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <GroupPromoDateContainer className='col col-12 pt2 flex flex-end'>
                 <DateSinglePickerWrapper className='col col-5 pr1' datepickerTitle='Promo Code Start Date' />

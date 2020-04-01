@@ -62,8 +62,8 @@ export const AdminRoutes = [
         displayedInHeadertab: true
     },
     {
-        path: '/chargebacks',
-        name: 'Chargebacks',
+        path: '/debits',
+        name: 'Debits',
         component: Chargebacks,
         exactPath: true,
         displayedInHeadertab: true

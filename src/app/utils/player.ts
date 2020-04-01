@@ -6,9 +6,11 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
 
     const initPlayer = () => {
         let player = dacast(contentId, playerRef.current, {
-            height: 341,
-            width: '100%',
             autoplay: false
+        })
+        player.on('EVENT_READYSTATE_CHANGE', (state: number) => {
+            console.log(state, player.getPlayerInstance().videoHeight)
+            
         })
         setPlayer(player)
     }
@@ -18,10 +20,12 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         {
             let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
                 .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
+                console.log(existingPlayerTag)
             if(!existingPlayerTag) {
+                let head = document.head || document.getElementsByTagName('head')[0];
                 const playerScript = document.createElement('script');
                 playerScript.src = "https://player.dacast.com/js/player.js?contentId=" + contentId;
-                playerRef.current.appendChild(playerScript);
+                head.insertBefore(playerScript, head.firstChild);                
                 playerScript.addEventListener('load', initPlayer)
             } else {
                 initPlayer()
@@ -31,6 +35,7 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
             // Investigate later why the state variable is null when trying to unmount 
             let player = dacast.players[contentId]
             if(player) {
+                console.log('disposing')                
                 player.dispose()
             }
         };

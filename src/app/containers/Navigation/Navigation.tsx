@@ -10,7 +10,6 @@ const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
-import { AppRoutes } from '../../constants/AppRoutes';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 

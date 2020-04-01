@@ -29,7 +29,7 @@ export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
                 </ModalContent>
                 <ModalFooter>
                     <div className="mt2">
-                        <Text size={12} weight="reg">Didn’t receive an email? <a>Re-send email confirmation.</a></Text>
+                        <Text size={12} weight="reg">Didn’t receive an email? <a onClick={() => props.confirmEmail(props.email)}>Re-send email confirmation.</a></Text>
                     </div>
                 </ModalFooter>
             </ModalCard>

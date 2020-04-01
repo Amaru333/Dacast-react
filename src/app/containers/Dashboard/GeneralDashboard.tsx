@@ -70,6 +70,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
     }
 
+    const onSubmitFunctions = () => {
+        console.log("you bought the thing")
+        setPurchaseStepperOpened(false)
+    }
+
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
@@ -147,7 +152,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 functionCancel={() => setPurchaseStepperOpened(false)}
                 lastStepButton="Purchase"
-                finalFunction={() => console.log("you bought the thing")}
+                finalFunction={onSubmitFunctions}
                 stepperData={mockPaymentMethod}
                 updateStepperData={(value: string) => console.log(value)}
             />

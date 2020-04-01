@@ -8,11 +8,13 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
+import { IconStyle } from '../../../shared/Common/Icon'
+import { DateTime } from 'luxon'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
 
-    const [accountId, setAccountId] = React.useState<string>(null)
+    const [accountId, setAccountId] = React.useState<string>('')
     let query = useHistory()
     let {url} = useRouteMatch()
 
@@ -26,9 +28,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             {cell: <Text key='accountsTableHeaderPlanCell' size={14} weight='med'>Plan</Text>},
             {cell: <Text key='accountsTableHeader12MonthsCell' size={14} weight='med'>12 Months</Text>},
             {cell: <Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
-            {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data</Text>},
-            {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage</Text>},
-            {cell: <Text key='accountsTableHeaderEncodingCell' size={14} weight='med'>Encoding</Text>},
+            {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data (GB)</Text>},
+            {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
             {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
             {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
             {cell: <Text key='accountsTableHeaderLogCell' size={14} weight='med'>Log</Text>},
@@ -51,12 +52,11 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.userName}</Text>,
                     <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    <Link key={'accountsTableBodyPlanCell' + key } to={`${url}/${account.id}/plan`}>{account.plan}</Link>,
-                    <Text key={'accountsTableBody12MonthsCell' + key } size={14}>{account.annualAmount}</Text>,
-                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate}</Text>,
+                    <Link key={'accountsTableBodyPlanCell' + key } to={`${url}/${account.id}/plan`}>{account.plan.charAt(0).toUpperCase() + account.plan.slice(1)}</Link>,
+                    <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount.toLocaleString()}</Text>,
+                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{DateTime.fromMillis(account.registeredDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage}</Text>,
-                    <Text key={'accountsTableBodyEncodingCell' + key } size={14}>{account.encoding}</Text>,
                     <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`${url}/${account.id}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to={`${url}/${account.id}/logs`}>Logs</Link>,
@@ -70,11 +70,14 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex my1'>
-                <Input className='mr2' id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                <div className='relative flex items-center mr2'>
+                    <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                    <div className={ accountId.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
+                </div>
                 <Button disabled={!accountId ? true : false} onClick={() => {props.getAccounts(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
-            <Table className='mt1 mb2' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
-            <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <Table className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
+            <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
         </div>
     )
 }

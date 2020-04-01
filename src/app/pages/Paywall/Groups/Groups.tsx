@@ -14,6 +14,7 @@ import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './Group
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -132,6 +133,9 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             })
         }
     }
+
+    useStepperFinalStepAction('stepperNextButton', () => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)})
+
 
     return (
         <div>

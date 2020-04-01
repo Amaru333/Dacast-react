@@ -7,6 +7,8 @@ import { Action, getPayoutInfosAction, addPaymentMethodRequestAction, deletePaym
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from '../../redux-flow/store/Paywall/Payout';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 
 export interface PayoutComponentProps {
@@ -15,6 +17,7 @@ export interface PayoutComponentProps {
     addPaymentMethodRequest: Function;
     deletePaymentMethodRequest: Function;
     addWithdrawalRequest: Function;
+    showToast: Function;
 }
 
 
@@ -53,6 +56,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         addWithdrawalRequest: (data: WithdrawalRequest) => {
             dispatch(addWithdrawalRequestAction(data));
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     }
 }
 

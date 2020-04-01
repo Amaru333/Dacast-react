@@ -68,7 +68,7 @@ const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
 const disabledSubtitlesTableBody = (text: string) => {
     return [{data: [
         <span key={'disabledTableBody'}></span>,
-        <div className=' center'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        <div className='left'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
     ]}]
 }
 

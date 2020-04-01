@@ -36,10 +36,8 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
     const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
 
     React.useEffect(() => {
-        setPresetsList(props.preset ? props.preset : defaultPreset);
-    }, [props.preset])
-
-    React.useEffect(() => {        console.log(presetsList)}, [presetsList])
+        setPresetsList(props.preset ? props.preset : {...defaultPreset, price: [{amount: NaN, currency: 'USD'}]});
+    }, [])
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = presetsList.price;
@@ -50,7 +48,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             tempPrices[key].currency = value;
         }
         setPresetsList({...presetsList, price: tempPrices});
-    }   
+    }
 
     const renderPrices = () => {
         return presetsList.price.map((price, key) => {
@@ -116,7 +114,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             }
             <div className='col col-12 mt3'>
                 <Button disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.duration.amount)) || presetsList.price.some(price => Number.isNaN(price.amount))} onClick={() => {props.action(presetsList);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )

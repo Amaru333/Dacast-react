@@ -14,11 +14,17 @@ export const CustomStepper = (props: StepperProps) => {
     const [stepIndex, setStepIndex] = React.useState<number>(0)
     const [stepValidated, setStepValidated] = React.useState<boolean>(true)
 
+    React.useEffect(() => {
+        if (!props.opened) {
+            setStepIndex(0)
+        }
+    }, [props.opened])
+
     const steps: string[] = props.stepTitles
-    const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function) => {
-        console.log('going to step with function', updateStepperData)
+    const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {
+        console.log('going to step with function', finalFunction)
         return (           
-            props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated)
+            props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated, finalFunction)
         )
     };
 
@@ -26,11 +32,6 @@ export const CustomStepper = (props: StepperProps) => {
         if(stepIndex < props.stepList.length - 1) {
             setStepIndex(stepIndex + 1)
             setStepValidated(true)
-        }
-        else {
-            setStepIndex(0)
-            props.finalFunction()
-            
         }
     }
 
@@ -60,7 +61,7 @@ export const CustomStepper = (props: StepperProps) => {
                     </Stepper>
                 </StepperStyle>
                 <StepperContentStyle isMobile={isMobile}> 
-                    {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData)}
+                    {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData, props.finalFunction)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
                     <StepperNextButton id='stepperNextButton' {...props.nextButtonProps} disabled={!stepValidated} onClick={nextStep}>

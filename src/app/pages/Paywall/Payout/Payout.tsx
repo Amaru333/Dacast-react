@@ -19,6 +19,14 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false);
 
+    const handleNewWithdrawlRequest = () => {
+        if (props.payoutInfos.paymentMethodRequests && Object.keys(props.payoutInfos.paymentMethodRequests).length !== 0) {
+            setWithdrawalModalOpened(true)
+        } else {
+            props.showToast("You must add a Payment Request Method before you can Request a Withdrawal", 'fixed', "error")
+        }
+    }
+
     const paymentMethodTableHeader = () => {
         return {data: [
             {cell: <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Method</Text>},
@@ -66,6 +74,8 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const [withdrawalModalOpened, setWithdrawalModalOpened] = React.useState<boolean>(false);
 
 
+
+
     const withdrawalTableHeader = () => {
         return {data: [
             {cell: <Text key='withdrawalTableHeaderRequestType' size={14} weight='med'>Method</Text>},
@@ -74,7 +84,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             {cell: <Text key='withdrawalTableHeaderRequestDate' size={14} weight='med'>Request Date (UTC)</Text>},
             {cell:<Text key='withdrawalTableHeaderTransferDate' size={14} weight='med'>Transfer Date (UTC)</Text>},
             {cell: <Text key='withdrawalTableHeaderStatus' size={14} weight='med'>Status</Text>},
-            {cell: <Button key='withdrawalTableHeaderActionButton' className='right mr2' onClick={() => setWithdrawalModalOpened(true)} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>}
+            {cell: <Button key='withdrawalTableHeaderActionButton' className='right mr2' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>}
         ]}
     }
 
@@ -104,7 +114,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const emptyWithdrawalTableHeder = () => {
         return props.payoutInfos.paymentMethodRequests ? {data: [
             {cell: <span key={"emptywithdrawalsTableHeader"}></span>},
-            {cell: <Button key='withdrawalTableHeaderActionButton' className='right mr2' onClick={() => setWithdrawalModalOpened(true)} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>}
+            {cell: <Button key='withdrawalTableHeaderActionButton' className='right mr2' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>}
         ]} :
             {data: [
                 {cell: <span key={"emptywithdrawalsTableHeader"}></span>}]
