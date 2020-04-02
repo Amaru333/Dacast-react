@@ -8,6 +8,8 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { SignupContainerProps } from '../../../containers/Register/SignUp/SignUp';
 import { defaultStateSignup, UserInfo } from '../../../redux-flow/store/Register/SignUp/types';
 import { useHistory } from 'react-router-dom';
+import { useKeyboardSubmit } from '../../../../utils/utils';
+import { IconStyle } from '../../../../shared/Common/Icon';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -17,11 +19,14 @@ export const SignupPage = (props: SignupContainerProps) => {
     let history = useHistory()
 
     const [userInfo, setUserInfo] = React.useState<UserInfo>(defaultStateSignup)
+    const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
-    const submitSignup = (userInfo: UserInfo) => {
+    const submitSignup = () => {
         props.signup(userInfo)
         history.push('/confirm-email')
     }
+
+    useKeyboardSubmit(submitSignup)
 
     return (<LoginContainer>
         <ImageStyle className="mx-auto" src={logo} />
@@ -33,8 +38,11 @@ export const SignupPage = (props: SignupContainerProps) => {
                 </div>
                 <Input className="col col-12" type="url" label="Company Website" placeholder="Company Website" onChange={event => setUserInfo({...userInfo, website: event.currentTarget.value})} />
                 <Input className="col col-12" type="email" label="Email Address" placeholder="Email Address" onChange={event => setUserInfo({...userInfo, email: event.currentTarget.value})} />
-                <Input className="col col-12" type="tel" label="Phone Number" placeholder="Phone Number" onChange={event => setUserInfo({...userInfo, phone: event.currentTarget.value})} />
-                <Input className="col col-12" type="password" label="Create Password" placeholder="Password" onChange={event => setUserInfo({...userInfo, password: event.currentTarget.value})} />
+                <Input className="col col-12" label="Phone Number" placeholder="Phone Number" onChange={event => setUserInfo({...userInfo, phone: event.currentTarget.value})} />
+                <div className='flex relative col col-12'>
+                    <Input className="col col-12" type={passwordVisible ? "text" : "password"} label="Create Password" placeholder="Password" onChange={event => setUserInfo({...userInfo, password: event.currentTarget.value})} />
+                    <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
+                </div>
                 <p>
                     <Text color="gray-1" size={12} weight="reg">Already have an account? <a href="/login">Log in.</a></Text><br />
                     <div className="mt1">
@@ -44,8 +52,8 @@ export const SignupPage = (props: SignupContainerProps) => {
                 </p>
             </ModalContent>
             <ModalFooter>
-                <Button sizeButton="large" typeButton="primary" onClick={() => submitSignup(userInfo)}>Sign Up</Button>
-                <Button sizeButton="large" typeButton="tertiary" onClick={() => location.href="/login"}>Cancel</Button>
+                <Button sizeButton="large" typeButton="primary" onClick={() => submitSignup()}>Sign Up</Button>
+                <Button sizeButton="large" typeButton="tertiary" onClick={() => history.push("/login")}>Cancel</Button>
             </ModalFooter>
         </ModalCard>
     </LoginContainer>);

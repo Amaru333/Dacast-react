@@ -170,7 +170,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Domain">
+                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Domain">
                             <BarChart
                                 datasetName="GBytes"
                                 displayBytesFromGB={true}
@@ -181,7 +181,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Device">
+                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                             <CheeseChart
                                 displayBytesFromGB={true}
                                 data={viewershipAnalytics.consumptionPerDevices.data}
@@ -189,7 +189,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className="col col-4 px1">
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers By Time">
+                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                             <DoubleLineChart
                                 datasetName="Hits"
                                 noDecimals={false}

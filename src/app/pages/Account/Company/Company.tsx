@@ -14,6 +14,8 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -123,7 +125,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         textArea.value = value;
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand("Copy");
+        document.execCommand("copy");
         textArea.remove();
     }
     
@@ -136,11 +138,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>
-                        <div className="p1 absolute" style={{top:0, right:0}} >
-                            <Button sizeButton='xs' typeButton='secondary' className="mr1" buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Change</Button>
-                            <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                        </div>
-                        <ImageStyle src={uploadedFileUrl}></ImageStyle>  
+                            {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null}
+                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                        <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
+                        <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Upload</Button>
                         </>
                             :
                         <>
@@ -275,7 +276,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Address line 1" 
                             placeholder="Address line 1"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('addressLine1', validations)}                      
                         />
 
@@ -315,7 +316,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Town" 
                             placeholder="Town"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('town', validations)}
                         />
 
@@ -328,7 +329,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Zip/Post Code" 
                             placeholder="Zip/Post Code"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('zipCode', validations)}
                     
                         />

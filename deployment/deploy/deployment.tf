@@ -231,25 +231,25 @@ resource "aws_iam_role" "iam_for_lambda" {
     EOF
 }
 
-// resource "aws_iam_role_policy" "iam_for_lambda_role_policy" {
-//   role = "${aws_iam_role.iam_for_lambda.name}"
+resource "aws_iam_role_policy" "iam_for_lambda_role_policy" {
+  role = "${aws_iam_role.iam_for_lambda.name}"
 
-//   policy = <<POLICY
-// {
-//     "Version": "2012-10-17",
-//     "Statement": [
-//         {
-//             "Effect": "Allow",
-//             "Resource": [
-//                 "*"
-//             ],
-//             "Action": [
-//                 "logs:CreateLogGroup",
-//                 "logs:CreateLogStream",
-//                 "logs:PutLogEvents"
-//             ]
-//         }
-//     ]
-// }
-// POLICY
-// }
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Resource": [
+                "*"
+            ],
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ]
+        }
+    ]
+}
+POLICY
+}

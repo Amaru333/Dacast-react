@@ -3,14 +3,15 @@ import Icon from '@material-ui/core/Icon';
 import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
-import { useLocation, useHistory } from 'react-router-dom';
-import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
 import { LogoutAction, Action } from '../../app/redux-flow/store/Register/Login';
 import Burger from '../../app/containers/Navigation/Burger';
+import { Text } from '../Typography/Text';
+import { AppRoutes } from '../../app/constants/AppRoutes';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -29,7 +30,8 @@ const Header = (props: HeaderProps) => {
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
     React.useEffect(() => {
-        setBreadcrumbItems(location.pathname.split('/').filter((f: string )=> f))
+        console.log(location.pathname.split('/').filter((f:string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        setBreadcrumbItems(location.pathname.split('/').filter((f:string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
     }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
@@ -82,12 +84,25 @@ const Header = (props: HeaderProps) => {
         )
     }
 
+    const renderHeaderBreadcrumb = () => {
+        return breadcrumbItems.map((item, index) => {
+            return index !== breadcrumbItems.length -1 ?
+                <Text className='navigation' key={item + index} size={14}>
+                    {AppRoutes.some(route => route.path === item.toLowerCase()) ?
+                    <Link to={item.toLowerCase()}><Text size={14} color='dark-violet' className='navigation'>{item}</Text></Link>
+                    : <Text size={14}>{item}</Text>
+                }
+                &nbsp;/&nbsp;</Text>
+                : <Text key={item + index} size={14}>{item}</Text>
+        })
+    }
+
     return (
         <HeaderStyle>
             {props.isMobile ? <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} /> : null}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
-            <div className="mr-auto ml2" >
-                <Breadcrumb isNavigation options={location.pathname + '/'} callback={() => {}}/>
+            <div className="mr-auto flex ml2" >
+                {renderHeaderBreadcrumb()}
             </div>          
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>

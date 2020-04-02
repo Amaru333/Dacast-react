@@ -38,7 +38,7 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
         <div>
             <div className='col col-12 pt2'>
                 <Input className='col col-6 pr1' value={groupPromo.name} label='Preset name' onChange={(event) => setGroupPromo({...groupPromo, name: event.currentTarget.value})} />
-                <Input className='col col-6 pl1' value={groupPromo.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
+                <Input className='col col-6 pl1' value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 Characters" onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
             </div>
             <div className='col col-12 pt2'>
                 <DropdownSingle id='associatedGroupDropdown' className='col col-6 pt1' dropdownTitle='Associated Group' list={props.groupList.reduce((reduced: DropdownListType, item: GroupPrice)=> {return {...reduced, [item.name]: false }},{})  } />

@@ -56,7 +56,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     return (
         <div className='flex flex-column'>
             <div className='col col-12 mb2 flex justify-end'>
-                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='blue'>Export </Button>
+                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button>
                 <TransactionsFiltering />
             </div>
 

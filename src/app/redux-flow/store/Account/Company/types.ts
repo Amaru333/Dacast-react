@@ -24,6 +24,7 @@ export interface CompanyPageInfos {
     country: string;
     logoUrl?: string;
     uploadLogoUrl?: string;
+    isUploading?: boolean;
 }
 
 export const companyInitialState: CompanyPageInfos = {
@@ -42,4 +43,5 @@ export const companyInitialState: CompanyPageInfos = {
     country: "",
     logoUrl: "",
     uploadLogoUrl: "",
+    isUploading: false
 };

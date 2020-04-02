@@ -50,7 +50,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
             <DateFilteringAnalytics refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className="col col-4 px1">
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Time">
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Time">
                         {
                             props.dashboardAnalytics.data.consumptionPerTime ?
                                 <BarChart
