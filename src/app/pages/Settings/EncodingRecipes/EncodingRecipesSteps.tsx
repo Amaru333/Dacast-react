@@ -7,8 +7,8 @@ import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
-//import { isMobile } from "react-device-detect";
-var isMobile = true;
+import { isMobile } from "react-device-detect";
+
 //TABLE ELEMENTS
 export const createRecipeHeaderElement = () => {
     return {data: [
@@ -77,7 +77,7 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
                     setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6" defaultChecked={stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6 sm-mt3" defaultChecked={stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
                     onChange={(event) => {
                         setSelectedRecipe({ ...stepperData, ["isDefault"]: event.currentTarget.checked })
                     }

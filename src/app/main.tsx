@@ -93,7 +93,6 @@ const AppContent = () => {
 
     const PrivateRoute = (props: {key: string; component: any; path: string, exact?: boolean}) => {
 
-        var isMobile=true;
         return (
             isLoggedIn()  ?
                 <Route 

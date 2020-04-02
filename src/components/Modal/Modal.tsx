@@ -10,8 +10,6 @@ export const Modal = (props: ModalProps) => {
 
     var { icon, hasClose,  ...other } = props;
 
-    var isMobile= true;
-
     let modalRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(modalRef, () => props.toggle());
     return (

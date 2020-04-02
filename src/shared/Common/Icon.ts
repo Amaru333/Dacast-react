@@ -15,6 +15,7 @@ export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean
 
 export const IconContainer = styled.div`
     float:right;
+    width: max-content;
     display:block;
     .material-icons{
         margin-right:16px;

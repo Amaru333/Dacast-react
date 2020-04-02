@@ -122,7 +122,6 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
     }
-    var isMobile = true;
 
     useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))
 
