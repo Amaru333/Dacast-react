@@ -167,17 +167,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
-                    <div className="col col-12 flex flex-column">
+                    <div className="col col-12 flex flex-column p1">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>
-                        <AccountIdContainer className="col col-3">
-                        <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
+                        <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
+                            <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
                             <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
-                    <div className="md-col md-col-12">
+                    <div className="md-col md-col-12 clearfix">
                         <Input 
                             disabled={false} 
                             defaultValue={CompanyPageDetails.accountName}
