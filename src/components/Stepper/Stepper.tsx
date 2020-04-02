@@ -21,11 +21,17 @@ export const CustomStepper = (props: StepperProps) => {
     }, [props.opened])
 
     const steps: string[] = props.stepTitles
-    const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {
-        console.log('going to step with function', finalFunction)
-        return (           
-            props.stepList[stepIndex](stepperData, updateStepperData, setStepValidated, finalFunction)
+    const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {    
+        const Test: React.FC<any> = props.stepList[stepIndex]
+        return  (
+            <Test
+                stepperData={stepperData} 
+                updateStepperData={updateStepperData}
+                setStepValidated={setStepValidated} 
+                finalFunction={finalFunction} 
+            />
         )
+        
     };
 
     const nextStep = () => {

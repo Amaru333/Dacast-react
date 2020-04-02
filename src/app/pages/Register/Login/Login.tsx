@@ -6,12 +6,12 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 
 const logo = require('../../../../../public/assets/logo.png');
 
-interface LoginComponentProps {
-    login: Function;
-}
 export const LoginPage = (props: LoginComponentProps) => {
 
     const [username, setUsername] = React.useState<string>('');
@@ -44,6 +44,11 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Button sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
+            {
+                props.loginInfos && props.loginInfos.waiting ?
+                <SpinnerContainer><LoadingSpinner color='dark-violet' size='medium' /></SpinnerContainer>
+                : null
+            }
         </LoginContainer>
 
     )

@@ -4,14 +4,9 @@ import { ActionTypes, TokenInfos, defaultStateLogin } from './types'
 
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {
-        case ActionTypes.LOGIN_REQUEST:
-            return {
-                ...state,
-                waiting: true
-            }
         case ActionTypes.LOGIN : 
             return {
-                ... state, ...action.payload, waiting: false
+                ... state, ...action.payload, waiting: !action.payload ? true : false
             }
         case ActionTypes.LOGOUT :
             localStorage.removeItem('userToken')

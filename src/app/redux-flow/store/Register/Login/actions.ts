@@ -6,7 +6,7 @@ import { showToastNotification } from '../../Toasts';
 
 export interface Login {
     type: ActionTypes.LOGIN;
-    payload: TokenInfos;
+    payload: TokenInfos | false;
 }
 
 export interface LoginRequest {
@@ -19,16 +19,10 @@ export interface Logout {
     payload: null;
 }
 
-const loginRequestAction = (): ThunkDispatch<void, {}, LoginRequest> => {
-    return (dispatch: ThunkDispatch<ApplicationState , {}, LoginRequest>) => {
-        dispatch({type: ActionTypes.LOGIN_REQUEST, payload: null})
-    }
-
-}
 
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
-    loginRequestAction()
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
+        dispatch({type: ActionTypes.LOGIN, payload: false})
         await loginService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data.data} );
