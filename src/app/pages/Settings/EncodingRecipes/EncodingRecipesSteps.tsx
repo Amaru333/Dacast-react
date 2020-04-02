@@ -8,6 +8,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 //TABLE ELEMENTS
 export const createRecipeHeaderElement = () => {
@@ -69,6 +70,9 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
         if (stepperData) { setStepValidated(stepperData.name.length > 0) }
     })
 
+    //BALANCING HOOK
+    React.useEffect(() => {})
+
     return (
         <StepContent className="clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
@@ -124,7 +128,10 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
     )
 }
 
-export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
+export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function, finalFunction: Function) => {
+
+    useStepperFinalStepAction('stepperNextButton', finalFunction)
+
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
