@@ -4,10 +4,10 @@ import { ModalCard } from '../../../../components/Modal/ModalCard'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../../components/Typography/Text'
-import { ResetPasswordComponentProps } from '../../../containers/Register/ResetPassword'
+import { ForgotPasswordComponentProps } from '../../../containers/Register/ForgotPassword'
 import { useHistory } from 'react-router'
 
-export const ResetPasswordPage = (props: ResetPasswordComponentProps) => {
+export const ForgotPasswordPage = (props: ForgotPasswordComponentProps) => {
 
     const [email, setEmail] = React.useState<string>(null)
     let history = useHistory()
@@ -20,7 +20,7 @@ export const ResetPasswordPage = (props: ResetPasswordComponentProps) => {
                     <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" onChange={(event) => setEmail(event.currentTarget.value)} />   
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {props.resetPassword(email); history.push('/change-password')}} sizeButton="large" typeButton="primary">Reset Password</Button>
+                    <Button onClick={() => {props.forgotPassword(email); history.push('/reset-password')}} sizeButton="large" typeButton="primary">Reset Password</Button>
                     <Button sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </ModalFooter>
             </ModalCard>

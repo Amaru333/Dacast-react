@@ -87,7 +87,8 @@ export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<
             .then( response => {
                 dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: response.data} );
                 dispatch(showToastNotification("Company Logo has been uploaded", 'flexible', "success"));
-            }).catch(() => {
+            }).catch((error) => {
+                dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: error} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

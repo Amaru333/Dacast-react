@@ -1,9 +1,9 @@
 export enum ActionTypes {
-    RESET_PASSWORD = "@@regiser_reset-password/RESET_PASSWORD",
+    FORGOT_PASSWORD = "@@regiser_forgot-password/FORGOT_PASSWORD",
 }
 
-export interface ResetPasswordInfo {
+export interface ForgotPasswordInfo {
     email: string;
 }
 
-export const defaultStateResetPassword: ResetPasswordInfo = null
+export const defaultStateResetPassword: ForgotPasswordInfo = null

@@ -25,7 +25,6 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
         await ProfileServices.getProfilePageDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data.data} );
-                dispatch(showToastNotification("Data saved!", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
