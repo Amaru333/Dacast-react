@@ -48,9 +48,8 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     transform: translate(-50%, -50%);
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;
-    ${props => props.isMobile && css`
-        max-height: 90%;
-    `}; 
+    max-height: 90%;
+    overflow-x: scroll;
 `;
 export const ModalTitleStyle = styled.div`
     margin-bottom: 8px;

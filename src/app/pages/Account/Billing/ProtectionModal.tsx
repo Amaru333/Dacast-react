@@ -44,7 +44,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
             <div className='clearfix'>
                 <DropdownSingle
                     isInModal   
-                    className='pb2 col col-6'                  
+                    className='pb2 col sm-col-6 col-12'                  
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}
                     id='amountDropdown'
