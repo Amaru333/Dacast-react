@@ -21,9 +21,15 @@ export const SignupPage = (props: SignupContainerProps) => {
     const [userInfo, setUserInfo] = React.useState<UserInfo>(defaultStateSignup)
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
+    const validateForm = () => {
+        return Object.keys(userInfo).every(key => userInfo[key] || key === 'id')
+    }
+
     const submitSignup = () => {
-        props.signup(userInfo)
-        history.push('/confirm-email')
+        if(validateForm) {
+            props.signup(userInfo)
+            history.push('/confirm-email')
+        }
     }
 
     useKeyboardSubmit(submitSignup)
@@ -52,7 +58,7 @@ export const SignupPage = (props: SignupContainerProps) => {
                 </p>
             </ModalContent>
             <ModalFooter>
-                <Button sizeButton="large" typeButton="primary" onClick={() => submitSignup()}>Sign Up</Button>
+                <Button disabled={!validateForm()} sizeButton="large" typeButton="primary" onClick={() => submitSignup()}>Sign Up</Button>
                 <Button sizeButton="large" typeButton="tertiary" onClick={() => history.push("/login")}>Cancel</Button>
             </ModalFooter>
         </ModalCard>

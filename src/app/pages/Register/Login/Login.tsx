@@ -18,8 +18,14 @@ export const LoginPage = (props: LoginComponentProps) => {
     const [password, setPassword] = React.useState<string>('');
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
+    const enableSubmit = () => {
+        return username.length > 0 && password.length > 0
+    }
+
     const submitLogin = () => {
-        props.login(username, password)
+        if(enableSubmit()) {
+            props.login(username, password)
+        }
     }
 
     useKeyboardSubmit(submitLogin)
@@ -41,7 +47,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
+                    <Button disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
             {
