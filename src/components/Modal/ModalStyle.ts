@@ -34,7 +34,7 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     `};
     ${props => props.isMobile && css`
         padding: 16px;
-        width: 300px;
+        width: 80%;
     `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
@@ -48,10 +48,8 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     transform: translate(-50%, -50%);
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;
-    ${props => props.isMobile && css`
-        max-height: 90%;
-        overflow-y: auto;
-    `}; 
+    max-height: 90%;
+    overflow-x: scroll;
 `;
 export const ModalTitleStyle = styled.div`
     margin-bottom: 8px;

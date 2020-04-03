@@ -227,7 +227,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <IconStyle className="mr1" >info_outlined</IconStyle>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your API Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Button className={"mb2 " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+                <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                 <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
                 <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
@@ -236,7 +236,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <IconStyle className="mr1" >info_outlined</IconStyle>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Webhook Settings? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left mb2 " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
+                <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
                 <Table className="col-12" id="webHooksTable" headerBackgroundColor="gray-10" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
                 <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
@@ -245,7 +245,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <IconStyle className="mr1" >info_outlined</IconStyle>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Encoder Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+                <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
                 <Table className="col-12" id="encoderKeysTable" headerBackgroundColor="gray-10" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
                 <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
@@ -254,7 +254,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     <IconStyle className="mr1" >info_outlined</IconStyle>
                     <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your S3 Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                 </div>
-                <Button className={"left mb2 " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
+                <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
                 <Table className="col-12" id="s3KeysTable" headerBackgroundColor="gray-10" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
                 <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Google Analytics</Text>
@@ -265,7 +265,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </div>
                 <Toggle onChange={() => setCurrentStateGa({ enabled: !currentStateGa.enabled, key: currentStateGa.key })} checked={currentStateGa.enabled} defaultChecked={props.infos.ga.enabled} label="Google Analytics" className="col col-12 mb2" />
                 {currentStateGa.enabled ?
-                    <Input value={currentStateGa.key} onChange={e => setCurrentStateGa({ enabled: currentStateGa.enabled, key: e.target.value })} defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2 mt1" label="Key" placeholder="UA-xxxxxx" />
+                    <Input value={currentStateGa.key} onChange={e => setCurrentStateGa({ enabled: currentStateGa.enabled, key: e.target.value })} defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2" label="Key" placeholder="UA-xxxxxx" />
                     : null
                 }
             </Card>

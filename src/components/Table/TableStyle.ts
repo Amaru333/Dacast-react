@@ -13,8 +13,11 @@ export const TableContainer = styled.table<{}>`
 export const TableHeaderContainer = styled.thead<{}>`
 `;
 
-export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean}>`
-    
+export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean; tableHeight?: number}>`
+    ${props => props.tableHeight && css `
+        height: ${props => props.tableHeight+"px"};
+        overflow-x: scroll;
+    `}
     margin: ${props => props.hasContainer ? "0"  : "16px 0" };
     
 `;

@@ -100,7 +100,7 @@ const AppContent = () => {
                     exact={props.exact ? true : false}
                 >
                     <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
-                    <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                    <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                             <props.component {...props} />
@@ -218,7 +218,7 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    overflow: auto;
+    overflow: hidden;
     ${props => props.isMobile && css`
         overflow-x: hidden;
         padding: 16px;

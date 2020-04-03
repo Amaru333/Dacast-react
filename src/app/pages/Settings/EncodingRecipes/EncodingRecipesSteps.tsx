@@ -50,8 +50,6 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
                     const editedRecipePresets = stepperData.recipePresets.filter(item => item !== value.id)
                     setStepValidated(editedRecipePresets.length >= 1)
                     setSelectedRecipe({ ...stepperData, ["recipePresets"]: editedRecipePresets })
-
-
                 }
             }
             } />,
@@ -77,27 +75,26 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem, updateStep
         <StepContent className="clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
 
-                <RecipeNameInput isMobile={isMobile} className="col lg-col-6 sm-col-12 mr2" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
+                <RecipeNameInput isMobile={isMobile} className="col md-col-6 col-12" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
                     event.preventDefault();
                     props.updateStepperData({ ...props.stepperData, ["name"]: event.currentTarget.value });
                     props.setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col lg-col-6 sm-col-12" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6 sm-mt3" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
                     onChange={(event) => {
                         props.updateStepperData({ ...props.stepperData, ["isDefault"]: event.currentTarget.checked })
                     }
                     } />
-
             </RecipeNameRow>
-            <WatermarkContainer isMobile={isMobile} className="col col-12">
-                <Text className="col col-12 mt2" size={16} weight="med" >Watermark</Text>
+            <WatermarkContainer isMobile={isMobile} className="col mt2 col-12">
+                <Text className="col col-12" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button className="lg-col-2 sm-col-6 mt2" sizeButton="xs" typeButton="secondary" onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: "cool new watermark" })}>Upload File</Button>
+                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: "cool new watermark" })}>Upload File</Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                 {props.stepperData.watermarkFile ?
                     <div>
-                        <WatermarkFile className="col lg-col-6 md-col-6  mt1">
+                        <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
                             <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFile}</Text>
                             <WatermarkDeleteButton>
                                 <IconStyle onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: null })} style={{ fontSize: "14px" }}>close</IconStyle>
@@ -105,14 +102,14 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem, updateStep
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFile} value={props.stepperData.watermarkFile ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 mr2" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFile} value={props.stepperData.watermarkFile ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPwositioningLeft"]: event.currentTarget.value })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFile} value={props.stepperData.watermarkFile ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFile} value={props.stepperData.watermarkFile ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: event.currentTarget.value })
@@ -151,7 +148,6 @@ const StepContent = styled.div`
 `
 
 const RecipeNameRow = styled.div<{ isMobile: boolean }>`
-display: flex;
 align-items: center;
 
 ${props => props.isMobile && css`
@@ -161,13 +157,10 @@ ${props => props.isMobile && css`
 `
 
 const RecipeNameInput = styled(Input) <{ isMobile: boolean }>`
-${props => props.isMobile && css`
-    width: 100%;
-    `};
+
 `
 
 const DefaultRecipeCheckbox = styled(InputCheckbox) <{ isMobile: boolean }>`
-    margin-bottom: -29px;
 
     ${props => props.isMobile && css`
         margin-left: 0;
@@ -175,9 +168,7 @@ const DefaultRecipeCheckbox = styled(InputCheckbox) <{ isMobile: boolean }>`
 `
 
 const WatermarkContainer = styled.div<{ isMobile: boolean }>`
-${props => props.isMobile && css`
-        margin-top: 24px;
-    `};
+
 `
 
 const WatermarkFile = styled.div`

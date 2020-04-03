@@ -33,10 +33,12 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         }
         return () => {
             // Investigate later why the state variable is null when trying to unmount 
-            let player = dacast.players[contentId]
-            if(player) {
-                console.log('disposing')                
-                player.dispose()
+            if(typeof dacast !== 'undefined') {
+                let player = dacast.players[contentId]
+                if(player) {
+                    console.log('disposing')                
+                    player.dispose()
+                }
             }
         };
     }, [])

@@ -13,6 +13,7 @@ import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { updateClipboard } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
@@ -134,7 +135,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
-                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
+                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>
                             {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null}
@@ -144,7 +145,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </>
                             :
                         <>
-                        <IconStyle className='pt3 center' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
@@ -167,17 +168,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
-                    <div className="col col-12 flex flex-column">
+                    <div className="col col-12 flex flex-column p1">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>
-                        <AccountIdContainer className="col col-4">
-                        <AccountIdText style={{paddingLeft:12}} size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
-                            <IconStyle className='pointer pr1' id="copyEmbedTooltip" onClick={() => copyKey(props.CompanyPageDetails.id)}>file_copy_outlined</IconStyle>
+                        <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
+                            <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
-                    <div className="md-col md-col-12">
+                    <div className="md-col md-col-12 clearfix">
                         <Input 
                             disabled={false} 
                             defaultValue={CompanyPageDetails.accountName}

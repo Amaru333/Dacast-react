@@ -204,7 +204,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
+                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                 {
                     props.billingInfos.paypal? 
                         <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
@@ -220,7 +220,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
+                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                
                 {
                     (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') && !playbackProtectionEnabled ?
@@ -240,7 +240,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                         title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' 
                         opened={paypalModalOpened}>
-                            <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
+                        <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>
