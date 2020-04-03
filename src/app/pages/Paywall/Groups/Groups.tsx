@@ -134,7 +134,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         }
     }
 
-    useStepperFinalStepAction('stepperNextButton', () => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)})
+    useStepperFinalStepAction('stepperNextButton', () => {{setGroupPricesStepperOpened(false);selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}})
 
 
     return (
@@ -172,7 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepperData={stepperData}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
                 functionCancel={() => {setGroupPricesStepperOpened(false)}}
-                finalFunction={() => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+                finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>
 

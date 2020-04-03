@@ -18,7 +18,7 @@ export const NewPaymentMethodForm = (props: {callback: Function; actionButton?: 
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
