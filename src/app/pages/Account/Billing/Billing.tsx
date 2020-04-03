@@ -36,6 +36,10 @@ export const BillingPage = (props: BillingComponentProps) => {
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
+    React.useEffect(() => {
+        console.log("playback protection", props.billingInfos.playbackProtection)
+    }, [props.billingInfos.playbackProtection])
+
     const checkPaymentMethod = () => {
         if(props.billingInfos.paypal) {
             setpaymentMethod('paypal');
@@ -136,7 +140,7 @@ export const BillingPage = (props: BillingComponentProps) => {
     }
 
     const protectionBodyElement= () => {
-        if(props.billingInfos.playbackProtection) {
+        if(props.billingInfos.playbackProtection && props.billingInfos.playbackProtection.enabled !== null) {
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,

@@ -221,16 +221,15 @@ export const TagsContainer = styled.div<{noBorder: boolean}>`
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: inherit;
 `
 
 export const TagsInputStyle = styled(InputStyle)`
     border: none;
-    background-color: white;
     width: 100%;
     padding-left: 6px;
     height: 20px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: inherit;
     &:focus {
         border: none;
     }

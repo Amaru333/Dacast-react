@@ -23,13 +23,7 @@ export const Modal = (props: ModalProps) => {
                     <Text color="gray-1" size={24} weight="med">
                         {props.title}
                     </Text>
-                    {
-                        hasClose ? 
-                            <ModalCloseButtonStyle onClick={() => props.toggle()}>
-                                <Icon>close</Icon>
-                            </ModalCloseButtonStyle>
-                            : null
-                    }
+                    
                 </ModalTitleStyle>
                 {props.children}
             </ModalContainerStyle>

@@ -227,7 +227,7 @@ export const GroupPriceStepperSecondStep = (props: {stepperData: GroupStepperDat
         <>
             <div className="inline-flex items-center flex col-12 mb2">
                 <IconStyle>search</IconStyle>
-                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'inherit'}} defaultTags={[]}   />
+                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'white'}} defaultTags={[]}   />
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <div className="pl1 pr1">

@@ -40,7 +40,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     return (
         <div>
             <div className='flex'>
-                <div className='flex items-center flex-auto'>
+                <div className='flex items-center flex-auto mb2'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />   
                 </div>
