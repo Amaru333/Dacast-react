@@ -39,16 +39,16 @@ export const VideoSubRoutes: Routes[] = [
         component: VodSecurity,
     },
     {
-        path: '/renditions',
-        name: 'Renditions',
-        iconName: null,
-        component: VodRenditions,
-    },
-    {
         path: '/theme',
         name: 'Theme',
         iconName: null,
         component: VodTheming,
     },
+    {
+        path: '/renditions',
+        name: 'Renditions',
+        iconName: null,
+        component: VodRenditions,
+    }
 
 ];

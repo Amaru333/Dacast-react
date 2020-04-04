@@ -48,11 +48,12 @@ const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails
             <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
             <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
             <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
-                <ActionIcon id={"downloadTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
-                <Tooltip target={"downloadTooltip" + key}></Tooltip>
-                <ActionIcon><IconStyle onClick={() => props.deleteVodSubtitle(value)}>delete</IconStyle></ActionIcon>
-                <ActionIcon><IconStyle onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</IconStyle></ActionIcon>
-                
+                <ActionIcon id={"downloadSubtitleTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
+                <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
+                <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteVodSubtitle(value)}>delete</IconStyle></ActionIcon>
+                <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
+                <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</IconStyle></ActionIcon>
+                <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
             </IconContainer>
         ]}
     })
@@ -172,8 +173,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
                         <Divider className="col col-12" />
@@ -198,8 +199,8 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
                         <Divider className="col col-12" />
