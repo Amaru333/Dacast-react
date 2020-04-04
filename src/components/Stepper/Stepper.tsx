@@ -29,6 +29,7 @@ export const CustomStepper = (props: StepperProps) => {
                 updateStepperData={updateStepperData}
                 setStepValidated={setStepValidated} 
                 finalFunction={finalFunction} 
+                usefulFunctions={props.usefulFunctions}
             />
         )
         
