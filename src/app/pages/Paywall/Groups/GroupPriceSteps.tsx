@@ -34,16 +34,16 @@ export const GroupPriceStepperFirstStep = (props:{stepperData: GroupStepperData;
     const renderPrices = () => {
         return props.stepperData.firststep.price.map((price, key) => {
             return( 
-                <div key={'groupPriceSection' + key} className='col col-12 py1 flex items-center'>
+                <div key={'groupPriceSection' + key} className='col col-12 flex items-center'>
                     <div className='col col-6'>
-                    <Input className='col col-6 pr1 mt1' defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
-                    <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
+                    <Input className={key === 0 ? 'col col-6 pr1' : 'col col-6 pr1 mt2'} defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
+                    <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1 mt2'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     </div>
                     {
                         key === props.stepperData.firststep.price.length - 1 ? 
-                            <div onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: [...props.stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx2 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: [...props.stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx2 flex' + (key === 0 ? ' mt3' : ' mt2')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
                             
-                            : <IconStyle onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
+                            : <IconStyle onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2 pt2'}>close</IconStyle>
                     }
                 </div>
             )
@@ -64,7 +64,7 @@ export const GroupPriceStepperFirstStep = (props:{stepperData: GroupStepperData;
                         :
                         <>
                             <Input className='col col-6 pr1' label='Duration' defaultValue={props.stepperData.firststep.duration.amount.toString()} onChange={(event) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, duration: {...props.stepperData.firststep.duration, amount: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt25' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, duration: {...props.stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt3' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, duration: {...props.stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
                         </>
                 }
 
