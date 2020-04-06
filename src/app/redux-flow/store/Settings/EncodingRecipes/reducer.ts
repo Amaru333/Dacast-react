@@ -19,6 +19,11 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                     }
                 })
             }
+        case ActionTypes.GET_ENCODING_RECIPES_PRESETS:
+            return {
+                ...state, 
+                defaultRecipePresets: action.payload.data.presets
+            }
         case ActionTypes.CREATE_ENCODING_RECIPES:   
             let recipes = state.recipes.slice()
             if(action.payload.data.isDefault) {

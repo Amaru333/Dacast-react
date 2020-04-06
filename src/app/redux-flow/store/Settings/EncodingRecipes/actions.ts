@@ -1,4 +1,4 @@
-import { ActionTypes, EncodingRecipeItem } from "../EncodingRecipes/EncodingRecipesTypes";
+import { ActionTypes, EncodingRecipeItem, RecipePreset } from "../EncodingRecipes/EncodingRecipesTypes";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -8,6 +8,11 @@ import { EncodingRecipesServices } from './services';
 export interface GetEncodingRecipeDetails {
     type: ActionTypes.GET_ENCODING_RECIPES;
     payload: {data: any};
+}
+
+export interface GetEncodingRecipePresets {
+    type: ActionTypes.GET_ENCODING_RECIPES_PRESETS;
+    payload: {data: {presets: RecipePreset[]}};
 }
 
 export interface CreateEncodingRecipeDetails {
@@ -46,6 +51,18 @@ export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, Get
         await EncodingRecipesServices.getEncodingRecipesService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ENCODING_RECIPES, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getEncodingRecipesPresetsAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipePresets> => {
+
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetEncodingRecipePresets> ) => {
+        await EncodingRecipesServices.getEncodingRecipesPresetsService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ENCODING_RECIPES_PRESETS, payload: response.data} );
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -115,9 +132,9 @@ export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Pr
     };
 }
 
-export const deleteWatermark = (): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
+export const deleteWatermark = (recipeId: string): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteWatermark> ) => {
-        await EncodingRecipesServices.deleteWatermarkService()
+        await EncodingRecipesServices.deleteWatermarkService(recipeId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: response.data} );
             }).catch(() => {
@@ -128,6 +145,7 @@ export const deleteWatermark = (): ThunkDispatch<Promise<void>, {}, DeleteWaterm
 
 export type Action = 
 GetEncodingRecipeDetails | 
+GetEncodingRecipePresets |
 CreateEncodingRecipeDetails | 
 SaveEncodingRecipeDetails | 
 DeleteEncodingRecipeDetails |

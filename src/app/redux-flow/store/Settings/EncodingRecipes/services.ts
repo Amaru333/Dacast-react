@@ -13,6 +13,15 @@ const getEncodingRecipesService = async () => {
         }})
 }
 
+const getEncodingRecipesPresetsService = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/presets',
+        {headers: {
+            'Authorization': token
+        }})
+}
+
 const createEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
@@ -54,12 +63,8 @@ const deleteEncodingRecipeService = async (data: EncodingRecipeItem) => {
 
 const getUploadWatermarkUrlService = async () => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart',
-        {'parameters': {
-            'userID': userId
-        }, 
-        'type': 'watermark'},
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/watermark',
         {headers: {
             'Authorization': token
         }});
@@ -69,16 +74,17 @@ const uploadWatermarkService = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, data)
 }
 
-const deleteWatermarkService = async () => {
+const deleteWatermarkService = async (recipeId: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company/logo', {headers: {
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + recipeId, {headers: {
         'Authorization': token
     }});
 }
 
 export const EncodingRecipesServices = {
     getEncodingRecipesService,
+    getEncodingRecipesPresetsService,
     createEncodingRecipeService,
     saveEncodingRecipeService,
     deleteEncodingRecipeService,

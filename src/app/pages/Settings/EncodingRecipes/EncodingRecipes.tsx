@@ -16,17 +16,17 @@ import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
     getEncodingRecipes: Function;
+    getEncodingRecipesPresets: Function;
     createEncodingRecipe: Function;
     saveEncodingRecipe: Function;
     deleteEncodingRecipe: Function;
     getWatermarkUrlForUploading: Function;
-    uploadCompanyLogo: Function;
-    deleteCompanyLogo: Function;
+    uploadWatermark: Function;
+    deleteWatermark: Function;
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
@@ -88,7 +88,6 @@ const stepList = [settingsStep, presetStep]
 
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
-
     let smScreen = useMedia('(max-width: 780px)');
 
     const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
@@ -149,11 +148,13 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={["Settings", "Presets"]}
-                    lastStepButton="Save"
+                    lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
                     functionCancel={FunctionRecipe}
                     finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
+                    stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl}}
+                    usefulFunctions={{'getUploadUrl': props.getWatermarkUrlForUploading, 'uploadWatermark': props.uploadWatermark, 'deleteWatermark': props.deleteWatermark}}
                 />
                 <Modal size="small" title="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
                     <ModalContent>
