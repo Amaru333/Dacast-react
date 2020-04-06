@@ -12,6 +12,10 @@ import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 
+export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
+export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
+
+
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean}) => {
 
     const exportCsvAnalytics = (data: any) => {
