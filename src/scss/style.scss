@@ -357,6 +357,7 @@ a {
 
 /** SM custom class */ 
 @media (min-width: 40em) {
+    .sm-px1 { padding-left:   var(--space-1); padding-right:  var(--space-1) }
     .sm-pr1 {
         padding-right: .5em;
     }
@@ -371,6 +372,9 @@ a {
     }
     .sm-mr1 {
         margin-right: .5em;
+    }
+    .sm-ml2 {
+        margin-left: 1em;
     }
     .sm-flex {
         display:flex;
