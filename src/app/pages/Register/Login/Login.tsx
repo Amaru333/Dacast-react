@@ -52,8 +52,8 @@ export const LoginPage = (props: LoginComponentProps) => {
             </ModalCard>
             {
                 props.loginInfos && props.loginInfos.waiting ?
-                <SpinnerContainer><LoadingSpinner color='dark-violet' size='medium' /></SpinnerContainer>
-                : null
+                    <SpinnerContainer><LoadingSpinner color='dark-violet' size='medium' /></SpinnerContainer>
+                    : null
             }
         </LoginContainer>
 

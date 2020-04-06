@@ -16,7 +16,7 @@ import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 
 var moment = require('moment-timezone');
 
-export const GroupPriceStepperFirstStep = (props:{stepperData: GroupStepperData; updateStepperData: Function}) => {
+export const GroupPriceStepperFirstStep = (props: {stepperData: GroupStepperData; updateStepperData: Function}) => {
 
     React.useEffect(() => {}, [props.stepperData])
 
@@ -36,8 +36,8 @@ export const GroupPriceStepperFirstStep = (props:{stepperData: GroupStepperData;
             return( 
                 <div key={'groupPriceSection' + key} className='col col-12 flex items-center'>
                     <div className='col col-6'>
-                    <Input className={key === 0 ? 'col col-6 pr1' : 'col col-6 pr1 mt2'} defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
-                    <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1 mt2'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
+                        <Input className={key === 0 ? 'col col-6 pr1' : 'col col-6 pr1 mt2'} defaultValue={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')}label={key === 0 ? 'Price' : ''} /> 
+                        <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1 mt2'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     </div>
                     {
                         key === props.stepperData.firststep.price.length - 1 ? 

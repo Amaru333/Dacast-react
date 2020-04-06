@@ -5,7 +5,7 @@ import { Action } from './actions'
 const reducer: Reducer<WithdrawalInfo> = (state = editWithdrawalDefaultState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_WITHDRAWAL_INFO: 
-        console.log(action.payload)
+            console.log(action.payload)
             return action.payload
         case ActionTypes.SAVE_WITHDRAWAL_STATUS: 
             return {

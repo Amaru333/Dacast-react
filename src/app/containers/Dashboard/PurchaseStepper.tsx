@@ -43,7 +43,7 @@ export const PurchaseStepperCartStep = () => {
     )
 }
 
-export const PurchaseStepperPaymentStep = (props: {stepperData: string, callback: Function, finalFunction: Function}) => {
+export const PurchaseStepperPaymentStep = (props: {stepperData: string; callback: Function; finalFunction: Function}) => {
 
     const purchaseStepperPaymentTotalHeader = () => {
         return  {data: [
@@ -91,11 +91,11 @@ export const PurchaseStepperPaymentStep = (props: {stepperData: string, callback
             
             {
                 props.stepperData === "none" ? 
-                <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
-                    <Elements>
-                    <NewPaymentMethodForm callback={props.callback} actionButton={props.finalFunction} />
-                    </Elements>
-                </RecurlyProvider>              
+                    <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
+                        <Elements>
+                            <NewPaymentMethodForm callback={props.callback} actionButton={props.finalFunction} />
+                        </Elements>
+                    </RecurlyProvider>              
                     : 
                     <div>
                         <Table id="purchaseStepperPaymentMethodTable" headerBackgroundColor="gray-10" header={purchaseStepperPaymentMethodHeader()} body={purchaseStepperPaymentMethodBody()} />

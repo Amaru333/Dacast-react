@@ -30,8 +30,8 @@ const Header = (props: HeaderProps) => {
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
     React.useEffect(() => {
-        console.log(location.pathname.split('/').filter((f:string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
-        setBreadcrumbItems(location.pathname.split('/').filter((f:string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        console.log(location.pathname.split('/').filter((f: string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        setBreadcrumbItems(location.pathname.split('/').filter((f: string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
     }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
@@ -89,9 +89,9 @@ const Header = (props: HeaderProps) => {
             return index !== breadcrumbItems.length -1 ?
                 <Text className='navigation' key={item + index} size={14}>
                     {AppRoutes.some(route => route.path === item.toLowerCase()) ?
-                    <Link to={item.toLowerCase()}><Text size={14} color='dark-violet' className='navigation'>{item}</Text></Link>
-                    : <Text size={14}>{item}</Text>
-                }
+                        <Link to={item.toLowerCase()}><Text size={14} color='dark-violet' className='navigation'>{item}</Text></Link>
+                        : <Text size={14}>{item}</Text>
+                    }
                 &nbsp;/&nbsp;</Text>
                 : <Text key={item + index} size={14}>{item}</Text>
         })

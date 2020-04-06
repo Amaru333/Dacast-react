@@ -20,10 +20,10 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                         </Text>
                         {
                             tooltip ? 
-                            <div>
-                                <IconStyle fontSize="small" id={tooltip}>info_outlined</IconStyle>
-                                <Tooltip target={tooltip}>{tooltip}</Tooltip>
-                            </div> : null
+                                <div>
+                                    <IconStyle fontSize="small" id={tooltip}>info_outlined</IconStyle>
+                                    <Tooltip target={tooltip}>{tooltip}</Tooltip>
+                                </div> : null
                             
                         }
                         {

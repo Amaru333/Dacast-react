@@ -46,11 +46,11 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
             </Card>
-           { settingsInfos === props.paywallSettingsInfos ? null :
-            <div>
-                 <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
-                <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
-            </div>
+            { settingsInfos === props.paywallSettingsInfos ? null :
+                <div>
+                    <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                </div>
             }
             <Prompt when={settingsInfos !== props.paywallSettingsInfos} message='' />
         </div>

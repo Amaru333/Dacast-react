@@ -24,7 +24,7 @@ export interface EncodingRecipeItem {
 
 export interface EncodingRecipesData {
     recipes: EncodingRecipeItem[];
-    uploadWatermarkUrl?: string
+    uploadWatermarkUrl?: string;
 }
 
 export const defaultEncodingRecipes: EncodingRecipesData = {

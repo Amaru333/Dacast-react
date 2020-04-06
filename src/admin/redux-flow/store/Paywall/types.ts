@@ -7,7 +7,7 @@ import { ChargebackReducer } from './Chargebacks/reducer';
 
 export interface PaywallState {
     balances: AccountBalanceInfo | false;
-    chargeback: Chargeback | false
+    chargeback: Chargeback | false;
 }
 
 export const paywallInitialState: PaywallState = {

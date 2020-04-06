@@ -26,15 +26,15 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                 <div className="flex">
                     <div>
                         <ActionIcon id={"tooltip" + props.dataName}>
-                        <IconStyle >info_outlined</IconStyle>
+                            <IconStyle >info_outlined</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"tooltip" + props.dataName}>{props.infoText}</Tooltip>
                     </div>
                     { !props.realTime ? 
-                    <ActionIcon id={"download" + props.dataName}>
-                        <IconStyle onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle>
-                    </ActionIcon>
-                     : null}   
+                        <ActionIcon id={"download" + props.dataName}>
+                            <IconStyle onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle>
+                        </ActionIcon>
+                        : null}   
                 </div>
                 <Tooltip target={"download" + props.dataName}>lorem ipsum</Tooltip>
             </AnalyticsCardHeader>

@@ -14,7 +14,7 @@ export interface TokenInfos {
     token: string;
     refresh: string;
     userId?: string;
-    waiting: boolean
+    waiting: boolean;
 }
 
 export const defaultStateLogin: TokenInfos = {

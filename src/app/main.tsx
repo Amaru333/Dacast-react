@@ -91,7 +91,7 @@ const AppContent = () => {
         }
     };
 
-    const PrivateRoute = (props: {key: string; component: any; path: string, exact?: boolean}) => {
+    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean}) => {
 
         return (
             isLoggedIn()  ?
@@ -140,12 +140,12 @@ const AppContent = () => {
         <Toasts />
             <Switch>
                 {isLoggedIn() ?
-                <PrivateRoute key='/' component={Dashboard} exact path='/' />                
+                    <PrivateRoute key='/' component={Dashboard} exact path='/' />                
 
-                :
-                <Route exact path='/'>
-                    <Login />
-                </Route>
+                    :
+                    <Route exact path='/'>
+                        <Login />
+                    </Route>
                 }                           
                 {returnRouter(AppRoutes)}
             </Switch>

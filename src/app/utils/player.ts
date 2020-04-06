@@ -20,7 +20,7 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         {
             let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
                 .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
-                console.log(existingPlayerTag)
+            console.log(existingPlayerTag)
             if(!existingPlayerTag) {
                 let head = document.head || document.getElementsByTagName('head')[0];
                 const playerScript = document.createElement('script');

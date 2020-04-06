@@ -34,7 +34,7 @@ const defaultPreset: Preset = {
 
 }
 
-export const ContentPricePresetsModal = (props: {action: Function; toggle: Function; preset: Preset, presetList: Preset[]; savePresetGlobally: Function;}) => {
+export const ContentPricePresetsModal = (props: {action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function}) => {
 
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)

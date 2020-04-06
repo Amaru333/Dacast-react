@@ -31,10 +31,10 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
                                 </div>
                             )
                         })
-                    :
-                    <div key={key + i} className='flex  col col-12'>
-                        <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + props.withdrawal[key] + ','}</Text>
-                    </div>
+                        :
+                        <div key={key + i} className='flex  col col-12'>
+                            <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + props.withdrawal[key] + ','}</Text>
+                        </div>
                 )
             })
         }

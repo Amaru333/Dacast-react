@@ -68,7 +68,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
                                 : 
                                 <div>
                                     <ActionIcon id={"subfolderTooltip" + i} className={childNode.subfolders === 0 ? 'hide' : ''}>
-                                    <IconStyle   onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                        <IconStyle   onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                                     </ActionIcon>
                                     
                                     <Tooltip target={"subfolderTooltip" + i}>Go to {getNameFromFullPath(childNode.fullPath)}</Tooltip>
