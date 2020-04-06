@@ -19,13 +19,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false);
 
-    const handleNewWithdrawlRequest = () => {
-        if (props.payoutInfos.paymentMethodRequests && Object.keys(props.payoutInfos.paymentMethodRequests).length !== 0) {
-            setWithdrawalModalOpened(true)
-        } else {
-            props.showToast("You must add a Payment Request Method before you can Request a Withdrawal", 'fixed', "error")
-        }
-    }
+    
 
     const paymentMethodTableHeader = () => {
         return {
@@ -80,7 +74,13 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const [withdrawalModalOpened, setWithdrawalModalOpened] = React.useState<boolean>(false);
 
 
-
+    const handleNewWithdrawlRequest = () => {
+        if (props.payoutInfos.paymentMethodRequests && Object.keys(props.payoutInfos.paymentMethodRequests).length !== 0) {
+            setWithdrawalModalOpened(true)
+        } else {
+            props.showToast("You must add a Payment Request Method before you can Request a Withdrawal", 'fixed', "error")
+        }
+    }
 
     const withdrawalTableHeader = () => {
         return {
@@ -137,19 +137,15 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
 
     const emptyWithdrawalTableBody = (text: string) => {
-        return props.payoutInfos.paymentMethodRequests ? [{
-            data: [
-                <div key={'emptyWithdrawalsTableBody'} className='right'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>,
-                <div key={'emptyWithdrawalsTableBody'} className='center'></div>
+        return props.payoutInfos.paymentMethodRequests ? [{data: [
+            <div key={'emptyWithdrawalsTableBody'} className='right'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>,
+            <div key={'emptyWithdrawalsTableBody'} className='center'></div>
+        ]}] :
+            [{data: [
+                <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
             ]
-        }] :
-            [{
-                data: [
-                    <div key={'emptyWithdrawalsTableBody'} className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-                ]
 
-            }]
-    }
+            }]}
 
     return displayPaymentMethodRequest ?
         <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} />

@@ -5,7 +5,7 @@ import ReactDates, { SingleDatePicker } from 'react-dates';
 import './datepicker_override.css';
 import { Text } from '../../Typography/Text'
 
-export const DateSinglePickerWrapper = (props: { className?: string; callback?: Function; id?: string; datepickerTitle?: string, openDirection?: ReactDates.OpenDirectionShape }) => {
+export const DateSinglePickerWrapper = (props: { className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
 
     const [date, setDate] = React.useState<any>(null)
     const [focusedInput, setFocusedInput] = React.useState<boolean>(false)

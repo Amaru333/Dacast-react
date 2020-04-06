@@ -24,7 +24,7 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
 `;
 
-export const LabelStyle = styled.label<{disabled: boolean, tooltip?: string}>`
+export const LabelStyle = styled.label<{disabled: boolean; tooltip?: string}>`
     display: flex;
     height:auto;
     margin-bottom: 4px;

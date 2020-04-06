@@ -129,7 +129,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
     )
 }
 
-export const presetStep = (props: {stepperData: EncodingRecipeItem, updateStepperData: Function, setStepValidated: Function, finalFunction: Function}) => {
+export const presetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
 
     useStepperFinalStepAction('stepperNextButton', props.finalFunction)
 

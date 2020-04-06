@@ -6,7 +6,7 @@ import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/ty
 import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 
-export const CartStep = (props:{stepperData: PendingOrder}) => {
+export const CartStep = (props: {stepperData: PendingOrder}) => {
 
     //to prevent errors with different numbers of hooks being rendered between steps
     const [test2, setTest2] = React.useState<boolean>(false)
@@ -37,7 +37,7 @@ export const CartStep = (props:{stepperData: PendingOrder}) => {
     )
 }
 
-export const PaymentStep = (props: {stepperData: PendingOrder, updateStepperData: Function, setStepValidated: Function, finalFunction: Function}) => {
+export const PaymentStep = (props: {stepperData: PendingOrder; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
 
     const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
 

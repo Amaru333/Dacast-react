@@ -165,44 +165,44 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             }
 
             <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
-            {passwordModalToggle ?
+                {passwordModalToggle ?
                 <>
                 <ModalContent>
-                        <Input 
-                            disabled={false} 
-                            defaultValue={''}
-                            type="password" 
-                            className="col col-12" 
-                            id="currentPassword" 
-                            label="Current Password" 
-                            onChange={(event) => setCurrentPassword(event.currentTarget.value)}
-                            placeholder="Current Password" 
-                            required
-                        />
-                        <Input 
-                            disabled={false} 
-                            defaultValue={''}
-                            type="password" 
-                            className="col col-12" 
-                            id="newPassword" 
-                            label="New Password" 
-                            onChange={(event) => setNewPassword(event.currentTarget.value)}
-                            placeholder="New Password" 
-                            help='Must contain more than 6 characters'
-                            required
-                        />
-                        <Input 
-                            disabled={false} 
-                            defaultValue={''}
-                            type="password" 
-                            className="col col-12" 
-                            id="confirmPassword" 
-                            onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
-                            label="Confirm Password" 
-                            placeholder="Confirm Password" 
-                            required
-                        />
-                    </ModalContent>
+                    <Input 
+                        disabled={false} 
+                        defaultValue={''}
+                        type="password" 
+                        className="col col-12" 
+                        id="currentPassword" 
+                        label="Current Password" 
+                        onChange={(event) => setCurrentPassword(event.currentTarget.value)}
+                        placeholder="Current Password" 
+                        required
+                    />
+                    <Input 
+                        disabled={false} 
+                        defaultValue={''}
+                        type="password" 
+                        className="col col-12" 
+                        id="newPassword" 
+                        label="New Password" 
+                        onChange={(event) => setNewPassword(event.currentTarget.value)}
+                        placeholder="New Password" 
+                        help='Must contain more than 6 characters'
+                        required
+                    />
+                    <Input 
+                        disabled={false} 
+                        defaultValue={''}
+                        type="password" 
+                        className="col col-12" 
+                        id="confirmPassword" 
+                        onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
+                        label="Confirm Password" 
+                        placeholder="Confirm Password" 
+                        required
+                    />
+                </ModalContent>
                     <ModalFooter>
                         <Button disabled={newPassword !== confirmNewPassword || newPassword.length < 5 || currentPassword.length === 0} sizeButton="large" onClick={() => {props.saveProfilePassword(currentPassword, newPassword);setPasswordModalToggle(false)}} typeButton="primary">Change Password</Button>
                         <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>

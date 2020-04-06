@@ -8,7 +8,7 @@ export interface Balance {
     type: string;
     credit: number;
     debit: number;
-    revenue: number
+    revenue: number;
 }
 
 export interface AccountBalanceInfo {

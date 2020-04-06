@@ -61,7 +61,7 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
                 <DropdownSingle hasSearch id='groupPromoTimezoneDropdown' dropdownDefaultSelect={groupPromo.timezone} className='col col-6 pr1' dropdownTitle='Timezone' callback={(value: string) => setGroupPromo({...groupPromo, timezone: value})} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
                 {
                     groupPromo.rateType === 'Subscription' ? 
-                        <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6 pl1' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
+                        <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
                         : null
                 }
             </div>

@@ -18,7 +18,7 @@ export const ForgotPasswordPage = (props: ForgotPasswordComponentProps) => {
 
     return (
         <LoginContainer>
-        <ImageStyle className="mx-auto" src={logo} />
+            <ImageStyle className="mx-auto" src={logo} />
             <ModalCard className="mx-auto" size="small" title="Password Reset" >
                 <ModalContent className="clearfix">
                     <Text className="col col-12" size={14} weight="reg" color="gray-3">Enter your email address to reset your password.</Text>

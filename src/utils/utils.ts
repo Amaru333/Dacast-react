@@ -203,13 +203,13 @@ export class CsvService {
 export const useKeyboardSubmit = (callback: Function) => {
     useEffect(() => {
         const listener = event => {
-          if (event.code === "Enter" || event.code === "NumpadEnter") {
-            callback()
-          }
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                callback()
+            }
         };
         document.addEventListener("keydown", listener);
         return () => {
-          document.removeEventListener("keydown", listener);
+            document.removeEventListener("keydown", listener);
         };
-      }, []);  
+    }, []);  
 }

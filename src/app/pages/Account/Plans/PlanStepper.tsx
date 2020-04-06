@@ -9,7 +9,7 @@ import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 
-export const PlanStepperFirstStep = (props: {stepperData: Plan, setStepperData: Function, setStepValidated: Function}) => {
+export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
     React.useEffect(() => {
         props.setStepValidated(true)
@@ -90,7 +90,7 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan, setStepperData: 
 }
 
 
-export const PlanStepperSecondStep = (props: {stepperData: Plan, setStepperData: Function, setStepValidated: Function}) => {
+export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
     const featuresTableBody = () => {
         
@@ -142,7 +142,7 @@ export enum PlansName {
 }
 
 
-export const PlanStepperThirdStep = (props: {stepperData: Plan, setStepperData: Function, setStepValidated: Function}) => {
+export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
 
     React.useEffect(() => {props.setStepValidated(true)}, [props.stepperData])
@@ -207,7 +207,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan, setStepperData: 
     )
 }
 
-export const PlanStepperFourthStep = (props: {stepperData: Plan, setStepperData: Function, setStepValidated: Function}) => {
+export const PlanStepperFourthStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
