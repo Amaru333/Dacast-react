@@ -32,6 +32,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     className='col sm-col-2 col-5 pr1'
                     dropdownTitle='Time Period' 
                     list={{'5 Minutes': false, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false}}
+                    isWhiteBackground
                 />
                 <DropdownSingle
                     id='liveChannelsDropdown'
@@ -40,6 +41,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     className='col sm-col-3 col-5 px1'
                     dropdownTitle='Live Channel'
                     list={{'Channel1': false, 'Channel2': false}}
+                    isWhiteBackground
                 />
                 <Button className='ml1' typeButton='primary' sizeButton='large' buttonColor='blue'>Apply</Button>
             </div>

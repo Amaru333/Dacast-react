@@ -300,8 +300,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
-                            label="State" 
-                            placeholder="State"
+                            label="State/Province" 
+                            placeholder="State/Province"
                             onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('state', validations)}
@@ -313,8 +313,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
-                            label="Town" 
-                            placeholder="Town"
+                            label="Town/City" 
+                            placeholder="Town/City"
                             onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('town', validations)}
@@ -326,8 +326,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
-                            label="Zip/Post Code" 
-                            placeholder="Zip/Post Code"
+                            label="Zip/Postal Code" 
+                            placeholder="Zip/Postal Code"
                             onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('zipCode', validations)}

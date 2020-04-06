@@ -3,7 +3,13 @@ exports.handler = async (event, context, callback) => {
     const response = event.Records[0].cf.response;
     console.log('request:', JSON.stringify(request))
     console.log('response', JSON.stringify(response))
-    if(response.status == '200'){
+
+    let code = parseInt(response.status)
+    if(isNaN(code)){
+        console.log('status code is nan, c\'est la merde')
+        return callback(null, response);
+    }
+    if(code >= 200 && code < 400){
         return callback(null, response);
     }
     let redirectTo = '/#!' + request.uri

@@ -24,6 +24,9 @@ export interface EncodingRecipesComponentProps {
     createEncodingRecipe: Function;
     saveEncodingRecipe: Function;
     deleteEncodingRecipe: Function;
+    getWatermarkUrlForUploading: Function;
+    uploadCompanyLogo: Function;
+    deleteCompanyLogo: Function;
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
@@ -79,32 +82,16 @@ const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
     ]}
 }
 
-const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
-    debugger
-    if(selectedRecipe) {
-        if (selectedRecipe.id) {
-            saveEncodingRecipe(selectedRecipe)
-        } else
-        {
-            createEncodingRecipe(selectedRecipe)
-        }
-        FunctionRecipe(false)
-    }
-    console.log('submitting')
-}
 
 const stepList = [settingsStep, presetStep]
 
 
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
-    React.useEffect(() => {
-        props.getEncodingRecipes();
-    }, [])
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["720p", "480p", "240p", "MagicEncoding"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -123,7 +110,21 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         FunctionRecipe(true);
     }
 
-    useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))
+    const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
+        
+        if(selectedRecipe) {
+            if (selectedRecipe.id) {
+                saveEncodingRecipe(selectedRecipe)
+            } else
+            {
+                createEncodingRecipe(selectedRecipe)
+            }
+            FunctionRecipe(false)
+        }
+        console.log('submitting')
+    }
+
+    // useStepperFinalStepAction('stepperNextButton', () => {submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)})
 
     return(
         !props.encodingRecipeData? 

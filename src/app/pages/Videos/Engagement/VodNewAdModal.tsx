@@ -21,12 +21,12 @@ export const VodNewAdModal = (props: VodEngagementComponentProps & {toggle: Func
 
     return (
         <div>
-            <Input className='col col-12' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
+            <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
                 <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, placement: value})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} />              
                 {
                     adData.placement === 'Mid-roll' ?
-                        <Input type='time' className='ml1 col col-6' id='adPosition' label='Position' value={adData.position} onChange={(event) => setAdData({...adData, position: event.currentTarget.value})} />
+                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.position} onChange={(event) => setAdData({...adData, position: event.currentTarget.value})} />
                         : null
                 }
             </div>

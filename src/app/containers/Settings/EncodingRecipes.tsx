@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction } from '../../redux-flow/store/Settings/EncodingRecipes/actions';
+import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction, uploadWatermark, deleteWatermark, getUploadWatermarkUrl } from '../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { EncodingRecipesData, EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { EncodingRecipesComponentProps, EncodingRecipesPage } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
@@ -45,6 +45,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteEncodingRecipe: (data: EncodingRecipeItem) => {
             dispatch(deleteEncodingRecipesAction(data))
+        },
+        getWatermarkUrlForUploading: () => {
+            dispatch(getUploadWatermarkUrl());
+        },
+        uploadCompanyLogo: (data: File, uploadWatermarkUrl: string) => {
+            dispatch(uploadWatermark(data, uploadWatermarkUrl));
+        },
+        deleteCompanyLogo: () => {
+            dispatch(deleteWatermark());
         },
     };
 }

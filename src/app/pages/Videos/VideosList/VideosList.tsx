@@ -171,7 +171,7 @@ export const VideosListPage = (props: VideosListProps) => {
             </div>
 
                 
-                <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} />
+                <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
                 <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />

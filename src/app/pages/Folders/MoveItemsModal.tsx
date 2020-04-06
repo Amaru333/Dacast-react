@@ -10,6 +10,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { ActionIcon } from '../../shared/ActionIconStyle';
 
 export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
 
@@ -66,7 +67,10 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
                                 <LoadingSpinner size='small' color='red'/> 
                                 : 
                                 <div>
-                                    <IconStyle id={"subfolderTooltip" + i} className={childNode.subfolders === 0 ? 'hide' : ''} onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                    <ActionIcon id={"subfolderTooltip" + i} className={childNode.subfolders === 0 ? 'hide' : ''}>
+                                    <IconStyle   onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                    </ActionIcon>
+                                    
                                     <Tooltip target={"subfolderTooltip" + i}>Go to {getNameFromFullPath(childNode.fullPath)}</Tooltip>
                                 </div>
                                 

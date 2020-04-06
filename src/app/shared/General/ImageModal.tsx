@@ -70,7 +70,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                         <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { uploadedImage === "" ? null :
-                            <ThumbnailFile className="col col-6 mt1">
+                            <ThumbnailFile className="col col-6 my1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setUploadedImage(testThumbnail)} customsize={14}>close</IconStyle>
@@ -85,7 +85,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                 <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                     <div className="col col-12">
                         <PlayerSection className='col col-12 mr2 mb2'>
-                            <PlayerContainer className="col col-12 px2 my2">
+                            <PlayerContainer className="col col-12 mx2 my2">
                                 <div ref={playerRef}>
                                 </div>
                             </PlayerContainer>
@@ -111,7 +111,7 @@ const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 12px 16px;
     background-color: ${props => props.isSelected ? props.theme.colors['violet10'] : props.theme.colors['white'] };
     border: 1px solid ${props => props.theme.colors['gray-7']};
     margin-bottom: 0px;

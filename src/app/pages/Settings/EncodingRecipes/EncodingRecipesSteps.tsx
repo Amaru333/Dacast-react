@@ -8,6 +8,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 //TABLE ELEMENTS
 export const createRecipeHeaderElement = () => {
@@ -21,14 +22,14 @@ export const createRecipeHeaderElement = () => {
 }
 
 export const recipePresets = [
-    { id: "2160p", rendition: "4K - 2160p", size: "3480", bitrate: "68", mpx: "7.52" },
-    { id: "1440p", rendition: "2K - 1440p", size: "2560", bitrate: "24", mpx: "3.69" },
-    { id: "1080p", rendition: "FHD - 1080p", size: "1920", bitrate: "12", mpx: "2.07" },
-    { id: "720p", rendition: "HD - 720p", size: "1280", bitrate: "7.5", mpx: "0.92" },
-    { id: "480p", rendition: "SD - 480p", size: "854", bitrate: "4", mpx: "0.41" },
-    { id: "360p", rendition: "LD - 360p", size: "640", bitrate: "1.5", mpx: "0.23" },
-    { id: "240p", rendition: "ULD - 240p", size: "426", bitrate: "0.5", mpx: "0.10" },
-    { id: "MagicEncoding", rendition: "Magic Encoding", size: "7.5", bitrate: "auto", mpx: "Auto" },
+    { id: "4K", rendition: "4K - 2160p", size: "3480", bitrate: "68", mpx: "7.52" },
+    { id: "2K", rendition: "2K - 1440p", size: "2560", bitrate: "24", mpx: "3.69" },
+    { id: "FHD", rendition: "FHD - 1080p", size: "1920", bitrate: "12", mpx: "2.07" },
+    { id: "HD", rendition: "HD - 720p", size: "1280", bitrate: "7.5", mpx: "0.92" },
+    { id: "SD", rendition: "SD - 480p", size: "854", bitrate: "4", mpx: "0.41" },
+    { id: "LD", rendition: "LD - 360p", size: "640", bitrate: "1.5", mpx: "0.23" },
+    { id: "ULD", rendition: "ULD - 240p", size: "426", bitrate: "0.5", mpx: "0.10" },
+    { id: "Magic", rendition: "Magic Encoding", size: "7.5", bitrate: "auto", mpx: "Auto" },
     { id: "DNE", rendition: "Do Not Encode", size: "Auto", bitrate: "Auto", mpx: "Auto" }
 ]
 
@@ -61,54 +62,61 @@ export const createRecipeBodyElement = (stepperData: EncodingRecipeItem, setSele
 }
 
 //STEPS
-export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
+export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}}) => {
 
     React.useEffect(() => {
-        if (stepperData) { setStepValidated(stepperData.name.length > 0) }
+        if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0) }
+    })
+
+    const [watermarkFileFile, setWatermarkFile] = React.useState<File>(null);
+
+    //BALANCING HOOK
+    React.useEffect(() => {
+
     })
 
     return (
         <StepContent className="clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
 
-                <RecipeNameInput isMobile={isMobile} className="col md-col-6 col-12" value={stepperData ? stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
+                <RecipeNameInput isMobile={isMobile} className="col md-col-6 col-12" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
                     event.preventDefault();
-                    setSelectedRecipe({ ...stepperData, ["name"]: event.currentTarget.value });
-                    setStepValidated(event.currentTarget.value.length > 0)
+                    props.updateStepperData({ ...props.stepperData, ["name"]: event.currentTarget.value });
+                    props.setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6 sm-mt3" defaultChecked={stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6 sm-mt3" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
                     onChange={(event) => {
-                        setSelectedRecipe({ ...stepperData, ["isDefault"]: event.currentTarget.checked })
+                        props.updateStepperData({ ...props.stepperData, ["isDefault"]: event.currentTarget.checked })
                     }
                     } />
             </RecipeNameRow>
             <WatermarkContainer isMobile={isMobile} className="col mt2 col-12">
                 <Text className="col col-12" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => setSelectedRecipe({ ...stepperData, watermarkFile: "cool new watermark" })}>Upload File</Button>
+                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: "cool new watermark" })}>Upload File</Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                {stepperData.watermarkFile ?
+                {props.stepperData.watermarkFileID ?
                     <div>
                         <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
-                            <Text className="ml2" color="gray-1" size={14} weight="reg">{stepperData.watermarkFile}</Text>
+                            <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFileID}</Text>
                             <WatermarkDeleteButton>
-                                <IconStyle onClick={() => setSelectedRecipe({ ...stepperData, watermarkFile: null })} style={{ fontSize: "14px" }}>close</IconStyle>
+                                <IconStyle onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: null })} style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFileID} value={props.stepperData.watermarkFileID ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
-                                    setSelectedRecipe({ ...stepperData, ["watermarkPositioningLeft"]: event.currentTarget.value })
+                                    props.updateStepperData({ ...props.stepperData, ["watermarkPwositioningLeft"]: event.currentTarget.value })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!stepperData.watermarkFile} value={stepperData.watermarkFile ? stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFileID} value={props.stepperData.watermarkFileID ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
-                                    setSelectedRecipe({ ...stepperData, ["watermarkPositioningRight"]: event.currentTarget.value })
+                                    props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: event.currentTarget.value })
                                 }
                                 }
                             />
@@ -121,13 +129,16 @@ export const settingsStep = (stepperData: EncodingRecipeItem, setSelectedRecipe:
     )
 }
 
-export const presetStep = (stepperData: EncodingRecipeItem, setSelectedRecipe: Function, setStepValidated: Function) => {
+export const presetStep = (props: {stepperData: EncodingRecipeItem, updateStepperData: Function, setStepValidated: Function, finalFunction: Function}) => {
+
+    useStepperFinalStepAction('stepperNextButton', props.finalFunction)
+
     return (
         <StepContent className="clearfix">
             <Text weight='reg' size={14}>
                 Provide your audience with the best viewing experience. Select up to 6 encoding presets from the table below and we will encode based on your choices.
             </Text>
-            <Table tableHeight={300} className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(stepperData, setSelectedRecipe, recipePresets, setStepValidated)} />
+            <Table tableHeight={300} className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement(props.stepperData, props.updateStepperData, recipePresets, props.setStepValidated)} />
             <div className="flex col col-12 mt3">
                 <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
                 <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>

@@ -19,7 +19,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -34,7 +34,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                 <img src={CardLogo} />
             </RadioButtonContainer>
             <RadioButtonOption isOpen={selectedOption === 'creditCard'} className='mb2'>
-                <div className='col col-12 py2 px2'>
+                <div className='col col-12 pt2 pb25 px2'>
                     <Input
                         data-recurly="first_name"
                         className={ClassHalfXsFullMd + 'pr1 mb2'}

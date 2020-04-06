@@ -110,7 +110,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                         <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
                         <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto">close</IconStyle>
                     </WidgetHeader>
-                    <div className="justify-between flex row items-center ">
+                    <div className="justify-between flex row flex-start">
                         <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
                         <img src={faqIcon} />
                     </div>
@@ -122,7 +122,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                             <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
                             <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto">close</IconStyle>
                         </WidgetHeader>
-                        <div className=" flex row justify-between items-center ">
+                        <div className=" flex row justify-between flex-start ">
                             <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
                             <img src={supportIcon} />
                         </div>

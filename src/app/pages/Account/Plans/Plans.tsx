@@ -38,7 +38,7 @@ export const PlansPage = (props: PlansContainerProps) => {
     }, [currentPlan])
 
     useStepperFinalStepAction('stepperNextButton', () => purchasePlan())
-
+    
 
     return (
         <PlansPageContainer isMobile={isMobile}>

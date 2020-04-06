@@ -8,11 +8,11 @@ import { addToken } from '../../../utils/token';
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 
-interface LoginContainerProps {
+export interface LoginComponentProps {
     login: Function;
     loginInfos: TokenInfos;
 }
-const Login = (props: LoginContainerProps) => {
+const Login = (props: LoginComponentProps) => {
 
     let history = useHistory()
 
@@ -29,7 +29,7 @@ const Login = (props: LoginContainerProps) => {
     }
 
     return (
-        <LoginPage login={loginUser} /> 
+        <LoginPage {...props} login={loginUser} /> 
     )
 }
 

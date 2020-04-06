@@ -16,31 +16,23 @@ import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 
 var moment = require('moment-timezone');
 
-export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, updateStepperData: Function) => {
+export const GroupPriceStepperFirstStep = (props:{stepperData: GroupStepperData; updateStepperData: Function}) => {
 
-
-    const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
-    // const [checkedFolders, setCheckedFolders] = React.useState<FolderAsset[]>([]);
-    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
-
-
-    React.useEffect(() => {}, [stepperData])
+    React.useEffect(() => {}, [props.stepperData])
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
-        let tempPrices = stepperData.firststep.price;
+        let tempPrices = props.stepperData.firststep.price;
         if(inputChange === 'amount') {
             tempPrices[key].amount = parseInt(value);
         }
         else {
             tempPrices[key].currency = value;
         }
-        updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: tempPrices}});
+        props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: tempPrices}});
     }   
 
     const renderPrices = () => {
-        return stepperData.firststep.price.map((price, key) => {
+        return props.stepperData.firststep.price.map((price, key) => {
             return( 
                 <div key={'groupPriceSection' + key} className='col col-12 py1 flex items-center'>
                     <div className='col col-6'>
@@ -48,10 +40,10 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
                     <DropdownSingle className={key === 0 ? 'col col-6 pl1 mt3' : 'col col-6 pl1'} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
                     </div>
                     {
-                        key === stepperData.firststep.price.length - 1 ? 
-                            <div onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: [...stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx2 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                        key === props.stepperData.firststep.price.length - 1 ? 
+                            <div onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: [...props.stepperData.firststep.price, {amount: 90, currency: 'USD'}]}})} className={'pointer col col-5 mx2 flex' + (key === 0 ? ' mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
                             
-                            : <IconStyle onClick={() => updateStepperData({...stepperData, firststep: {...stepperData.firststep, price: stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
+                            : <IconStyle onClick={() => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => {return index !== key})}})} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle>
                     }
                 </div>
             )
@@ -61,32 +53,32 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
     return (
         <div>
             <div className='col col-12 py2'>
-                <Input className='col col-6 pr1 mt1' label='Price Group Name' defaultValue={stepperData.firststep.name} onChange={(event) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, name: event.currentTarget.value}})} />
-                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={stepperData.firststep.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : stepperData.firststep.startMethod}})} list={{'Subscription': false, 'Pay Per View': false}} />
+                <Input className='col col-6 pr1 mt1' label='Price Group Name' defaultValue={props.stepperData.firststep.name} onChange={(event) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, name: event.currentTarget.value}})} />
+                <DropdownSingle id='groupPriceTypeDropdown' className='col col-6 pl1 mt1' dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.type} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.startMethod}})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             {renderPrices()}
             <div className='col col-6 py2'>
                 {
-                    stepperData.firststep.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' dropdownDefaultSelect={stepperData.firststep.recurrence} dropdownTitle='Recurrence' list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} />
+                    props.stepperData.firststep.type === 'Subscription' ?
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' dropdownDefaultSelect={props.stepperData.firststep.recurrence} dropdownTitle='Recurrence' list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} />
                         :
                         <>
-                            <Input className='col col-6 pr1' label='Duration' defaultValue={stepperData.firststep.duration.amount.toString()} onChange={(event) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, duration: {...stepperData.firststep.duration, amount: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt25' dropdownDefaultSelect={stepperData.firststep.duration.type} callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, duration: {...stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <Input className='col col-6 pr1' label='Duration' defaultValue={props.stepperData.firststep.duration.amount.toString()} onChange={(event) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, duration: {...props.stepperData.firststep.duration, amount: parseInt(event.currentTarget.value)}}})} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt25' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, duration: {...props.stepperData.firststep.duration, type: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
                         </>
                 }
 
             </div>
             <div className='col col-12 py2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={stepperData.firststep.startMethod} className='col col-6 pr1' callback={(value: string) => updateStepperData({...stepperData, firststep: {...stepperData.firststep, startMethod: value}})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={stepperData.firststep.type === 'Subscription'} />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.startMethod} className='col col-6 pr1' callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, startMethod: value}})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={props.stepperData.firststep.type === 'Subscription'} />
                 {
-                    stepperData.firststep.startMethod === 'Schedule' && stepperData.firststep.type === 'Pay Per View' ?
+                    props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                         <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
                         : null
                 }
             </div>
             {  
-                stepperData.firststep.startMethod === 'Schedule' && stepperData.firststep.type === 'Pay Per View' ?  
+                props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?  
                     <div className='col col-12 py2'>
                         <DateSinglePickerWrapper className='col col-6 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-3 pl1' type='time' label='Start Time' />
@@ -97,7 +89,7 @@ export const GroupPriceStepperFirstStep = (stepperData: GroupStepperData, update
     )
 }
 
-export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updateStepperData: Function) => {
+export const GroupPriceStepperSecondStep = (props: {stepperData: GroupStepperData; updateStepperData: Function}) => {
 
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -110,7 +102,7 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
             setSelectedFolder('/');
             return;
         } else {
-            stepperData.secondStep.getFolderContent(selectedFolder)
+            props.stepperData.secondStep.getFolderContent(selectedFolder)
         }
     }, [selectedFolder])
 
@@ -166,7 +158,7 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
     }
 
     const renderContentsList = () => {
-        return stepperData.secondStep.folderData.requestedContent.map((row) => {
+        return props.stepperData.secondStep.folderData.requestedContent.map((row) => {
             if(row.contentType === "playlist" || selectedItems.includes(row)) {
                 return;
             }
@@ -235,7 +227,7 @@ export const GroupPriceStepperSecondStep = (stepperData: GroupStepperData, updat
         <>
             <div className="inline-flex items-center flex col-12 mb2">
                 <IconStyle>search</IconStyle>
-                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'inherit'}} defaultTags={[]}   />
+                <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block", backgroundColor: 'white'}} defaultTags={[]}   />
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <div className="pl1 pr1">

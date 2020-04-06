@@ -103,8 +103,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.liveDetails.id)}>file_copy_outlined</IconStyle>
-                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id)}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyCOntentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
                 </div>
@@ -129,8 +129,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("share link here")}>file_copy_outlined</IconStyle>
-                            <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard("share link here")}>file_copy_outlined</IconStyle>
+                            <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
                     <Divider className="col col-12" />
