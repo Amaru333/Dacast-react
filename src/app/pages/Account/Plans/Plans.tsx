@@ -16,6 +16,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
@@ -26,8 +27,14 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [stepperData, setStepperData] = React.useState<Plan>(null);
     const [stepList, setStepList] = React.useState(fullSteps);
     const [currentPlan, setCurrentPlan] = React.useState<string>(null)
+    const [planBillingFrequency, setPlanBillingFrequency] = React.useState<string>('Annually')
 
     React.useEffect(() => {}, [stepperData, stepList]);
+
+    React.useEffect(() => {
+        
+        // console.log(props.planDetails)
+    }, [props.planDetails])
 
     const purchasePlan = () => {
         setStepperPlanOpened(false);
@@ -127,12 +134,12 @@ export const PlansPage = (props: PlansContainerProps) => {
                             <PlanCard isSelected={currentPlan === "scale"}>
                                 <PlanInfosContainer isMobile={isMobile}>
                                     <div className='flex items-end'>
-                                        <Text className={textClassName} size={32} weight='med' color='gray-1'>$250</Text>
+                                        <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$188' : '$250'}</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'> /month*</Text>
                                     </div>
-                                    <div>
-                                    <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed</Text>
-                                    {/* DROPDOWN HERE */}
+                                    <div className='flex flex-baseline'>
+                                    <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed </Text>
+                                    <DropdownSingle id='scalePlanDropdown' dropdownTitle='' list={{'Annually': false, 'Monthly': false}} callback={(value: string) => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency}  />
                                     </div>
                                     
                                     
@@ -152,8 +159,15 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
-                                    <Label className="pt4" color='green' backgroundColor='green20' label='25% Discount'></Label>
-                                    <Text className='center py35' size={12}>When billed Annually compared to Monthly</Text>
+
+                                    {planBillingFrequency === 'Annually' ?
+                                    <div className="flex flex-column">
+                                        <Label className="pt4" color='green' backgroundColor='green20' label='25% Discount' />
+                                        <Text className='center py35' size={12}>When billed Annually compared to Monthly</Text>
+                                    </div>
+                                     : null }
+                                    
+                                    
                                     <div className='flex flex-column absolute bottom-0'>
                                         {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
                                         <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'purchase'});setStepList(purchaseSteps);setStepperPlanOpened(true)}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
