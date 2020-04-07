@@ -42,7 +42,7 @@ export interface UploadWatermark {
 
 export interface DeleteWatermark {
     type: ActionTypes.DELETE_WATERMARK;
-    payload: File;
+    payload: EncodingRecipeItem;
 }
 
 export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipeDetails> => {
@@ -132,11 +132,11 @@ export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Pr
     };
 }
 
-export const deleteWatermark = (recipeId: string): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
+export const deleteWatermark = (data: EncodingRecipeItem): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteWatermark> ) => {
-        await EncodingRecipesServices.deleteWatermarkService(recipeId)
+        await EncodingRecipesServices.deleteWatermarkService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

@@ -6,7 +6,7 @@ import { ApplicationState } from '../..';
 
 export interface GetProfilePageDetails {
     type: ActionTypes.GET_PROFILE_PAGE_DETAILS;
-    payload: ProfilePageInfos;
+    payload: {data: ProfilePageInfos};
 }
 
 export interface SaveProfilePageDetails {
@@ -24,7 +24,7 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProfilePageDetails> ) => {
         await ProfileServices.getProfilePageDetailsService()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data.data} );
+                dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -35,7 +35,7 @@ export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispa
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePageDetails> ) => {
         await ProfileServices.saveProfilePageDetailsService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PROFILE_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PROFILE_PAGE_DETAILS, payload: data} );
                 dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'flexible', "error"));

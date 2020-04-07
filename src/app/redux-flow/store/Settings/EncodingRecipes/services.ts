@@ -74,12 +74,20 @@ const uploadWatermarkService = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, data)
 }
 
-const deleteWatermarkService = async (recipeId: string) => {
+const deleteWatermarkService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + recipeId, {headers: {
-        'Authorization': token
-    }});
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + data.id,
+        {"id": data.id,
+            "isDefault": data.isDefault,
+            "name": data.name,
+            "recipePresets": data.recipePresets,
+            "watermarkFileID": null
+        }, 
+        {headers: {
+            'Authorization': token
+        }}
+    )
 }
 
 export const EncodingRecipesServices = {

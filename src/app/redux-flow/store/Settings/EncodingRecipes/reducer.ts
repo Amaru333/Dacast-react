@@ -61,9 +61,18 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 isUploading: false
             }
         case ActionTypes.DELETE_WATERMARK:
-            return {
-                ...state,
+            if(action.payload.isDefault) {  
+                recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
             }
+            return  {...state, recipes: recipes.map((item) => {
+                if (item.id !== action.payload.id) {
+                    return item
+                }
+                return {
+                    ...item,
+                    ...action.payload
+                }
+            })}
         default:
             return state;
     }

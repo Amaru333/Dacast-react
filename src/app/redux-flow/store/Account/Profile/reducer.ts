@@ -6,7 +6,7 @@ export const reducer = (state = profileInitialState, action: ProfileAction): Pro
     switch (action.type) {
         case ActionTypes.GET_PROFILE_PAGE_DETAILS:
             return {...state,
-                ...action.payload
+                ...action.payload.data
             }
         case ActionTypes.SAVE_PROFILE_PAGE_DETAILS:
             return {...state, 

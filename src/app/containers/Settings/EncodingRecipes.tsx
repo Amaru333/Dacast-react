@@ -58,8 +58,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         uploadWatermark: (data: File, uploadWatermarkUrl: string) => {
             dispatch(uploadWatermark(data, uploadWatermarkUrl));
         },
-        deleteWatermark: (recipeId: string) => {
-            dispatch(deleteWatermark(recipeId));
+        deleteWatermark: (data: EncodingRecipeItem) => {
+            dispatch(deleteWatermark(data));
         },
     };
 }

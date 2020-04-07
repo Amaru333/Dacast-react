@@ -10,7 +10,6 @@ const reducer: Reducer<EmbedSettingsOptionType> = (state = {}, action: Action) =
                 ...action.payload,
             }
         case ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS:
-            console.log(state)
             return {
                 ...state,
                 ...action.payload,
