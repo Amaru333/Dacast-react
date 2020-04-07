@@ -19,8 +19,6 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
     const [watermarkFileFile, setWatermarkFile] = React.useState<File>(null);
 
-    //BALANCING HOOK
-
     const handleUpload = () => {
         props.usefulFunctions['getUploadUrl']();       
     }

@@ -17,7 +17,7 @@ export interface GetEncodingRecipePresets {
 
 export interface CreateEncodingRecipeDetails {
     type: ActionTypes.CREATE_ENCODING_RECIPES;
-    payload: {data: EncodingRecipeItem};
+    payload: EncodingRecipeItem;
 }
 
 export interface SaveEncodingRecipeDetails {
@@ -74,8 +74,8 @@ export const createEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.createEncodingRecipeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: response.data} );
-                dispatch(showToastNotification(`${response.data.name} created`, 'fixed', "success"));
+                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: data} );
+                dispatch(showToastNotification(`${data.name} created`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -87,8 +87,8 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.saveEncodingRecipeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: response.data} );
-                dispatch(showToastNotification(`${response.data.name} has been updated`, 'fixed', "success"));
+                dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been updated`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

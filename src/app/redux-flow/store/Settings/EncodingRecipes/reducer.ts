@@ -26,10 +26,10 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
             }
         case ActionTypes.CREATE_ENCODING_RECIPES:   
             let recipes = state.recipes.slice()
-            if(action.payload.data.isDefault) {
+            if(action.payload.isDefault) {
                 recipes = recipes.map((item) => {return {...item, isDefault: false}})
             }
-            recipes.splice(recipes.length, 0, action.payload.data )
+            recipes.splice(recipes.length, 0, action.payload )
             return {...state,
                 recipes  
             }
