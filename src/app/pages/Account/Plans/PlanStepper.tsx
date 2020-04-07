@@ -8,6 +8,7 @@ const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
+import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 
 export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
@@ -149,27 +150,24 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: 
 
 
     const cartTableBodyElement = () => {
-        return props.stepperData.action === 'custom' ? [
+        if (props.stepperData.name !== 'developer')
+        {return  [
             {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
                 <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.included.price.toLocaleString()}</Text>
             ]},
             {data: [
-                <Text  key="cartTableCutomAllowancesHeading" size={14}  weight="reg" color="gray-1">Allowances</Text>,
-                <Text className='right pr2' key="cartTableCutomAllowancesTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.total.toLocaleString()}</Text>
-            ]},
-            {data: [
                 <Text  key="cartTableFeaturesHeading" size={14}  weight="reg" color="gray-1">Features</Text>,
                 <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.secondStep.total.toLocaleString()}</Text>
             ]}
-        ]
-            :
-            [{data: 
-                [
+        ]} else {
+            return  [
+                {data: [
                     <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
                     <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.included.price.toLocaleString()}</Text>
-                ]}
-            ]
+                ]}]
+        }
+           
     }
 
     const cartDropdownOption = () => {
@@ -207,7 +205,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: 
     )
 }
 
-export const PlanStepperFourthStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function, finalFunction: Function}) => {
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
@@ -237,10 +235,11 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; setStepperData:
     return (
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
-            <Table id='extraStepperStep2PaymentMethodTable' headerBackgroundColor="gray-10" header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+            {/* <Table id='extraStepperStep2PaymentMethodTable' headerBackgroundColor="gray-10" header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} /> */}
+            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} />
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12 flex flex-auto'>
-                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={props.stepperData.termsAndConditions}  onChange={() => {props.setStepperData({...props.stepperData, termsAndConditions: !props.stepperData.termsAndConditions})}} />
+                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={props.stepperData.termsAndConditions}  onChange={() => {props.updateStepperData({...props.stepperData, termsAndConditions: !props.stepperData.termsAndConditions})}} />
                 <div className='col col-11 flex'>
                     <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>                   
                 </div>
