@@ -27,7 +27,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
             setWatermarkFile(e.target.files[0])
-            props.updateStepperData({...props.stepperData, watermarkFileID: e.target.files[0].name})
+            props.updateStepperData({...props.stepperData, watermarkFilename: e.target.files[0].name})
             handleUpload()
         }
     }
@@ -59,31 +59,31 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
             <WatermarkContainer isMobile={isMobile} className="col mt2 col-12">
                 <Text className="col col-12" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary" onClick={() => props.updateStepperData({ ...props.stepperData, watermarkFile: "cool new watermark" })}>
+                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary">
                     <label className='pointer' htmlFor='browseButton'>
                         <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
                         Browse Files   
                     </label>    
                 </Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                {props.stepperData.watermarkFileID ?
+                {props.stepperData.watermarkFilename ?
                     <div>
                         <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
-                            <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFileID}</Text>
+                            <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</Text>
                             <WatermarkDeleteButton>
-                                <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFileID: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
+                                <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFileID} value={props.stepperData.watermarkFileID && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPwositioningLeft"]: event.currentTarget.value })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFileID} value={props.stepperData.watermarkFileID && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: event.currentTarget.value })

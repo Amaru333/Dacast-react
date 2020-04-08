@@ -25,6 +25,7 @@ export interface EncodingRecipeItem {
     name: string;
     isDefault: boolean;
     watermarkFileID?: string;
+    watermarkFilename?: string;
     watermarkPositioningLeft?: number;
     watermarkPositioningRight?: number;
     recipePresets: string[];
