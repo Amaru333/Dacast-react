@@ -317,20 +317,25 @@ export const PlansPage = (props: PlansContainerProps) => {
             }
          <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
              <Elements>
-                <CustomStepper 
-                    opened={stepperPlanOpened}
-                    stepperHeader='Upgrade Plan'
-                    stepList={stepList}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                    stepTitles={stepTitles}
-                    lastStepButton="Purchase"
-                    stepperData={stepperData}
-                    updateStepperData={(value: Plan) => setStepperData(value)}
-                    functionCancel={setStepperPlanOpened}
-                    finalFunction={() => purchasePlan()}
-                />
+                 {
+                     stepperPlanOpened ?
+                        <CustomStepper 
+                            opened={stepperPlanOpened}
+                            stepperHeader='Upgrade Plan'
+                            stepList={stepList}
+                            nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                            backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                            cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                            stepTitles={stepTitles}
+                            lastStepButton="Purchase"
+                            stepperData={stepperData}
+                            updateStepperData={(value: Plan) => setStepperData(value)}
+                            functionCancel={setStepperPlanOpened}
+                            finalFunction={() => purchasePlan()}
+                        />
+                     : null
+                 }
+
              </Elements>
          </RecurlyProvider>
             
