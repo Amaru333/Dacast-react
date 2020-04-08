@@ -18,6 +18,7 @@ import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAct
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
+import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
@@ -29,15 +30,10 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [stepperData, setStepperData] = React.useState<Plan>(null);
     const [stepList, setStepList] = React.useState(fullSteps);
     const [currentPlan, setCurrentPlan] = React.useState<string>(null)
-    const [planBillingFrequency, setPlanBillingFrequency] = React.useState<string>('Annually')
+    const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
     React.useEffect(() => {}, [stepperData, stepList]);
-
-    React.useEffect(() => {
-        
-        console.log("stepper data", stepperData)
-    }, [stepperData])
 
     const purchasePlan = () => {
         setStepperPlanOpened(false);
@@ -159,7 +155,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     </div>
                                     <div className='flex flex-baseline'>
                                     <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed </Text>
-                                    <DropdownSingle id='scalePlanDropdown' dropdownTitle='' list={{'Annually': false, 'Monthly': false}} callback={(value: string) => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency}  />
+                                    <DropdownButton id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency}  />
                                     </div>
                                     
                                     
@@ -190,7 +186,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     
                                     <div className='flex flex-column absolute bottom-0'>
                                         {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                        <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData(props.planDetails.scalePlan);handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                        <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, paymentFrequency: planBillingFrequency});handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                     </div>
 
                                 </PlanInfosContainer>
