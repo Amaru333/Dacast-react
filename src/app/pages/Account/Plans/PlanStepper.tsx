@@ -1,70 +1,42 @@
 import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
-import { Bubble } from '../../../../components/Bubble/Bubble';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
+import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
+import { RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing/BillingStyle';
+import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
+import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
 
-export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+//PLAN
+export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
+
+    const [selectedPlan, setSelectedPlan] = React.useState<string>('ott')
 
     React.useEffect(() => {
         props.setStepValidated(true)
+        console.log(props.stepperData)
     }, [props.stepperData])
-
-    const handleIncreaseButtonClick = (item: string) => {
-        let displayedIndex = props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount);
-        if(displayedIndex < props.stepperData.firstStep.custom[item].length - 1) {
-            let newCustomArray = props.stepperData.firstStep.custom[item];
-            newCustomArray[displayedIndex].currentAmount = false;
-            newCustomArray[displayedIndex + 1].currentAmount = true;
-            let total = 0;
-            Object.keys(props.stepperData.firstStep.custom).map((item) => {total += props.stepperData.firstStep.custom[item].filter(element => {return element.currentAmount})[0].price});
-            props.setStepperData({...props.stepperData, firstStep:{...props.stepperData.firstStep, total: total, custom: {...props.stepperData.firstStep.custom, [item]: newCustomArray}}})
-        }
-    }
-
-    const handleDencreaseButtonClick = (item: string) => {
-        let displayedIndex = props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount);
-        if(displayedIndex > 0) {
-            let newCustomArray = props.stepperData.firstStep.custom[item];
-            newCustomArray[displayedIndex].currentAmount = false;
-            newCustomArray[displayedIndex - 1].currentAmount = true;
-            let total = 0;
-            Object.keys(props.stepperData.firstStep.custom).map((item) => {total += props.stepperData.firstStep.custom[item].filter(element => {return element.currentAmount})[0].price});
-            props.setStepperData({...props.stepperData, firstStep:{...props.stepperData.firstStep, total: total, custom: {...props.stepperData.firstStep.custom, [item]: newCustomArray}}})
-        }
-
-    }
-    const AllowancesBodyTable = () => {
-        return props.stepperData ? (
-            Object.keys(props.stepperData.firstStep.custom).map((item, key) => {
-                return( {data: [
-                    <Text key={'test'+ key.toString()} size={14} weight='reg' color='gray-3'>{item}</Text>,
-                    <div key={'test22'+ key.toString()} className='col-right col-5 flex mr2'>
-                        <Button className='mr2' disabled={props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === 0 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {handleDencreaseButtonClick(item)}}>
-                            -
-                        </Button>
-                        <Text size={14} weight='reg' color='gray-3'>{props.stepperData.firstStep.custom[item].filter(value => {return value.currentAmount})[0].amount}GB</Text>
-                        <Button className='mx2 right' disabled={props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === props.stepperData.firstStep.custom[item].length -1 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue'  onClick={() => {handleIncreaseButtonClick(item)}}>
-                            +
-                        </Button>
-                    </div>
-                ]}
-                
-                )})
-        
-        ) : null}
 
     const totalPriceTableFooter = () => {
         if(props.stepperData) {
-            return ( 
+           return props.stepperData.paymentFrequency === "Monthly" ?
+             ( 
                 [
-                    <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Total Per Month</Text>,
-                    <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${(props.stepperData.firstStep.total + props.stepperData.firstStep.included.price).toLocaleString()}*</Text>
+                    <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>,
+                    <DropdownButton id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>,
+                    <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.firstStep.included.price).toLocaleString()}*</Text>
+                ]
+            ) :
+             ( 
+                [
+                    <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>,
+                    <DropdownButton id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>,
+                    <Label color='green' backgroundColor='green20' label='25% Discount Applied' />,
+                    <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${calculateDiscount( props.stepperData.firstStep.included.price).toFixed(2)}*</Text>
                 ]
             )
         }
@@ -73,31 +45,46 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: 
 
     return (
         <div>
-            <Text size={14} weight='reg' color='gray-3'>Add extra Data, Encoding or Storage to your Scale Plan:</Text>
-            <Table id='stepperFirstStepTableAllowances' headerBackgroundColor="gray-10" body={AllowancesBodyTable()} />
-            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
-            <Text size={12} weight='reg' color='gray-3'>*Billed anually</Text>
+            <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
 
-            {
-                props.stepperData && Object.keys(props.stepperData.firstStep.custom).some((element) => {return props.stepperData.firstStep.custom[element].findIndex(value => value.currentAmount) === props.stepperData.firstStep.custom[element].length - 1}) ? 
-                    <Bubble type='info' className='mt2'>
-                        To increase allowances further please upgrade to the next plan.
-                    </Bubble>
-                    :null
-            }
+            <RadioButtonContainer isSelected={selectedPlan === 'ott'}>
+                <InputRadio name='scalePlanSelection' value='ott' defaultChecked={true} label='OTT' onChange={() => setSelectedPlan('ott')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'ott'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
+            </RadioButtonOption>
+
+            <RadioButtonContainer isSelected={selectedPlan === 'live'} className="mt2">
+                <InputRadio name='scalePlanSelection' value='live' defaultChecked={false} label='Live' onChange={() => setSelectedPlan('live')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'live'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
+            </RadioButtonOption>
+
+            <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'vod'}>
+                <InputRadio name='scalePlanSelection' value='vod' defaultChecked={false} label='VOD' onChange={() => setSelectedPlan('vod')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'vod'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
+            </RadioButtonOption>
+            
+            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
+            
+
+            
         </div>
     )
 }
 
-
-export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+//FEATURES
+export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
 
     const featuresTableBody = () => {
         
         return props.stepperData ? Object.keys(props.stepperData.secondStep.custom).map((item: string) => {
             return {data: [
                 
-                <InputCheckbox id={'chekbox'+ item} key={'secondStepCheckbox'+item} defaultChecked={props.stepperData.secondStep.custom[item].checked}  onChange={() => {props.setStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, custom: {...props.stepperData.secondStep.custom, [item]: {...props.stepperData.secondStep.custom[item], checked: !props.stepperData.secondStep.custom[item].checked}}}})}} />,
+                <InputCheckbox id={'chekbox'+ item} key={'secondStepCheckbox'+item} defaultChecked={props.stepperData.secondStep.custom[item].checked}  onChange={() => {props.updateStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, custom: {...props.stepperData.secondStep.custom, [item]: {...props.stepperData.secondStep.custom[item], checked: !props.stepperData.secondStep.custom[item].checked}}}})}} />,
                 <Text key={'secondStepText' + item} size={14} weight='reg' color='gray-3'>{item}</Text>,
                 <Text key={'secondStepPrice' + item} size={14} weight='reg' color={'gray-3'}>{'$' + props.stepperData.secondStep.custom[item].price.toLocaleString()}</Text>
             ]}
@@ -105,13 +92,6 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData:
             : null
 
     }      
-
-    const secondStepTableFooterElement = () => {
-        return  [
-            <Text  key={"secondStepTableFooterTotal"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
-            <Text className='right pr2' key={"secondStepTableFooterValue"} size={14}  weight="med" color="gray-1">${(props.stepperData.secondStep.total + props.stepperData.firstStep.total + props.stepperData.firstStep.included.price).toLocaleString()}</Text>,
-        ]
-    }
 
     React.useEffect(() => {
         if(props.stepperData) {
@@ -121,16 +101,16 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData:
                     subTotal+= props.stepperData.secondStep.custom[item].price
                 }
             })
-            props.setStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, total: subTotal}})
+            props.updateStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, total: subTotal}})
         }
         props.setStepValidated(true)
-    }, [props.stepperData])
+        console.log(props.stepperData)
+    }, [props.stepperData.secondStep.custom])
     
     return (
         <div>
-            <Text size={14} weight='reg' color='gray-3'>Add additional Features:</Text>
+            <Text size={14} weight='reg' color='gray-3'>Add additional Features to your {PlansName[props.stepperData.name]}</Text>
             <Table id='secondStepFeatureTable' headerBackgroundColor="gray-10" body={featuresTableBody()} />
-            <Table id='secondStepTotalTable' headerBackgroundColor="gray-10" footer={secondStepTableFooterElement()} />
         </div>
     )
 }
@@ -141,39 +121,42 @@ export enum PlansName {
     scale = "Scale Plan"
 }
 
+//CART
+export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
 
-export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+    var moment = require('moment')
 
+    const planPrice: number = (props.stepperData.firstStep.included.price)
+    const discountedPlanPrice: number = calculateDiscount(props.stepperData.firstStep.included.price)
+    const featuresTotal: number = (props.stepperData.secondStep.total)
 
     React.useEffect(() => {props.setStepValidated(true)}, [props.stepperData])
 
 
     const cartTableBodyElement = () => {
-        return props.stepperData.action === 'custom' ? [
+        if (props.stepperData.name !== 'developer')
+        {return  [
             {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.included.price.toLocaleString()}</Text>
-            ]},
-            {data: [
-                <Text  key="cartTableCutomAllowancesHeading" size={14}  weight="reg" color="gray-1">Allowances</Text>,
-                <Text className='right pr2' key="cartTableCutomAllowancesTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.total.toLocaleString()}</Text>
+                <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">{props.stepperData.paymentFrequency === 'Annually' ? '$' + calculateAnnualPrice(discountedPlanPrice).toLocaleString() + '/yr' : '$' + planPrice.toLocaleString() + '/mo'}</Text>
             ]},
             {data: [
                 <Text  key="cartTableFeaturesHeading" size={14}  weight="reg" color="gray-1">Features</Text>,
                 <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.secondStep.total.toLocaleString()}</Text>
             ]}
-        ]
-            :
-            [{data: 
-                [
+        ]} else {
+            return  [
+                {data: [
                     <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                    <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.included.price.toLocaleString()}</Text>
-                ]}
-            ]
+                    <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">${props.stepperData.firstStep.included.price.toLocaleString()}/yr</Text>
+                ]}]
+        }
+           
     }
 
     const cartDropdownOption = () => {
-        return [
+        if (props.stepperData.paymentFrequency === 'Annually')
+        {return [
             {data: [
                 <Text  key="cartTableBilled" size={14}  weight="med" color="gray-1">Billed</Text>,
                 props.stepperData.name === 'scale' ? 
@@ -183,21 +166,46 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: 
                                 <Label color='green' backgroundColor='green20' label='25% discount' />
                                 : null
                         }
-                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.setStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} />
+                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.paymentFrequency} />
                     </div>
                     :
                     <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
             ]}
-        ]
+        ]} else {
+        return [
+            {data: [
+                <Text  key="cartTableBilled" size={14}  weight="med" color="gray-1">Billed</Text>,
+                props.stepperData.name === 'scale' ? 
+                    <div >
+                        
+                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.paymentFrequency} />
+                    </div>
+                    :
+                    <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
+            ]},
+           {data: [
+            <Text  key="cartTableBilled" size={14}  weight="med" color="gray-1">Monthly from {moment().format('DD MMMM YYYY')} </Text>,
+            <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{'$' + (planPrice + featuresTotal) }</Text>
+           ]}
+        
+        ]}
+
     }
 
     const cartTableFooterElement = () => {
-        const total: string = props.stepperData.action === 'custom' ? (props.stepperData.firstStep.included.price + props.stepperData.firstStep.total + props.stepperData.secondStep.total).toLocaleString() : props.stepperData.firstStep.included.price.toLocaleString();
-        return  [
-            <Text  key={"cartTableFooterTotal"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
-            <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{'$' + total }</Text>,
-        ]
+        if (props.stepperData.paymentFrequency === 'Annually') {
+            return  [
+                <Text  key={"cartTableFooterTotal"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
+                <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{props.stepperData.name === 'scale' ? '$' + (calculateAnnualPrice(discountedPlanPrice) + featuresTotal) : '$' + (planPrice + featuresTotal) }</Text>,
+            ] 
+        } else {
+            return  [
+                <Text  key={"cartTableFooterTotal"} size={14}  weight="med" color="gray-1">Total Pay Now(First 3 months paid upfront)</Text>,
+                <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{'$' + (planPrice + featuresTotal)*3 }</Text>,
+            ] 
+        }
     }
+
     return (
         <div>
             <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} /> 
@@ -207,7 +215,8 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: 
     )
 }
 
-export const PlanStepperFourthStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+//PAYMENT
+export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function, finalFunction: Function}) => {
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
@@ -237,10 +246,11 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; setStepperData:
     return (
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
-            <Table id='extraStepperStep2PaymentMethodTable' headerBackgroundColor="gray-10" header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} />
+            {/* <Table id='extraStepperStep2PaymentMethodTable' headerBackgroundColor="gray-10" header={step2CreditCardTableHeader()} body={step2CreditCardTableBody()} /> */}
+            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} />
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12 flex flex-auto'>
-                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={props.stepperData.termsAndConditions}  onChange={() => {props.setStepperData({...props.stepperData, termsAndConditions: !props.stepperData.termsAndConditions})}} />
+                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={props.stepperData.termsAndConditions}  onChange={() => {props.updateStepperData({...props.stepperData, termsAndConditions: !props.stepperData.termsAndConditions})}} />
                 <div className='col col-11 flex'>
                     <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>                   
                 </div>
