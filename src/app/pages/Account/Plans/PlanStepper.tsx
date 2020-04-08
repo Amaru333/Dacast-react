@@ -9,56 +9,18 @@ import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
+import { RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing/BillingStyle';
+import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 
+//PLAN
 export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+
+    const [selectedPlan, setSelectedPlan] = React.useState<string>('ott')
 
     React.useEffect(() => {
         props.setStepValidated(true)
     }, [props.stepperData])
 
-    const handleIncreaseButtonClick = (item: string) => {
-        let displayedIndex = props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount);
-        if(displayedIndex < props.stepperData.firstStep.custom[item].length - 1) {
-            let newCustomArray = props.stepperData.firstStep.custom[item];
-            newCustomArray[displayedIndex].currentAmount = false;
-            newCustomArray[displayedIndex + 1].currentAmount = true;
-            let total = 0;
-            Object.keys(props.stepperData.firstStep.custom).map((item) => {total += props.stepperData.firstStep.custom[item].filter(element => {return element.currentAmount})[0].price});
-            props.setStepperData({...props.stepperData, firstStep:{...props.stepperData.firstStep, total: total, custom: {...props.stepperData.firstStep.custom, [item]: newCustomArray}}})
-        }
-    }
-
-    const handleDencreaseButtonClick = (item: string) => {
-        let displayedIndex = props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount);
-        if(displayedIndex > 0) {
-            let newCustomArray = props.stepperData.firstStep.custom[item];
-            newCustomArray[displayedIndex].currentAmount = false;
-            newCustomArray[displayedIndex - 1].currentAmount = true;
-            let total = 0;
-            Object.keys(props.stepperData.firstStep.custom).map((item) => {total += props.stepperData.firstStep.custom[item].filter(element => {return element.currentAmount})[0].price});
-            props.setStepperData({...props.stepperData, firstStep:{...props.stepperData.firstStep, total: total, custom: {...props.stepperData.firstStep.custom, [item]: newCustomArray}}})
-        }
-
-    }
-    const AllowancesBodyTable = () => {
-        return props.stepperData ? (
-            Object.keys(props.stepperData.firstStep.custom).map((item, key) => {
-                return( {data: [
-                    <Text key={'test'+ key.toString()} size={14} weight='reg' color='gray-3'>{item}</Text>,
-                    <div key={'test22'+ key.toString()} className='col-right col-5 flex mr2'>
-                        <Button className='mr2' disabled={props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === 0 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {handleDencreaseButtonClick(item)}}>
-                            -
-                        </Button>
-                        <Text size={14} weight='reg' color='gray-3'>{props.stepperData.firstStep.custom[item].filter(value => {return value.currentAmount})[0].amount}GB</Text>
-                        <Button className='mx2 right' disabled={props.stepperData.firstStep.custom[item].findIndex(element => element.currentAmount) === props.stepperData.firstStep.custom[item].length -1 ? true : false} typeButton='primary' sizeButton='xs' buttonColor='blue'  onClick={() => {handleIncreaseButtonClick(item)}}>
-                            +
-                        </Button>
-                    </div>
-                ]}
-                
-                )})
-        
-        ) : null}
 
     const totalPriceTableFooter = () => {
         if(props.stepperData) {
@@ -74,18 +36,33 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: 
 
     return (
         <div>
-            <Text size={14} weight='reg' color='gray-3'>Add extra Data, Encoding or Storage to your Scale Plan:</Text>
-            <Table id='stepperFirstStepTableAllowances' headerBackgroundColor="gray-10" body={AllowancesBodyTable()} />
-            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
-            <Text size={12} weight='reg' color='gray-3'>*Billed anually</Text>
+            <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
 
-            {
-                props.stepperData && Object.keys(props.stepperData.firstStep.custom).some((element) => {return props.stepperData.firstStep.custom[element].findIndex(value => value.currentAmount) === props.stepperData.firstStep.custom[element].length - 1}) ? 
-                    <Bubble type='info' className='mt2'>
-                        To increase allowances further please upgrade to the next plan.
-                    </Bubble>
-                    :null
-            }
+            <RadioButtonContainer isSelected={selectedPlan === 'ott'}>
+                <InputRadio name='scalePlanSelection' value='ott' defaultChecked={true} label='OTT' onChange={() => setSelectedPlan('ott')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'ott'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
+            </RadioButtonOption>
+
+            <RadioButtonContainer isSelected={selectedPlan === 'live'} className="mt2">
+                <InputRadio name='scalePlanSelection' value='live' defaultChecked={false} label='Live' onChange={() => setSelectedPlan('live')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'live'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
+            </RadioButtonOption>
+
+            <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'vod'}>
+                <InputRadio name='scalePlanSelection' value='vod' defaultChecked={false} label='VOD' onChange={() => setSelectedPlan('vod')} />
+            </RadioButtonContainer>
+            <RadioButtonOption isOpen={selectedPlan === 'vod'}>
+            <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
+            </RadioButtonOption>
+            
+            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
+            
+
+            
         </div>
     )
 }
