@@ -90,15 +90,15 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; setStepperData: 
     )
 }
 
-
-export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
+//FEATURES
+export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
 
     const featuresTableBody = () => {
         
         return props.stepperData ? Object.keys(props.stepperData.secondStep.custom).map((item: string) => {
             return {data: [
                 
-                <InputCheckbox id={'chekbox'+ item} key={'secondStepCheckbox'+item} defaultChecked={props.stepperData.secondStep.custom[item].checked}  onChange={() => {props.setStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, custom: {...props.stepperData.secondStep.custom, [item]: {...props.stepperData.secondStep.custom[item], checked: !props.stepperData.secondStep.custom[item].checked}}}})}} />,
+                <InputCheckbox id={'chekbox'+ item} key={'secondStepCheckbox'+item} defaultChecked={props.stepperData.secondStep.custom[item].checked}  onChange={() => {props.updateStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, custom: {...props.stepperData.secondStep.custom, [item]: {...props.stepperData.secondStep.custom[item], checked: !props.stepperData.secondStep.custom[item].checked}}}})}} />,
                 <Text key={'secondStepText' + item} size={14} weight='reg' color='gray-3'>{item}</Text>,
                 <Text key={'secondStepPrice' + item} size={14} weight='reg' color={'gray-3'}>{'$' + props.stepperData.secondStep.custom[item].price.toLocaleString()}</Text>
             ]}
@@ -122,7 +122,7 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; setStepperData:
                     subTotal+= props.stepperData.secondStep.custom[item].price
                 }
             })
-            props.setStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, total: subTotal}})
+            props.updateStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, total: subTotal}})
         }
         props.setStepValidated(true)
     }, [props.stepperData])
@@ -142,7 +142,7 @@ export enum PlansName {
     scale = "Scale Plan"
 }
 
-
+//CART
 export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: Function; setStepValidated: Function}) => {
 
 
@@ -205,6 +205,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; setStepperData: 
     )
 }
 
+//PAYMENT
 export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function, finalFunction: Function}) => {
 
     React.useEffect(() => {

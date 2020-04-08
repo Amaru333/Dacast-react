@@ -30,6 +30,7 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [stepList, setStepList] = React.useState(fullSteps);
     const [currentPlan, setCurrentPlan] = React.useState<string>(null)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<string>('Annually')
+    const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
     React.useEffect(() => {}, [stepperData, stepList]);
 
@@ -41,6 +42,23 @@ export const PlansPage = (props: PlansContainerProps) => {
     const purchasePlan = () => {
         setStepperPlanOpened(false);
         setCurrentPlan(stepperData.name)
+    }
+
+    const handleSteps = (plan: string) => {
+        switch (plan) {
+            case 'developer':
+                setStepList(developerPlanSteps);
+                setStepTitles(['Cart', 'Payment'])
+                break;
+            case 'event':
+                setStepList(eventPlanSteps);
+                setStepTitles(['Features', 'Cart', 'Payment'])
+                break;
+            case 'scale':
+                setStepList(fullSteps);
+                setStepTitles(['Allowances', 'Features', 'Cart', 'Payment'])
+        }
+        setStepperPlanOpened(true)
     }
 
     // React.useEffect(() => {
@@ -126,7 +144,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     <Text className=' center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
                                     {currentPlan === 'event' || currentPlan === 'scale' ? 
                                         <ButtonStyle className='absolute bottom-0' disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle>  :
-                                        <ButtonStyle className='absolute bottom-0' disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developerPlan, action: 'purchase'});setStepList(developerPlanSteps);setStepperPlanOpened(true)}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0' disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developerPlan, action: 'purchase'});handleSteps('developer')}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                     }
                                 </PlanInfosContainer>
                             </PlanCard>
@@ -204,7 +222,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                             <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
                                             <div className="col col-12 flex flex-column">
                                                 {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                                <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'purchase'});setStepList(developerPlanSteps);setStepperPlanOpened(true)}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'purchase'});handleSteps('event')}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             </div>
                                         }
                                     </div>
@@ -310,7 +328,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                     nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                    stepTitles={stepList.length === 4 ? ['Allowances', 'Features', 'Cart', 'Payment'] : ['Cart', 'Payment']}
+                    stepTitles={stepTitles}
                     lastStepButton="Purchase"
                     stepperData={stepperData}
                     updateStepperData={(value: Plan) => setStepperData(value)}
