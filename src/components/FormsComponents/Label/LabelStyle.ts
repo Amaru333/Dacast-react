@@ -6,4 +6,5 @@ export const LabelStyleContainer = styled.div<LabelProps>`
     border-radius: 4px;
     display: inline-block;
     padding: 2px 8px;
+    text-align: center;
 `;
