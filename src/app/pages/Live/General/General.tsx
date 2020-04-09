@@ -144,7 +144,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                             </ToggleTextInfo>
                         </div>
-                        <div>
+                        <div className="mb2">
                             <Toggle
                                 label="Live Stream Start Countdown" 
                                 onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
@@ -187,7 +187,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                         />
                                     </div> : null
                             }
-                        </div>    
+                        </div>  
+                        <div className="mb2">
+                            <Toggle label="30 Minute Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({...newLiveDetails, rewind: !newLiveDetails.rewind})}></Toggle>
+                            <ToggleTextInfo className="mt1">
+                                <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a  href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
+                            </ToggleTextInfo>
+                        </div>  
                     </div> 
                 </div>
                 <Divider className="col col-12" />

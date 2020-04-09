@@ -111,7 +111,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             {  
                 presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?  
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper className='col col-8 pr1' datepickerTitle='Start Date' />
+                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-8 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-4 pl1' type='time' defaultValue={presetsList.startTime} label='Start Time' />
                     </div>
                     : null

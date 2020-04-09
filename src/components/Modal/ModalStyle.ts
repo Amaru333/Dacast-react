@@ -32,10 +32,11 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     ${props => props.size === "small" && css`
         width: 400px;
     `};
-    ${props => props.isMobile && css`
+    @media (max-width: 40em) {
         padding: 16px;
         width: 80%;
-    `};
+    }
+ 
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
     display: none;

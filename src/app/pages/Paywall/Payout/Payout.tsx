@@ -66,7 +66,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const emptyPaymentMethodTableBody = (text: string) => {
         return [{
             data: [
-                <div className='left center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
+                <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
             ]
         }]
     }

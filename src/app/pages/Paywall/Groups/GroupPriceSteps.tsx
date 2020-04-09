@@ -42,9 +42,9 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                     </div>
                     {
                         key === props.stepperData.firststep.price.length - 1 ?
-                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.price, { amount: 90, currency: 'USD' }] } })} className={'pointer col col-2 sm-col-6 px1 flex sm-ml2 ' + (key === 0 ? 'mt3 flex items-center ' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.price, { amount: 90, currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
 
-                            : <div className={'pointer col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => { return index !== key }) } })} className={key === 0 ? 'px2 pt3' : 'px2'}>close</IconStyle></div>
+                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => { return index !== key }) } })} >close</IconStyle></div>
                     }
                 </div>
             )
@@ -83,7 +83,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             {
                 props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper className='col col-8 pr1' datepickerTitle='Start Date' />
+                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-8 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-4 pl1' type='time' label='Start Time' />
                     </div>
                     : null

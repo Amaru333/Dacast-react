@@ -23,6 +23,7 @@ export const IconContainer = styled.div`
 `
 
 export const IconGreyContainer = styled.div<{}>`
+    justify-content: center;
     position: relative;
     z-index: 1;
     color :  ${props => props.theme.colors["gray-3"]} ;

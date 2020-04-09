@@ -89,7 +89,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.newPlaybackSessionsPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="New Playback Sessions By Time (UTC)">
+                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.newPlaybackSessionsPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="New Playback Sessions by Time (UTC)">
                         <BarChart
                             displayBytesFromGB={true}
                             beginAtZero={true}

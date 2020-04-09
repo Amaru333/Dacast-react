@@ -129,8 +129,8 @@ const PayPal = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentM
             <div className='col col-12 my2'>
                 <Input className='col col-4 pr1' id='emailAddress' label='Email Address' placeholder='Email Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, paypal: {...paymentMethodData.paypal, emailAddress: event.currentTarget.value}})} />
             </div>
-            <div className='col col-12 my2'>
-                <Input className='col col-4 pr1' id='comments' label='Comments' placeholder='Comments' onChange={(event) => updatePaymentMethod({...paymentMethodData, paypal: {...paymentMethodData.paypal, comments: event.currentTarget.value}})} />
+            <div className='col col-12 mb2'>
+                <Input type="textarea" indicationLabel="Optional" className='col col-4 pr1' id='comments' label='Comments' placeholder='Comments' onChange={(event) => updatePaymentMethod({...paymentMethodData, paypal: {...paymentMethodData.paypal, comments: event.currentTarget.value}})} />
             </div>
         </div>
     )

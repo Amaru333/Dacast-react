@@ -18,9 +18,9 @@ const defaultPromo: GroupPromo = {
     limit: 0,
     rateType: 'Subscription',
     startDate: null,
-    startTime: null,
+    startTime: '00:00',
     endDate: null,
-    endTime: null,
+    endTime: '00:00',
     timezone: null,
     discountApplied: 'Once'
 }
