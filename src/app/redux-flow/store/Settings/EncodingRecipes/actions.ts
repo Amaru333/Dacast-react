@@ -32,7 +32,7 @@ export interface DeleteEncodingRecipeDetails {
 
 export interface GetUploadWatermarkUrl {
     type: ActionTypes.GET_UPLOAD_WATERMARK_URL;
-    payload: {data: {presignedURL: string, fileID: string}};
+    payload: {data: {presignedURL: string; fileID: string}};
 }
 
 export interface UploadWatermark {

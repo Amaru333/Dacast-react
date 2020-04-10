@@ -59,9 +59,9 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
             return (
                 <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className="col col-11 flex">
-                    <InputCheckbox className="mr2" id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
-                    <IconStyle coloricon='gray-7'>folder_open</IconStyle>
-                    <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
+                        <InputCheckbox className="mr2" id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
+                        <IconStyle coloricon='gray-7'>folder_open</IconStyle>
+                        <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
                     </div>
                     
                     <div  className='flex justify-end col col-1'>

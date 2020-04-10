@@ -11,6 +11,12 @@ import { RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
 
+export enum PlansName {
+    developer = "Developer Plan",
+    event = "Event Plan",
+    scale = "Scale Plan"
+}
+
 //PLAN
 export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
 
@@ -23,31 +29,31 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
 
     const totalPriceTableFooter = () => {
         if(props.stepperData) {
-           return props.stepperData.paymentFrequency === "Monthly" ?
-             ( 
-                [   
-                    <div className='flex items-center'>
-                    <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                    <DropdownButton className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
-                    </div>
-                    ,
-                    <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.firstStep.included.price).toLocaleString()}</Text>
-                ]
-            ) :
-             ( 
-                [
-                    <div className="flex items-center">
-                        <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                        <DropdownButton style={{maxHeight: 30}} className="ml1 border-none" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
-                    </div>
-                    ,
-                    <div className="flex items-center right mr2">
-                        <Label className="mr2" color='green' backgroundColor='green20' label='25% Discount Applied' />
-                        <Text key='totalPriceTableFooterValue' className='right' size={14} weight='med' color='gray-3'>${calculateDiscount( props.stepperData.firstStep.included.price).toFixed(2)}</Text>
-                    </div>
+            return props.stepperData.paymentFrequency === "Monthly" ?
+                ( 
+                    [   
+                        <div className='flex items-center'>
+                            <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
+                            <DropdownButton className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
+                        </div>
+                        ,
+                        <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.firstStep.included.price).toLocaleString()}</Text>
+                    ]
+                ) :
+                ( 
+                    [
+                        <div className="flex items-center">
+                            <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
+                            <DropdownButton style={{maxHeight: 30}} className="ml1 border-none" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
+                        </div>
+                        ,
+                        <div className="flex items-center right mr2">
+                            <Label className="mr2" color='green' backgroundColor='green20' label='25% Discount Applied' />
+                            <Text key='totalPriceTableFooterValue' className='right' size={14} weight='med' color='gray-3'>${calculateDiscount( props.stepperData.firstStep.included.price).toFixed(2)}</Text>
+                        </div>
                     
-                ]
-            )
+                    ]
+                )
         }
 
     }
@@ -60,21 +66,21 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
                 <InputRadio name='scalePlanSelection' value='ott' defaultChecked={true} label='OTT' onChange={() => setSelectedPlan('ott')} />
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'ott'}>
-            <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
+                <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
             </RadioButtonOption>
 
             <RadioButtonContainer isSelected={selectedPlan === 'live'} className="mt2">
                 <InputRadio name='scalePlanSelection' value='live' defaultChecked={false} label='Live' onChange={() => setSelectedPlan('live')} />
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'live'}>
-            <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
+                <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
             </RadioButtonOption>
 
             <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'vod'}>
                 <InputRadio name='scalePlanSelection' value='vod' defaultChecked={false} label='VOD' onChange={() => setSelectedPlan('vod')} />
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'vod'}>
-            <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
+                <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
             </RadioButtonOption>
             
             <Table id='firstStepFooterTotalPrice' className="tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
@@ -128,11 +134,7 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
     )
 }
 
-export enum PlansName {
-    developer = "Developer Plan",
-    event = "Event Plan",
-    scale = "Scale Plan"
-}
+
 
 //CART
 export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
@@ -145,13 +147,13 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 
     let annualPlanPrice: number = null
     props.stepperData.name === "scale" ?
-    annualPlanPrice = calculateAnnualPrice(discountedPlanPrice) :
-    annualPlanPrice = calculateAnnualPrice(planPrice)
+        annualPlanPrice = calculateAnnualPrice(discountedPlanPrice) :
+        annualPlanPrice = calculateAnnualPrice(planPrice)
 
     let annualFeaturesPrice: number = null
     props.stepperData.name === "scale" ?
-     annualFeaturesPrice = (props.stepperData.secondStep.total * 12) :
-     annualFeaturesPrice = featuresTotal
+        annualFeaturesPrice = (props.stepperData.secondStep.total * 12) :
+        annualFeaturesPrice = featuresTotal
     
 
 
@@ -201,23 +203,23 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
                     <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="reg" color="gray-1">Annually</Text>,
             ]}
         ]} else {
-        return [
-            {data: [
-                <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Billed</Text>,
-                props.stepperData.name === 'scale' ? 
-                    <div >
+            return [
+                {data: [
+                    <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Billed</Text>,
+                    props.stepperData.name === 'scale' ? 
+                        <div >
                         
-                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.paymentFrequency} />
-                    </div>
-                    :
-                    <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
-            ]},
-           {data: [
-            <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Monthly from {moment().format('DD MMMM YYYY')} </Text>,
-            <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="reg" color="gray-1">{'$' + (planPrice + featuresTotal) }</Text>
-           ]}
+                            <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.paymentFrequency} />
+                        </div>
+                        :
+                        <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
+                ]},
+                {data: [
+                    <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Monthly from {moment().format('DD MMMM YYYY')} </Text>,
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="reg" color="gray-1">{'$' + (planPrice + featuresTotal) }</Text>
+                ]}
         
-        ]}
+            ]}
 
     }
 
@@ -256,7 +258,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 }
 
 //PAYMENT
-export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function, finalFunction: Function}) => {
+export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
@@ -291,7 +293,7 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperDa
             <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} />
         
             <div className="mt2 mb1">
-            <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+                <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             </div>
             
             <div className='py2 col col-12 flex flex-auto'>
