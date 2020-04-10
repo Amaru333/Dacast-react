@@ -38,7 +38,7 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
                 [
                     <div className="flex items-center">
                         <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                        <DropdownButton className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
+                        <DropdownButton style={{maxHeight: 30}} className="ml1 border-none" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
                     </div>
                     ,
                     <div className="flex items-center right mr2">
@@ -77,7 +77,7 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
             <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
             </RadioButtonOption>
             
-            <Table id='firstStepFooterTotalPrice' headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
+            <Table id='firstStepFooterTotalPrice' className="tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
             
 
             
