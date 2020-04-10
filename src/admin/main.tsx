@@ -18,13 +18,12 @@ import Header from './shared/header/Header';
 interface AdminMainProps {
     store: Store<AdminState>;
 }
-const PrivateRoute = (props: {key: string; component: any; path: string}) => {
-
-    
+const PrivateRoute = (props: {key: string; component: any; path: string; exact: boolean}) => {  
     return (
         isLoggedIn() ?
             <Route 
                 path={props.path}
+                exact={props.exact}
             >
                 <div className='flex flex-column px2'>
                     <Header />
@@ -34,7 +33,6 @@ const PrivateRoute = (props: {key: string; component: any; path: string}) => {
             </Route>
             : 
             <Redirect to='/' />
-
     )
 }
 
@@ -45,6 +43,7 @@ const returnRouter = (props: Routes[]) => {
                 <Route key={route.path} path={route.path}><route.component /></Route>
                 :  <PrivateRoute key={i.toString()}
                     path={route.path}
+                    exact={route.exactPath ? true : false}
                     // pass the sub-routes down to keep nesting
                     component={route.component}
                 />
@@ -64,17 +63,18 @@ const AdminContent = () => {
     }, [location])
 
     return (
-            <div>
-                <Switch>
-                <Route exact path='/'>
-                    {isLoggedIn() ?
-                        <Accounts />
-                        : <Login />
-                    }
-                </Route>  
-                    {returnRouter(AdminRoutes)}
-                </Switch>
-            </div>
+        <div>
+            <Switch>
+                {isLoggedIn() ?
+                    <PrivateRoute key='/' exact path='/' component={Accounts} />  
+                    : 
+                    <Route exact path='/'>                
+                        <Login />
+                    </Route>  
+                }  
+                {returnRouter(AdminRoutes)}
+            </Switch>
+        </div>
     )
 }
  
@@ -87,7 +87,6 @@ const AdminMain: React.FC<AdminMainProps> = ({ store}: AdminMainProps) => {
                     <AdminContent />
                 </BrowserRouter>
             </ThemeProvider>
-
         </Provider>
     );
 };

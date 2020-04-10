@@ -3,12 +3,13 @@ import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonContainer} from './DropdownStyle';
 import { dropdownIcons, DropdownButtonProps } from './DropdownTypes';
 import { useOutsideAlerter } from '../../../utils/utils';
+import {Text} from '../../Typography/Text'
 
 export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownButtonProps) => {
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.list[0]);
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : props.list[0]);
 
     useOutsideAlerter(dropdownListRef, () => {
         setOpen(!isOpened)
@@ -34,7 +35,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
                         className={key === 1 ? 'mt1' : ''}
                         isSelected={selectedItem === name} 
                         onClick={() => handleClick(name)}> 
-                        <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        <DropdownItemText size={12} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
                     </DropdownItem>
                 )                
             })
@@ -44,7 +45,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
     return (
         <ContainerStyle {...props}>
             <ButtonContainer isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                {selectedItem}
+                <Text size={12}>{selectedItem}</Text>
                 <Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon>
             </ButtonContainer>
             <DropdownList style={{position: 'static'}} hasSearch={false} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>

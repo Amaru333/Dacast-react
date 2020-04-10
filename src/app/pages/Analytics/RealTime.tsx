@@ -31,6 +31,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     className='col col-2 pr1'
                     dropdownTitle='Time Period' 
                     list={{'5 Minutes': false, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false}}
+                    isWhiteBackground
                 />
                 <DropdownSingle
                     id='liveChannelsDropdown'
@@ -38,12 +39,13 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     className='col col-3 px1'
                     dropdownTitle='Live Channel'
                     list={{'Channel1': false, 'Channel2': false}}
+                    isWhiteBackground
                 />
                 <Button className='ml1' typeButton='primary' sizeButton='large' buttonColor='blue'>Apply</Button>
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.concurentViewersPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurent Viewers By Time (UTC)">
+                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.concurentViewersPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurent Viewers by Time (UTC)">
                         <BarChart
                             displayBytesFromGB={true}
                             beginAtZero={true}
@@ -67,7 +69,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className="col col-6 px1">
-                    <AnalyticsCard realTime dataName="gbPerTime" data={props.gbPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="GBytes By Time (UTC)">
+                    <AnalyticsCard realTime dataName="gbPerTime" data={props.gbPerTime}  infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="GBytes by Time (UTC)">
                         <BarChart
                             datasetName="GBytes"
                             displayBytesFromGB={true}
@@ -78,7 +80,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     </AnalyticsCard>
                 </div>
                 <div className="col col-6 px1">
-                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption By Location">
+                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.consumptionPerLocation.data} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {renderMap(props.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')}
                     </AnalyticsCard>
                 </div>

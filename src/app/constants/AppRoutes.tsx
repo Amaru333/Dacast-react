@@ -32,8 +32,9 @@ import ConfirmEmail from '../containers/Register/ConfirmEmail';
 import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
 import Uploader from '../containers/Videos/Uploader';
-import ResetPassword from '../containers/Register/ResetPassword';
+import ForgotPassword from '../containers/Register/ForgotPassword';
 import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
+import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -58,15 +59,22 @@ export const AppRoutes: Routes[] = [
         component: ConfirmEmail
     },
     {
-        path:'/reset-password',
-        name: 'reset-password',
+        path:'/account-activated',
+        name: 'account-activated',
         notDisplayedInNavigation: true,
         isPublic: true,
-        component: ResetPassword
+        component: ActivatedAccountPage
     },
     {
-        path:'/change-password',
-        name: 'change-password',
+        path:'/forgot-password',
+        name: 'forgot-password',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ForgotPassword
+    },
+    {
+        path:'/reset-password',
+        name: 'reset-password',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ChangePassword
@@ -187,7 +195,7 @@ export const AppRoutes: Routes[] = [
                 component: EncodingRecipes
             },
             {
-                path: '/settings/deliveryembed',
+                path: '/settings/embed',
                 name: 'Embed',
                 component: EmbedSettings
             },
@@ -197,7 +205,7 @@ export const AppRoutes: Routes[] = [
                 component: Security
             },
             {
-                path: '/settings/apiintegrations',
+                path: '/settings/api-integrations',
                 name: 'API & Integrations',
                 component: ApiIntegration
             },
@@ -208,7 +216,7 @@ export const AppRoutes: Routes[] = [
                 component: Theming
             },
             {
-                path: '/settings/Engagement',
+                path: '/settings/engagement',
                 name: 'Engagement',
                 component: Interactions
             }
@@ -241,7 +249,7 @@ export const AppRoutes: Routes[] = [
                 component: Billing
             },
             {
-                path: '/account/pendingorders',
+                path: '/account/pending-orders',
                 name: 'Pending Orders',
                 component: PendingOrders
             },

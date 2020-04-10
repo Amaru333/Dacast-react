@@ -16,6 +16,7 @@ import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -23,6 +24,9 @@ export interface EncodingRecipesComponentProps {
     createEncodingRecipe: Function;
     saveEncodingRecipe: Function;
     deleteEncodingRecipe: Function;
+    getWatermarkUrlForUploading: Function;
+    uploadCompanyLogo: Function;
+    deleteCompanyLogo: Function;
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
@@ -74,34 +78,20 @@ const recipesHeaderElement = (newRecipe: Function, smScreen: boolean) => {
         {cell: <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>},
         {cell: <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>},
         {cell: <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>},
-        {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 "+ (smScreen ? 'hide' : '')} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
+        {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 sm-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
     ]}
 }
 
-const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
-    if(selectedRecipe) {
-        if (selectedRecipe.id) {
-            saveEncodingRecipe(selectedRecipe)
-        } else
-        {
-            createEncodingRecipe(selectedRecipe)
-        }
-        FunctionRecipe(false)
-    }
-
-}
 
 const stepList = [settingsStep, presetStep]
 
+
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
-    React.useEffect(() => {
-        props.getEncodingRecipes();
-    }, [])
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["720p", "480p", "240p", "MagicEncoding"], watermarkFile: "sick_watermark.png", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -119,6 +109,23 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
     }
+
+    const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
+        
+        if(selectedRecipe) {
+            if (selectedRecipe.id) {
+                saveEncodingRecipe(selectedRecipe)
+            } else
+            {
+                createEncodingRecipe(selectedRecipe)
+            }
+            FunctionRecipe(false)
+        }
+        console.log('submitting')
+    }
+
+    // useStepperFinalStepAction('stepperNextButton', () => {submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)})
+
     return(
         !props.encodingRecipeData? 
             <LoadingSpinner size='large' color='blue80' />
@@ -132,6 +139,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
+                <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
                 <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}

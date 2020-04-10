@@ -7,7 +7,7 @@ import { Chargeback } from '../../redux-flow/store/Paywall/Chargebacks/types';
 import { AdminState } from '../../redux-flow/store';
 
 export interface ChargebackComponentProps {
-    submitChargeback: Function
+    submitChargeback: Function;
 }
 const Chargebacks = (props: ChargebackComponentProps) => {
 

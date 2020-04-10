@@ -28,10 +28,10 @@ export interface LivePaywallComponentProps {
     theming: PaywallThemingData;
     getPaywallThemes: Function;
     globalPresets: LivePaywallPageInfos;
-    getPresetsInfo: Function
-    customPricePresetList: Preset[]
+    getPresetsInfo: Function;
+    customPricePresetList: Preset[];
     createPricePreset: Function;
-    customPromoPresetList: Promo[]
+    customPromoPresetList: Promo[];
     createPromoPreset: Function;
     showToast: Function;
 }
@@ -65,10 +65,10 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 type: 'Pay Per View',
                 price: [
                     
-                        {
-                            amount: NaN,
-                            currency: 'USD'
-                        }
+                    {
+                        amount: NaN,
+                        currency: 'USD'
+                    }
                     
                 ],
                 duration: {amount: NaN, type: 'Hours'},

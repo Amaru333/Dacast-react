@@ -73,8 +73,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
             {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
             {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
             </div>}
         ]}
     }
@@ -97,7 +97,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return {data: [
             {cell: <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>},
             {cell: <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>},
-            {cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>}
+            {cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>}
         ]}
     }
 
@@ -122,9 +122,13 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Toggle id='advertisingEnabled' defaultChecked={interactionInfos.adEnabled} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                <div className='flex'>
+                <div className='flex mb2'>
                     <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                </div>
+                <div className="clearfix mb2">
+                    <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                    <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
                 </div>
                 <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
                         
@@ -140,21 +144,22 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 {/* <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
                 </div> */}
+                <Button className='xs-show col col-12' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
                 <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
             </Card>
 
             <Card className='my2'>
                 <TextStyle className="pb2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
                 <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                <div className='flex'>
+                <div className='clearfix mb2'>
                     <Input 
-                        disabled={interactionInfos.isBrandTextAsTitle} className='my2 pr1 col col-8' 
+                        disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
                         label='Brand Text' 
                         onChange={(event) => {setInteractionsInfos({...interactionInfos, brandText: event.currentTarget.value})}}
                         value={interactionInfos.brandText ? interactionInfos.brandText : ""} 
                     />
                     <Input 
-                        className='my2 pl1 col col-4' 
+                        className='pl1 col col-12 md-col-4 xs-no-gutter'
                         label='Brand Text Link' 
                         value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""} 
                         onChange={(event) => {setInteractionsInfos({...interactionInfos, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
@@ -164,16 +169,16 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>End Screen Text</Text>
-                <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                <div className='flex'>
+                <Text className="inline-block mb2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                <div className='clearfix mb2'>
                     <Input 
-                        className='my2 pr1 col col-8' 
+                        className='xs-no-gutter pr1 col col-12 md-col-8' 
                         label='End Screen Text' 
                         value={interactionInfos.endScreenText ? interactionInfos.endScreenText : ""}
                         onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenText: event.currentTarget.value});setSettingsEdited(true)}}
                     />
                     <Input 
-                        className='my2 pl1 col col-4' 
+                        className='xs-no-gutter pl1 col col-12 md-col-4'
                         label='End Screen Text Link' 
                         value={interactionInfos.endScreenTextLink ? interactionInfos.endScreenTextLink : ""} 
                         onChange={(event) => {setInteractionsInfos({...interactionInfos, endScreenTextLink: event.currentTarget.value});setSettingsEdited(true)}} />

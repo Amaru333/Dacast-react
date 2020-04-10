@@ -25,10 +25,10 @@ export interface VodPaywallComponentProps {
     getGroupsInfos: Function;
     theming: PaywallThemingData;
     getPaywallThemes: Function;
-    globalPresets: PresetsPageInfos
-    getPresetsInfo: Function
-    customPricePresetList: Preset[]
-    customPromoPresetList: Promo[]
+    globalPresets: PresetsPageInfos;
+    getPresetsInfo: Function;
+    customPricePresetList: Preset[];
+    customPromoPresetList: Promo[];
     createPromoPreset: Function;
     createPricePreset: Function;
 }
@@ -62,10 +62,10 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 type: 'Pay Per View',
                 price: [
                     
-                        {
-                            amount: NaN,
-                            currency: 'USD'
-                        }
+                    {
+                        amount: NaN,
+                        currency: 'USD'
+                    }
                     
                 ],
                 duration: {amount: NaN, type: 'Hours'},

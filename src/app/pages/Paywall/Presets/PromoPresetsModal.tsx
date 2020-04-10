@@ -39,7 +39,7 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
             </div>
             <div className='col col-12 py1'>
                 <Input className='col col-3 pr1' value={promoPreset.discount ? promoPreset.discount.toString() : ''} label='Discount' onChange={(event) => setPromoPreset({...promoPreset, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                <Input className='col col-3 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
+                <Input className='col col-3 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
                 <DropdownSingle id='promoPresetRateTypeDropdown' dropdownDefaultSelect={promoPreset.rateType} className='col col-6 pl1' dropdownTitle='Rate Type' callback={(value: string) => setPromoPreset({...promoPreset, rateType: value})} list={{'Pay Per View': false, 'Subscription': false}} />
             </div>
             <div className='col col-12 py1'>

@@ -63,8 +63,8 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
             {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
             {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
             {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
             </div>}
         ]}
     }
@@ -72,9 +72,9 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
     const advertisingTableBody = () => {
         return props.liveEngagementSettings.engagementSettings.adList.map((item, i) => {
             return {data: [
-                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
-                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
-                <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
+                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='reg'>{item.placement}</Text>,
+                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='reg'>{item.position}</Text>,
+                <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='reg'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon id={"deleteTooltip" + item.id}>
                         <IconStyle 
@@ -120,15 +120,16 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                         defaultChecked={engagementSettings.adEnabled} 
                         onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
                     />
-
-                    <div className="py2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    </div>
-                    
-                    <div className='flex'>
+                    <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <div className='flex mb2'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
+                    <div className="clearfix mb2">
+                        <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                        <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                    </div>
+                    
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
 
                 </DisabledSection>
@@ -154,7 +155,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle
-                        className="col col-3 mt2" 
+                        className="col col-12 md-col-3 mt2" 
                         id="LiveMailCatcherList"
                         dropdownTitle="Email Catcher"
                         list={props.liveEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
@@ -176,16 +177,16 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <Tooltip target="unlockBrandSectionTooltip">{adSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
-                    <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    <div className='flex'>
+                    <Text className="inline-block mb2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <div className='clearfix mb2'>
                         <Input 
-                            disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8' 
+                            disabled={engagementSettings.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8' 
                             label='Brand Text' 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, brandText: event.currentTarget.value})}}
                             value={engagementSettings.brandText ? engagementSettings.brandText : ""} 
                         />
                         <Input 
-                            className='my2 pl1 col col-4' 
+                            className='pl1 col col-12 md-col-4 xs-no-gutter' 
                             label='Brand Text Link' 
                             value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""} 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
@@ -205,16 +206,16 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     <Tooltip target="unlockEndScreenSectionTooltip">{adSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
-                    <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    <div className='flex'>
+                    <Text className="inline-block mb2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <div className='clearfix mb2'>
                         <Input 
-                            className='my2 pr1 col col-8' 
+                            className='xs-no-gutter pr1 col col-12 md-col-8' 
                             label='End Screen Text' 
                             value={engagementSettings.endScreenText ? engagementSettings.endScreenText : ""}
                             onChange={(event) => {setEngagementSettings({...engagementSettings, endScreenText: event.currentTarget.value});setSettingsEdited(true)}}
                         />
                         <Input 
-                            className='my2 pl1 col col-4' 
+                            className='xs-no-gutter pl1 col col-12 md-col-4' 
                             label='End Screen Text Link' 
                             value={engagementSettings.endScreenTextLink ? engagementSettings.endScreenTextLink : ""} 
                             onChange={(event) => {setEngagementSettings({...engagementSettings, endScreenTextLink: event.currentTarget.value});setSettingsEdited(true)}} />

@@ -26,7 +26,7 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
 
     ${props => props.isMobile && css`
         padding: 16px;
-        width: 300px;
+        width: 80%;
         top: 45%;
     `};
 `
@@ -73,7 +73,6 @@ export const StepperStyle = styled.div<{isMobile: boolean}>`
 `
 export const StepperContentStyle = styled.div<{isMobile: boolean}>`
     ${props => props.isMobile && css`
-        max-height: 300px;
         overflow: auto;
     `};
 `

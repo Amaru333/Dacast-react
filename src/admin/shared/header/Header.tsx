@@ -13,7 +13,7 @@ const Header = (props: {logout: Function}) => {
     let history = useHistory()
     
     return (
-        <div className='flex items-center mt2'>
+        <div className='flex items-center my2'>
             <div className='flex col col-12 flex-auto'>
                 <Tab className='flex col col-12 flex-auto' orientation='horizontal' list={AdminRoutes.filter(r => r.displayedInHeadertab)}/>
             </div>

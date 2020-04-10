@@ -199,3 +199,25 @@ export class CsvService {
         }
     }
 }
+
+export const useKeyboardSubmit = (callback: Function) => {
+    useEffect(() => {
+        const listener = event => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                callback()
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, []);  
+}
+
+export const calculateDiscount = (total: number) => {
+    return total - ((total / 100) * 25)
+ }
+
+ export const calculateAnnualPrice = (total: number) => {
+     return total * 12
+ }

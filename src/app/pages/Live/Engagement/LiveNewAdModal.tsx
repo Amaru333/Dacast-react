@@ -4,6 +4,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { LiveEngagementComponentProps } from '../../../containers/Live/Engagement';
+import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 
 
 export const LiveNewAdModal = (props: LiveEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
@@ -21,10 +22,14 @@ export const LiveNewAdModal = (props: LiveEngagementComponentProps & {toggle: Fu
 
     return (
         <div>
-            <Input className='my1 col col-12' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
-            <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} />              
-                <Input className='ml1 col col-6' id='adPosition' label='Position' value={adData.position} />
+            <Input className='mb2 mt1 col col-12' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
+            <div className='mb2 col col-12 clearfix'>
+                <DropdownSingle className={'pr1 xs-mb2 '+ClassHalfXsFullMd} id='adPlacementDropdown' dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} callback={(value: string) => setAdData({...adData, placement: value})} /> 
+                {
+                    adData.placement === 'Mid-roll' ?
+                        <Input type="time" className={'ml2 mt1' +ClassHalfXsFullMd} id='adPosition' label='Position' value={adData.position} onChange={(event) => setAdData({...adData, position: event.currentTarget.value})} /> : null
+                }              
+                
             </div>
             <div className='my2 col col-12'>
                 <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>

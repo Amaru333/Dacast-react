@@ -14,16 +14,16 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
         <ContainerStyle hidden={props.hidden} className={className} >
             {
                 label ?
-                    <LabelStyle disabled={props.disabled ? true : false} >
+                    <LabelStyle tooltip={props.tooltip} disabled={props.disabled ? true : false} >
                         <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight="med" >
                             {props.label}
                         </Text>
                         {
                             tooltip ? 
-                            <div>
-                                <IconStyle id={tooltip}>info_outlined</IconStyle>
-                                <Tooltip target={tooltip}>{tooltip}</Tooltip>
-                            </div> : null
+                                <div>
+                                    <IconStyle fontSize="small" id={tooltip}>info_outlined</IconStyle>
+                                    <Tooltip target={tooltip}>{tooltip}</Tooltip>
+                                </div> : null
                             
                         }
                         {

@@ -14,6 +14,7 @@ import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './Group
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -133,10 +134,13 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         }
     }
 
+    useStepperFinalStepAction('stepperNextButton', () => {{setGroupPricesStepperOpened(false);selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}})
+
+
     return (
         <div>
             <Card>
-                <Text size={20} weight='med'>Group Prices</Text>
+                <Text size={20} weight='med'>Price Groups</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Group content into a single Price Group that can be purchased together.</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
@@ -145,7 +149,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 <BorderStyle className='my2' />
 
-                <Text className="mt1" size={20} weight='med'>Groups Promo</Text>
+                <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Allow a promo to be used to purchase content in a Price Group.</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
@@ -168,7 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepperData={stepperData}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
                 functionCancel={() => {setGroupPricesStepperOpened(false)}}
-                finalFunction={() => {selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+                finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>
 

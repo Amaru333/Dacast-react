@@ -25,11 +25,11 @@ export interface PlaylistPaywallComponentProps {
     getGroupsInfos: Function;
     theming: PaywallThemingData;
     getPaywallThemes: Function;
-    globalPresets: PlaylistPaywallPageInfos
-    getPresetsInfo: Function
-    customPricePresetList: Preset[]
+    globalPresets: PlaylistPaywallPageInfos;
+    getPresetsInfo: Function;
+    customPricePresetList: Preset[];
     createPricePreset: Function;
-    customPromoPresetList: Promo[]
+    customPromoPresetList: Promo[];
     createPromoPreset: Function;
 }
 
@@ -62,10 +62,10 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 type: 'Pay Per View',
                 price: [
                     
-                        {
-                            amount: NaN,
-                            currency: 'USD'
-                        }
+                    {
+                        amount: NaN,
+                        currency: 'USD'
+                    }
                     
                 ],
                 duration: {amount: NaN, type: 'Hours'},

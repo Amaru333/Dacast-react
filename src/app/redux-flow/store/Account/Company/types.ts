@@ -9,6 +9,7 @@ export enum ActionTypes {
 
 
 export interface CompanyPageInfos {
+    id: string;
     accountName: string;
     businessName: string;
     contactNumber: string;
@@ -23,9 +24,11 @@ export interface CompanyPageInfos {
     country: string;
     logoUrl?: string;
     uploadLogoUrl?: string;
+    isUploading?: boolean;
 }
 
 export const companyInitialState: CompanyPageInfos = {
+    id: "",
     accountName: "",
     businessName: "",
     contactNumber: "",
@@ -40,4 +43,5 @@ export const companyInitialState: CompanyPageInfos = {
     country: "",
     logoUrl: "",
     uploadLogoUrl: "",
+    isUploading: false
 };

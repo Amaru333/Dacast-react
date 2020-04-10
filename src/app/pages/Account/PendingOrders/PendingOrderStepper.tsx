@@ -3,9 +3,10 @@ import { Text } from "../../../../components/Typography/Text"
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 
-export const CartStep = (stepperData: PendingOrder) => {
+export const CartStep = (props: {stepperData: PendingOrder}) => {
 
     //to prevent errors with different numbers of hooks being rendered between steps
     const [test2, setTest2] = React.useState<boolean>(false)
@@ -13,7 +14,7 @@ export const CartStep = (stepperData: PendingOrder) => {
     React.useEffect(() => {}, [])
 
     const cartTableBodyElement = () => {
-        return stepperData.items.map((order) => {
+        return props.stepperData.items.map((order) => {
             return {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{order.description}</Text>,
                 <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">{order.price}</Text>
@@ -25,7 +26,7 @@ export const CartStep = (stepperData: PendingOrder) => {
     const cartTableFooterElement = () => {
         return [
             <Text  key={"cartTableFooterTotal"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>,
-            <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{stepperData.price}</Text>
+            <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{props.stepperData.price}</Text>
         ]
     }
 
@@ -36,18 +37,19 @@ export const CartStep = (stepperData: PendingOrder) => {
     )
 }
 
-export const PaymentStep = (stepperData: PendingOrder, updateStepperData: Function, setStepValidated: Function) => {
+export const PaymentStep = (props: {stepperData: PendingOrder; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
 
     const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setStepValidated(termsAndConditionsChecked)
+        props.setStepValidated(termsAndConditionsChecked)
     })
+
 
     const paymentStepheader = () => {
         return  {data: [
             {cell: <Text  key={"paymentStepheaderText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
-            {cell: <Text  key={"paymentStepheaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + stepperData.price}</Text>}
+            {cell: <Text  key={"paymentStepheaderNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + props.stepperData.price}</Text>}
         ]}
     }
 

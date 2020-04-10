@@ -7,12 +7,12 @@ import { EncodingRecipesServices } from './services';
 
 export interface GetEncodingRecipeDetails {
     type: ActionTypes.GET_ENCODING_RECIPES;
-    payload: EncodingRecipesData;
+    payload: {data: any};
 }
 
 export interface CreateEncodingRecipeDetails {
     type: ActionTypes.CREATE_ENCODING_RECIPES;
-    payload: EncodingRecipeItem;
+    payload: {data: EncodingRecipeItem};
 }
 
 export interface SaveEncodingRecipeDetails {
@@ -23,6 +23,21 @@ export interface SaveEncodingRecipeDetails {
 export interface DeleteEncodingRecipeDetails {
     type: ActionTypes.DELETE_ENCODING_RECIPES;
     payload: EncodingRecipeItem;
+}
+
+export interface GetUploadWatermarkUrl {
+    type: ActionTypes.GET_UPLOAD_WATERMARK_URL;
+    payload: {data: {presignedURL: string}};
+}
+
+export interface UploadWatermark {
+    type: ActionTypes.UPLOAD_WATERMARK;
+    payload: File;
+}
+
+export interface DeleteWatermark {
+    type: ActionTypes.DELETE_WATERMARK;
+    payload: File;
 }
 
 export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipeDetails> => {
@@ -67,13 +82,55 @@ export const deleteEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.deleteEncodingRecipeService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.DELETE_ENCODING_RECIPES, payload: response.data} );
-                dispatch(showToastNotification(`${response.data.name} has been deleted`, 'fixed', "success"));
+            .then( () => {
+                dispatch( {type: ActionTypes.DELETE_ENCODING_RECIPES, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export type Action = GetEncodingRecipeDetails | CreateEncodingRecipeDetails | SaveEncodingRecipeDetails | DeleteEncodingRecipeDetails;
+export const getUploadWatermarkUrl = (): ThunkDispatch<Promise<void>, {}, GetUploadWatermarkUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetUploadWatermarkUrl> ) => {
+        await EncodingRecipesServices.getUploadWatermarkUrlService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_UPLOAD_WATERMARK_URL, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadWatermark> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, UploadWatermark> ) => {
+        await EncodingRecipesServices.uploadWatermarkService(data, uploadUrl)
+            .then( response => {
+                dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: response.data} );
+                dispatch(showToastNotification("Watermark file has been uploaded", 'flexible', "success"));
+            }).catch((error) => {
+                dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: error} );
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const deleteWatermark = (): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteWatermark> ) => {
+        await EncodingRecipesServices.deleteWatermarkService()
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = 
+GetEncodingRecipeDetails | 
+CreateEncodingRecipeDetails | 
+SaveEncodingRecipeDetails | 
+DeleteEncodingRecipeDetails |
+GetUploadWatermarkUrl |
+UploadWatermark |
+DeleteWatermark;

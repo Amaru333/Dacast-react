@@ -36,7 +36,6 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                 }
 
             })
-            debugger;
             props.callback(returnedString);
         }
     });

@@ -5,7 +5,7 @@ type Size = "large" | "medium" | "small";
 interface LoadingSpinnerCustomProps {
     size: Size;
     color: ColorsApp;
-    center? :boolean;
+    center? : boolean;
 }
 
 export type LoadingSpinnerProps = LoadingSpinnerCustomProps & React.HTMLAttributes<HTMLDivElement>;

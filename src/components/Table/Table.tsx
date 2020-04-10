@@ -76,7 +76,7 @@ export const Table = (props: TableProps) => {
 
 
     return (
-        <WrapperResponsiveContainer hasContainer={props.hasContainer}>
+        <WrapperResponsiveContainer tableHeight={props.tableHeight} hasContainer={props.hasContainer}>
             <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}}>
                 <TableContainer  {...props}>
             

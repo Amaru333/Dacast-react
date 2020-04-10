@@ -14,6 +14,7 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
+import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 
 interface BillingComponentProps {
     billingInfos: BillingPageInfos;
@@ -34,6 +35,10 @@ export const BillingPage = (props: BillingComponentProps) => {
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
+
+    React.useEffect(() => {
+        console.log("playback protection", props.billingInfos.playbackProtection)
+    }, [props.billingInfos.playbackProtection])
 
     const checkPaymentMethod = () => {
         if(props.billingInfos.paypal) {
@@ -135,7 +140,7 @@ export const BillingPage = (props: BillingComponentProps) => {
     }
 
     const protectionBodyElement= () => {
-        if(props.billingInfos.playbackProtection) {
+        if(props.billingInfos.playbackProtection && props.billingInfos.playbackProtection.enabled !== null) {
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
@@ -186,15 +191,20 @@ export const BillingPage = (props: BillingComponentProps) => {
             ]}})    
     }
 
+    const onSubmitFunctions = () => {
+        props.saveBillingPagePaymentMethod();
+        setPaypaylModalOpened(false)
+    }
+
     return (
-        <div>   
+        <div> 
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
+                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaypaylModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                 {
                     props.billingInfos.paypal? 
                         <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
@@ -210,7 +220,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
-                <Button className={"left mb2 "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
+                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                
                 {
                     (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') && !playbackProtectionEnabled ?
@@ -223,9 +233,17 @@ export const BillingPage = (props: BillingComponentProps) => {
 
             
             </Card>
-            <Modal hasClose={false} title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' opened={paypalModalOpened}>
-                <PaymentMethodModal actionButton={props.saveBillingPagePaymentMethod} toggle={setPaypaylModalOpened} />
-            </Modal>
+            <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
+                <Elements>
+                    <Modal 
+                        hasClose={false} 
+                        title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
+                        toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' 
+                        opened={paypalModalOpened}>
+                        <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
+                    </Modal>
+                </Elements>
+            </RecurlyProvider>
             <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} />
             </Modal>

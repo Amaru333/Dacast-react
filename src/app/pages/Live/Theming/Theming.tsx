@@ -24,6 +24,7 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
     const togglePadding = 'py1';
 
     let playerRef = React.useRef<HTMLDivElement>(null);
+    
 
     let player = usePlayer(playerRef, '1552_f_297509');
 
@@ -38,7 +39,13 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
     return (
         <React.Fragment>
             <ThemingContainer>
-                <div className='col col-12 md-col-4 mr2 flex flex-column'>
+                <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
+                    <PlayerContainer>
+                        <div ref={playerRef}>
+                        </div>
+                    </PlayerContainer>
+                </PlayerSection>
+                <div className='col col-12 md-col-4 sm-pr1 flex flex-column'>
                     <ControlsCard className='col col-12'>
                         <TitleSection>
                             <Text size={20} weight='med'>Edit Theme</Text>
@@ -230,12 +237,6 @@ export const LiveThemingPage = (props: LiveThemingComponentProps) => {
                         <Button typeButton="tertiary" onClick={() => {location.href="/livestreams";props.showDiscardToast("Changes have been discarded", 'flexible', "success")}}>Cancel</Button>
                     </div>
                 </div>
-                <PlayerSection className='col col-12 md-col-8 mr2'>
-                    <PlayerContainer>
-                        <div ref={playerRef}>
-                        </div>
-                    </PlayerContainer>
-                </PlayerSection>
             </ThemingContainer>
             <Prompt when={selectedTheme !== props.theme.selectedTheme} message='' />
         </React.Fragment>

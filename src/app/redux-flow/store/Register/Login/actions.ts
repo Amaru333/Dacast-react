@@ -6,7 +6,12 @@ import { showToastNotification } from '../../Toasts';
 
 export interface Login {
     type: ActionTypes.LOGIN;
-    payload: TokenInfos;
+    payload: TokenInfos | false;
+}
+
+export interface LoginRequest {
+    type: ActionTypes.LOGIN_REQUEST;
+    payload: null;
 }
 
 export interface Logout {
@@ -14,17 +19,22 @@ export interface Logout {
     payload: null;
 }
 
+
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
+        dispatch({type: ActionTypes.LOGIN, payload: false})
         await loginService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.LOGIN, payload: null} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 
 }
+
+
 
 export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
     return (dispatch: ThunkDispatch<ApplicationState , {}, Logout>) => {
@@ -32,4 +42,4 @@ export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
     }
 }
 
-export type Action = Login | Logout;
+export type Action = Login | Logout | LoginRequest;

@@ -13,6 +13,9 @@ import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { updateClipboard } from '../../../utils/utils';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -28,6 +31,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     /** Validation */
     let formRef = React.useRef<HTMLFormElement>(null);
     let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
+    const [selectedCountry, setSelectedCountry] = React.useState<string>(props.CompanyPageDetails.country)
 
     let {CompanyPageDetails} = props;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
@@ -44,7 +48,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             state: data['state'].value,
             town: data['town'].value,
             zipCode: data['zipCode'].value,
-            country: ""
+            country: selectedCountry
         })
     }
 
@@ -121,7 +125,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         textArea.value = value;
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand("Copy");
+        document.execCommand("copy");
         textArea.remove();
     }
     
@@ -131,16 +135,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
                 <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
-                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1" handleDrop={handleDrop}>
+                    <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>
+                            {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null}
                         <ImageStyle src={uploadedFileUrl}></ImageStyle>
                         <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
                         <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Upload</Button>
                         </>
                             :
                         <>
-                        <IconStyle className='pt3 center' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
@@ -163,17 +168,17 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
-                    <div className="col col-12 flex flex-column">
+                    <div className="col col-12 flex flex-column p1">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>
-                        <AccountIdContainer className="col col-3">
-                            <AccountIdText size={14} weight="reg"></AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("copied")}>file_copy_outlined</IconStyle>
+                        <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
+                            <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
-                    <div className="md-col md-col-12">
+                    <div className="md-col md-col-12 clearfix">
                         <Input 
                             disabled={false} 
                             defaultValue={CompanyPageDetails.accountName}
@@ -271,7 +276,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Address line 1" 
                             placeholder="Address line 1"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('addressLine1', validations)}                      
                         />
 
@@ -295,8 +300,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
-                            label="State" 
-                            placeholder="State"
+                            label="State/Province" 
+                            placeholder="State/Province"
                             onChange={() => setPageEdited(true)} 
                             required={false}
                             {...handleValidationProps('state', validations)}
@@ -308,10 +313,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
-                            label="Town" 
-                            placeholder="Town"
+                            label="Town/City" 
+                            placeholder="Town/City"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('town', validations)}
                         />
 
@@ -321,14 +326,14 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
-                            label="Zip/Post Code" 
-                            placeholder="Zip/Post Code"
+                            label="Zip/Postal Code" 
+                            placeholder="Zip/Postal Code"
                             onChange={() => setPageEdited(true)} 
-                            required
+                            required={false}
                             {...handleValidationProps('zipCode', validations)}
                     
                         />
-                        <DropdownSingle hasSearch dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
+                        <DropdownSingle hasSearch callback={(value: string) => setSelectedCountry(value)} dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
 
                     </div>
                 </form>

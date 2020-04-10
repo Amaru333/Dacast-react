@@ -91,16 +91,16 @@ const AppContent = () => {
         }
     };
 
-    const PrivateRoute = (props: {key: string; component: any; path: string}) => {
+    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean}) => {
 
-    
         return (
             isLoggedIn()  ?
                 <Route 
                     path={props.path}
+                    exact={props.exact ? true : false}
                 >
                     <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
-                    <FullContent isLocked={menuLocked} isMobile={isMobile || mobileWidth} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                    <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                             <props.component {...props} />
@@ -139,12 +139,14 @@ const AppContent = () => {
         <>                 
         <Toasts />
             <Switch>
-                <Route exact path='/'>
-                    {isLoggedIn() ?
-                        <Dashboard />
-                        : <Login />
-                    }
-                </Route>                             
+                {isLoggedIn() ?
+                    <PrivateRoute key='/' component={Dashboard} exact path='/' />                
+
+                    :
+                    <Route exact path='/'>
+                        <Login />
+                    </Route>
+                }                           
                 {returnRouter(AppRoutes)}
             </Switch>
     </>
@@ -216,7 +218,7 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    overflow: auto;
+    overflow: hidden;
     ${props => props.isMobile && css`
         overflow-x: hidden;
         padding: 16px;

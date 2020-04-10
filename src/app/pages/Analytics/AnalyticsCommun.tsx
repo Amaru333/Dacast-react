@@ -11,6 +11,7 @@ import { GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/D
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
+import { ActionIcon } from '../../shared/ActionIconStyle';
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean}) => {
 
@@ -24,11 +25,18 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                 <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
                 <div className="flex">
                     <div>
-                        <IconStyle id={"tooltip" + props.id}>info_outlined</IconStyle>
-                        <Tooltip target={"tooltip" + props.id}>{props.infoText}</Tooltip>
+                        <ActionIcon id={"tooltip" + props.dataName}>
+                            <IconStyle >info_outlined</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"tooltip" + props.dataName}>{props.infoText}</Tooltip>
                     </div>
-                    { !props.realTime ? <IconStyle className="ml2" onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle> : null}   
+                    { !props.realTime ? 
+                        <ActionIcon id={"download" + props.dataName}>
+                            <IconStyle onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle>
+                        </ActionIcon>
+                        : null}   
                 </div>
+                <Tooltip target={"download" + props.dataName}>lorem ipsum</Tooltip>
             </AnalyticsCardHeader>
             {props.children}
         </AnalyticsCardStyle>

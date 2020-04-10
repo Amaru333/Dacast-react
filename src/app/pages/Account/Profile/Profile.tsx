@@ -32,7 +32,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const [currentPassword, setCurrentPassword] = React.useState<string>(null)
     const [newPassword, setNewPassword] = React.useState<string>(null)
     const [confirmNewPassword, setConfirmNewPassword] = React.useState<string>(null)
-    const [timezone, setTimezone] = React.useState<string>(null)
+    const [timezone, setTimezone] = React.useState<string>(props.ProfilePageDetails.timezone)
+    const [pageEdited, setPageEdited] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
         event.preventDefault();
@@ -46,6 +47,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             lowData: value['Low Data'].value,
             videoUpload: value['Video Uploaded'].value
         })
+        setPageEdited(false)
     }
 
     return (
@@ -63,6 +65,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             label="First Name" 
                             placeholder="First Name" 
                             required
+                            onChange={() => setPageEdited(true)}
                             {...handleValidationProps('firstName', validations)}
                         />
                         <AvatarInputContainer className="md-col md-col-6 px1 pb1">
@@ -73,6 +76,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                 className="col col-11" 
                                 id="lastName" 
                                 label="Last Name" 
+                                onChange={() => setPageEdited(true)}
                                 placeholder="Last Name" 
                                 required
                                 {...handleValidationProps('lastName', validations)} 
@@ -91,6 +95,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             label="Phone Number" 
                             placeholder="(00) 0000 0000 00" 
                             required
+                            onChange={() => setPageEdited(true)}
                             {...handleValidationProps('phoneNumber', validations)}
                         />
                         <Input 
@@ -101,6 +106,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             id="emailAddress" 
                             label="Email Address" 
                             placeholder="Email Address" 
+                            onChange={() => setPageEdited(true)}
                             required
                             {...handleValidationProps('emailAddress', validations)}
                         />
@@ -113,7 +119,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             dropdownDefaultSelect={props.ProfilePageDetails.timezone}
                             defaultValue={props.ProfilePageDetails.timezone}
                             id='dropdownTimezone'
-                            callback={(value: string) => setTimezone(value)}
+                            callback={(value: string) => {setPageEdited(value !== props.ProfilePageDetails.timezone);setTimezone(value)}}
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
                         />
                     </div>
@@ -132,17 +138,17 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 
                     <ToggleContainer>
-                        <Toggle id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
+                        <Toggle id="marketingToggle" label='Marketing' onChange={() => setPageEdited(true)} defaultChecked={props.ProfilePageDetails.marketing} {...handleValidationProps('Marketing', validations)}/>
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
-                        <Toggle id="lowDataToggle" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
+                        <Toggle id="lowDataToggle" label='Low Data' onChange={() => setPageEdited(true)} defaultChecked={props.ProfilePageDetails.lowData} {...handleValidationProps('lowDataToggle', validations)}/>
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when the your remaining Data falls below 10%.</Text></ToggleTextInfo>
                     </ToggleContainer>
                     
                     <ToggleContainer className="mt25">
-                        <Toggle id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.videoUpload} {...handleValidationProps('uploadToggle', validations)}/>
+                        <Toggle id="uploadToggle" label='Video Uploaded' onChange={() => setPageEdited(true)} defaultChecked={props.ProfilePageDetails.videoUpload} {...handleValidationProps('uploadToggle', validations)}/>
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
                     </ToggleContainer>    
                 </form>
@@ -152,13 +158,15 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                 <div> 
                     
-                    <Button disabled={!enabledSubmit} onClick={() => handleSubmit()} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button type='reset' form="profilePageForm" onClick={() => props.showDiscardToast("Changes have been discarded", 'flexible', "success")} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    <Button disabled={!enabledSubmit} onClick={(event) => {event.preventDefault();handleSubmit()}} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button type='reset' form="profilePageForm" onClick={() => {setPageEdited(false) ;props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
                 : null
             }
 
             <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
+                {passwordModalToggle ?
+                <>
                 <ModalContent>
                     <Input 
                         disabled={false} 
@@ -195,13 +203,16 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         required
                     />
                 </ModalContent>
-                <ModalFooter>
-                    <Button disabled={newPassword !== confirmNewPassword} sizeButton="large" onClick={() => {props.saveProfilePassword(currentPassword, newPassword);setPasswordModalToggle(false)}} typeButton="primary">Change Password</Button>
-                    <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
-                </ModalFooter>
+                    <ModalFooter>
+                        <Button disabled={newPassword !== confirmNewPassword || newPassword.length < 5 || currentPassword.length === 0} sizeButton="large" onClick={() => {props.saveProfilePassword(currentPassword, newPassword);setPasswordModalToggle(false)}} typeButton="primary">Change Password</Button>
+                        <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
+                    </ModalFooter>
+                    </>
+                    : null
+                }
             </Modal>
             {/* Will do real prompt when connected to endpoint */}
-            <Prompt when={true} message='' />
+            <Prompt when={pageEdited} message='' />
         </div>
     )
 }

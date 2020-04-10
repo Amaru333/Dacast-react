@@ -24,13 +24,15 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
 `;
 
-export const LabelStyle = styled.label<{disabled: boolean}>`
+export const LabelStyle = styled.label<{disabled: boolean; tooltip?: string}>`
     display: flex;
     height:auto;
     margin-bottom: 4px;
     margin-top:4px;
     align-items: center;
-    justify-content: space-between;
+    ${props => props.tooltip && css`
+        justify-content: space-between;
+    `}
 `;
 
 export const IndicationLabelStyle = styled.label<{}>`
@@ -219,16 +221,15 @@ export const TagsContainer = styled.div<{noBorder: boolean}>`
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: inherit;
 `
 
 export const TagsInputStyle = styled(InputStyle)`
     border: none;
-    background-color: white;
     width: 100%;
     padding-left: 6px;
     height: 20px;
-    background-color: ${props => props.theme.colors["gray-10"]};
+    background-color: inherit;
     &:focus {
         border: none;
     }

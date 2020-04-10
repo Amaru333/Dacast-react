@@ -20,11 +20,13 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
             console.log(action.payload.data.presignedURL)  
             return {
                 ...state,
-                uploadLogoUrl: action.payload.data.presignedURL
+                uploadLogoUrl: action.payload.data.presignedURL,
+                isUploading: true
             }
         case ActionTypes.UPLOAD_COMPANY_LOGO:
             return {
                 ...state,
+                isUploading: false
             }
         case ActionTypes.DELETE_COMPANY_LOGO:
             return {

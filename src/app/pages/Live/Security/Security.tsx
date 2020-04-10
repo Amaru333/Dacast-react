@@ -53,13 +53,13 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
         
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
+                        <Text weight="reg" size={16} >These settings are inherited from your <a href="/settings/security">Security Settings</a> — click the&nbsp;<IconStyle className="align-middle" >lock</IconStyle>&nbsp;Padlock to override these settings.</Text>
                     </BubbleContent>     
                 </Bubble> 
                 :
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock_open</IconStyle>&nbsp;Padlock to revert to global settings.
+                        <Text weight="reg" size={16} >These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle className="align-middle" >lock_open</IconStyle>&nbsp;Padlock to revert to global settings.</Text>
                     </BubbleContent>     
                 </Bubble> 
 
@@ -94,7 +94,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                 <Input 
                                     type='text'
                                     defaultValue={props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.liveSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
-                                    className='col col-4 md-col-3 mb2'
+                                    className='col col-12 md-col-4 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 
@@ -106,7 +106,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                             : null }
                     </div> 
 
-                    <div className='col col-12'>
+                    <div className='col col-12 clearfix'>
                         <Toggle 
                             id="videoScheduling" 
                             label='Content Scheduling' 
@@ -116,9 +116,9 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                          
                         { toggleSchedulingVideo ? 
                         <>
-                        <div className='col col-12 flex items-center'>
+                        <div className='col col-12 mb2 clearfix sm-flex'>
                             <DropdownSingle 
-                                className='col col-4 md-col-3 mb2 mr1' 
+                                className='col col-12 md-col-3 clearfix sm-mr1' 
                                 id="availableStart" 
                                 dropdownTitle="Available" 
                                 list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.videoScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
@@ -126,18 +126,17 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                             {
                                 selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
                                 <>        
-                                <div className='col col-4 md-col-3 mb2'>
+                                <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
                                     <DateSinglePickerWrapper 
-                                        className='mt2'
                                         id="startDate"
                                         callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
                                     />
                                 </div>
 
-                                <Input 
+                                <Input
                                     type='time'
                                     defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.startTime ? props.liveSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
-                                    className='col col-3 md-col-2 px1 mt1'
+                                    className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
                                     disabled={false} 
                                     id='startTime' 
                                     pattern="[0-9]{2}:[0-9]{2}"
@@ -148,9 +147,9 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                             }                
                         </div>
 
-                    <div className='col col-12 flex items-center'>
+                    <div className='col col-12 mb2 clearfix sm-flex'>
                         <DropdownSingle 
-                            className='col col-4 md-col-3 mb2 mr1' 
+                            className='col col-12 md-col-3 clearfix sm-mr1' 
                             id="availableEnd" 
                             dropdownTitle="Until" 
                             list={{Forever: false, "Set Date and Time": false}} 
@@ -162,9 +161,8 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                             selectedSettings.videoScheduling.endDateTime === "Set Date and Time" ?
                         
                                 <>
-                                <div className='col col-4 md-col-3 mb2' >
+                                <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
                                     <DateSinglePickerWrapper
-                                        className='mt2' 
                                         id="endDate"
                                         callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}
                                     />
@@ -172,7 +170,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                 <Input 
                                     type='time' 
                                     defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.endTime ? props.liveSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
-                                    className='col col-3 md-col-2 mt1 px1'
+                                    className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
                                     disabled={false} 
                                     id='endTime' 
                                     pattern="[0-9]{2}:[0-9]{2}"
@@ -200,7 +198,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 my2 mr1' 
+                            className='col col-12 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.liveSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -220,7 +218,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         </TextStyle>
                         <div className="col col-12 py2">
                             <DropdownSingle 
-                                className="col col-3" 
+                                className="col col-12 col-md-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.liveSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

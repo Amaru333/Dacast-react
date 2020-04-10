@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { Card } from '../../../components/Card/Card';
 
 export const ThemingContainer = styled.div`
-    display: flex;
     width: 100%;
 `
 

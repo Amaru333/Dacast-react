@@ -9,7 +9,7 @@ export interface AdminState {
     accounts: AccountsState;
     withdrawals: WithdrawalsState;
     paywall: PaywallState;
-    register: RegisterState
+    register: RegisterState;
 }
 
 export const globalDefaultState: AdminState = {
