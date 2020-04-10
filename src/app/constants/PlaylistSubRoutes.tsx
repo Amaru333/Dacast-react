@@ -29,13 +29,14 @@ export const PlaylistSubRoutes: Routes[] = [
         component: Engagement
     },
     {
-        path: '/theme',
-        name: 'Theme',
-        component: Theming
-    },
-    {
         path: '/security',
         name: 'Security',
         component: PlaylistSecurity
     },
+    {
+        path: '/theme',
+        name: 'Theme',
+        component: Theming
+    }
+    
 ]

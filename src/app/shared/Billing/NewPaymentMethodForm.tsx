@@ -60,7 +60,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <div className="col col-6 sm-col-2 sm-pl1 mb2 pr1">
                         <Text size={14} weight="med">CVV</Text>
                         <RecurlyElementStyle>
-                            <CardCvvElement />
+                            <CardCvvElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
                         </RecurlyElementStyle>
 
                     </div>
@@ -68,7 +68,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <div className="col col-3 sm-col-2 pl1 mb2 pr1">
                         <Text size={14} weight="med">Month</Text>
                         <RecurlyElementStyle>
-                            <CardMonthElement />
+                            <CardMonthElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
                         </RecurlyElementStyle>
 
                     </div>
@@ -76,7 +76,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <div className="col col-3 sm-col-2 pl1 mb2">
                         <Text size={14} weight="med">Year</Text>
                         <RecurlyElementStyle>
-                            <CardYearElement />
+                            <CardYearElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
                         </RecurlyElementStyle>
 
                     </div>

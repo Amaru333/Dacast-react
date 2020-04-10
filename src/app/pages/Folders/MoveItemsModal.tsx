@@ -57,11 +57,14 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
         }
         return currentNode ? Object.values(currentNode.children).map((childNode, i) => {            
             return (
-                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center p2 pointer'>
-                    <InputCheckbox id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} className='col col-1' onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
+                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center py2 pl2 pointer'>
+                    <div className="col col-11 flex">
+                    <InputCheckbox className="mr2" id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
                     <IconStyle coloricon='gray-7'>folder_open</IconStyle>
                     <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
-                    <div  className='flex justify-end col col-8'>
+                    </div>
+                    
+                    <div  className='flex justify-end col col-1'>
                         {
                             childNode.loadingStatus === 'loading' ?
                                 <LoadingSpinner size='small' color='red'/> 

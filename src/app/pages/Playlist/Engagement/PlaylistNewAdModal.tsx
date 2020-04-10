@@ -30,7 +30,7 @@ export const PlaylistNewAdModal = (props: PlaylistEngagementComponentProps & {to
                 }             
                 
             </div>
-            <div className='my2 col col-12'>
+            <div className='mt2 col col-12'>
                 <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
                 <Button onClick={() => {setAdData(props.selectedAd);props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>

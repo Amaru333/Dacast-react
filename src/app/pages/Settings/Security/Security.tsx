@@ -124,7 +124,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     <Input
                                         type='text'
                                         defaultValue={props.securityDetails.passwordProtectedVideo.password ? props.securityDetails.passwordProtectedVideo.password : ''}
-                                        className='col col-4 md-col-3 px1 mb1'
+                                        className='col col-4 md-col-3 pr1 mb2'
                                         disabled={false}
                                         id='password'
                                         label='Password'

@@ -33,9 +33,9 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutP
                 <Input className='col col-5 pl1' id='addressLine2' label='Address Line 2' indicationLabel='Optional' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, address2: event.currentTarget.value}})} />
             </div>
             <div className='col col-6 my2'>
-                <Input className='col col-4 pr1' id='state' label='State' placeholder='State' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, state: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='town' label='Town' placeholder='Town' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, town: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='zipCode' label='Zip/Postal Code' placeholder='Zip Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, zipCode: event.currentTarget.value}})} />
+                <Input className='col col-4 pr1' id='state' label='State/Province' placeholder='State/Province' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, state: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='town' label='Town/City' placeholder='Town/City' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, town: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='zipCode' label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, zipCode: event.currentTarget.value}})} />
             </div>
 
             <BorderStyle className='my2' />
@@ -48,9 +48,9 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PayoutP
                 <Input className='col col-5 pl1' id='bankAddressLine2' label='Address Line 2' indicationLabel='Optional' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankAddress2: event.currentTarget.value}})} />
             </div>
             <div className='col col-6 my2'>
-                <Input className='col col-4 pr1' id='bankState' label='State' placeholder='State' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankState: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='bankTown' label='Town' placeholder='Town' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankTown: event.currentTarget.value}})} />
-                <Input className='col col-4 px1' id='bankZipCode' label='Zip/Postal Code' placeholder='Zip Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankZipCode: event.currentTarget.value}})} />
+                <Input className='col col-4 pr1' id='bankState' label='State/Province' placeholder='State/Province' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankState: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='bankTown' label='Town/City' placeholder='Town/City' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankTown: event.currentTarget.value}})} />
+                <Input className='col col-4 px1' id='bankZipCode' label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountUS: {...paymentMethodData.bankAccountUS, bankZipCode: event.currentTarget.value}})} />
             </div>
         </div>
     )
@@ -75,9 +75,9 @@ const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodDa
                 <Input className='col col-5 pl1' id='addressLine2' label='Address Line 2' indicationLabel='Optional' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, address2: event.currentTarget.value}})} />
             </div>
             <div className='col col-12 my2'>
-                <Input className='col col-2 pr1' id='state' label='State' placeholder='State' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, state: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='town' label='Town' placeholder='Town' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, town: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='zipCode' label='Zip/Postal Code' placeholder='Zip Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, zipCode: event.currentTarget.value}})} />
+                <Input className='col col-2 pr1' id='state' label='State/Province' placeholder='State/Province' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, state: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='town' label='Town/City' placeholder='Town/City' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, town: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='zipCode' label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, zipCode: event.currentTarget.value}})} />
                 <Input className='col col-3 pl1' id='Country' label='Country' placeholder='Country' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, country: event.currentTarget.value}})} />
             </div>
 
@@ -91,9 +91,9 @@ const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodDa
                 <Input className='col col-5 pl1' id='bankAddressLine2' label='Address Line 2' indicationLabel='Optional' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankAddress2: event.currentTarget.value}})} />
             </div>
             <div className='col col-12 my2'>
-                <Input className='col col-2 pr1' id='bankState' label='State' placeholder='State' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankState: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='bankTown' label='Town' placeholder='Town' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankTown: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='bankZipCode' label='Zip/Postal Code' placeholder='Zip Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankZipCode: event.currentTarget.value}})} />
+                <Input className='col col-2 pr1' id='bankState' label='State/Province' placeholder='State/Province' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankState: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='bankTown' label='Town/City' placeholder='Town/City' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankTown: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='bankZipCode' label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankZipCode: event.currentTarget.value}})} />
                 <Input className='col col-3 pl1' id='bankCountry' label='Country' placeholder='Country' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankAccountInternational: {...paymentMethodData.bankAccountInternational, bankCountry: event.currentTarget.value}})} />
             </div>
         </div>
@@ -113,9 +113,9 @@ const Check = (updatePaymentMethod: Function, paymentMethodData: PayoutPaymentMe
                 <Input className='col col-5 pl1' id='checkAddressLine2' label='Address Line 2' indicationLabel='Optional' placeholder='Address' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, address2: event.currentTarget.value}})} />
             </div>
             <div className='col col-12 my2'>
-                <Input className='col col-2 pr1' id='checkState' label='State' placeholder='State' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, state: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='checkTown' label='Town' placeholder='Town' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, town: event.currentTarget.value}})} />
-                <Input className='col col-2 px1' id='checkZipCode' label='Zip Code' placeholder='Zip Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, zipCode: event.currentTarget.value}})} />
+                <Input className='col col-2 pr1' id='checkState' label='State/Province' placeholder='State/Province' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, state: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='checkTown' label='Town/City' placeholder='Town/City' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, town: event.currentTarget.value}})} />
+                <Input className='col col-2 px1' id='checkZipCode' label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, zipCode: event.currentTarget.value}})} />
                 <Input className='col col-3 pl1' id='checkCountry' label='Country' placeholder='Country' onChange={(event) => updatePaymentMethod({...paymentMethodData, check: {...paymentMethodData.check, country: event.currentTarget.value}})} />
             </div>
         </div>
