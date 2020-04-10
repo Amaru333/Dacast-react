@@ -61,8 +61,13 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     React.useEffect(() => {
         // countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name
         setDefaultCountryValue('United States')
-        setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
+
+    React.useEffect(() => {
+        if(props.CompanyPageDetails.logoUrl && !props.CompanyPageDetails.uploadLogoUrl) {
+            setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        }
+    }, [props.CompanyPageDetails.logoUrl])
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 

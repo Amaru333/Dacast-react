@@ -6,7 +6,7 @@ import { showToastNotification } from '../../Toasts';
 
 export interface GetEmbedSettingsOptions {
     type: ActionTypes.GET_EMBED_SETTINGS_OPTIONS;
-    payload: EmbedSettingsOptionType;
+    payload: {data: EmbedSettingsOptionType};
 }
 
 export interface SaveEmbedSettingsOptions {
@@ -30,7 +30,7 @@ export const saveEmbedSettingsOptionsAction = (data: EmbedSettingsOptionType): T
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveEmbedSettingsOptions> ) => {
         await SettingsServices.saveEmbedSettingsOptionsService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS, payload: data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

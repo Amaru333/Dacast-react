@@ -7,17 +7,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
         case ActionTypes.GET_ENCODING_RECIPES:
             return {
                 ...state, 
-                recipes: action.payload.data.recipes.map(recipe => {
-                    return {
-                        id: recipe.id,
-                        name: recipe.name,
-                        isDefault: recipe.isDefault,
-                        watermarkFileID: recipe.watermarkFileID,
-                        watermarkPositioningLeft: recipe.watermarkPositioningLeft,
-                        watermarkPositioningRight: recipe.watermarkPositioningRight,
-                        recipePresets: recipe.recipe.map(s => s.name)
-                    }
-                })
+                recipes: action.payload.data.recipes
             }
         case ActionTypes.GET_ENCODING_RECIPES_PRESETS:
             return {
@@ -53,6 +43,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
             return {
                 ...state,
                 uploadWatermarkUrl: action.payload.data.presignedURL,
+                watermarkFileID: action.payload.data.fileID,
                 isUploading: true
             }
         case ActionTypes.UPLOAD_WATERMARK:

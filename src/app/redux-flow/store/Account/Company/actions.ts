@@ -12,7 +12,7 @@ export interface GetCompanyPageDetails {
 
 export interface GetCompanyLogoUrl {
     type: ActionTypes.GET_COMPANY_LOGO_URL;
-    payload: {data: {url: string}};
+    payload: {data: {id: string; url: string}};
 }
 
 export interface SaveCompanyPageDetails {

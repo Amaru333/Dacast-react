@@ -32,10 +32,14 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
         }
     }
 
-
+    React.useEffect(() => {
+        if(props.staticStepperData['watermarkFileID']) {
+            props.updateStepperData({...props.stepperData, watermarkFileID: props.staticStepperData['watermarkFileID']})
+        }
+    }, [props.staticStepperData['watermarkFileID']])
 
     React.useEffect(() => {
-        if(props.staticStepperData['uploadWatermarkUrl']) {
+        if(props.staticStepperData['uploadWatermarkUrl'] && watermarkFileFile) {
             props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl'])
         }
     }, [props.staticStepperData['uploadWatermarkUrl']])
@@ -79,14 +83,14 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                             <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
-                                    props.updateStepperData({ ...props.stepperData, ["watermarkPwositioningLeft"]: event.currentTarget.value })
+                                    props.updateStepperData({ ...props.stepperData, ["watermarkPositioningLeft"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />
                             <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
-                                    props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: event.currentTarget.value })
+                                    props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />

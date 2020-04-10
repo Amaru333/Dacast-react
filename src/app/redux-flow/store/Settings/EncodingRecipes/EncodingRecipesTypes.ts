@@ -34,6 +34,7 @@ export interface EncodingRecipeItem {
 export interface EncodingRecipesData {
     recipes: EncodingRecipeItem[];
     uploadWatermarkUrl?: string;
+    watermarkFileID?: string;
     defaultRecipePresets: RecipePreset[];
 }
 

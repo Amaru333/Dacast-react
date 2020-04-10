@@ -26,11 +26,7 @@ const createEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes',
-        {"id": data.id,
-            "isDefault": data.isDefault,
-            "name": data.name,
-            "recipePresets": data.recipePresets
-        }, 
+        {...data}, 
         {headers: {
             'Authorization': token
         }}
@@ -41,11 +37,7 @@ const saveEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + data.id,
-        {"id": data.id,
-            "isDefault": data.isDefault,
-            "name": data.name,
-            "recipePresets": data.recipePresets
-        }, 
+        {...data}, 
         {headers: {
             'Authorization': token
         }}

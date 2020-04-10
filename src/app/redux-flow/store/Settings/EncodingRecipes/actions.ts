@@ -32,7 +32,7 @@ export interface DeleteEncodingRecipeDetails {
 
 export interface GetUploadWatermarkUrl {
     type: ActionTypes.GET_UPLOAD_WATERMARK_URL;
-    payload: {data: {presignedURL: string}};
+    payload: {data: {presignedURL: string, fileID: string}};
 }
 
 export interface UploadWatermark {
@@ -90,6 +90,7 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
                 dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: data} );
                 dispatch(showToastNotification(`${data.name} has been updated`, 'fixed', "success"));
             }).catch(error => {
+                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
