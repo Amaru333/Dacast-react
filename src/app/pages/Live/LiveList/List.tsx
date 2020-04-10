@@ -69,7 +69,7 @@ export const LiveListPage = (props: LiveListProps) => {
             {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div style={{ width: "80px" }} ></div>},
+            {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
         ], defaultSort: 'Created Date'}
     }
 

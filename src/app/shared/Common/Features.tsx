@@ -55,7 +55,7 @@ export const handleFeatures = (item: FolderAsset | VodItem | LiveItem | Playlist
     }
     if (item.features.folder) {
         element.push(
-            <IconGreyContainer className="mr1" >
+            <IconGreyContainer key={'featureIconFolder' + id} className="mr1" >
                 <IconStyle id={"folderTooltip" + id} coloricon='gray-3'>folder</IconStyle>
                 <Tooltip target={"folderTooltip" + id}></Tooltip>
             </IconGreyContainer>)
