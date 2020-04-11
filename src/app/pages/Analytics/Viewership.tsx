@@ -11,7 +11,7 @@ import {  TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
@@ -169,7 +169,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                     </AnalyticsContainerHalfSelector>
                 </div>
                 <div className="clearfix mxn1 mb2">
-                    <div className="col col-4 px1">
+                    <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Domain">
                             <BarChart
                                 datasetName="GBytes"
@@ -180,7 +180,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                 labels={viewershipAnalytics.consumptionPerDomain.domain} />
                         </AnalyticsCard>
                     </div>
-                    <div className="col col-4 px1">
+                    <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                             <CheeseChart
                                 displayBytesFromGB={true}
@@ -188,7 +188,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                 labels={viewershipAnalytics.consumptionPerDevices.labels} />
                         </AnalyticsCard>
                     </div>
-                    <div className="col col-4 px1">
+                    <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                             <DoubleLineChart
                                 datasetName="Hits"
@@ -202,9 +202,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                 labels={labelsFormate} />
                         </AnalyticsCard>
                     </div>
-                </div>
-                <div className="clearfix mxn1 mb2">
-                    <div className="col col-4 px1">
+                    <div style={{float:"right"}} className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Breakdown">
                             <TabSetupContainer className="clearfix">
                                 <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "time"} onClick={() => { setSelectedTabConsumption("time") }}>
@@ -238,7 +236,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             </div>
                         </AnalyticsCard>
                     </div>
-                    <div className="col col-4 px1">
+                    <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Viewing Time Breakdown">
                             <TabSetupContainer className="clearfix">
                                 <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "device"} onClick={() => { setSelectedTabViewing("device") }}>
@@ -269,7 +267,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             </div>
                         </AnalyticsCard>
                     </div>
-                    <div className="col col-4 px1">
+                    <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
                             <TabSetupContainer className="clearfix">
                                 <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "device"} onClick={() => { setSelectedTabPlayback("device") }}>

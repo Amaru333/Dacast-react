@@ -173,7 +173,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <BorderStyle className="p1 mx1" />
                 <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
-                    <div className="col col-12 flex flex-column p1">
+                    <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>

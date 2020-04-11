@@ -103,7 +103,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         ]
 
         return (
-            <div className='flex flex-column col col-4 mr1'>
+            <div className='col col-12 sm-col-4 pr1'>
                 <Card>
                     <Text size={20} weight='med'>{selectedTheme.id === '-1' ? "New Paywall Theme" : "Edit Paywall Theme"}</Text>
                     <Input className='mt2' id='paywalThemeNameInput' label='Theme Name' defaultValue={selectedTheme.name} onChange={(event) => setSelectedTheme({...selectedTheme, name: event.currentTarget.value})} />
@@ -230,9 +230,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         currentPage === 'list' ?
             PaywallThemingList()
             : 
-            <div className='flex'>
-                {PaywallThemingInPlayerCustomization()}
-                <Card className='col col-8 ml1'>
+            <div className='col col-12'>
+                <Card className='col-12 sm-col-8 right pl1 xs-mb2'>
                     <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/iframe/InPlayerPaywallPreview.html"
                         onLoad={() => {
                             inPlayerPreviewIframeRef.current.contentWindow.postMessage({
@@ -265,8 +264,9 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             });  
                         }}
                     />
-
                 </Card>
+                {PaywallThemingInPlayerCustomization()}
+                
             </div>
     )
 }

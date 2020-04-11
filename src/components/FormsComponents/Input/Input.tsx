@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text } from '../../Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { InputProps } from './InputTypes';
-import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle } from './InputStyle';
+import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle, TextAreaStyle } from './InputStyle';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon';
 
@@ -47,7 +47,12 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     </AddonStyle>
                     :
                     null}
-                <InputStyle ref={ref} isError={isError} {...other} />
+                {
+                    props.type === 'textarea' ?
+                        <TextAreaStyle isError={isError} {...other} /> :
+                        <InputStyle ref={ref} isError={isError} {...other} />
+                }
+                
                 {suffix ?
                     <AddonStyle suffix={true}>
                         {suffix}

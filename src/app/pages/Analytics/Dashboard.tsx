@@ -5,7 +5,7 @@ import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs } from './AnalyticsCommun';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
@@ -49,7 +49,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
         <React.Fragment>
             <DateFilteringAnalytics refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Time">
                         {
                             props.dashboardAnalytics.data.consumptionPerTime ?
@@ -65,7 +65,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                         }
                     </AnalyticsCard>
                 </div>
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
                         {
                             props.dashboardAnalytics.data.playsViewersPerTime ?
@@ -84,7 +84,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
                     </AnalyticsCard>
                 </div>
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard dataName="consumptionPerDevice" data={props.dashboardAnalytics.data.consumptionPerDevice ? props.dashboardAnalytics.data.consumptionPerDevice : false} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
                         {
                             props.dashboardAnalytics.data.consumptionPerDevice ?
@@ -97,9 +97,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
                     </AnalyticsCard>
                 </div>
-            </div>
-            <div className="clearfix mxn1 mb2">
-                <div className="col col-6 px1">
+                <div style={{ float:"right" }} className={HalfSmFullXs}>
                     <AnalyticsCard dataName="topContents" data={props.dashboardAnalytics.data.topContents ? props.dashboardAnalytics.data.topContents.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
                         {
                             props.dashboardAnalytics.data.topContents ?
@@ -112,7 +110,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                         }
                     </AnalyticsCard>
                 </div>
-                <div className="col col-6 px1">
+                <div className={HalfSmFullXs}>
                     <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
                             props.dashboardAnalytics.data.consumptionPerLocation ?
