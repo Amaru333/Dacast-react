@@ -68,7 +68,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
 
         ]}
     }
@@ -105,7 +105,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
+            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
 
         ]}
     }
@@ -146,6 +146,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
+                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 <BorderStyle className='my2' />
 
@@ -155,6 +156,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
+                <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} title={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
@@ -170,6 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepTitles={['Group Details', 'Content Selection']}
                 lastStepButton="Create"
                 stepperData={stepperData}
+                widthSecondStep={60}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
                 functionCancel={() => {setGroupPricesStepperOpened(false)}}
                 finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}

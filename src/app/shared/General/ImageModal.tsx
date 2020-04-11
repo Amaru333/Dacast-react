@@ -7,10 +7,11 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: Function}) => {
+export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: Function; title: string}) => {
 
     const testThumbnail = "sick_thumbnail.png"
-
+    
+    var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [uploadedImage, setUploadedImage] = React.useState<string>("")
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
@@ -59,17 +60,17 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     }
 
     return (
-        <Modal size="large" title="Change Thumbnail" toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" title={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
-                    <InputRadio name="addThumbnail" value="upload" label="Upload Thumbnail" onChange={() => setSelectedOption('upload')}/>
+                    <InputRadio name="addThumbnail" value="upload" label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
-                        <Text className="col col-12" size={14} weight="reg">Upload a file for your Thumbnail</Text>
+                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                         <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { uploadedImage === "" ? null :
+                        { uploadedImage === "" ? null : 
                             <ThumbnailFile className="col col-6 my1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>

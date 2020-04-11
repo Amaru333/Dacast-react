@@ -25,8 +25,8 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        signup: (data: UserInfo) => {
-            dispatch(signupAction(data));
+        signup: (data: UserInfo, callback?: Function, fallback?: Function) => {
+            dispatch(signupAction(data)).then(callback, fallback);
         },
 
     };

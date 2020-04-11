@@ -49,9 +49,10 @@ export const CustomStepper = (props: StepperProps) => {
         }
     }
 
+    console.log(stepIndex);
     return (
         <React.Fragment>
-            <StepperContainerStyle opened={props.opened} isMobile={isMobile}>
+            <StepperContainerStyle containerWidth={props.widthSecondStep && stepIndex === 1 ? props.widthSecondStep : null} opened={props.opened} isMobile={isMobile}>
                 <StepperHeaderStyle>
                     <Text size={24} weight="reg">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>

@@ -419,7 +419,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 
-            <Modal hasClose={false} size='small' title={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal style={{ zIndex: 10000 }} hasClose={false} size='small' title={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

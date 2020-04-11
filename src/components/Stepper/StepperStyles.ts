@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { Button } from '../FormsComponents/Button/Button';
 
-export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean}>`
+export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: boolean; containerWidth?: number}>`
     box-sizing: border-box;
     display: none;
     flex-direction: column;
@@ -24,11 +24,16 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
         display: flex;
     `}
 
-    ${props => props.isMobile && css`
+    ${props => props.containerWidth && css`
+        width: ${props => props.containerWidth+"%"};
+    `}
+
+
+    @media (max-width: 40em) {
         padding: 16px;
         width: 80%;
         top: 45%;
-    `};
+    }
 `
 export const StepperStyle = styled.div<{isMobile: boolean}>`
 

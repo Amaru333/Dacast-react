@@ -8,7 +8,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
@@ -166,7 +166,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                 </AnalyticsContainerHalfSelector>
             </div>
             <div className="clearfix mxn1 mb2">
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Time">
                         {
                             props.analyticsRevenueData.data.salesByTime ?
@@ -181,7 +181,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
                     </AnalyticsCard>
                 </div>
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Revenue by Time">
                         {
                             props.analyticsRevenueData.data.revenueByTime ?
@@ -196,7 +196,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
                     </AnalyticsCard>
                 </div>
-                <div className="col col-4 px1">
+                <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Country">
                         {
                             props.analyticsRevenueData.data.salesPerCountry ?

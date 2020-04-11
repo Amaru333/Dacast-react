@@ -24,6 +24,7 @@ export interface LiveDetails {
     poster?: string;
     recording: boolean;
     countdown: LiveStreamCountdown;
+    rewind: boolean;
 }
 
 export interface LiveItem {
