@@ -177,7 +177,9 @@ a {
     padding-top: 2.5rem;
 }
 
-
+.DateRangePicker_picker {
+    z-index:998;
+}
 .SingleDatePickerInput {
     width:100%;
 }

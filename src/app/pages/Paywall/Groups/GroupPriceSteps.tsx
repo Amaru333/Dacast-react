@@ -42,7 +42,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                     </div>
                     {
                         key === props.stepperData.firststep.price.length - 1 ?
-                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.price, { amount: 90, currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.price, { amount: "", currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
 
                             : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: props.stepperData.firststep.price.filter((item, index) => { return index !== key }) } })} >close</IconStyle></div>
                     }
