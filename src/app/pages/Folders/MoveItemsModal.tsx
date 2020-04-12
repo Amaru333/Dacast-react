@@ -8,9 +8,8 @@ import { getNameFromFullPath } from '../../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
-import { IconStyle } from '../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../shared/ActionIconStyle';
 
 export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
 

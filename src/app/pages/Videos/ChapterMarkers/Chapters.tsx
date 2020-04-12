@@ -2,13 +2,12 @@ import React from 'react';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal } from '../../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
 import { intToTime, useMedia } from '../../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 

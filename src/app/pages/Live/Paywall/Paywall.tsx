@@ -9,13 +9,12 @@ import { Table } from '../../../../components/Table/Table'
 import { PricePresetsModal } from '../../Paywall/Presets/PricePresetsModal'
 import { Modal } from '../../../../components/Modal/Modal'
 import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon'
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon'
 import { Preset, Promo, LivePaywallPageInfos } from '../../../redux-flow/store/Live/Paywall'
 import { LivePaywallComponentProps } from '../../../containers/Live/Paywall'
 import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Prompt } from 'react-router';
 import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
 import { ContentPromoPresetsModal } from '../../../shared/Paywall/ContentPromoPresetModal';

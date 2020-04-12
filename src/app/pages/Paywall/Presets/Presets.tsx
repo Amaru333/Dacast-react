@@ -9,8 +9,7 @@ import { PricePresetsModal } from './PricePresetsModal';
 import { PromoPresetsModal } from './PromoPresetsModal';
 import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const PresetsPage = (props: PresetsComponentProps) => {

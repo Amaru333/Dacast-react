@@ -5,7 +5,7 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { tsToLocaleDate, useMedia } from '../../../../utils/utils';
 import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
@@ -14,7 +14,6 @@ import { DateTime } from 'luxon';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 

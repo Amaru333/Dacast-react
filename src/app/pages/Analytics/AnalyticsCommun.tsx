@@ -1,6 +1,6 @@
 import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
 import React from 'react';
-import { IconStyle } from '../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
@@ -11,7 +11,6 @@ import { GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/D
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
-import { ActionIcon } from '../../shared/ActionIconStyle';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";

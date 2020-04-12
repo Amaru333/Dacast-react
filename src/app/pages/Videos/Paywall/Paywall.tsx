@@ -8,12 +8,11 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Table } from '../../../../components/Table/Table'
 import { Modal } from '../../../../components/Modal/Modal'
 import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon'
+import { IconStyle, IconContainer , ActionIcon} from '../../../../shared/Common/Icon'
 import { Preset, Promo, VodPaywallPageInfos } from '../../../redux-flow/store/VOD/Paywall'
 import { VodPaywallComponentProps } from '../../../containers/Videos/Paywall'
 import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes'
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';

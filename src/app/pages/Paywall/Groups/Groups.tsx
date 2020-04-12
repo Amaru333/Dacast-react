@@ -5,14 +5,13 @@ import { Table } from '../../../../components/Table/Table';
 import { BorderStyle } from './GroupsStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 

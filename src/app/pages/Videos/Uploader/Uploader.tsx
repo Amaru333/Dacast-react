@@ -74,7 +74,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 {
                     ...currentList[index],
                     currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                    progress: progressPerc,
+                    progress: progressPerc > currentList[index].progress ? progressPerc : currentList[index].progress,
                     timeRemaining: {num: eta, unit: etaUnit}
                 }
             })
