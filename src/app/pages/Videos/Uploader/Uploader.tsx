@@ -80,9 +80,9 @@ export const UploaderPage = (props: UploaderProps) => {
             })
         });
     }
-    const startMultiPartUpload = (file: File) => {
+    const startMultiPartUpload = (file: File, startTime: number) => {
         upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-            updateItemMultiPart(event, file.name, (new Date()).getTime(), fileSize, bytesUploaded);
+            updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
         }, setRemainingUploads, remainingUploads.uploadUrls, remainingUploads.ETags, remainingUploads.uploaderID, remainingUploads.s3Path).then(() => {
             setUploadingList((currentList: UploaderItemProps[]) => {
                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "completed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
@@ -125,7 +125,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         });
                 }
                 else {
-                    startMultiPartUpload(file)
+                    startMultiPartUpload(file, startTime)
                 }
                 setUploadingList((currentList: UploaderItemProps[]) => {
                     return [
@@ -198,7 +198,8 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleResumeAll = () => {
-        startMultiPartUpload(File)
+        var startTime = (new Date()).getTime();
+        startMultiPartUpload(File, startTime)
         setItemsPaused(!itemsPaused)
         setUploadingList((currentList: UploaderItemProps[]) => {
             const updatedList = currentList.map((value, key) => { if (value.name === File.name) { value.currentState = "progress" } return value })
