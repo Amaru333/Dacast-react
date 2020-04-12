@@ -7,9 +7,10 @@ import axios, { AxiosResponse } from 'axios'
 import { isTokenExpired, addTokenToHeader } from './token'
 
 const CancelToken = axios.CancelToken;
-export const source = CancelToken.source();
+export let cancel: any
 
 let pausedRequests: any = []
+let remainingUploads: any = {}
 
 
 const  completeMultipart = async (uploadId: string, allEtags: any, s3Url: string) => {
@@ -23,7 +24,6 @@ const  completeMultipart = async (uploadId: string, allEtags: any, s3Url: string
             'uploaderID': uploadId
         },
         {
-            cancelToken: source.token,
             headers: {
                 'Authorization': token
             }
@@ -77,38 +77,35 @@ const retrieveChunkPresignedURL = async (uploadId: string, fromPart: number, toP
 }
 
 axios.interceptors.request.use((request) => {
-    console.log('request', request)
     pausedRequests.push(request)
-    console.log(pausedRequests)
     return Promise.resolve(request);
 }, (error) => {
     if (error.config && error.response) {
-        console.log('error request',axios.request(error.config))
-        console.log('error request object', error)
+
     }
     return Promise.reject(error);
   }
 )
 
 axios.interceptors.response.use((response) => {
-    console.log('response', response)
     pausedRequests = pausedRequests.filter(item => item.url !== response.config.url)
-    console.log(pausedRequests)
     return Promise.resolve(response);
 }, (error) => {
     if (error.config && error.response) {
-        console.log('error response',axios.request(error.config))
-        console.log('error response object', error)
     }
     return Promise.reject(error);
   }
 )
 
-const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: number, urlS3: string, file: File, Etags: any, nbChunks: number, fileSize: number, updateItem: Function) => {
-    let urls = await retrieveChunkPresignedURL(uploadId, batchStart, batchEnd, urlS3)
-    console.log('entering batch with first chunk no', batchStart)
+const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: number, urlS3: string, file: File, Etags: any, nbChunks: number, fileSize: number, updateItem: Function, uploadUrls?: string[]) => {
+    let urls = uploadUrls ? uploadUrls : await retrieveChunkPresignedURL(uploadId, batchStart, batchEnd, urlS3)
+    let token = new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        cancel = c;
+    })
+    
     for(let index = batchStart; index < batchEnd; index += MAX_MULTI_THREADING_REQUESTS) {
-
+        console.log(`starting batch with startValue ${index} and end value ${batchEnd}`)
         let multiThreadRequests = Array.from({length: MAX_MULTI_THREADING_REQUESTS})
         let test = multiThreadRequests.map((v, i) => {
             let start = ((index + i) - 1) * FILE_CHUNK_SIZE
@@ -116,7 +113,7 @@ const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: num
             if((index + i) <= urls.length) {
                 let chunk = (index + i < nbChunks) ? file.slice(start, end) : file.slice(start)
                 return axios.put(urls[index + i - 1], chunk, {
-                    cancelToken: source.token,
+                    cancelToken: token,
                     onUploadProgress: (event: ProgressEvent) => {
                         let bytesUploaded = FILE_CHUNK_SIZE * ((index + i) - 1)
                         updateItem(event, bytesUploaded, fileSize)
@@ -128,9 +125,10 @@ const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: num
                     Etags.push(etagObject)
                 }).catch((error: any) => {
                     index = nbChunks;
-                    console.log(error)
                     if (axios.isCancel(error)) {
                         console.log('post Request canceled');
+                        remainingUploads = {uploadUrls: urls, ETags: Etags, uploaderID: uploadId, s3Path: urlS3}
+                        
                       }
                     throw new Error(error)
                 })
@@ -138,40 +136,42 @@ const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: num
         })
         
         await axios.all(test)
-        .then(axios.spread((...respnses) => {
-        })).catch(errors => {
-            console.log(errors)
-        })
     }
 }
 
-const multiPartUploadRefactored = async (keyPrefix: string, file: File, updateItem: Function) => {
-    let Etags: any = []
+const multiPartUploadRefactored = async (keyPrefix: string, file: File, updateItem: Function, uploadUrls?: string[], eTags?: any, uploaderID?: string, s3Path?: string) => {
+    let Etags: any = eTags ? eTags : []
+    let uploaderId = uploaderID ? uploaderID : null
+    let s3path = s3Path ? s3Path : null
     try {
         try {
-            var res = await initMultiPart(file.name);
+            if(!uploaderId) {
+                var res = await initMultiPart(file.name);
+                uploaderId = res.uploaderID
+                s3path = res.s3Path
+            }
 
             const FILE_SIZE = file.size
             const NUM_CHUNKS = Math.ceil(FILE_SIZE / FILE_CHUNK_SIZE)
-
-            let currentBatch = 1
+            console.log('etags done', eTags ? eTags.length : -1)
+            let currentBatch = eTags ? eTags.length + 1 : 1
             while(currentBatch < NUM_CHUNKS) {
                 
                 if(currentBatch + MAX_ULRS_REQUEST < NUM_CHUNKS) {
-                    await requestsBatch(res.uploaderID, currentBatch, currentBatch + MAX_ULRS_REQUEST, res.s3Path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem)
+                    await requestsBatch(uploaderId, currentBatch, currentBatch + MAX_ULRS_REQUEST, s3path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem, uploadUrls)
                 } else {
-                    await requestsBatch(res.uploaderID, currentBatch, currentBatch + (NUM_CHUNKS - currentBatch), res.s3Path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem)
+                    await requestsBatch(uploaderId, currentBatch, currentBatch + (NUM_CHUNKS - currentBatch), s3path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem, uploadUrls)
                 }
-                console.log(currentBatch)
+
                 currentBatch += MAX_ULRS_REQUEST
             }
 
         } catch(error) {
             throw new Error(error)
         }
-        let completeUploadResp = await completeMultipart(res.uploaderID, Etags, res.s3Path)
+        let completeUploadResp = await completeMultipart(uploaderId, Etags, s3path)
         
-    } catch (error) {
+    } catch (error) {      
         throw new Error(error);
     }
 }
@@ -197,14 +197,17 @@ const singlePartUpload = async (keyPrefix: string, file: File, updateItem: Funct
     try {
         let signedSinglePartURL = await retrieveSinglePartURL()
         await axios.put(JSON.parse(signedSinglePartURL).url, file, {
-            cancelToken: source.token,
+            cancelToken: new CancelToken(function executor(c) {
+                // An executor function receives a cancel function as a parameter
+                cancel = c;
+            }),
             onUploadProgress: (event) => updateItem(event)
         })
     } catch(error) {
         throw new Error(error);
     }
 }
-export const upload = async (file: File, updateItem: Function) => {
+export const upload = async (file: File, updateItem: Function, setRemainingUploads?: Function, uploadUrls?: string[], eTags?: string[], uploaderID?: string, s3Path?: string) => {
 
     try {
         let keyPrefix = "";
@@ -213,9 +216,10 @@ export const upload = async (file: File, updateItem: Function) => {
             await singlePartUpload(keyPrefix, file, updateItem)
         }
         else {
-            await multiPartUploadRefactored(keyPrefix, file, updateItem)
+            await multiPartUploadRefactored(keyPrefix, file, updateItem, uploadUrls, eTags, uploaderID, s3Path)
         }
     } catch (error) {
+        setRemainingUploads(remainingUploads)
         throw new Error(error);
     }
 }

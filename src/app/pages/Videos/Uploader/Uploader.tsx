@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
-import { upload, MIN_CHUNK_SIZE, source } from '../../../utils/uploaderService';
+import { upload, MIN_CHUNK_SIZE, cancel } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -13,7 +13,13 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 export const UploaderPage = (props: UploaderProps) => {
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
+    const [remainingUploads, setRemainingUploads] = React.useState<{uploadUrls: string[], ETags: any, uploaderID: string, s3Path: string}>({uploadUrls: null, ETags: null, uploaderID: null, s3Path: null})
     const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
+    const [File, setFile] = React.useState<File>(null)
+
+    React.useEffect(() => {
+        console.log(remainingUploads)
+    }, [remainingUploads])
 
     const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
@@ -74,6 +80,31 @@ export const UploaderPage = (props: UploaderProps) => {
             })
         });
     }
+    const startMultiPartUpload = (file: File) => {
+        upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
+            updateItemMultiPart(event, file.name, (new Date()).getTime(), fileSize, bytesUploaded);
+        }, setRemainingUploads, remainingUploads.uploadUrls, remainingUploads.ETags, remainingUploads.uploaderID, remainingUploads.s3Path).then(() => {
+            setUploadingList((currentList: UploaderItemProps[]) => {
+                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "completed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                return updatedList;
+            })
+        })
+            .catch((err) => {
+                console.log(err)
+                if(err.message.indexOf('Operation canceled by the user.') > -1) {
+                    setUploadingList((currentList: UploaderItemProps[]) => {
+                        const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
+                        return updatedList;
+                    })
+                } else {
+                    setUploadingList((currentList: UploaderItemProps[]) => {
+                        const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                        return updatedList;
+                    })
+                }
+
+            });
+    }
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4'];
@@ -81,8 +112,9 @@ export const UploaderPage = (props: UploaderProps) => {
             const file = fileList[i];
             if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
                 var startTime = (new Date()).getTime();
+                setFile(file)
                 if (file.size < MIN_CHUNK_SIZE) {
-                    upload(file, (event: ProgressEvent) => {
+                    upload(file,(event: ProgressEvent) => {
                         updateItem(event, file.name, startTime);
                     })
                         .catch(err => {
@@ -93,28 +125,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         });
                 }
                 else {
-                    upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-                        updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
-                    }).then(() => {
-                        setUploadingList((currentList: UploaderItemProps[]) => {
-                            const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "completed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                            return updatedList;
-                        })
-                    })
-                        .catch((err) => {
-                            if(err.message.indexOf('Operation canceled by the user.') > -1) {
-                                setUploadingList((currentList: UploaderItemProps[]) => {
-                                    const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
-                                    return updatedList;
-                                })
-                            } else {
-                                setUploadingList((currentList: UploaderItemProps[]) => {
-                                    const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                                    return updatedList;
-                                })
-                            }
-
-                        });
+                    startMultiPartUpload(file)
                 }
                 setUploadingList((currentList: UploaderItemProps[]) => {
                     return [
@@ -186,6 +197,15 @@ export const UploaderPage = (props: UploaderProps) => {
         })
     }
 
+    const handleResumeAll = () => {
+        startMultiPartUpload(File)
+        setItemsPaused(!itemsPaused)
+        setUploadingList((currentList: UploaderItemProps[]) => {
+            const updatedList = currentList.map((value, key) => { if (value.name === File.name) { value.currentState = "progress" } return value })
+            return updatedList;
+        })
+    }
+
     React.useEffect(() => {
     }, [uploadingList]);
 
@@ -239,9 +259,9 @@ export const UploaderPage = (props: UploaderProps) => {
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
                 {
                     itemsPaused ?
-                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => {console.log('resuming');setItemsPaused(!itemsPaused)}} >Resume All</Button>
+                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume All</Button>
                         :
-                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {source.cancel('Operation canceled by the user.');setItemsPaused(!itemsPaused)}} >Pause All</Button>
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {cancel('Operation canceled by the user.');setItemsPaused(!itemsPaused)}} >Pause All</Button>
 
                 }
             </div>
