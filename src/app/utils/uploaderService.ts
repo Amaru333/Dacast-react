@@ -8,8 +8,6 @@ import { isTokenExpired, addTokenToHeader } from './token'
 
 const CancelToken = axios.CancelToken;
 export let cancel: any
-
-let pausedRequests: any = []
 let remainingUploads: any = {}
 
 
@@ -76,19 +74,7 @@ const retrieveChunkPresignedURL = async (uploadId: string, fromPart: number, toP
     }
 }
 
-axios.interceptors.request.use((request) => {
-    pausedRequests.push(request)
-    return Promise.resolve(request);
-}, (error) => {
-    if (error.config && error.response) {
-
-    }
-    return Promise.reject(error);
-  }
-)
-
 axios.interceptors.response.use((response) => {
-    pausedRequests = pausedRequests.filter(item => item.url !== response.config.url)
     return Promise.resolve(response);
 }, (error) => {
     if (error.config && error.response) {
@@ -160,7 +146,7 @@ const multiPartUploadRefactored = async (keyPrefix: string, file: File, updateIt
                 if(currentBatch + MAX_ULRS_REQUEST < NUM_CHUNKS) {
                     await requestsBatch(uploaderId, currentBatch, currentBatch + MAX_ULRS_REQUEST, s3path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem, uploadUrls)
                 } else {
-                    await requestsBatch(uploaderId, currentBatch, currentBatch + (NUM_CHUNKS - currentBatch), s3path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem, uploadUrls)
+                    await requestsBatch(uploaderId, currentBatch, NUM_CHUNKS, s3path, file, Etags, NUM_CHUNKS, FILE_SIZE, updateItem, uploadUrls)
                 }
 
                 currentBatch += MAX_ULRS_REQUEST
