@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
-import { upload, MIN_CHUNK_SIZE } from '../../../utils/uploaderService';
+import { upload, MIN_CHUNK_SIZE, source } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -13,6 +13,7 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 export const UploaderPage = (props: UploaderProps) => {
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
+    const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
 
     const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
@@ -94,12 +95,25 @@ export const UploaderPage = (props: UploaderProps) => {
                 else {
                     upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
                         updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
+                    }).then(() => {
+                        setUploadingList((currentList: UploaderItemProps[]) => {
+                            const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "completed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                            return updatedList;
+                        })
                     })
-                        .catch(err => {
-                            setUploadingList((currentList: UploaderItemProps[]) => {
-                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                                return updatedList;
-                            })
+                        .catch((err) => {
+                            if(err.message.indexOf('Operation canceled by the user.') > -1) {
+                                setUploadingList((currentList: UploaderItemProps[]) => {
+                                    const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
+                                    return updatedList;
+                                })
+                            } else {
+                                setUploadingList((currentList: UploaderItemProps[]) => {
+                                    const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
+                                    return updatedList;
+                                })
+                            }
+
                         });
                 }
                 setUploadingList((currentList: UploaderItemProps[]) => {
@@ -125,32 +139,32 @@ export const UploaderPage = (props: UploaderProps) => {
             case 'completed':
                 const items = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(items);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'failed':
                 const itemsFailed = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsFailed);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'paused':
-                const itemsPaused = uploadingList.filter(obj => obj.name !== item.name);
+                const itemsPaused: UploaderItemProps[] = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsPaused);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'progress':
                 const itemsProgress = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsProgress);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'queue':
                 const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsQueue);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'veryfing':
 
@@ -223,7 +237,13 @@ export const UploaderPage = (props: UploaderProps) => {
             </Text>
             <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
-                <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' >Pause All</Button>
+                {
+                    itemsPaused ?
+                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => {console.log('resuming');setItemsPaused(!itemsPaused)}} >Resume All</Button>
+                        :
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {source.cancel('Operation canceled by the user.');setItemsPaused(!itemsPaused)}} >Pause All</Button>
+
+                }
             </div>
             <ItemList className="col-12">
                 {renderList()}
