@@ -6,7 +6,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
-import { formSubmit, ValueInput, handleValidationProps, handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
@@ -54,7 +54,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
-    const [pageEdited, setPageEdited] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
@@ -178,7 +177,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="accountName" 
                             label="Account Name" 
                             placeholder="Account Name"
-                            onChange={() => setPageEdited(true)} 
                             {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
                         />
                         <Input 
@@ -189,7 +187,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="businessName" 
                             label="Business Name" 
                             placeholder="Business Name"
-                            onChange={() => setPageEdited(true)}
                             indicationLabel='Optional'
                             name="businessName" ref={register()}
                         />
@@ -203,7 +200,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="contactNumber" 
                             label="Phone Number" 
                             placeholder="(00) 0000 0000 00" 
-                            onChange={() => setPageEdited(true)}
                             {...handleValidationForm('contactNumber', errors, 'tel', register)}
                         />
                         <Input 
@@ -214,7 +210,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="emailAddress" 
                             label="Email Address" 
                             placeholder="Email Address"
-                            onChange={() => setPageEdited(true)} 
                             {...handleValidationForm('emailAddress', errors, 'email', register)}
                         />
                     </div>
@@ -227,7 +222,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="companyWebsite"
                             label="Company Website" 
                             placeholder="Company Website"
-                            onChange={() => setPageEdited(true)} 
                             {...handleValidationForm('companyWebsite', errors, 'url', register)}
                         />
                         <Input 
@@ -237,7 +231,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="vatNumber" 
                             label="VAT Number" 
                             placeholder="VAT Number"
-                            onChange={() => setPageEdited(true)} 
                             indicationLabel='Optional'
                             name="vatNumber" ref={register()}
                         />
@@ -257,7 +250,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="addressLine1" 
                             label="Address line 1" 
                             placeholder="Address line 1"
-                            onChange={() => setPageEdited(true)} 
                             name="addressLine1" ref={register()}
                         />
 
@@ -268,7 +260,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="addressLine2" 
                             label="Address line 2" 
                             placeholder="Address line 2"
-                            onChange={() => setPageEdited(true)} 
                             name="addressLine2" ref={register()}
                         />
                     </div>
@@ -280,7 +271,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="state" 
                             label="State/Province" 
                             placeholder="State/Province"
-                            onChange={() => setPageEdited(true)} 
                             name="state" ref={register()}
                         />
 
@@ -291,7 +281,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="town" 
                             label="Town/City" 
                             placeholder="Town/City"
-                            onChange={() => setPageEdited(true)} 
                             name="town" ref={register()}
                         />
 
@@ -302,7 +291,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="zipCode" 
                             label="Zip/Postal Code" 
                             placeholder="Zip/Postal Code"
-                            onChange={() => setPageEdited(true)} 
                             name="zipCode" ref={register()}
                         />
                         <input type="hidden" name="country" ref={register()} />
@@ -322,7 +310,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             onClick={() => reset(props.CompanyPageDetails, {errors: true})}>Discard</Button>
                     </ButtonsArea> : null
             }     
-            <Prompt when={pageEdited} message='' />     
+            <Prompt when={dirty} message='' />     
         </CompanyPageContainer>
     )
 }

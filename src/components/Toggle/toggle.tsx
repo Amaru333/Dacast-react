@@ -4,9 +4,11 @@ import { ToggleProps } from './ToggleTypes';
 
 export const Toggle = (props: ToggleProps) => {
 
+    var { name, ref, ...other } = props;
+
     return (
-        <ToggleWrapperStyle {...props}>
-            <ToggleStyle id={props.label} defaultChecked={props.defaultChecked} type="checkbox"/>
+        <ToggleWrapperStyle {...other}>
+            <ToggleStyle name={name} ref={ref} onChange={(value) => { props.callback ? props.callback(value.target.checked) : null}  } id={props.label} defaultChecked={props.defaultChecked} type="checkbox"/>
             <ToggleLabelStyle htmlFor={props.label}>
                 <LabelTextStyle color="gray-1" size={16} weight="med">{props.label}</LabelTextStyle>
             </ToggleLabelStyle>
