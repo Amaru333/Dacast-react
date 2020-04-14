@@ -6,16 +6,19 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
-import { formSubmit, ValueInput, handleValidationProps } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import {CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Prompt } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { useForm } from 'react-hook-form';
+import { UserInfo } from 'os';
+import { useKeyboardSubmit } from '../../../../utils/utils';
 
 interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -29,38 +32,34 @@ interface CompanyComponentProps {
 export const CompanyPage = (props: CompanyComponentProps) => {
 
     /** Validation */
-    let formRef = React.useRef<HTMLFormElement>(null);
-    let {value, validations, enabledSubmit, displayFormActionButtons} = formSubmit(formRef);
-    const [selectedCountry, setSelectedCountry] = React.useState<string>(props.CompanyPageDetails.country)
+    const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
+        reValidateMode: 'onChange',
+        mode: 'onBlur',
+        defaultValues: props.CompanyPageDetails,
+    })
+    const { dirty } = formState;
 
-    let {CompanyPageDetails} = props;
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: ValueInput) => {
-        event.preventDefault();
-        props.saveCompanyPageDetails({
-            accountName: data['accountName'].value,
-            businessName: data['businessName'].value,
-            contactNumber: data['contactNumber'].value,
-            companyEmail: data['emailAddress'].value,
-            companyWebsite: data['companyWebsite'].value,
-            vatNumber: data['vatNumber'].value,
-            addressLine1: data['addressLine1'].value,
-            addressLine2: data['addressLine2'].value,
-            state: data['state'].value,
-            town: data['town'].value,
-            zipCode: data['zipCode'].value,
-            country: selectedCountry
-        })
+    let history = useHistory();
+
+    const onSubmit = (data: CompanyPageInfos) => { 
+        props.saveCompanyPageDetails(data, () => {
+            history.push('/confirm-email')
+        });
     }
+
+    useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
+    
+    let {CompanyPageDetails} = props;
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
-    const [defaultCountryValue, setDefaultCountryValue] = React.useState<string>('')
-    const [pageEdited, setPageEdited] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        // countries[Object.keys(countries).filter((item: string) => {return countries[item].name.includes(CompanyPageDetails.country)})[0]].name
-        setDefaultCountryValue('United States')
+        if(!CompanyPageDetails.country) {
+            setValue('country', "United States");
+        }
+        setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
     React.useEffect(() => {
@@ -125,14 +124,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
 
-    const copyKey = (value: string) => {
-        var textArea = document.createElement("textarea");
-        textArea.value = value;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        textArea.remove();
-    }
     
     return (
         <CompanyPageContainer>
@@ -171,7 +162,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
                 <div className="mb25 ml1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
                 <BorderStyle className="p1 mx1" />
-                <form id='companyPageForm' onSubmit={(event) => handleSubmit(event, value)} ref={formRef} noValidate>
+                <form id='companyPageForm' onSubmit={handleSubmit(onSubmit)}>
                     <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
                     <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
@@ -192,9 +183,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="accountName" 
                             label="Account Name" 
                             placeholder="Account Name"
-                            onChange={() => setPageEdited(true)} 
-                            required
-                            {...handleValidationProps('accountName', validations)}
+                            {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
                         />
                         <Input 
                             disabled={false}
@@ -204,10 +193,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="businessName" 
                             label="Business Name" 
                             placeholder="Business Name"
-                            onChange={() => setPageEdited(true)}
                             indicationLabel='Optional'
-                            required
-                            {...handleValidationProps('businessName', validations)} 
+                            name="businessName" ref={register()}
                         />
                     </div>
                     <div className="md-col md-col-12" >
@@ -219,9 +206,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="contactNumber" 
                             label="Phone Number" 
                             placeholder="(00) 0000 0000 00" 
-                            onChange={() => setPageEdited(true)}
-                            required
-                            {...handleValidationProps('contactNumber', validations)}
+                            {...handleValidationForm('contactNumber', errors, 'tel', register)}
                         />
                         <Input 
                             disabled={false} 
@@ -231,37 +216,29 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="emailAddress" 
                             label="Email Address" 
                             placeholder="Email Address"
-                            onChange={() => setPageEdited(true)} 
-                            required
-                            {...handleValidationProps('emailAddress', validations)}
+                            {...handleValidationForm('emailAddress', errors, 'email', register)}
                         />
                     </div>
 
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.companyWebsite}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="companyWebsite"
                             label="Company Website" 
                             placeholder="Company Website"
-                            onChange={() => setPageEdited(true)} 
-                            required
-                            {...handleValidationProps('companyWebsite', validations)}
+                            {...handleValidationForm('companyWebsite', errors, 'url', register)}
                         />
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.vatNumber}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="vatNumber" 
                             label="VAT Number" 
                             placeholder="VAT Number"
-                            onChange={() => setPageEdited(true)} 
                             indicationLabel='Optional'
-                            required={false}
-                            {...handleValidationProps('vatNumber', validations)}
+                            name="vatNumber" ref={register()}
                         />
                     </div>
 
@@ -274,84 +251,72 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.addressLine1}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine1" 
                             label="Address line 1" 
                             placeholder="Address line 1"
-                            onChange={() => setPageEdited(true)} 
-                            required={false}
-                            {...handleValidationProps('addressLine1', validations)}                      
+                            name="addressLine1" ref={register()}
                         />
 
                         <Input  
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.addressLine2}
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine2" 
                             label="Address line 2" 
                             placeholder="Address line 2"
-                            onChange={() => setPageEdited(true)} 
-                            required={false}
-                            {...handleValidationProps('addressLine2', validations)}
+                            name="addressLine2" ref={register()}
                         />
                     </div>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.state}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
                             label="State/Province" 
                             placeholder="State/Province"
-                            onChange={() => setPageEdited(true)} 
-                            required={false}
-                            {...handleValidationProps('state', validations)}
+                            name="state" ref={register()}
                         />
 
                         <Input 
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.town}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
                             label="Town/City" 
                             placeholder="Town/City"
-                            onChange={() => setPageEdited(true)} 
-                            required={false}
-                            {...handleValidationProps('town', validations)}
+                            name="town" ref={register()}
                         />
 
                         <Input  
                             disabled={false} 
-                            defaultValue={CompanyPageDetails.zipCode}
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
                             label="Zip/Postal Code" 
                             placeholder="Zip/Postal Code"
-                            onChange={() => setPageEdited(true)} 
-                            required={false}
-                            {...handleValidationProps('zipCode', validations)}
-                    
+                            name="zipCode" ref={register()}
                         />
-                        <DropdownSingle hasSearch callback={(value: string) => setSelectedCountry(value)} dropdownDefaultSelect={defaultCountryValue} className="sm-col md-col-3 sm-col-6 p1" id='country' dropdownTitle='Country' list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
-
+                        <input type="hidden" name="country" ref={register()} />
+                        <DropdownSingle hasSearch 
+                            callback={(value: string) => setValue('country', value)}
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "United States" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
+                            id='country' dropdownTitle='Country' 
+                            list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
                     </div>
                 </form>
             </Card>            
             { 
-                displayFormActionButtons ?
+                dirty ? 
                     <ButtonsArea> 
-                        <Button disabled={!enabledSubmit} type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => setPageEdited(false)}>Discard</Button>
-                    </ButtonsArea>
-                    : null
+                        <Button type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
+                            onClick={() => reset(props.CompanyPageDetails, {errors: true})}>Discard</Button>
+                    </ButtonsArea> : null
             }     
-            <Prompt when={pageEdited} message='' />     
+            <Prompt when={dirty} message='' />     
         </CompanyPageContainer>
     )
 }

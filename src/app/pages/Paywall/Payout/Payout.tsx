@@ -151,7 +151,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         :
         <div>
             <Card>
-                <Text size={20} weight='reg'>New Payment Method</Text>
+                <Text size={20} weight='reg'>New Withdrawal Method</Text>
                 <Text className='pt2 pb1' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Button key='paymentMethodTableHeaderActionButton' className='col col-12 xs-show' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
                 {

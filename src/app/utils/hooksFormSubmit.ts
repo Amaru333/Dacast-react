@@ -42,7 +42,7 @@ const PresetFormValidation: { [key in CustomType]: ValidationOptions } = {
 export const handleValidationForm = (id: string, data: any, type?: CustomType, register?: Function) => {
     let spreadProps: any =  {
         isError: data[id],
-        help: data[id] && data[id].message,
+        help: data[id] && (data[id].message ? data[id].message : data[id].validate) ,
         name: id
     }
     if(type && register) {

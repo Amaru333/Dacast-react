@@ -12,7 +12,8 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
     height: auto;
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
-    overflow: auto;
+    max-height: 90%;
+    overflow-x: scroll;
     position: fixed;
     left: 50%;
     top: 50vh;
