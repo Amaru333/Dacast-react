@@ -16,7 +16,7 @@ const defaultPromo: GroupPromo = {
     alphanumericCode: '',
     discount: 0,
     limit: 0,
-    rateType: 'Subscription',
+    rateType: 'Pay Per View',
     startDate: null,
     startTime: '00:00',
     endDate: null,

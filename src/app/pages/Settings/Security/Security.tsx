@@ -18,6 +18,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { useMedia } from '../../../../utils/utils';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Prompt } from 'react-router';
+import moment from 'moment';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
 
@@ -151,7 +152,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             startDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper className='col col-4 md-col-3 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
@@ -172,7 +173,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             endDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper className='col col-4 md-col-3 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}

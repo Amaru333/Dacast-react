@@ -15,6 +15,8 @@ interface ItemTodo { isChecked: boolean; name: string; href: string }
 
 export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
+    const [supportWidgetOpen, setSupportWidgetOpen] = React.useState<boolean>(true)
+
     let history = useHistory()
 
     const todoProfileItems: ItemTodo[] = [
@@ -116,11 +118,12 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     </div>
                     <Button className="col col-4" sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
                 </WidgetElement>
-                <div className={classItemFullWidthContainer}>
+                { supportWidgetOpen ? 
+                    <div className={classItemFullWidthContainer}>
                     <SupportCard className="dashboardCard col col-12">
                         <WidgetHeader className="flex">
                             <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
-                            <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto">close</IconStyle>
+                            <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setSupportWidgetOpen(false)}>close</IconStyle>
                         </WidgetHeader>
                         <div className=" flex row justify-between flex-start ">
                             <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
@@ -128,7 +131,9 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                         </div>
                         <Button onClick={() => history.push('/help')} className="col col-4" sizeButton="xs" typeButton="secondary">Get Help</Button>
                     </SupportCard>
-                </div>
+                </div> : null
+                }
+                
             </div>
         </section>
     )

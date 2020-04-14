@@ -15,6 +15,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; className
         if (props.callback && date) {
             props.callback(date.toString())
         }
+        
     }, [date])
 
     return (
