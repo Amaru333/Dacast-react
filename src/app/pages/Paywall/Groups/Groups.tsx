@@ -38,7 +38,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const defaultPrice: GroupPrice = {
         id: '-1',
         name: '',
-        type: 'Subscription',
+        type: 'Pay Per View',
         price: pricesList,
         duration: {amount: 90, type: 'Hours'},
         recurrence: 'Weekly',
