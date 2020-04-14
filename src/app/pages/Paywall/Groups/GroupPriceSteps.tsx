@@ -66,8 +66,8 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                         <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} />
                         :
                         <>
-                            <Input className='col col-6 pr1' label='Duration' defaultValue={props.stepperData.firststep.duration.amount.toString()} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, amount: parseInt(event.currentTarget.value) } } })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pl1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, type: value } } })} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
+                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.duration.amount.toString()} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, amount: parseInt(event.currentTarget.value) } } })} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, type: value } } })} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
                         </>
                 }
 
@@ -83,8 +83,8 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             {
                 props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-8 pr1' datepickerTitle='Start Date' />
-                        <Input className='col col-4 pl1' type='time' label='Start Time' />
+                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
+                        <Input className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
                     : null
             }
