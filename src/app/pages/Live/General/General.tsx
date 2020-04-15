@@ -149,7 +149,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             </ToggleTextInfo>
                         </div>
                         <div className="mb2 clearfix">
-                            <Toggle label="Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
+                            <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
                             </ToggleTextInfo>

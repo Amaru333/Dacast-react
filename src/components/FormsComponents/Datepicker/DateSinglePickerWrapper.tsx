@@ -13,7 +13,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; className
 
     React.useEffect(() => {
         if (props.callback && date) {
-            props.callback(date.toString())
+            props.callback(date.toString(), date.format("X"))
         }
     }, [date])
 
