@@ -84,7 +84,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                 props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
-                        <Input className='col col-3 pl1' type='time' label='Start Time' />
+                        <Input defaultValue={props.stepperData.firststep.startTime} className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
                     : null
             }
@@ -239,8 +239,8 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 {renderContentsList()}
             </ContainerHalfSelector>
             <div className="col col-2" style={{ marginTop: 180 }}>
-                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle fontSize="small">chevron_right</IconStyle></ArrowButton>
-                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle fontSize="small">chevron_left</IconStyle></ArrowButton>
+                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
+                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">

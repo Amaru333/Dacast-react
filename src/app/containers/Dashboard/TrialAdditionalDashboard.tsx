@@ -16,6 +16,7 @@ interface ItemTodo { isChecked: boolean; name: string; href: string }
 export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
 
     const [supportWidgetOpen, setSupportWidgetOpen] = React.useState<boolean>(true)
+    const [trialFAQWidgetOpen, setTrialFAQWidgetOpen] = React.useState<boolean>(true)
 
     let history = useHistory()
 
@@ -107,17 +108,21 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     <Button className="col-12 mb1" sizeButton="large" typeButton='secondary'> Upload a Video </Button>
                     <Button className="col-12" sizeButton="large" typeButton='secondary'> Create a Live Stream </Button>
                 </div>
-                <WidgetElement className={classItemFullWidthContainer}>
+                {
+                    trialFAQWidgetOpen ? 
+                    <WidgetElement className={classItemFullWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
-                        <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto">close</IconStyle>
+                        <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setTrialFAQWidgetOpen(false)}>close</IconStyle>
                     </WidgetHeader>
                     <div className="justify-between flex row flex-start">
                         <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
                         <img src={faqIcon} />
                     </div>
                     <Button className="col col-4" sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
-                </WidgetElement>
+                </WidgetElement> : null
+                }
+                
                 { supportWidgetOpen ? 
                     <div className={classItemFullWidthContainer}>
                     <SupportCard className="dashboardCard col col-12">

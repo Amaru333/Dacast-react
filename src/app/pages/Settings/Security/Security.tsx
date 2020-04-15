@@ -147,16 +147,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo ?
                                 <>
                                     <div className='col col-12 flex items-center'>
-                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.videoScheduling.startDate ? 'Set Date and Time' : 'Always' } list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
+                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.videoScheduling.startDate ? 'Set Date and Time' : 'Always' } list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
 
                                         {
                                             startDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                                        className='col col-3 md-col-2 px1 mt1'
+                                                        className='col col-3 md-col-2 mt2'
                                                         disabled={false}
                                                         id='startTime'
                                                         pattern="[0-9]{2}:[0-9]{2}"
@@ -168,16 +168,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     </div>
 
                                     <div className='col col-12 flex items-center'>
-                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr1' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.videoScheduling.endDate ? 'Set Date and Time' : 'Forever' } list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setEndDateTime(value) }} />
+                                        <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.videoScheduling.endDate ? 'Set Date and Time' : 'Forever' } list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setEndDateTime(value) }} />
 
                                         {
                                             endDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' />
                                                     <Input
                                                         type='time'
                                                         defaultValue={props.securityDetails.passwordProtectedVideo.promptTime ? props.securityDetails.passwordProtectedVideo.promptTime : '00:00:00'}
-                                                        className='col col-3 md-col-2 mt1 px1'
+                                                        className='col col-3 md-col-2 mt2'
                                                         disabled={false}
                                                         id='endTime'
                                                         pattern="[0-9]{2}:[0-9]{2}"

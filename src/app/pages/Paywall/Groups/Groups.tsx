@@ -45,7 +45,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         startMethod: 'Upon Purchase',
         timezone: null,
         startDate: null,
-        startTime: null
+        startTime: '00:00'
     
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);

@@ -193,7 +193,7 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
     return (
         <div>
             <Card>
-                <Text size={20} weight='reg'>New Withdrawl Method</Text>
+                <Text size={20} weight='reg'>New Withdrawal Method</Text>
                 <div className="mt2">
                     <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
                 </div>

@@ -145,7 +145,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
                 <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
-                <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection)}}>delete</IconStyle><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
+                <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
             return [{data:[
@@ -245,7 +245,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 </Elements>
             </RecurlyProvider>
             <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} />
+                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection : null}/>
             </Modal>
             <CustomStepper 
                 opened={extrasModalOpened}
@@ -261,7 +261,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
             />
-            <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} title="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened}>
+            <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} title="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
                     <div className="mt1">
                         <Text size={14} weight="reg">This means you won’t have any protection if you run out of data or stuff</Text>

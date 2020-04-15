@@ -28,18 +28,18 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                 <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
                 <div className="flex">
                     <div>
-                        <ActionIcon id={"tooltip" + props.dataName}>
+                        <ActionIcon id={"tooltip" + props.title}>
                             <IconStyle >info_outlined</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"tooltip" + props.dataName}>{props.infoText}</Tooltip>
+                        <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip>
                     </div>
                     { !props.realTime ? 
-                        <ActionIcon id={"download" + props.dataName}>
+                        <ActionIcon id={"download" + props.title}>
                             <IconStyle onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle>
                         </ActionIcon>
                         : null}   
                 </div>
-                <Tooltip target={"download" + props.dataName}>lorem ipsum</Tooltip>
+                <Tooltip target={"download" + props.title}>lorem ipsum</Tooltip>
             </AnalyticsCardHeader>
             {props.children}
         </AnalyticsCardStyle>

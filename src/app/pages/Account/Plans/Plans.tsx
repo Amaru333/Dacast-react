@@ -178,7 +178,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                     
                                     
@@ -211,12 +211,12 @@ export const PlansPage = (props: PlansContainerProps) => {
                                         <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;total data</Text>
                                     </div>                
                                     <Text className={textClassName} size={16} weight='reg' color='gray-1'>10 GB</Text>
-                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                     <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                    <Text className={textClassName} size={14} weight='reg' color='gray-1'>Add-On</Text>
+                                    <Text className={textClassName} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                     
                                     <div className='flex flex-column absolute bottom-0'>
                                         { currentPlan === 'scale' ? 

@@ -3,6 +3,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { PlaybackProtection } from '../../../redux-flow/store/Account/Billing';
 
 const ProtectionModalTableData = [
     {
@@ -19,8 +20,15 @@ const ProtectionModalTableData = [
     } 
 ]
 
-export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function}) => {
+export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function, playbackProtection: PlaybackProtection}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
+
+    console.log(props.playbackProtection)
+
+    React.useEffect(() => {
+        props.playbackProtection === null || props.playbackProtection.amount === null ? 
+        setSelectedValue('Select') : setSelectedValue(props.playbackProtection.amount)
+    }, [props.playbackProtection])
 
     const protectionModalTableBodyElement = () => {
         return ProtectionModalTableData.map((value, key) => {
@@ -48,6 +56,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}
                     id='amountDropdown'
+                    dropdownDefaultSelect={props.playbackProtection === null || props.playbackProtection.amount === null ? "Select" : props.playbackProtection.amount}
                     callback={setSelectedValue}
                         
                 />

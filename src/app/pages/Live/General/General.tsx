@@ -101,7 +101,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <div className={ClassHalfXsFullMd + "flex flex-column"}>
+                    <div className={"col col-3 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
