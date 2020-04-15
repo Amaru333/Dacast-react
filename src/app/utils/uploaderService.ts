@@ -1,177 +1,237 @@
 const BASE_PATH = "https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev"
-export const MIN_CHUNK_SIZE = 5000000 //
-export const FILE_CHUNK_SIZE = 10000000 // 10MB
-const MAX_ULRS_REQUEST = 100
-const MAX_MULTI_THREADING_REQUESTS = 5
 import axios, { AxiosResponse } from 'axios'
 import { isTokenExpired, addTokenToHeader } from './token'
 
-const CancelToken = axios.CancelToken;
-export let cancel: any
-let remainingUploads: any = {}
+export class UploadObject {
 
-const  completeMultipart = async (uploadId: string, allEtags: any, s3Url: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    let response = await axios.post(`${BASE_PATH}/uploads/complete-multipart`,
-    {
-        'orderedETags': allEtags.sort((a, b) => (a.index > b.index) ? 1 : -1).map((ETag: {'index': number, 'etag': string}) => {return ETag.etag}),
-        's3Path': s3Url,
-        'uploaderID': uploadId
-    },
-    {
-        headers: {
-            'Authorization': token
+    constructor(
+        file: File, 
+        uploadUrlBatchSize: number, 
+        maxMultiThreadingRequests: number, 
+        fileChunkSize: number, 
+        onProgressUpdate: (percent: number) => void, 
+        onError: (error: any) => void
+        ) {
+            this.file = file
+            this.uploadUrlBatchSize = uploadUrlBatchSize
+            this.maxMultiThreadingRequests = maxMultiThreadingRequests
+            this.fileChunkSize = fileChunkSize
+            this.onProgressUpdate = onProgressUpdate
+            this.onError = onError
+            this.requestBatch = this.requestBatch.bind(this)
+            this.uploadPart = this.uploadPart.bind(this)
+            this.getUploadUrl = this.getUploadUrl.bind(this)
         }
-    })
 
-    return response
+    private file: File
+    private uploadUrlBatchSize: number
+    private maxMultiThreadingRequests: number
+    private fileChunkSize: number
+    private onProgressUpdate: (percent: number) => void
+    private onError: (error: any) => void
+    uploadId: string
+    urlS3: string
+    ETags: {partNumber: number; etag: string}[] = []
+    uploadUrls: string[] = []
+    hasStarted: boolean = false
+    execCancel: () => {}
+    token: any
+    totalUploadedBytes: number = 0
+    nextStart: number = 1
+    onGoingUploads: {[partNumber: number]: true} = {}
 
-}
+    public getFileName() {
+        return this.file.name
+    }
 
-const initMultiPart = async (fileName: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    let res = await axios.post(`${BASE_PATH}/uploads/init-multipart`, {'fileName': fileName,'vodStorageID': userId}, 
-    {
-        headers: {
-            'Authorization': token
+    public async startUpload() {
+        if(this.hasStarted) {
+            throw new Error('Upload has alredy started.')
+        }        
+        console.log('starting upload')
+        this.hasStarted = true
+        this.createCancelToken()
+        if(this.fileChunkSize >= this.file.size) {
+            this.singlePartUpload()
+        } else {
+            await this.initUpload()
+            this.runUpload()
         }
-    })
-    return res.data.data
-}
+    }
 
-const retrieveChunkPresignedURL = async (uploadId: string, fromPart: number, toPart: number, urlS3: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    let res = await axios.post(`${BASE_PATH}/uploads/signatures/multipart`, 
-    {
-        's3Path': urlS3,
-        'uploaderID': uploadId,
-        'fromPartNumber': fromPart,
-        'toPartNumber': toPart
-    },
-    {
-        headers: {       
-            'Authorization': token
+    public pauseUpload() {
+        this.execCancel()
+        this.createCancelToken()
+    }
+
+    public resumeUpload() {
+        this.nextStart = parseInt(Object.keys(this.onGoingUploads)[Object.keys(this.onGoingUploads).length - 1]) + 1
+        this.runUpload()
+    }
+
+    private createCancelToken() {
+        this.token = new axios.CancelToken(function executor(c: any) {
+            this.execCancel = c;
+        }.bind(this))
+    }
+
+    private async initUpload() {
+        console.log('init upload for file ', this.file.name)
+        await isTokenExpired()
+        let {token, vodStorageId} = addTokenToHeader();
+        let res = await axios.post(`${BASE_PATH}/uploads/init-multipart`, 
+        {
+            fileName: this.file.name,
+            vodStorageID: vodStorageId
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+        this.uploadId = res.data.data.uploaderID
+        this.urlS3 = res.data.data.s3Path
+    }
+
+    private async getUploadUrl(partNumber: number): Promise<string> {
+        if(partNumber >= Math.ceil(this.file.size / this.fileChunkSize)) {
+            return null
         }
-    })
+        if((partNumber - 1) in this.uploadUrls) {
+            return this.uploadUrls[partNumber - 1]
+        } 
+        let newUrlBatch = await this.retrieveChunkPresignedURL(this.uploadUrls.length, this.uploadUrls.length + this.uploadUrlBatchSize)
+        this.uploadUrls.push(...newUrlBatch)
+        return await this.getUploadUrl(partNumber)
 
-    return res.data.data.presignedURLs
+    }
+    private retrieveSinglePartURL = async () => {
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        let response = await axios.get(`${BASE_PATH}/uploads/signatures/singlepart/`, 
+        {
+            headers: {      
+                'Authorization': token
+            }
+        })      
+        return response.data.data  
+    }
+
+    private singlePartUpload = async () => {
+        let signedSinglePartURL = await this.retrieveSinglePartURL()
+        await axios.put(JSON.parse(signedSinglePartURL).url, {
+            cancelToken: this.token,
+            onUploadProgress: (event: ProgressEvent) => {
+                this.totalUploadedBytes += event.loaded
+                this.onProgressUpdate(this.totalUploadedBytes / this.file.size * 100)
+            },
+        })
+    }
+
+    private retrieveChunkPresignedURL = async (fromPart: number, toPart: number): Promise<string[]> => {
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        let res = await axios.post(`${BASE_PATH}/uploads/signatures/multipart`, 
+        {
+            s3Path: this.urlS3,
+            uploaderID: this.uploadId,
+            fromPartNumber: fromPart + 1,
+            toPartNumber: toPart
+        },
+        {
+            headers: {       
+                Authorization: token
+            }
+        })
+    
+        return res.data.data.presignedURLs
+    }
+
+    private async uploadPart(partNumber: number): Promise<void> {
+        let start = (partNumber - 1) * this.fileChunkSize
+        let end = partNumber * this.fileChunkSize        
+        let uploadedBytes = 0
+        let chunk = (end < this.file.size) ? this.file.slice(start, end) : this.file.slice(start)
+        let uploadUrl = await this.getUploadUrl(partNumber)
+        console.log(`upload url ${uploadUrl} for part ${partNumber}`)
+        this.onGoingUploads[partNumber] = true
+        return uploadUrl ? await axios.put(uploadUrl, chunk, {
+            cancelToken: this.token,
+            onUploadProgress: (event: ProgressEvent) => {
+                this.totalUploadedBytes += event.loaded - uploadedBytes
+                uploadedBytes = event.loaded
+                this.onProgressUpdate(this.totalUploadedBytes / this.file.size * 100)
+            },
+        }).then((response: AxiosResponse<any>) => {
+            let etagStr: string = response.headers['etag']
+            etagStr = etagStr.substring(1, etagStr.length - 1)
+            this.ETags.push({
+                partNumber: partNumber, 
+                etag: etagStr
+            })
+            delete this.onGoingUploads[partNumber]
+            console.log(this.onGoingUploads)
+        }).catch((error: any) => {
+            if (!axios.isCancel(error)) {
+                this.onError(error)          
+            }
+            this.onError('Cancel')  
+            throw new Error(error)
+        })
+        : null
+    }
+
+    private async requestBatch(partNumbers: number[]): Promise<void> {   
+        let batchArray = partNumbers
+        let i = 0 
+        while(i < partNumbers.length) {
+            let batch = batchArray.slice(i, i + this.maxMultiThreadingRequests)
+            await axios.all(batch.map(this.uploadPart))
+            i += this.maxMultiThreadingRequests
+        }
+    }
+
+    private async completeUpload() {
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        await axios.post(`${BASE_PATH}/uploads/complete-multipart`,
+        {
+            orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
+            s3Path: this.urlS3,
+            uploaderID: this.uploadId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+        this.onProgressUpdate(100)
+    }
+
+    private async runUpload() {
+        const nbChunks = Math.ceil(this.file.size / this.fileChunkSize)
+        while(this.nextStart < nbChunks) {
+            let nextParts: number[] = []
+            if(Object.keys(this.onGoingUploads).length > 0) {
+                nextParts.push(...Object.keys(this.onGoingUploads).map(v => parseInt(v)))
+            }          
+            nextParts.push(...Array.from({length: this.uploadUrlBatchSize}).map((_, i) => i + this.nextStart))
+            this.nextStart += this.uploadUrlBatchSize
+            console.log('next parts ', nextParts)
+            await this.requestBatch(nextParts)
+        }
+        await this.completeUpload()
+    }
+
 }
 
 axios.interceptors.response.use(null, (error) => {
     if (error.config && error.response) {
+        // TODO: Count nb of retry
+        // return axios.request(error.config)
     }
     return Promise.reject(error);
   }
 )
-
-const requestsBatch = async (uploadId: string, batchStart: number, batchEnd: number, urlS3: string, file: File, Etags: any, nbChunks: number, updateItem: Function, uploadUrls?: string[]) => {
-    let urls = uploadUrls ? uploadUrls : await retrieveChunkPresignedURL(uploadId, batchStart, batchEnd, urlS3)
-    let token = new CancelToken(function executor(c) {
-        cancel = c;
-    })
-    
-    for(let index = batchStart; index < batchEnd; index += MAX_MULTI_THREADING_REQUESTS) {
-        console.log(`starting batch with startValue ${index} and end value ${batchEnd}`)
-        let multiThreadRequests = Array.from({length: MAX_MULTI_THREADING_REQUESTS})
-        let test = multiThreadRequests.map((v, i) => {
-            let start = ((index + i) - 1) * FILE_CHUNK_SIZE
-            let end = (index + i) * FILE_CHUNK_SIZE
-            if((index + i) <= urls.length) {
-                let chunk = (index + i < nbChunks) ? file.slice(start, end) : file.slice(start)
-                return axios.put(urls[index + i - 1], chunk, {
-                    cancelToken: token,
-                    onUploadProgress: (event: ProgressEvent) => {
-                        let bytesUploaded = FILE_CHUNK_SIZE * ((index + i) - 1)
-                        updateItem(event, bytesUploaded, file.size)
-                    },
-                }).then((response: AxiosResponse<any>) => {
-                    let etagStr = response.headers['etag']
-                    etagStr = etagStr.substring(1, etagStr.length - 1)
-                    let etagObject = {'index': index + i, 'etag': etagStr}
-                    Etags.push(etagObject)
-                }).catch((error: any) => {
-                    index = nbChunks;
-                    if (axios.isCancel(error)) {
-                        console.log('post Request canceled');
-                        remainingUploads = {uploadUrls: urls, ETags: Etags, uploaderID: uploadId, s3Path: urlS3}
-                        
-                      }
-                    throw new Error(error)
-                })
-            }
-        })
-        
-        await axios.all(test)
-    }
-}
-
-const multiPartUploadRefactored = async (file: File, updateItem: Function, uploadUrls?: string[], eTags?: any, uploaderID?: string, s3Path?: string) => {
-    let Etags: any = eTags ? eTags : []
-    let uploaderId = uploaderID ? uploaderID : null
-    let s3path = s3Path ? s3Path : null
-    if(!uploaderId) {
-        var res = await initMultiPart(file.name);
-        uploaderId = res.uploaderID
-        s3path = res.s3Path
-    }
-    const NUM_CHUNKS = Math.ceil(file.size / FILE_CHUNK_SIZE)
-    let currentBatch = eTags ? eTags.length + 1 : 1
-    while(currentBatch < NUM_CHUNKS) {
-        
-        if(currentBatch + MAX_ULRS_REQUEST < NUM_CHUNKS) {
-            await requestsBatch(uploaderId, currentBatch, currentBatch + MAX_ULRS_REQUEST, s3path, file, Etags, NUM_CHUNKS, updateItem, uploadUrls)
-        } else {
-            await requestsBatch(uploaderId, currentBatch, NUM_CHUNKS, s3path, file, Etags, NUM_CHUNKS, updateItem, uploadUrls)
-        }
-
-        currentBatch += MAX_ULRS_REQUEST
-    }
-    await completeMultipart(uploaderId, Etags, s3path)
-}
-
-const retrieveSinglePartURL = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    let response = await axios.get(`${BASE_PATH}/uploads/signatures/singlepart/`, 
-    {
-        headers: {
-        
-            'Authorization': token
-        }
-    })
-    
-    return response.data.data
-
-}
-
-const singlePartUpload = async (file: File, updateItem: Function) => {
-
-    let signedSinglePartURL = await retrieveSinglePartURL()
-    await axios.put(JSON.parse(signedSinglePartURL).url, file, {
-        cancelToken: new CancelToken(function executor(c) {
-            cancel = c;
-        }),
-        onUploadProgress: (event) => updateItem(event)
-    })
-}
-export const upload = async (file: File, updateItem: Function, setRemainingUploads?: Function, uploadUrls?: string[], eTags?: string[], uploaderID?: string, s3Path?: string) => {
-
-    try {
-
-        if (file.size < MIN_CHUNK_SIZE) {
-            await singlePartUpload(file, updateItem)
-        }
-        else {
-            await multiPartUploadRefactored(file, updateItem, uploadUrls, eTags, uploaderID, s3Path)
-        }
-    } catch (error) {
-        setRemainingUploads(remainingUploads)
-        throw new Error(error);
-    }
-}
-
 
 

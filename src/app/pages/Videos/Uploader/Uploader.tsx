@@ -5,31 +5,32 @@ import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
-import { upload, MIN_CHUNK_SIZE, cancel } from '../../../utils/uploaderService';
+import { UploadObject } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
+
 export const UploaderPage = (props: UploaderProps) => {
 
+    const FILE_CHUNK_SIZE = 10000000 // 10MB
+    const MAX_REQUEST_PER_BATCH = 100
+    const NB_CONCURRENT_REQUESTS = 5
+
+
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
-    const [remainingUploads, setRemainingUploads] = React.useState<{uploadUrls: string[], ETags: any, uploaderID: string, s3Path: string}>({uploadUrls: null, ETags: null, uploaderID: null, s3Path: null})
     const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
     const [File, setFile] = React.useState<File>(null)
+    const [currentUpload, setCurrentUpload] = React.useState<any>(null)
 
-    React.useEffect(() => {
-        console.log(remainingUploads)
-    }, [remainingUploads])
-
-    const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
+    const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
-            const progressPerc = Math.round(100 * event.loaded / event.total);
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
             elapsedtime = elapsedtime / 1000;
-            var eta = ((event.total / event.loaded) * elapsedtime) - elapsedtime;
+            var eta = ((percent) * elapsedtime) - elapsedtime;
             if(eta > 120) {
                 eta = Math.round(eta / 60);
                 var etaUnit = 'minutes'
@@ -41,69 +42,12 @@ export const UploaderPage = (props: UploaderProps) => {
                 [index]:
                 {
                     ...currentList[index],
-                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                    progress: progressPerc,
+                    currentState: percent === 100 ? "completed" : currentList[index].currentState,
+                    progress: percent,
                     timeRemaining: {num: eta, unit: etaUnit}
                 }
             })
         });
-    }
-
-    const updateItemMultiPart = (event: ProgressEvent, name: string, startTime: number, fileSize: number, bytesUploaded: number) => {
-        setUploadingList((currentList: UploaderItemProps[]) => {
-            const index = currentList.findIndex(element => element.name === name);
-            const bytesProgress = event.loaded + bytesUploaded
-            const progressPerc = Math.round((bytesProgress / fileSize) * 100);
-            //Calcul ETA
-            var now = (new Date()).getTime();
-            var elapsedtime = now - startTime;
-            elapsedtime = elapsedtime / 1000;
-            var eta = ((fileSize / bytesProgress) * elapsedtime) - elapsedtime;
-            if(eta > 120) {
-                eta = Math.round(eta / 60);
-                var etaUnit = 'minutes'
-            } else {
-                eta = Math.round(eta);
-                var etaUnit= ' seconds';
-            }
-            if(bytesProgress === fileSize) {
-                props.postVodDemo()
-            };
-            return Object.assign([...currentList], {
-                [index]:
-                {
-                    ...currentList[index],
-                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                    progress: progressPerc > currentList[index].progress ? progressPerc : currentList[index].progress,
-                    timeRemaining: {num: eta, unit: etaUnit}
-                }
-            })
-        });
-    }
-    const startMultiPartUpload = (file: File, startTime: number) => {
-        upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-            updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
-        }, setRemainingUploads, remainingUploads.uploadUrls, remainingUploads.ETags, remainingUploads.uploaderID, remainingUploads.s3Path).then(() => {
-            setUploadingList((currentList: UploaderItemProps[]) => {
-                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "completed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                return updatedList;
-            })
-        })
-            .catch((err) => {
-                console.log(err)
-                if(err.message.indexOf('Operation canceled by the user.') > -1) {
-                    setUploadingList((currentList: UploaderItemProps[]) => {
-                        const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
-                        return updatedList;
-                    })
-                } else {
-                    setUploadingList((currentList: UploaderItemProps[]) => {
-                        const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                        return updatedList;
-                    })
-                }
-
-            });
     }
 
     const handleDrop = (fileList: FileList) => {
@@ -113,20 +57,30 @@ export const UploaderPage = (props: UploaderProps) => {
             if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
                 var startTime = (new Date()).getTime();
                 setFile(file)
-                if (file.size < MIN_CHUNK_SIZE) {
-                    upload(file,(event: ProgressEvent) => {
-                        updateItem(event, file.name, startTime);
-                    })
-                        .catch(err => {
+                let newUpload = new UploadObject(
+                    file, 
+                    MAX_REQUEST_PER_BATCH, 
+                    NB_CONCURRENT_REQUESTS, 
+                    FILE_CHUNK_SIZE, 
+                    (percent: number) => {updateItem(percent, file.name, startTime)}, 
+                    (err: any) => {
+                        console.log(err)
+                        if(err === 'Cancel') {
+                            setUploadingList((currentList: UploaderItemProps[]) => {
+                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
+                                return updatedList;
+                            })
+                        } else {
                             setUploadingList((currentList: UploaderItemProps[]) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;
                             })
-                        });
-                }
-                else {
-                    startMultiPartUpload(file, startTime)
-                }
+                        }
+                    }
+                )
+                newUpload.startUpload()
+                setCurrentUpload(newUpload)
+
                 setUploadingList((currentList: UploaderItemProps[]) => {
                     return [
                         ...currentList,
@@ -198,8 +152,7 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleResumeAll = () => {
-        var startTime = (new Date()).getTime();
-        startMultiPartUpload(File, startTime)
+        currentUpload.resumeUpload()
         setItemsPaused(!itemsPaused)
         setUploadingList((currentList: UploaderItemProps[]) => {
             const updatedList = currentList.map((value, key) => { if (value.name === File.name) { value.currentState = "progress" } return value })
@@ -262,7 +215,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     itemsPaused ?
                         <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume All</Button>
                         :
-                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {cancel('Operation canceled by the user.');setItemsPaused(!itemsPaused)}} >Pause All</Button>
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {currentUpload.pauseUpload();setItemsPaused(!itemsPaused)}} >Pause All</Button>
 
                 }
             </div>
