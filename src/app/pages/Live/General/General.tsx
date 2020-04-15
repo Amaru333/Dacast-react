@@ -92,6 +92,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <InputTags
                         className={ClassHalfXsFullMd + "mb2"}
                         label="Folders"
+                        greyBackground
                         disabled
                         defaultTags={props.liveDetails.folder}
                     />
@@ -149,26 +150,6 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             </ToggleTextInfo>
                         </div>
                         <div className="mb2 clearfix">
-                            <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
-                            <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
-                            </ToggleTextInfo>
-                            {
-                                newLiveDetails.rewind ?
-                                    <div className="col col-12 mb2">
-                                        <Bubble type='warning' className='my2'>
-                                            <BubbleContent>
-                                                <Text weight="reg" size={16}>
-                                                    30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. 
-                                                </Text>
-                                            </BubbleContent>
-                                        </Bubble>
-                                        <Button sizeButton="xs" typeButton="secondary" onClick={() => {console.log("free the niples")}}>Purge Live Stream</Button>
-                                    </div> :
-                                    null
-                            }
-                        </div>
-                        <div className="mb2 clearfix">
                             <Toggle
                                 label="Live Stream Start Countdown"
                                 onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle); setNewLiveDetails({ ...newLiveDetails, countdown: { ...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled } }) }}
@@ -180,7 +161,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
                             {
                                 liveStreamCountdownToggle ?
-                                    <div className="col col-12 mb2">
+                                    <div className="col col-12">
                                         <div
                                             className='col col-12 sm-col-4 pr1 mt1'
                                         >
@@ -209,6 +190,26 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                                         />
                                     </div> : null
+                            }
+                        </div>
+                        <div className="mb2 clearfix">
+                            <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
+                            <ToggleTextInfo className="mt1">
+                                <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
+                            </ToggleTextInfo>
+                            {
+                                newLiveDetails.rewind ?
+                                    <div className="col col-12 mb2">
+                                        <Bubble type='warning' className='my2'>
+                                            <BubbleContent>
+                                                <Text weight="reg" size={16}>
+                                                    30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. 
+                                                </Text>
+                                            </BubbleContent>
+                                        </Bubble>
+                                        <Button sizeButton="xs" typeButton="secondary" onClick={() => {console.log("free the niples")}}>Purge Live Stream</Button>
+                                    </div> :
+                                    null
                             }
                         </div>
 

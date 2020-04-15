@@ -158,6 +158,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             className="col col-6"
                             label="Folders"
                             disabled
+                            greyBackground
                             defaultTags={props.vodDetails.folder} 
                         />
 

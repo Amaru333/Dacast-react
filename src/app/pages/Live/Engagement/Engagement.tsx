@@ -23,7 +23,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
     const emptyAd: Ad = { 
         id: "-1",
-        placement: "",
+        placement: "Pre-roll",
         position: "",
         url: "test"
     }
