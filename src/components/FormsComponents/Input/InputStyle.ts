@@ -261,7 +261,7 @@ export const TagsContainer = styled.div<{noBorder: boolean}>`
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
-    background-color: inherit;
+    background-color: ${props => props.theme.colors['gray-10']};
 `
 
 export const TagsInputStyle = styled(InputStyle)`
