@@ -25,12 +25,11 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             let returnedString: string[] = []
             Object.keys(checkedContinents).map((continent) => {
                 if(checkedContinents[continent].checked === 'checked') {
-                    returnedString.push(continent)
-                }
-                else if(checkedContinents[continent].checked === 'undeterminate') {
+                    returnedString.push('AU')
+                } else if(checkedContinents[continent].checked === 'undeterminate') {
                     Object.keys(checkedContinents[continent].countries).map((country) => {
                         if(checkedContinents[continent].countries[country].isChecked) {
-                            returnedString.push(country);
+                            returnedString.push(checkedContinents[continent].countries[country].key);
                         }
                     })
                 }
@@ -109,7 +108,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
     React.useEffect(() => {
 
         let initCountriesList: ContinentListType = {...Object.keys(continents).reduce((reduced, continent) => {
-            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked'}}
+            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked', key: continent}}
         }, {})}
 
         initCountriesList = Object.keys(initCountriesList).reduce((reduced, continent) => {
@@ -120,7 +119,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                         countries: Object.keys(countries).reduce((reduced, country) => {
                             if(continents[countries[country].continent] === continent) {
                                 return {        
-                                    ...reduced, [countries[country].name]: {isChecked: true, isFiltered: false}
+                                    ...reduced, [countries[country].name]: {isChecked: true, isFiltered: false, key: country}
                                 }
                             }
                             return {...reduced}

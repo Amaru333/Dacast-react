@@ -5,15 +5,17 @@ import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SecurityPage } from '../../pages/Settings/Security/Security';
 import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../redux-flow/store/Settings/Security/types';
-import { getSettingsSecurityOptionsAction, saveSettingsSecurityOptionsAction, saveGeoRestrictionGroupAction, saveDomainControlGroupAction, deleteDomainControlGroupAction, deleteGeoRestrictionGroupAction, Action } from '../../redux-flow/store/Settings/Security';
+import { getSettingsSecurityOptionsAction, saveSettingsSecurityOptionsAction, saveGeoRestrictionGroupAction, saveDomainControlGroupAction, deleteDomainControlGroupAction, deleteGeoRestrictionGroupAction, Action, createGeoRestrictionGroupAction, createDomainControlGroupAction } from '../../redux-flow/store/Settings/Security';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SecurityComponentProps {
     securityDetails: SettingsSecurityDetails;
     getSettingsSecurityOptions: Function;
     saveSettingsSecurityOptions: Function;
+    createGeoRestrictionGroup: Function;
     saveGeoRestrictionGroup: Function;
     deleteGeoRestrictionGroup: Function;
+    createDomainControlGroup: Function;
     saveDomainControlGroup: Function;
     deleteDomainControlGroup: Function;
 }
@@ -46,11 +48,17 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveSettingsSecurityOptions: (data: SettingsSecurityDetails) => {
             dispatch(saveSettingsSecurityOptionsAction(data));
         },
+        createGeoRestrictionGroup: (data: GeoRestriction) => {
+            dispatch(createGeoRestrictionGroupAction(data));
+        },
         saveGeoRestrictionGroup: (data: GeoRestriction) => {
             dispatch(saveGeoRestrictionGroupAction(data));
         },
         deleteGeoRestrictionGroup: (data: GeoRestriction) => {
             dispatch(deleteGeoRestrictionGroupAction(data));
+        },
+        createDomainControlGroup: (data: DomainControl) => {
+            dispatch(createDomainControlGroupAction(data));
         },
         saveDomainControlGroup: (data: DomainControl) => {
             dispatch(saveDomainControlGroupAction(data));

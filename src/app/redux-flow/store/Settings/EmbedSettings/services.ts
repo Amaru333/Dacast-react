@@ -11,7 +11,8 @@ const getEmbedSettingsOptionsService = async () => {
     return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/embed',
         {headers: {
             'Authorization': token
-        }})}
+        }})
+}
 
 const saveEmbedSettingsOptionsService = async(data: EmbedSettingsOptionType) => {
     await isTokenExpired()
@@ -21,7 +22,8 @@ const saveEmbedSettingsOptionsService = async(data: EmbedSettingsOptionType) => 
         {headers: {
             'Authorization': token
         }}
-    )}
+    )
+}
 
 export const SettingsServices = {
     getEmbedSettingsOptionsService,
