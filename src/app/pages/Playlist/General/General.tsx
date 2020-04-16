@@ -93,6 +93,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         className="col col-6 pr2 pt2"
                         label="Description"
                         value={newPlaylistDetails.description}
+                        type="textarea"
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
                     />
                     <div className="col col-3 pt2 flex flex-column">
