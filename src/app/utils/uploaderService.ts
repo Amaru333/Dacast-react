@@ -64,10 +64,13 @@ export class UploadObject {
         this.createCancelToken()
     }
 
-    public resumeUpload() {
+    public async resumeUpload() {
         if(this.fileChunkSize >= this.file.size) {
             this.singlePartUpload()
         } else {
+            if(!this.uploadId || !this.urlS3) {
+                await this.initUpload()
+            }
             this.nextStart = parseInt(Object.keys(this.onGoingUploads)[Object.keys(this.onGoingUploads).length - 1]) + 1
             this.runUpload()
         }
