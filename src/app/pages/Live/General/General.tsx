@@ -97,6 +97,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
+                        type="textarea"
                         label="Description"
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}

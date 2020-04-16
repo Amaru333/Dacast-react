@@ -85,7 +85,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                         }
                                     </Text>
                                 </div>
-                                <Button className='right flex' sizeButton='xs' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle>keyboard_arrow_left</IconStyle><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                                <Button className='right flex items-center' sizeButton='xs' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                             </TitleSection>
                             {
                                 showAdvancedPanel ?

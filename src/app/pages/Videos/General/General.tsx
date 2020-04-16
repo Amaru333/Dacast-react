@@ -162,6 +162,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
                         <Input
                             className="col col-6 pr2 pt2"
+                            type="textarea"
                             label="Description"
                             value={VodDetails.description}
                             onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
