@@ -298,7 +298,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </AdvancedLinksContainer>
                     </div>
 
-                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
+                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
                         <form id="addSubtitlesForm"
                             onSubmit={event => { event.preventDefault(); handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle) }}>
                             <ModalContent>

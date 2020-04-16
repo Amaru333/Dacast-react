@@ -237,14 +237,14 @@ export const BillingPage = (props: BillingComponentProps) => {
                 <Elements>
                     <Modal 
                         hasClose={false} 
-                        title={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
+                        modalTitle={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaypaylModalOpened(!paypalModalOpened)} size='large' 
                         opened={paypalModalOpened}>
                         <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>
-            <Modal hasClose={false} title='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+            <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection : null}/>
             </Modal>
             <CustomStepper 
@@ -261,7 +261,7 @@ export const BillingPage = (props: BillingComponentProps) => {
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
             />
-            <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} title="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
+            <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
                     <div className="mt1">
                         <Text size={14} weight="reg">This means you won’t have any protection if you run out of data or stuff</Text>

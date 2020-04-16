@@ -60,7 +60,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     }
 
     return (
-        <Modal size="large" title={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>

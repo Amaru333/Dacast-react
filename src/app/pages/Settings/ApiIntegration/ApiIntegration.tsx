@@ -272,38 +272,38 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 <ButtonStyle typeButton="primary" onClick={() => alert("Post GA Tag")}>Save</ButtonStyle>
                 <ButtonStyle onClick={() => setCurrentStateGa(originalStateGa)} typeButton="secondary">Cancel</ButtonStyle>
             </ButtonContainer>
-            <Modal title="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
+            <Modal modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
             </Modal>
             {selectedEditApiKey ?
-                <Modal title="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
+                <Modal modalTitle="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
                     <ApiKeysForm item={selectedEditApiKey} toggle={setPutApiKeyModalOpened} />
                 </Modal> :
                 null
             }
-            <Modal title="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
+            <Modal modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
                 <EncoderKeysForm toggle={setPostEncoderKeyModalOpened} />
             </Modal>
             {selectedEditEncoderKey ?
-                <Modal title="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} >
+                <Modal modalTitle="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} >
                     <EncoderKeysForm item={selectedEditEncoderKey} toggle={setPutEncoderKeyModalOpened} />
                 </Modal> :
                 null
             }
-            <Modal title="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} >
+            <Modal modalTitle="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} >
                 <WebHooksForm toggle={setPostWebHooksModalOpened} />
             </Modal>
             {selectedEditWebHooks ?
-                <Modal title="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
+                <Modal modalTitle="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
                     <WebHooksForm item={selectedEditWebHooks} toggle={setPutWebHooksModalOpened} />
                 </Modal> :
                 null
             }
-            <Modal title="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
+            <Modal modalTitle="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
                 <S3KeysForm toggle={setPostS3KeysModalOpened} />
             </Modal>
             {selectedEditS3Keys ?
-                <Modal title="Edit S3 Key" toggle={() => setPutS3KeysModalOpened(!putS3KeysModalOpened)} size="small" opened={putS3KeysModalOpened} >
+                <Modal modalTitle="Edit S3 Key" toggle={() => setPutS3KeysModalOpened(!putS3KeysModalOpened)} size="small" opened={putS3KeysModalOpened} >
                     <S3KeysForm item={selectedEditS3Keys} toggle={setPutS3KeysModalOpened} />
                 </Modal> :
                 null

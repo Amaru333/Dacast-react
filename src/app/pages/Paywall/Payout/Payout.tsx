@@ -172,7 +172,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         : <Table id='payoutWithdrawalsTable' headerBackgroundColor="gray-10" header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
                 }
             </Card>
-            <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
+            <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 <WithdrawalModal action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
             </Modal>
         </div>

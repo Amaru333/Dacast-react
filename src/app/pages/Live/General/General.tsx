@@ -322,7 +322,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
-                <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
+                <Modal size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
                         <div className="col col-12">
                             <Bubble type='info' className='my2'>

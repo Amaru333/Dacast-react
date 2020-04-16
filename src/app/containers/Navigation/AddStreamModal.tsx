@@ -24,7 +24,7 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean; priv
 
 
     return (
-        <Modal size="large" title="Create Live Stream" toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <StreamTypeSelectorContainer className="flex col col-12 mt25">
 
