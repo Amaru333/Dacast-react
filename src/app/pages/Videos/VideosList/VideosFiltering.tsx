@@ -41,8 +41,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
         },
         afterDate: false,
         beforedate: false,
-        sizeStart: false,
-        sizeEnd: false
+        sizeStart: '',
+        sizeEnd: ''
     }
 
     const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
@@ -63,6 +63,12 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
     React.useEffect(() => {
         checkActiveFilter();
     }, [filteringState])
+
+    const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key:string) => {
+        let value = event.currentTarget.value
+        setFilteringState(prevState => { return { ...prevState, [key]: value } })
+
+    }
 
 
     return (
@@ -115,8 +121,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                     <div className="mb3" id="vodFilterSize">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                         <div className="mxn2 clearfix">
-                            <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: event.currentTarget.value } })} />
-                            <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: event.currentTarget.value } })} />
+                            <Input className="col col-6 px2" label="Min (Gb)" type="number" defaultValue={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
+                            <Input className="col col-6 px2" label="Max (Gb)" type="number" defaultValue={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
                         </div>
                     </div>
                 </div>
