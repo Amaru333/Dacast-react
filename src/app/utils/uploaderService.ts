@@ -65,8 +65,12 @@ export class UploadObject {
     }
 
     public resumeUpload() {
-        this.nextStart = parseInt(Object.keys(this.onGoingUploads)[Object.keys(this.onGoingUploads).length - 1]) + 1
-        this.runUpload()
+        if(this.fileChunkSize >= this.file.size) {
+            this.singlePartUpload()
+        } else {
+            this.nextStart = parseInt(Object.keys(this.onGoingUploads)[Object.keys(this.onGoingUploads).length - 1]) + 1
+            this.runUpload()
+        }
     }
 
     private createCancelToken() {
@@ -107,24 +111,36 @@ export class UploadObject {
     }
     private retrieveSinglePartURL = async () => {
         await isTokenExpired()
-        let {token} = addTokenToHeader();
-        let response = await axios.get(`${BASE_PATH}/uploads/signatures/singlepart/`, 
+        let {token, vodStorageId,userId} = addTokenToHeader();
+        let response = await axios.post(`${BASE_PATH}/uploads/signatures/singlepart/`, 
+        {
+            fileName: this.file.name,
+            vodStorageID: vodStorageId
+        },
         {
             headers: {      
-                'Authorization': token
+                Authorization: token
             }
         })      
-        return response.data.data  
+        this.uploadUrls.push(response.data.data.presignedURL)
+        return this.uploadUrls[0]
     }
 
     private singlePartUpload = async () => {
         let signedSinglePartURL = await this.retrieveSinglePartURL()
-        await axios.put(JSON.parse(signedSinglePartURL).url, {
+        axios.put(signedSinglePartURL, this.file,
+        {
             cancelToken: this.token,
             onUploadProgress: (event: ProgressEvent) => {
-                this.totalUploadedBytes += event.loaded
-                this.onProgressUpdate(this.totalUploadedBytes / this.file.size * 100)
+                this.onProgressUpdate(event.loaded/ this.file.size * 100)
             },
+        }).then(() => this.onProgressUpdate(100))
+        .catch((error: any) => {
+            if (!axios.isCancel(error)) {
+                this.onError(error)          
+            }
+            this.onError('Cancel')  
+            throw new Error(error)
         })
     }
 

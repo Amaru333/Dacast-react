@@ -51,10 +51,10 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleDrop = (fileList: FileList) => {
-        const acceptedVideoTypes = ['video/mp4'];
+        const acceptedVideoTypes = ['video/mp4', 'video/mov'];
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
+            if (fileList.length > 0 ) {
                 var startTime = (new Date()).getTime();
                 setFile(file)
                 let newUpload = new UploadObject(
