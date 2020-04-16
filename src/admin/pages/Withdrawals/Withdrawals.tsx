@@ -35,7 +35,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                     <Text key={'withdrawalsTableBodyPreviousDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.previous).toFormat("yyyy-LL-dd HH:mm")}</Text>,
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.completedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
-                    <Link key={'withdrawalsTableBodyRecurlyIdCell' + key }to={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</Link>,
+                    <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
                     <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
                 ]}
             })
@@ -46,7 +46,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
         <div className='flex flex-column'>
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
             <Tab className='my1 col col-3' orientation='horizontal' callback={() => {}} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
-            <Table className='my1' id='withdrawalsTable' headerBackgroundColor='white' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
+            <Table className='my1' id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
 
         </div>
