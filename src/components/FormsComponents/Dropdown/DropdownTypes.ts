@@ -24,6 +24,7 @@ export interface ContinentListType {
     [key: string]: {
         countries: {[key: string]: {isChecked: boolean; isFiltered: boolean}};
         checked: CheckboxStatus;
+        key: string;
     };
 }
 

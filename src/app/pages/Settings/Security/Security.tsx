@@ -13,7 +13,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
-import { DomainControl, GeoRestriction } from '../../../redux-flow/store/Settings/Security/types';
+import { DomainControl, GeoRestriction, SettingsSecurityDetails } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { useMedia } from '../../../../utils/utils';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -25,14 +25,24 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
-    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(false)
-    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(false)
+    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime !== 0 || props.securityDetails.contentScheduling.startTime !== 0 ? true : false)
+    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
     const [startDateTime, setStartDateTime] = React.useState<string>(null);
     const [endDateTime, setEndDateTime] = React.useState<string>(null);
+    const [securityDetails, setSecurityDetails] = React.useState<SettingsSecurityDetails>(props.securityDetails)
+    const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
 
     let smScreen = useMedia('(max-width: 780px)');
 
+    React.useEffect(() => {
+        if(props.securityDetails !== securityDetails) {
+            setDisplayformActionButtons(true)
+        }
+    }, [securityDetails])
 
+    React.useEffect(() => {
+        setSecurityDetails(props.securityDetails)
+    }, [props.securityDetails])
 
     const domainControlEmptyValues: DomainControl = {
         id: '',
@@ -50,24 +60,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         restrictionType: 'geo-restriction'
     };
 
-
-    let formRef = React.useRef<HTMLFormElement>(null);
-    let { value, validations, enabledSubmit, displayFormActionButtons } = formSubmit(formRef);
-
-    React.useEffect(() => { }, [selectedItem])
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>, value: ValueInput) => {
-        event.preventDefault();
-        props.saveSettingsSecurityOptions({
-            passwordProtection: {
-                password: value['password'] ? value['password'].value : null
-            },
-            contentScheduling: {
-                startTime: value['startTime'] ? value['startTime'].value : 0,
-                endTime: value['endTime'] ? value['endTime'].value : 0
-            }
-        })
-    }
 
     const tableHeaderElement = (tableType: string) => {
         return {data: [
@@ -107,22 +99,22 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)
             </Bubble>
             <Card>
-                <form id='settingsPageForm' ref={formRef} onReset={() => { setTogglePasswordProtectedVideo(false); setToggleSchedulingVideo(false) }} onSubmit={event => handleSubmit(event, value)}>
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} {...handleValidationProps('Password Protected Videos', validations)} />
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo ?
                                 <div className='col col-12'>
                                     <Input
                                         type='text'
-                                        defaultValue={props.securityDetails.passwordProtection.password ? props.securityDetails.passwordProtection.password : ''}
+                                        value={securityDetails.passwordProtection.password ? securityDetails.passwordProtection.password : ''}
                                         className='col col-4 md-col-3 pr1 mb2'
                                         disabled={false}
+                                        onChange={(event) => {setSecurityDetails({...securityDetails, passwordProtection: {password: event.currentTarget.value}})}}
                                         id='password'
                                         label='Password'
                                         placeholder='Password'
@@ -137,7 +129,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <div className='col col-12'>
 
-                        <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling ? true : false} {...handleValidationProps('Content Scheduling', validations)} />
+                        <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling.startTime !== 0 || props.securityDetails.contentScheduling.endTime !== 0 ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {
                             toggleSchedulingVideo ?
@@ -148,7 +140,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             startDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' callback={(date: string, ms: number) => {setSecurityDetails({...securityDetails, contentScheduling: {...securityDetails.contentScheduling, startTime: ms}})}} />
                                                 </>
                                                 : null
                                         }
@@ -160,7 +152,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         {
                                             endDateTime === "Set Date and Time" ?
                                                 <>
-                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' />
+                                                    <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' callback={(date: string, ms: number) => {setSecurityDetails({...securityDetails, contentScheduling: {...securityDetails.contentScheduling, endTime: ms}})}}  />
                                                 </> : null
                                         }
                                     </div>
@@ -190,13 +182,12 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <Button className={"col col-12 xs-show "} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                     </div>
                     <Table className="col-12 " id="domainControlTable" headerBackgroundColor="gray-10" header={tableHeaderElement('domainControl')} body={domainControlBodyElement()} />
-                </form>
             </Card>
             {
                 displayFormActionButtons ?
                     <div>
-                        <Button disabled={!enabledSubmit} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button onClick={() => props.saveSettingsSecurityOptions(securityDetails)} disabled={false} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button onClick={() => setSecurityDetails(props.securityDetails)} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
                     : null
             }

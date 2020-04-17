@@ -31,6 +31,7 @@ export const saveEmbedSettingsOptionsAction = (data: EmbedSettingsOptionType): T
         await SettingsServices.saveEmbedSettingsOptionsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS, payload: data} );
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
