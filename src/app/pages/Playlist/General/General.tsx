@@ -217,7 +217,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
                             return (
-                                <LinkBoxContainer className="col col-6">
+                                <LinkBoxContainer className="col col-6 mt2">
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>

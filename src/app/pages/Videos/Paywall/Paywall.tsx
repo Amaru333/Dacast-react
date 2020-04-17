@@ -178,7 +178,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown' 
-                    className='col col-2 my2' 
+                    className='col col-3 my2' 
                     dropdownTitle='Paywall Theme' 
                     dropdownDefaultSelect={props.vodPaywallInfos.selectedTheme}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
@@ -186,7 +186,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
+                <Input id='VodPaywallIntroVideoIdInput' className='col col-3 my2' placeholder='Video ID' />
                         
                 <BorderStyle className='my2' />
 

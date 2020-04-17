@@ -218,7 +218,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         </TextStyle>
                         <div className="col col-12 py2">
                             <DropdownSingle 
-                                className="col col-12 col-md-3" 
+                                className="col col-12 md-col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.liveSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

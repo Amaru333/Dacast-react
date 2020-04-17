@@ -178,7 +178,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                 
                 <DropdownSingle 
                     id='PlaylistPaywallThemesDropdown' 
-                    className='col col-2 my2' 
+                    className='col col-3 my2' 
                     dropdownTitle='Paywall Theme' 
                     dropdownDefaultSelect={props.playlistPaywallInfos.selectedTheme}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
@@ -186,7 +186,7 @@ export const PlaylistPaywallPage = (props: PlaylistPaywallComponentProps) => {
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='PlaylistPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
+                <Input id='PlaylistPaywallIntroVideoIdInput' className='col col-3 my2' placeholder='Video ID' />
                         
                 <BorderStyle className='my2' />
 

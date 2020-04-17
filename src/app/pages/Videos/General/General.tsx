@@ -283,7 +283,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.map((item) => {
                                 return (
-                                    <LinkBoxContainer key={item.id} className="col col-6">
+                                    <LinkBoxContainer key={item.id} className="col col-6 mt2">
                                         <LinkBoxLabel>
                                             <Text size={14} weight="med">{item.label}</Text>
                                         </LinkBoxLabel>
