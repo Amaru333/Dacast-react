@@ -6,7 +6,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import styled from 'styled-components';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../../shared/General/ImageModal';
@@ -14,7 +14,6 @@ import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/
 import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle'
 import { Prompt } from 'react-router';
 
 interface GeneralComponentProps {
@@ -164,6 +163,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
                         <Input
                             className="col col-6 pr2 pt2"
+                            type="textarea"
                             label="Description"
                             value={VodDetails.description}
                             onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
@@ -284,7 +284,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.map((item) => {
                                 return (
-                                    <LinkBoxContainer className="col col-6">
+                                    <LinkBoxContainer key={item.id} className="col col-6 mt2">
                                         <LinkBoxLabel>
                                             <Text size={14} weight="med">{item.label}</Text>
                                         </LinkBoxLabel>
@@ -300,7 +300,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </AdvancedLinksContainer>
                     </div>
 
-                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" title="Add Subtitles">
+                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
                         <form id="addSubtitlesForm"
                             onSubmit={event => { event.preventDefault(); handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle) }}>
                             <ModalContent>
@@ -329,7 +329,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
+                    <ImageModal title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
 
                 </Card>
                 <ButtonContainer>

@@ -216,8 +216,8 @@ export const useKeyboardSubmit = (callback: Function) => {
 
 export const calculateDiscount = (total: number) => {
     return total - ((total / 100) * 25)
- }
+}
 
- export const calculateAnnualPrice = (total: number) => {
-     return total * 12
- }
+export const calculateAnnualPrice = (total: number) => {
+    return total * 12
+}

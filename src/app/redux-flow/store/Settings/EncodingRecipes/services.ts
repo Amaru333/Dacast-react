@@ -13,15 +13,20 @@ const getEncodingRecipesService = async () => {
         }})
 }
 
+const getEncodingRecipesPresetsService = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/presets',
+        {headers: {
+            'Authorization': token
+        }})
+}
+
 const createEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes',
-        {"id": data.id,
-            "isDefault": data.isDefault,
-            "name": data.name,
-            "recipePresets": data.recipePresets
-        }, 
+        {...data}, 
         {headers: {
             'Authorization': token
         }}
@@ -32,11 +37,7 @@ const saveEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + data.id,
-        {"id": data.id,
-            "isDefault": data.isDefault,
-            "name": data.name,
-            "recipePresets": data.recipePresets
-        }, 
+        {...data}, 
         {headers: {
             'Authorization': token
         }}
@@ -54,12 +55,8 @@ const deleteEncodingRecipeService = async (data: EncodingRecipeItem) => {
 
 const getUploadWatermarkUrlService = async () => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart',
-        {'parameters': {
-            'userID': userId
-        }, 
-        'type': 'watermark'},
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/watermark',
         {headers: {
             'Authorization': token
         }});
@@ -69,16 +66,25 @@ const uploadWatermarkService = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, data)
 }
 
-const deleteWatermarkService = async () => {
+const deleteWatermarkService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/company/logo', {headers: {
-        'Authorization': token
-    }});
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/encoding-recipes/' + data.id,
+        {"id": data.id,
+            "isDefault": data.isDefault,
+            "name": data.name,
+            "recipePresets": data.recipePresets,
+            "watermarkFileID": null
+        }, 
+        {headers: {
+            'Authorization': token
+        }}
+    )
 }
 
 export const EncodingRecipesServices = {
     getEncodingRecipesService,
+    getEncodingRecipesPresetsService,
     createEncodingRecipeService,
     saveEncodingRecipeService,
     deleteEncodingRecipeService,

@@ -4,11 +4,15 @@ import { ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { ModalCard } from '../../../../components/Modal/ModalCard';
 import { Text } from '../../../../components/Typography/Text';
 import { ConfirmEmailComponentProps } from '../../../containers/Register/ConfirmEmail'
+import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { useHistory } from 'react-router';
 
 const logo = require('../../../../../public/assets/logo.png');
 
 
 export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
+
+    let history = useHistory()
 
     React.useEffect(() => {
         props.confirmEmail(props.email)
@@ -31,6 +35,7 @@ export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
                     <div className="mt2">
                         <Text size={12} weight="reg">Didn’t receive an email? <a href='#' onClick={() => props.confirmEmail(props.email)}>Re-send email confirmation.</a></Text>
                     </div>
+                    <Button className='mt2' onClick={() => history.push('/login')} buttonColor='blue' typeButton='primary' sizeButton='large'>Back to Log In</Button>
                 </ModalFooter>
             </ModalCard>
         </LoginContainer>

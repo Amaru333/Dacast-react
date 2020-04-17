@@ -98,17 +98,18 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
+                        type="textarea"
                         label="Description"
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <div className={ClassHalfXsFullMd + "flex flex-column"}>
+                    <div className={"col col-3 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id)}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id, 'Live id copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyCOntentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -124,7 +125,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("embed code here")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard('', "embed code here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -134,7 +135,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard("share link here")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('', "share link here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -306,13 +307,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {liveAdvancedLinksOptions.map((item) => {
                             return (
-                                <LinkBoxContainer className={ClassHalfXsFullMd + "mb2"}>
+                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd+"mb2"}>
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard("embed code here")}>file_copy_outlined</IconStyle>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', "embed code here")}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>
@@ -323,7 +324,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
-                <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
+                <Modal size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
                         <div className="col col-12">
                             <Bubble type='info' className='my2'>
@@ -339,7 +340,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -348,7 +349,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -357,7 +358,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -366,7 +367,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>
@@ -375,7 +376,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                         </div>

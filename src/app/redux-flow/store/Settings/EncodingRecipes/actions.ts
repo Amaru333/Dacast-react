@@ -1,4 +1,4 @@
-import { ActionTypes, EncodingRecipeItem } from "../EncodingRecipes/EncodingRecipesTypes";
+import { ActionTypes, EncodingRecipeItem, RecipePreset } from "../EncodingRecipes/EncodingRecipesTypes";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -10,9 +10,14 @@ export interface GetEncodingRecipeDetails {
     payload: {data: any};
 }
 
+export interface GetEncodingRecipePresets {
+    type: ActionTypes.GET_ENCODING_RECIPES_PRESETS;
+    payload: {data: {presets: RecipePreset[]}};
+}
+
 export interface CreateEncodingRecipeDetails {
     type: ActionTypes.CREATE_ENCODING_RECIPES;
-    payload: {data: EncodingRecipeItem};
+    payload: EncodingRecipeItem;
 }
 
 export interface SaveEncodingRecipeDetails {
@@ -27,7 +32,7 @@ export interface DeleteEncodingRecipeDetails {
 
 export interface GetUploadWatermarkUrl {
     type: ActionTypes.GET_UPLOAD_WATERMARK_URL;
-    payload: {data: {presignedURL: string}};
+    payload: {data: {presignedURL: string; fileID: string}};
 }
 
 export interface UploadWatermark {
@@ -37,7 +42,7 @@ export interface UploadWatermark {
 
 export interface DeleteWatermark {
     type: ActionTypes.DELETE_WATERMARK;
-    payload: File;
+    payload: EncodingRecipeItem;
 }
 
 export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipeDetails> => {
@@ -52,13 +57,25 @@ export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, Get
     };
 }
 
+export const getEncodingRecipesPresetsAction = (): ThunkDispatch<Promise<void>, {}, GetEncodingRecipePresets> => {
+
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetEncodingRecipePresets> ) => {
+        await EncodingRecipesServices.getEncodingRecipesPresetsService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ENCODING_RECIPES_PRESETS, payload: response.data} );
+            }).catch(error => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
 export const createEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispatch<Promise<void>, {}, CreateEncodingRecipeDetails> => {
 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.createEncodingRecipeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: response.data} );
-                dispatch(showToastNotification(`${response.data.name} created`, 'fixed', "success"));
+                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: data} );
+                dispatch(showToastNotification(`${data.name} created`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -70,9 +87,10 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.saveEncodingRecipeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: response.data} );
-                dispatch(showToastNotification(`${response.data.name} has been updated`, 'fixed', "success"));
+                dispatch( {type: ActionTypes.SAVE_ENCODING_RECIPES, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been updated`, 'fixed', "success"));
             }).catch(error => {
+                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -115,11 +133,12 @@ export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Pr
     };
 }
 
-export const deleteWatermark = (): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
+export const deleteWatermark = (data: EncodingRecipeItem): ThunkDispatch<Promise<void>, {}, DeleteWatermark> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteWatermark> ) => {
-        await EncodingRecipesServices.deleteWatermarkService()
+        await EncodingRecipesServices.deleteWatermarkService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: data} );
+                dispatch(showToastNotification("Watermark file has been deleted", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -128,6 +147,7 @@ export const deleteWatermark = (): ThunkDispatch<Promise<void>, {}, DeleteWaterm
 
 export type Action = 
 GetEncodingRecipeDetails | 
+GetEncodingRecipePresets |
 CreateEncodingRecipeDetails | 
 SaveEncodingRecipeDetails | 
 DeleteEncodingRecipeDetails |

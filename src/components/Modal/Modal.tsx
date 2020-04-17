@@ -20,7 +20,7 @@ export const Modal = (props: ModalProps) => {
                         <IconStyle  iconColor={icon.color} ><Icon fontSize="large">{icon.name}</Icon></IconStyle>
                     ) : null}
                     <Text color="gray-1" size={24} weight="med">
-                        {props.title}
+                        {props.modalTitle}
                     </Text>
                     
                 </ModalTitleStyle>

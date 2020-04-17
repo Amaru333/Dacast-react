@@ -264,6 +264,7 @@ export const TagsContainer = styled.div<{noBorder: boolean; greyBackground: bool
     ${props => props.greyBackground && css`
         background-color: ${props.theme.colors["gray-10"]};
     `}
+    background-color: ${props => props.theme.colors['gray-10']};
 `
 
 export const TagsInputStyle = styled(InputStyle)`

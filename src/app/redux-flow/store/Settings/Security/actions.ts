@@ -6,12 +6,17 @@ import { showToastNotification } from '../../Toasts';
 
 export interface GetSettingsSecurityOptions {
     type: ActionTypes.GET_SETTINGS_SECURITY_OPTIONS;
-    payload: SettingsSecurityDetails;
+    payload: {data: SettingsSecurityDetails};
 }
 
 export interface SaveSettingsSecurityOptions {
     type: ActionTypes.SAVE_SETTINGS_SECURITY_OPTIONS;
     payload: SettingsSecurityDetails;
+}
+
+export interface CreateGeoRestrictionGroup {
+    type: ActionTypes.CREATE_GEO_RESTRICTION_GROUP;
+    payload: GeoRestriction;
 }
 
 export interface SaveGeoRestrictionGroup {
@@ -22,6 +27,11 @@ export interface SaveGeoRestrictionGroup {
 export interface DeleteGeoRestrictionGroup {
     type: ActionTypes.DELETE_GEO_RESTRICTION_GROUP;
     payload: GeoRestriction;
+}
+
+export interface CreateDomainControlGroup {
+    type: ActionTypes.CREATE_DOMAIN_CONTROL_GROUP;
+    payload: DomainControl;
 }
 
 export interface SaveDomainControlGroup {
@@ -49,7 +59,20 @@ export const saveSettingsSecurityOptionsAction = (data: SettingsSecurityDetails)
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveSettingsSecurityOptions> ) => {
         await SettingsServices.saveSettingsSecurityOptionsService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_SETTINGS_SECURITY_OPTIONS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_SETTINGS_SECURITY_OPTIONS, payload: data} );
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const createGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDispatch<Promise<void>, {}, CreateGeoRestrictionGroup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateGeoRestrictionGroup> ) => {
+        await SettingsServices.createGeoRestrictionGroupService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.CREATE_GEO_RESTRICTION_GROUP, payload: {...data, id: response.data.data.id}} );
+                dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -60,7 +83,8 @@ export const saveGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveGeoRestrictionGroup> ) => {
         await SettingsServices.saveGeoRestrictionGroupService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_GEO_RESTRICTION_GROUP, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_GEO_RESTRICTION_GROUP, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -71,7 +95,20 @@ export const deleteGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteGeoRestrictionGroup> ) => {
         await SettingsServices.deleteGeoRestrictionGroupService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_GEO_RESTRICTION_GROUP, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_GEO_RESTRICTION_GROUP, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const createDomainControlGroupAction = (data: DomainControl): ThunkDispatch<Promise<void>, {}, CreateDomainControlGroup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateDomainControlGroup> ) => {
+        await SettingsServices.createDomainControlGroupService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.CREATE_DOMAIN_CONTROL_GROUP, payload: {...data, id: response.data.data.id}} );
+                dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -82,7 +119,8 @@ export const saveDomainControlGroupAction = (data: DomainControl): ThunkDispatch
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveDomainControlGroup> ) => {
         await SettingsServices.saveDomainControlGroupService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_DOMAIN_CONTROL_GROUP, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_DOMAIN_CONTROL_GROUP, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -93,7 +131,8 @@ export const deleteDomainControlGroupAction = (data: DomainControl): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteDomainControlGroup> ) => {
         await SettingsServices.deleteDomainControlGroupService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_DOMAIN_CONTROL_GROUP, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_DOMAIN_CONTROL_GROUP, payload: data} );
+                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -103,8 +142,10 @@ export const deleteDomainControlGroupAction = (data: DomainControl): ThunkDispat
 export type Action = 
 GetSettingsSecurityOptions | 
 SaveSettingsSecurityOptions |
+CreateGeoRestrictionGroup |
 SaveGeoRestrictionGroup |
 DeleteGeoRestrictionGroup |
+CreateDomainControlGroup |
 SaveDomainControlGroup |
 DeleteDomainControlGroup 
 ;

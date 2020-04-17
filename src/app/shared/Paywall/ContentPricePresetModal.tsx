@@ -61,7 +61,7 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                     {
                         key === newPricePreset.price.length - 1 ?
                             <div onClick={() => setNewPricePreset({ ...newPricePreset, price: [...newPricePreset.price, { amount: NaN, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex sm-ml2 ' + (key === 0 ? 'mt3 flex items-center ' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
-                            : <div className={'pointer col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() => { var newList = newPricePreset.price.filter((item, index) => { return index !== key }); setNewPricePreset({ ...newPricePreset, price: newList }) }} >close</IconStyle></div>
+                            : <div className={'pointer col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle className='ml2' onClick={() => { var newList = newPricePreset.price.filter((item, index) => { return index !== key }); setNewPricePreset({ ...newPricePreset, price: newList }) }} >close</IconStyle></div>
                     }
                 </div>
             )
@@ -80,19 +80,19 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                 />
                 {
                     newPricePreset.id === "custom" ?
-                        <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label='Save as Price Preset' onChange={() => setSavePreset(!savePreset)} />
+                        <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label='Save as Price Preset' defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
                         : null
                 }
 
             </PresetSelectRow>
-            <div className={'col col-12 clearfix ' + (savePreset ? 'sm-py1' : '')}>
-                {savePreset ?
+            <div className='col col-12 clearfix'>
+                {savePreset && newPricePreset.id === 'custom' ?
                     <Input className='col mb2 col-12 sm-col-6 sm-pr1' label='Preset Name' onChange={(event) => setNewPricePreset({ ...newPricePreset, name: event.currentTarget.value })} /> : null
                 }
 
                 <DropdownSingle
                     id='pricePresetTypeDropdown'
-                    className={'col col-12 sm-col-6 mb2 ' + (savePreset ? 'sm-pl1' : '')}
+                    className={'col col-12 sm-col-6 mb2 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
                     dropdownTitle='Preset Type'
                     dropdownDefaultSelect={newPricePreset.type}
                     list={{ 'Pay Per View': false, 'Subscription': false }}

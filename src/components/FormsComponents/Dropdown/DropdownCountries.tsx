@@ -25,12 +25,17 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             let returnedString: string[] = []
             Object.keys(checkedContinents).map((continent) => {
                 if(checkedContinents[continent].checked === 'checked') {
-                    returnedString.push(continent)
-                }
-                else if(checkedContinents[continent].checked === 'undeterminate') {
+                    returnedString.push(...Object.keys(countries).map((country) => { 
+                        
+                        if(countries[country].continent === checkedContinents[continent].key){ 
+                            return country
+                        }
+                        return
+                    }).filter(f => f))
+                } else if(checkedContinents[continent].checked === 'undeterminate') {
                     Object.keys(checkedContinents[continent].countries).map((country) => {
                         if(checkedContinents[continent].countries[country].isChecked) {
-                            returnedString.push(country);
+                            returnedString.push(checkedContinents[continent].countries[country].key);
                         }
                     })
                 }
@@ -109,18 +114,18 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
     React.useEffect(() => {
 
         let initCountriesList: ContinentListType = {...Object.keys(continents).reduce((reduced, continent) => {
-            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked'}}
+            return {...reduced, [continents[continent]]: {countries: {}, checked: 'unchecked', key: continent}}
         }, {})}
-
         initCountriesList = Object.keys(initCountriesList).reduce((reduced, continent) => {
             if(props.list.includes(continent)) {
                 return {
                     ...reduced, 
                     [continent]: {
+                        ...initCountriesList[continent],
                         countries: Object.keys(countries).reduce((reduced, country) => {
                             if(continents[countries[country].continent] === continent) {
                                 return {        
-                                    ...reduced, [countries[country].name]: {isChecked: true, isFiltered: false}
+                                    ...reduced, [countries[country].name]: {isChecked: true, isFiltered: false, key: country}
                                 }
                             }
                             return {...reduced}
@@ -135,23 +140,25 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                 let currentContinent = {
                     ...reduced, 
                     [continent] : {
+                        ...initCountriesList[continent],
                         countries: Object.keys(countries).reduce((reduced, country) => {
                             if(continents[countries[country].continent] === continent) {
-                                if(props.list.includes(countries[country].name)) {counter++}
+                                if(props.list.includes(country)) {counter++}
                                 return {        
-                                    ...reduced, [countries[country].name]: {isChecked: props.list.includes(countries[country].name), isFiltered: false}
+                                    ...reduced, [countries[country].name]: {isChecked: props.list.includes(country), isFiltered: false, key: country}
                                 }
                             }
                             return {...reduced}
 
                         }, {}),
-                        checked: counter === 0 ? 'unchecked' : 'undeterminate'
+                        checked: counter === 0 ? 'unchecked' : counter === Object.keys(countries).filter(f => {return continents[countries[f].continent] === continent}).length ? 'checked' : 'undeterminate'
                     }
                 }
-                //currentContinent[continent].checked = 
                 return currentContinent;
             }
         }, {})
+
+        console.log(initCountriesList)
         setCheckedContinents(initCountriesList);
         setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
         handleTitle();
@@ -185,6 +192,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             let continents = checkedContinents
             Object.keys(continents).forEach((continent) => {
                 continents[continent] = {
+                    ...continents[continent],
                     countries: {...Object.keys(continents[continent].countries).reduce((reduced, key) => {
                         if(key.toLowerCase().includes(filteringString.toLowerCase()) && filteringString.toLowerCase() !== continent.toLowerCase()) {
                             return {...reduced, [key]: {...checkedContinents[continent].countries[key], isFiltered: false}}
@@ -217,7 +225,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
 
         if(checkedContinents[continent].checked === 'unchecked' || checkedContinents[continent].checked === 'undeterminate') { 
             let changingContinent = checkedContinents[continent];
-            changingContinent = {countries: {...Object.keys(checkedContinents[continent].countries).reduce((reduced, key) => {
+            changingContinent = {...changingContinent, countries: {...Object.keys(checkedContinents[continent].countries).reduce((reduced, key) => {
                 if(!checkedContinents[continent].countries[key].isFiltered) {
                     return {...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: true}}
                 }
@@ -229,7 +237,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
 
         } else {
             let changingContinent = checkedContinents[continent];
-            changingContinent = {countries: {...Object.keys(checkedContinents[continent].countries).reduce((reduced, key) => {
+            changingContinent = {...changingContinent, countries: {...Object.keys(checkedContinents[continent].countries).reduce((reduced, key) => {
                 if(!checkedContinents[continent].countries[key].isFiltered) {
                     return {...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: false}}
                 }

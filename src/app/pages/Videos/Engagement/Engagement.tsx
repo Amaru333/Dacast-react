@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
@@ -15,7 +15,6 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { VodNewAdModal } from './VodNewAdModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
 
@@ -236,10 +235,10 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
-            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
             <Prompt when={engagementSettings !== props.vodEngagementSettings.engagementSettings} message='' />

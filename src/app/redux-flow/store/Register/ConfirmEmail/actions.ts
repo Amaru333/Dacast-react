@@ -6,14 +6,14 @@ import { confirmEmail } from './service';
 
 export interface ConfirmEmail {
     type: ActionTypes.SEND_CONFIRM_EMAIL;
-    payload: ConfirmEmailInfo;
+    payload: {data: ConfirmEmailInfo};
 }
 
 export const confirmEmailAction = (email: string): ThunkDispatch<Promise<void>, {}, ConfirmEmail> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ConfirmEmail> ) => {
         await confirmEmail(email)
             .then( response => {
-                dispatch( {type: ActionTypes.SEND_CONFIRM_EMAIL, payload: response.data.data} );
+                dispatch( {type: ActionTypes.SEND_CONFIRM_EMAIL, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

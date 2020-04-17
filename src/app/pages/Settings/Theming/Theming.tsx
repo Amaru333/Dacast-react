@@ -75,7 +75,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     </PlayerSection>
                     <div className='col col-12 md-col-4 sm-pr1 flex flex-column' >
                         <ControlsCard className='col col-12'>
-                            <TitleSection>
+                            <TitleSection className="justify-center">
                                 <div style={{marginTop: 5}}>
                                     <Text size={20} weight='med'>
                                         {
@@ -85,12 +85,12 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                         }
                                     </Text>
                                 </div>
-                                <Button className='right mb2 flex' sizeButton='large' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle>keyboard_arrow_left</IconStyle><Text size={16} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
+                                <Button className='right flex items-center' sizeButton='xs' typeButton='tertiary' buttonColor='blue' onClick={(event) => {event.preventDefault();setShowAdvancedPanel(!showAdvancedPanel)}}>{showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}</Button>
                             </TitleSection>
                             {
                                 showAdvancedPanel ?
                                 <>
-                                    <TextStyle className="py2" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
+                                    <TextStyle className="pt25" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
                                     <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => {setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 
@@ -113,7 +113,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 </>
                                     :
                                 <>
-                                    <Input className='mb2' label='Theme Name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
+                                    <Input className='my2' label='Theme Name' id='themeTitle' placeholder='New Theme' value={selectedTheme.themeName} onChange={(event) => {setSelectedTheme({...selectedTheme, themeName: event.currentTarget.value});setSettingsEdited(true)}} />
                                     <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault});setSettingsEdited(true)}} />
                                     <BorderStyle className="p1" />
 

@@ -30,6 +30,7 @@ export const CustomStepper = (props: StepperProps) => {
                 setStepValidated={setStepValidated} 
                 finalFunction={finalFunction} 
                 usefulFunctions={props.usefulFunctions}
+                staticStepperData={props.stepperStaticData}
             />
         )
         
@@ -54,7 +55,7 @@ export const CustomStepper = (props: StepperProps) => {
         <React.Fragment>
             <StepperContainerStyle containerWidth={props.widthSecondStep && stepIndex === 1 ? props.widthSecondStep : null} opened={props.opened} isMobile={isMobile}>
                 <StepperHeaderStyle>
-                    <Text size={24} weight="reg">{props.stepperHeader}</Text>
+                    <Text size={24} weight="med">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
                 <StepperStyle isMobile={isMobile}>
                     <Stepper activeStep={stepIndex} alternativeLabel>

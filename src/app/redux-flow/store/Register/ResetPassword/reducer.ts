@@ -6,7 +6,7 @@ const reducer: Reducer<ForgotPasswordInfo> = (state = defaultStateResetPassword,
     switch(action.type) {
         case ActionTypes.FORGOT_PASSWORD : 
             return {
-                ...action.payload
+                ...action.payload.data
             }
         default :
             return {...state}

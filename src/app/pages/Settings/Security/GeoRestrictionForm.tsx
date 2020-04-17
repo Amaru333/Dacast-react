@@ -44,8 +44,8 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
                     <DropdownCountries 
                         id="geoRestrictionCountriesDropdown"
                         dropdownTitle="Countries"
-                        list={geoRestrictionItem.countries}
-                        callback={(value: string[]) => setGeoRestrictionItem({...geoRestrictionItem, countries: value})}
+                        list={geoRestrictionItem.values}
+                        callback={(value: string[]) => setGeoRestrictionItem({...geoRestrictionItem, values: value})}
                     />
                 </div>
 

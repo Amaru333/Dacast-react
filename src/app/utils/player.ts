@@ -9,7 +9,6 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
             autoplay: false
         })
         player.on('EVENT_READYSTATE_CHANGE', (state: number) => {
-            console.log(state, player.getPlayerInstance().videoHeight)
             
         })
         setPlayer(player)
@@ -20,7 +19,6 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         {
             let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
                 .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
-            console.log(existingPlayerTag)
             if(!existingPlayerTag) {
                 let head = document.head || document.getElementsByTagName('head')[0];
                 const playerScript = document.createElement('script');
@@ -36,7 +34,6 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
             if(typeof dacast !== 'undefined') {
                 let player = dacast.players[contentId]
                 if(player) {
-                    console.log('disposing')                
                     player.dispose()
                 }
             }

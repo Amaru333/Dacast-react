@@ -10,9 +10,8 @@ import { WithdrawalModal } from './WithdrawalModal';
 import { PayoutComponentProps } from '../../../containers/Paywall/Payout';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import styled from 'styled-components';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
@@ -173,7 +172,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         : <Table id='payoutWithdrawalsTable' headerBackgroundColor="gray-10" header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
                 }
             </Card>
-            <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
+            <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 <WithdrawalModal action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
             </Modal>
         </div>

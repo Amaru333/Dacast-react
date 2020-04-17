@@ -4,7 +4,7 @@ type Size = "large" | "small";
 
 interface ModalCustomProps {
     size: string;
-    title: string;
+    modalTitle: string;
     icon?: { name: string; color: ColorsApp };
     opened: boolean;
     hasClose: boolean;

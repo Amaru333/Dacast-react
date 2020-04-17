@@ -60,7 +60,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     }
 
     return (
-        <Modal size="large" title={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
@@ -71,7 +71,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                         <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { uploadedImage === "" ? null : 
-                            <ThumbnailFile className="col col-6 my1">
+                            <ThumbnailFile className="col col-6 mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setUploadedImage(testThumbnail)} customsize={14}>close</IconStyle>
@@ -85,7 +85,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                     <div className="col col-12">
-                        <PlayerSection className='col col-12 mr2 mb2'>
+                        <PlayerSection className='col col-12 mr2 mb1'>
                             <PlayerContainer className="col col-12 mx2 my2">
                                 <div ref={playerRef}>
                                 </div>
@@ -141,7 +141,7 @@ export const PlayerSection = styled.div`
 `
 
 export const PlayerContainer = styled.div`
-    width: 100%;
+    width: 94%;
     height: 341px;
     position: relative;
 `

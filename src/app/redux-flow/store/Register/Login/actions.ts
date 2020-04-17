@@ -6,7 +6,7 @@ import { showToastNotification } from '../../Toasts';
 
 export interface Login {
     type: ActionTypes.LOGIN;
-    payload: TokenInfos | false;
+    payload: {data: TokenInfos} | false;
 }
 
 export interface LoginRequest {
@@ -25,7 +25,7 @@ export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, 
         dispatch({type: ActionTypes.LOGIN, payload: false})
         await loginService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.LOGIN, payload: response.data.data} );
+                dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
             }).catch(() => {
                 dispatch( {type: ActionTypes.LOGIN, payload: null} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

@@ -62,6 +62,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         setUploadedFileUrl(CompanyPageDetails.logoUrl)
     }, []);
 
+    React.useEffect(() => {
+        if(props.CompanyPageDetails.logoUrl && !props.CompanyPageDetails.uploadLogoUrl) {
+            setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        }
+    }, [props.CompanyPageDetails.logoUrl])
+
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
 
@@ -164,7 +170,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
                             <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("copied")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.CompanyPageDetails.id, 'Account ID copied to clipboard')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>

@@ -3,14 +3,13 @@ import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../../components/Typography/Text';
 import { tsToLocaleDate } from '../../../../utils/utils';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -69,7 +68,7 @@ export const LiveListPage = (props: LiveListProps) => {
             {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div style={{ width: "80px" }} ></div>},
+            {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
         ], defaultSort: 'Created Date'}
     }
 

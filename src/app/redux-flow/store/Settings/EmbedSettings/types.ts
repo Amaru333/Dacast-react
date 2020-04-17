@@ -5,5 +5,7 @@ export enum ActionTypes {
 
 
 export interface EmbedSettingsOptionType {
-    [key: string]:  string; 
+    ['embed-type']:  'iframe' | 'html5-video'; 
+    ['embed-scaling']: 'fixed' | 'responsive';
+    'embed-size': number;
 }

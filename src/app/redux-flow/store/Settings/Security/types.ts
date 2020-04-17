@@ -1,8 +1,10 @@
 export enum ActionTypes {
     GET_SETTINGS_SECURITY_OPTIONS = "@@settings_security/GET_SETTINGS_SECURITY_OPTIONS",
     SAVE_SETTINGS_SECURITY_OPTIONS = "@@settings_security/SAVE_SETTINGS_SECURITY_OPTIONS",
+    CREATE_GEO_RESTRICTION_GROUP = "@@settings_security/CREATE_GEO_RESTRICTION_GROUP",
     SAVE_GEO_RESTRICTION_GROUP = "@@settings_security/SAVE_GEO_RESTRICTION_GROUP",
     DELETE_GEO_RESTRICTION_GROUP = "@@settings_security/DELETE_GEO_RESTRICTION_GROUP",
+    CREATE_DOMAIN_CONTROL_GROUP = "@@settings_security/CREATE_DOMAIN_CONTROL_GROUP",
     SAVE_DOMAIN_CONTROL_GROUP = "@@settings_security/SAVE_DOMAIN_CONTROL_GROUP",
     DELETE_DOMAIN_CONTROL_GROUP = "@@settings_security/DELETE_DOMAIN_CONTROL_GROUP",
 
@@ -10,48 +12,44 @@ export enum ActionTypes {
 
 
 export interface GeoRestriction {
+    id: string;
     name: string;
     isDefault: boolean;
-    countries: string[];
+    values: string[];
+    restrictionType: 'geo-restriction'
 }
 
 export interface DomainControl {
+    id: string;
     name: string;
     isDefault: boolean;
-    domains: string[];
+    values: string[];
+    restrictionType: 'domain-restriction'
 }
 
 export interface PasswordProtectedVideo {
-    enabled: boolean;
-    promptTime?: string;
-    password?: string;
+    password: string;
 }
 
 export interface VideoScheduling {
-    enabled: boolean;
-    startAvailable?: boolean;
-    startDate?: number;
-    startTime?: string;
-    endAvalaible?: string;
-    endDate?: number;
-    endTime?: string;
+    startTime: number;
+    endTime: number;
 }
 
 export interface SettingsSecurityDetails {
-    privateVideo: boolean;
-    passwordProtectedVideo: PasswordProtectedVideo;
-    videoScheduling: VideoScheduling;
+    passwordProtection: PasswordProtectedVideo;
+    contentScheduling: VideoScheduling;
     geoRestriction?: GeoRestriction[];
     domainControl?: DomainControl[];
 }
 
 export const defaultStateSettingsSecurity: SettingsSecurityDetails = {
-    privateVideo: false,
-    passwordProtectedVideo: {
-        enabled: false
+    passwordProtection: {
+        password: null
     },
-    videoScheduling: {
-        enabled: false,
+    contentScheduling: {
+        startTime: 0,
+        endTime: 0
     },
     geoRestriction: [],
     domainControl: [],

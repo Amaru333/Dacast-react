@@ -155,7 +155,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     : null
             }
 
-            <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" title="Change Password">
+            <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" modalTitle="Change Password">
                 {passwordModalToggle ?
                     <>
                         <ModalContent>

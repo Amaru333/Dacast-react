@@ -40,7 +40,8 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                 />
                 <InputTags 
                     className='col col-12 py1'
-                    defaultTags={domainControlItem.domains} 
+                    defaultTags={domainControlItem.values} 
+                    callback={(domainControls: string[]) => setDomainControlItem({...domainControlItem, values: domainControls})}
                     placeholder="Type URL" 
                     label="URLs"
                 />

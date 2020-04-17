@@ -196,7 +196,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                      
                 </div>
             </div>
-            <Modal size="small" title="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
+            <Modal size="small" modalTitle="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
                 <ModalContent>
                     <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? This will come at a cost</Text> 
                 </ModalContent>
@@ -205,7 +205,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     <Button typeButton="tertiary" onClick={() => setEncodeRenditionsModalOpen(false)}>Cancel</Button>  
                 </ModalFooter>
             </Modal>
-            <Modal size="small" title="Delete Renditions" opened={deleteRenditionsModalOpen} toggle={() => setDeleteRenditionsModalOpen(false)} hasClose={false} icon={{name: "warning", color: "red"}}>
+            <Modal size="small" modalTitle="Delete Renditions" opened={deleteRenditionsModalOpen} toggle={() => setDeleteRenditionsModalOpen(false)} hasClose={false} icon={{name: "warning", color: "red"}}>
                 <ModalContent>
                     <Text size={14} weight="reg">Are you sure you want to delete the selected renditions?</Text> 
                 </ModalContent>
@@ -214,7 +214,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                     <Button typeButton="tertiary" onClick={() => setDeleteRenditionsModalOpen(false)}>Cancel</Button>  
                 </ModalFooter>
             </Modal>
-            <Modal size="small" title="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
+            <Modal size="small" modalTitle="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
                 <ModalContent>
                     <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
                 </ModalContent>

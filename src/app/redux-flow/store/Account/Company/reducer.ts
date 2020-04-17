@@ -6,7 +6,7 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
     switch (action.type) {
         case ActionTypes.GET_COMPANY_PAGE_DETAILS:
             return {...state, 
-                ...action.payload
+                ...action.payload.data
             }
         case ActionTypes.GET_COMPANY_LOGO_URL:
             return {...state, 
@@ -17,7 +17,6 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
                 ...action.payload
             }
         case ActionTypes.GET_UPLOAD_LOGO_URL:   
-            console.log(action.payload.data.presignedURL)  
             return {
                 ...state,
                 uploadLogoUrl: action.payload.data.presignedURL,

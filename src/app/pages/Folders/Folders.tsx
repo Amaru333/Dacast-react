@@ -419,17 +419,17 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 </div>
             </ContentSection> 
-            <Modal style={{ zIndex: 10000 }} hasClose={false} size='small' title={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal style={{ zIndex: 10000 }} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
-            <Modal hasClose={false} title={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+            <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
                         <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened}  />
                         : null
                 }
             </Modal>
-            <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} size='small' title='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
+            <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
                 <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
             </Modal>
             <OnlineBulkForm items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />

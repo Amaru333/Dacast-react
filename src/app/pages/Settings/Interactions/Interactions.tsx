@@ -193,21 +193,21 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={mailCatcherModalOpened} title='Add Email Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
+            <Modal hasClose={false} opened={mailCatcherModalOpened} modalTitle='Add Email Catcher' size='small' toggle={() => setMailCatcherModalOpened(!mailCatcherModalOpened)}>
                 {
                     mailCatcherModalOpened ?                 
                         <MailCatcherModal {...props} toggle={setMailCatcherModalOpened} selectedMailCatcher={selectedMailCatcher} />
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened ? 
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
                         : null
                 }
             </Modal>
-            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
             <Prompt when={interactionInfos !== props.interactionsInfos} message='' />

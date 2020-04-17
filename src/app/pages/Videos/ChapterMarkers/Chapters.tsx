@@ -2,13 +2,12 @@ import React from 'react';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal } from '../../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
 import { intToTime, useMedia } from '../../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 
@@ -100,7 +99,7 @@ export const ChaptersPage = (props: ChapterComponentProps) => {
                 </TableContainer>
  
             </ChaptersContainer>
-            <Modal hasClose={false} title={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} size='small' opened={chapterMarkerModalOpened}>
+            <Modal hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} size='small' opened={chapterMarkerModalOpened}>
                 {
                     chapterMarkerModalOpened ?
                         <ChapterMarkerForm item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {name: '', time: intToTime(marker)}} toggle={setChapterMarkerModalOpened} submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker} />

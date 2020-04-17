@@ -5,24 +5,32 @@ import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
-import { upload, MIN_CHUNK_SIZE } from '../../../utils/uploaderService';
+import { UploadObject } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
+
 export const UploaderPage = (props: UploaderProps) => {
 
-    const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
+    const FILE_CHUNK_SIZE = 10000000 // 10MB
+    const MAX_REQUEST_PER_BATCH = 100
+    const NB_CONCURRENT_REQUESTS = 5
 
-    const updateItem = (event: ProgressEvent, name: string, startTime: number) => {
+
+    const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
+    const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
+    const [File, setFile] = React.useState<File>(null)
+    const [currentUpload, setCurrentUpload] = React.useState<any>(null)
+
+    const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
-            const progressPerc = Math.round(100 * event.loaded / event.total);
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
             elapsedtime = elapsedtime / 1000;
-            var eta = ((event.total / event.loaded) * elapsedtime) - elapsedtime;
+            var eta = ((percent) * elapsedtime) - elapsedtime;
             if(eta > 120) {
                 eta = Math.round(eta / 60);
                 var etaUnit = 'minutes'
@@ -34,40 +42,8 @@ export const UploaderPage = (props: UploaderProps) => {
                 [index]:
                 {
                     ...currentList[index],
-                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                    progress: progressPerc,
-                    timeRemaining: {num: eta, unit: etaUnit}
-                }
-            })
-        });
-    }
-
-    const updateItemMultiPart = (event: ProgressEvent, name: string, startTime: number, fileSize: number, bytesUploaded: number) => {
-        setUploadingList((currentList: UploaderItemProps[]) => {
-            const index = currentList.findIndex(element => element.name === name);
-            const bytesProgress = event.loaded + bytesUploaded
-            const progressPerc = Math.round((bytesProgress / fileSize) * 100);
-            //Calcul ETA
-            var now = (new Date()).getTime();
-            var elapsedtime = now - startTime;
-            elapsedtime = elapsedtime / 1000;
-            var eta = ((fileSize / bytesProgress) * elapsedtime) - elapsedtime;
-            if(eta > 120) {
-                eta = Math.round(eta / 60);
-                var etaUnit = 'minutes'
-            } else {
-                eta = Math.round(eta);
-                var etaUnit= ' seconds';
-            }
-            if(bytesProgress === fileSize) {
-                props.postVodDemo()
-            };
-            return Object.assign([...currentList], {
-                [index]:
-                {
-                    ...currentList[index],
-                    currentState: progressPerc === 100 ? "completed" : currentList[index].currentState,
-                    progress: progressPerc,
+                    currentState: percent === 100 ? "completed" : currentList[index].currentState,
+                    progress: percent,
                     timeRemaining: {num: eta, unit: etaUnit}
                 }
             })
@@ -75,33 +51,36 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleDrop = (fileList: FileList) => {
-        const acceptedVideoTypes = ['video/mp4'];
+        const acceptedVideoTypes = ['video/mp4', 'video/mov'];
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            if (fileList.length > 0 && acceptedVideoTypes.includes(file.type)) {
+            if (fileList.length > 0 ) {
                 var startTime = (new Date()).getTime();
-                if (file.size < MIN_CHUNK_SIZE) {
-                    upload(file, (event: ProgressEvent) => {
-                        updateItem(event, file.name, startTime);
-                    })
-                        .catch(err => {
+                setFile(file)
+                let newUpload = new UploadObject(
+                    file, 
+                    MAX_REQUEST_PER_BATCH, 
+                    NB_CONCURRENT_REQUESTS, 
+                    FILE_CHUNK_SIZE, 
+                    (percent: number) => {updateItem(percent, file.name, startTime)}, 
+                    (err: any) => {
+                        console.log(err)
+                        if(err === 'Cancel') {
+                            setUploadingList((currentList: UploaderItemProps[]) => {
+                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
+                                return updatedList;
+                            })
+                        } else {
                             setUploadingList((currentList: UploaderItemProps[]) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;
                             })
-                        });
-                }
-                else {
-                    upload(file, (event: ProgressEvent, bytesUploaded: number, fileSize: number) => {
-                        updateItemMultiPart(event, file.name, startTime, fileSize, bytesUploaded);
-                    })
-                        .catch(err => {
-                            setUploadingList((currentList: UploaderItemProps[]) => {
-                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
-                                return updatedList;
-                            })
-                        });
-                }
+                        }
+                    }
+                )
+                newUpload.startUpload()
+                setCurrentUpload(newUpload)
+
                 setUploadingList((currentList: UploaderItemProps[]) => {
                     return [
                         ...currentList,
@@ -125,32 +104,32 @@ export const UploaderPage = (props: UploaderProps) => {
             case 'completed':
                 const items = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(items);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'failed':
                 const itemsFailed = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsFailed);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'paused':
-                const itemsPaused = uploadingList.filter(obj => obj.name !== item.name);
+                const itemsPaused: UploaderItemProps[] = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsPaused);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'progress':
                 const itemsProgress = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsProgress);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'queue':
                 const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
                 setUploadingList(itemsQueue);
-                var event = new CustomEvent('paused' + item.name);
-                document.dispatchEvent(event);
+                // var event = new CustomEvent('paused' + item.name);
+                // document.dispatchEvent(event);
                 break;
             case 'veryfing':
 
@@ -169,6 +148,15 @@ export const UploaderPage = (props: UploaderProps) => {
             return (
                 <UploaderItem actionFunction={() => { handleActionItem(value) }} key={key} {...value} ></UploaderItem>
             )
+        })
+    }
+
+    const handleResumeAll = () => {
+        currentUpload.resumeUpload()
+        setItemsPaused(!itemsPaused)
+        setUploadingList((currentList: UploaderItemProps[]) => {
+            const updatedList = currentList.map((value, key) => { if (value.name === File.name) { value.currentState = "progress" } return value })
+            return updatedList;
         })
     }
 
@@ -223,7 +211,13 @@ export const UploaderPage = (props: UploaderProps) => {
             </Text>
             <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
-                <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' >Pause All</Button>
+                {
+                    itemsPaused ?
+                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume All</Button>
+                        :
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {currentUpload.pauseUpload();setItemsPaused(!itemsPaused)}} >Pause All</Button>
+
+                }
             </div>
             <ItemList className="col-12">
                 {renderList()}

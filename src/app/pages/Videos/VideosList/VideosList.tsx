@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../../utils/utils';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
@@ -10,7 +10,6 @@ import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm } from '../../Playlist/List/BulkModals';
