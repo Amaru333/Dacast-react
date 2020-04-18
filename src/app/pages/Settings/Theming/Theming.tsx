@@ -75,7 +75,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         </PlayerContainer>
                     </PlayerSection>
                     <div className='col col-12 md-col-4 sm-pr1 flex flex-column' >
-                        <ThemingControlsCard selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />
+                        <ThemingControlsCard selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} contentType={'settings'} />
                         <div className="mt25">
                             <Button 
                                 className="mr1" 

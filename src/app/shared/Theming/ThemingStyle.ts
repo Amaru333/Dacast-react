@@ -37,10 +37,10 @@ export const TextStyle = styled.span<{}>`
     display: block;
 `
 
-export const DisabledSection = styled.div<{selectedTheme: string}>`
+export const DisabledSection = styled.div<{enabled: boolean}>`
 pointer-events: none;
 opacity: 0.5;
-    ${props => props.selectedTheme === "Custom Theme" && css`
+    ${props => props.enabled && css`
         pointer-events: auto;
         opacity: 1;
     `}
