@@ -49,3 +49,10 @@ export const ControlsCard = styled(Card)`
     height: 765px;
     overflow-y: scroll;
 `
+
+export const ControlToggleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative
+`

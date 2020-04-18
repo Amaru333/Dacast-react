@@ -16,6 +16,7 @@ export interface ThemeOptions {
     isDefault: boolean;
     createdDate: number;
     themeType: ThemeType;
+    playerControls: boolean;
     bigPlayButton: boolean;
     playPause: boolean;
     scrubber: boolean;
@@ -40,6 +41,7 @@ export interface ThemeOptions {
     continuousPlay: boolean;
     skipVideos: boolean;
     offlineMessage: string;
+    offlineMessagePosition: string;
     deliveryMethod: DeliveryMethod;
     regionSettings: RegionSetting;
 }
