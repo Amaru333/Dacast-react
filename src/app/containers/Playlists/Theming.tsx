@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlaylistThemingPage } from '../../pages/Playlist/Theming/Theming';
 import { PlaylistTheme } from '../../redux-flow/store/Playlists/Theming/types';
-import { ThemesData, ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
+import { ThemesData, ThemeOptions, ContentTheme } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getPlaylistThemeAction, savePlaylistThemeAction } from '../../redux-flow/store/Playlists/Theming/actions';
@@ -11,7 +11,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PlaylistThemingComponentProps {
-    theme: PlaylistTheme;
+    theme: ContentTheme;
     themeList: ThemesData;
     getPlaylistTheme: Function;
     savePlaylistTheme: Function;

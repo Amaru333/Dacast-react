@@ -1,3 +1,5 @@
+
+
 export enum ActionTypes {
     GET_SETTING_THEMING_LIST = "@@settings_theming/GET_SETTINGS_THEMING_LIST",
     SAVE_SETTING_THEME = "@@settings_theming/SAVE_SETTINGS_THEME",
@@ -16,6 +18,7 @@ export interface ThemeOptions {
     isDefault: boolean;
     createdDate: number;
     themeType: ThemeType;
+    playerControls: boolean;
     bigPlayButton: boolean;
     playPause: boolean;
     scrubber: boolean;
@@ -40,6 +43,7 @@ export interface ThemeOptions {
     continuousPlay: boolean;
     skipVideos: boolean;
     offlineMessage: string;
+    offlineMessagePosition: string;
     deliveryMethod: DeliveryMethod;
     regionSettings: RegionSetting;
 }
@@ -53,6 +57,50 @@ export interface ThemesData {
     themes: ThemeOptions[];
 }
 
+export interface ContentTheme {
+    contentId: string;
+    selectedTheme: ThemeOptions;
+}
+
 export const defaultStateThemesType: ThemesData = {
     themes: []
+}
+
+export const defaultTheme: ThemeOptions = {
+    id: "-1",
+    themeName: '',
+    isDefault: false,
+    createdDate: '',
+    themeType: 'vod',
+    bigPlayButton: false,
+    playPause: false,
+    scrubber: false,
+    scrubbingThumbnail: false,
+    timeCode: false,
+    speedControls: false,
+    qualityOptions: false,
+    volume: false,
+    fullscreen: false,
+    thumbnailPosition: 'left',
+    isViewerCounterEnabled: false,
+    viewerCounterLimit: 100,
+    downloadButton: false,
+    socialSharing: false,
+    embedCode: false,
+    playerTransparency: false,
+    hasCustomColor: false,
+    customColor: '',
+    autoplay: false,
+    startVideoMuted: false,
+    looping: false,
+    continuousPlay: false,
+    skipVideos: false,
+    offlineMessage: '',
+    deliveryMethod: 'compatible',
+    regionSettings: 'standard'
+}
+
+export const defaultStateContentTheme: ContentTheme = {
+    contentId: null,
+    selectedTheme: defaultTheme
 }

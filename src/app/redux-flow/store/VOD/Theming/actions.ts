@@ -3,15 +3,16 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
 import { VodTheme, ActionTypes } from "../Theming/types"
 import { VodThemingServices } from './services';
+import { ContentTheme } from '../../Settings/Theming/types';
 
 export interface GetVodTheme {
     type: ActionTypes.GET_VOD_THEME;
-    payload: VodTheme;
+    payload: ContentTheme;
 }
 
 export interface SaveVodTheme {
     type: ActionTypes.SAVE_VOD_THEME;
-    payload: VodTheme;
+    payload: ContentTheme;
 }
 
 export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {

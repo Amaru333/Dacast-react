@@ -12,6 +12,7 @@ import { VodThemingReducer } from './Theming/reducer';
 import { VodEngagementSettings } from './Engagement/types';
 import { VodEngagementReducer } from './Engagement/reducer';
 import { VodPaywallPageInfos, VodPaywallReducer } from './Paywall';
+import { ContentTheme } from '../Settings/Theming/types';
 
 
 export const vodInitialState: VodState = {
@@ -32,7 +33,7 @@ export interface  VodState {
     general: false | VodDetails;
     list: false | VodItem[];
     renditions: false | RenditionsList;
-    theming: false | VodTheme;
+    theming: false | ContentTheme;
     engagement: false | VodEngagementSettings;
     paywall: false | VodPaywallPageInfos;
 }

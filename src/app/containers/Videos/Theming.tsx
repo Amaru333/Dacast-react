@@ -1,7 +1,7 @@
 import React from 'react';
 import { VodThemingPage } from '../../pages/Videos/Theming/Theming';
 import { VodTheme } from '../../redux-flow/store/VOD/Theming/types';
-import { ThemesData, ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
+import { ThemesData, ThemeOptions, ContentTheme } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
@@ -11,7 +11,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface VodThemingComponentProps {
-    theme: VodTheme;
+    theme: ContentTheme;
     themeList: ThemesData;
     getVodTheme: Function;
     saveVodTheme: Function;
