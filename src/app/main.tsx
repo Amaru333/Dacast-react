@@ -23,7 +23,7 @@ import { responsiveMenu } from './utils/hooksReponsiveNav';
 import { isLoggedIn } from './utils/token';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
-import { useMedia } from '../utils/utils'
+import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -65,6 +65,8 @@ history.listen( (location) =>  {
 const AppContent = () => { 
     let location = useLocation()
     let history = useHistory()
+
+    ScrollToTop()
 
     React.useEffect(() => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];

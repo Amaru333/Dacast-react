@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
+import { useLocation } from "react-router-dom";
+
+export default function ScrollToTop(): void {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {

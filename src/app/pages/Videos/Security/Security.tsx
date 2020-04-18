@@ -34,7 +34,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
 
     const handleReset = () => {
         setSelectedSettings(props.vodSecuritySettings.securitySettings)
-        setTogglePasswordProtectedVideo(props.vodSecuritySettings.securitySettings.passwordProtectedVideo.enabled)
+        setTogglePasswordProtectedVideo(props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     }
 
     React.useEffect(() => {
@@ -42,7 +42,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     }, [props.vodSecuritySettings.securitySettings])
 
     React.useEffect(() => {
-        setTogglePasswordProtectedVideo(selectedSettings.passwordProtectedVideo.enabled);
+        setTogglePasswordProtectedVideo(selectedSettings.passwordProtection.password);
         setToggleSchedulingVideo(selectedSettings.videoScheduling.enabled)
     }, [selectedSettings])
 
@@ -82,7 +82,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                         <Toggle 
                             id="passwordProtectedVideosToggle" 
                             label='Password Protection' 
-                            onChange={() => {setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, enabled: !selectedSettings.passwordProtectedVideo.enabled}})}} defaultChecked={selectedSettings.passwordProtectedVideo.enabled}
+                            onChange={() => {setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)}} defaultChecked={togglePasswordProtectedVideo}
                         />
                         <ToggleTextInfo>
                             <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
@@ -91,13 +91,13 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             <div className='col col-12'>
                                 <Input 
                                     type='text'
-                                    defaultValue={props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.vodSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
+                                    defaultValue={props.vodSecuritySettings.securitySettings.passwordProtection.password ? props.vodSecuritySettings.securitySettings.passwordProtection.password : ''}  
                                     className='col col-4 md-col-3 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 
                                     placeholder='Password'
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, password: event.currentTarget.value }})}
+                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtection: {password: event.currentTarget.value }})}
                                     required
                                 />
                             </div>
@@ -119,7 +119,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 className='col col-4 md-col-3 mb2 mr1' 
                                 id="availableStart" 
                                 dropdownTitle="Available" 
-                                list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.videoScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
+                                list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.contentScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
                             />
                             {
                                 selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
@@ -201,7 +201,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             className='col col-4 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
-                            list={props.vodSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
+                            list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
                             defaultValue={selectedSettings.selectedGeoRestriction} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
                         />
                     </div>
@@ -221,7 +221,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 className="col col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
-                                list={props.vodSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
+                                list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
                                 defaultValue={selectedSettings.selectedDomainControl} 
                                 callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
                             />
