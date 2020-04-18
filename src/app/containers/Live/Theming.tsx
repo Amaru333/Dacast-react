@@ -1,6 +1,6 @@
 import React from 'react';
 import { LiveThemingPage } from '../../pages/Live/Theming/Theming';
-import { ThemeOptions, ThemesData, Action, getThemingListAction } from '../../redux-flow/store/Settings/Theming';
+import { ThemeOptions, ThemesData, Action, getThemingListAction, ContentTheme } from '../../redux-flow/store/Settings/Theming';
 import { LiveTheme } from '../../redux-flow/store/Live/Theming/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -12,7 +12,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveThemingComponentProps {
-    theme: LiveTheme;
+    theme: ContentTheme;
     themeList: ThemesData;
     getLiveTheme: Function;
     saveLiveTheme: Function;

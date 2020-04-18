@@ -34,9 +34,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
         props.saveVodTheme(selectedTheme)
     }
 
-    React.useEffect(() => {
-        console.log(selectedTheme)
-    }, [selectedTheme])
+    
 
     return (
         <React.Fragment>
