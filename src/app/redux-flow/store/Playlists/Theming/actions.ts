@@ -3,15 +3,16 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
 import { PlaylistTheme, ActionTypes } from "../Theming/types"
 import { PlaylistThemingServices } from './services';
+import { ContentTheme } from '../../Settings/Theming/types';
 
 export interface GetPlaylistTheme {
     type: ActionTypes.GET_PLAYLIST_THEME;
-    payload: PlaylistTheme;
+    payload: ContentTheme;
 }
 
 export interface SavePlaylistTheme {
     type: ActionTypes.SAVE_PLAYLIST_THEME;
-    payload: PlaylistTheme;
+    payload: ContentTheme;
 }
 
 export const getPlaylistThemeAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistTheme> => {

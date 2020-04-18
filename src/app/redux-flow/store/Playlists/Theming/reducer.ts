@@ -1,9 +1,10 @@
 import { Reducer } from "redux";
 import { defaultPlaylistTheme, PlaylistTheme, ActionTypes } from './types';
 import { Action } from './actions';
+import { ContentTheme, defaultStateContentTheme } from '../../Settings/Theming';
 
 
-const reducer: Reducer<PlaylistTheme> = (state = defaultPlaylistTheme, action: Action) => {
+const reducer: Reducer<ContentTheme> = (state = defaultStateContentTheme, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_THEME :
             return {

@@ -10,6 +10,7 @@ import { PlaylistThemingReducer } from './Theming/reducer';
 import { PlaylistEngagementSettings } from './Engagement/types';
 import { PlaylistEngagementReducer } from './Engagement/reducer';
 import { PlaylistPaywallPageInfos, PlaylistPaywallReducer } from './Paywall';
+import { ContentTheme } from '../Settings/Theming';
 
 
 export const playlistInitialState: PlaylistState = {
@@ -26,7 +27,7 @@ export interface  PlaylistState {
     list: false | PlaylistListState;
     general: false | PlaylistDetails;
     security: false | PlaylistSecuritySettings;
-    theming: false | PlaylistTheme;
+    theming: false | ContentTheme;
     engagement: false | PlaylistEngagementSettings;
     paywall: false | PlaylistPaywallPageInfos;
 }
