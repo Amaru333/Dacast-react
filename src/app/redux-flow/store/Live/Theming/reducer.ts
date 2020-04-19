@@ -1,4 +1,4 @@
-import { ActionTypes, defaultLiveTheme, LiveTheme } from './types';
+import { ActionTypes } from './types';
 import { Reducer } from 'redux';
 import { Action } from './actions';
 import { ContentTheme, defaultStateContentTheme } from '../../Settings/Theming';

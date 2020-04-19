@@ -20,14 +20,7 @@ export interface ThemeOptions {
     themeType: ThemeType;
     playerControls: boolean;
     bigPlayButton: boolean;
-    playPause: boolean;
-    scrubber: boolean;
     scrubbingThumbnail: boolean;
-    timeCode: boolean;
-    speedControls: boolean;
-    qualityOptions: boolean;
-    volume: boolean;
-    fullscreen: boolean;
     thumbnailPosition: string;
     isViewerCounterEnabled: boolean;
     viewerCounterLimit: number;
@@ -58,7 +51,7 @@ export interface ThemesData {
 }
 
 export interface ContentTheme {
-    contentId: string;
+    id: string;
     selectedTheme: ThemeOptions;
 }
 
@@ -70,17 +63,11 @@ export const defaultTheme: ThemeOptions = {
     id: "-1",
     themeName: '',
     isDefault: false,
-    createdDate: '',
+    createdDate: 980989080,
     themeType: 'vod',
     bigPlayButton: false,
-    playPause: false,
-    scrubber: false,
+    playerControls: false,
     scrubbingThumbnail: false,
-    timeCode: false,
-    speedControls: false,
-    qualityOptions: false,
-    volume: false,
-    fullscreen: false,
     thumbnailPosition: 'left',
     isViewerCounterEnabled: false,
     viewerCounterLimit: 100,
@@ -88,19 +75,20 @@ export const defaultTheme: ThemeOptions = {
     socialSharing: false,
     embedCode: false,
     playerTransparency: false,
-    hasCustomColor: false,
-    customColor: '',
+    customOverlayColor: '',
+    customMenuColor: '',
     autoplay: false,
     startVideoMuted: false,
     looping: false,
     continuousPlay: false,
     skipVideos: false,
     offlineMessage: '',
+    offlineMessagePosition: '',
     deliveryMethod: 'compatible',
     regionSettings: 'standard'
 }
 
 export const defaultStateContentTheme: ContentTheme = {
-    contentId: null,
+    id: null,
     selectedTheme: defaultTheme
 }
