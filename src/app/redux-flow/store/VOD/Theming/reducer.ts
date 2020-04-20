@@ -1,9 +1,10 @@
 import { Reducer } from "redux";
-import { defaultVodTheme, VodTheme, ActionTypes } from './types';
+import { ActionTypes } from './types';
 import { Action } from './actions';
+import { defaultStateContentTheme, ContentTheme } from '../../Settings/Theming';
 
 
-const reducer: Reducer<VodTheme> = (state = defaultVodTheme, action: Action) => {
+const reducer: Reducer<ContentTheme> = (state = defaultStateContentTheme, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_VOD_THEME :
             return {

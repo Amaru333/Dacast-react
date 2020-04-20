@@ -3,6 +3,17 @@ var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
 import { Privilege } from '../app/constants/PrivilegesName';
 import { getUserInfoItem } from '../app/utils/token';
+import { useLocation } from "react-router-dom";
+
+export default function ScrollToTop(): void {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+}
 
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
@@ -157,9 +168,9 @@ export const mapMarkerNameTranformBytesFromGB = (name: string, value: number) =>
     return name + ': ' + displayBytesForHumans(value, true);
 }
 
-export const formateDateFromDatepicker = (dates: {startDate: any; endDate: any}) => {
-    return {startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x')}
-} 
+export const formateDateFromDatepicker = (dates: { startDate: any; endDate: any }) => {
+    return { startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x') }
+}
 
 //SOOOO this thing is working, THOOOOO we might need an extra deepth cause at one point converting the map i got some {{objetc, object}}
 //Might remove the Class / static function if we don;t need anyting else related to CSV in the app
@@ -189,7 +200,7 @@ export class CsvService {
             }).join('\n');
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        if (navigator.msSaveBlob) { 
+        if (navigator.msSaveBlob) {
             //This is to support fucking IE 
             navigator.msSaveBlob(blob, filename);
         } else {
@@ -218,7 +229,7 @@ export const useKeyboardSubmit = (callback: Function) => {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, []);  
+    }, []);
 }
 
 export const calculateDiscount = (total: number) => {
