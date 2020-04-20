@@ -15,6 +15,7 @@ import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonConta
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 
 interface GeneralComponentProps {
     vodDetails: VodDetails;
@@ -123,13 +124,13 @@ export const GeneralPage = (props: GeneralComponentProps) => {
     }
 
     const vodAdvancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail" },
-        { id: "splashscreen", label: "Splashscreen" },
-        { id: "poster", label: "Poster" },
-        { id: "embed", label: "Embed Code" },
-        { id: "video", label: "Video" },
-        { id: "download", label: "Download" },
-        { id: "m3u8", label: "M3U8" }
+        { id: "thumbnail", label: "Thumbnail", enabled: true },
+        { id: "splashscreen", label: "Splashscreen", enabled: true },
+        { id: "poster", label: "Poster", enabled: true },
+        { id: "embed", label: "Embed Code", enabled: true },
+        { id: "video", label: "Video", enabled: true },
+        { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download') },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
     ]
 
     return (
@@ -139,7 +140,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                     <div className="details col col-12">
                         <header className="flex justify-between">
                             <Text size={20} weight="med">Details</Text>
-                            <Button sizeButton="xs" typeButton="secondary">Download</Button>
+                            { getPrivilege('privilege-web-download') && <Button sizeButton="xs" typeButton="secondary">Download</Button>}
                         </header>
                         <Toggle
                             className="col col-12 mt2 pb2"
@@ -282,7 +283,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
                         </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
-                            {vodAdvancedLinksOptions.map((item) => {
+                            {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                                 return (
                                     <LinkBoxContainer key={item.id} className="col col-6 mt2">
                                         <LinkBoxLabel>

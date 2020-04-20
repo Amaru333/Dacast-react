@@ -26,7 +26,6 @@ export function addToken(data: TokenInfos) {
 
 export const getUserInfoItem = (item: string | Privilege) => {
     if(userInfo) {
-        console.log(userInfo);
         return userInfo[item];
     }
     throw new Error('User not defined')

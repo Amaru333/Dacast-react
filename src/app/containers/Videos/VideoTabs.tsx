@@ -7,6 +7,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { VodItem } from '../../redux-flow/store/VOD/General/types';
+import { getPrivilege } from '../../../utils/utils';
 
 export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoTabs: Function}) => {
     const {path} = useRouteMatch();
@@ -18,7 +19,7 @@ export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoT
     }, [])
 
     const handleVideoSubRoutes = () => {
-        return VideoSubRoutes.map((route) => {
+        return VideoSubRoutes.filter( item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((route) => {
             return {
                 ...route, path: path + '/' + props.videoId + route.path
             }
@@ -26,7 +27,7 @@ export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoT
     }
     const returnRouter = (props: Routes[]) => {
         return (
-            props.map((route: Routes, i: number) => {
+            props.filter( item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((route: Routes, i: number) => {
                 return !route.slug ? <Route key={i}
                     path={route.path}
                     render={props => (
@@ -34,7 +35,7 @@ export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoT
                         <route.component {...props} routes={route.slug} />
                     )}
                 />
-                    : route.slug.map((subroute, index) => {
+                    : route.slug.filter( item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((subroute, index) => {
                         return <Route key={'subroute'+index}
                             path={subroute.path}
                             render={props => (

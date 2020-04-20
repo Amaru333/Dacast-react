@@ -17,6 +17,7 @@ import { PlaylistNewAdModal } from './PlaylistNewAdModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) => {
 
@@ -104,35 +105,37 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
     return (
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
-            <Card className='my2'>
-                <Header className="mb25">
-                    <TextStyle>
-                        <Text size={20} weight='med'>Advertising</Text>
-                    </TextStyle>
-                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
-                        {adSectionEditable ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
-                </Header>
-                <DisabledSection settingsEditable={adSectionEditable}>
-                    <Toggle
-                        className="mb2" 
-                        id='advertisingEnabled' 
-                        defaultChecked={engagementSettings.adEnabled} 
-                        onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
-                    />
+            {getPrivilege('privilege-advertising') && 
+                <Card className='my2'>
+                    <Header className="mb25">
+                        <TextStyle>
+                            <Text size={20} weight='med'>Advertising</Text>
+                        </TextStyle>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                            {adSectionEditable ? "lock_open" : "lock"}
+                        </IconStyle>
+                        <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                    </Header>
+                    <DisabledSection settingsEditable={adSectionEditable}>
+                        <Toggle
+                            className="mb2" 
+                            id='advertisingEnabled' 
+                            defaultChecked={engagementSettings.adEnabled} 
+                            onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
+                        />
 
-                    <div className="pb2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    </div>
-                    
-                    <div className='flex'>
-                        <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                    </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
-                </DisabledSection>
-            </Card>
+                        <div className="pb2">
+                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        </div>
+                        
+                        <div className='flex'>
+                            <IconStyle className="mr1">info_outlined</IconStyle>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                        </div>
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                    </DisabledSection>
+                </Card>
+            }
 
             <Card className='my2'>
                 <Header className="mb2">

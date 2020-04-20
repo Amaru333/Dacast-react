@@ -13,6 +13,7 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { getPrivilege } from '../../../utils/utils';
 
 export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSelectedTheme: Function, contentType: string, themeList?: ThemesData, contentTheme?: ContentTheme}) => {
 
@@ -45,8 +46,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                     {showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></>: 'Advanced'}
                 </Button>
             </TitleSection>
-        {
-            showAdvancedPanel ?
+            { showAdvancedPanel ?
             <>
                 <DisabledSection enabled={customEnabled}>
                     <TextStyle className="pt25" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
@@ -57,7 +57,8 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
 
                 <BorderStyle className="p1" />
 
-                <DisabledSection enabled={customEnabled}>
+
+                <DisabledSection enabled={customEnabled && getPrivilege('privilege-aes')}>
                     <TextStyle className="my2" ><Text size={20} weight='med'>Delivery Method</Text></TextStyle>
                     <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
                     <InputRadio className="mt2" name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={props.selectedTheme.deliveryMethod === 'compatible'} onChange={() => {props.setSelectedTheme({...props.selectedTheme, deliveryMethod:'compatible'});}}/>
@@ -66,7 +67,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                     
                 <BorderStyle className="p1" />
 
-                <DisabledSection enabled={customEnabled}>
+                <DisabledSection enabled={customEnabled && getPrivilege('privilege-china')}>
                     <TitleSection className="my2">
                         <Text size={20} weight='med'>Region Settings</Text>
                         <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href="/help"}>

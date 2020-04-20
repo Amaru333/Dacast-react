@@ -22,7 +22,6 @@ export const LiveSubRoutes: Routes[] = [
         path: '/engagement',
         name: 'Engagement',
         component: LiveEngagement,
-        associatePrivilege: 'privilege-advertising'
     },
     {
         path: '/security',

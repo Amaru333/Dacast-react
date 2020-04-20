@@ -25,12 +25,13 @@ export const VideoSubRoutes: Routes[] = [
         name: 'Paywall',
         iconName: null,
         component: VodPaywall,
+        associatePrivilege: 'privilege-paywall'
     },
     {
         path: '/engagement',
         name: 'Engagement',
         iconName: null,
-        component: VodEngagement,
+        component: VodEngagement
     },
     {
         path: '/security',

@@ -114,12 +114,9 @@ const AppContent = () => {
 
     const returnRouter = (props: Routes[]) => {
         return (
-            props.map((route: Routes, i: number) => {
+            props.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((route: Routes, i: number) => {
                 if (route.isPublic) {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
-                }
-                if(false && route.associatePrivilege && !getPrivilege(route.associatePrivilege)) {
-                    return;
                 }
                 if (!route.slug) {
                     return <PrivateRoute key={i.toString()}
@@ -128,7 +125,7 @@ const AppContent = () => {
                         component={route.component}
                     />
                 } else {
-                    return route.slug.map((subroute, index) => {
+                    return route.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subroute, index) => {
                         return <PrivateRoute key={'subroute' + index}
                             path={subroute.path}
                             component={subroute.component}

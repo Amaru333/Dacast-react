@@ -176,7 +176,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.map((subMenuElement, index) => {
+                                {element.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>

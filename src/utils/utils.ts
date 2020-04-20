@@ -33,7 +33,6 @@ export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimal
 }
 
 export const getPrivilege = (privilege: Privilege) => {
-    console.log(getUserInfoItem(privilege));
     //Remove this by updating type on backend
     return getUserInfoItem(privilege) === 'true';
 }
