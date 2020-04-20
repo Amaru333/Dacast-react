@@ -7,8 +7,9 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { getPrivilege } from '../../../utils/utils';
 
-export const AddStreamModal = (props: {toggle: () => void; opened: boolean; privileges: UserAccountPrivileges}) => {
+export const AddStreamModal = (props: {toggle: () => void; opened: boolean}) => {
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(null)
@@ -28,7 +29,7 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean; priv
             <ModalContent>
                 <StreamTypeSelectorContainer className="flex col col-12 mt25">
 
-                    { props.privileges.standard ?
+                    { getPrivilege('privilege-live') &&
                         <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
                             <StreamTypeSelectorContents>
                                 <IconStyle className="mb2">videocam</IconStyle>
@@ -36,38 +37,38 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean; priv
                                 <Text className="mt2" size={14}>Web, Mobile &amp; TV</Text>
                             </StreamTypeSelectorContents>
                             
-                        </StreamTypeSelector> : null
+                        </StreamTypeSelector>
                     }
 
-                    { props.privileges.compatible ?   
+                    { getPrivilege('privilege-unsecure-m3u8') &&
                         <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
                             <StreamTypeSelectorContents>
                                 <IconStyle className="mb2">desktop_windows</IconStyle>
                                 <Text size={16} weight="med">Compatible</Text>
                                 <Text className="mt2" size={14}>Native Apps</Text>
                             </StreamTypeSelectorContents>
-                        </StreamTypeSelector> : null
+                        </StreamTypeSelector> 
                     }
 
-                    { props.privileges.premium ? 
+                    { getPrivilege('privilege-china') &&
                         <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
                             <StreamTypeSelectorContents>
                                 <IconStyle className="mb2">public</IconStyle>
                                 <Text size={16} weight="med">Premium</Text>
                                 <Text className="mt2" size={14}>Standard + China</Text>
                             </StreamTypeSelectorContents>
-                        </StreamTypeSelector> : null}
+                        </StreamTypeSelector>}
 
                 </StreamTypeSelectorContainer>
 
-                {  props.privileges.rewind ?  
+                {  getPrivilege('privilege-dvr') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
                             <Toggle onChange={() => {setStreamSetupOptions({...streamSetupOptions, rewind: !streamSetupOptions.rewind})}} label="30 Minute Rewind" />
                         </div>
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
-                    </div> : null}
+                    </div>}
                 
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>

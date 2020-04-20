@@ -1,3 +1,5 @@
+import { Privilege } from '../../constants/PrivilegesName';
+
 export interface MainMenuSpecificProps {
     routes: Routes[]; 
     history: any;
@@ -31,6 +33,7 @@ export interface Routes {
     slug?: Routes[];
     isExact?: boolean;
     isPublic?: boolean;
+    associatePrivilege?: Privilege;
     notDisplayedInNavigation?: boolean;
 }
 

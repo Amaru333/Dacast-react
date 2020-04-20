@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
+import { Privilege } from '../app/constants/PrivilegesName';
+import { getUserInfoItem } from '../app/utils/token';
 
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
@@ -19,6 +21,11 @@ export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimal
     return numeral(num).format(formatNumeral);
 }
 
+export const getPrivilege = (privilege: Privilege) => {
+    console.log(getUserInfoItem(privilege));
+    //Remove this by updating type on backend
+    return getUserInfoItem(privilege) === 'true';
+}
 
 
 export function readableBytes(size: number): string {
