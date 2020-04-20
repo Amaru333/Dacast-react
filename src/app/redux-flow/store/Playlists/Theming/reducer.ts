@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { defaultPlaylistTheme, PlaylistTheme, ActionTypes } from './types';
+import { ActionTypes } from './types';
 import { Action } from './actions';
 import { ContentTheme, defaultStateContentTheme } from '../../Settings/Theming';
 

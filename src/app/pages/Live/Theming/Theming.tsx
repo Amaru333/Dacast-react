@@ -1,18 +1,8 @@
 import React from 'react';
-import { ThemingContainer, ControlsCard, TitleSection, DisabledSection, TextStyle, BorderStyle, PlayerSection, PlayerContainer } from '../../../shared/Theming/ThemingStyle';
-import { Text } from '../../../../components/Typography/Text';
+import { ThemingContainer, PlayerSection, PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { IconStyle } from '../../../../shared/Common/Icon';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { Bubble } from '../../../../components/Bubble/Bubble';
-import { Toggle } from '../../../../components/Toggle/toggle';
-import { ColorPicker } from '../../../../components/ColorPicker/ColorPicker';
 import { LiveThemingComponentProps } from '../../../containers/Live/Theming';
-import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
@@ -20,13 +10,9 @@ import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard
 export const LiveThemingPage = (props: LiveThemingComponentProps) => {
 
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(props.theme.selectedTheme);
-    const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
-
-    const togglePadding = 'py1';
 
     let playerRef = React.useRef<HTMLDivElement>(null);
     
-
     let player = usePlayer(playerRef, '1552_f_297509');
 
     const handleThemeSave = () => {

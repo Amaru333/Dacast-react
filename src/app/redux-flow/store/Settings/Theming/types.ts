@@ -27,7 +27,6 @@ export interface ThemeOptions {
     downloadButton: boolean;
     socialSharing: boolean;
     embedCode: boolean;
-    playerTransparency: boolean;
     customOverlayColor: string;
     customMenuColor: string;
     autoplay: boolean;
@@ -65,25 +64,24 @@ export const defaultTheme: ThemeOptions = {
     isDefault: false,
     createdDate: 980989080,
     themeType: 'vod',
-    bigPlayButton: false,
-    playerControls: false,
-    scrubbingThumbnail: false,
-    thumbnailPosition: 'left',
+    bigPlayButton: true,
+    playerControls: true,
+    scrubbingThumbnail: true,
+    thumbnailPosition: 'right',
     isViewerCounterEnabled: false,
     viewerCounterLimit: 100,
     downloadButton: false,
     socialSharing: false,
     embedCode: false,
-    playerTransparency: false,
-    customOverlayColor: '',
-    customMenuColor: '',
+    customOverlayColor: '#000000',
+    customMenuColor: '#ffffff',
     autoplay: false,
     startVideoMuted: false,
     looping: false,
     continuousPlay: false,
     skipVideos: false,
-    offlineMessage: '',
-    offlineMessagePosition: '',
+    offlineMessage: 'Sorry this media is offline',
+    offlineMessagePosition: 'Top',
     deliveryMethod: 'compatible',
     regionSettings: 'standard'
 }

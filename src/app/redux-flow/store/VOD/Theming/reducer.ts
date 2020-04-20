@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { defaultVodTheme, ActionTypes } from './types';
+import { ActionTypes } from './types';
 import { Action } from './actions';
 import { defaultStateContentTheme, ContentTheme } from '../../Settings/Theming';
 

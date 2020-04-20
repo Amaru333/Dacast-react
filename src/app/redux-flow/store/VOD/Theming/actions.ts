@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { VodTheme, ActionTypes } from "../Theming/types"
+import { ActionTypes } from "../Theming/types"
 import { VodThemingServices } from './services';
 import { ContentTheme } from '../../Settings/Theming/types';
 
@@ -27,7 +27,7 @@ export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodThem
     };
 }
 
-export const saveVodThemeAction = (data: VodTheme): ThunkDispatch<Promise<void>, {}, SaveVodTheme> => {
+export const saveVodThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SaveVodTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
         await VodThemingServices.saveVodThemeService(data)
             .then( response => {

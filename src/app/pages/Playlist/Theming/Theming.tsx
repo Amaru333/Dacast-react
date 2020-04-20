@@ -1,16 +1,7 @@
 import React from 'react';
-import { ThemingContainer, TitleSection, TextStyle, BorderStyle, PlayerSection, PlayerContainer, DisabledSection, ControlsCard } from '../../../shared/Theming/ThemingStyle';
+import { ThemingContainer, PlayerSection, PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { IconStyle } from '../../../../shared/Common/Icon';
-import { Text } from '../../../../components/Typography/Text';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
-import { Toggle } from '../../../../components/Toggle/toggle';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { ColorPicker } from '../../../../components/ColorPicker/ColorPicker';
-import { Bubble } from '../../../../components/Bubble/Bubble';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { PlaylistThemingComponentProps } from '../../../containers/Playlists/Theming';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
@@ -20,9 +11,6 @@ export const PlaylistThemingPage = (props: PlaylistThemingComponentProps) => {
     
     
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(props.theme.selectedTheme);
-    const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
-
-    const togglePadding = 'py1';
 
     let playerRef = React.useRef<HTMLDivElement>(null);
 

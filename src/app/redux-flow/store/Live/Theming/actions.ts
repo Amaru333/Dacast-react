@@ -1,6 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { showToastNotification } from '../../Toasts';
-import { LiveTheme, ActionTypes } from './types';
+import { ActionTypes } from './types';
 import { ApplicationState } from '../..';
 import { LiveThemingServices } from './services';
 import { ContentTheme } from '../../Settings/Theming';
@@ -27,7 +27,7 @@ export const getLiveThemeAction = (): ThunkDispatch<Promise<void>, {}, GetLiveTh
     };
 }
 
-export const saveLiveThemeAction = (data: LiveTheme): ThunkDispatch<Promise<void>, {}, SaveLiveTheme> => {
+export const saveLiveThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SaveLiveTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveTheme> ) => {
         await LiveThemingServices.saveLiveThemeService(data)
             .then( response => {

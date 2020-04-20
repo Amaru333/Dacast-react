@@ -1,18 +1,12 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, BorderStyle, TextStyle, TitleSection, Heading, ControlsCard } from '../../../shared/Theming/ThemingStyle'
+import { ThemingContainer, PlayerSection, PlayerContainer, TextStyle } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../../components/Card/Card';
-import { Toggle } from '../../../../components/Toggle/toggle';
 import { Text } from '../../../../components/Typography/Text';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
-import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { ColorPicker } from '../../../../components/ColorPicker/ColorPicker';
-import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
+import { ThemeOptions, defaultTheme } from '../../../redux-flow/store/Settings/Theming';
 import { usePlayer } from '../../../utils/player';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
@@ -23,42 +17,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
-    const newTheme: ThemeOptions = {
-        id: "-1",
-        themeName: '',
-        isDefault: false,
-        createdDate: 0,
-        themeType: 'vod',
-        bigPlayButton: true,
-        playPause: true,
-        scrubber: true,
-        scrubbingThumbnail: false,
-        timeCode: true,
-        speedControls: true,
-        qualityOptions: true,
-        volume: true,
-        fullscreen: true,
-        thumbnailPosition: 'left',
-        isViewerCounterEnabled: false,
-        viewerCounterLimit: 100,
-        downloadButton: false,
-        socialSharing: false,
-        embedCode: false,
-        playerTransparency: false,
-        customMenuColor: '',
-        customOverlayColor: '',
-        autoplay: false,
-        startVideoMuted: false,
-        looping: false,
-        continuousPlay: false,
-        skipVideos: false,
-        offlineMessage: 'Sorry this media is offline',
-        deliveryMethod: 'compatible',
-        regionSettings: 'standard'
-    };
-
-    const togglePadding = 'py1';
-    const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false);
 
     let playerRef = React.useRef<HTMLDivElement>(null);
 
@@ -103,7 +61,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 {cell: <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>},
                 {cell: <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
                 {cell: <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created Date</Text>},
-                {cell: <Button className='right sm-show mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>}
+                {cell: <Button className='right sm-show mr2' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>}
             ]}
         }
 
@@ -127,7 +85,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     <IconStyle className="mr1">info_outlined</IconStyle> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
                 </div>
-                <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
+                <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
                 <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />
             </Card>
         )

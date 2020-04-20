@@ -1,7 +1,6 @@
 import React from 'react';
 import { LiveThemingPage } from '../../pages/Live/Theming/Theming';
-import { ThemeOptions, ThemesData, Action, getThemingListAction, ContentTheme } from '../../redux-flow/store/Settings/Theming';
-import { LiveTheme } from '../../redux-flow/store/Live/Theming/types';
+import { ThemesData, Action, getThemingListAction, ContentTheme } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
@@ -10,6 +9,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { handleCustomTheme } from '../../shared/Theming/handleCustomTheme';
 
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
@@ -35,47 +35,8 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
     
     React.useEffect(() => {
-        if (props.theme && props.themeList) {
-            let customTheme: ThemeOptions = {
-
-                id: "custom",
-                themeName: 'Custom Theme',
-                isDefault: props.theme.selectedTheme.isDefault,
-                createdDate: props.theme.selectedTheme.createdDate,
-                themeType: props.theme.selectedTheme.themeType,
-                bigPlayButton: props.theme.selectedTheme.bigPlayButton,
-                playPause: props.theme.selectedTheme.playPause,
-                scrubber: props.theme.selectedTheme.scrubber,
-                scrubbingThumbnail: props.theme.selectedTheme.scrubbingThumbnail,
-                timeCode: props.theme.selectedTheme.timeCode,
-                speedControls: props.theme.selectedTheme.speedControls,
-                qualityOptions: props.theme.selectedTheme.qualityOptions,
-                volume: props.theme.selectedTheme.volume,
-                fullscreen: props.theme.selectedTheme.fullscreen,
-                thumbnailPosition: props.theme.selectedTheme.thumbnailPosition,
-                isViewerCounterEnabled: props.theme.selectedTheme.isViewerCounterEnabled,
-                viewerCounterLimit: props.theme.selectedTheme.viewerCounterLimit,
-                downloadButton: props.theme.selectedTheme.downloadButton,
-                socialSharing: props.theme.selectedTheme.socialSharing,
-                embedCode: props.theme.selectedTheme.embedCode,
-                playerTransparency: props.theme.selectedTheme.playerTransparency,
-                customMenuColor: props.theme.selectedTheme.customMenuColor,
-                customOverlayColor: props.theme.selectedTheme.customOverlayColor,
-                autoplay: props.theme.selectedTheme.autoplay,
-                startVideoMuted: props.theme.selectedTheme.startVideoMuted,
-                looping: props.theme.selectedTheme.looping,
-                continuousPlay: props.theme.selectedTheme.continuousPlay,
-                skipVideos: props.theme.selectedTheme.skipVideos,
-                offlineMessage: props.theme.selectedTheme.offlineMessage,
-                deliveryMethod: props.theme.selectedTheme.deliveryMethod,
-                regionSettings: props.theme.selectedTheme.regionSettings
-            };
-
-            let customThemeList = props.themeList.themes
-            customThemeList.push(customTheme)
-            setCustomThemeList({themes: customThemeList})
-        }  
-    }, [props.themeList, props.theme])
+        handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
+   }, [props.themeList, props.theme])
     
     return (
         props.theme && customThemeList ?
@@ -97,7 +58,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveTheme: () => {
             dispatch(getLiveThemeAction());
         },
-        saveLiveTheme: (theme: LiveTheme) => {
+        saveLiveTheme: (theme: ContentTheme) => {
             dispatch(saveLiveThemeAction(theme));
         },
         getThemingList: () => {

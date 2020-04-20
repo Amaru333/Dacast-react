@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { PlaylistTheme, ActionTypes } from "../Theming/types"
+import { ActionTypes } from "../Theming/types"
 import { PlaylistThemingServices } from './services';
 import { ContentTheme } from '../../Settings/Theming/types';
 
@@ -27,7 +27,7 @@ export const getPlaylistThemeAction = (): ThunkDispatch<Promise<void>, {}, GetPl
     };
 }
 
-export const savePlaylistThemeAction = (data: PlaylistTheme): ThunkDispatch<Promise<void>, {}, SavePlaylistTheme> => {
+export const savePlaylistThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SavePlaylistTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistTheme> ) => {
         await PlaylistThemingServices.savePlaylistThemeService(data)
             .then( response => {
