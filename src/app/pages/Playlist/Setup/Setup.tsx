@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
+import { useOutsideAlerter } from '../../../../utils/utils';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
@@ -34,7 +35,14 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [playlistSettingsOpen, setPlaylistSettingsOpen] = React.useState<boolean>(false);
 
-    const [sortSettings, setSortSetttings] = React.useState<string>("Sort");
+    const [sortSettings, setSortSettings] = React.useState<string>("Sort");
+    const sortDropdownRef = React.useRef<HTMLUListElement>(null);
+
+    useOutsideAlerter(sortDropdownRef, () => {
+        setDropdownIsOpened(!dropdownIsOpened)
+    })
+
+    React.useEffect(() => {setDropdownIsOpened(false)}, [sortSettings])
 
     React.useEffect(() => {
         if(!selectedFolder) {
@@ -205,23 +213,25 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const bulkActions = [
-        { name: 'Name (A-Z)', function: () => setSortSetttings('Name (A-Z)') },
-        { name: 'Name (Z-A)', function: () => setSortSetttings('Name (Z-A)') },
-        { name: 'Date Created (Newest First)', function: () => setSortSetttings('Date Created (Newest First)') },
-        { name: 'Date Created (Oldest First)', function: () => setSortSetttings('Date Created (Oldest First)') },
-        { name: 'Custom', function: () => setSortSetttings('Custom') },
+        { name: 'Name (A-Z)', function: () => setSortSettings('Name (A-Z)') },
+        { name: 'Name (Z-A)', function: () => setSortSettings('Name (Z-A)') },
+        { name: 'Date Created (Newest First)', function: () => setSortSettings('Date Created (Newest First)') },
+        { name: 'Date Created (Oldest First)', function: () => setSortSettings('Date Created (Oldest First)') },
+        { name: 'Custom', function: () => setSortSettings('Custom') },
     ]
 
 
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
+            
             return (
                 <DropdownItem
                     isSingle
                     key={item.name}
+                    id={item.name}
                     className={key === 1 ? 'mt1' : ''}
-                    isSelected={false}
+                    isSelected={sortSettings === item.name}
                     onClick={() => item.function()}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
@@ -234,14 +244,14 @@ export const SetupPage = (props: SetupComponentProps) => {
             <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => {setSelectedTab(selectedTab === "content" ? 'folders' : 'content');setSelectedItems([]); }} />
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() =>setPlaylistSettingsOpen(false)} />
             <div className="flex items-center">
-                <div className="inline-flex items-center flex col-7 mb2">
+                <div className="inline-flex items-center flex col-7 mb1">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings}</Button>
-                        <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                        <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
                     </div>  
@@ -281,8 +291,8 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative mt2 mr1 right" sizeButton="small" typeButton="primary" >Save</Button>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative mt2 right" sizeButton="small" typeButton="tertiary" >Discard</Button>
+            <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
+            <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
         </>
     )
 }

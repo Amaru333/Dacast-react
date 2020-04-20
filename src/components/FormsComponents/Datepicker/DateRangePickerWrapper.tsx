@@ -25,7 +25,7 @@ export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Functio
                     return (
                         <Button
                             key={text}
-                            className='mx1 mb2'
+                            className='ml1 mb2'
                             typeButton='secondary'
                             buttonColor='blue'
                             sizeButton='small'
