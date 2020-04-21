@@ -3,7 +3,7 @@ import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../../utils/utils';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
-import { VodItem } from '../../../redux-flow/store/VOD/General/types';
+import { VodItem, SearchResult } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { VideoTabs } from '../../../containers/Videos/VideoTabs';
@@ -21,7 +21,7 @@ import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 export interface VideosListProps {
-    items: VodItem[];
+    items: SearchResult;
     themesList: ThemeOptions[];
     getVodList: Function;
     deleteVodList: Function;
@@ -66,10 +66,10 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListHeaderElement = () => {
         return {data: [
-            {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.length} defaultChecked={selectedVod.length === props.items.length} id="globalCheckboxVodList"
+            {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.totalResults} defaultChecked={selectedVod.length === props.items.totalResults} id="globalCheckboxVodList"
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
-                        const editedSelectedVod = props.items.map(item => { return item.id })
+                        const editedSelectedVod = props.items.results.map(item => { return item.objectID })
                         setSelectedVod(editedSelectedVod);
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedVod([])
@@ -88,35 +88,35 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListBodyElement = () => {
         if (props.items) {
-            return props.items.map((value) => {
+            return props.items.results.map((value) => {
                 return {data: [
-                    <div key={"checkbox" + value.id} className='flex items-center'>
-                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedVod.includes(value.id)} id={"checkboxVod" + value.id.toString()} onChange={(event) => {
-                            if (event.currentTarget.checked && selectedVod.length < props.items.length) {
-                                setSelectedVod([...selectedVod, value.id])
+                    <div key={"checkbox" + value.objectID} className='flex items-center'>
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedVod.includes(value.objectID)} id={"checkboxVod" + value.objectID.toString()} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedVod.length < props.items.totalResults) {
+                                setSelectedVod([...selectedVod, value.objectID])
                             } else {
-                                const editedSelectedVod = selectedVod.filter(item => item !== value.id)
+                                const editedSelectedVod = selectedVod.filter(item => item !== value.objectID)
                                 setSelectedVod(editedSelectedVod);
                             }
                         }
                         } />
-                        <img className="pl2" key={"thumbnail" + value.id} width={50} height={42} src={value.thumbnail} />
+                        <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} />
                     </div>,
-                    <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                    <Text key={"size" + value.id} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
-                    <Text key={"views" + value.id} size={14} weight="reg" color="gray-1">{value.views}</Text>,
-                    <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.online ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <div className='flex'>{handleFeatures(value, value.id.toString())}</div>,
-                    <div key={"more" + value.id} className="iconAction right mr2" >
-                        <ActionIcon id={"editTooltip" + value.id}>
+                    <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                    <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
+                    <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
+                    <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === 'online' ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
+                    <div className='flex'>{value.features ? handleFeatures(value, value.objectID.toString()) : null}</div>,
+                    <div key={"more" + value.objectID} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.objectID}>
                             <IconStyle onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
-                        <ActionIcon id={"deleteTooltip" + value.id}>
+                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.objectID}>
                             <IconStyle onClick={() => { props.deleteVodList(value.title);props.showVodDeletedToast(`${value.title} has been deleted`, 'flexible', "success") }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>  
+                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>  
                     </div>,
                 ], 
                 callback: (value: VodItem) => {setSelectedVodId(value); setShowVodTabs(true) },
@@ -144,7 +144,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     return (
         showVodTabs ?
-            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' && selectedVodId ? selectedVodId.id.toString() : location.pathname.split('/')[2]} />
+            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' && selectedVodId ? selectedVodId.objectID.toString() : location.pathname.split('/')[2]} />
             :
             <>
             <div className='flex items-center mb2'>
@@ -171,7 +171,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
                 
                 <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
-                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
                 <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />

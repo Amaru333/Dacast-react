@@ -143,15 +143,15 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </header>
                         <Toggle
                             className="col col-12 mt2 pb2"
-                            defaultChecked={VodDetails.online}
-                            onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, ["online"]: !videoIsOnline }) }}
+                            defaultChecked={VodDetails.metadata.online}
+                            onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, metadata: {...VodDetails.metadata, online: !videoIsOnline }}) }}
                             label="Video Online"
                         />
                         <Input
                             className="col col-6 pr2"
                             label="Title"
-                            value={VodDetails.title}
-                            onChange={event => setVodDetails({ ...VodDetails, ["title"]: event.currentTarget.value })}
+                            value={VodDetails.metadata.title}
+                            onChange={event => setVodDetails({...VodDetails , metadata: {...VodDetails.metadata, title: event.currentTarget.value }})}
                         />
                         <InputTags
                             className="col col-6"
@@ -164,16 +164,16 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             className="col col-6 pr2 pt2"
                             type="textarea"
                             label="Description"
-                            value={VodDetails.description}
-                            onChange={event => setVodDetails({ ...VodDetails, ["description"]: event.currentTarget.value })}
+                            value={VodDetails.metadata.description}
+                            onChange={event => setVodDetails({ ...VodDetails, metadata: {...VodDetails.metadata, description: event.currentTarget.value }})}
                         />
                         <div className="col col-3 pt2 flex flex-column">
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{props.vodDetails.metadata.id}</LinkText>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.metadata.id)}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -270,7 +270,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         <Text className="col col-12" size={20} weight="med">Subtitles</Text>
                         <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
                     </div>
-                    {(props.vodDetails.subtitles.length === 0) ?
+                    {(!props.vodDetails.subtitles) ?
                         <Table className="col col-12" headerBackgroundColor="gray-10" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
                         : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
                     }

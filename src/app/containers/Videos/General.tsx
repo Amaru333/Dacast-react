@@ -7,6 +7,7 @@ import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUp
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { useParams } from 'react-router-dom';
 
 
 interface GeneralProps {
@@ -24,9 +25,12 @@ interface GeneralProps {
 
 const General = (props: GeneralProps) => {
 
+    let { vodId } = useParams()
+
     React.useEffect(() => {
         if (!props.vodDetails) {
-            props.getVodDetails();
+            console.log(vodId)
+            props.getVodDetails('f99c7752-a941-6496-bd73-0ec776b8664e');
         }
     }, [])
 
@@ -48,8 +52,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodDetails: () => {
-            dispatch(getVodDetailsAction());
+        getVodDetails: (vodId: string) => {
+            dispatch(getVodDetailsAction(vodId));
         },
         editVodDetails: (data: VodDetails) => {
             dispatch(editVodDetailsAction(data));

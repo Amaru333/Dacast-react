@@ -14,13 +14,15 @@ export enum ActionTypes {
     CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER",
     DELETE_VOD_POSTER = "@@vod_general/DELETE_VOD_POSTER"
 }
-
-export interface VodDetails {
+export interface VodMetadata {
     id: string;
     online: boolean;
     title: string;
-    folder: string[];
     description: string;
+}
+export interface VodDetails {
+    metadata: VodMetadata;
+    folder?: string[];
     thumbnail: string;
     splashscreen: string;
     poster?: string;
@@ -28,14 +30,24 @@ export interface VodDetails {
 }
 
 export interface VodItem {
-    id: string;
-    online: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
     size: number;
-    views: number;
-    thumbnail: string;
-    created: number;
-    features: FeaturesList;
+    views?: number;
+    duration: number;
+    thumbnail?: string;
+    createdAt: number;
+    features?: FeaturesList;
+}
+
+export interface SearchResult {
+    results: VodItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }
 
 export interface SubtitleInfo {

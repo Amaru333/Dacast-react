@@ -9,8 +9,9 @@ import { TabsContainer } from '../../shared/TabsStyle';
 import { VodItem } from '../../redux-flow/store/VOD/General/types';
 
 export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoTabs: Function}) => {
-    const {path} = useRouteMatch();
+    const {url} = useRouteMatch();
     let history = useHistory()
+
     React.useEffect(() => {
         if(location.pathname === '/videos') {
             history.push('/videos/'+props.videoId+'/general')
@@ -20,7 +21,7 @@ export const VideoTabs = (props: {video: VodItem; videoId: string; setShowVideoT
     const handleVideoSubRoutes = () => {
         return VideoSubRoutes.map((route) => {
             return {
-                ...route, path: path + '/' + props.videoId + route.path
+                ...route, path: url + '/' + props.videoId + route.path
             }
         })
     }

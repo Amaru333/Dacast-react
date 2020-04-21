@@ -1,4 +1,4 @@
-import { ActionTypes, VodDetails, SubtitleInfo, ThumbnailUpload, VodItem, SplashscreenUpload, PosterUpload } from "./types";
+import { ActionTypes, VodDetails, SubtitleInfo, ThumbnailUpload, VodItem, SplashscreenUpload, PosterUpload, SearchResult } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -6,12 +6,12 @@ import { VodGeneralServices } from './services';
 
 export interface GetVodDetails {
     type: ActionTypes.GET_VOD_DETAILS;
-    payload: VodDetails;
+    payload: {data: VodDetails};
 }
 
 export interface GetVodList {
     type: ActionTypes.GET_VOD_LIST;
-    payload: VodItem[];
+    payload: {data: SearchResult};
 }
 
 export interface EditVodDetails {
@@ -79,9 +79,9 @@ export const deleteVodAction = (name: string): DeleteVod => {
     }
 }
 
-export const getVodDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetVodDetails> => {
+export const getVodDetailsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetVodDetails>) => {
-        await VodGeneralServices.getVodDetailsService()
+        await VodGeneralServices.getVodDetailsService(vodId)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_VOD_DETAILS, payload: response.data });
             })
