@@ -6,7 +6,7 @@ const reducer: Reducer<ChapterMarkerInfos> = (state = defaultStateChapter, actio
     switch (action.type) {
         case ActionTypes.GET_VOD_CHAPTER_MARKERS:
             return {
-                ...state, chapterMarkers: action.payload
+                ...state, chapterMarkers: action.payload.map((chapter, i) => {return {...chapter, id: chapter.text + i.toString()}})
             };
         case ActionTypes.SAVE_VOD_CHAPTER_MARKER:
             return {
@@ -22,7 +22,7 @@ const reducer: Reducer<ChapterMarkerInfos> = (state = defaultStateChapter, actio
             };
         case ActionTypes.ADD_VOD_CHAPTER_MARKER:
             let newArray = state.chapterMarkers.slice()
-            newArray.splice(newArray.length, 0, action.payload)
+            newArray.splice(newArray.length, 0, {...action.payload, id: action.payload.text + (newArray.length + 1)})
             return {
                 ...state, 
                 chapterMarkers: newArray

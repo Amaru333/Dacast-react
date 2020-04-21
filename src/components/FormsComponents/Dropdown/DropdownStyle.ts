@@ -49,7 +49,7 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']}
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch: boolean}>`
+export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
     display: none;
     position: absolute;
     z-index: 999;

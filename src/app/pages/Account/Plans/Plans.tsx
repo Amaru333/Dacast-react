@@ -23,6 +23,7 @@ import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx2';
+    const customInfoIconSize = 16;
     const fullSteps = [PlanStepperFirstStep, PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep];
     const developerPlanSteps = [PlanStepperThirdStep, PlanStepperFourthStep];
     const eventPlanSteps = [PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep]
@@ -70,42 +71,42 @@ export const PlansPage = (props: PlansContainerProps) => {
                 !isMobile ?
                     <AllowancesList className={marginBlocks}>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconData' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconData' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconData'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>Data</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconStorage' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconStorage' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconStorage'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>Storage</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconPhoneSupport' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconPhoneSupport' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconPhoneSupport'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>24/7 Phone Support</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconPaywall' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconPaywall' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconPaywall'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconAds' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconAds' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconAds'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconAes' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconAes' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconAes'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>AES for VOD</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconM3u8' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconM3u8' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconM3u8'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
                         </div>
                         <div className='flex items-center'>
-                            <IconStyle style={{paddingRight: 10}}  id='iconChina' coloricon='gray-5'>info_outlined</IconStyle>
+                            <IconStyle customsize={customInfoIconSize} className="mr1"  id='iconChina' coloricon='gray-5'>info_outlined</IconStyle>
                             <Tooltip target='iconChina'>Lorem ipsum</Tooltip>
                             <Text className={textClassName} size={14} weight='med' color='gray-1'>China</Text>
                         </div>

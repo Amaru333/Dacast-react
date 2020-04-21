@@ -63,7 +63,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
         <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
-                    <InputRadio name="addThumbnail" value="upload" label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
+                    <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
@@ -81,7 +81,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                     </div>
                 </RadioButtonOption>
                 <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
-                    <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
+                    <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                     <div className="col col-12">

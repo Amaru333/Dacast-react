@@ -30,7 +30,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             buttonColor: '#2899F6',
             primaryColor: '#2899F6',
             headerColor: '#2899F6',
-            hasCompanyLogo: false
+            hasCompanyLogo: true
         }
     }
     const [selectedTheme, setSelectedTheme] = React.useState<PaywallTheme>(newTheme);

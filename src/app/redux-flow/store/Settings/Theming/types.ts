@@ -67,7 +67,7 @@ export const defaultTheme: ThemeOptions = {
     bigPlayButton: true,
     playerControls: true,
     scrubbingThumbnail: true,
-    thumbnailPosition: 'right',
+    thumbnailPosition: 'Top',
     isViewerCounterEnabled: false,
     viewerCounterLimit: 100,
     downloadButton: false,

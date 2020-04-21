@@ -213,7 +213,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
 
                 <DisabledSection enabled={playlistEnabled}>
                     <TextStyle className="py2" ><Text size={20} weight='med'>Playlists</Text></TextStyle>
-                    <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Left': false, 'Right': false}} dropdownDefaultSelect={props.selectedTheme.thumbnailPosition} callback={(value: string) => {{props.setSelectedTheme({...props.selectedTheme, thumbnailPosition: value});}}} />
+                    <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Top': false, 'Left': false, 'Right': false, 'Bottom': false}} dropdownDefaultSelect={props.selectedTheme.thumbnailPosition} callback={(value: string) => {{props.setSelectedTheme({...props.selectedTheme, thumbnailPosition: value});}}} />
 
                     <ControlToggleContainer>
                         <Toggle className={togglePadding} label='Continuous Play' defaultChecked={props.selectedTheme.continuousPlay} onChange={() => {props.setSelectedTheme({...props.selectedTheme, continuousPlay: !props.selectedTheme.continuousPlay});}} />

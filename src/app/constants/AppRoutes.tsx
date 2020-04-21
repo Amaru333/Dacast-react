@@ -35,6 +35,7 @@ import Uploader from '../containers/Videos/Uploader';
 import ForgotPassword from '../containers/Register/ForgotPassword';
 import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
 import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
+import General from '../containers/Videos/General';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -100,6 +101,14 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-vod',
         iconName: 'play_arrow',
         component: VodList,
+    },
+    {
+        path: '/videos/:vodId/general',
+        name: 'General',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: General,
     },
     {
         path: '/folders',

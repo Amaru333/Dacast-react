@@ -17,6 +17,7 @@ import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../../utils/utils';
+import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -119,23 +120,23 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         <div>
             <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
             { getPrivilege('privilege-advertising') && 
-                <Card className='my2'>
-                    <Text className="pb2" size={20} weight='med'>Advertising</Text>
-                    <Toggle id='advertisingEnabled' defaultChecked={interactionInfos.adEnabled} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
-                    
-                    <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    <div className='flex mb2'>
-                        <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
-                    </div>
-                    <div className="clearfix mb2">
-                        <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                        <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-                    </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
-                            
-                </Card>
-            }
+            <Card className='my2'>
+                <Text className="pb2" size={20} weight='med'>Advertising</Text>
+                <DisabledSection settingsEditable={props.interactionsInfos.adList.length > 1}>
+                <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adList.length > 1 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
+                </DisabledSection>
+                <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                <div className='flex mb2'>
+                    <IconStyle className="mr1">info_outlined</IconStyle>
+                    <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                </div>
+                <div className="clearfix mb2">
+                    <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                    <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                </div>
+                <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        
+            </Card>}
 
             <Card className='my2'>
                 <TextStyle> <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
