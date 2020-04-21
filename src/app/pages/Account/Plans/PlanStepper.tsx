@@ -34,7 +34,7 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
                     [   
                         <div className='flex items-center'>
                             <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                            <DropdownButton className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
+                            <DropdownButton style={{maxHeight: 30}} className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.paymentFrequency}></DropdownButton>
                         </div>
                         ,
                         <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.firstStep.included.price).toLocaleString()}</Text>

@@ -17,6 +17,11 @@ import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
+import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -29,7 +34,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
     const emptyMailCatcher: MailCatcher = {
         type: "",
-        isDefault: false
+        isDefault: false,
+        placement: "",
+        position: ""
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -62,6 +69,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     let playerRef = React.useRef<HTMLDivElement>(null);
 
     let player = usePlayer(playerRef, '1552_f_297509');
+
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
 
 
     React.useEffect(() => {
@@ -148,6 +157,51 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 </div> */}
                 <Button className='xs-show col col-12' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
                 <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
+            </Card>
+
+            <Card className="my2">
+            <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>
+            <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the player.</Text>
+            
+            
+            <div className="lg-col lg-col-12 mb1 flex">
+            <div className="lg-col lg-col-6 mr2">
+            <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => {}}>  
+                        { uploadedFileUrl ? 
+                        <>
+                            {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                        <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue'>Delete</Button>
+                        <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' >Upload</Button>
+                        </>
+                            :
+                        <>
+                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                        <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                        <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                        <ButtonStyle className='my1'>
+                            <Button style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                <label htmlFor='browseButton'>
+                                    <LinkStyle>
+                                        <input type='file' style={{display:'none'}} id='browseButton' />
+                                        Browse Files
+                                    </LinkStyle>
+                                </label>
+                            </Button>
+                        </ButtonStyle>
+                        </>
+                        } 
+                    </DragAndDrop>
+                    <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                    </div>
+                    <div className="col col-6">
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}}></DropdownSingle>
+                        <Input className="col col-4 pr2" label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" />
+                    </div>
+                </div>
+                
             </Card>
 
             <Card className='my2'>

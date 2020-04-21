@@ -141,6 +141,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             startDateTime === "Set Date and Time" ?
                                                 <>
                                                     <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' callback={(date: string, ms: number) => {setSecurityDetails({...securityDetails, contentScheduling: {...securityDetails.contentScheduling, startTime: ms}})}} />
+                                                    <Input
+                                                        type='time'
+                                                        defaultValue={props.securityDetails.contentScheduling.startTime ? props.securityDetails.contentScheduling.startTime.toString() : '00:00:00'}
+                                                        className='col col-3 md-col-2 mt2'
+                                                        disabled={false}
+                                                        id='endTime'
+                                                        pattern="[0-9]{2}:[0-9]{2}"
+                                                        required
+                                                    />
                                                 </>
                                                 : null
                                         }
@@ -153,6 +162,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             endDateTime === "Set Date and Time" ?
                                                 <>
                                                     <DateSinglePickerWrapper date={moment()} className='col col-4 md-col-3 mr2 mt2' callback={(date: string, ms: number) => {setSecurityDetails({...securityDetails, contentScheduling: {...securityDetails.contentScheduling, endTime: ms}})}}  />
+                                                    <Input
+                                                        type='time'
+                                                        defaultValue={props.securityDetails.contentScheduling.endTime ? props.securityDetails.contentScheduling.endTime.toString() : '00:00:00'}
+                                                        className='col col-3 md-col-2 mt2'
+                                                        disabled={false}
+                                                        id='endTime'
+                                                        pattern="[0-9]{2}:[0-9]{2}"
+                                                        required
+                                                    />
                                                 </> : null
                                         }
                                     </div>
