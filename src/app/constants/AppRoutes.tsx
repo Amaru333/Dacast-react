@@ -104,6 +104,8 @@ export const AppRoutes: Routes[] = [
         path: '/videos/:vodId/general',
         name: 'General',
         iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
         component: General,
     },
     {
