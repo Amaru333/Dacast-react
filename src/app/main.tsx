@@ -29,6 +29,8 @@ import Dashboard from './containers/Dashboard/Dashboard';
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
+import { Privilege } from './constants/PrivilegesName';
+import { NotFound } from './containers/404page';
 
 // Any additional component props go here.
 interface MainProps {
@@ -88,10 +90,13 @@ const AppContent = () => {
         }
     };
 
-    const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean }) => {
+    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
 
-        return (
-            isLoggedIn() ?
+        if(isLoggedIn()) {
+            if(props.associatePrivilege && getPrivilege(props.associatePrivilege)) {
+                return <NotFound />
+            }
+            return (
                 <Route
                     path={props.path}
                     exact={props.exact ? true : false}
@@ -105,29 +110,31 @@ const AppContent = () => {
                         <div id="navigationConfirmationModal"></div>
                     </FullContent>
                 </Route>
-                :
-                <Redirect to='/' />
-
-        )
+            )
+        } else {
+            return <Redirect to='/' />;
+        }
     }
 
 
     const returnRouter = (props: Routes[]) => {
         return (
-            props.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((route: Routes, i: number) => {
+            props.map((route: Routes, i: number) => {
                 if (route.isPublic) {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
                 if (!route.slug) {
                     return <PrivateRoute key={i.toString()}
                         path={route.path}
+                        associatePrivilege={route.associatePrivilege}
                         // pass the sub-routes down to keep nesting
                         component={route.component}
                     />
                 } else {
-                    return route.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subroute, index) => {
+                    return route.slug.map((subroute, index) => {
                         return <PrivateRoute key={'subroute' + index}
                             path={subroute.path}
+                            associatePrivilege={subroute.associatePrivilege}
                             component={subroute.component}
                         />
                     })

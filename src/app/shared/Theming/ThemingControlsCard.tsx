@@ -140,7 +140,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                     <ControlToggleContainer>
                     <Toggle className={togglePadding} label='Download Button' defaultChecked={props.selectedTheme.downloadButton} onChange={() => {props.setSelectedTheme({...props.selectedTheme, downloadButton: !props.selectedTheme.downloadButton});}} />
                     <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                    <Tooltip target="downloadButtonTooltip">Download Button</Tooltip>
+                    { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Download Button</Tooltip>}
                     </ControlToggleContainer>
 
                     <ControlToggleContainer>
