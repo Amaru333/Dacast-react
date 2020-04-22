@@ -21,7 +21,41 @@ export const IconContainer = styled.div`
         margin-right:16px;
     }
 `
-
+export const IconGreyActionsContainer = styled.div<{isFocus?: boolean}>`
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    color :  ${props => props.theme.colors["gray-3"]} ;
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    align-items: center;
+    ${props => props.isFocus && css`
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 40px;
+            z-index: -1;
+            height: 40px;
+            position: absolute;
+            border-radius: 50%;
+            background-color: ${props => props.theme.colors["gray-8"]} ;
+        }
+    `}
+    &:hover {
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 40px;
+            z-index: -1;
+            height: 40px;
+            position: absolute;
+            border-radius: 50%;
+            background-color: ${props => props.theme.colors["gray-10"]} ;
+        }
+    }
+    
+`
 export const IconGreyContainer = styled.div<{}>`
     justify-content: center;
     position: relative;

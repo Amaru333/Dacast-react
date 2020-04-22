@@ -30,7 +30,7 @@ export interface GroupStepperData {
 export const GroupsPage = (props: GroupsComponentProps) => {
     const pricesList = [
         {
-            amount: 0,
+            amount: '',
             currency: 'USD'
         }
     ]
@@ -40,7 +40,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         name: '',
         type: 'Pay Per View',
         price: pricesList,
-        duration: {amount: 0, type: 'Hours'},
+        duration: {amount: '', type: 'Hours'},
         recurrence: 'Weekly',
         startMethod: 'Upon Purchase',
         timezone: null,

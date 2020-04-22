@@ -34,7 +34,11 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                                 <div className="mt1">
                                     <Text size={14} weight='reg'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password.</Text>
                                 </div>
-                                <InputCheckbox className='pt1' id='paypalTCCheckbox' label={'Agree to PayPal User Agreement'} defaultChecked={settingsInfos.paypalTC} onChange={() => setSettingsInfos({...settingsInfos, paypalTC: !settingsInfos.paypalTC})} />
+
+                                <div className="clearfix mt1">
+                                    <InputCheckbox className='left' id='paypalTCCheckbox' defaultChecked={settingsInfos.paypalTC} onChange={() => setSettingsInfos({...settingsInfos, paypalTC: !settingsInfos.paypalTC})} />
+                                    <Text size={14} weight='reg' >Agree to <a target="_blank" rel="noopener noreferrer" href="https://www.paypal.com/us/webapps/mpp/ua/useragreement-full" > PayPal User Agreement</a></Text>
+                                </div>
                             </>
                             : null
                     }

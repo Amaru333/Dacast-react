@@ -46,7 +46,7 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 19px;
     top: 17%;
-    color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']}
+    color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']};
 `;
 
 export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
@@ -179,12 +179,12 @@ export const CloseIconButton = styled.div`
     cursor: pointer;
 `
 
-export const ButtonContainer = styled.div<{isOpened: boolean}>`
+export const ButtonContainer = styled.div<{isOpened: boolean; backgroundColor: string}>`
     display: flex;
     align-items: center;
     border-radius: 4px;
     padding: 4px;
-    background-color: white;
+    background-color: ${props => props.backgroundColor ? props.backgroundColor : "white"};
     border: 1px solid ${props => props.theme.colors['gray-7']};
     cursor: pointer;
     height: 22px;

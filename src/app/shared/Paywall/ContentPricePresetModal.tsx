@@ -56,7 +56,7 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center ' + (key === newPricePreset.price.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
                         <Input className={"col sm-col-6 col-5 px1"} value={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
-                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
+                        <DropdownSingle className={'col sm-col-6 col-5 px1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
                     </div>
                     {
                         key === newPricePreset.price.length - 1 ?
@@ -102,7 +102,7 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
             <div className="mb2 clearfix">
                 {renderPrices()}
             </div>
-            <div className='col col-12 sm-col-6 mb2 flex'>
+            <div className='col col-12 sm-col-6 mb2 mxn1 flex'>
                 {
                     newPricePreset.type === 'Subscription' ?
                         <DropdownSingle
@@ -112,12 +112,12 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                         :
                         <>
                             <Input
-                                className='col col-6 pr1'
+                                className='col col-6 px1'
                                 label='Duration'
                                 defaultValue={newPricePreset.duration.amount ? newPricePreset.duration.amount.toString() : ''} onChange={(event) => setNewPricePreset({ ...newPricePreset, duration: { ...newPricePreset.duration, amount: parseInt(event.currentTarget.value) } })}
                             />
                             <DropdownSingle
-                                id='pricePresetDurationDropdown' className='col col-6 pl1 mt-auto' dropdownDefaultSelect={newPricePreset.duration.type} callback={(value: string) => setNewPricePreset({ ...newPricePreset, duration: { ...newPricePreset.duration, type: value } })} dropdownTitle=''
+                                id='pricePresetDurationDropdown' className='col col-6 px1 mt-auto' dropdownDefaultSelect={newPricePreset.duration.type} callback={(value: string) => setNewPricePreset({ ...newPricePreset, duration: { ...newPricePreset.duration, type: value } })} dropdownTitle=''
                                 list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }}
                             />
                         </>

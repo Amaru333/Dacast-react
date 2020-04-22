@@ -246,7 +246,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 }
             </Modal>
             {/* Needs save prompt adding when connected to endpoint */}
-            <Prompt when={true} message='' />
+            <Prompt when={dirty} message='' />
         </div>
     )
 }

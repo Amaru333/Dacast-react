@@ -13,7 +13,7 @@ export const WithdrawalModal = (props: { action: Function; toggle: Function }) =
         <div>
             <div className='col col-12 my2'>
                 <DropdownSingle
-                    className='my2 col xs-no-gutter col-12 sm-col-8 pr1'
+                    className='col xs-no-gutter xs-mb1 col-12 sm-col-8 pr1'
                     id='widthdrawalModalPaymentMethodDropdown'
                     dropdownTitle='Choose Method'
                     list={{ 'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false }}

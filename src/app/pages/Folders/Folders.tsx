@@ -3,7 +3,7 @@ import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from '
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { IconStyle } from '../../../shared/Common/Icon';
+import { IconStyle, IconGreyActionsContainer } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { Table } from '../../../components/Table/Table';
 import { Pagination } from '../../../components/Pagination/Pagination';
@@ -39,7 +39,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         fullPath: '/' + path + '/',
         loadingStatus: 'not-loaded',
         children: {}
-    })).reduce((acc, next) => ({...acc, [getNameFromFullPath(next.fullPath)]: next}), {})
+    })).reduce((acc, next) => ({ ...acc, [getNameFromFullPath(next.fullPath)]: next }), {})
 
     let rootNode: FolderTreeNode = {
         isExpanded: true,
@@ -86,7 +86,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 <DropdownItem
                     isSingle
                     key={item.name}
-                    className={key === 1 ? 'mt1' : ''}
+                    className={key === 0 ? 'mt1' : ''}
                     isSelected={false}
                     onClick={() => item.function(true)}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
@@ -96,59 +96,63 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const foldersContentTableHeader = () => {
-        return {data: [
-            {cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox' 
-                indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.length}
-                defaultChecked={checkedItems.length === props.folderData.requestedContent.length}
-                onChange={(event) => {
-                    if (event.currentTarget.checked) {
-                        let folderCounter = 0
-                        const editedItem = props.folderData.requestedContent.map(item => { 
-                            if(item.contentType === 'folder') {
-                                folderCounter += 1
-                            } 
-                            return item.id + item.contentType 
-                        })
-                        setFolderAssetSelected(folderCounter);
-                        setCheckedItems(editedItem);
-                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                        setCheckedItems([])
-                        setFolderAssetSelected(0)
-                    }
-                }
-                } 
-            />},
-            // {cell: <span key='tableHeaderEmptyCell1'></span>},
-            {cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'Name'},
-            {cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text>},
-            {cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
-            {cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text>},
-            {cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text>},
-            {cell: <span key='tableHeaderEmptyCell2'></span>}
-        ], defaultSort: 'Created Date'}
+        return {
+            data: [
+                {
+                    cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox'
+                        indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.length}
+                        defaultChecked={checkedItems.length === props.folderData.requestedContent.length}
+                        onChange={(event) => {
+                            if (event.currentTarget.checked) {
+                                let folderCounter = 0
+                                const editedItem = props.folderData.requestedContent.map(item => {
+                                    if (item.contentType === 'folder') {
+                                        folderCounter += 1
+                                    }
+                                    return item.id + item.contentType
+                                })
+                                setFolderAssetSelected(folderCounter);
+                                setCheckedItems(editedItem);
+                            } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                                setCheckedItems([])
+                                setFolderAssetSelected(0)
+                            }
+                        }
+                        }
+                    />
+                },
+                // {cell: <span key='tableHeaderEmptyCell1'></span>},
+                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'Name' },
+                { cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text> },
+                { cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'Created Date' },
+                { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text> },
+                { cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text> },
+                { cell: <span key='tableHeaderEmptyCell2'></span> }
+            ], defaultSort: 'Created Date'
+        }
     }
 
     const handleCheckboxChange = (item: string, isChecked: boolean) => {
-        if(checkedItems.includes(item)) {
-            setCheckedItems(checkedItems.filter(option => {return option !== item}));
+        if (checkedItems.includes(item)) {
+            setCheckedItems(checkedItems.filter(option => { return option !== item }));
         } else {
             setCheckedItems([...checkedItems, item]);
         }
-        if(isChecked && item.includes('folder')) {
+        if (isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected + 1)
-        } else if(!isChecked && item.includes('folder')) {
+        } else if (!isChecked && item.includes('folder')) {
             setFolderAssetSelected(folderAssetSelected > 0 ? folderAssetSelected - 1 : 0)
         }
     }
 
     const handleRowIconType = (item: FolderAsset) => {
-        switch(item.contentType) {
+        switch (item.contentType) {
             case 'playlist':
                 return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
-            case 'folder': 
+            case 'folder':
                 return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
             case 'live':
-            case 'vod': 
+            case 'vod':
                 return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
             default:
                 return
@@ -156,17 +160,17 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const handleMoreActions = (item: FolderAsset): string[] => {
-        if(item.status === 'Deleted') {
+        if (item.status === 'Deleted') {
             return ['Restore']
         }
-        if(item.contentType === 'folder') {
+        if (item.contentType === 'folder') {
             return ['Rename', 'Move', 'Delete']
         }
         return ['Edit', 'Move', 'Delete']
     }
 
     const handleAssetDropdownOptions = (option: string, assetName: string) => {
-        switch(option) {
+        switch (option) {
             case 'Rename':
                 setNewFolderModalAction('Rename Folder');
                 setNewFolderModalOpened(true);
@@ -187,25 +191,28 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const foldersContentTableBody = () => {
-        if(props.folderData.requestedContent) {
+        if (props.folderData.requestedContent) {
             return props.folderData.requestedContent.map((row) => {
-                return {data: [
-                    <div key={'foldersTableInputCheckbox' + row.id}  className='flex items-center'>
-                        <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
-                        {handleRowIconType(row)}
-                    </div>,
-                    <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
-                    <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                    <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.created, DateTime.DATETIME_SHORT)}</Text>,
-                    row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'}/> : <span key={'foldersTableNoStatus' + row.id}></span>,
-                    <div className='flex' key={'foldersTableFeatures'  + row.id}>{handleFeatures(row, row.id)}</div>,
-                    <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
-                        <DropdownCustom id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
-                            <IconStyle>more_vert</IconStyle>
-                        </DropdownCustom>
-                    </div>
-                ], callback: (row: FolderAsset) => {handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType))}
-                , callbackData: row
+                return {
+                    data: [
+                        <div key={'foldersTableInputCheckbox' + row.id} className='flex items-center'>
+                            <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
+                            {handleRowIconType(row)}
+                        </div>,
+                        <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
+                        <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
+                        <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.created, DateTime.DATETIME_SHORT)}</Text>,
+                        row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.id}></span>,
+                        <div className='flex' key={'foldersTableFeatures' + row.id}>{handleFeatures(row, row.id)}</div>,
+                        <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
+                            <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
+                                <IconGreyActionsContainer >
+                                    <IconStyle>more_vert</IconStyle> 
+                                </IconGreyActionsContainer>
+                            </DropdownCustom>
+                        </div>
+                    ], callback: (row: FolderAsset) => { handleCheckboxChange(row.id + row.contentType, checkedItems.includes(row.id + row.contentType)) }
+                    , callbackData: row
                 }
             })
         }
@@ -231,7 +238,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
 
 
-    React.useEffect(() => {}, [foldersTree])
+    React.useEffect(() => { }, [foldersTree])
 
     const getChild = async (node: FolderTreeNode) => {
         await wait();
@@ -246,34 +253,34 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const loadChildren = async (node: FolderTreeNode) => {
         node.loadingStatus = 'loading'
-        setFoldersTree({...foldersTree})
+        setFoldersTree({ ...foldersTree })
         node.children = await getChild(node);
         node.isExpanded = true
         node.loadingStatus = 'loaded'
-        setFoldersTree({...foldersTree})
+        setFoldersTree({ ...foldersTree })
     }
 
     const getNode = async (root: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
         let pathElements = searchedFolder.split('/').filter(f => f)
 
-        if(pathElements.length === 0) {
+        if (pathElements.length === 0) {
             return root
         }
         let currentNode = root
-        while(currentNode.fullPath !== searchedFolder) {
+        while (currentNode.fullPath !== searchedFolder) {
 
-            if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
+            if (Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
                 await loadChildren(currentNode)
             }
 
             let pathElement = pathElements.shift()
             let foundChild = currentNode.children[pathElement]
-            if(!foundChild) {
+            if (!foundChild) {
                 throw new Error('path doesnt exist: ' + pathElement + ' (of ' + searchedFolder + ')')
             }
             currentNode = foundChild
         }
-        if(Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
+        if (Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
             console.log('node has no children, fecthing')
             await loadChildren(currentNode)
         }
@@ -296,7 +303,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     //         console.log('node has no children, fecthing')
     //         await loadChildren(node)
     //     }
-        
+
     //     let leftoverSearch = searchedFolder.substr(node.fullPath.length)
     //     let pathElement = leftoverSearch.split('/').filter(f => f)[0]
     //     let foundChild = node.children[pathElement]
@@ -311,24 +318,24 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const renderNode = (node: FolderTreeNode) => {
-        let depth = node.fullPath.split('/').length-1
+        let depth = node.fullPath.split('/').length - 1
         return (
             <div key={node.fullPath}>
-                <FolderRow isSelected={node.fullPath === selectedFolder} style={{paddingLeft: depth*10}} className='p1 flex items-center' onClick={() => {
+                <FolderRow isSelected={node.fullPath === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {
                     setSelectedFolder(node.fullPath);
-                    if(node.loadingStatus === 'not-loaded' && !node.isExpanded) {
+                    if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
                         loadChildren(node)
                         return
                     }
-                    if(node.loadingStatus === 'loading') {
+                    if (node.loadingStatus === 'loading') {
                         console.log('blocked double loading')
                         return
                     }
                     node.isExpanded = !node.isExpanded
-                    setFoldersTree({...foldersTree})
+                    setFoldersTree({ ...foldersTree })
                 }}>
                     {
-                        node.subfolders > 0 ? 
+                        node.subfolders > 0 ?
                             <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
                             : null
 
@@ -337,13 +344,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </FolderRow>
                 <div>
                     {
-                        node.isExpanded ? 
-                            Object.values(node.children).map((childNode) => renderNode(childNode)) 
+                        node.isExpanded ?
+                            Object.values(node.children).map((childNode) => renderNode(childNode))
                             : null
                     }
                 </div>
             </div>
-        )     
+        )
     }
 
 
@@ -360,15 +367,15 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     </div>
                     <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
                         <div className='col col-12 pl2 flex flex-auto items-center '>
-                            <BreadcrumbDropdown 
-                                options={selectedFolder} 
-                                callback={(value: string) => setSelectedFolder(value)} 
-                                dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']} 
-                                dropdownCallback={(value: string) => {handleAssetDropdownOptions(value, selectedFolder)}} 
+                            <BreadcrumbDropdown
+                                options={selectedFolder}
+                                callback={(value: string) => setSelectedFolder(value)}
+                                dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
+                                dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
                             />
-                            <SeparatorHeader className={(selectedFolder.split('/').length > 1 ? '' : 'hide ') + "mx2 inline-block"} />         
+                            <SeparatorHeader className={(selectedFolder.split('/').length > 1 ? '' : 'hide ') + "mx2 inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
+                            <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                         </div>
                     </div>
 
@@ -376,21 +383,24 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 <div className="relative flex justify-end items-center col col-3">
                     {
                         selectedFolder !== 'Trash' ?
-                        <>
-                            {checkedItems.length > 0 ?
-                                <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
-                                : null
-                            }
-                            <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{width: 167, left: 138, top: 37}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
-                                {renderList()}
-                            </DropdownList>
+                            <>
+                                {checkedItems.length > 0 ?
+                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
+                                    : null
+                                }
+                                <div>
+                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                                    <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{ }} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                        {renderList()}
+                                    </DropdownList>
+                                </div>
+                                
 
-                            <SeparatorHeader className="mx2 inline-block" /> 
-                        </>
-                            : null 
-                    }                     
-       
+                                <SeparatorHeader className="mx2 inline-block" />
+                            </>
+                            : null
+                    }
+
                     <FoldersFiltering setCheckedItems={setCheckedItems} />
                     {
                         selectedFolder === 'Trash' ?
@@ -406,30 +416,30 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => setSelectedFolder("Unsorted")}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
-                        <Badge number={foldersTree.children['Unsorted'] ? foldersTree.children['Unsorted'].nbChildren : 6} color='gray-5'/>
+                        <Badge number={foldersTree.children['Unsorted'] ? foldersTree.children['Unsorted'].nbChildren : 6} color='gray-5' />
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => setSelectedFolder("Trash")}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
-                        <Badge number={foldersTree.children['Trash'] ? foldersTree.children['Trash'].nbChildren : 54} color='gray-5'/>
+                        <Badge number={foldersTree.children['Trash'] ? foldersTree.children['Trash'].nbChildren : 54} color='gray-5' />
                     </FolderRow>
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
                     <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} hasContainer />
-                    <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                    <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => { }} />
                 </div>
-            </ContentSection> 
+            </ContentSection>
             <Modal style={{ zIndex: 10000 }} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened ?
-                        <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened}  />
+                        <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                         : null
                 }
             </Modal>
-            <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
                 <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
             </Modal>
             <OnlineBulkForm items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
