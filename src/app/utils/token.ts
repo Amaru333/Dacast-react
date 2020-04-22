@@ -34,7 +34,6 @@ export const getUserInfoItem = (item: string | Privilege) => {
 
 export function addTokenToHeader() {
     if(userInfo) {
-        console.log(userInfo);
         return {token: userInfo.token, userId: userInfo['custom:dacast_user_id'], accessToken: userInfo.accessToken, vodStorageId: userInfo['vod-storage-id']}
     }
     if(localStorage.getItem('userToken')) {
