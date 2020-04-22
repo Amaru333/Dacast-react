@@ -8,6 +8,8 @@ import { VodSecuritySettings, SecuritySettings } from '../../redux-flow/store/VO
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { useParams } from 'react-router-dom';
+import { VideoTabs } from './VideoTabs';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: VodSecuritySettings;
@@ -19,16 +21,21 @@ interface VodSecurityContainerProps {
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
 
+    let { vodId } = useParams()
+    
     React.useEffect(() => {
         if(!props.vodSecuritySettings ||  (!props.vodSecuritySettings && !props.globalSecuritySettings)) {
-            props.getVodSecuritySettings();
+            props.getVodSecuritySettings(vodId);
             props.getSettingsSecurityOptions();
         }
     }, [])
 
     return (
         props.vodSecuritySettings && props.globalSecuritySettings ? 
-            <VodSecurityPage {...props}/>
+            <div className='flex flex-column'>
+                <VideoTabs videoId={vodId} />
+                <VodSecurityPage {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
@@ -42,8 +49,8 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodSecuritySettings: () => {
-            dispatch(getVodSecuritySettingsAction());
+        getVodSecuritySettings: (vodId: string) => {
+            dispatch(getVodSecuritySettingsAction(vodId));
         },
         saveVodSecuritySettings: (data: SecuritySettings) => {
             dispatch(saveVodSecuritySettingsAction(data));

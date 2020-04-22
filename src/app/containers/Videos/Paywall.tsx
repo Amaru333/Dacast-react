@@ -9,6 +9,8 @@ import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Pa
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { PresetsPageInfos, getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets';
+import { useParams } from 'react-router-dom';
+import { VideoTabs } from './VideoTabs';
 var moment = require('moment-timezone');
 
 export interface VodPaywallComponentProps {
@@ -34,6 +36,8 @@ export interface VodPaywallComponentProps {
 }
 
 const VodPaywall = (props: VodPaywallComponentProps) => {
+
+    let { vodId } = useParams()
 
     React.useEffect(() => {
         if(!props.vodPaywallInfos) {
@@ -96,7 +100,10 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
     }, [props.globalPresets.presets, props.vodPaywallInfos])
 
     return props.vodPaywallInfos && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
-        <VodPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        <div className='flex flex-column'>
+            <VideoTabs videoId={vodId} />
+            <VodPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        </div>
         : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 

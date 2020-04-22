@@ -1,43 +1,45 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, changeVodThumbnailAction, editVodDetailsAction, deleteVodSubtitleAction, changeVodSplashscreenAction, changeVodPosterAction, deleteVodPosterAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, getUploadUrlAction, editVodDetailsAction, deleteVodSubtitleAction, uploadImageAction, deleteImageAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
-import { VodDetails, SubtitleInfo, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
+import { VideoTabs } from './VideoTabs';
 
 
-interface GeneralProps {
+export interface GeneralComponentProps {
     vodDetails: VodDetails;
     editVodDetails: Function;
     getVodDetails: Function;
     addVodSubtitle: Function;
     editVodSubtitle: Function;
     deleteVodSubtitle: Function;
-    changeVodThumbnail: Function;
-    changeVodSplashscreen: Function;
-    changeVodPoster: Function;
-    deleteVodPoster: Function;
+    getUploadUrl: Function;
+    uploadImage: Function;
+    deleteImage: Function;
 }
 
-const General = (props: GeneralProps) => {
+const General = (props: GeneralComponentProps) => {
 
     let { vodId } = useParams()
 
     React.useEffect(() => {
         if (!props.vodDetails) {
-            console.log(vodId)
-            props.getVodDetails('f99c7752-a941-6496-bd73-0ec776b8664e');
+            props.getVodDetails(vodId);
         }
     }, [])
 
     return (
         props.vodDetails ?
             (
-                <GeneralPage {...props} />
+                <div className='flex flex-column'>
+                    <VideoTabs videoId={vodId} />
+                    <GeneralPage {...props} vodId={vodId} />
+                </div>
             )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -67,17 +69,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteVodSubtitle: (data: SubtitleInfo) => {
             dispatch(deleteVodSubtitleAction(data));
         },
-        changeVodThumbnail: (data: ThumbnailUpload) => {
-            dispatch(changeVodThumbnailAction(data))
+        getUploadUrl: (uploadType: string, vodId: string) => {
+            dispatch(getUploadUrlAction(uploadType, vodId))
         },
-        changeVodSplashscreen: (data: SplashscreenUpload) => {
-            dispatch(changeVodSplashscreenAction(data))
+        uploadImage: (data: File, uploadUrl: string) => {
+            dispatch(uploadImageAction(data, uploadUrl))
         },
-        changeVodPoster: (data: PosterUpload) => {
-            dispatch(changeVodPosterAction(data))
-        },
-        deleteVodPoster: () => {
-            dispatch(deleteVodPosterAction())
+        deleteImage: (data: File) => {
+            dispatch(deleteImageAction(data))
         }
     };
 }

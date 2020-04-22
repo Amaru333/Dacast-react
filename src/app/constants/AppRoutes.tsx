@@ -36,6 +36,13 @@ import ForgotPassword from '../containers/Register/ForgotPassword';
 import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
 import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
 import General from '../containers/Videos/General';
+import VodRenditions from '../containers/Videos/Renditions';
+import VodTheming from '../containers/Videos/Theming';
+import VodSecurity from '../containers/Videos/Security';
+import VodEngagement from '../containers/Videos/Engagement';
+import Chapters from '../containers/Videos/Chapters';
+import VodPaywall from '../containers/Videos/Paywall';
+
 
 export const AppRoutes: Routes[] = [   
     {
@@ -110,6 +117,56 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         component: General,
     },
+    {
+        path: '/videos/:vodId/chapters',
+        name: 'Chapters',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: Chapters,
+    },
+    {
+        path: '/videos/:vodId/paywall',
+        name: 'Paywall',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodPaywall,
+    },
+    {
+        path: '/videos/:vodId/engagement',
+        name: 'Engagement',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodEngagement,
+    },
+    {
+        path: '/videos/:vodId/security',
+        name: 'Security',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodSecurity,
+    },
+    {
+        path: '/videos/:vodId/theme',
+        name: 'Theme',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodTheming,
+    },
+    {
+        path: '/videos/:vodId/renditions',
+        name: 'Renditions',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodRenditions,
+    },
+
+
     {
         path: '/folders',
         name: 'Folders',

@@ -13,6 +13,8 @@ export enum ActionTypes {
 export interface MailCatcher {
     type: string;
     isDefault: boolean;
+    placement: string;
+    position: string;
 }
 
 export interface Ad {

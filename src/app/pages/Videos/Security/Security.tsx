@@ -35,23 +35,25 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                 startDateTime: 'Always' | 'Set Date and Time';
                 endDateTime: 'Forever' | 'Set Date and Time';
             } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, contentSchedulingToggle: false, startDateTime: "Always", endDateTime: "Forever"}
-            if(!props.vodSecuritySettings.securitySettings.passwordProtection.password
-                && props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0
-                && !props.vodSecuritySettings.securitySettings.selectedGeoRestriction && !props.vodSecuritySettings.securitySettings.selectedDomainControl) {
-                    defaultValues.editableSettings = false
-                    defaultValues.selectedSettings = props.globalSecuritySettings
-                    defaultValues.passwordProtectionToggle = true
-                    defaultValues.contentSchedulingToggle = props.globalSecuritySettings.contentScheduling.endTime === 0 && props.globalSecuritySettings.contentScheduling.startTime === 0 ? false : true
-                    defaultValues.startDateTime = props.globalSecuritySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-                    defaultValues.endDateTime = props.globalSecuritySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
-    
-            } else {
-                defaultValues.editableSettings = true
-                defaultValues.selectedSettings = props.vodSecuritySettings.securitySettings
-                defaultValues.passwordProtectionToggle = props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false
-                defaultValues.contentSchedulingToggle = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
-                defaultValues.startDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-                defaultValues.endDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
+            if(props.vodSecuritySettings.securitySettings && props.globalSecuritySettings) {
+                if(!props.vodSecuritySettings.securitySettings.passwordProtection.password
+                    && props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0
+                    && !props.vodSecuritySettings.securitySettings.selectedGeoRestriction && !props.vodSecuritySettings.securitySettings.selectedDomainControl) {
+                        defaultValues.editableSettings = false
+                        defaultValues.selectedSettings = props.globalSecuritySettings
+                        defaultValues.passwordProtectionToggle = true
+                        defaultValues.contentSchedulingToggle = props.globalSecuritySettings.contentScheduling.endTime === 0 && props.globalSecuritySettings.contentScheduling.startTime === 0 ? false : true
+                        defaultValues.startDateTime = props.globalSecuritySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
+                        defaultValues.endDateTime = props.globalSecuritySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
+        
+                } else {
+                    defaultValues.editableSettings = true
+                    defaultValues.selectedSettings = props.vodSecuritySettings.securitySettings
+                    defaultValues.passwordProtectionToggle = props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false
+                    defaultValues.contentSchedulingToggle = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
+                    defaultValues.startDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
+                    defaultValues.endDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
+                }
             }
             return defaultValues
         }

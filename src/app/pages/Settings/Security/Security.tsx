@@ -159,7 +159,17 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             <DateSinglePickerWrapper
                                                 date={moment()}
                                                 callback={(date: string, ms: number) => { setValue('videoScheduling.startDate', ms) }}
-                                                className='col col-4 md-col-3 mt2' /></>
+                                                className='col col-4 md-col-3 mt2' />
+                                            <Input
+                                                type='time'
+                                                defaultValue={props.securityDetails.contentScheduling.startTime ? props.securityDetails.contentScheduling.startTime.toString() : '00:00:00'}
+                                                className='col col-3 md-col-2 mt2'
+                                                disabled={false}
+                                                id='endTime'
+                                                pattern="[0-9]{2}:[0-9]{2}"
+                                                required
+                                            />
+                                        </>
                                     }
                                 </div>
                                 <div className='col col-12 flex items-center'>
@@ -173,6 +183,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                                 date={moment()}
                                                 callback={(date: string, ms: number) => { setValue('contentScheduling.endTime', ms) }}
                                                 className='col col-4 md-col-3 mr2 mt2' />
+                                            <Input
+                                                type='time'
+                                                defaultValue={props.securityDetails.contentScheduling.endTime ? props.securityDetails.contentScheduling.endTime.toString() : '00:00:00'}
+                                                className='col col-3 md-col-2 mt2'
+                                                disabled={false}
+                                                id='endTime'
+                                                pattern="[0-9]{2}:[0-9]{2}"
+                                                required
+                                            />
                                         </>
                                     }
                                 </div>

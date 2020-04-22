@@ -3,7 +3,7 @@ import { combineReducers, Reducer } from 'redux';
 import { ChapterMarkerInfos } from './Chapters/types';
 import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecuritySettings, VodSecurityReducer } from './Security';
-import { VodDetails, VodItem, SearchResult } from './General/types';
+import { VodDetails, SearchResult } from './General/types';
 import { GeneralReducer, reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsList } from './Renditions/types';

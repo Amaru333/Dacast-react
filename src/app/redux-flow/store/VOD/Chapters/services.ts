@@ -1,28 +1,35 @@
 import axios from 'axios'
-import { ChapterMarker } from './types';
+import { ChapterMarker } from './types'
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/'
 
-const getVodChapterMarkersService = () => {
-    return axios.get(urlBase + 'chapters-list');
+const getVodChapterMarkersService = async (vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/chapter-markers', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveVodChapterMarkerService = (data: ChapterMarker) => {
-    return axios.put(urlBase + 'chapter', {...data})
-}
-
-const addVodChapterMarkerService = (data: ChapterMarker) => {
-    return axios.post(urlBase + 'chapter', {...data})
-}
-
-const deleteVodChapterMarkerService = (data: ChapterMarker) => {
-    return axios.delete(urlBase + 'chapter', {...data})
+const saveVodChapterMarkerService = async (vodId: string, data: ChapterMarker[]) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/chapter-markers',
+        {chapterMarkers: data}, 
+        {
+            headers: {
+                Authorization: token
+            }
+        })
 }
 
 
 export const VodChaptersServices = {
     getVodChapterMarkersService,
-    saveVodChapterMarkerService,
-    addVodChapterMarkerService,
-    deleteVodChapterMarkerService
+    saveVodChapterMarkerService
 }

@@ -9,6 +9,8 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { handleCustomTheme } from '../../shared/Theming/handleCustomTheme';
+import { useParams } from 'react-router-dom';
+import { VideoTabs } from './VideoTabs';
 
 export interface VodThemingComponentProps {
     theme: ContentTheme;
@@ -21,7 +23,8 @@ export interface VodThemingComponentProps {
 
 export const VodTheming = (props: VodThemingComponentProps) => {
 
-    
+    let { vodId } = useParams()
+
     React.useEffect(() => {
         if(!props.theme) {
             props.getVodTheme();
@@ -39,7 +42,10 @@ export const VodTheming = (props: VodThemingComponentProps) => {
 
     return (
         props.theme && customThemeList ?
-            <VodThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            <div className='flex flex-column'>
+                <VideoTabs videoId={vodId} />
+                <VodThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

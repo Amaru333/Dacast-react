@@ -129,6 +129,7 @@ const AppContent = () => {
                         associatePrivilege={route.associatePrivilege}
                         // pass the sub-routes down to keep nesting
                         component={route.component}
+                        exact={route.isExact ? true : false}
                     />
                 } else {
                     return route.slug.map((subroute, index) => {
@@ -136,6 +137,7 @@ const AppContent = () => {
                             path={subroute.path}
                             associatePrivilege={subroute.associatePrivilege}
                             component={subroute.component}
+                            exact={subroute.isExact ? true : false}                     
                         />
                     })
                 }
