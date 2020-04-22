@@ -218,7 +218,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         </TextStyle>
                         <div className="col col-12 py2">
                             <DropdownSingle 
-                                className="col col-12 col-md-3" 
+                                className="col col-12 md-col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.liveSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
@@ -236,7 +236,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveLiveSecuritySettings(selectedSettings)}>Save</Button>
                     <Button type="button" form="liveSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {handleReset();props.showDiscardToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
                 </div>}
-            <Modal size="small" title="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
+            <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
                     <Text size={14} weight="reg">This page is using the global settings. Override this if you wish to edit, but keep in mind that something, and this is a user based setting. </Text>
                 </ModalContent>
@@ -245,7 +245,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                     <Button typeButton="tertiary" onClick={() => setEditSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-            <Modal size="small" title="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
+            <Modal size="small" modalTitle="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
                     <Text size={14} weight="reg">Choosing to revert to the Global Security Settings means that blah blah balh...</Text>
                 </ModalContent>

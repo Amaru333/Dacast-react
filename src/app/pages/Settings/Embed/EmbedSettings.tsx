@@ -21,7 +21,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
     }
 
     const checkInputError = () => {
-        if (inputOptions['embed-size'] === 'fixed') {
+        if (inputOptions['embed-scaling'] === 'fixed') {
             if (inputRef.current!.value.length === 0) {
                 return true;
             }
@@ -42,13 +42,13 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     </div>
                     <br />
                     <div>
-                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-settings"]: "iframe" })} defaultChecked={props.embedSettingsOption["embed-settings"] === "iframe"} />
+                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "iframe" })} defaultChecked={props.embedSettingsOption["embed-type"] === "iframe"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 The embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-settings"]: "html5-video" })} defaultChecked={props.embedSettingsOption["embed-settings"] === "html5-video"} />
+                        <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "html5-video" })} defaultChecked={props.embedSettingsOption["embed-type"] === "html5-video"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 The most lightweight way to embed your video. Does not include all Dacast features & will not count video views. Only use if your CMS does not accept iframes.
@@ -65,19 +65,19 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     </div>
                     <br />
                     <div>
-                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-size"]: "responsive" })} defaultChecked={props.embedSettingsOption["embed-size"] === "responsive"} />
+                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "responsive" })} defaultChecked={props.embedSettingsOption["embed-scaling"] === "responsive"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Your videos will automatically resize to fit their container.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-size"]: "fixed" })} defaultChecked={props.embedSettingsOption["embed-size"] === "fixed"} />
+                        <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "fixed" })} defaultChecked={props.embedSettingsOption["embed-scaling"] === "fixed"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Videos will default to a fixed width with their height determined automatically based on aspect ratio.
                             </Text>
                         </RadioText>
-                        <WidthInput isDisplayed={inputOptions['embed-size'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({ ...inputOptions, ["embed-width"]: event.currentTarget.value })} defaultValue="640" id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
+                        <WidthInput isDisplayed={inputOptions['embed-scaling'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({ ...inputOptions, ["embed-size"]: parseInt(event.currentTarget.value) })} defaultValue="640" id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
                     </div>
                     <br />
                 </Card>

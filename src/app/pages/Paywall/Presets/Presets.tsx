@@ -9,8 +9,7 @@ import { PricePresetsModal } from './PricePresetsModal';
 import { PromoPresetsModal } from './PromoPresetsModal';
 import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
@@ -148,14 +147,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 }
                 
             </Card>
-            <Modal hasClose={false} title={selectedPreset ? 'Edit Price Preset' : 'Create Price Preset'} opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={selectedPreset ? 'Edit Price Preset' : 'Create Price Preset'} opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 {
                     pricePresetsModalOpened ?
                         <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} title={selectedPromo ? 'Edit Promo Preset' : 'Create Promo Preset'} opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={selectedPromo ? 'Edit Promo Preset' : 'Create Promo Preset'} opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 {
                     promoPresetsModalOpened ?
                         <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />

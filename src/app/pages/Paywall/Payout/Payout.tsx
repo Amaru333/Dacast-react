@@ -10,9 +10,8 @@ import { WithdrawalModal } from './WithdrawalModal';
 import { PayoutComponentProps } from '../../../containers/Paywall/Payout';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import styled from 'styled-components';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
@@ -152,7 +151,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         :
         <div>
             <Card>
-                <Text size={20} weight='reg'>New Payment Method</Text>
+                <Text size={20} weight='reg'>New Withdrawal Method</Text>
                 <Text className='pt2 pb1' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Button key='paymentMethodTableHeaderActionButton' className='col col-12 xs-show' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
                 {
@@ -173,7 +172,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         : <Table id='payoutWithdrawalsTable' headerBackgroundColor="gray-10" header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
                 }
             </Card>
-            <Modal hasClose={false} title='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
+            <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 <WithdrawalModal action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
             </Modal>
         </div>

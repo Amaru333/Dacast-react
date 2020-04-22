@@ -1,3 +1,5 @@
+
+
 export enum ActionTypes {
     GET_SETTING_THEMING_LIST = "@@settings_theming/GET_SETTINGS_THEMING_LIST",
     SAVE_SETTING_THEME = "@@settings_theming/SAVE_SETTINGS_THEME",
@@ -16,22 +18,15 @@ export interface ThemeOptions {
     isDefault: boolean;
     createdDate: number;
     themeType: ThemeType;
+    playerControls: boolean;
     bigPlayButton: boolean;
-    playPause: boolean;
-    scrubber: boolean;
     scrubbingThumbnail: boolean;
-    timeCode: boolean;
-    speedControls: boolean;
-    qualityOptions: boolean;
-    volume: boolean;
-    fullscreen: boolean;
     thumbnailPosition: string;
     isViewerCounterEnabled: boolean;
     viewerCounterLimit: number;
     downloadButton: boolean;
     socialSharing: boolean;
     embedCode: boolean;
-    playerTransparency: boolean;
     customOverlayColor: string;
     customMenuColor: string;
     autoplay: boolean;
@@ -40,6 +35,7 @@ export interface ThemeOptions {
     continuousPlay: boolean;
     skipVideos: boolean;
     offlineMessage: string;
+    offlineMessagePosition: string;
     deliveryMethod: DeliveryMethod;
     regionSettings: RegionSetting;
 }
@@ -53,6 +49,44 @@ export interface ThemesData {
     themes: ThemeOptions[];
 }
 
+export interface ContentTheme {
+    id: string;
+    selectedTheme: ThemeOptions;
+}
+
 export const defaultStateThemesType: ThemesData = {
     themes: []
+}
+
+export const defaultTheme: ThemeOptions = {
+    id: "-1",
+    themeName: '',
+    isDefault: false,
+    createdDate: 980989080,
+    themeType: 'vod',
+    bigPlayButton: true,
+    playerControls: true,
+    scrubbingThumbnail: true,
+    thumbnailPosition: 'Top',
+    isViewerCounterEnabled: false,
+    viewerCounterLimit: 100,
+    downloadButton: false,
+    socialSharing: false,
+    embedCode: false,
+    customOverlayColor: '#000000',
+    customMenuColor: '#ffffff',
+    autoplay: false,
+    startVideoMuted: false,
+    looping: false,
+    continuousPlay: false,
+    skipVideos: false,
+    offlineMessage: 'Sorry this media is offline',
+    offlineMessagePosition: 'Top',
+    deliveryMethod: 'compatible',
+    regionSettings: 'standard'
+}
+
+export const defaultStateContentTheme: ContentTheme = {
+    id: null,
+    selectedTheme: defaultTheme
 }

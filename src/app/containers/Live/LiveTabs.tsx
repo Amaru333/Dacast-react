@@ -7,6 +7,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { LiveSubRoutes } from '../../constants/LiveSubRoutes';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { LiveItem } from '../../redux-flow/store/Live/General/types';
+import { getPrivilege } from '../../../utils/utils';
 
 export const LiveTabs = (props: { live: LiveItem; liveId: string; setShowLiveTabs: Function}) => {
     const {path} = useRouteMatch();
@@ -19,7 +20,7 @@ export const LiveTabs = (props: { live: LiveItem; liveId: string; setShowLiveTab
     }, [])
 
     const handleLiveSubRoutes = () => {
-        return LiveSubRoutes.map((route) => {
+        return LiveSubRoutes.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((route) => {
             return {
                 ...route, path: path + '/' + props.liveId + route.path
             }
@@ -27,7 +28,7 @@ export const LiveTabs = (props: { live: LiveItem; liveId: string; setShowLiveTab
     }
     const returnRouter = (props: Routes[]) => {
         return (
-            props.map((route: Routes, i: number) => {
+            props.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((route: Routes, i: number) => {
                 return !route.slug ? <Route key={i}
                     path={route.path}
                     render={props => (
@@ -35,7 +36,7 @@ export const LiveTabs = (props: { live: LiveItem; liveId: string; setShowLiveTab
                         <route.component {...props} routes={route.slug} />
                     )}
                 />
-                    : route.slug.map((subroute, index) => {
+                    : route.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ).map((subroute, index) => {
                         return <Route key={'subroute'+index}
                             path={subroute.path}
                             render={props => (

@@ -33,12 +33,8 @@ const saveCompanyPageDetailsService = async (data: CompanyPageInfos) => {
 
 const getUploadLogoUrlService = async () => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart',
-        {'parameters': {
-            'userID': userId
-        }, 
-        'type': 'company-logo'},
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/company-logo',
         {headers: {
             'Authorization': token
         }});

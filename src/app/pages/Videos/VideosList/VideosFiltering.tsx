@@ -7,6 +7,7 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const VideosFiltering = (props: {setSelectedVod: Function}) => {
 
@@ -41,8 +42,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
         },
         afterDate: false,
         beforedate: false,
-        sizeStart: false,
-        sizeEnd: false
+        sizeStart: '',
+        sizeEnd: ''
     }
 
     const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
@@ -63,6 +64,12 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
     React.useEffect(() => {
         checkActiveFilter();
     }, [filteringState])
+
+    const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key:string) => {
+        let value = event.currentTarget.value
+        setFilteringState(prevState => { return { ...prevState, [key]: value } })
+
+    }
 
 
     return (
@@ -94,15 +101,15 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                     </div>
                     <div className="mb3" id="vodFilterFeatures">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                        {getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
-                            id='vodFilterPaywall' label="Paywall" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                            id='vodFilterPaywall' label="Paywall" labelWeight="reg" />}
+                        {getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                            id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                            id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />}
+                        {getPrivilege('privilege-playlists') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                            id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />
+                            id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />}
                     </div>
                     <div className="mb3" id="vodFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
@@ -115,8 +122,8 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                     <div className="mb3" id="vodFilterSize">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                         <div className="mxn2 clearfix">
-                            <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeStart: event.currentTarget.value } })} />
-                            <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => setFilteringState(prevState => { return { ...prevState, sizeEnd: event.currentTarget.value } })} />
+                            <Input className="col col-6 px2" label="Min (Gb)" type="number" defaultValue={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
+                            <Input className="col col-6 px2" label="Max (Gb)" type="number" defaultValue={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
                         </div>
                     </div>
                 </div>

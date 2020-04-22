@@ -17,9 +17,9 @@ const defaultPromo: Promo = {
     limit: NaN,
     rateType: 'Pay Per View',
     startDate: null,
-    startTime: null,
+    startTime: '00:00',
     endDate: null,
-    endTime: null,
+    endTime: '00:00',
     timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
     discountApplied: 'Once'
 }
@@ -44,11 +44,11 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                 <DropdownSingle id='promoPresetRateTypeDropdown' dropdownDefaultSelect={promoPreset.rateType}  className='col sm-col-6 col-12 sm-pl1' dropdownTitle='Rate Type' callback={(value: string) => setPromoPreset({...promoPreset, rateType: value})} list={{'Pay Per View': false, 'Subscription': false}} />
             </div>
             <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code Start Date' />
+                <DateSinglePickerWrapper date={moment()} className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code Start Date' />
                 <Input type='time' label='Start Time' value={promoPreset.startTime} className='col sm-col-3 col-4 pl1' onChange={(event) => setPromoPreset({...promoPreset, startTime: event.currentTarget.value})} />
             </div>
             <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code End Date' />
+                <DateSinglePickerWrapper date={moment()} className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code End Date' />
                 <Input type='time' label='End Time' value={promoPreset.endTime} className='col sm-col-3 col-4 pl1' onChange={(event) => setPromoPreset({...promoPreset, endTime: event.currentTarget.value})} />
             </div>
             <div className=' col col-12 mb25'>
@@ -59,8 +59,8 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                         : null
                 }
             </div>
-            <div className='col col-12 my2'>
-                <Button disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || promoPreset.alphanumericCode.length < 5 || Number.isNaN(promoPreset.limit)} onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+            <div className='col col-12 mt1'>
+                <Button disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || promoPreset.alphanumericCode.length < 5 || Number.isNaN(promoPreset.limit) || promoPreset.startTime === null || promoPreset.endTime === null} onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

@@ -7,6 +7,7 @@ import { TabsContainer } from '../../../shared/TabsStyle';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
 import { PlaylistSubRoutes } from '../../../constants/PlaylistSubRoutes';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem; setShowPlaylistTabs: Function}) => {
     const {path} = useRouteMatch();
@@ -19,7 +20,7 @@ export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem
     }, [])
 
     const handlePlaylistSubRoutes = () => {
-        return PlaylistSubRoutes.map((route) => {
+        return PlaylistSubRoutes.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((route) => {
             return {
                 ...route, path: path + '/' + props.playlistId + route.path
             }
@@ -27,7 +28,7 @@ export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem
     }
     const returnRouter = (props: Routes[]) => {
         return (
-            props.map((route: Routes, i: number) => {
+            props.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((route: Routes, i: number) => {
                 return !route.slug ? <Route key={i}
                     path={route.path}
                     render={props => (
@@ -35,7 +36,7 @@ export const PlaylistsTabs = (props: {playlistId: string; playlist: PlaylistItem
                         <route.component {...props} routes={route.slug} />
                     )}
                 />
-                    : route.slug.map((subroute, index) => {
+                    : route.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subroute, index) => {
                         return <Route key={'subroute'+index}
                             path={subroute.path}
                             render={props => (

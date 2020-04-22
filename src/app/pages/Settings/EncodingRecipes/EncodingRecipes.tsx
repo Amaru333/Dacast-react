@@ -3,7 +3,7 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
@@ -14,19 +14,18 @@ import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/M
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
     getEncodingRecipes: Function;
+    getEncodingRecipesPresets: Function;
     createEncodingRecipe: Function;
     saveEncodingRecipe: Function;
     deleteEncodingRecipe: Function;
     getWatermarkUrlForUploading: Function;
-    uploadCompanyLogo: Function;
-    deleteCompanyLogo: Function;
+    uploadWatermark: Function;
+    deleteWatermark: Function;
 }
 
 const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
@@ -88,10 +87,9 @@ const stepList = [settingsStep, presetStep]
 
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
-
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -149,13 +147,15 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={["Settings", "Presets"]}
-                    lastStepButton="Save"
+                    lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
                     functionCancel={FunctionRecipe}
                     finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
+                    stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}
+                    usefulFunctions={{'getUploadUrl': props.getWatermarkUrlForUploading, 'uploadWatermark': props.uploadWatermark, 'deleteWatermark': props.deleteWatermark}}
                 />
-                <Modal size="small" title="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
+                <Modal size="small" modalTitle="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
                     <ModalContent>
                         <Text size={14} weight="reg">Are you sure that you want to delete {deletedRecipe.name}?</Text>
                         <Text size={14} weight="med">Please note any unsaved schanges will be lost.</Text>

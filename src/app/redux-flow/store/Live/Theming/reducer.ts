@@ -1,8 +1,9 @@
-import { ActionTypes, defaultLiveTheme, LiveTheme } from './types';
+import { ActionTypes } from './types';
 import { Reducer } from 'redux';
 import { Action } from './actions';
+import { ContentTheme, defaultStateContentTheme } from '../../Settings/Theming';
 
-const reducer: Reducer<LiveTheme> = (state = defaultLiveTheme, action: Action) => {
+const reducer: Reducer<ContentTheme> = (state = defaultStateContentTheme, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_LIVE_THEME :
             return {

@@ -5,14 +5,13 @@ import { Table } from '../../../../components/Table/Table';
 import { BorderStyle } from './GroupsStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
@@ -31,7 +30,7 @@ export interface GroupStepperData {
 export const GroupsPage = (props: GroupsComponentProps) => {
     const pricesList = [
         {
-            amount: 90,
+            amount: 0,
             currency: 'USD'
         }
     ]
@@ -39,14 +38,14 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const defaultPrice: GroupPrice = {
         id: '-1',
         name: '',
-        type: 'Subscription',
+        type: 'Pay Per View',
         price: pricesList,
-        duration: {amount: 90, type: 'Hours'},
+        duration: {amount: 0, type: 'Hours'},
         recurrence: 'Weekly',
         startMethod: 'Upon Purchase',
         timezone: null,
         startDate: null,
-        startTime: null
+        startTime: '00:00'
     
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
@@ -159,7 +158,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
-            <Modal hasClose={false} title={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices} />
             </Modal>
             <CustomStepper

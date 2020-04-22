@@ -8,9 +8,8 @@ import { getNameFromFullPath } from '../../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
-import { IconStyle } from '../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../shared/ActionIconStyle';
 
 export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
 
@@ -57,11 +56,14 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
         }
         return currentNode ? Object.values(currentNode.children).map((childNode, i) => {            
             return (
-                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center p2 pointer'>
-                    <InputCheckbox id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} className='col col-1' onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
-                    <IconStyle coloricon='gray-7'>folder_open</IconStyle>
-                    <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
-                    <div  className='flex justify-end col col-8'>
+                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center py2 pl2 pointer'>
+                    <div className="col col-11 flex">
+                        <InputCheckbox className="mr2" id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
+                        <IconStyle coloricon='gray-7'>folder_open</IconStyle>
+                        <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
+                    </div>
+                    
+                    <div  className='flex justify-end col col-1'>
                         {
                             childNode.loadingStatus === 'loading' ?
                                 <LoadingSpinner size='small' color='red'/> 

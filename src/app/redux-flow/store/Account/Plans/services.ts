@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Plans } from './types';
 
-const urlBase = 'https:/0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getPlanDetailsService = () => {
     return axios.get(urlBase + 'account/plans');

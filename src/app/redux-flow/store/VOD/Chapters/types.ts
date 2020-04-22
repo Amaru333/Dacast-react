@@ -6,7 +6,11 @@ export enum ActionTypes {
 
 }
 
-export interface ChapterMarker { [key: string]: string};
+export interface ChapterMarker { 
+    id?: string;
+    text: string;
+    start: number;
+};
 
 export interface ChapterMarkerInfos {
     chapterMarkers: ChapterMarker[];

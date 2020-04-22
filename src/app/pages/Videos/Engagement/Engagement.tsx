@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
@@ -15,13 +15,13 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { VodNewAdModal } from './VodNewAdModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
-    const emptyAd: Ad = { 
+    const emptyAd: Ad = {
         id: "-1",
         placement: "",
         position: "",
@@ -39,14 +39,14 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
     const newAd = () => {
         setSelectedAd(emptyAd);
-        setNewAdModalOpened(true) 
+        setNewAdModalOpened(true)
     }
 
     const editAd = (ad: Ad) => {
         setSelectedAd(ad);
         setNewAdModalOpened(true);
     }
-    
+
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
@@ -58,37 +58,43 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }, [props.vodEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        return {data: [
-            {cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>},
-            {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
-            {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
-            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-            </div>}
-        ]}
+        return {
+            data: [
+                { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
+                { cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text> },
+                { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
+                {
+                    cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
+                        <Button className='mr2' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
+                        <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
+                    </div>
+                }
+            ]
+        }
     }
 
     const advertisingTableBody = () => {
         return props.vodEngagementSettings.engagementSettings.adList.map((item, i) => {
-            return {data: [
-                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
-                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
-                <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
-                <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <ActionIcon id={"deleteTooltip" + item.id}>
-                        <IconStyle 
-                            onClick={() => {props.deleteVodAd(item)}} 
-                        >delete
+            return {
+                data: [
+                    <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
+                    <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
+                    <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
+                    <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
+                        <ActionIcon id={"deleteTooltip" + item.id}>
+                            <IconStyle
+                                onClick={() => { props.deleteVodAd(item) }}
+                            >delete
                         </IconStyle>
-                    </ActionIcon>
-                    <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
-                    <ActionIcon id={"editTooltip" + item.id}>
-                        <IconStyle onClick={() => editAd(item)}>edit</IconStyle>
-                    </ActionIcon>
-                    <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>  
-                </IconContainer>
-            ]}
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltip" + item.id}>
+                            <IconStyle onClick={() => editAd(item)}>edit</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + item.id}>Edit</Tooltip>
+                    </IconContainer>
+                ]
+            }
         })
     }
 
@@ -98,41 +104,43 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
         setAdSectionEditable(false);
         setMailSectionEditable(false);
         setEndScreenSectionEditable(false);
-    } 
+    }
 
     return (
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
-            <Card className='my2'>
-                <Header className="mb25">
-                    <TextStyle>
-                        <Text size={20} weight='med'>Advertising</Text>
-                    </TextStyle>
-                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
-                        {adSectionEditable ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
-                </Header>
-                <DisabledSection settingsEditable={adSectionEditable}>
-                    <Toggle
-                        className="mb2" 
-                        id='advertisingEnabled' 
-                        defaultChecked={engagementSettings.adEnabled} 
-                        onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
-                    />
+            {getPrivilege('privilege-advertising') &&
+                <Card className='my2'>
+                    <Header className="mb25">
+                        <TextStyle>
+                            <Text size={20} weight='med'>Advertising</Text>
+                        </TextStyle>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                            {adSectionEditable ? "lock_open" : "lock"}
+                        </IconStyle>
+                        <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                    </Header>
+                    <DisabledSection settingsEditable={adSectionEditable}>
+                        <Toggle
+                            className="mb2"
+                            id='advertisingEnabled'
+                            defaultChecked={engagementSettings.adEnabled}
+                            onChange={() => { setEngagementSettings({ ...engagementSettings, adEnabled: !engagementSettings.adEnabled }); setSettingsEdited(true) }} label='Advertising enabled'
+                        />
 
-                    <div className="pb2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    </div>
-                        
-                    <div className='flex'>
-                        <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                    </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <div className="pb2">
+                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        </div>
 
-                </DisabledSection>
-            </Card>
+                        <div className='flex'>
+                            <IconStyle className="mr1">info_outlined</IconStyle>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                        </div>
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+
+                    </DisabledSection>
+                </Card>
+            }
 
             <Card className='my2'>
                 <Header className="mb2">
@@ -148,21 +156,22 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <div className="pb2">
                         <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     </div>
-                
+
                     <div className='flex'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                     </div>
                     <DropdownSingle
-                        className="col col-3 mt2" 
+                        className="col col-3 mt2"
                         id="vodMailCatcherList"
                         dropdownTitle="Email Catcher"
                         dropdownDefaultSelect={engagementSettings.selectedMailCatcher}
-                        list={props.vodEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher)=> {return {...reduced, [item.type]: false }},{})  }
+                        list={props.vodEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher) => { return { ...reduced, [item.type]: false } }, {})}
                         callback={
                             (selectedMailCatcher: string) => {
-                                setEngagementSettings({...engagementSettings, selectedMailCatcher: selectedMailCatcher});setSettingsEdited(true)}}
-                    
+                                setEngagementSettings({ ...engagementSettings, selectedMailCatcher: selectedMailCatcher }); setSettingsEdited(true)
+                            }}
+
                     />
                 </DisabledSection>
             </Card>
@@ -180,19 +189,19 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 <DisabledSection settingsEditable={brandSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex'>
-                        <Input 
-                            disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8' 
-                            label='Brand Text' 
-                            onChange={(event) => {setEngagementSettings({...engagementSettings, brandText: event.currentTarget.value});setSettingsEdited(true)}}
-                            value={engagementSettings.brandText ? engagementSettings.brandText : ""} 
+                        <Input
+                            disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8'
+                            label='Brand Text'
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
+                            value={engagementSettings.brandText ? engagementSettings.brandText : ""}
                         />
-                        <Input 
-                            className='my2 pl1 col col-4' 
-                            label='Brand Text Link' 
-                            value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""} 
-                            onChange={(event) => {setEngagementSettings({...engagementSettings, brandTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
+                        <Input
+                            className='my2 pl1 col col-4'
+                            label='Brand Text Link'
+                            value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
                     </div>
-                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => {setEngagementSettings({...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle});setSettingsEdited(true)}} />
+                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => { setEngagementSettings({ ...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle }); setSettingsEdited(true) }} />
                 </DisabledSection>
             </Card>
 
@@ -209,37 +218,37 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
                     <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex'>
-                        <Input 
-                            className='my2 pr1 col col-8' 
-                            label='End Screen Text' 
+                        <Input
+                            className='my2 pr1 col col-8'
+                            label='End Screen Text'
                             value={engagementSettings.endScreenText ? engagementSettings.endScreenText : ""}
-                            onChange={(event) => {setEngagementSettings({...engagementSettings, endScreenText: event.currentTarget.value});setSettingsEdited(true)}}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenText: event.currentTarget.value }); setSettingsEdited(true) }}
                         />
-                        <Input 
-                            className='my2 pl1 col col-4' 
-                            label='End Screen Text Link' 
-                            value={engagementSettings.endScreenTextLink ? engagementSettings.endScreenTextLink : ""} 
-                            onChange={(event) => {setEngagementSettings({...engagementSettings, endScreenTextLink: event.currentTarget.value});setSettingsEdited(true)}} />
+                        <Input
+                            className='my2 pl1 col col-4'
+                            label='End Screen Text Link'
+                            value={engagementSettings.endScreenTextLink ? engagementSettings.endScreenTextLink : ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
                     </div>
                 </DisabledSection>
             </Card>
 
-            {   
+            {
                 settingsEdited ?
                     <div className="mt1">
-                        <Button 
-                            onClick={() => {props.saveVodEngagementSettings(engagementSettings);setSettingsEdited(false)}}
+                        <Button
+                            onClick={() => { props.saveVodEngagementSettings(engagementSettings); setSettingsEdited(false) }}
                         >
-                                Save
+                            Save
                         </Button>
                         <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+                <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
-            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
             <Prompt when={engagementSettings !== props.vodEngagementSettings.engagementSettings} message='' />

@@ -87,12 +87,14 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         className="col col-6"
                         label="Folders"
                         disabled
+                        greyBackground
                         defaultTags={props.playlistDetails.folder} 
                     />
                     <Input
                         className="col col-6 pr2 pt2"
                         label="Description"
                         value={newPlaylistDetails.description}
+                        type="textarea"
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
                     />
                     <div className="col col-3 pt2 flex flex-column">
@@ -216,7 +218,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
                             return (
-                                <LinkBoxContainer className="col col-6">
+                                <LinkBoxContainer className="col col-6 mt2">
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>

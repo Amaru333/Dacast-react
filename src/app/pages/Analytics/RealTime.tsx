@@ -43,7 +43,7 @@ export const RealTimeAnalyticsPage = (props: AnalyticsRealTimeInfos) => {
                     list={{'Channel1': false, 'Channel2': false}}
                     isWhiteBackground
                 />
-                <Button className='ml1' typeButton='primary' sizeButton='large' buttonColor='blue'>Apply</Button>
+                <Button style={{marginBottom:5}} className='ml1' typeButton='primary' sizeButton='small' buttonColor='blue'>Apply</Button>
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>

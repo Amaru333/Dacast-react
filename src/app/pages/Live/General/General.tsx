@@ -17,6 +17,9 @@ import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
+import { Bubble } from '../../../../components/Bubble/Bubble';
+import { BubbleContent } from '../../../shared/Security/SecurityStyle';
+import { getPrivilege } from '../../../../utils/utils';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -49,7 +52,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            return  props.changeLiveSplashscreen()
+            return props.changeLiveSplashscreen()
         } else if (imageModalTitle === "Change Thumbnail") {
             return props.changeLiveThumbnail()
         } else {
@@ -58,12 +61,14 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     }
 
     const liveAdvancedLinksOptions = [
-        { id: "splashscreen", label: "Splashscreen" },
-        { id: "thumbnail", label: "Thumbnail" },
-        { id: "poster", label: "Poster" },
-        { id: "embed", label: "Embed Code" },
-        { id: "m3u8", label: "M3U8" }
+        { id: "splashscreen", label: "Splashscreen", enabled: true },
+        { id: "thumbnail", label: "Thumbnail", enabled: true },
+        { id: "poster", label: "Poster", enabled: true },
+        { id: "embed", label: "Embed Code", enabled: true },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
     ]
+
+    console.log(newLiveDetails);
 
     return (
         <React.Fragment>
@@ -76,34 +81,36 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <Toggle
                         className="col col-12 mb2"
                         defaultChecked={newLiveDetails.streamOnline}
-                        onChange={() => setNewLiveDetails({...newLiveDetails, streamOnline: !newLiveDetails.streamOnline})}
+                        onChange={() => setNewLiveDetails({ ...newLiveDetails, streamOnline: !newLiveDetails.streamOnline })}
                         label="Live Stream Online"
                     />
                     <Input
-                        className={ClassHalfXsFullMd+"pr2 mb2"}
+                        className={ClassHalfXsFullMd + "pr2 mb2"}
                         label="Title"
                         value={newLiveDetails.title}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["title"]: event.currentTarget.value })}
                     />
                     <InputTags
-                        className={ClassHalfXsFullMd+ "mb2"}
+                        className={ClassHalfXsFullMd + "mb2"}
                         label="Folders"
+                        greyBackground
                         disabled
-                        defaultTags={props.liveDetails.folder} 
+                        defaultTags={props.liveDetails.folder}
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
+                        type="textarea"
                         label="Description"
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <div className={ClassHalfXsFullMd + "flex flex-column"}>
+                    <div className={"col col-3 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id)}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id, 'Live id copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyCOntentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -113,23 +120,23 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                     <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
-                    <div className={ClassHalfXsFullMd+"mt2 pr2 flex flex-column"} >
+                    <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"} >
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard("embed code here")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard('', "embed code here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
-                    <div className={ClassHalfXsFullMd+"mt2 flex flex-column"}>
+                    <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard("share link here")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('', "share link here")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -138,63 +145,84 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <div className="settings col col-12">
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
-                        <div className="mb2">
-                            <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({...newLiveDetails, recording: !newLiveDetails.recording})}></Toggle>
-                            <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
-                            </ToggleTextInfo>
-                        </div>
-                        <div className="mb2">
+                        {
+                            getPrivilege('privilege-recording') && 
+                            <div className="mb2">
+                                <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({ ...newLiveDetails, recording: !newLiveDetails.recording })}></Toggle>
+                                <ToggleTextInfo className="mt1">
+                                    <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
+                                </ToggleTextInfo>
+                            </div>
+                        }
+                        
+                        <div className="mb2 clearfix">
                             <Toggle
-                                label="Live Stream Start Countdown" 
-                                onChange={() => {setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setNewLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled}})}}
+                                label="Live Stream Start Countdown"
+                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle); setNewLiveDetails({ ...newLiveDetails, countdown: { ...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled } }) }}
                                 defaultChecked={newLiveDetails.countdown.enabled}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
-                    
+
                             {
                                 liveStreamCountdownToggle ?
-
                                     <div className="col col-12">
-                                        <div 
-                                            className='col col-4 md-col-3 mr2'
+                                        <div
+                                            className='col col-12 sm-col-4 pr1 mt1'
                                         >
-                                            <DateSinglePickerWrapper 
+                                            <DateSinglePickerWrapper
                                                 className='mt25'
                                                 id="startDate"
                                             />
                                         </div>
-                                        <Input 
-                                            type='time' 
-                                            className='col col-3 md-col-2 mb1 mr1'
+                                        <Input
+                                            type='time'
+                                            className='col col-12 sm-col-4 pl1 pr1'
                                             defaultValue={props.liveDetails.countdown.startTime}
-                                            disabled={false} 
-                                            id='promptTime' 
-                                            label='Prompt Time' 
+                                            disabled={false}
+                                            id='promptTime'
+                                            label='Prompt Time'
                                             required
                                             pattern="[0-9]{2}:[0-9]{2}"
                                             step='1'
                                         />
-                                        <DropdownSingle 
-                                            className="md-col md-col-6 p1"
+                                        <DropdownSingle
+                                            className="col col-12 sm-col-4 pl1 "
                                             hasSearch
                                             dropdownTitle='Timezone'
                                             defaultValue={props.liveDetails.countdown.timezone}
                                             id='dropdownTimezone'
-                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})}
+                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                                         />
                                     </div> : null
                             }
-                        </div>  
-                        <div className="mb2">
-                            <Toggle label="30 Minute Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({...newLiveDetails, rewind: !newLiveDetails.rewind})}></Toggle>
-                            <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a  href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
-                            </ToggleTextInfo>
-                        </div>  
-                    </div> 
+                        </div>
+                        {
+                            getPrivilege('privilege-dvr') && 
+                            <div className="mb2 clearfix">
+                                <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
+                                <ToggleTextInfo className="mt1">
+                                    <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
+                                </ToggleTextInfo>
+                                {
+                                    newLiveDetails.rewind ?
+                                        <div className="col col-12 mb2">
+                                            <Bubble type='warning' className='my2'>
+                                                <BubbleContent>
+                                                    <Text weight="reg" size={16}>
+                                                        30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. 
+                                                    </Text>
+                                                </BubbleContent>
+                                            </Bubble>
+                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => {console.log("free the niples")}}>Purge Live Stream</Button>
+                                        </div> :
+                                        null
+                                }
+                            </div>
+                        }
+
+                    </div>
                 </div>
                 <Divider className="col col-12" />
                 <div className="thumbnail col col-12">
@@ -211,16 +239,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.liveDetails.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                        onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
+                                        onClick={() => { setImageModalTitle("Change Splashscreen"); setImageModalOpen(true) }}>
                                         {
                                             props.liveDetails.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
-                                </ButtonSection>  
+                                </ButtonSection>
                                 <ImageSection><SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
@@ -235,16 +263,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.liveDetails.thumbnail ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> : null
                                     }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
                                             props.liveDetails.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
-                                </ButtonSection> 
-                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection> 
+                                </ButtonSection>
+                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -260,16 +288,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         props.liveDetails.poster ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> : null
                                     }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
                                             props.liveDetails.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection> 
+                                <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -277,23 +305,23 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
 
-                
-                
+
+
                 <div className="col col-12 advancedVideoLinks">
                     <div className="mb2 clearfix" onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
-                    </div>    
+                    </div>
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                        {liveAdvancedLinksOptions.map((item) => {
+                        {liveAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                             return (
-                                <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
+                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd+"mb2"}>
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard("embed code here")}>file_copy_outlined</IconStyle>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', "embed code here")}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>
@@ -304,44 +332,50 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 </div>
                 <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
-                <Modal size="large" title="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
+                <Modal size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
-                        <Text size={14} weight="reg">Some information about this and how you enter it into the encoder blah and this is.</Text>
                         <div className="col col-12">
-                            <LinkBoxContainer className={ClassHalfXsFullMd}>
+                            <Bubble type='info' className='my2'>
+                                <BubbleContent>
+                                    <Text weight="reg" size={16} >
+                                        Correct <a href="www.dacast.com" target="_blank">Encoder Setup</a> is required — <a href="www.dacast.com" target="_blank">contact us</a> if you need help.
+                                    </Text>
+                                </BubbleContent>
+                            </Bubble>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">Login</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
-                            <LinkBoxContainer className={ClassHalfXsFullMd}>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">Password</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
-                            <LinkBoxContainer className={ClassHalfXsFullMd}>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">Stream URL</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
-                            <LinkBoxContainer className={ClassHalfXsFullMd}>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">Stream Name</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>
@@ -350,13 +384,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard("JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
-                            </LinkBoxContainer>   
+                            </LinkBoxContainer>
                         </div>
                         <div className="flex col col-12 mt2">
-                            <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                            <Text  size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                            <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
+                            <Text size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                     </ModalContent>
                     <ModalFooter className="mt1" >

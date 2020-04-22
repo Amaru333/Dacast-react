@@ -35,6 +35,14 @@ import Uploader from '../containers/Videos/Uploader';
 import ForgotPassword from '../containers/Register/ForgotPassword';
 import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
 import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
+import General from '../containers/Videos/General';
+import VodRenditions from '../containers/Videos/Renditions';
+import VodTheming from '../containers/Videos/Theming';
+import VodSecurity from '../containers/Videos/Security';
+import VodEngagement from '../containers/Videos/Engagement';
+import Chapters from '../containers/Videos/Chapters';
+import VodPaywall from '../containers/Videos/Paywall';
+
 
 export const AppRoutes: Routes[] = [   
     {
@@ -89,6 +97,7 @@ export const AppRoutes: Routes[] = [
         path: '/livestreams',
         name: 'Live Streams',
         isExact: true,
+        associatePrivilege: 'privilege-live',
         iconName: 'videocam',
         component: LiveList
     },
@@ -96,13 +105,73 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         iconName: 'play_arrow',
         component: VodList,
     },
     {
+        path: '/videos/:vodId/general',
+        name: 'General',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: General,
+    },
+    {
+        path: '/videos/:vodId/chapters',
+        name: 'Chapters',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: Chapters,
+    },
+    {
+        path: '/videos/:vodId/paywall',
+        name: 'Paywall',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodPaywall,
+    },
+    {
+        path: '/videos/:vodId/engagement',
+        name: 'Engagement',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodEngagement,
+    },
+    {
+        path: '/videos/:vodId/security',
+        name: 'Security',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodSecurity,
+    },
+    {
+        path: '/videos/:vodId/theme',
+        name: 'Theme',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodTheming,
+    },
+    {
+        path: '/videos/:vodId/renditions',
+        name: 'Renditions',
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        component: VodRenditions,
+    },
+
+
+    {
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
+        associatePrivilege: 'privilege-folders',
         component: Folders
     },
 
@@ -111,6 +180,7 @@ export const AppRoutes: Routes[] = [
         name: 'Playlists',
         isExact: true,
         iconName: 'playlist_play',
+        associatePrivilege: 'privilege-playlists',
         component: PlaylistList
     },
     {
@@ -118,6 +188,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: 'bar_chart',
         component: null,
+        associatePrivilege: 'privilege-analytics',
         slug: [
             {
                 path: '/analytics/dashboard',
@@ -145,6 +216,7 @@ export const AppRoutes: Routes[] = [
         path: '/paywall',
         name: 'Paywall',
         iconName: 'attach_money',
+        associatePrivilege: 'privilege-paywall',
         component: null,
         slug: [
             {
@@ -207,7 +279,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/api-integrations',
                 name: 'API & Integrations',
-                component: ApiIntegration
+                component: ApiIntegration,
+                associatePrivilege: 'privilege-api'
             },
 
             {

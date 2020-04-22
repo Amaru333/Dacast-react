@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
@@ -15,15 +15,15 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LiveNewAdModal } from './LiveNewAdModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
 
     const emptyAd: Ad = { 
         id: "-1",
-        placement: "",
+        placement: "Pre-roll",
         position: "",
         url: "test"
     }
@@ -103,37 +103,39 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
     return (
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
-            <Card className='my2'>
-                <Header className="mb2">
-                    <TextStyle>
-                        <Text size={20} weight='med'>Advertising</Text>
-                    </TextStyle>
-                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
-                        {adSectionEditable ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
-                </Header>
-                <DisabledSection settingsEditable={adSectionEditable}>
-                    <Toggle
-                        className="mb2" 
-                        id='advertisingEnabled' 
-                        defaultChecked={engagementSettings.adEnabled} 
-                        onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
-                    />
-                    <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    <div className='flex mb2'>
-                        <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                    </div>
-                    <div className="clearfix mb2">
-                        <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                        <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
-                    </div>
-                    
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+            {getPrivilege('privilege-advertising') && 
+                <Card className='my2'>
+                    <Header className="mb2">
+                        <TextStyle>
+                            <Text size={20} weight='med'>Advertising</Text>
+                        </TextStyle>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                            {adSectionEditable ? "lock_open" : "lock"}
+                        </IconStyle>
+                        <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                    </Header>
+                    <DisabledSection settingsEditable={adSectionEditable}>
+                        <Toggle
+                            className="mb2" 
+                            id='advertisingEnabled' 
+                            defaultChecked={engagementSettings.adEnabled} 
+                            onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
+                        />
+                        <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        <div className='flex mb2'>
+                            <IconStyle className="mr1">info_outlined</IconStyle>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                        </div>
+                        <div className="clearfix mb2">
+                            <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
+                            <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                        </div>
+                        
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
 
-                </DisabledSection>
-            </Card>
+                    </DisabledSection>
+                </Card>
+            }
 
             <Card className='my2'>
                 <Header className="mb2">
@@ -235,10 +237,10 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <LiveNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
-            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
             <Prompt when={engagementSettings !== props.liveEngagementSettings.engagementSettings} message='' />

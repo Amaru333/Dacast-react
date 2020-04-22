@@ -86,8 +86,8 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                         <DropdownSingle id='pricePresetRecurrenceDropdown' dropdownDefaultSelect={presetsList.recurrence} dropdownTitle='Recurrence' list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} />
                         :
                         <>
-                            <Input className='col col-6 pr1'  label='Duration' defaultValue={presetsList.duration.amount ? presetsList.duration.amount.toString() : ''} onChange={(event) => setPresetsList({...presetsList, duration: {...presetsList.duration, amount: parseInt(event.currentTarget.value)}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pl1 mt-auto' dropdownDefaultSelect={presetsList.duration.type} callback={(value: string) => setPresetsList({...presetsList, duration: {...presetsList.duration, type: value}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.duration.amount ? presetsList.duration.amount.toString() : ''} onChange={(event) => setPresetsList({...presetsList, duration: {...presetsList.duration, amount: parseInt(event.currentTarget.value)}})} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.duration.type} callback={(value: string) => setPresetsList({...presetsList, duration: {...presetsList.duration, type: value}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
                         </>
                 }
 
@@ -111,8 +111,8 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             {  
                 presetsList.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?  
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-8 pr1' datepickerTitle='Start Date' />
-                        <Input className='col col-4 pl1' type='time' defaultValue={presetsList.startTime} label='Start Time' />
+                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
+                        <Input className='col col-3 pl1' type='time' defaultValue={presetsList.startTime} label='Start Time' />
                     </div>
                     : null
             }

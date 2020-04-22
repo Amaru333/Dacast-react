@@ -7,6 +7,7 @@ import { LiveThemingReducer } from './Theming/reducer';
 import { LiveEngagementSettings } from './Engagement/types';
 import { LiveEngagementReducer } from './Engagement/reducer';
 import { LivePaywallPageInfos, LivePaywallReducer } from './Paywall';
+import { ContentTheme } from '../Settings/Theming/types';
 
 export const liveInitialState: LiveState = {
     general: false,
@@ -21,7 +22,7 @@ export interface LiveState {
     general: false | LiveDetails;
     list: false | LiveItem[];
     security: false | LiveSecuritySettings;
-    theming: false | LiveTheme;
+    theming: false | ContentTheme;
     engagement: false | LiveEngagementSettings;
     paywall: false | LivePaywallPageInfos;
 };

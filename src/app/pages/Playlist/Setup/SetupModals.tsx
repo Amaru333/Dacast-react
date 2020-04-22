@@ -13,7 +13,7 @@ interface PropsBulkModal {
 
 const SwitchTabConfirmation = (props: PropsBulkModal & {tab: string}) => {    
     return (
-        <Modal icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} title={"Select by "+ props.tab} size="small" opened={props.open}>
+        <Modal icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Select by "+ props.tab} size="small" opened={props.open}>
             <form>
                 <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Swtiching to view "+props.tab+" will clear all of your selected items. "}</Text>
                 <Button sizeButton="large" typeButton="primary" buttonColor="blue" onClick={(e) => {e.preventDefault();props.callBackSuccess();props.toggle(false);} } >Continue</Button>
@@ -25,7 +25,7 @@ const SwitchTabConfirmation = (props: PropsBulkModal & {tab: string}) => {
 
 const PlaylistSettings = (props: PropsBulkModal) => {    
     return (
-        <Modal toggle={() => props.toggle(!props.open)} title={"Playlist Settings"} size="small" opened={props.open}>
+        <Modal toggle={() => props.toggle(!props.open)} modalTitle={"Playlist Settings"} size="small" opened={props.open}>
             <form>
                 <Input  disabled={false} required id="encoder" type="text" className="col col-12 mb3" label="Max Number of Items" placeholder="100"  />
                 <Button sizeButton="large" typeButton="primary" buttonColor="blue" onClick={(e) => {e.preventDefault();props.callBackSuccess();props.toggle(false) } } >Save</Button>

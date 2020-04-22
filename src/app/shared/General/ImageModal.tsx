@@ -7,9 +7,7 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: Function; title: string}) => {
-
-    const testThumbnail = "sick_thumbnail.png"
+export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -18,12 +16,6 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
     let playerRef = React.useRef<HTMLDivElement>(null);
 
     let player = usePlayer(playerRef, '104301_f_713989')
-
-    React.useEffect(() => {
-        if (uploadedImage) {
-            setIsSaveDisabled(false)
-        }
-    }, [uploadedImage])
 
     React.useEffect(() => {
         if (selectedOption === "frame" || uploadedImage !== "") {
@@ -49,43 +41,97 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
         player.getPlayerInstance().currentTime -= 1/24.0;
     }
 
-    const handleSubmit = (ImageModalFunction: Function) => {
-        event.preventDefault();
-        if (selectedOption === "upload") {
-            ImageModalFunction(uploadedImage)
+    const getImageType = ():string => {
+        if(props.title.indexOf('Thumbnail') > -1) {
+            return 'vod-thumbnail'
+        } else if(props.title.indexOf('Splashscreen') > -1) {
+            return 'vod-splashscreen'
+        } else if(props.title.indexOf('Poster') > -1) {
+            return 'vod-poster'
         } else {
-            ImageModalFunction(player.getPlayerInstance().currentTime.toString())
+            return ''
         }
-        props.toggle()
     }
 
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
+    const [logoFile, setLogoFile] = React.useState<File>(null);
+
+    const handleSubmit = () => {
+        props.getUploadUrl(getImageType(), props.vodId)
+    }
+
+    React.useEffect(() => {
+        if (selectedOption === "upload") {
+            console.log(logoFile)
+            props.submit(logoFile, props.uploadUrl)
+        } else {
+            props.submit(player.getPlayerInstance().currentTime.toString())
+        }
+        props.toggle()
+    }, [props.uploadUrl])
+
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setUploadedFileUrl(reader.result.toString())
+                    setLogoFile(file[0])
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+    }
+    
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    React.useEffect(() => {
+        setIsSaveDisabled(logoFile ? false : true)
+    }, [logoFile])
+
     return (
-        <Modal size="large" title={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
-                    <InputRadio name="addThumbnail" value="upload" label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
+                    <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                     <div className="col col-12">
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary" onClick={() => setUploadedImage(testThumbnail)}>Upload File</Button>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary">
+                            <label htmlFor='browseButton'>
+                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                                Upload File
+                            </label>
+                        </Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { uploadedImage === "" ? null : 
-                            <ThumbnailFile className="col col-6 my1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedImage}</Text>
+                        { !logoFile ? null : 
+                            <ThumbnailFile className="col col-6 mt1">
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{logoFile ? logoFile.name : ''}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
-                                    <IconStyle onClick={() => setUploadedImage(testThumbnail)} customsize={14}>close</IconStyle>
+                                    <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
                                 </button>   
                             </ThumbnailFile>
                         }
                     </div>
                 </RadioButtonOption>
                 <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
-                    <InputRadio name="addThumbnail" value="frame" label="Select from Video" onChange={() => setSelectedOption('frame')}/>
+                    <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                 </RadioButtonContainer>
                 <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                     <div className="col col-12">
-                        <PlayerSection className='col col-12 mr2 mb2'>
+                        <PlayerSection className='col col-12 mr2 mb1'>
                             <PlayerContainer className="col col-12 mx2 my2">
                                 <div ref={playerRef}>
                                 </div>
@@ -100,7 +146,7 @@ export const ImageModal = (props: {toggle: () => void; opened: boolean; submit: 
                 </RadioButtonOption>
             </ModalContent>
             <ModalFooter>
-                <Button disabled={isSaveDisabled} onClick={() => handleSubmit(props.submit)}>Save</Button>
+                <Button disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
                 <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
             </ModalFooter>
         </Modal>
@@ -141,7 +187,7 @@ export const PlayerSection = styled.div`
 `
 
 export const PlayerContainer = styled.div`
-    width: 100%;
+    width: 94%;
     height: 341px;
     position: relative;
 `

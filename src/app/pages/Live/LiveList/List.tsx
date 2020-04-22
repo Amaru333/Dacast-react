@@ -2,15 +2,14 @@ import React from 'react';
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../../components/Typography/Text';
-import { tsToLocaleDate } from '../../../../utils/utils';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { tsToLocaleDate, getPrivilege } from '../../../../utils/utils';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { LiveItem } from '../../../redux-flow/store/Live/General/types';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
 import { LivesFiltering } from './LivesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -18,7 +17,6 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
-import { UserAccountPrivileges } from '../../../containers/Navigation/NavigationTypes';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useLocation } from 'react-router-dom'
 import { DateTime } from 'luxon';
@@ -69,7 +67,7 @@ export const LiveListPage = (props: LiveListProps) => {
             {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
             {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div style={{ width: "80px" }} ></div>},
+            {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
         ], defaultSort: 'Created Date'}
     }
 
@@ -114,15 +112,16 @@ export const LiveListPage = (props: LiveListProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
 
     const bulkActions = [
-        { name: 'Online/Offline', function: setBulkOnlineOpen },
-        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
-        { name: 'Change Theme', function: setBulkThemeOpen },
-        { name: 'Move To', function: setBulkThemeOpen },
-        { name: 'Delete', function: setBulkDeleteOpen },
+        { name: 'Online/Offline', function: setBulkOnlineOpen, enabled: true },
+        { name: 'Paywall On/Off', function: setBulkPaywallOpen, enabled: getPrivilege('privilege-paywall') },
+        { name: 'Change Theme', function: setBulkThemeOpen, enabled: true },
+        { name: 'Move To', function: setBulkThemeOpen, enabled: getPrivilege('privilege-folders') },
+        { name: 'Delete', function: setBulkDeleteOpen, enabled: true },
     ]
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
+            if(!item.enabled) return;
             return (
                 <DropdownItem
                     isSingle
@@ -138,15 +137,6 @@ export const LiveListPage = (props: LiveListProps) => {
 
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
-
-
-    /** TO BE REMOVED AND TAKE REAL USER PRIVILEGES */
-    const UserAccountPrivileges: UserAccountPrivileges = {
-        standard: true,
-        compatible: true,
-        premium: true,
-        rewind: true
-    }
 
     return (
         showLiveTabs ?
@@ -180,7 +170,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm items={selectedLive} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
+                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
             </>
     )
 }

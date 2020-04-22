@@ -94,6 +94,7 @@ export interface TagSpecificProps {
     noBorder?: boolean;
     callback?: Function;
     oneTag?: boolean;
+    greyBackground?: boolean;
 }
 
 export type TagProps = TagSpecificProps & InputProps;

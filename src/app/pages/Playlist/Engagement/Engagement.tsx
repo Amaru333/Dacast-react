@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
@@ -15,9 +15,9 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { PlaylistNewAdModal } from './PlaylistNewAdModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 
 export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) => {
 
@@ -105,35 +105,37 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
     return (
         <div>
             <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
-            <Card className='my2'>
-                <Header className="mb25">
-                    <TextStyle>
-                        <Text size={20} weight='med'>Advertising</Text>
-                    </TextStyle>
-                    <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
-                        {adSectionEditable ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
-                </Header>
-                <DisabledSection settingsEditable={adSectionEditable}>
-                    <Toggle
-                        className="mb2" 
-                        id='advertisingEnabled' 
-                        defaultChecked={engagementSettings.adEnabled} 
-                        onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
-                    />
+            {getPrivilege('privilege-advertising') && 
+                <Card className='my2'>
+                    <Header className="mb25">
+                        <TextStyle>
+                            <Text size={20} weight='med'>Advertising</Text>
+                        </TextStyle>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                            {adSectionEditable ? "lock_open" : "lock"}
+                        </IconStyle>
+                        <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                    </Header>
+                    <DisabledSection settingsEditable={adSectionEditable}>
+                        <Toggle
+                            className="mb2" 
+                            id='advertisingEnabled' 
+                            defaultChecked={engagementSettings.adEnabled} 
+                            onChange={() => {setEngagementSettings({...engagementSettings, adEnabled: !engagementSettings.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' 
+                        />
 
-                    <div className="pb2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
-                    </div>
-                    
-                    <div className='flex'>
-                        <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
-                    </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
-                </DisabledSection>
-            </Card>
+                        <div className="pb2">
+                            <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        </div>
+                        
+                        <div className='flex'>
+                            <IconStyle className="mr1">info_outlined</IconStyle>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                        </div>
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                    </DisabledSection>
+                </Card>
+            }
 
             <Card className='my2'>
                 <Header className="mb2">
@@ -237,10 +239,10 @@ export const PlaylistEngagementPage = (props: PlaylistEngagementComponentProps) 
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} title={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <PlaylistNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
             </Modal>
-            <Modal title='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
             <Prompt when={engagementSettings !== props.playlistEngagementSettings.engagementSettings} message='' />

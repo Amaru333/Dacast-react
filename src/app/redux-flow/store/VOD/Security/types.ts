@@ -6,9 +6,8 @@ export enum ActionTypes {
 }
 
 export interface SecuritySettings {
-    privateVideo: boolean;
-    passwordProtectedVideo: PasswordProtectedVideo;
-    videoScheduling: VideoScheduling;
+    passwordProtection: PasswordProtectedVideo;
+    contentScheduling: VideoScheduling;
     geoRestriction?: GeoRestriction[];
     selectedGeoRestriction?: string;
     domainControl?: DomainControl[];
@@ -21,12 +20,12 @@ export interface VodSecuritySettings {
 }
 
 const defaultStateSecuritySettings: SecuritySettings = {
-    privateVideo: false,
-    passwordProtectedVideo: {
-        enabled: false
+    passwordProtection: {
+        password: ''
     },
-    videoScheduling: {
-        enabled: false,
+    contentScheduling: {
+        startTime: 0,
+        endTime: 0
     },
     geoRestriction: [],
     domainControl: [],

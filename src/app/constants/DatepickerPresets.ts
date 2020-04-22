@@ -1,7 +1,9 @@
 import moment from 'moment';
 
 const today = moment();
-const tomorrow = moment().add(1, 'day');
+const yesterday = moment().subtract(1, 'day')
+const thisMonth = moment().month()
+const thisYear = moment().year()
 
 export const presets = [{
     text: 'Today',
@@ -9,9 +11,9 @@ export const presets = [{
     end: today
 },
 {
-    text: 'Tomorrow',
-    start: tomorrow,
-    end: tomorrow,
+    text: 'Yesterday',
+    start: yesterday,
+    end: yesterday,
 },
 {
     text: 'Last 7 days',
@@ -24,13 +26,13 @@ export const presets = [{
     end: today,
 },
 {
-    text: 'Last year',
-    start: moment().subtract(1, 'year'),
+    text: 'Month To Date',
+    start: moment().date(1).month(thisMonth).year(thisYear),
     end: today,
 },
 {
-    text: 'This Year',
-    start: today,
-    end: moment().add(1, 'year'),
+    text: 'Year To Date',
+    start: moment().date(1).month(0).year(thisYear),
+    end: today
 }
 ]

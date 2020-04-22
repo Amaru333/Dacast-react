@@ -1,8 +1,14 @@
 import React from 'react'
-import { ModalCard, ModalContent } from '../../../../components/Modal/ModalCard'
+import { ModalCard, ModalContent, ModalFooter } from '../../../../components/Modal/ModalCard'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
+import { Text } from '../../../../components/Typography/Text'
+
 import axios from 'axios'
+import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
+
+const logo = require('../../../../../public/assets/logo.png');
+
 
 export const ChangePassword = (props: any) => {
 
@@ -17,44 +23,35 @@ export const ChangePassword = (props: any) => {
             })
     }, [])
 
-    const [newPassword, setNewPassword] = React.useState<string>(null)
-    const [confirmNewPassword, setConfirmNewPassword] = React.useState<string>(null)
+    const [newPassword, setNewPassword] = React.useState<string>('')
 
     const handleChangePassword = (passwordText: string) => {
         axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: 'jean.bernardo@dacast.com', verificationToken: '9098'})
     }
     return (
-        <ModalCard size="small" title="Reset Password">
-            <ModalContent>
-                <Input 
-                    disabled={false} 
-                    defaultValue={''}
-                    onChange={(event) => setNewPassword(event.currentTarget.value)}
-                    type="password" 
-                    className="col col-12" 
-                    id="newPassword" 
-                    label="New Password" 
-                    placeholder="New Password" 
-                    help='Must contain more than 6 characters'
-                    required
-                />
-                <Input 
-                    disabled={false} 
-                    defaultValue={''}
-                    onChange={(event) => setConfirmNewPassword(event.currentTarget.value)}
-                    type="password" 
-                    className="col col-12" 
-                    id="confirmPassword" 
-                    label="Confirm Password" 
-                    placeholder="Confirm Password" 
-                    required
-                />
-                <Button disabled={newPassword !== confirmNewPassword} onClick={() => handleChangePassword(newPassword)} sizeButton="large" typeButton="primary">Change Password</Button>
-            </ModalContent>
-        
-            {/* <ModalFooter>
-            
-        </ModalFooter> */}
-        </ModalCard>
+        <LoginContainer>
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className='mx-auto' size="small" title="Reset Password">
+                <ModalContent >
+                    <Text size={14}>Please enter your new password.</Text>
+                    <Input 
+                        disabled={false} 
+                        defaultValue={''}
+                        onChange={(event) => setNewPassword(event.currentTarget.value)}
+                        type="password" 
+                        className="col col-12" 
+                        id="newPassword" 
+                        label="New Password" 
+                        placeholder="New Password" 
+                        help='Your password must contain at least 6 characters.'
+                        required
+                    />
+                </ModalContent>
+                <ModalFooter>
+                    <Button disabled={newPassword.length < 5} onClick={() => handleChangePassword(newPassword)} sizeButton="large" typeButton="primary">Change Password</Button>
+                </ModalFooter>
+            </ModalCard>
+        </LoginContainer>
+
     )
 }

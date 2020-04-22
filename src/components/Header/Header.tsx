@@ -30,8 +30,7 @@ const Header = (props: HeaderProps) => {
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
     React.useEffect(() => {
-        console.log(location.pathname.split('/').filter((f: string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
-        setBreadcrumbItems(location.pathname.split('/').filter((f: string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        setBreadcrumbItems(location.pathname.replace('-', ' ').split('/').filter((f: string)=> f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
     }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)

@@ -7,7 +7,7 @@ const reducer: Reducer<VodSecuritySettings> = (state = defaultStateVodSecuritySe
         case ActionTypes.GET_VOD_SECURITY_SETTINGS :
             return {
                 ...state,
-                ...action.payload,
+                ...action.payload.data,
             }
         case ActionTypes.SAVE_VOD_SECURITY_SETTINGS :
             return {

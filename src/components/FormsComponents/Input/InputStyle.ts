@@ -255,13 +255,16 @@ export const SliderContainerStyle = styled.div<SliderContainerProps>`
         transition: none;
     }
 `
-export const TagsContainer = styled.div<{noBorder: boolean}>`
+export const TagsContainer = styled.div<{noBorder: boolean; greyBackground: boolean}>`
     border: ${props => props.noBorder ? "none" : "1px solid "+ props.theme.colors["gray-7"] };  ;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
-    background-color: inherit;
+    ${props => props.greyBackground && css`
+        background-color: ${props.theme.colors["gray-10"]};
+    `}
+    background-color: ${props => props.theme.colors['gray-10']};
 `
 
 export const TagsInputStyle = styled(InputStyle)`

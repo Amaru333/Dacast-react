@@ -1,4 +1,4 @@
-import { FeaturesList } from '../../../../shared/Common/Features';
+import { FeaturesList } from '../../../../shared/Common/Features'
 
 export enum ActionTypes {
     GET_VOD_DETAILS = "@@vod_general/GET_VOD_DETAILS",
@@ -9,49 +9,54 @@ export enum ActionTypes {
     ADD_VOD_SUBTITLE = "@@vod_general/ADD_VOD_SUBTITLE",
     EDIT_VOD_SUBTITLE = "@@vod_general/EDIT_VOD_SUBTITLE",
     DELETE_VOD_SUBTITLE = "@@vod_general/DELETE_VOD_SUBTITLE",
-    CHANGE_VOD_THUMBNAIL = "@@vod_general/CHANGE_VOD_THUMBNAIL",
-    CHANGE_VOD_SPLASHSCREEN = "@@vod_general/CHANGE_VOD_SPLASHSCREEN",
-    CHANGE_VOD_POSTER = "@@vod_general/CHANGE_VOD_POSTER",
-    DELETE_VOD_POSTER = "@@vod_general/DELETE_VOD_POSTER"
+    GET_UPLOAD_URL = "@@vod_general/GET_UPLOAD_URL",
+    UPLOAD_IMAGE = "@@vod_general/UPLOAD_IMAGE",
+    DELETE_IMAGE = "@@vod_general/DELETE_IMAGE",
+}
+
+interface AssetType {
+    assetGroupID: string;
+    targetType: string;
+    targetID: string;
+    url: string;
 }
 
 export interface VodDetails {
     id: string;
     online: boolean;
     title: string;
-    folder: string[];
     description: string;
-    thumbnail: string;
-    splashscreen: string;
-    poster?: string;
+    folder?: string[];
+    thumbnail: AssetType;
+    splashscreen: AssetType;
+    poster?: AssetType;
     subtitles: SubtitleInfo[];
+    uploadurl: string;
 }
 
 export interface VodItem {
-    id: string;
-    online: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
     size: number;
-    views: number;
-    thumbnail: string;
-    created: number;
-    features: FeaturesList;
+    views?: number;
+    duration: number;
+    thumbnail?: string;
+    createdAt: number;
+    features?: FeaturesList;
+}
+
+export interface SearchResult {
+    results: VodItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }
 
 export interface SubtitleInfo {
     id: string;
     fileName: string;
     language: string;
-}
-
-export interface ThumbnailUpload {
-    thumbnail: File | string;
-}
-
-export interface SplashscreenUpload {
-    splashscreen: File | string;
-}
-
-export interface PosterUpload {
-    poster: File | string;
 }

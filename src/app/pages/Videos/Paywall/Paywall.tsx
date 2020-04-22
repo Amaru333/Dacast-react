@@ -8,12 +8,11 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Table } from '../../../../components/Table/Table'
 import { Modal } from '../../../../components/Modal/Modal'
 import { PromoPresetsModal } from '../../Paywall/Presets/PromoPresetsModal'
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon'
+import { IconStyle, IconContainer , ActionIcon} from '../../../../shared/Common/Icon'
 import { Preset, Promo, VodPaywallPageInfos } from '../../../redux-flow/store/VOD/Paywall'
 import { VodPaywallComponentProps } from '../../../containers/Videos/Paywall'
 import { BorderStyle } from '../../Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes'
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { ContentPricePresetsModal } from '../../../shared/Paywall/ContentPricePresetModal';
@@ -179,7 +178,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown' 
-                    className='col col-2 my2' 
+                    className='col col-3 my2' 
                     dropdownTitle='Paywall Theme' 
                     dropdownDefaultSelect={props.vodPaywallInfos.selectedTheme}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
@@ -187,7 +186,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' className='col col-2 my2' placeholder='Video ID' />
+                <Input id='VodPaywallIntroVideoIdInput' className='col col-3 my2' placeholder='Video ID' />
                         
                 <BorderStyle className='my2' />
 
@@ -222,16 +221,16 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 <Button onClick={() => props.saveVodPaywallInfos(vodPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => setVodPaywallSettings(props.vodPaywallInfos)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal hasClose={false} title='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
                 <ContentPricePresetsModal action={ props.createVodPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
             </Modal>
-            <Modal hasClose={false} title='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={props.saveVodPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
             </Modal>
-            <Modal hasClose={false} title='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
                 <ContentPromoPresetsModal action={ props.createVodPromoPreset} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
             </Modal>
-            <Modal hasClose={false} title='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={props.saveVodPromoPreset} promo={selectedPromo} toggle={setEditPromoPresetsModalOpened} />
             </Modal>
             <Prompt when={vodPaywallSettings !== props.vodPaywallInfos} message='' />

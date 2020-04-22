@@ -6,14 +6,14 @@ import { resetPassword } from './service';
 
 export interface ForgotPassword {
     type: ActionTypes.FORGOT_PASSWORD;
-    payload: ForgotPasswordInfo;
+    payload: {data: ForgotPasswordInfo};
 }
 
 export const forgotPasswordAction = (email: string): ThunkDispatch<Promise<void>, {}, ForgotPassword> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ForgotPassword> ) => {
         await resetPassword(email)
             .then( response => {
-                dispatch( {type: ActionTypes.FORGOT_PASSWORD, payload: response.data.data} );
+                dispatch( {type: ActionTypes.FORGOT_PASSWORD, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

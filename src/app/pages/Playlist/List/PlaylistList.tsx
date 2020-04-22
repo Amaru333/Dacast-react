@@ -3,7 +3,7 @@ import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../../components/Typography/Text';
 import { tsToLocaleDate } from '../../../../utils/utils';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import styled from 'styled-components';
 import { Pagination } from '../../../../components/Pagination/Pagination'
@@ -15,7 +15,6 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { ActionIcon } from '../../../shared/ActionIconStyle';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { PlaylistFiltering } from './PlaylistFilter';
 import { DateTime } from 'luxon';

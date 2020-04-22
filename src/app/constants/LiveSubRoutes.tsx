@@ -15,12 +15,13 @@ export const LiveSubRoutes: Routes[] = [
     {
         path: '/paywall',
         name: 'Paywall',
-        component: LivePaywall
+        component: LivePaywall,
+        associatePrivilege: 'privilege-paywall'
     },
     {
         path: '/engagement',
         name: 'Engagement',
-        component: LiveEngagement
+        component: LiveEngagement,
     },
     {
         path: '/security',

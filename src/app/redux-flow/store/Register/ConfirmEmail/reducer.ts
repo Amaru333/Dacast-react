@@ -6,7 +6,7 @@ const reducer: Reducer<ConfirmEmailInfo> = (state = defaultStateConfirmEmail, ac
     switch(action.type) {
         case ActionTypes.SEND_CONFIRM_EMAIL : 
             return {
-                ...action.payload
+                ...action.payload.data
             }
         default :
             return {...state}

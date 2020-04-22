@@ -8,6 +8,8 @@ import { VodEngagementSettings } from "../../redux-flow/store/VOD/Engagement/typ
 import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { VideoTabs } from './VideoTabs';
+import { useParams } from 'react-router-dom';
 
 export interface VodEngagementComponentProps {
     vodEngagementSettings: VodEngagementSettings;
@@ -20,6 +22,8 @@ export interface VodEngagementComponentProps {
 
 export const VodEngagement = (props: VodEngagementComponentProps) => {
 
+    let { vodId } = useParams()
+
     React.useEffect(() => {
         if(!props.vodEngagementSettings) {
             props.getVodEngagementSettings();
@@ -28,7 +32,10 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
 
     return (
         props.vodEngagementSettings ?
-            <VodEngagementPage {...props} />
+            <div className='flex flex-column'>
+                <VideoTabs videoId={vodId} />
+                <VodEngagementPage {...props} />
+            </div>            
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
