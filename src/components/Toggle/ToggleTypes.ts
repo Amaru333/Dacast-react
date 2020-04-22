@@ -2,7 +2,7 @@ export interface ToggleCustomProps {
     label: string;
     callback? : Function;
     name?: string;
-    ref?: any;
+    refForwarded?: any;
 }
 
 export type ToggleProps = ToggleCustomProps & React.HTMLAttributes<HTMLInputElement>

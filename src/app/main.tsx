@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Store } from "redux";
-import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
@@ -23,29 +23,27 @@ import { responsiveMenu } from './utils/hooksReponsiveNav';
 import { isLoggedIn } from './utils/token';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia } from '../utils/utils'
+import ScrollToTop, { useMedia, getPrivilege } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
-
+import { Privilege } from './constants/PrivilegesName';
+import { NotFound } from './containers/404page';
 
 // Any additional component props go here.
 interface MainProps {
     store: Store<ApplicationState>;
 }
 
-
-
-  
-export const updateStateTitle = (pathname: string) => { 
-    var result = AppRoutes.filter(item => pathname.includes(item.path) );
-    if( /\d/.test(pathname) ) { return; }
-    if(result.length) {
-        if(result[0].slug) {
-            let match =  result[0].slug.filter(subRoute => {return subRoute.path === pathname; } );
-            if(match[0]){
+export const updateStateTitle = (pathname: string) => {
+    var result = AppRoutes.filter(item => pathname.includes(item.path));
+    if (/\d/.test(pathname)) { return; }
+    if (result.length) {
+        if (result[0].slug) {
+            let match = result[0].slug.filter(subRoute => { return subRoute.path === pathname; });
+            if (match[0]) {
                 updateTitleApp(match[0].name);
             } else {
                 updateTitleApp(result[0].name);
@@ -56,13 +54,12 @@ export const updateStateTitle = (pathname: string) => {
     }
 }
 
-history.listen( (location) =>  {
+history.listen((location) => {
     updateStateTitle(location.pathname)
 });
 
 // Create an intersection type of the component props and our Redux props.
-
-const AppContent = () => { 
+const AppContent = () => {
     let location = useLocation()
     let history = useHistory()
 
@@ -77,7 +74,7 @@ const AppContent = () => {
 
     let mobileWidth = useMedia('(max-width:780px');
 
-    const {currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked} = responsiveMenu();
+    const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
 
     React.useEffect(() => {
         updateStateTitle(location.pathname)
@@ -93,73 +90,82 @@ const AppContent = () => {
         }
     };
 
-    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean}) => {
+    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
 
-        return (
-            isLoggedIn()  ?
-                <Route 
+        if(isLoggedIn()) {
+            if(props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
+                return <NotFound />
+            }
+            return (
+                <Route
                     path={props.path}
                     exact={props.exact ? true : false}
                 >
-                    <MainMenu menuLocked={menuLocked} onMouseEnter={ () => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes}/>
+                    <MainMenu menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
                             <props.component {...props} />
                         </Content>
                         <div id="navigationConfirmationModal"></div>
-                    </FullContent>  
+                    </FullContent>
                 </Route>
-                : 
-                <Redirect to='/' />
-    
-        )
+            )
+        } else {
+            return <Redirect to='/' />;
+        }
     }
-    
-    
+
+
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
-                return route.isPublic ? 
-                    <Route key={route.path} path={route.path}><route.component /></Route>
-                    :  !route.slug ? <PrivateRoute key={i.toString()}
+                if (route.isPublic) {
+                    return <Route key={route.path} path={route.path}><route.component /></Route>;
+                }
+                if (!route.slug) {
+                    return <PrivateRoute key={i.toString()}
                         path={route.path}
+                        associatePrivilege={route.associatePrivilege}
                         // pass the sub-routes down to keep nesting
                         component={route.component}
                         exact={route.isExact ? true : false}
                     />
-                        : route.slug.map((subroute, index) => {
-                            return <PrivateRoute key={'subroute'+index}
-                                path={subroute.path}
-                                component={subroute.component}     
-                                exact={subroute.isExact ? true : false}                     
-                            />
-                        })
+                } else {
+                    return route.slug.map((subroute, index) => {
+                        return <PrivateRoute key={'subroute' + index}
+                            path={subroute.path}
+                            associatePrivilege={subroute.associatePrivilege}
+                            component={subroute.component}
+                            exact={subroute.isExact ? true : false}                     
+                        />
+                    })
+                }
             })
         )
     }
 
     return (
-        <>                 
-        <Toasts />
+        <>
+            <Toasts />
             <Switch>
                 {isLoggedIn() ?
-                    <PrivateRoute key='/' component={Dashboard} exact path='/' />                
+                    <PrivateRoute key='/' component={Dashboard} exact path='/' />
 
                     :
                     <Route exact path='/'>
                         <Login />
                     </Route>
-                }                           
+                }
                 {returnRouter(AppRoutes)}
             </Switch>
-    </>
+        </>
     )
 }
-const Main: React.FC<MainProps> = ({ store}: MainProps) => {
+const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
     /** TO DO: Figure out a way to implement the styled components */
-    const NavigationConfirmationModal = (props: {callback: Function; message: string}) => {
+    const NavigationConfirmationModal = (props: { callback: Function; message: string }) => {
 
         //const [isOpen, setIsOpen] = React.useState<boolean>(true);
 
@@ -175,7 +181,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
             <React.Fragment>
                 <div className="unsavedChangesContainer">
                     <div className="unsavedChangesTitle">
-                        <Icon className="material-icons-outlined" fontSize="large" style={{color:"red"}}>report_problem</Icon>
+                        <Icon className="material-icons-outlined" fontSize="large" style={{ color: "red" }}>report_problem</Icon>
                         <span className="unsavedChangesText-Header">Unsaved Changes</span>
                     </div>
                     <div className="unsavedChangesBody">
@@ -217,7 +223,7 @@ const Main: React.FC<MainProps> = ({ store}: MainProps) => {
     );
 };
 
-const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
+const Content = styled.div<{ isOpen: boolean; isMobile: boolean }>`
     position: relative;
     height: auto;
     min-height: 100vh;
@@ -230,7 +236,7 @@ const Content = styled.div<{isOpen: boolean; isMobile: boolean}>`
     padding-top: 81px;
 `
 
-const FullContent = styled.div<{isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean}>`
+const FullContent = styled.div<{ isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean }>`
     margin-left: ${props => props.isMobile ? 0 : props.isLocked ? '235px' : '64px'};
     background: rgb(245, 247, 250);
     position: relative;

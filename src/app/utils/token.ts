@@ -1,27 +1,58 @@
 import { TokenInfos } from '../redux-flow/store/Register/Login';
 import { DateTime } from 'luxon';
 import axios from 'axios'
+import { Privilege } from '../constants/PrivilegesName';
 
+var userInfo: any = false;
+
+export const initUserInfo = () => {
+    if(userInfo) {
+        return userInfo;
+    } else {
+        if(localStorage.getItem('userToken')) {
+            var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
+            let userInfos = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
+            userInfo = userInfos;
+        }
+    }
+}
 
 export function addToken(data: TokenInfos) {
     if(data) {
-        localStorage.setItem('userToken', JSON.stringify(data))
+        localStorage.setItem('userToken', JSON.stringify(data));
+        initUserInfo();
     }
+}
+
+export const getUserInfoItem = (item: string | Privilege) => {
+    if(userInfo) {
+        console.log(userInfo);
+        return userInfo[item];
+    }
+    throw new Error('User not defined')
 }
 
 export function addTokenToHeader() {
     if(localStorage.getItem('userToken')) {
+        if(userInfo) {
+            var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
+            return {token: userInfo.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken, vodStorageId: userInfo['vod-storage-id']}
+        }
         var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
         let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
-        console.log(userInfo)
-        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken, vodStorageId: userInfo['vod-storage-id']}
 
+        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken, vodStorageId: userInfo['vod-storage-id']}
     }
     throw new Error('No user token found')
 }
 
 export function isLoggedIn() {
-    return localStorage.getItem('userToken') ? true : false;
+    if(localStorage.getItem('userToken')) {
+        initUserInfo();
+        return true;
+    } else {
+        return false
+    }
 }
 
 export async function isTokenExpired() {

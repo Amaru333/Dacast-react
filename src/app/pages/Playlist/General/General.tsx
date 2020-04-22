@@ -87,6 +87,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         className="col col-6"
                         label="Folders"
                         disabled
+                        greyBackground
                         defaultTags={props.playlistDetails.folder} 
                     />
                     <Input

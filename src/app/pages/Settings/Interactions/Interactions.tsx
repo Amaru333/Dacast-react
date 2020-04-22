@@ -16,6 +16,7 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -127,6 +128,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     return (
         <div>
             <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
+            { getPrivilege('privilege-advertising') && 
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>Advertising</Text>
                 <DisabledSection settingsEditable={props.interactionsInfos.adList.length > 1}>
@@ -143,7 +145,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 </div>
                 <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
                         
-            </Card>
+            </Card>}
 
             <Card className='my2'>
                 <TextStyle> <Text size={20} weight='med'>Email Catcher</Text></TextStyle>

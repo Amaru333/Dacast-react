@@ -2,14 +2,15 @@ import * as React from "react";
 import { Text } from '../../../components/Typography/Text';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Link, useLocation, useHistory } from 'react-router-dom'
-import {MainMenuProps, ElementMenuProps, UserAccountPrivileges } from './NavigationTypes'
+import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
-import { useOutsideAlerter } from '../../../utils/utils';
+import { useOutsideAlerter, getPrivilege } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
+import { initUserInfo } from '../../utils/token';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -25,7 +26,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
-    let history = useHistory()
+    let history = useHistory();
     const firstSelectedItem = (): {main: string; slug: string} => {
         let matchingRoute = {main: '/dashboard', slug: ''};
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
@@ -57,12 +58,13 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
+        initUserInfo();
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
         }
-        setSelectedElement(firstSelectedItem().main)
-        setSelectedSubElement(firstSelectedItem().slug)
+        setSelectedElement(firstSelectedItem().main);
+        setSelectedSubElement(firstSelectedItem().slug);
     }, [location])
 
     // React.useEffect(() => {
@@ -89,7 +91,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     }
 
-    const AddItemsList = ["Vod", "Stream", "Playlist"]
+    const AddItemsList = [{name: "Vod", enabled: getPrivilege('privilege-vod')}, {name: "Stream", enabled: getPrivilege('privilege-live')}, {name: "Playlist", enabled: getPrivilege('privilege-playlists')}]
 
     
 
@@ -99,13 +101,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setAddDropdownIsOpened(!addDropdownIsOpened)
     });
 
-    const UserAccountPrivileges: UserAccountPrivileges = {
-        standard: true,
-        compatible: true,
-        premium: true,
-        rewind: true
-    }
-
     const handleClick = (name: string) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
@@ -114,7 +109,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 break
             case "Stream":
                 setAddDropdownIsOpened(false)
-                if (UserAccountPrivileges.premium === false && UserAccountPrivileges.compatible === false && UserAccountPrivileges.rewind === false ) {
+                if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")
                 } else {
                     setAddStreamModalOpen(true)
@@ -130,16 +125,16 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const renderAddList = () => {
         return (
-            AddItemsList.map((name) => {
+            AddItemsList.filter(item => item.enabled).map((item) => {
                 return (
                     <DropdownItem 
                         isSingle
-                        key={props.id + '_' + name} 
-                        id={props.id + '_' + name} 
+                        key={props.id + '_' + item.name} 
+                        id={props.id + '_' + item.name} 
                         className="mt1"
-                        isSelected={selectedAddDropdownItem === name} 
+                        isSelected={selectedAddDropdownItem === item.name} 
                         onClick={() => handleClick(name)}> 
-                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
                     </DropdownItem>
                 )                
             })
@@ -156,7 +151,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const renderMenu = () => {
 
-        return props.routes.map((element, i) => {
+        return props.routes.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((element, i) => {
             if(!element.notDisplayedInNavigation) {
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
@@ -181,7 +176,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.map((subMenuElement, index) => {
+                                {element.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
@@ -232,7 +227,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     </SectionStyle>
                 </Scrollbar>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
-                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} privileges={UserAccountPrivileges} />
+                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
            
                   
             </ContainerStyle>

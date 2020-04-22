@@ -30,7 +30,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
 
     /** Validation */
-    const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
+    const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
         reValidateMode: 'onChange',
         mode: 'onBlur',
         defaultValues: props.ProfilePageDetails,
@@ -52,6 +52,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         reValidateMode: 'onChange',
         mode: 'onBlur'
     })
+
+    console.log(getValues());
 
     return (
         <div>
@@ -125,20 +127,20 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 
                     <ToggleContainer>
-                        <Toggle name="marketing" ref={register()} callback={ (value: boolean) => { setValue('marketing', value) }} 
-                            id="marketingToggle" label='Marketing'  defaultChecked={props.ProfilePageDetails.marketing} />
+                        <Toggle name="marketing" refForwarded={register()}  
+                            id="marketingToggle" label='Marketing'  />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
-                        <Toggle name="lowData" ref={register()} callback={ (value: boolean) => { setValue('lowData', value) }} 
-                            id="lowData" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData}/>
+                        <Toggle name="lowData" refForwarded={register()} 
+                            id="lowData" label='Low Data' />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when the your remaining Data falls below 10%.</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
-                        <Toggle name="videoUpload" ref={register()} callback={ (value: boolean) => { setValue('videoUpload', value) }} 
-                            id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.videoUpload}/>
+                        <Toggle name="videoUpload" refForwarded={register()} 
+                            id="uploadToggle" label='Video Uploaded' />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
                     </ToggleContainer>
                 </form>
@@ -147,7 +149,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             {
                 dirty ?
                     <div>
-                        <Button type="submit" className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'flexible', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
                     : null

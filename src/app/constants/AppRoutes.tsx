@@ -97,6 +97,7 @@ export const AppRoutes: Routes[] = [
         path: '/livestreams',
         name: 'Live Streams',
         isExact: true,
+        associatePrivilege: 'privilege-live',
         iconName: 'videocam',
         component: LiveList
     },
@@ -104,6 +105,7 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         iconName: 'play_arrow',
         component: VodList,
     },
@@ -169,6 +171,7 @@ export const AppRoutes: Routes[] = [
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
+        associatePrivilege: 'privilege-folders',
         component: Folders
     },
 
@@ -177,6 +180,7 @@ export const AppRoutes: Routes[] = [
         name: 'Playlists',
         isExact: true,
         iconName: 'playlist_play',
+        associatePrivilege: 'privilege-playlists',
         component: PlaylistList
     },
     {
@@ -184,6 +188,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: 'bar_chart',
         component: null,
+        associatePrivilege: 'privilege-analytics',
         slug: [
             {
                 path: '/analytics/dashboard',
@@ -211,6 +216,7 @@ export const AppRoutes: Routes[] = [
         path: '/paywall',
         name: 'Paywall',
         iconName: 'attach_money',
+        associatePrivilege: 'privilege-paywall',
         component: null,
         slug: [
             {
@@ -273,7 +279,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/api-integrations',
                 name: 'API & Integrations',
-                component: ApiIntegration
+                component: ApiIntegration,
+                associatePrivilege: 'privilege-api'
             },
 
             {

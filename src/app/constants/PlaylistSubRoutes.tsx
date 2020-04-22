@@ -21,7 +21,8 @@ export const PlaylistSubRoutes: Routes[] = [
     {
         path: '/paywall',
         name: 'Paywall',
-        component: PlaylistPaywall
+        component: PlaylistPaywall,
+        associatePrivilege: 'privilege-paywall'
     },
     {
         path: '/engagement',

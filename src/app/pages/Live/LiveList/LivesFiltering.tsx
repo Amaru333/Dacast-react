@@ -6,8 +6,9 @@ import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/
 import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
+import { getPrivilege } from '../../../../utils/utils';
 
-export const LivesFiltering = (props: {setSelectedLive: Function}) => {
+export const LivesFiltering = (props: { setSelectedLive: Function }) => {
 
 
     interface FilteringState {
@@ -87,32 +88,33 @@ export const LivesFiltering = (props: {setSelectedLive: Function}) => {
                     </div>
                     <div className="mb3" id="vodFilterFeatures">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                        {getPrivilege('privilege-paywall') && <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
                             id='vodFilterPaywall' label="Paywall" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                        }
+                        {getPrivilege('privilege-advertising') && <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                            id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                            id='vodFilterAdvertising' label="Advertising" labelWeight="reg" />}
+                        {getPrivilege('privilege-playlists') && <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                            id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />
+                            id='vodFilterPlaylists' label="Playlists" labelWeight="reg" />}
                         <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
                             id='vodFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
+                        {getPrivilege('privilege-recording') && <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
-                            id='vodFilterRecording' label="Recording" labelWeight="reg" />
+                            id='vodFilterRecording' label="Recording" labelWeight="reg" />}
                     </div>
                     <div className="mb3" id="vodFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
                     </div>
                 </div>
-                
+
                 <div className="flex" id="vodFilterbuttons">
                     <Button onClick={() => { setOpenFilters(false); props.setSelectedLive([]) }} className="mr1" typeButton="primary">
                         Apply
