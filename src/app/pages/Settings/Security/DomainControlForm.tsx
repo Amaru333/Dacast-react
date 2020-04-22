@@ -10,6 +10,8 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
     const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(null);
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.name.length > 0);
 
+    console.log(domainControlItem)
+
     React.useEffect(() => {
         setDomainControlItem(props.item)
     }, [props.item])

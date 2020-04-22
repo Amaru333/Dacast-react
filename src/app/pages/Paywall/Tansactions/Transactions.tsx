@@ -8,6 +8,8 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
+import { IconStyle } from '../../../../shared/Common/Icon';
+import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -55,7 +57,11 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     }
     return (
         <div className='flex flex-column'>
-            <div className='col col-12 mb2 flex justify-end'>
+            <div style={{alignItems: 'center'}} className='col col-12 flex justify-end'>
+            <div className='flex items-center flex-auto'>
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />   
+                </div>
                 <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button>
                 <TransactionsFiltering />
             </div>
