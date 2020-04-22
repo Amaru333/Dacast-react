@@ -1,35 +1,35 @@
 import axios from 'axios'
-import { SubtitleInfo, VodDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
-import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
+import { SubtitleInfo, VodDetails } from './types'
+import { addTokenToHeader, isTokenExpired } from '../../../../utils/token'
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/'
 
 const getVodDetailsService = async (vodId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader();
+    let {token} = addTokenToHeader()
     return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId, 
         {
             headers: {
                 Authorization: token
             }
         }
-    );
+    )
 }
 
 const getVodList = async () => {
     await isTokenExpired()
-    let {token} = addTokenToHeader();
+    let {token} = addTokenToHeader()
     return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/', 
         {
             headers: {
                 Authorization: token
             }
         }
-    );
+    )
 }
 
 const editVodDetailsService = (data: VodDetails) => {
-    return axios.put(urlBase + 'vod-details', {...data});
+    return axios.put(urlBase + 'vod-details', {...data})
 }
 
 const addVodSubtitleService = (data: SubtitleInfo) => {
@@ -44,21 +44,30 @@ const deleteVodSubtitleService = (data: SubtitleInfo) => {
     return axios.delete(urlBase + 'vod-subtitle', {data:{...data}})
 }
 
-const changeVodThumbnailService = (data: ThumbnailUpload) => {
-    return axios.put(urlBase + 'vod-thumbnail', {...data})
+const getUploadUrl = async (data: string, vodId: string) => {
+    console.log('vod id', vodId)
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/' + data,
+    {
+        vodID: vodId
+    },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
 }
 
-const changeVodSplashscrenService = (data: SplashscreenUpload) => {
-    return axios.put(urlBase + 'vod/splashscreen', {...data})
+const uploadImage = (data: File, uploadUrl: string) => {
+    console.log(data)
+    return axios.put(uploadUrl, {...data})
 }
 
-const changeVodPosterService = (data: PosterUpload) => {
+const deleteImage = (data: File) => {
     return axios.put(urlBase + 'vod/poster', {...data})
 }
 
-const deleteVodPosterService = () => {
-    return axios.delete(urlBase + 'vod/poster')
-}
 
 export const VodGeneralServices = {
     getVodDetailsService,
@@ -66,9 +75,8 @@ export const VodGeneralServices = {
     addVodSubtitleService,
     editVodSubtitleService,
     deleteVodSubtitleService,
-    changeVodThumbnailService,
-    changeVodSplashscrenService,
-    changeVodPosterService,
-    deleteVodPosterService,
+    getUploadUrl,
+    uploadImage,
+    deleteImage,
     getVodList
 }

@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { ChapterMarker } from '../../../redux-flow/store/VOD/Chapters/types';
+import { Button } from '../../../../components/FormsComponents/Button/Button'
+import { ChapterMarker } from '../../../redux-flow/store/VOD/Chapters/types'
 
-export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function; submit: Function}) => {
+export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function}) => {
 
-    const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null);
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0);
+    const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null)
+    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0)
 
     React.useEffect(() => {
         setChapterMarker(props.item);
@@ -19,9 +19,22 @@ export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function;
     }, [chapterMarker])
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        props.submit(chapterMarker);
-        props.toggle(false);
+        let submittedChapterMarkers: ChapterMarker[] = props.chapters
+        if(props.item.text.length === 0) {
+            submittedChapterMarkers.push({...chapterMarker, id: chapterMarker.text + chapterMarker.start})
+        } else {
+            submittedChapterMarkers = submittedChapterMarkers.map((chapter) => {
+                if(chapter.id === props.item.id) {
+                    return {...chapterMarker, id: props.item.id}
+                }
+                else {
+                    return chapter
+                }
+            })
+        }
+        event.preventDefault()
+        props.submit(props.vodId, submittedChapterMarkers)
+        props.toggle(false)
     }
     return (
         chapterMarker ?
@@ -44,7 +57,7 @@ export const ChapterMarkerForm = (props: {item: ChapterMarker; toggle: Function;
                     disabled={false}
                     onChange={(event) => setChapterMarker({...chapterMarker, start: parseInt(event.currentTarget.value)})}
                     id='chapterMarkerTime'
-                    type='time'
+                    type='number'
                     step='2'
                     className='col col-12 pb1'
                     label='Start Time'

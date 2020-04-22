@@ -15,17 +15,8 @@ import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonConta
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { GeneralComponentProps } from '../../../containers/Videos/General';
 
-interface GeneralComponentProps {
-    vodDetails: VodDetails;
-    editVodDetails: Function;
-    addVodSubtitle: Function;
-    editVodSubtitle: Function;
-    deleteVodSubtitle: Function;
-    changeVodThumbnail: Function;
-    changeVodSplashscreen: Function;
-    changeVodPoster: Function;
-}
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
     return {data: [
@@ -93,7 +84,7 @@ const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen
     setSubtitleModalOpen(false);
 }
 
-export const GeneralPage = (props: GeneralComponentProps) => {
+export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     const emptySubtitle = { id: "", fileName: "", language: "" }
 
@@ -114,11 +105,11 @@ export const GeneralPage = (props: GeneralComponentProps) => {
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            return  props.changeVodSplashscreen
+            return  'splashscreen'
         } else if (imageModalTitle === "Change Thumbnail") {
-            return props.changeVodThumbnail
+            return 'thumbnail'
         } else {
-            return props.changeVodPoster
+            return 'poster'
         }
     }
 
@@ -143,15 +134,15 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                         </header>
                         <Toggle
                             className="col col-12 mt2 pb2"
-                            defaultChecked={VodDetails.metadata.online}
-                            onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, metadata: {...VodDetails.metadata, online: !videoIsOnline }}) }}
+                            defaultChecked={VodDetails.online}
+                            onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, online: !videoIsOnline })}}
                             label="Video Online"
                         />
                         <Input
                             className="col col-6 pr2"
                             label="Title"
-                            value={VodDetails.metadata.title}
-                            onChange={event => setVodDetails({...VodDetails , metadata: {...VodDetails.metadata, title: event.currentTarget.value }})}
+                            value={VodDetails.title}
+                            onChange={event => setVodDetails({...VodDetails, title: event.currentTarget.value })}
                         />
                         <InputTags
                             className="col col-6"
@@ -164,16 +155,16 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             className="col col-6 pr2 pt2"
                             type="textarea"
                             label="Description"
-                            value={VodDetails.metadata.description}
-                            onChange={event => setVodDetails({ ...VodDetails, metadata: {...VodDetails.metadata, description: event.currentTarget.value }})}
+                            value={VodDetails.description}
+                            onChange={event => setVodDetails({ ...VodDetails, description: event.currentTarget.value })}
                         />
                         <div className="col col-3 pt2 flex flex-column">
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{props.vodDetails.metadata.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.metadata.id)}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -223,7 +214,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                                 Change
                                         </Button>
                                     </ButtonSection> 
-                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen.url} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -235,7 +226,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail.url} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -248,18 +239,18 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
-                                            VodDetails.poster === "" ? null :
+                                            !VodDetails.poster ? null :
                                                 <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                             {
-                                                VodDetails.poster === "" ?
+                                                !VodDetails.poster  ?
                                                     "Add" : "Change"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.poster} /></ImageSection>  
+                                    <ImageSection> <SelectedImage src={props.vodDetails.poster.url} /></ImageSection>  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -328,7 +319,7 @@ export const GeneralPage = (props: GeneralComponentProps) => {
                             </ModalFooter>
                         </form>
                     </Modal>
-                    <ImageModal title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction()} />
+                    <ImageModal vodId={props.vodId} uploadUrl={props.vodDetails.uploadurl} getUploadUrl={props.getUploadUrl} title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.uploadImage} />
 
                 </Card>
                 <ButtonContainer>

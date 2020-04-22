@@ -85,11 +85,10 @@ export class UploadObject {
     private async initUpload() {
         console.log('init upload for file ', this.file.name)
         await isTokenExpired()
-        let {token, vodStorageId} = addTokenToHeader();
+        let {token} = addTokenToHeader();
         let res = await axios.post(`${BASE_PATH}/uploads/init-multipart`, 
         {
             fileName: this.file.name,
-            vodStorageID: vodStorageId
         }, 
         {
             headers: {

@@ -7,6 +7,8 @@ import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRendit
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { VideoTabs } from './VideoTabs';
+import { useParams } from 'react-router-dom';
 
 interface VodRenditionsContainerProps {
     renditions: RenditionsList;
@@ -16,6 +18,8 @@ interface VodRenditionsContainerProps {
 }
 
 export const VodRenditions = (props: VodRenditionsContainerProps) => {
+
+    let { vodId } = useParams()
 
     React.useEffect(() => {
         if(!props.renditions) {
@@ -27,8 +31,10 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
     return (
         props.renditions ?
             (
-                <VodRenditionsPage {...props} />
-            )
+                <div className='flex flex-column'>
+                    <VideoTabs videoId={vodId} />
+                    <VodRenditionsPage {...props} />
+                </div>            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

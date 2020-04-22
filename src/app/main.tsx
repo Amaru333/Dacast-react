@@ -126,11 +126,13 @@ const AppContent = () => {
                         path={route.path}
                         // pass the sub-routes down to keep nesting
                         component={route.component}
+                        exact={route.isExact ? true : false}
                     />
                         : route.slug.map((subroute, index) => {
                             return <PrivateRoute key={'subroute'+index}
                                 path={subroute.path}
-                                component={subroute.component}                          
+                                component={subroute.component}     
+                                exact={subroute.isExact ? true : false}                     
                             />
                         })
             })

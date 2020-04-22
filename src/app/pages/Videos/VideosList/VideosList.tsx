@@ -6,7 +6,6 @@ import { Text } from '../../../../components/Typography/Text';
 import { VodItem, SearchResult } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { VideoTabs } from '../../../containers/Videos/VideoTabs';
 import { VideosFiltering } from './VideosFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
@@ -33,8 +32,6 @@ export const VideosListPage = (props: VideosListProps) => {
     let history = useHistory()
 
     const [selectedVod, setSelectedVod] = React.useState<string[]>([]);
-    const [showVodTabs, setShowVodTabs] = React.useState<boolean>(false);
-    const [selectedVodId, setSelectedVodId] = React.useState<VodItem>(null);
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
@@ -53,16 +50,6 @@ export const VideosListPage = (props: VideosListProps) => {
         { name: 'Move To', function: setBulkThemeOpen },
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
-
-    React.useEffect(() => {
-        setShowVodTabs(location.pathname !== '/videos')
-
-    }, [location])
-
-    React.useEffect(() => {
-    }, [selectedVod])
-
-
 
     const vodListHeaderElement = () => {
         return {data: [
@@ -110,7 +97,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <div className='flex'>{value.features ? handleFeatures(value, value.objectID.toString()) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { setSelectedVodId(value); setShowVodTabs(true) }} className="right mr1" >edit</IconStyle>
+                            <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -119,7 +106,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>  
                     </div>,
                 ], 
-                callback: (value: VodItem) => {setSelectedVodId(value); setShowVodTabs(true) },
+                callback: (value: VodItem) => { },
                 callbackData: value
                 }
             })
@@ -143,10 +130,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
 
     return (
-        showVodTabs ?
-            <VideoTabs video={selectedVodId} setShowVideoTabs={setShowVodTabs} videoId={location.pathname === '/videos' && selectedVodId ? selectedVodId.objectID.toString() : location.pathname.split('/')[2]} />
-            :
-            <>
+        <>
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -167,15 +151,13 @@ export const VideosListPage = (props: VideosListProps) => {
                     <VideosFiltering setSelectedVod={setSelectedVod} />                
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
-            </div>
-
-                
-                <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
-                <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
-                <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-                <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-                <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            </>
+            </div>        
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
+            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+        </>
 
     )
 

@@ -7,8 +7,10 @@ import { ChapterMarkerInfos, ChapterMarker } from '../../redux-flow/store/VOD/Ch
 import { Action, getVodChapterMarkersAction, saveVodChapterMarkerAction, addVodChapterMarkerAction, deleteVodChapterMarkerAction } from '../../redux-flow/store/VOD/Chapters/actions';
 import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { VideoTabs } from './VideoTabs';
+import { useParams } from 'react-router-dom';
 
-interface ChapterContainerProps {
+export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
     getVodChapterMarkers: Function;
     saveVodChapterMarker: Function;
@@ -16,16 +18,21 @@ interface ChapterContainerProps {
     deleteVodChapterMarker: Function;
 }
 
-const Chapters = (props: ChapterContainerProps) => {
+const Chapters = (props: ChapterComponentProps) => {
 
+    let { vodId } = useParams()
+    
     React.useEffect(() => {
         if(!props.chapterPageDetails) {
-            props.getVodChapterMarkers();
+            props.getVodChapterMarkers(vodId);
         }
     }, [])
     return (
-        props.chapterPageDetails ?
-            <ChaptersPage {...props} />
+        props.chapterPageDetails ? 
+            <div className='flex flex-column'>
+                <VideoTabs videoId={vodId} />
+                <ChaptersPage {...props} vodId={vodId} />
+            </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
@@ -38,17 +45,17 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodChapterMarkers: () => {
-            dispatch(getVodChapterMarkersAction());
+        getVodChapterMarkers: (vodId: string) => {
+            dispatch(getVodChapterMarkersAction(vodId));
         },
-        saveVodChapterMarker: (data: ChapterMarker) => {
-            dispatch(saveVodChapterMarkerAction(data));
+        saveVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
+            dispatch(saveVodChapterMarkerAction(vodId, data));
         },
-        addVodChapterMarker: (data: ChapterMarker) => {
-            dispatch(addVodChapterMarkerAction(data));
+        addVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
+            dispatch(addVodChapterMarkerAction(vodId, data));
         },
-        deleteVodChapterMarker: (data: ChapterMarker) => {
-            dispatch(deleteVodChapterMarkerAction(data));
+        deleteVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
+            dispatch(deleteVodChapterMarkerAction(vodId, data));
         },
     };
 }
