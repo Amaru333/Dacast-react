@@ -42,6 +42,17 @@ import VodSecurity from '../containers/Videos/Security';
 import VodEngagement from '../containers/Videos/Engagement';
 import Chapters from '../containers/Videos/Chapters';
 import VodPaywall from '../containers/Videos/Paywall';
+import LiveGeneral  from '../containers/Live/General';
+import LiveEngagement  from '../containers/Live/Engagement';
+import LiveSecurity from '../containers/Live/Security';
+import LiveTheming  from '../containers/Live/Theming';
+import LivePaywall from '../containers/Live/Paywall';
+import GeneralPlaylist from '../containers/Playlists/General';
+import PlaylistSecurity from '../containers/Playlists/Security';
+import Engagement from '../containers/Playlists/Engagement';
+import PlaylistTheming from '../containers/Playlists/Theming';
+import Setup from '../containers/Playlists/Setup';
+import PlaylistPaywall from '../containers/Playlists/Paywall';
 
 
 export const AppRoutes: Routes[] = [   
@@ -102,6 +113,51 @@ export const AppRoutes: Routes[] = [
         component: LiveList
     },
     {
+        path: '/livestreams/:liveId/general',
+        name: 'General',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-live',
+        notDisplayedInNavigation: true,
+        component: LiveGeneral
+    },
+    {
+        path: '/livestreams/:liveId/paywall',
+        name: 'Paywall',
+        component: LivePaywall,
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        associatePrivilege: 'privilege-paywall'
+    },
+    {
+        path: '/livestreams/:liveId/engagement',
+        name: 'Engagement',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-live',
+        notDisplayedInNavigation: true,
+        component: LiveEngagement,
+    },
+    {
+        path: '/livestreams/:liveId/security',
+        name: 'Security',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-live',
+        notDisplayedInNavigation: true,
+        component: LiveSecurity
+    },
+    {
+        path: '/livestreams/:liveId/theme',
+        name: 'Theme',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-live',
+        notDisplayedInNavigation: true,
+        component: LiveTheming
+    },
+    {
         path: '/videos',
         name: 'Videos',
         isExact: true,
@@ -114,6 +170,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: General,
     },
@@ -122,6 +179,7 @@ export const AppRoutes: Routes[] = [
         name: 'Chapters',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: Chapters,
     },
@@ -130,6 +188,7 @@ export const AppRoutes: Routes[] = [
         name: 'Paywall',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodPaywall,
         associatePrivilege: 'privilege-paywall'
@@ -139,6 +198,7 @@ export const AppRoutes: Routes[] = [
         name: 'Engagement',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodEngagement,
     },
@@ -147,6 +207,7 @@ export const AppRoutes: Routes[] = [
         name: 'Security',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodSecurity,
     },
@@ -155,6 +216,7 @@ export const AppRoutes: Routes[] = [
         name: 'Theme',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodTheming,
     },
@@ -163,6 +225,7 @@ export const AppRoutes: Routes[] = [
         name: 'Renditions',
         iconName: null,
         isExact: true,
+        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodRenditions,
     },
@@ -183,6 +246,60 @@ export const AppRoutes: Routes[] = [
         iconName: 'playlist_play',
         associatePrivilege: 'privilege-playlists',
         component: PlaylistList
+    },
+    {
+        path: '/playlists/:playlistId/general',
+        name: 'General',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-playlists',
+        notDisplayedInNavigation: true,
+        component: GeneralPlaylist
+    },
+    {
+        path: '/playlists/:playlistId/setup',
+        name: 'Setup',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-playlists',
+        notDisplayedInNavigation: true,
+        component: Setup
+    },
+    {
+        path: '/playlists/:playlistId/paywall',
+        name: 'Paywall',
+        component: PlaylistPaywall,
+        iconName: null,
+        isExact: true,
+        notDisplayedInNavigation: true,
+        associatePrivilege: 'privilege-paywall'
+    },
+    {
+        path: '/playlists/:playlistId/engagement',
+        name: 'Engagement',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-playlists',
+        notDisplayedInNavigation: true,
+        component: Engagement
+    },
+    {
+        path: '/playlists/:playlistId/security',
+        name: 'Security',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-playlists',
+        notDisplayedInNavigation: true,
+        component: PlaylistSecurity
+    },
+    {
+        path: '/playlists/:playlistId/theme',
+        name: 'Theme',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-playlists',
+        notDisplayedInNavigation: true,
+        component: PlaylistTheming
     },
     {
         path: '/analytics',

@@ -9,6 +9,8 @@ import { PlaylistGeneralPage } from '../../pages/Playlist/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { useParams } from 'react-router';
+import { PlaylistsTabs } from './PlaylistTabs';
 
 
 interface GeneralProps {
@@ -26,6 +28,8 @@ interface GeneralProps {
 
 const GeneralPlaylist = (props: GeneralProps) => {
 
+    let { playlistId } = useParams()
+
     React.useEffect(() => {
         if (!props.playlistDetails) {
             props.getPlaylistDetails();
@@ -35,8 +39,10 @@ const GeneralPlaylist = (props: GeneralProps) => {
     return (
         props.playlistDetails ?
             (
-                <PlaylistGeneralPage {...props} />
-            )
+                <div className='flex flex-column'>
+                    <PlaylistsTabs playlistId={playlistId} />
+                    <PlaylistGeneralPage {...props} />
+                </div>            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 

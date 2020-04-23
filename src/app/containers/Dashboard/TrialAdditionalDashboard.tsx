@@ -110,33 +110,33 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                 </div>
                 {
                     trialFAQWidgetOpen ? 
-                    <WidgetElement className={classItemFullWidthContainer}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
-                        <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setTrialFAQWidgetOpen(false)}>close</IconStyle>
-                    </WidgetHeader>
-                    <div className="justify-between flex row flex-start">
-                        <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
-                        <img src={faqIcon} />
-                    </div>
-                    <Button className="col col-4" sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
-                </WidgetElement> : null
+                        <WidgetElement className={classItemFullWidthContainer}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
+                                <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setTrialFAQWidgetOpen(false)}>close</IconStyle>
+                            </WidgetHeader>
+                            <div className="justify-between flex row flex-start">
+                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
+                                <img src={faqIcon} />
+                            </div>
+                            <Button className="col col-4" sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
+                        </WidgetElement> : null
                 }
                 
                 { supportWidgetOpen ? 
                     <div className={classItemFullWidthContainer}>
-                    <SupportCard className="dashboardCard col col-12">
-                        <WidgetHeader className="flex">
-                            <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
-                            <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setSupportWidgetOpen(false)}>close</IconStyle>
-                        </WidgetHeader>
-                        <div className=" flex row justify-between flex-start ">
-                            <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
-                            <img src={supportIcon} />
-                        </div>
-                        <Button onClick={() => history.push('/help')} className="col col-4" sizeButton="xs" typeButton="secondary">Get Help</Button>
-                    </SupportCard>
-                </div> : null
+                        <SupportCard className="dashboardCard col col-12">
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
+                                <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setSupportWidgetOpen(false)}>close</IconStyle>
+                            </WidgetHeader>
+                            <div className=" flex row justify-between flex-start ">
+                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
+                                <img src={supportIcon} />
+                            </div>
+                            <Button onClick={() => history.push('/help')} className="col col-4" sizeButton="xs" typeButton="secondary">Get Help</Button>
+                        </SupportCard>
+                    </div> : null
                 }
                 
             </div>

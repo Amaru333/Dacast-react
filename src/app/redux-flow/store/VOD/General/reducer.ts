@@ -70,7 +70,7 @@ export const reducerList: Reducer<SearchResult | false> = (state = initialVodLis
             return {...action.payload.data, results: vodList}
         case ActionTypes.DELETE_VOD:
             if(state) {
-                var newList = state.results.filter(elem => elem.title !== action.payload.name)
+                var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
                 return {...state, results: newList}
             }
         default:

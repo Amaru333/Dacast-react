@@ -4,15 +4,31 @@ export enum ActionTypes {
     DELETE_VOD_RENDITIONS = "@@vod_renditions/DELETE_VOD_RENDITIONS"
 }
 
+interface VodInfo {
+    videoBitrateBytePerSec: number;
+    audioBitrateBytePerSec: number;
+    durationSec: number;
+    width: number;
+    height: number;
+    rotationMetadataDegrees: number;
+    framerate: number;
+    videoCodec: string;
+    audioCodec: string;
+    numberAudioChannel: number;
+    fileSize: number;
+}
+
 export interface RenditionsList {
-    renditionsList: Rendition[];
+    id: string;
+    videoInfo: VodInfo;
+    presets: Rendition[];
     encodedRenditions: Rendition[];
 }
 
 export interface Rendition {
     id: string;
-    rendition: string;
+    name: string;
     size: string;
-    bitrateCap: string;
+    bitrate: string;
     encoded?: boolean;
 }

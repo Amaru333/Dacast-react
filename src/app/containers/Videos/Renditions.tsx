@@ -23,8 +23,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
 
     React.useEffect(() => {
         if(!props.renditions) {
-            props.getVodRenditions();
-
+            props.getVodRenditions(vodId);
         }
     }, [])
 
@@ -33,7 +32,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
             (
                 <div className='flex flex-column'>
                     <VideoTabs videoId={vodId} />
-                    <VodRenditionsPage {...props} />
+                    <VodRenditionsPage {...props} vodId={vodId} />
                 </div>            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -47,8 +46,8 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodRenditions: () => {
-            dispatch(getVodRenditionsAction());
+        getVodRenditions: (vodId: string) => {
+            dispatch(getVodRenditionsAction(vodId));
         },
         addVodRenditions: (data: Rendition[]) => {
             dispatch(addVodRenditionsAction(data));

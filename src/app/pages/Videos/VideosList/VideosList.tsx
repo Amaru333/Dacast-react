@@ -101,7 +101,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { props.deleteVodList(value.title);props.showVodDeletedToast(`${value.title} has been deleted`, 'flexible', "success") }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { props.deleteVodList(value.objectID);props.showVodDeletedToast(`${value.title} has been deleted`, 'flexible', "success") }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>  
                     </div>,

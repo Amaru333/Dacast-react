@@ -38,8 +38,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodList: () => {
             dispatch(getVodListAction());
         },
-        deleteVodList: (name: string) => {
-            dispatch(deleteVodAction(name));
+        deleteVodList: (vodId: string) => {
+            dispatch(deleteVodAction(vodId));
         },
         showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

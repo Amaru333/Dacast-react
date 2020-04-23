@@ -38,7 +38,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     
     React.useEffect(() => {
         handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
-   }, [props.themeList, props.theme])
+    }, [props.themeList, props.theme])
 
     return (
         props.theme && customThemeList ?

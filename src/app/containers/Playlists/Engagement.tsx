@@ -10,6 +10,8 @@ import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { useParams } from 'react-router';
+import { PlaylistsTabs } from './PlaylistTabs';
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettings: PlaylistEngagementSettings;
@@ -23,6 +25,8 @@ export interface PlaylistEngagementComponentProps {
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
+    let { playlistId } = useParams()
+
     React.useEffect(() => {
         if (!props.playlistEngagementSettings) {
             props.getPlaylistEngagementSettings();
@@ -31,7 +35,10 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
     return (
         props.playlistEngagementSettings ?
-            <PlaylistEngagementPage {...props} />
+            <div className='flex flex-column'>
+                <PlaylistsTabs playlistId={playlistId} />
+                <PlaylistEngagementPage {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }

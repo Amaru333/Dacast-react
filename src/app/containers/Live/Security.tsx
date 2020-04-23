@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { useParams } from 'react-router';
+import { LiveTabs } from './LiveTabs';
 
 interface LiveSecurityProps {
     liveSecuritySettings: LiveSecuritySettings;
@@ -19,7 +21,9 @@ interface LiveSecurityProps {
     showDiscardToast: Function;
 }
 
-export const LiveSecurity = (props: LiveSecurityProps) => {
+const LiveSecurity = (props: LiveSecurityProps) => {
+
+    let { liveId } = useParams()
 
     React.useEffect(() => {
         if(!props.liveSecuritySettings || (!props.liveSecuritySettings && !props.globalSecuritySettings)) {
@@ -30,7 +34,10 @@ export const LiveSecurity = (props: LiveSecurityProps) => {
 
     return (
         props.liveSecuritySettings && props.globalSecuritySettings ? 
-            <LiveSecurityPage {...props} />
+            <div className='flex flex-column'>
+                <LiveTabs liveId={liveId} />
+                <LiveSecurityPage {...props} />
+            </div>            
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
     

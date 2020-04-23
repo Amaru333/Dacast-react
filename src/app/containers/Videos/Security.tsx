@@ -34,7 +34,7 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
         props.vodSecuritySettings && props.globalSecuritySettings ? 
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
-                <VodSecurityPage {...props} />
+                <VodSecurityPage {...props} vodId={vodId} />
             </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -52,8 +52,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodSecuritySettings: (vodId: string) => {
             dispatch(getVodSecuritySettingsAction(vodId));
         },
-        saveVodSecuritySettings: (data: SecuritySettings) => {
-            dispatch(saveVodSecuritySettingsAction(data));
+        saveVodSecuritySettings: (data: SecuritySettings, vodId: string) => {
+            dispatch(saveVodSecuritySettingsAction(data, vodId));
         },
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());

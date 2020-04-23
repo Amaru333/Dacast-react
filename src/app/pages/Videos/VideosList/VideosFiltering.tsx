@@ -65,7 +65,7 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
         checkActiveFilter();
     }, [filteringState])
 
-    const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key:string) => {
+    const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key: string) => {
         let value = event.currentTarget.value
         setFilteringState(prevState => { return { ...prevState, [key]: value } })
 

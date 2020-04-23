@@ -11,17 +11,17 @@ export class UploadObject {
         fileChunkSize: number, 
         onProgressUpdate: (percent: number) => void, 
         onError: (error: any) => void
-        ) {
-            this.file = file
-            this.uploadUrlBatchSize = uploadUrlBatchSize
-            this.maxMultiThreadingRequests = maxMultiThreadingRequests
-            this.fileChunkSize = fileChunkSize
-            this.onProgressUpdate = onProgressUpdate
-            this.onError = onError
-            this.requestBatch = this.requestBatch.bind(this)
-            this.uploadPart = this.uploadPart.bind(this)
-            this.getUploadUrl = this.getUploadUrl.bind(this)
-        }
+    ) {
+        this.file = file
+        this.uploadUrlBatchSize = uploadUrlBatchSize
+        this.maxMultiThreadingRequests = maxMultiThreadingRequests
+        this.fileChunkSize = fileChunkSize
+        this.onProgressUpdate = onProgressUpdate
+        this.onError = onError
+        this.requestBatch = this.requestBatch.bind(this)
+        this.uploadPart = this.uploadPart.bind(this)
+        this.getUploadUrl = this.getUploadUrl.bind(this)
+    }
 
     private file: File
     private uploadUrlBatchSize: number
@@ -87,14 +87,14 @@ export class UploadObject {
         await isTokenExpired()
         let {token} = addTokenToHeader();
         let res = await axios.post(`${BASE_PATH}/uploads/init-multipart`, 
-        {
-            fileName: this.file.name,
-        }, 
-        {
-            headers: {
-                Authorization: token
-            }
-        })
+            {
+                fileName: this.file.name,
+            }, 
+            {
+                headers: {
+                    Authorization: token
+                }
+            })
         this.uploadId = res.data.data.uploaderID
         this.urlS3 = res.data.data.s3Path
     }
@@ -115,15 +115,15 @@ export class UploadObject {
         await isTokenExpired()
         let {token, vodStorageId,userId} = addTokenToHeader();
         let response = await axios.post(`${BASE_PATH}/uploads/signatures/singlepart/`, 
-        {
-            fileName: this.file.name,
-            vodStorageID: vodStorageId
-        },
-        {
-            headers: {      
-                Authorization: token
-            }
-        })      
+            {
+                fileName: this.file.name,
+                vodStorageID: vodStorageId
+            },
+            {
+                headers: {      
+                    Authorization: token
+                }
+            })      
         this.uploadUrls.push(response.data.data.presignedURL)
         return this.uploadUrls[0]
     }
@@ -131,36 +131,36 @@ export class UploadObject {
     private singlePartUpload = async () => {
         let signedSinglePartURL = await this.retrieveSinglePartURL()
         axios.put(signedSinglePartURL, this.file,
-        {
-            cancelToken: this.token,
-            onUploadProgress: (event: ProgressEvent) => {
-                this.onProgressUpdate(event.loaded/ this.file.size * 100)
-            },
-        }).then(() => this.onProgressUpdate(100))
-        .catch((error: any) => {
-            if (!axios.isCancel(error)) {
-                this.onError(error)          
-            }
-            this.onError('Cancel')  
-            throw new Error(error)
-        })
+            {
+                cancelToken: this.token,
+                onUploadProgress: (event: ProgressEvent) => {
+                    this.onProgressUpdate(event.loaded/ this.file.size * 100)
+                },
+            }).then(() => this.onProgressUpdate(100))
+            .catch((error: any) => {
+                if (!axios.isCancel(error)) {
+                    this.onError(error)          
+                }
+                this.onError('Cancel')  
+                throw new Error(error)
+            })
     }
 
     private retrieveChunkPresignedURL = async (fromPart: number, toPart: number): Promise<string[]> => {
         await isTokenExpired()
         let {token} = addTokenToHeader();
         let res = await axios.post(`${BASE_PATH}/uploads/signatures/multipart`, 
-        {
-            s3Path: this.urlS3,
-            uploaderID: this.uploadId,
-            fromPartNumber: fromPart + 1,
-            toPartNumber: toPart
-        },
-        {
-            headers: {       
-                Authorization: token
-            }
-        })
+            {
+                s3Path: this.urlS3,
+                uploaderID: this.uploadId,
+                fromPartNumber: fromPart + 1,
+                toPartNumber: toPart
+            },
+            {
+                headers: {       
+                    Authorization: token
+                }
+            })
     
         return res.data.data.presignedURLs
     }
@@ -196,7 +196,7 @@ export class UploadObject {
             this.onError('Cancel')  
             throw new Error(error)
         })
-        : null
+            : null
     }
 
     private async requestBatch(partNumbers: number[]): Promise<void> {   
@@ -213,16 +213,16 @@ export class UploadObject {
         await isTokenExpired()
         let {token} = addTokenToHeader();
         await axios.post(`${BASE_PATH}/uploads/complete-multipart`,
-        {
-            orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
-            s3Path: this.urlS3,
-            uploaderID: this.uploadId
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        })
+            {
+                orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
+                s3Path: this.urlS3,
+                uploaderID: this.uploadId
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            })
         this.onProgressUpdate(100)
     }
 
@@ -249,7 +249,7 @@ axios.interceptors.response.use(null, (error) => {
         // return axios.request(error.config)
     }
     return Promise.reject(error);
-  }
+}
 )
 
 

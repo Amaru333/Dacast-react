@@ -15,7 +15,7 @@ interface VodRenditionsProps {
     deleteVodRenditions: Function;
 }
 
-export const VodRenditionsPage = (props: VodRenditionsProps) => {
+export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) => {
 
     const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
@@ -25,8 +25,8 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
     const [replaceSourceModalOpen, setReplaceSourceModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        let renditionsId = props.renditions.encodedRenditions.map((renditions) => {return renditions.id})
-        setNotEncodedRenditions(props.renditions.renditionsList.filter((rendition) => !renditionsId.includes(rendition.id)))
+        let renditionName = props.renditions.encodedRenditions.map((renditions) => {return renditions.name})
+        setNotEncodedRenditions(props.renditions.presets.filter((rendition) => !renditionName.includes(rendition.name)))
     }, [props.renditions.encodedRenditions])
 
     const notEncodedRenditionsTableHeader = () => {
@@ -60,9 +60,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                         }
                     }
                     } />,
-                <Text key={value.rendition} size={14} weight="reg">{value.rendition}</Text>,
+                <Text key={value.name} size={14} weight="reg">{value.name}</Text>,
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
-                <Text key={"bitrate" + value.bitrateCap} size={14} weight="reg">{value.bitrateCap}</Text>,
+                <Text key={"bitrate" + value.bitrate} size={14} weight="reg">{value.bitrate}</Text>,
             ]}
         })
     }
@@ -98,9 +98,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                             setSelectedEncodedRendition(editedSelectedEncodedRendition);
                         }
                     }} />,
-                <Text size={14} weight="reg">{value.rendition}</Text>,
+                <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.size}</Text>,
-                <Text size={14} weight="reg">{value.bitrateCap}</Text>,
+                <Text size={14} weight="reg">{value.bitrate}</Text>,
                 value.encoded ? 
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
@@ -136,7 +136,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
             <div className="widgets flex items-baseline mt25">
                 <RenditionsWidget>
                     <div >
-                        <Text size={24} weight="reg">1.30 MB</Text>
+                        <Text size={24} weight="reg">{props.renditions.videoInfo ? props.renditions.videoInfo.fileSize : ''}</Text>
                     </div>
                     <div className="mt1">
                         <Text size={14} weight="reg">Source File Size</Text>
@@ -144,7 +144,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps) => {
                 </RenditionsWidget>
                 <RenditionsWidget>
                     <div>
-                        <Text size={24} weight="reg">57 Mbps</Text>
+                        <Text size={24} weight="reg">{props.renditions.videoInfo ? props.renditions.videoInfo.videoBitrateBytePerSec: ''}</Text>
                     </div>
                     <div className="mt1">
                         <Text size={14} weight="reg">Source File Bitrate</Text>

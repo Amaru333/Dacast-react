@@ -7,6 +7,8 @@ import { Action, getLiveDetailsAction, saveLiveDetailsAction, changeLiveThumbnai
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LiveTabs } from './LiveTabs';
+import { useParams } from 'react-router-dom';
 
 interface LiveGeneralProps {
     liveDetails: LiveDetails;
@@ -22,6 +24,9 @@ interface LiveGeneralProps {
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
 
+    let {liveId} = useParams()
+
+
     React.useEffect(() => {
         if (!props.liveDetails) {
             props.getLiveDetails();
@@ -31,8 +36,10 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
     return (
         props.liveDetails ? 
             (
-                <LiveGeneralPage {...props} />
-            )
+                <div className='flex flex-column'>
+                    <LiveTabs liveId={liveId} />
+                    <LiveGeneralPage {...props} />
+                </div>            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

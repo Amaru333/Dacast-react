@@ -42,7 +42,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                             <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
                         </div>
                     </div>                
-                    </ModalContent>
+                </ModalContent>
                 <ModalFooter>
                     <Button sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
                 </ModalFooter>
