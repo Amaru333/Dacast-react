@@ -17,6 +17,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../../utils/utils';
 import { GeneralComponentProps } from '../../../containers/Videos/General';
+import { updateClipboard } from '../../../utils/utils';
 
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -64,17 +65,6 @@ const disabledSubtitlesTableBody = (text: string) => {
     ]}]
 }
 
-
-
-const copyKey = (value: string) => {
-    var textArea = document.createElement("textarea");
-    textArea.value = value;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("Copy");
-    textArea.remove();
-}
-
 const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
     if (selectedSubtitle.id === emptySubtitle.id && selectedSubtitle.fileName === emptySubtitle.fileName) {
         props.addVodSubtitle(data);
@@ -92,7 +82,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
-    const [videoIsOnline, toggleVideoIsOnline] = React.useState<boolean>(true)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
     const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
@@ -166,7 +155,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => copyKey(props.vodDetails.id)}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(props.vodDetails.id, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -182,7 +171,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.vodDetails.id, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -192,7 +181,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -210,10 +199,17 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
+                                        {
+                                            !VodDetails.splashscreen.url ? null :
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                        }
                                         <Button 
                                             className="clearfix right m1" sizeButton="xs" typeButton="secondary"
                                             onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
-                                                Change
+                                                                                            {
+                                                !VodDetails.splashscreen.url  ?
+                                                    "Add" : "Change"
+                                            }
                                         </Button>
                                     </ButtonSection> 
                                     <ImageSection> <SelectedImage src={props.vodDetails.splashscreen.url} /></ImageSection>   
@@ -227,7 +223,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
-                                    <ButtonSection><Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>Change</Button></ButtonSection>
+                                    <ButtonSection>
+                                        {
+                                            !VodDetails.thumbnail.url ? null :
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                        }
+                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
+                                            {
+                                                !VodDetails.thumbnail.url  ?
+                                                    "Add" : "Change"
+                                            }
+                                        </Button>
+                                    </ButtonSection>
                                     <ImageSection> <SelectedImage src={props.vodDetails.thumbnail.url} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
@@ -241,13 +248,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
-                                            !VodDetails.poster ? null :
+                                            !VodDetails.poster.url ? null :
                                                 <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.poster  ?
+                                                !VodDetails.poster.url  ?
                                                     "Add" : "Change"
                                             }
                                         </Button>
@@ -282,7 +289,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <Text size={14} weight="reg">{item.link}</Text>
-                                            <IconStyle className='pointer' id={item.id} onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
+                                            <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                             <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                         </LinkBox>
                                     </LinkBoxContainer>
