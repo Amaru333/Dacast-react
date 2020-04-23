@@ -247,7 +247,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
             </Modal>
             <Modal size="small" modalTitle="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
-                    <Text size={14} weight="reg">Choosing to revert to the Global Security Settings means that blah blah balh...</Text>
+                    <Text size={14} weight="reg">Use global settings instead of content settings.</Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button onClick={() => {setSettingsEditable(!settingsEditable); setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>
