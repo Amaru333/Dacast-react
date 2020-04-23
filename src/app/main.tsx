@@ -93,7 +93,7 @@ const AppContent = () => {
     const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
 
         if(isLoggedIn()) {
-            if(props.associatePrivilege && getPrivilege(props.associatePrivilege)) {
+            if(props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
                 return <NotFound />
             }
             return (
