@@ -124,8 +124,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         id={props.id + '_' + item.name} 
                         className="mt1"
                         isSelected={selectedAddDropdownItem === item.name} 
-                        onClick={() => handleClick(name)}> 
-                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        onClick={() => handleClick(item.name)}> 
+                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{item.name}</DropdownItemText>
                     </DropdownItem>
                 )                
             })
