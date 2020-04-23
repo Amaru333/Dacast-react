@@ -18,6 +18,7 @@ import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../../utils/utils';
 import { GeneralComponentProps } from '../../../containers/Videos/General';
 import { updateClipboard } from '../../../utils/utils';
+import { addTokenToHeader } from '../../../utils/token';
 
 
 const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -79,6 +80,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     const emptySubtitle = { id: "", fileName: "", language: "" }
 
+    const {userId} = addTokenToHeader()
+
     const [advancedVideoLinksExpanded, setAdvancedVideoLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
@@ -107,9 +110,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
-        { id: "embed", label: "Embed Code", enabled: true, link: 'todo' },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
-        { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
+        // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
 
@@ -170,8 +173,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.vodDetails.id, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -180,8 +183,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`}</LinkText>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
