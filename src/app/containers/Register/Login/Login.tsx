@@ -24,8 +24,8 @@ const Login = (props: LoginComponentProps) => {
         }
     }, [props.loginInfos])
 
-    const  loginUser = async (username: string, password: string) => {
-        await props.login({email: username, password: password})
+    const  loginUser = async (username: string, password: string, callback: Function) => {
+        await props.login({email: username, password: password}, callback)
     }
 
     return (
@@ -41,8 +41,9 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        login: (data: LoginInfos) => {
-            dispatch(loginAction(data));
+        login: (data: LoginInfos, callback: Function) => {
+            console.log(callback)
+            dispatch(loginAction(data)).then(callback) ;
         },
 
     };

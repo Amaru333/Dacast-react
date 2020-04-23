@@ -6,8 +6,6 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
-import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 
 const logo = require('../../../../../public/assets/logo.png');
@@ -17,14 +15,16 @@ export const LoginPage = (props: LoginComponentProps) => {
     const [username, setUsername] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const enableSubmit = () => {
         return username.length > 0 && password.length > 0
     }
 
     const submitLogin = () => {
+        setButtonLoading(true);
         if(enableSubmit()) {
-            props.login(username, password)
+            props.login(username, password,() =>  setButtonLoading(false))
         }
     }
 
@@ -47,14 +47,9 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
+                    <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
-            {
-                props.loginInfos && props.loginInfos.waiting ?
-                    <SpinnerContainer><LoadingSpinner color='dark-violet' size='medium' /></SpinnerContainer>
-                    : null
-            }
         </LoginContainer>
 
     )

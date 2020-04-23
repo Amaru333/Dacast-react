@@ -112,9 +112,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        props.getLogoUrlForUploading();
-        console.log('waiting')
-       
+        props.getLogoUrlForUploading();       
     }
 
     React.useEffect(() => {
