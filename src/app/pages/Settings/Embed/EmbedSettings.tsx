@@ -21,14 +21,15 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
     }
 
     const checkInputError = () => {
-        if (inputOptions['embed-scaling'] === 'fixed') {
-            if (inputRef.current!.value.length === 0) {
-                return true;
+        if (inputRef && inputRef.current) {
+            if (inputOptions['embed-scaling'] === 'fixed') {
+                if (inputRef.current!.value.length === 0) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
-
     return (
         <React.Fragment>
             <form>
