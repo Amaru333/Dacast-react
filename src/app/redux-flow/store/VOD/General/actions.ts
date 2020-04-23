@@ -5,58 +5,58 @@ import { showToastNotification } from '../../Toasts'
 import { VodGeneralServices } from './services'
 
 export interface GetVodDetails {
-    type: ActionTypes.GET_VOD_DETAILS
-    payload: {data: VodDetails}
+    type: ActionTypes.GET_VOD_DETAILS;
+    payload: {data: VodDetails};
 }
 
 export interface GetVodList {
-    type: ActionTypes.GET_VOD_LIST
-    payload: {data: SearchResult}
+    type: ActionTypes.GET_VOD_LIST;
+    payload: {data: SearchResult};
 }
 
 export interface EditVodDetails {
-    type: ActionTypes.EDIT_VOD_DETAILS
-    payload: VodDetails
+    type: ActionTypes.EDIT_VOD_DETAILS;
+    payload: VodDetails;
 }
 
 export interface AddVodSubtitle {
-    type: ActionTypes.ADD_VOD_SUBTITLE
-    payload: SubtitleInfo
+    type: ActionTypes.ADD_VOD_SUBTITLE;
+    payload: SubtitleInfo;
 }
 
 export interface EditVodSubtitle {
-    type: ActionTypes.EDIT_VOD_SUBTITLE
-    payload: SubtitleInfo
+    type: ActionTypes.EDIT_VOD_SUBTITLE;
+    payload: SubtitleInfo;
 }
 
 export interface DeleteVodSubtitle {
-    type: ActionTypes.DELETE_VOD_SUBTITLE
-    payload: SubtitleInfo
+    type: ActionTypes.DELETE_VOD_SUBTITLE;
+    payload: SubtitleInfo;
 }
 
 export interface GetUploadUrl {
-    type: ActionTypes.GET_UPLOAD_URL
-    payload: {data:  {presignedURL: string }}
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string }};
 }
 
 export interface UploadImage {
-    type: ActionTypes.UPLOAD_IMAGE
-    payload: {file: File}
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
 }
 
 export interface DeleteImage {
-    type: ActionTypes.DELETE_IMAGE
-    payload: {file: File}
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
 }
 
 export interface PostVod {
-    type: ActionTypes.POST_VOD
-    payload: {}
+    type: ActionTypes.POST_VOD;
+    payload: {};
 }
 
 export interface DeleteVod {
-    type: ActionTypes.DELETE_VOD
-    payload: {name: string}
+    type: ActionTypes.DELETE_VOD;
+    payload: {id: string};
 }
 
 
@@ -67,10 +67,15 @@ export const postVodDemo = (): PostVod => {
     }
 }
 
-export const deleteVodAction = (name: string): DeleteVod => {
-    return {
-        type: ActionTypes.DELETE_VOD,
-        payload: {name}
+export const deleteVodAction = (vodId: string): ThunkDispatch<Promise<void>, {}, DeleteVod> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVod>) => {
+        await VodGeneralServices.deleteVodService(vodId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_VOD, payload: {id: vodId} })
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
     }
 }
 

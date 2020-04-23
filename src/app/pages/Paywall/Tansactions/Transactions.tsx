@@ -58,7 +58,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     return (
         <div className='flex flex-column'>
             <div style={{alignItems: 'center'}} className='col col-12 flex justify-end'>
-            <div className='flex items-center flex-auto'>
+                <div className='flex items-center flex-auto'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />   
                 </div>

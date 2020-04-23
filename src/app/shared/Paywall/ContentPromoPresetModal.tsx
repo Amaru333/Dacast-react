@@ -26,7 +26,7 @@ const defaultPromo: Promo = {
     discountApplied: 'Once'
 }
 
-export const ContentPromoPresetsModal = (props: { action: Function; toggle: Function; promo: Promo, presetList: Promo[]; savePresetGlobally: Function; }) => {
+export const ContentPromoPresetsModal = (props: { action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
 
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)

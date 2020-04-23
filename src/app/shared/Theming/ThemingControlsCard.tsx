@@ -15,7 +15,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { getPrivilege } from '../../../utils/utils';
 
-export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSelectedTheme: Function, contentType: string, themeList?: ThemesData, contentTheme?: ContentTheme}) => {
+export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions; setSelectedTheme: Function; contentType: string; themeList?: ThemesData; contentTheme?: ContentTheme}) => {
 
     const togglePadding = 'py1';
 
@@ -104,7 +104,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                                 }
                             </Bubble>
                     </>
-                    :
+                        :
                     <>
                         <Input className='my2' label='Theme Name' id='themeTitle' placeholder='New Theme' value={props.selectedTheme.themeName} onChange={(event) => {props.setSelectedTheme({...props.selectedTheme, themeName: event.currentTarget.value});}} />
                         <InputCheckbox  id='themeIsDefaultCheckbox' label='Make Default Theme' defaultChecked={props.selectedTheme.isDefault} onChange={() => {props.setSelectedTheme({...props.selectedTheme, isDefault: !props.selectedTheme.isDefault});}} />
@@ -138,9 +138,9 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                     <TextStyle className="py2" ><Text size={20} weight='med'>Actions</Text></TextStyle>
 
                     <ControlToggleContainer>
-                    <Toggle className={togglePadding} label='Download Button' defaultChecked={props.selectedTheme.downloadButton} onChange={() => {props.setSelectedTheme({...props.selectedTheme, downloadButton: !props.selectedTheme.downloadButton});}} />
-                    <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                    { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Download Button</Tooltip>}
+                        <Toggle className={togglePadding} label='Download Button' defaultChecked={props.selectedTheme.downloadButton} onChange={() => {props.setSelectedTheme({...props.selectedTheme, downloadButton: !props.selectedTheme.downloadButton});}} />
+                        <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
+                        { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Download Button</Tooltip>}
                     </ControlToggleContainer>
 
                     <ControlToggleContainer>
@@ -150,10 +150,10 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                     </ControlToggleContainer>
 
                     <ControlToggleContainer>
-                    <Toggle className={togglePadding} label='Embed Code' defaultChecked={props.selectedTheme.embedCode} onChange={() => {props.setSelectedTheme({...props.selectedTheme, embedCode: !props.selectedTheme.embedCode});}} />
-                    <BorderStyle className="p1" />
-                    <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
-                    <Tooltip target="embedCodeTooltip">Embed Code</Tooltip>
+                        <Toggle className={togglePadding} label='Embed Code' defaultChecked={props.selectedTheme.embedCode} onChange={() => {props.setSelectedTheme({...props.selectedTheme, embedCode: !props.selectedTheme.embedCode});}} />
+                        <BorderStyle className="p1" />
+                        <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
+                        <Tooltip target="embedCodeTooltip">Embed Code</Tooltip>
                     </ControlToggleContainer>
                     
                     <BorderStyle className="p1" />
@@ -229,7 +229,7 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions, setSele
                 </DisabledSection>
     
             </>  
-        }              
+            }              
         </ControlsCard>
     )
 }

@@ -6,7 +6,7 @@ import { VodSecurityServices } from './services';
 
 export interface GetVodSecuritySettings {
     type: ActionTypes.GET_VOD_SECURITY_SETTINGS;
-    payload: {data: VodSecuritySettings};
+    payload: {data: SecuritySettings};
 }
 
 export interface SaveVodSecuritySettings {
@@ -26,9 +26,9 @@ export const getVodSecuritySettingsAction = (vodId: string): ThunkDispatch<Promi
     };
 }
 
-export const saveVodSecuritySettingsAction = (data: SecuritySettings): ThunkDispatch<Promise<void>, {}, SaveVodSecuritySettings> => {
+export const saveVodSecuritySettingsAction = (data: SecuritySettings, vodId: string): ThunkDispatch<Promise<void>, {}, SaveVodSecuritySettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodSecuritySettings> ) => {
-        await VodSecurityServices.saveVodSecuritySettingsService(data)
+        await VodSecurityServices.saveVodSecuritySettingsService(data, vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload: response.data} );
             })

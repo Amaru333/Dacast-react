@@ -6,23 +6,23 @@ import { showToastNotification } from '../../Toasts'
 import { ChapterMarker } from './types'
 
 export interface GetVodChapterMarkers {
-    type: ActionTypes.GET_VOD_CHAPTER_MARKERS
-    payload: {data:{chapterMarkers: ChapterMarker[]}}
+    type: ActionTypes.GET_VOD_CHAPTER_MARKERS;
+    payload: {data: {chapterMarkers: ChapterMarker[]}};
 }
 
 export interface SaveVodChapterMarker {
-    type: ActionTypes.SAVE_VOD_CHAPTER_MARKER
-    payload: ChapterMarker[]
+    type: ActionTypes.SAVE_VOD_CHAPTER_MARKER;
+    payload: ChapterMarker[];
 }
 
 export interface AddVodChapterMarker {
-    type: ActionTypes.ADD_VOD_CHAPTER_MARKER
-    payload: ChapterMarker[]
+    type: ActionTypes.ADD_VOD_CHAPTER_MARKER;
+    payload: ChapterMarker[];
 }
 
 export interface DeleteVodChapterMarker {
-    type: ActionTypes.DELETE_VOD_CHAPTER_MARKER
-    payload: ChapterMarker[]
+    type: ActionTypes.DELETE_VOD_CHAPTER_MARKER;
+    payload: ChapterMarker[];
 }
 
 export const getVodChapterMarkersAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodChapterMarkers> => {

@@ -132,7 +132,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>Advertising</Text>
                 <DisabledSection settingsEditable={props.interactionsInfos.adList.length > 1}>
-                <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adList.length > 1 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
+                    <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adList.length > 1 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 </DisabledSection>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex mb2'>
@@ -162,21 +162,21 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card>
 
             <Card className="my2">
-            <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>
-            <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the player.</Text>
+                <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>
+                <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the player.</Text>
             
             
-            <div className="lg-col lg-col-12 mb1 flex">
-            <div className="lg-col lg-col-6 mr2">
-            <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => {}}>  
-                        { uploadedFileUrl ? 
+                <div className="lg-col lg-col-12 mb1 flex">
+                    <div className="lg-col lg-col-6 mr2">
+                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => {}}>  
+                            { uploadedFileUrl ? 
                         <>
                             {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
                         <ImageStyle src={uploadedFileUrl}></ImageStyle>
                         <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue'>Delete</Button>
                         <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' >Upload</Button>
                         </>
-                            :
+                                :
                         <>
                         <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
@@ -192,9 +192,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                             </Button>
                         </ButtonStyle>
                         </>
-                        } 
-                    </DragAndDrop>
-                    <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                            } 
+                        </DragAndDrop>
+                        <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
                         <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}}></DropdownSingle>

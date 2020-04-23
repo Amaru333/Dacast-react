@@ -37,7 +37,7 @@ const PlaylistList = (props: PlaylistListContainerProps) => {
     } else {
         return (
             <>
-                <PlaylistListPage history={props.history} themesList={props.themeList.themes} playlistItems={props.playlistList.items}  />
+                <PlaylistListPage themesList={props.themeList.themes} playlistItems={props.playlistList.items}  />
             </>
         )
     }

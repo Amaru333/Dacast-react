@@ -6,7 +6,7 @@ import { VodRenditionsServices } from './services';
 
 export interface GetVodRenditions {
     type: ActionTypes.GET_VOD_RENDITIONS;
-    payload: RenditionsList;
+    payload: {data: RenditionsList};
 }
 
 export interface AddVodRenditions {
@@ -19,9 +19,9 @@ export interface DeleteVodRenditions {
     payload: Rendition[];
 }
 
-export const getVodRenditionsAction = (): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
+export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetVodRenditions>) => {
-        await VodRenditionsServices.getVodRenditionsService()
+        await VodRenditionsServices.getVodRenditionsService(vodId)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_VOD_RENDITIONS, payload: response.data });
             })

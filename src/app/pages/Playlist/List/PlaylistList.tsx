@@ -8,7 +8,6 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import styled from 'styled-components';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { PlaylistItem } from '../../../redux-flow/store/Playlists/List/types';
-import { PlaylistsTabs } from './PlaylistTabs';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
@@ -18,6 +17,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { PlaylistFiltering } from './PlaylistFilter';
 import { DateTime } from 'luxon';
+import { useHistory } from 'react-router';
 
 export interface LiveListProps {
     playlistItems: PlaylistItem[];
@@ -27,14 +27,8 @@ export interface LiveListProps {
 export const PlaylistListPage = (props: LiveListProps) => {
 
     const [selectedPlaylist, setSelectedPlaylist] = React.useState<string[]>([]);
-    const [showPlaylistTabs, setShowPlaylistTabs] = React.useState<boolean>(false)
-    const [selectedPlaylistId, setSelectedPlaylistId] = React.useState<PlaylistItem>(null)
 
-    React.useEffect(() => {
-        setShowPlaylistTabs(location.pathname !== '/playlists')
-    }, [location])
-
-    React.useEffect(() => { }, [selectedPlaylist])
+    let history = useHistory()
 
     const liveListHeaderElement = () => {
         return {data: [
@@ -86,7 +80,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                     <div className='flex'>{handleFeatures(value, value.id)}</div>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
-                            <IconStyle onClick={() => { setSelectedPlaylistId(value); setShowPlaylistTabs(true) }} className="right mr1" >edit</IconStyle>
+                            <IconStyle onClick={() => { history.push('/playlists/' + value.id + '/general') }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
@@ -130,10 +124,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     return (
-        showPlaylistTabs ?
-            <PlaylistsTabs playlistId={location.pathname === '/playlists' && selectedPlaylistId ? selectedPlaylistId.id : location.pathname.split('/')[2]} playlist={selectedPlaylistId} setShowPlaylistTabs={setShowPlaylistTabs} />
-            :
-            <>
+        <>
                 <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>

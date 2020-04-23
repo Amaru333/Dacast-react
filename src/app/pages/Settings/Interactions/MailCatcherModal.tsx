@@ -31,7 +31,7 @@ export const MailCatcherModal = (props: SettingsInteractionComponentProps & {tog
                 />              
             </div>
             <div className="col col-12 flex">
-            <DropdownSingle className='mr1 mt1 col col-6' id='mailCatcherPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setMailCatcherData({...mailCatcherData, placement: value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={mailCatcherData.placement} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='mailCatcherPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setMailCatcherData({...mailCatcherData, placement: value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={mailCatcherData.placement} /> 
                 {
                     mailCatcherData.placement === 'Mid-roll' ?
                         <Input type='time' className='ml1 mt1 col col-6' id='mailCatcherPosition' label='Position' onChange={(event) => setMailCatcherData({...mailCatcherData, position: event.currentTarget.value})}  />

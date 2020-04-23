@@ -9,6 +9,8 @@ import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Pa
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { useParams } from 'react-router-dom';
+import { PlaylistsTabs } from './PlaylistTabs';
 var moment = require('moment-timezone');
 
 export interface PlaylistPaywallComponentProps {
@@ -34,6 +36,8 @@ export interface PlaylistPaywallComponentProps {
 }
 
 const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
+
+    let { playlistId } = useParams()
 
     React.useEffect(() => {
         if(!props.playlistPaywallInfos) {
@@ -95,7 +99,10 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
     }, [props.globalPresets.presets, props.playlistPaywallInfos])
 
     return props.playlistPaywallInfos && props.groupsInfos && customPricePresetList && props.theming ? 
-        <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        <div className='flex flex-column'>
+            <PlaylistsTabs playlistId={playlistId} />
+            <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        </div>
         : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 

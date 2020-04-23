@@ -8,6 +8,8 @@ import { LiveEngagementSettings } from "../../redux-flow/store/Live/Engagement/t
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
 import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LiveTabs } from './LiveTabs';
+import { useParams } from 'react-router';
 
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: LiveEngagementSettings;
@@ -20,6 +22,8 @@ export interface LiveEngagementComponentProps {
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
+    let {liveId} = useParams()
+
     React.useEffect(() => {
         if(!props.liveEngagementSettings) {
             props.getLiveEngagementSettings();
@@ -28,7 +32,10 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
     return (
         props.liveEngagementSettings ?
-            <LiveEngagementPage {...props} />
+            <div className='flex flex-column'>
+                <LiveTabs liveId={liveId} />
+                <LiveEngagementPage {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
