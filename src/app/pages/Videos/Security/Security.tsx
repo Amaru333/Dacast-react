@@ -23,40 +23,28 @@ interface VodSecurityComponentProps {
     saveVodSecuritySettings: Function;
 }
 
-export const VodSecurityPage = (props: VodSecurityComponentProps) => {
+export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: string}) => {
 
-        //Initial state depending on custom settings for the content
-        const initvalues = () => {
-            let defaultValues: {
-                editableSettings: boolean;
-                selectedSettings: SecuritySettings;
-                passwordProtectionToggle: boolean;
-                contentSchedulingToggle: boolean;
-                startDateTime: 'Always' | 'Set Date and Time';
-                endDateTime: 'Forever' | 'Set Date and Time';
-            } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, contentSchedulingToggle: false, startDateTime: "Always", endDateTime: "Forever"}
-            if(props.vodSecuritySettings.securitySettings && props.globalSecuritySettings) {
-                if(!props.vodSecuritySettings.securitySettings.passwordProtection.password
-                    && props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0
-                    && !props.vodSecuritySettings.securitySettings.selectedGeoRestriction && !props.vodSecuritySettings.securitySettings.selectedDomainControl) {
-                        defaultValues.editableSettings = false
-                        defaultValues.selectedSettings = props.globalSecuritySettings
-                        defaultValues.passwordProtectionToggle = true
-                        defaultValues.contentSchedulingToggle = props.globalSecuritySettings.contentScheduling.endTime === 0 && props.globalSecuritySettings.contentScheduling.startTime === 0 ? false : true
-                        defaultValues.startDateTime = props.globalSecuritySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-                        defaultValues.endDateTime = props.globalSecuritySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
-        
-                } else {
-                    defaultValues.editableSettings = true
-                    defaultValues.selectedSettings = props.vodSecuritySettings.securitySettings
-                    defaultValues.passwordProtectionToggle = props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false
-                    defaultValues.contentSchedulingToggle = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
-                    defaultValues.startDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-                    defaultValues.endDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
-                }
-            }
-            return defaultValues
+    //Initial state depending on custom settings for the content
+    const initvalues = () => {
+        let defaultValues: {
+            editableSettings: boolean;
+            selectedSettings: SecuritySettings;
+            passwordProtectionToggle: boolean;
+            contentSchedulingToggle: boolean;
+            startDateTime: 'Always' | 'Set Date and Time';
+            endDateTime: 'Forever' | 'Set Date and Time';
+        } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, contentSchedulingToggle: false, startDateTime: "Always", endDateTime: "Forever"}
+        if(props.vodSecuritySettings.securitySettings && props.globalSecuritySettings) {
+            defaultValues.editableSettings = JSON.stringify(props.globalSecuritySettings) == JSON.stringify(props.vodSecuritySettings.securitySettings) ? false : true
+            defaultValues.selectedSettings = props.vodSecuritySettings.securitySettings
+            defaultValues.passwordProtectionToggle = props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false
+            defaultValues.contentSchedulingToggle = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
+            defaultValues.startDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
+            defaultValues.endDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
         }
+        return defaultValues
+    }
 
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(initvalues().contentSchedulingToggle)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(initvalues().passwordProtectionToggle)
@@ -66,12 +54,6 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(initvalues().selectedSettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
-
-
-
-    React.useEffect(() => {
-        console.log(togglePasswordProtectedVideo)
-    }, [togglePasswordProtectedVideo])
 
     const handleReset = () => {
         setSelectedSettings(props.vodSecuritySettings.securitySettings)
@@ -247,7 +229,8 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
-                            dropdownDefaultSelect={settingsEditable ? selectedSettings.selectedGeoRestriction : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name : ''} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: selectedItem})} 
+                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : ''} 
+                            callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.vodSecuritySettings.securitySettings.geoRestriction.filter(f => f.name === selectedItem)[0].id})} 
                         />
                     </div>
 
@@ -267,8 +250,8 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
-                                dropdownDefaultSelect={settingsEditable ? selectedSettings.selectedDomainControl : props.globalSecuritySettings.domainControl.filter(f => f.isDefault).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name : ''} 
-                                callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: selectedItem})} 
+                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : ''} 
+                                callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: props.vodSecuritySettings.securitySettings.domainControl.filter(f => f.name === selectedItem)[0].id})} 
                             />
                         </div>
                     </div>
@@ -278,7 +261,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps) => {
             { selectedSettings === props.vodSecuritySettings.securitySettings ? null :
                 <div>
                     <Button 
-                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings)}>Save</Button>
+                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings, props.vodId)}>Save</Button>
                     <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
                 </div>}
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>

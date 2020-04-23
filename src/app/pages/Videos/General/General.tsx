@@ -115,13 +115,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     }
 
     const vodAdvancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true },
-        { id: "splashscreen", label: "Splashscreen", enabled: true },
-        { id: "poster", label: "Poster", enabled: true },
-        { id: "embed", label: "Embed Code", enabled: true },
-        { id: "video", label: "Video", enabled: true },
-        { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download') },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
+        { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
+        { id: "embed", label: "Embed Code", enabled: true, link: 'todo' },
+        { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
+        { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
 
     return (
@@ -136,7 +136,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         <Toggle
                             className="col col-12 mt2 pb2"
                             defaultChecked={VodDetails.online}
-                            onChange={(event) => { toggleVideoIsOnline(!videoIsOnline); setVodDetails({ ...VodDetails, online: !videoIsOnline })}}
+                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online })}}
                             label="Video Online"
                         />
                         <Input
@@ -191,7 +191,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                                <LinkText size={14} weight="reg">{'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId}</LinkText>
                                 <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => copyKey("share link here")}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
@@ -281,7 +281,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             <Text size={14} weight="med">{item.label}</Text>
                                         </LinkBoxLabel>
                                         <LinkBox>
-                                            <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                            <Text size={14} weight="reg">{item.link}</Text>
                                             <IconStyle className='pointer' id={item.id} onClick={() => copyKey("embed code here")}>file_copy_outlined</IconStyle>
                                             <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                         </LinkBox>
@@ -326,7 +326,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                 </Card>
                 <ButtonContainer>
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
-                    <Button typeButton="secondary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
+                    <Button typeButton="tertiary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
                 <Prompt when={VodDetails !== props.vodDetails} message='' />
             </React.Fragment>

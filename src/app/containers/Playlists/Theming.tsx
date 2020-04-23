@@ -9,6 +9,8 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { handleCustomTheme } from '../../shared/Theming/handleCustomTheme';
+import { useParams } from 'react-router';
+import { PlaylistsTabs } from './PlaylistTabs';
 
 export interface PlaylistThemingComponentProps {
     theme: ContentTheme;
@@ -19,9 +21,10 @@ export interface PlaylistThemingComponentProps {
     setCustomThemeList: Function;
 }
 
-export const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
+const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
 
-    
+    let { playlistId } = useParams() 
+
     React.useEffect(() => {
         if(!props.theme) {
             props.getPlaylistTheme();
@@ -34,12 +37,15 @@ export const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
     const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
     
     React.useEffect(() => {
-         handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
+        handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
     }, [props.themeList, props.theme])
 
     return (
         props.theme && customThemeList ?
-            <PlaylistThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            <div className='flex flex-column'>
+                <PlaylistsTabs playlistId={playlistId} />
+                <PlaylistThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            </div>  
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

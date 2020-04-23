@@ -10,6 +10,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { handleCustomTheme } from '../../shared/Theming/handleCustomTheme';
+import { LiveTabs } from './LiveTabs';
+import { useParams } from 'react-router';
 
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
@@ -22,6 +24,8 @@ export interface LiveThemingComponentProps {
 }
 
 export const LiveTheming = (props: LiveThemingComponentProps) => {
+
+    let { liveId } = useParams()
 
     React.useEffect(() => {
         if(!props.theme) {
@@ -36,11 +40,14 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     
     React.useEffect(() => {
         handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
-   }, [props.themeList, props.theme])
+    }, [props.themeList, props.theme])
     
     return (
         props.theme && customThemeList ?
-            <LiveThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            <div className='flex flex-column'>
+                <LiveTabs liveId={liveId} />
+                <LiveThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
     

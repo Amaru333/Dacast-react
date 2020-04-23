@@ -18,7 +18,7 @@ import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { handleFeatures } from '../../../shared/Common/Features';
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon';
 
 export interface LiveListProps {
@@ -29,16 +29,9 @@ export interface LiveListProps {
 
 export const LiveListPage = (props: LiveListProps) => {
 
-    let location = useLocation()
+    let history = useHistory()
 
     const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
-    const [showLiveTabs, setShowLiveTabs] = React.useState<boolean>(false)
-    const [selectedLiveId, setSelectedLiveId] = React.useState<LiveItem>(null)
-
-    React.useEffect(() => {
-        setShowLiveTabs(location.pathname !== '/livestreams')
-
-    }, [location])
 
     React.useEffect(() => {
 
@@ -93,7 +86,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <div className='flex'>{handleFeatures(value, value.id)}</div>,
                     <div key={"more" + value.id} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.id}>
-                            <IconStyle onClick={() => { setSelectedLiveId(value); setShowLiveTabs(true) }} className="right mr1" >edit</IconStyle>
+                            <IconStyle onClick={() => {history.push('/livestreams/' + value.id + '/general') }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
@@ -139,9 +132,6 @@ export const LiveListPage = (props: LiveListProps) => {
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
 
     return (
-        showLiveTabs ?
-            <LiveTabs live={selectedLiveId} setShowLiveTabs={setShowLiveTabs} liveId={location.pathname === '/livestreams' && selectedLiveId ? selectedLiveId.id.toString() : location.pathname.split('/')[2]} />
-            :
             <>
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">

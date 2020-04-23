@@ -16,8 +16,17 @@ const getVodSecuritySettingsService = async (vodId: string) => {
     )
 }
 
-const saveVodSecuritySettingsService = (data: SecuritySettings) => {
-    return axios.post(urlBase + 'vod-security', {...data});
+const saveVodSecuritySettingsService = async (data: SecuritySettings, vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/security', 
+        {...data},
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const VodSecurityServices = {

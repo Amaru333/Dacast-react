@@ -85,7 +85,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                             <IconStyle
                                 onClick={() => { props.deleteVodAd(item) }}
                             >delete
-                        </IconStyle>
+                            </IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + item.id}>

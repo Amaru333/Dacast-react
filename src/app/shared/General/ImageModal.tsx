@@ -41,7 +41,7 @@ export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl:
         player.getPlayerInstance().currentTime -= 1/24.0;
     }
 
-    const getImageType = ():string => {
+    const getImageType = (): string => {
         if(props.title.indexOf('Thumbnail') > -1) {
             return 'vod-thumbnail'
         } else if(props.title.indexOf('Splashscreen') > -1) {

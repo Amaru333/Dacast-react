@@ -12,7 +12,7 @@ export const VideoTabs = (props: {videoId: string}) => {
     let history = useHistory()
 
     const handleVideoSubRoutes = () => {
-        return AppRoutes.filter((route) => route.path.indexOf('videos') > -1 && route.name !== 'Videos' && (route.associatePrivilege ? getPrivilege(item.associatePrivilege) : true ) ).map((route) => {
+        return AppRoutes.filter((route) => route.path.indexOf('videos') > -1 && route.name !== 'Videos' && (route.associatePrivilege ? getPrivilege(route.associatePrivilege) : true ) ).map((route) => {
             return {
                 ...route, path: '/videos/' + props.videoId + '/' + route.path.split('/')[route.path.split('/').length -1]
             }

@@ -23,14 +23,15 @@ export const UploaderPage = (props: UploaderProps) => {
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<any>(null)
 
-    const updateItem = (percent: number, name: string, startTime: number) => {
+    const updateItem = (percent: number, name: string, startTime: number) => {    
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
             elapsedtime = elapsedtime / 1000;
-            var eta = ((percent) * elapsedtime) - elapsedtime;
+            var uploadSpeed = percent / elapsedtime
+            var eta = (100 - percent) / uploadSpeed;
             if(eta > 120) {
                 eta = Math.round(eta / 60);
                 var etaUnit = 'minutes'

@@ -4,15 +4,17 @@ import { Action } from './actions';
 
 
 const initialRenditionsState: RenditionsList = {
-    renditionsList: [],
-    encodedRenditions: []
+    id: null,
+    presets: [],
+    encodedRenditions: [],
+    videoInfo: null
 }
 
 const reducer: Reducer<RenditionsList> = (state = initialRenditionsState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_VOD_RENDITIONS:
             return {
-                ...state, ...action.payload
+                ...state, ...action.payload.data
             };
         case ActionTypes.ADD_VOD_RENDITIONS:
             let renditions = state.encodedRenditions.slice()

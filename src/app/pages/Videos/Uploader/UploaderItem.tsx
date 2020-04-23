@@ -55,7 +55,7 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                     <>
                         <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
                         <Text className="mr2" weight="med" size={14} color="gray-1">
-                            {props.progress}%
+                            {props.progress.toFixed(2)}%
                         </Text>
                     </>
                 );

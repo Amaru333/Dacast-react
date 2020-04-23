@@ -29,7 +29,7 @@ export const VodThemingPage = (props: VodThemingComponentProps) => {
     return (
         <React.Fragment>
             <ThemingContainer>
-            <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
+                <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
                     <PlayerContainer>
                         <div ref={playerRef}>
                         </div>

@@ -8,6 +8,8 @@ import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, del
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { useParams } from 'react-router-dom';
+import { PlaylistsTabs } from './PlaylistTabs';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -21,6 +23,9 @@ export interface FoldersComponentProps {
 }
 
 const Setup = (props: FoldersComponentProps) => {
+
+    let { playlistId } = useParams()
+    
     React.useEffect(() => {
         if(!props.folderData) {
             const wait = async () => {
@@ -33,7 +38,10 @@ const Setup = (props: FoldersComponentProps) => {
     }, [])
     return (
         props.folderData ? 
-            <SetupPage {...props} />
+            <div className='flex flex-column'>
+                <PlaylistsTabs playlistId={playlistId} />
+                <SetupPage {...props} />
+            </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

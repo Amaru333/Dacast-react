@@ -10,6 +10,8 @@ import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Setting
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { useParams } from 'react-router';
+import { PlaylistsTabs } from './PlaylistTabs';
 
 export interface PlaylistSecurityContainerProps {
     playlistSecuritySettings: PlaylistSecuritySettings;
@@ -22,6 +24,7 @@ export interface PlaylistSecurityContainerProps {
 
 const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
 
+    let { playlistId } = useParams()
 
     React.useEffect(() => {
         if(!props.playlistSecuritySettings ||  (!props.playlistSecuritySettings && !props.globalSecuritySettings)) {
@@ -33,7 +36,10 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
 
     return (
         props.playlistSecuritySettings && props.globalSecuritySettings ? 
-            <PlaylistSecurityPage {...props}/>
+            <div className='flex flex-column'>
+                <PlaylistsTabs playlistId={playlistId} />
+                <PlaylistSecurityPage {...props} />
+            </div>            
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

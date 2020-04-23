@@ -60,7 +60,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         id: '',
         name: '',
         isDefault: false,
-        values: [''],
+        values: [],
         restrictionType: 'domain-restriction'
     }
 

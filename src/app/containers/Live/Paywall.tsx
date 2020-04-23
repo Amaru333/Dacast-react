@@ -11,6 +11,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { LiveTabs } from './LiveTabs';
+import { useParams } from 'react-router';
 var moment = require('moment-timezone');
 
 export interface LivePaywallComponentProps {
@@ -37,6 +39,8 @@ export interface LivePaywallComponentProps {
 }
 
 const LivePaywall = (props: LivePaywallComponentProps) => {
+
+    let { liveId } = useParams()
 
     React.useEffect(() => {
         if(!props.livePaywallInfos) {
@@ -98,7 +102,10 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
     }, [props.globalPresets.presets, props.livePaywallInfos])
 
     return props.livePaywallInfos && props.groupsInfos && props.theming && customPricePresetList? 
-        <LivePaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        <div className='flex flex-column'>
+            <LiveTabs liveId={liveId} />
+            <LivePaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+        </div>
         : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
