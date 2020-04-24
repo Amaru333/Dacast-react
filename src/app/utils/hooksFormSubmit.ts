@@ -19,7 +19,7 @@ const PresetFormValidation: { [key in CustomType]: ValidationOptions } = {
     'tel': {
         required: requiredHelp,
         pattern: {
-            value: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+            value: /.*/,
             message: 'Please enter a valid phone number'
         } 
     },
