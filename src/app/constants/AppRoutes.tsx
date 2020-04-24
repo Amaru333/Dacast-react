@@ -53,6 +53,7 @@ import Engagement from '../containers/Playlists/Engagement';
 import PlaylistTheming from '../containers/Playlists/Theming';
 import Setup from '../containers/Playlists/Setup';
 import PlaylistPaywall from '../containers/Playlists/Paywall';
+import { ForgotPasswordEmail } from '../pages/Register/ResetPassword/ForgotPasswordEmail';
 
 
 export const AppRoutes: Routes[] = [   
@@ -97,6 +98,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ChangePassword
+    },
+    {
+        path:'/forgot-password-email',
+        name: 'forgot-password-email',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: ForgotPasswordEmail
     },
     {
         path: '/dashboard',
