@@ -19,66 +19,12 @@ import { getPrivilege } from '../../../../utils/utils';
 import { GeneralComponentProps } from '../../../containers/Videos/General';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
+import { languages } from 'countries-list';
 
-
-const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
-    return {data: [
-        {cell: <Text size={14} weight="med">Subtitles</Text>},
-        {cell: <Text size={14} weight="med">Language</Text>},
-        {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
-    ]}
-};
-
-const editSubtitle = (subtitle: SubtitleInfo, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
-    setSelectedSubtitle(subtitle);
-    setUploadedSubtitleFile(subtitle)
-    setSubtitleModalOpen(true)
-}
-
-const subtitlesTableBody = (props: GeneralComponentProps, vodDetails: VodDetails, setSelectedSubtitle: Function, setSubtitleModalOpen: Function, setUploadedSubtitleFile: Function) => {
-    return vodDetails.subtitles.map((value, key) => {
-        return {data: [
-            <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
-            <Text key={"generalPage_subtitles_" + value.language + key} size={14} weight="reg">{value.language}</Text>,
-            <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
-                <ActionIcon id={"downloadSubtitleTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
-                <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
-                <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteVodSubtitle(value)}>delete</IconStyle></ActionIcon>
-                <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
-                <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)}>edit</IconStyle></ActionIcon>
-                <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
-            </IconContainer>
-        ]}
-    })
-};
-
-const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
-    return {data: [
-        {cell: <span key={'disabledTableHeader'}></span>},
-        {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
-    ]}
-}
-
-const disabledSubtitlesTableBody = (text: string) => {
-    return [{data: [
-        <span key={'disabledTableBody'}></span>,
-        <div className='left'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
-    ]}]
-}
-
-const handleSubtitleSubmit = (props: GeneralComponentProps, setSubtitleModalOpen: Function, data: SubtitleInfo, setUploadedSubtitleFile: Function, selectedSubtitle: SubtitleInfo, emptySubtitle: SubtitleInfo) => {
-    if (selectedSubtitle.id === emptySubtitle.id && selectedSubtitle.fileName === emptySubtitle.fileName) {
-        props.addVodSubtitle(data);
-    } else {
-        props.editVodSubtitle(data)
-    }
-    setUploadedSubtitleFile({ fileName: "", language: "" })
-    setSubtitleModalOpen(false);
-}
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
-    const emptySubtitle = { id: "", fileName: "", language: "" }
+    const emptySubtitle = { id: "", fileName: "", languageLongName: "", languageShortName: "" }
 
     const {userId} = addTokenToHeader()
 
@@ -86,23 +32,105 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
-    const [selectedSubtitle, setSelectedSubtitle] = React.useState<SubtitleInfo>(emptySubtitle)
     const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
+    const [subtitleFile, setSubtitleFile] = React.useState<File>(null);
+    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
-    React.useEffect(() => { }, [selectedSubtitle, subtitleModalOpen])
-    const testSubtitleFile = "mozumban_subtitle_678.srt"
+
+    const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+        return {data: [
+            {cell: <Text size={14} weight="med">Subtitles</Text>},
+            {cell: <Text size={14} weight="med">Language</Text>},
+            {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+        ]}
+    };
+    
+    const editSubtitle = (subtitle: SubtitleInfo) => {
+        setUploadedSubtitleFile(subtitle)
+        setSubtitleModalOpen(true)
+    }
+    
+    const subtitlesTableBody = () => {
+        return VodDetails.subtitles.map((value, key) => {
+            return {data: [
+                <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
+                <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
+                <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
+                    <ActionIcon id={"downloadSubtitleTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
+                    <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
+                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteFile(props.vodDetails.id, value.id)}>delete</IconStyle></ActionIcon>
+                    <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
+                    <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
+                    <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
+                </IconContainer>
+            ]}
+        })
+    };
+    
+    const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+        return {data: [
+            {cell: <span key={'disabledTableHeader'}></span>},
+            {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+        ]}
+    }
+    
+    const disabledSubtitlesTableBody = (text: string) => {
+        return [{data: [
+            <span key={'disabledTableBody'}></span>,
+            <div className='left'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]}]
+    }
+
+    React.useEffect(() => {
+        if(props.vodDetails.uploadurl && subtitleModalOpen) {
+            props.uploadFile(props.vodDetails.uploadurl, SubtitleFile)
+            setUploadedSubtitleFile(emptySubtitle)
+            setSubtitleModalOpen(false);
+        }
+    }, [props.vodDetails.uploadurl])
+    
+    const handleSubtitleSubmit = () => {
+        props.getUploadUrl('subtitle', props.vodDetails.id, uploadedSubtitleFile)
+    }
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            return  'splashscreen'
+            return  'vod-splashscreen'
         } else if (imageModalTitle === "Change Thumbnail") {
-            return 'thumbnail'
+            return 'vod-thumbnail'
+        } else if(imageModalTitle === 'Change Poster') {
+            return 'vod-poster'
         } else {
-            return 'poster'
+            return ''
+        }
+    }
+
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['.srt', '.vtt'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setSubtitleFile(file[0])
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+    }
+    
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
         }
     }
 
@@ -149,7 +177,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             className="col col-6 pr2 pt2"
                             type="textarea"
                             label="Description"
-                            value={VodDetails.description}
+                            value={VodDetails.description ? VodDetails.description : ''}
                             onChange={event => setVodDetails({ ...VodDetails, description: event.currentTarget.value })}
                         />
                         <div className="col col-3 pt2 flex flex-column">
@@ -204,12 +232,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             !VodDetails.splashscreen.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.splashscreen.targetID)}}>Delete</Button>
                                         }
                                         <Button 
                                             className="clearfix right m1" sizeButton="xs" typeButton="secondary"
-                                            onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
-                                                                                            {
+                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(VodDetails.splashscreen.url);setImageModalOpen(true)}}>
+                                            {
                                                 !VodDetails.splashscreen.url  ?
                                                     "Add" : "Change"
                                             }
@@ -229,9 +257,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             !VodDetails.thumbnail.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.thumbnail.targetID)}}>Delete</Button>
                                         }
-                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(VodDetails.thumbnail.url);setImageModalOpen(true)}}>
                                             {
                                                 !VodDetails.thumbnail.url  ?
                                                     "Add" : "Change"
@@ -252,10 +280,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             !VodDetails.poster.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID)}}>Delete</Button>
                                         }
                                         
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(VodDetails.poster.url);setImageModalOpen(true)}}>
                                             {
                                                 !VodDetails.poster.url  ?
                                                     "Add" : "Change"
@@ -273,9 +301,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         <Text className="col col-12" size={20} weight="med">Subtitles</Text>
                         <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
                     </div>
-                    {(!props.vodDetails.subtitles) ?
+                    {(!props.vodDetails.subtitles || props.vodDetails.subtitles.length === 0) ?
                         <Table className="col col-12" headerBackgroundColor="gray-10" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
-                        : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody(props, VodDetails, setSelectedSubtitle, setSubtitleModalOpen, setUploadedSubtitleFile)} id="subtitlesTable" />
+                        : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable" />
                     }
                     <Divider className="col col-12" />
                     <div className="col col-12 advancedVideoLinks">
@@ -291,7 +319,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             <Text size={14} weight="med">{item.label}</Text>
                                         </LinkBoxLabel>
                                         <LinkBox>
-                                            <Text size={14} weight="reg">{item.link}</Text>
+                                            <LinkText>
+                                                <Text size={14} weight="reg">{item.link}</Text>
+                                            </LinkText>
                                             <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, 'Copied to clipboard!')}>file_copy_outlined</IconStyle>
                                             <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                         </LinkBox>
@@ -303,18 +333,21 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </div>
 
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
-                        <form id="addSubtitlesForm"
-                            onSubmit={event => { event.preventDefault(); handleSubtitleSubmit(props, setSubtitleModalOpen, uploadedSubtitleFile, setUploadedSubtitleFile, selectedSubtitle, emptySubtitle) }}>
                             <ModalContent>
                                 <DropdownSingle
                                     className="col col-12"
                                     id="subtitleLanguage"
                                     dropdownTitle="Subtitle Language"
-                                    list={{ "Swedish": false, "French": false, "German": false, "Mozumban": false, "Russian": false }}
-                                    dropdownDefaultSelect={selectedSubtitle.language}
-                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, language: value })}
+                                    list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
+                                    dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
+                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
                                 />
-                                <Button className="mt25" onClick={(event) => { event.preventDefault(); setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: testSubtitleFile }) }} typeButton="secondary" sizeButton="xs">Select File</Button>
+                                <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                    <label htmlFor='browseButton'>
+                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                                        Select Files
+                                    </label>                                    
+                                </Button>
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.fileName === "" ? null :
                                     <SubtitleFile className="col mt1">
@@ -326,12 +359,15 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 }
                             </ModalContent>
                             <ModalFooter>
-                                <Button type="submit" >Add</Button>
-                                <Button onClick={(event) => { event.preventDefault(); setSubtitleModalOpen(false); setSelectedSubtitle(emptySubtitle); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
+                                <Button onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                                <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
                             </ModalFooter>
-                        </form>
                     </Modal>
-                    <ImageModal vodId={props.vodId} uploadUrl={props.vodDetails.uploadurl} getUploadUrl={props.getUploadUrl} title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.uploadImage} />
+                    {
+                        imageModalOpen ?
+                            <ImageModal imageFileName={selectedImageName} imageType={handleImageModalFunction()} contentId={props.vodId} uploadUrl={props.vodDetails.uploadurl} getUploadUrl={props.getUploadUrl} title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.uploadFile} />
+                            : null
+                    }
 
                 </Card>
                 <ButtonContainer>

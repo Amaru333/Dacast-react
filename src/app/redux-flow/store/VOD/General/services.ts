@@ -51,32 +51,23 @@ const editVodDetailsService = async (data: VodDetails) => {
     )
 }
 
-const addVodSubtitleService = async (data: SubtitleInfo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + data.id,
-        {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
-    )
-}
-
-const editVodSubtitleService = (data: SubtitleInfo) => {
-    return axios.put(urlBase + 'vod-subtitle', {...data})
-}
-
-const deleteVodSubtitleService = (data: SubtitleInfo) => {
-    return axios.delete(urlBase + 'vod-subtitle', {data:{...data}})
-}
-
-const getUploadUrl = async (data: string, vodId: string) => {
-    console.log('vod id', vodId)
+const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
+    let requestData: {vodID: string; fileName?: string; languageLongName?: string; languageShortName?: string;} = {
+        vodID: vodId
+    }
+    if(subtitleInfo) {
+        requestData = {
+           vodID: vodId,
+            fileName: subtitleInfo.fileName,
+            languageLongName: subtitleInfo.languageLongName,
+            languageShortName: subtitleInfo.languageShortName
+        }
+    }
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/' + data,
         {
-            vodID: vodId
+            ...requestData
         },
         {
             headers: {
@@ -85,25 +76,29 @@ const getUploadUrl = async (data: string, vodId: string) => {
         })
 }
 
-const uploadImage = (data: File, uploadUrl: string) => {
-    console.log(data)
+const uploadFile = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, {...data})
 }
 
-const deleteImage = (data: File) => {
-    return axios.put(urlBase + 'vod/poster', {...data})
+const deleteFile = async (vodId: string, targetId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/targets/' + targetId,
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 
 export const VodGeneralServices = {
     getVodDetailsService,
     editVodDetailsService,
-    addVodSubtitleService,
-    editVodSubtitleService,
-    deleteVodSubtitleService,
     getUploadUrl,
-    uploadImage,
-    deleteImage,
+    uploadFile,
+    deleteFile,
     getVodList,
     deleteVodService
 }

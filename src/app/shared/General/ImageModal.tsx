@@ -7,18 +7,19 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
+export const ImageModal = (props: {imageType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
-    const [uploadedImage, setUploadedImage] = React.useState<string>("")
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     let playerRef = React.useRef<HTMLDivElement>(null);
+    const [logoFile, setLogoFile] = React.useState<File>(null);
+    const [fileName, setFileName] = React.useState<string>(props.imageFileName)
 
     let player = usePlayer(playerRef, '104301_f_713989')
 
     React.useEffect(() => {
-        if (selectedOption === "frame" || uploadedImage !== "") {
+        if (selectedOption === "frame") {
             setIsSaveDisabled(false)
         } else { 
             setIsSaveDisabled(true) 
@@ -41,33 +42,21 @@ export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl:
         player.getPlayerInstance().currentTime -= 1/24.0;
     }
 
-    const getImageType = (): string => {
-        if(props.title.indexOf('Thumbnail') > -1) {
-            return 'vod-thumbnail'
-        } else if(props.title.indexOf('Splashscreen') > -1) {
-            return 'vod-splashscreen'
-        } else if(props.title.indexOf('Poster') > -1) {
-            return 'vod-poster'
-        } else {
-            return ''
-        }
-    }
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
-    const [logoFile, setLogoFile] = React.useState<File>(null);
 
     const handleSubmit = () => {
-        props.getUploadUrl(getImageType(), props.vodId)
+        props.getUploadUrl(props.imageType, props.contentId)
     }
 
     React.useEffect(() => {
-        if (selectedOption === "upload") {
-            console.log(logoFile)
-            props.submit(logoFile, props.uploadUrl)
-        } else {
-            props.submit(player.getPlayerInstance().currentTime.toString())
+        if(props.uploadUrl) {
+            if (selectedOption === "upload") {
+                props.submit(logoFile, props.uploadUrl)
+            } else {
+                props.submit(player.getPlayerInstance().currentTime.toString())
+            }
+            props.toggle()
         }
-        props.toggle()
     }, [props.uploadUrl])
 
     const handleDrop = (file: FileList) => {
@@ -81,8 +70,8 @@ export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl:
                     //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
                 }
                 if(acceptedRatio) {
-                    setUploadedFileUrl(reader.result.toString())
                     setLogoFile(file[0])
+                    setFileName(file[0].name)
                 }
             }
             reader.readAsDataURL(file[0])
@@ -118,7 +107,7 @@ export const ImageModal = (props: {vodId: string; toggle: () => void; uploadUrl:
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { !logoFile ? null : 
                             <ThumbnailFile className="col col-6 mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{logoFile ? logoFile.name : ''}</Text>
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
                                 </button>   
