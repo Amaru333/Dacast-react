@@ -21,7 +21,17 @@ export const UploaderPage = (props: UploaderProps) => {
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
     const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
     const [File, setFile] = React.useState<File>(null)
-    const [currentUpload, setCurrentUpload] = React.useState<any>(null)
+    const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
+    const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
+
+    React.useEffect(() => {
+        console.log('upload file queue', uploadFileQueue)
+    }, [uploadFileQueue])
+
+    React.useEffect(() => {
+       uploadNextFile()
+        
+    }, [currentUpload && currentUpload.isCompleted])
 
     const updateItem = (percent: number, name: string, startTime: number) => {    
         setUploadingList((currentList: UploaderItemProps[]) => {
@@ -79,7 +89,11 @@ export const UploaderPage = (props: UploaderProps) => {
                         }
                     }
                 )
-                newUpload.startUpload()
+                
+                setUploadFileQueue(uploadFileQueue.concat(newUpload)) 
+                if (uploadFileQueue.length < 1){
+                    
+                    newUpload.startUpload()
                 setCurrentUpload(newUpload)
 
                 setUploadingList((currentList: UploaderItemProps[]) => {
@@ -95,9 +109,36 @@ export const UploaderPage = (props: UploaderProps) => {
                             embedCode: ""
                         }]
                 })
+                } else {
+                    setUploadingList((currentList: UploaderItemProps[]) => {
+                        return [
+                            ...currentList,
+                            {
+                                currentState: 'queue',
+                                progress: 0,
+                                timeRemaining: {num: 0, unit: ''},
+                                size: file.size,
+                                name: file.name,
+                                idItem: 0,
+                                embedCode: ""
+                            }]
+                    })
+                }
+
+
+                
             }
         }
 
+    }
+
+    const uploadNextFile = () => {
+        if (uploadFileQueue.length > 1) {
+            setUploadFileQueue(uploadFileQueue.slice(1))
+        setCurrentUpload(uploadFileQueue[0])
+        uploadFileQueue[1].startUpload()
+        }
+        
     }
 
     const handleActionItem = (item: UploaderItemProps) => {
