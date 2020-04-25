@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
-import { useQuery } from '../../utils/utils';
+import { useQuery } from '../../../utils/utils';
 import { BalancesPage } from '../../pages/Paywall/Balances';
 import { getBalancesAction } from '../../redux-flow/store/Paywall/Balances/actions';
 import { AccountBalanceInfo } from '../../redux-flow/store/Paywall/Balances/types';

@@ -5,7 +5,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getWithdrawalsAction, Action } from '../../redux-flow/store/Withdrawals/List/actions';
 import { Withdrawal } from '../../redux-flow/store/Withdrawals/List/types';
-import { useQuery } from '../../utils/utils';
+import { useQuery } from '../../../utils/utils';
 
 export interface WithdrawalsComponentsProps {
     withdrawals: Withdrawal[] | false;

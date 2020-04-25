@@ -1,5 +1,3 @@
-import { useLocation } from 'react-router-dom';
-
 export interface Routes {
     path: string;
     name: string;
@@ -19,8 +17,4 @@ export const makeRoute = (name: string, path?: string, component?: any): Routes 
         name: name,
         component: component
     }
-}
-
-export const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
 }
