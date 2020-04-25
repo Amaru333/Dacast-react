@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { DropdownList } from '../FormsComponents/Dropdown/DropdownStyle';
+import { Avatar } from '../Avatar/Avatar';
 
 export const HeaderStyle = styled.div`
     border-bottom: 1px solid #D1DBE8;
@@ -25,6 +26,12 @@ export const HeaderIconStyle = styled.div`
     top: 50%;
     padding: 8px;
     color: ${props => props.theme.colors["gray-1"]};
+    cursor: pointer;
+`
+
+export const HeaderAvatar = styled(Avatar)`
+    margin-bottom: 4px;
+    margin-left: 8px;
     cursor: pointer;
 `
 

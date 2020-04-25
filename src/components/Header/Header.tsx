@@ -1,6 +1,6 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory, Link } from 'react-router-dom';
@@ -12,18 +12,24 @@ import { LogoutAction, Action } from '../../app/redux-flow/store/Register/Login'
 import Burger from '../../app/containers/Navigation/Burger';
 import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
+import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
+import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
 
 export interface HeaderProps {
     isOpen: boolean;
     setOpen: Function;
     isMobile: boolean;
     title: string;
-    logout: Function; 
+    logout: Function;
+    ProfileInfo: ProfilePageInfos;
+    getProfilePageDetails: Function 
 }
 
 
 
 const Header = (props: HeaderProps) => {
+
+    props.getProfilePageDetails()
 
     let location = useLocation()
     let history = useHistory()
@@ -106,11 +112,17 @@ const Header = (props: HeaderProps) => {
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
-                    <HeaderIconStyle onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)}><Icon>account_circle</Icon></HeaderIconStyle>
-                    <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
+                    {props.ProfileInfo ? 
+                          
+                          <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={props.ProfileInfo.firstName + ' ' + props.ProfileInfo.lastName} />
+                       :
+                       <HeaderIconStyle ><Icon>account_circle</Icon></HeaderIconStyle> } 
+                       <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
                         {renderAddList()}
-                    </UserOptionsDropdownList>   
+                    </UserOptionsDropdownList> 
                 </div>
+                
+                
             </IconContainerStyle>
             <VerticalDivider />
             <a href="/account/plans"><Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button></a>
@@ -120,7 +132,8 @@ const Header = (props: HeaderProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        title: state.title
+        title: state.title,
+        ProfileInfo: state.account.profile
     };
 }
 
@@ -130,6 +143,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         logout: () => {
             dispatch(LogoutAction());
         },
+        getProfilePageDetails: () => {
+            dispatch(getProfilePageDetailsAction());
+        }
     }
 
 }
