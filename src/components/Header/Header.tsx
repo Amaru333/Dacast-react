@@ -29,7 +29,13 @@ export interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
 
-    props.getProfilePageDetails()
+    React.useEffect(() => {
+        if (!props.ProfileInfo) {
+            props.getProfilePageDetails()
+        }
+    })
+
+    
 
     let location = useLocation()
     let history = useHistory()
