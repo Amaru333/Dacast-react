@@ -16,10 +16,11 @@ const getVodDetailsService = async (vodId: string) => {
     )
 }
 
-const getVodList = async () => {
+const getVodList = async (qs: string) => {
+    console.log(qs)
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/', 
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
         {
             headers: {
                 Authorization: token

@@ -9,25 +9,27 @@ import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { getPrivilege } from '../../../../utils/utils';
 
-export const VideosFiltering = (props: {setSelectedVod: Function}) => {
+export interface FilteringVodState {
+    status: {
+        online: boolean;
+        offline: boolean;
+        processing: boolean;
+    };
+    features: {
+        paywall: boolean;
+        advertising: boolean;
+        playlists: boolean;
+    };
+    afterDate: number | boolean;
+    beforeDate: number | boolean;
+    sizeStart: string;
+    sizeEnd: string;
+}
+
+export const VideosFiltering = (props: {setSelectedFilter: Function}) => {
 
 
-    interface FilteringState {
-        status: {
-            online: boolean;
-            offline: boolean;
-            processing: boolean;
-        };
-        features: {
-            paywall: boolean;
-            advertising: boolean;
-            playlists: boolean;
-        };
-        afterDate: number | boolean;
-        beforedate: number | boolean;
-        sizeStart: string;
-        sizeEnd: string;
-    }
+
 
     var filteringDefault = {
         status: {
@@ -41,12 +43,12 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
             playlists: false
         },
         afterDate: false,
-        beforedate: false,
+        beforeDate: false,
         sizeStart: '',
         sizeEnd: ''
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringVodState>(filteringDefault);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
@@ -55,7 +57,7 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
         Object.entries(filteringState.features).map(item => item[1] !== false ? counter++ : null);
         Object.entries(filteringState.status).map(item => item[1] !== false ? counter++ : null)
         filteringState.afterDate ? counter++ : null;
-        filteringState.beforedate ? counter++ : null;
+        filteringState.beforeDate ? counter++ : null;
         filteringState.sizeStart ? counter++ : null;
         filteringState.sizeEnd ? counter++ : null;
         setActiveFilter(counter);
@@ -113,11 +115,11 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                     </div>
                     <div className="mb3" id="vodFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterSize">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
@@ -128,10 +130,10 @@ export const VideosFiltering = (props: {setSelectedVod: Function}) => {
                     </div>
                 </div>
                 <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false); props.setSelectedVod([]) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault); props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

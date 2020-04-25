@@ -91,9 +91,9 @@ export const getVodDetailsAction = (vodId: string): ThunkDispatch<Promise<void>,
     };
 }
 
-export const getVodListAction = (): ThunkDispatch<Promise<void>, {}, GetVodList> => {
+export const getVodListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetVodList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetVodList>) => {
-        await VodGeneralServices.getVodList()
+        await VodGeneralServices.getVodList(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_VOD_LIST, payload: response.data })
             })

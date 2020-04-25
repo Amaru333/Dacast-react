@@ -6,7 +6,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { VodItem, SearchResult } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { VideosFiltering } from './VideosFiltering';
+import { VideosFiltering, FilteringVodState } from './VideosFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -18,6 +18,7 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { number } from '@storybook/addon-knobs';
 
 export interface VideosListProps {
     items: SearchResult;
@@ -38,6 +39,34 @@ export const VideosListPage = (props: VideosListProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
+    const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
+    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [searchString, setSearchString] = React.useState<string>(null)
+
+    const parseFiltersToQueryString = (filters: FilteringVodState) => {
+        if(filters) {
+            let returnedString= ''
+            Object.keys(filters).map((filter) => {
+                if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
+                    returnedString += filter + '='
+                    Object.keys(filters[filter]).map((subfilter, i) => {
+                        if(filters[filter][subfilter]) {
+                            returnedString += subfilter + ','
+                        }
+                    })  
+                    returnedString += '&'                
+                    returnedString = returnedString.replace(',&','&')
+                }            
+            })
+            returnedString+= `created-at=${filters.beforeDate},${filters.afterDate}&size=${filters.sizeStart},${filters.sizeEnd}&page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&keyword=${searchString}`
+            return returnedString
+
+        }
+    }
+
+    React.useEffect(() => {
+        props.getVodList(parseFiltersToQueryString(selectedFilters))    
+    }, [selectedFilters, searchString, paginationInfo])
 
     useOutsideAlerter(bulkDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -134,7 +163,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={[]}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string) => setSearchString(value)}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?
@@ -148,12 +177,12 @@ export const VideosListPage = (props: VideosListProps) => {
                         </DropdownList>
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
-                    <VideosFiltering setSelectedVod={setSelectedVod} />                
+                    <VideosFiltering setSelectedFilter={setSelectedFilter} />                
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
             <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
-            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
