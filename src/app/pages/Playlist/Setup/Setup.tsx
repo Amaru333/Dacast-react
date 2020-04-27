@@ -259,6 +259,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                     <Button  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
                 </div>
             </div>
+            <div>
             <ContainerHalfSelector className="col col-5" >
                 <TabSetupContainer className="clearfix">
                     <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => {setSwitchTabOpen(true)} }>
@@ -291,8 +292,12 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
+            </div>
+            <div>
             <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
             <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+            </div>
+            
         </>
     )
 }
