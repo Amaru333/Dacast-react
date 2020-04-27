@@ -54,7 +54,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                     props.setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-3 col-6 sm-mt3" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-6 col-6 pt3" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
                     onChange={(event) => {
                         props.updateStepperData({ ...props.stepperData, ["isDefault"]: event.currentTarget.checked })
                     }

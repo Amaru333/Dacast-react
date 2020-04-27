@@ -40,8 +40,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getEmbedSettingsOptions: () => {
             dispatch(getEmbedSettingsOptionsAction());
         },
-        saveEmbedSettingsOptions: (data: EmbedSettingsOptionType) => {
-            dispatch(saveEmbedSettingsOptionsAction(data))
+        saveEmbedSettingsOptions: (data: EmbedSettingsOptionType, callback?:Function) => {
+            dispatch(saveEmbedSettingsOptionsAction(data)).then(callback)
         }
     };
 }

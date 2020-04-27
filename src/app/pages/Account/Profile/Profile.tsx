@@ -28,6 +28,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
 
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
     /** Validation */
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
@@ -38,8 +39,10 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const { dirty } = formState;
 
     const onSubmit = (data: any) => {
-        console.log(data);
-        props.saveProfilePageDetails(data);
+        setSubmitLoading(true);
+        props.saveProfilePageDetails(data,() => {
+            setSubmitLoading(false);
+        });
     }
 
     const onPasswordSubmit = (data: any) => {
@@ -149,7 +152,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             {
                 dirty ?
                     <div>
-                        <Button type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'flexible', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
                     : null

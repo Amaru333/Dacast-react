@@ -40,11 +40,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getThemingList: () => {
             dispatch(getThemingListAction());
         },
-        saveTheme: (theme: ThemeOptions) => {
-            dispatch(saveThemeAction(theme));
+        saveTheme: (theme: ThemeOptions, callback?: Function) => {
+            dispatch(saveThemeAction(theme)).then(callback);
         },
-        createTheme: (theme: ThemeOptions) => {
-            dispatch(createThemeAction(theme));
+        createTheme: (theme: ThemeOptions, callback?: Function) => {
+            dispatch(createThemeAction(theme)).then(callback);
         },
         deleteTheme: (theme: ThemeOptions) => {
             dispatch(deleteThemeAction(theme));

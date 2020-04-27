@@ -95,7 +95,9 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
     const [deleteWarningModalOpen, setDeleteWarningModalOpen] = React.useState<boolean>(false);
     const [deletedRecipe, setDeletedRecipe] = React.useState<EncodingRecipeItem>(emptyRecipe)
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
+    
     const FunctionRecipe = (value: boolean) => {setCreateRecipeStepperOpen(value)}
 
     const editRecipe = (recipe: EncodingRecipeItem) => {
@@ -109,13 +111,17 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     }
 
     const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
-        
+        setSubmitLoading(true);
         if(selectedRecipe) {
             if (selectedRecipe.id) {
-                saveEncodingRecipe(selectedRecipe)
+                saveEncodingRecipe(selectedRecipe, () => {
+                    setSubmitLoading(false)
+                })
             } else
             {
-                createEncodingRecipe(selectedRecipe)
+                createEncodingRecipe(selectedRecipe, () => {
+                    setSubmitLoading(false)
+                })
             }
             FunctionRecipe(false)
         }
@@ -143,7 +149,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
                     stepList={stepList}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                    nextButtonProps={{typeButton: "primary", sizeButton: "large", isLoading: submitLoading, buttonText: "Next"}} 
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={["Settings", "Presets"]}
