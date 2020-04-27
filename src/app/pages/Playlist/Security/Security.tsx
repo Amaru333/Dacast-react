@@ -84,7 +84,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                                 <Input 
                                     type='text'
                                     defaultValue={props.playlistSecuritySettings.securitySettings.passwordProtectedVideo.password ? props.playlistSecuritySettings.securitySettings.passwordProtectedVideo.password : ''}  
-                                    className='col col-4 md-col-3 mb2'
+                                    className='col col-12 md-col-4 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 
@@ -98,7 +98,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
 
                     <BorderStyle className="p1" />
 
-                    <div className="col col-12">
+                    <div className="col col-12 clearfix">
                         <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
                         </TextStyle>
@@ -108,7 +108,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 my2 mr1' 
+                            className='col col-12 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.playlistSecuritySettings.securitySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -128,7 +128,7 @@ export const PlaylistSecurityPage = (props: PlaylistSecurityContainerProps) => {
                         </TextStyle>
                         <div className="col col-12 pb2">
                             <DropdownSingle 
-                                className="col col-3 my2" 
+                                className="col col-12 md-col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.playlistSecuritySettings.securitySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

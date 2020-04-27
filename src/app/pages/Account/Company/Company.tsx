@@ -54,6 +54,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
@@ -112,13 +113,14 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+        setUploadButtonLoading(true)
         props.getLogoUrlForUploading();       
     }
 
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
             console.log('uploading at the url', props.CompanyPageDetails.uploadLogoUrl)
-            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
+            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl, () => setUploadButtonLoading(false) );
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
 

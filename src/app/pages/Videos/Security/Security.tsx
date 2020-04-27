@@ -114,12 +114,12 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                         <ToggleTextInfo>
                             <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
                         </ToggleTextInfo>
-                        { togglePasswordProtectedVideo ? 
+                        { togglePasswordProtectedVideo && 
                             <div className='col col-12'>
                                 <Input 
                                     type='text'
                                     defaultValue={handlePasswordValue()}  
-                                    className='col col-4 md-col-3 mb2'
+                                    className='col col-12 md-col-4 mb2'
                                     disabled={false} 
                                     id='password' 
                                     label='Password' 
@@ -127,11 +127,10 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                                     onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtection: {password: event.currentTarget.value }})}
                                     required
                                 />
-                            </div>
-                            : null }
+                            </div>}
                     </div> 
 
-                    <div className='col col-12'>
+                    <div className='col col-12 clearfix'>
                         <Toggle 
                             id="videoScheduling" 
                             label='Content Scheduling' 
@@ -141,41 +140,41 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                          
                         { toggleSchedulingVideo ? 
                         <>
-                        <div className='col col-12 flex items-center'>
+                        <div className='col col-12 mb2 clearfix sm-flex'>
                             <DropdownSingle 
-                                className='col col-4 md-col-3 mb2 mr1' 
+                                className='col col-12 md-col-3 clearfix sm-mr1'
                                 id="availableStart" 
                                 dropdownTitle="Available" 
                                 list={{'Always': false, "Set Date and Time": false}} dropdownDefaultSelect={startDateTime} callback={(selectedItem: 'Always' | 'Set Date and Time') => setStartDateTime(selectedItem)} 
                             />
                             {
-                                startDateTime === "Set Date and Time" ?
+                                startDateTime === "Set Date and Time" &&
                                 <>        
-                                <div className='col col-4 md-col-3 mb2'>
-                                    <DateSinglePickerWrapper 
-                                        className='mt2'
-                                        id="startDate"
-                                        callback={(startDateValue: number) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, startTime: startDateValue}})}
-                                    />
-                                </div>
+                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
+                                        <DateSinglePickerWrapper 
+                                            className='mt2'
+                                            id="startDate"
+                                            callback={(startDateValue: number) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, startTime: startDateValue}})}
+                                        />
+                                    </div>
 
-                                <Input 
-                                    type='time'
-                                    defaultValue={'00:00:00'} 
-                                    className='col col-3 md-col-2 px1 mt1'
-                                    disabled={false} 
-                                    id='startTime' 
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, startTime: parseInt(event.currentTarget.value)}}) }
-                                    required
-                                /> 
-                                </> : null
+                                    <Input 
+                                        type='time'
+                                        defaultValue={'00:00:00'} 
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
+                                        disabled={false} 
+                                        id='startTime' 
+                                        pattern="[0-9]{2}:[0-9]{2}"
+                                        onChange={(event) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, startTime: parseInt(event.currentTarget.value)}}) }
+                                        required
+                                    /> 
+                                </>
                             }                
                         </div>
 
-                    <div className='col col-12 flex items-center'>
+                    <div className='col col-12 mb2 clearfix sm-flex'>
                         <DropdownSingle 
-                            className='col col-4 md-col-3 mb2 mr1' 
+                            className='col col-12 md-col-3 clearfix sm-mr1' 
                             id="availableEnd" 
                             dropdownTitle="Until" 
                             list={{'Forever': false, "Set Date and Time": false}} 
@@ -184,27 +183,26 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
 
                         {
                         
-                            endDateTime === "Set Date and Time" ?
-                        
+                            endDateTime === "Set Date and Time" &&
                                 <>
-                                <div className='col col-4 md-col-3 mb2' >
-                                    <DateSinglePickerWrapper
-                                        className='mt2' 
-                                        id="endDate"
-                                        callback={(endDateValue: number) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, endTime: endDateValue}})}
-                                    />
-                                </div>
-                                <Input 
-                                    type='time' 
-                                    defaultValue={'00:00:00'}
-                                    className='col col-3 md-col-2 mt1 px1'
-                                    disabled={false} 
-                                    id='endTime' 
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, endTime: parseInt(event.currentTarget.value)}})}
-                                    required
-                                /> 
-                                </> : null
+                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
+                                        <DateSinglePickerWrapper
+                                            className='mt2' 
+                                            id="endDate"
+                                            callback={(endDateValue: number) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, endTime: endDateValue}})}
+                                        />
+                                    </div>
+                                    <Input 
+                                        type='time' 
+                                        defaultValue={'00:00:00'}
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
+                                        disabled={false} 
+                                        id='endTime' 
+                                        pattern="[0-9]{2}:[0-9]{2}"
+                                        onChange={(event) => setSelectedSettings({...selectedSettings, contentScheduling:{...selectedSettings.contentScheduling, endTime: parseInt(event.currentTarget.value)}})}
+                                        required
+                                    /> 
+                                </>
                         }
                     </div>
                     </> : null
@@ -225,7 +223,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                         </TextStyle>
 
                         <DropdownSingle 
-                            className='col col-4 md-col-3 my2 mr1' 
+                            className='col col-12 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
@@ -246,7 +244,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                         </TextStyle>
                         <div className="col col-12 py2">
                             <DropdownSingle 
-                                className="col col-3" 
+                                className="col col-12 md-col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 

@@ -278,11 +278,9 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         </ImageContainer>
                         <ImageContainer>
                             <div className="flex flex-center">
-                                <div className="flex flex-center">
-                                    <Text size={16} weight="med" className="mr1">Poster</Text>
-                                    <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
-                                </div>
+                                <Text size={16} weight="med" className="mr1">Poster</Text>
+                                <IconStyle id="posterTooltip">info_outlined</IconStyle>
+                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -304,9 +302,6 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </ImagesContainer>
                 </div>
                 <Divider className="col col-12" />
-
-
-
                 <div className="col col-12 advancedVideoLinks">
                     <div className="mb2 clearfix" onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>

@@ -59,8 +59,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLogoUrlForUploading: () => {
             dispatch(getUploadLogoUrlAction());
         },
-        uploadCompanyLogo: (data: File, uploadUrl: string) => {
-            dispatch(uploadCompanyLogo(data, uploadUrl));
+        uploadCompanyLogo: (data: File, uploadUrl: string, callback: Function) => {
+            dispatch(uploadCompanyLogo(data, uploadUrl)).then(callback);
         },
         deleteCompanyLogo: () => {
             dispatch(deleteCompanyLogo());

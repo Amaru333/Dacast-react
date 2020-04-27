@@ -3,7 +3,7 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
@@ -78,26 +78,26 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         label="Playlist Online"
                     />
                     <Input
-                        className="col col-6 pr2"
+                        className={ClassHalfXsFullMd + "pr2 mb2"}
                         label="Title"
                         value={newPlaylistDetails.title}
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["title"]: event.currentTarget.value })}
                     />
                     <InputTags
-                        className="col col-6"
+                        className={ClassHalfXsFullMd + "mb2"}
                         label="Folders"
                         disabled
                         greyBackground
                         defaultTags={props.playlistDetails.folder} 
                     />
                     <Input
-                        className="col col-6 pr2 pt2"
+                        className={ClassHalfXsFullMd + "pr2 mb2"}
                         label="Description"
                         value={newPlaylistDetails.description}
                         type="textarea"
                         onChange={event => setNewPlaylistDetails({ ...newPlaylistDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <div className="col col-3 pt2 flex flex-column">
+                    <div className={"col col-3 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
@@ -113,7 +113,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                     <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
-                    <div className="col col-6 mt2 pr2 flex flex-column">
+                    <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"} >
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
@@ -123,7 +123,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
-                    <div className="col col-6 mt2 flex flex-column">
+                    <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
@@ -139,7 +139,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     <Text className="col col-12" size={20} weight="med">Images</Text>
                     <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
                     <ImagesContainer className="col col-12 pt2 flex">
-                        <ImageContainer className="mr2">
+                        <ImageContainer className="mr2 xs-mr0 xs-mb25">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
@@ -163,7 +163,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-                        <ImageContainer className="mr2">
+                        <ImageContainer className="mr2 xs-mb25 xs-mr0">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
                                 <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
@@ -211,14 +211,14 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
                 <div className="col col-12 advancedLinks">
-                    <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
+                    <div className="mb2 clearfix" onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
                     </div>                 
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
                             return (
-                                <LinkBoxContainer className="col col-6 mt2">
+                                <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
