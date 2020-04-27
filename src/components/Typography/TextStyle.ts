@@ -32,5 +32,5 @@ export const SpanStyle = styled.span<TextProps>`
     font-family: 'Roboto';
     font-style: normal;
     font-weight: ${props => props.weight === "med" ? 500 : 'normal'};
-    line-height: ${props => returnLineHeight(props.size)}px;
+    line-height: ${props => props.lineHeight ? props.lineHeight : returnLineHeight(props.size)}px;
 `;

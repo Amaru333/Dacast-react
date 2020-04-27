@@ -45,8 +45,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
-        saveSettingsSecurityOptions: (data: SettingsSecurityDetails) => {
-            dispatch(saveSettingsSecurityOptionsAction(data));
+        saveSettingsSecurityOptions: (data: SettingsSecurityDetails, callback?: Function) => {
+            dispatch(saveSettingsSecurityOptionsAction(data)).then(callback);
         },
         createGeoRestrictionGroup: (data: GeoRestriction) => {
             dispatch(createGeoRestrictionGroupAction(data));

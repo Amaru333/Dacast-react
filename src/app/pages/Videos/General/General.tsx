@@ -11,7 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/M
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -149,24 +149,24 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
             <React.Fragment>
                 <Card className="col-12 clearfix">
                     <div className="details col col-12">
-                        <header className="flex justify-between">
+                        <header className="flex justify-between mb2">
                             <Text size={20} weight="med">Details</Text>
                             { getPrivilege('privilege-web-download') && <Button sizeButton="xs" typeButton="secondary">Download</Button>}
                         </header>
                         <Toggle
-                            className="col col-12 mt2 pb2"
+                            className="col col-12 mb2"
                             defaultChecked={VodDetails.online}
                             onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online })}}
                             label="Video Online"
                         />
                         <Input
-                            className="col col-6 pr2"
+                            className={ClassHalfXsFullMd + "pr2 mb2"}
                             label="Title"
                             value={VodDetails.title}
                             onChange={event => setVodDetails({...VodDetails, title: event.currentTarget.value })}
                         />
                         <InputTags
-                            className="col col-6"
+                            className={ClassHalfXsFullMd + "mb2"}
                             label="Folders"
                             disabled
                             greyBackground
@@ -174,13 +174,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         />
 
                         <Input
-                            className="col col-6 pr2 pt2"
+                            className={ClassHalfXsFullMd + "pr2 mb2"}
                             type="textarea"
                             label="Description"
                             value={VodDetails.description ? VodDetails.description : ''}
                             onChange={event => setVodDetails({ ...VodDetails, description: event.currentTarget.value })}
                         />
-                        <div className="col col-3 pt2 flex flex-column">
+                        <div className={"col col-3 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
@@ -190,13 +190,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <Divider className="col col-12" />
                     </div>
+                    <Divider className="col col-12" />
                     <div className='col col-12'>
                         <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                         <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
-                        <div className="col col-6 mt2 pr2 flex flex-column">
+                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
@@ -206,7 +206,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <div className="col col-6 mt2 flex flex-column">
+                        <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
@@ -222,7 +222,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         <Text className="col col-12" size={20} weight="med">Images</Text>
                         <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
                         <ImagesContainer className="col col-12 pt2">
-                            <ImageContainer className="mr2">
+                            <ImageContainer className="mr2 xs-mr0 xs-mb25">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                     <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
@@ -235,7 +235,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                                 <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.splashscreen.targetID)}}>Delete</Button>
                                         }
                                         <Button 
-                                            className="clearfix right m1" sizeButton="xs" typeButton="secondary"
+                                            className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                             onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(VodDetails.splashscreen.url);setImageModalOpen(true)}}>
                                             {
                                                 !VodDetails.splashscreen.url  ?
@@ -247,7 +247,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
-                            <ImageContainer className="mr2">
+                            <ImageContainer className="mr2 xs-mb25 xs-mr0">
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                     <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
@@ -333,35 +333,35 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </div>
 
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
-                            <ModalContent>
-                                <DropdownSingle
-                                    className="col col-12"
-                                    id="subtitleLanguage"
-                                    dropdownTitle="Subtitle Language"
-                                    list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
-                                    dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
-                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
-                                />
-                                <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                    <label htmlFor='browseButton'>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
-                                        Select Files
-                                    </label>                                    
-                                </Button>
-                                <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
-                                {uploadedSubtitleFile.fileName === "" ? null :
-                                    <SubtitleFile className="col mt1">
-                                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
-                                        <button style={{ border: "none", backgroundColor: "inherit" }}>
-                                            <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: "" })} className='flex items-center' customsize={14}>close</IconStyle>
-                                        </button>
-                                    </SubtitleFile>
-                                }
-                            </ModalContent>
-                            <ModalFooter>
-                                <Button onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
-                                <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
-                            </ModalFooter>
+                        <ModalContent>
+                            <DropdownSingle
+                                className="col col-12"
+                                id="subtitleLanguage"
+                                dropdownTitle="Subtitle Language"
+                                list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
+                                dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
+                                callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
+                            />
+                            <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                <label htmlFor='browseButton'>
+                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                                    Select Files
+                                </label>                                    
+                            </Button>
+                            <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
+                            {uploadedSubtitleFile.fileName === "" ? null :
+                                <SubtitleFile className="col mt1">
+                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
+                                    <button style={{ border: "none", backgroundColor: "inherit" }}>
+                                        <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: "" })} className='flex items-center' customsize={14}>close</IconStyle>
+                                    </button>
+                                </SubtitleFile>
+                            }
+                        </ModalContent>
+                        <ModalFooter>
+                            <Button onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                            <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
+                        </ModalFooter>
                     </Modal>
                     {
                         imageModalOpen ?

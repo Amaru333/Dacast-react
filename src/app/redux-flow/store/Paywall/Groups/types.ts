@@ -19,7 +19,7 @@ export interface GroupPrice {
     name: string;
     type: string;
     price: Price[];
-    duration?: {amount: number; type: string};
+    duration?: {amount: number | string; type: string};
     recurrence?: string;
     startMethod: string;
     timezone?: string;

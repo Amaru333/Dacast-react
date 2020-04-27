@@ -42,10 +42,10 @@ export const SetupPage = (props: SetupComponentProps) => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
 
-    React.useEffect(() => {setDropdownIsOpened(false)}, [sortSettings])
+    React.useEffect(() => { setDropdownIsOpened(false) }, [sortSettings])
 
     React.useEffect(() => {
-        if(!selectedFolder) {
+        if (!selectedFolder) {
             setSelectedFolder('/');
             return;
         } else {
@@ -54,13 +54,13 @@ export const SetupPage = (props: SetupComponentProps) => {
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {
-        switch(item.contentType) {
+        switch (item.contentType) {
             case 'playlist':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
-            case 'folder': 
+            case 'folder':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
             case 'live':
-            case 'vod': 
+            case 'vod':
                 return <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
             default:
                 return;
@@ -68,32 +68,32 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleNavigateToFolder = (folderName: string) => {
-        setSelectedFolder(selectedFolder+folderName+'/');
+        setSelectedFolder(selectedFolder + folderName + '/');
         setCheckedFolders([]);
         setCheckedContents([]);
     }
 
     const handleMoveFoldersToSelected = () => {
-        setSelectedItems( [...selectedItems, ...checkedFolders] );
+        setSelectedItems([...selectedItems, ...checkedFolders]);
         setCheckedFolders([]);
     }
 
     const handleMoveContentsToSelected = () => {
-        setSelectedItems( [...selectedItems, ...checkedContents] );
+        setSelectedItems([...selectedItems, ...checkedContents]);
         setCheckedContents([]);
     }
 
     const handleMoveToSelected = () => {
-        if(selectedTab === 'content') {
+        if (selectedTab === 'content') {
             handleMoveContentsToSelected();
         }
-        if(selectedTab === 'folders') {
+        if (selectedTab === 'folders') {
             handleMoveFoldersToSelected();
         }
     }
 
     const handleCheckboxFolder = (checkedOption: FolderAsset) => {
-        if(checkedFolders.includes(checkedOption)) {
+        if (checkedFolders.includes(checkedOption)) {
             setCheckedFolders(checkedFolders.filter(option => option !== checkedOption));
         } else {
             setCheckedFolders([checkedOption]);
@@ -101,7 +101,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleCheckboxContents = (checkedOption: FolderAsset) => {
-        if(checkedContents.includes(checkedOption)) {
+        if (checkedContents.includes(checkedOption)) {
             setCheckedContents(checkedContents.filter(option => option !== checkedOption));
         } else {
             setCheckedContents([...checkedContents, checkedOption]);
@@ -109,7 +109,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleCheckboxSelected = (checkedOption: FolderAsset) => {
-        if(checkedSelectedItems.includes(checkedOption)) {
+        if (checkedSelectedItems.includes(checkedOption)) {
             setCheckedSelectedItems(checkedSelectedItems.filter(option => option !== checkedOption));
         } else {
             setCheckedSelectedItems([...checkedSelectedItems, checkedOption]);
@@ -117,7 +117,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleRemoveFromSelected = () => {
-        var newSelectedItems = selectedItems.filter( el => {
+        var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
                 return el.id === elChecked.id;
             })
@@ -128,10 +128,10 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     const renderFoldersList = () => {
         return props.folderData.requestedContent.map((row) => {
-            if(row.contentType === "folder" && !selectedItems.includes(row)) {
+            if (row.contentType === "folder" && !selectedItems.includes(row)) {
                 return (
-                    <ItemSetupRow className='col col-12 flex items-center p2 pointer' 
-                        onClick={() => handleCheckboxFolder(row) } 
+                    <ItemSetupRow className='col col-12 flex items-center p2 pointer'
+                        onClick={() => handleCheckboxFolder(row)}
                         selected={checkedFolders.includes(row)}>
                         <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
                         <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
@@ -148,29 +148,29 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     const renderContentsList = () => {
         return props.folderData.requestedContent.map((row) => {
-            if(row.contentType === "playlist" || selectedItems.includes(row)) {
+            if (row.contentType === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
-                <ItemSetupRow className='col col-12 flex items-center p2 pointer' 
+                <ItemSetupRow className='col col-12 flex items-center p2 pointer'
                     selected={checkedContents.includes(row)}
-                    onDoubleClick={ () =>  { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null } }
+                    onDoubleClick={() => { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null }}
                 >
-                    { row.contentType !== "folder" ? 
+                    {row.contentType !== "folder" ?
                         <InputCheckbox className='mr2' id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id}
-                            onChange={() => handleCheckboxContents(row)} 
+                            onChange={() => handleCheckboxContents(row)}
                             defaultChecked={checkedContents.includes(row)}
-                            
-                        /> 
-                        : null }
+
+                        />
+                        : null}
                     {handleRowIconType(row)}
                     <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
                     {
-                        row.contentType === "folder" ? 
+                        row.contentType === "folder" ?
                             <div className="flex-auto justify-end">
                                 <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
-                            :null
+                            : null
                     }
                 </ItemSetupRow>
             )
@@ -181,7 +181,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
-        newArray.splice(currentIndex+1, 0, element);
+        newArray.splice(currentIndex + 1, 0, element);
         setSelectedItems(newArray);
     }
 
@@ -189,17 +189,17 @@ export const SetupPage = (props: SetupComponentProps) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
-        newArray.splice(currentIndex-1, 0, element);
+        newArray.splice(currentIndex - 1, 0, element);
         setSelectedItems(newArray);
     }
-   
+
     const renderSelectedItems = () => {
-        return selectedItems.map( (element, i) => {
+        return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id} 
+                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id}
                         defaultChecked={checkedSelectedItems.includes(element)}
-                        onChange={() => handleCheckboxSelected(element) }
+                        onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
                     <Text className='pl2' size={14} weight='reg'>{element.name}</Text>
@@ -224,7 +224,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
-            
+
             return (
                 <DropdownItem
                     isSingle
@@ -241,50 +241,61 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     return (
         <>
-            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => {setSelectedTab(selectedTab === "content" ? 'folders' : 'content');setSelectedItems([]); }} />
-            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() =>setPlaylistSettingsOpen(false)} />
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => { setSelectedTab(selectedTab === "content" ? 'folders' : 'content'); setSelectedItems([]); }} />
+            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() => setPlaylistSettingsOpen(false)} />
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags  noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={[]}   />
+                    <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings}</Button>
-                        <DropdownList style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
+                        <DropdownList style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
-                    </div>  
-                    <Button onClick={() => setPlaylistSettingsOpen(true)}  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
-                    <Button  buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
+                    </div>
+                    <Button onClick={() => setPlaylistSettingsOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
+                    <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
                 </div>
             </div>
+            <div className="clearfix">
+                <ContainerHalfSelector className="col col-5" >
+                    <TabSetupContainer className="clearfix">
+                        <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => { setSwitchTabOpen(true) }}>
+                            <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
+                        </TabSetupStyle>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { setSwitchTabOpen(true) }}>
+                            <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                        </TabSetupStyle>
+                    </TabSetupContainer>
+                    <div hidden={selectedTab !== "folders"} >
+                        <div className="pl1 pr1">
+                            <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
+                        </div>
+                        {renderFoldersList()}
+                    </div>
+                    <div hidden={selectedTab !== "content"} >
+                        <div className="pl1 pr1">
+                            <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
+                        </div>
+                        {renderContentsList()}
+                    </div>
+                </ContainerHalfSelector>
+                <div className="col col-2" style={{ marginTop: 180 }}>
+                    <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                </div>
+                <ContainerHalfSelector className="col col-5" >
+                    <HeaderBorder className="p2">
+                        <Text color={"gray-1"} size={14} weight='med'>[Playlist name]</Text>
+                    </HeaderBorder>
+                    {renderSelectedItems()}
+                </ContainerHalfSelector>
+            </div>
             <div>
-            <ContainerHalfSelector className="col col-5" >
-                <TabSetupContainer className="clearfix">
-                    <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => {setSwitchTabOpen(true)} }>
-                        <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
-                    </TabSetupStyle>
-                    <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => {setSwitchTabOpen(true)} }>
-                        <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
-                    </TabSetupStyle>
-                </TabSetupContainer>
-                <div hidden={selectedTab !== "folders"} >
-                    <div className="pl1 pr1">
-                        <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                    </div>
-                    {renderFoldersList()} 
-                </div>
-                <div hidden={selectedTab !== "content"} >
-                    <div className="pl1 pr1">
-                        <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                    </div>
-                    {renderContentsList()} 
-                </div>
-            </ContainerHalfSelector>
-            <div className="col col-2" style={{marginTop: 180}}>
-                <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-1 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
+                <Button onClick={() => { }} buttonColor="blue" className=" col-3 sm-col-1 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
             <ContainerHalfSelector className="col col-5" >
                 <HeaderBorder className="p2">
@@ -292,7 +303,6 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
-            </div>
             <div>
             <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
             <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
@@ -315,7 +325,7 @@ export const HeaderBorder = styled.div<{}>`
     box-sizing: border-box;
 `
 
-export const TabSetupStyle = styled.div<{selected: boolean}>`
+export const TabSetupStyle = styled.div<{ selected: boolean }>`
     width:50%;
     box-sizing: border-box;
     float:left;
@@ -327,7 +337,7 @@ export const TabSetupStyle = styled.div<{selected: boolean}>`
         color: ${props.theme.colors["dark-violet"]};
     `}
 `
-export const TabSetupStyles = styled.div<{selected: boolean}>`
+export const TabSetupStyles = styled.div<{ selected: boolean }>`
     box-sizing: border-box;
     margin-bottom: 16px;
     float:left;
@@ -339,11 +349,11 @@ export const TabSetupStyles = styled.div<{selected: boolean}>`
         color: ${props.theme.colors["dark-violet"]};
     `}
 `
-export const TabSetupContainer= styled.div<{}>`
+export const TabSetupContainer = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors["gray-7"]};
 `
 
-export const ItemSetupRow = styled.div<{selected: boolean}>`
+export const ItemSetupRow = styled.div<{ selected: boolean }>`
     border-top: 1px solid ${props => props.theme.colors['gray-7']};
     height: 64px;
     ${props => props.selected && css`

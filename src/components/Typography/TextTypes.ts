@@ -7,6 +7,7 @@ export interface TextSpecificProps {
     size: Size;
     weight: Weight;
     color: ColorsApp;
+    lineHeight?: number;
 }
 
 export type TextProps = TextSpecificProps & React.HTMLAttributes<HTMLSpanElement>;

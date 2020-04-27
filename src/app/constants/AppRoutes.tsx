@@ -199,6 +199,7 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodPaywall,
+        associatePrivilege: 'privilege-paywall'
     },
     {
         path: '/videos/:vodId/engagement',

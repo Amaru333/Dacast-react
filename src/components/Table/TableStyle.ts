@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import { ColorsApp } from '../../styled/types';
+import { IconGreyContainer } from '../../shared/Common/Icon';
 
 export const TableContainer = styled.table<{}>`
     height: auto;
@@ -50,6 +51,11 @@ export const TableBodyRow = styled.tr<{}>`
     }
     padding-left: 16px;
     &:hover {
+        ${IconGreyContainer} {
+            &:before {
+                background-color: ${props => props.theme.colors["white"]} ;
+            }
+        }
         cursor: pointer;
         background-color: ${props => props.theme.colors["violet10"]};
         td {

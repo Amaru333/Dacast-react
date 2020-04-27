@@ -35,20 +35,40 @@ const PresetFormValidation: { [key in CustomType]: ValidationOptions } = {
         minLength: {
             value: 6,
             message: 'Password must contain at least 6 characters'
-        }
+        }   
     }
 }
 
 export const handleValidationForm = (id: string, data: any, type?: CustomType, register?: Function) => {
-    let spreadProps: any =  {
-        isError: data[id],
-        help: data[id] && (data[id].message ? data[id].message : data[id].validate) ,
-        name: id
+    if(id.indexOf('.') === -1) {
+        let spreadProps: any =  {
+            isError: data[id],
+            help: data[id] && (data[id].message ? data[id].message : data[id].validate) ,
+            name: id
+        }
+        if(type && register) {
+            spreadProps = { ...spreadProps, ref: register(PresetFormValidation[type]) }
+        }
+        return spreadProps;
+    } else {
+        let deepness = id.split('.');
+        let targetObject = false;
+        for(var i = 0; i < deepness.length; i++) {
+            targetObject = targetObject ? targetObject[deepness[i]] : data[deepness[i]]
+        }
+        console.log(targetObject)
+        let spreadProps: any =  {
+            isError: targetObject,
+            help: targetObject && (targetObject.message ? targetObject.message : targetObject.validate) ,
+            name: id
+        }
+        if(type && register) {
+            spreadProps = { ...spreadProps, ref: register(PresetFormValidation[type]) }
+        }
+        return spreadProps;
+        
     }
-    if(type && register) {
-        spreadProps = { ...spreadProps, ref: register(PresetFormValidation[type]) }
-    }
-    return spreadProps;
+    
 }
 
 //TODO: Delete all of this under that

@@ -1,6 +1,6 @@
 import { ColorsApp } from "../../../../styled/types";
 
-type Size = "large" | "medium" | "small";
+type Size = "large" | "medium" | "small" | 'xs';
 
 interface LoadingSpinnerCustomProps {
     size: Size;

@@ -19,6 +19,8 @@ const logo = require('../../../../../public/assets/logo.png');
 export const SignupPage = (props: SignupContainerProps) => {
 
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
+
     const { register, handleSubmit, errors } = useForm({
         reValidateMode: 'onChange',
         mode: 'onBlur'
@@ -26,8 +28,10 @@ export const SignupPage = (props: SignupContainerProps) => {
     let history = useHistory();
 
     const onSubmit = (data: UserInfo) => { 
+        setSubmitLoading(true);
         props.signup(data, () => {
-            history.push('/confirm-email')
+            history.push('/confirm-email');
+            setSubmitLoading(false);
         });
     }
 
@@ -54,7 +58,7 @@ export const SignupPage = (props: SignupContainerProps) => {
                 
             </ModalContent>
             <ModalFooter>
-                <Button sizeButton="large" typeButton="primary" type="submit" form="formSignUp">Sign Up</Button>
+                <Button sizeButton="large" isLoading={submitLoading} typeButton="primary" type="submit" form="formSignUp">Sign Up</Button>
                 <Button sizeButton="large" typeButton="tertiary" onClick={() => history.push("/login")}>Cancel</Button>
             </ModalFooter>
         </ModalCard>

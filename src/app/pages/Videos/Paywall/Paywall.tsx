@@ -41,7 +41,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2  sm-show ' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
 
         ]}
     }
@@ -78,7 +78,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
             {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2  sm-show '  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
 
         ]}
     }
@@ -178,7 +178,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown' 
-                    className='col col-3 my2' 
+                    className='col col-12 sm-col-3 my2' 
                     dropdownTitle='Paywall Theme' 
                     dropdownDefaultSelect={props.vodPaywallInfos.selectedTheme}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
@@ -186,11 +186,12 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' className='col col-3 my2' placeholder='Video ID' />
+                <Input id='VodPaywallIntroVideoIdInput' className='col col-12 sm-col-3 my2' placeholder='Video ID' />
                         
                 <BorderStyle className='my2' />
 
                 <Text size={20} weight='med'>Prices</Text>
+                <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
                 {props.vodPaywallInfos.presets.length === 0 ? 
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
@@ -200,6 +201,7 @@ export const VodPaywallPage = (props: VodPaywallComponentProps) => {
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
+                <Button onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
                 { props.vodPaywallInfos.promos.length === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :

@@ -43,7 +43,7 @@ export const ContentPromoPresetsModal = (props: { action: Function; toggle: Func
                 />
                 {
                     newPromoPreset.id === "custom" ?
-                        <InputCheckbox className="ml2 mt25" id='pricePresetSaveCheckbox' label='Save as Promo Preset' onChange={() => setSavePreset(!savePreset)} />
+                        <InputCheckbox defaultChecked={savePreset} className="ml2 mt25" id='pricePresetSaveCheckbox' label='Save as Promo Preset' onChange={() => setSavePreset(!savePreset)} />
                         : null
                 }
 

@@ -4,10 +4,10 @@ import { SpanStyle } from './TextStyle';
 
 export const Text = (props: TextProps) => {
 
-    var { size, weight, ...other } = props;
+    var { size, weight, lineHeight, ...other } = props;
 
     return (
-        <SpanStyle size={size} weight={weight} {...other} > {props.children}  </SpanStyle>
+        <SpanStyle lineHeight={lineHeight} size={size} weight={weight} {...other} > {props.children}  </SpanStyle>
     );
 }
 
