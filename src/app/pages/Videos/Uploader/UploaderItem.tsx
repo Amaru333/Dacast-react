@@ -60,7 +60,11 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                     </>
                 );
             case 'queue':
-                return;
+                return (
+                    <Text className="mr2" weight="med" size={14} color="gray-1">
+                        Queued
+                    </Text>
+                )
             case 'veryfing':
                 return (
                     <Text className="mr2" weight="med" size={14} color="gray-1">

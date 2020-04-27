@@ -24,14 +24,17 @@ export const UploaderPage = (props: UploaderProps) => {
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
 
-    React.useEffect(() => {
-        console.log('upload file queue', uploadFileQueue)
-    }, [uploadFileQueue])
 
     React.useEffect(() => {
-       uploadNextFile()
-        
+       uploadNextFile()     
     }, [currentUpload && currentUpload.isCompleted])
+
+    React.useEffect(() => {
+        setUploadingList((currentList: UploaderItemProps[]) => {
+            const updatedList = currentList.map((value, key) => { if (value.name === currentUpload.getFileName()) {value.currentState = "progress"; value.timeRemaining.num = 0} return value })
+            return updatedList;
+        })
+    }, [currentUpload && currentUpload.getFileName()])
 
     const updateItem = (percent: number, name: string, startTime: number) => {    
         setUploadingList((currentList: UploaderItemProps[]) => {
@@ -135,10 +138,10 @@ export const UploaderPage = (props: UploaderProps) => {
     const uploadNextFile = () => {
         if (uploadFileQueue.length > 1) {
             setUploadFileQueue(uploadFileQueue.slice(1))
-        setCurrentUpload(uploadFileQueue[0])
+            //could be a bit dodgy
+        setCurrentUpload(uploadFileQueue[1])
         uploadFileQueue[1].startUpload()
         }
-        
     }
 
     const handleActionItem = (item: UploaderItemProps) => {
