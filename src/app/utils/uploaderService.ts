@@ -34,6 +34,7 @@ export class UploadObject {
     ETags: {partNumber: number; etag: string}[] = []
     uploadUrls: string[] = []
     hasStarted: boolean = false
+    isCompleted: boolean = false
     execCancel: () => {}
     token: any
     totalUploadedBytes: number = 0
@@ -216,13 +217,14 @@ export class UploadObject {
             {
                 orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
                 s3Path: this.urlS3,
-                uploaderID: this.uploadId
+                uploaderID: this.uploadId,
             },
             {
                 headers: {
                     Authorization: token
                 }
             })
+            this.isCompleted = true
         this.onProgressUpdate(100)
     }
 
