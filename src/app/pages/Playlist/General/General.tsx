@@ -103,7 +103,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.playlistDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {copyKey(props.playlistDetails.id);props.showToast(`Content ID copied to clipboard`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {copyKey(props.playlistDetails.id);props.showToast(`Content ID Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -119,7 +119,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => {copyKey("embed code here");props.showToast("Embed code copied to clipboard", 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => {copyKey("embed code here");props.showToast("Embed Code Copied", 'flexible', "success")}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -129,7 +129,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() => {copyKey("share link here");props.showToast("Share link copied to clipboard", 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() => {copyKey("share link here");props.showToast("Share Link Copied", 'flexible', "success")}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -224,7 +224,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => {copyKey("embed code here");props.showToast(`${item.label} copied to clipboard`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => {copyKey("embed code here");props.showToast(`${item.label} Link Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>

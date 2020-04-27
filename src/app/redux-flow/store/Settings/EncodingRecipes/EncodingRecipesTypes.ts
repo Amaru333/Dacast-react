@@ -16,8 +16,8 @@ export interface EncodingRecipeOptionType {
 export interface RecipePreset {
     name: string;
     description: string;
-    width: string;
-    videoBitrate: string;
+    size: string;
+    bitrate: string;
 }
 
 export interface EncodingRecipeItem {

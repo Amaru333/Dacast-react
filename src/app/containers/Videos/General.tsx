@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, addVodSubtitleAction, editVodSubtitleAction, getUploadUrlAction, editVodDetailsAction, deleteVodSubtitleAction, uploadImageAction, deleteImageAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -15,12 +15,9 @@ export interface GeneralComponentProps {
     vodDetails: VodDetails;
     editVodDetails: Function;
     getVodDetails: Function;
-    addVodSubtitle: Function;
-    editVodSubtitle: Function;
-    deleteVodSubtitle: Function;
     getUploadUrl: Function;
-    uploadImage: Function;
-    deleteImage: Function;
+    uploadFile: Function;
+    deleteFile: Function;
 }
 
 const General = (props: GeneralComponentProps) => {
@@ -60,23 +57,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editVodDetails: (data: VodDetails) => {
             dispatch(editVodDetailsAction(data));
         },
-        addVodSubtitle: (data: SubtitleInfo) => {
-            dispatch(addVodSubtitleAction(data));
+        getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
+            dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
         },
-        editVodSubtitle: (data: SubtitleInfo) => {
-            dispatch(editVodSubtitleAction(data));
+        uploadFile: (data: File, uploadUrl: string) => {
+            dispatch(uploadFileAction(data, uploadUrl))
         },
-        deleteVodSubtitle: (data: SubtitleInfo) => {
-            dispatch(deleteVodSubtitleAction(data));
-        },
-        getUploadUrl: (uploadType: string, vodId: string) => {
-            dispatch(getUploadUrlAction(uploadType, vodId))
-        },
-        uploadImage: (data: File, uploadUrl: string) => {
-            dispatch(uploadImageAction(data, uploadUrl))
-        },
-        deleteImage: (data: File) => {
-            dispatch(deleteImageAction(data))
+        deleteFile: (vodId: string, targetId: string) => {
+            dispatch(deleteFileAction(vodId, targetId))
         }
     };
 }

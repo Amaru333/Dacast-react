@@ -35,8 +35,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodList: () => {
-            dispatch(getVodListAction());
+        getVodList: (qs: string) => {
+            dispatch(getVodListAction(qs));
         },
         deleteVodList: (vodId: string) => {
             dispatch(deleteVodAction(vodId));
