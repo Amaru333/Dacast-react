@@ -159,6 +159,20 @@ export const VideosListPage = (props: VideosListProps) => {
         }
     }
 
+    const emptyVodListHeader = () => {
+        return {data: [
+            {cell: <span key={'emptyVodListHeader'}></span>}
+        ]}
+    }
+
+    const emptyVodListBody = (text: string) => {
+        return [{data:[
+            <div className='center'>
+                <Text key={'emptyVodListBodyText' + text} size={14} weight='reg' color='gray-3' >{text}</Text>
+            </div> 
+        ]}]
+    }
+
     const renderList = () => {
         return bulkActions.map((item, key) => {
             return (
@@ -198,7 +212,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyVodListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyVodListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
