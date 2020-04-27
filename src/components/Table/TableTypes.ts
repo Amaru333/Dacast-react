@@ -20,6 +20,7 @@ interface HeaderCell {
 interface HeaderRow {
     data: HeaderCell[];
     defaultSort?: string;
+    sortCallback?: Function;
 }
 
 interface TableSpecificProps {

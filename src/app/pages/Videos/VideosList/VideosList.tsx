@@ -6,7 +6,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { VodItem, SearchResult } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { VideosFiltering } from './VideosFiltering';
+import { VideosFiltering, FilteringVodState } from './VideosFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
@@ -38,6 +38,48 @@ export const VideosListPage = (props: VideosListProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
+    const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
+    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [searchString, setSearchString] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>(null)
+
+    const parseFiltersToQueryString = (filters: FilteringVodState) => {
+        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
+        if(filters) {
+            
+            Object.keys(filters).map((filter) => {
+                if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
+                    returnedString += filter + '='
+                    Object.keys(filters[filter]).map((subfilter, i) => {
+                        if(filters[filter][subfilter]) {
+                            returnedString += subfilter + ','
+                        }
+                    })  
+                    returnedString += '&'                
+                    returnedString = returnedString.replace(',&','&')
+                }            
+            })
+
+            if(filters.afterDate || filters.beforeDate) {
+                returnedString+= `created-at=${filters.beforeDate ? filters.beforeDate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+            }
+            if(filters.sizeStart || filters.sizeEnd) {
+                returnedString+= `size=${filters.sizeStart ? filters.sizeStart : ''},${filters.sizeEnd ? filters.sizeEnd : ''}&`
+            }
+        }
+        if(searchString) {
+            returnedString += `keyword=${searchString}&`
+        }
+        if(sort) {
+            returnedString += `sort-by=${sort}`
+        }
+        return returnedString
+
+    }
+
+    React.useEffect(() => {
+        props.getVodList(parseFiltersToQueryString(selectedFilters))    
+    }, [selectedFilters, searchString, paginationInfo, sort])
 
     useOutsideAlerter(bulkDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -52,25 +94,29 @@ export const VideosListPage = (props: VideosListProps) => {
     ]
 
     const vodListHeaderElement = () => {
-        return {data: [
-            {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.totalResults} defaultChecked={selectedVod.length === props.items.totalResults} id="globalCheckboxVodList"
-                onChange={(event) => {
-                    if (event.currentTarget.checked) {
-                        const editedSelectedVod = props.items.results.map(item => { return item.objectID })
-                        setSelectedVod(editedSelectedVod);
-                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                        setSelectedVod([])
-                    }
-                }} />},
-            // {cell: <></>},
-            {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
-            {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
-            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
-            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
-            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
-            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div style={{ width: "80px" }} ></div>},
-        ], defaultSort: 'Created Date'}
+        return {
+            data: [
+                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.totalResults} defaultChecked={selectedVod.length === props.items.totalResults} id="globalCheckboxVodList"
+                    onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                            const editedSelectedVod = props.items.results.map(item => { return item.objectID })
+                            setSelectedVod(editedSelectedVod);
+                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                            setSelectedVod([])
+                        }
+                    }} />},
+                // {cell: <></>},
+                {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
+                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
+                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created_at'},
+                {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
+                {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
+                {cell: <div style={{ width: "80px" }} ></div>},
+            ], 
+            defaultSort: 'created_at',
+            sortCallback: (value: string) => setSort(value)
+        }
     }
 
     const vodListBodyElement = () => {
@@ -113,6 +159,20 @@ export const VideosListPage = (props: VideosListProps) => {
         }
     }
 
+    const emptyVodListHeader = () => {
+        return {data: [
+            {cell: <span key={'emptyVodListHeader'}></span>}
+        ]}
+    }
+
+    const emptyVodListBody = (text: string) => {
+        return [{data:[
+            <div className='center'>
+                <Text key={'emptyVodListBodyText' + text} size={14} weight='reg' color='gray-3' >{text}</Text>
+            </div> 
+        ]}]
+    }
+
     const renderList = () => {
         return bulkActions.map((item, key) => {
             return (
@@ -134,7 +194,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={[]}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?
@@ -148,12 +208,12 @@ export const VideosListPage = (props: VideosListProps) => {
                         </DropdownList>
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
-                    <VideosFiltering setSelectedVod={setSelectedVod} />                
+                    <VideosFiltering setSelectedFilter={setSelectedFilter} />                
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodListHeaderElement()} body={vodListBodyElement()} hasContainer />
-            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyVodListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyVodListBody('No items matched your search')} hasContainer />
+            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />

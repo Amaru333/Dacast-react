@@ -13,22 +13,28 @@ import { Prompt } from 'react-router';
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
     const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(props.embedSettingsOption);
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
+
     let inputRef = React.useRef<HTMLInputElement>(null)
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
-        props.saveEmbedSettingsOptions(inputOptions)
+        setSubmitLoading(true);
+        props.saveEmbedSettingsOptions(inputOptions, () => {
+            setSubmitLoading(false);
+        })
     }
 
     const checkInputError = () => {
-        if (inputOptions['embed-scaling'] === 'fixed') {
-            if (inputRef.current!.value.length === 0) {
-                return true;
+        if (inputRef && inputRef.current) {
+            if (inputOptions['embed-scaling'] === 'fixed') {
+                if (inputRef.current!.value.length === 0) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
-
     return (
         <React.Fragment>
             <form>
@@ -84,7 +90,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                 {
                     inputOptions === props.embedSettingsOption ? null :
                         <ButtonContainer>
-                            <ButtonStyle typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
+                            <ButtonStyle isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
                             <ButtonStyle typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>

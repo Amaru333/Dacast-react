@@ -89,7 +89,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                         <ToggleTextInfo>
                             <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
                         </ToggleTextInfo>
-                        { togglePasswordProtectedVideo ? 
+                        { togglePasswordProtectedVideo &&
                             <div className='col col-12'>
                                 <Input 
                                     type='text'
@@ -102,8 +102,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                     onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtectedVideo: {...selectedSettings.passwordProtectedVideo, password: event.currentTarget.value }})}
                                     required
                                 />
-                            </div>
-                            : null }
+                            </div>}
                     </div> 
 
                     <div className='col col-12 clearfix'>
@@ -124,26 +123,26 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                 list={{'Always': false, "Set Date and Time": false}} defaultValue={selectedSettings.videoScheduling.startDateTime} callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDateTime: selectedItem}})} 
                             />
                             {
-                                selectedSettings.videoScheduling.startDateTime === "Set Date and Time" ?
+                                selectedSettings.videoScheduling.startDateTime === "Set Date and Time" &&
                                 <>        
-                                <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
-                                    <DateSinglePickerWrapper 
-                                        id="startDate"
-                                        callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
-                                    />
-                                </div>
+                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
+                                        <DateSinglePickerWrapper 
+                                            id="startDate"
+                                            callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
+                                        />
+                                    </div>
 
-                                <Input
-                                    type='time'
-                                    defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.startTime ? props.liveSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
-                                    className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
-                                    disabled={false} 
-                                    id='startTime' 
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startTime: event.currentTarget.value}}) }
-                                    required
-                                /> 
-                                </> : null
+                                    <Input
+                                        type='time'
+                                        defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.startTime ? props.liveSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
+                                        disabled={false} 
+                                        id='startTime' 
+                                        pattern="[0-9]{2}:[0-9]{2}"
+                                        onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startTime: event.currentTarget.value}}) }
+                                        required
+                                    /> 
+                                </> 
                             }                
                         </div>
 
@@ -158,26 +157,25 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
 
                         {
                         
-                            selectedSettings.videoScheduling.endDateTime === "Set Date and Time" ?
-                        
+                            selectedSettings.videoScheduling.endDateTime === "Set Date and Time" &&
                                 <>
-                                <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
-                                    <DateSinglePickerWrapper
-                                        id="endDate"
-                                        callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}
-                                    />
-                                </div>
-                                <Input 
-                                    type='time' 
-                                    defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.endTime ? props.liveSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
-                                    className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
-                                    disabled={false} 
-                                    id='endTime' 
-                                    pattern="[0-9]{2}:[0-9]{2}"
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endTime: event.currentTarget.value}})}
-                                    required
-                                /> 
-                                </> : null
+                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
+                                        <DateSinglePickerWrapper
+                                            id="endDate"
+                                            callback={(endDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endDate: endDateValue}})}
+                                        />
+                                    </div>
+                                    <Input 
+                                        type='time' 
+                                        defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.endTime ? props.liveSecuritySettings.securitySettings.videoScheduling.endTime : '00:00:00'}
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
+                                        disabled={false} 
+                                        id='endTime' 
+                                        pattern="[0-9]{2}:[0-9]{2}"
+                                        onChange={(event) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, endTime: event.currentTarget.value}})}
+                                        required
+                                    /> 
+                                </> 
                         }
                     </div>
                     </> : null
@@ -209,14 +207,14 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                     <BorderStyle className="p1" />
                 
                     <div>
-                        <TextStyle className="pt2" >
+                        <TextStyle className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
                         </TextStyle>
 
-                        <TextStyle className="pt25" >
+                        <TextStyle className="pt2" >
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </TextStyle>
-                        <div className="col col-12 py2">
+                        <div className="col col-12 pb2">
                             <DropdownSingle 
                                 className="col col-12 md-col-3" 
                                 id="availableEnd" 
@@ -247,7 +245,7 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
             </Modal>
             <Modal size="small" modalTitle="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
-                    <Text size={14} weight="reg">Choosing to revert to the Global Security Settings means that blah blah balh...</Text>
+                    <Text size={14} weight="reg">Use global settings instead of content settings.</Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button onClick={() => {setSettingsEditable(!settingsEditable); setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>

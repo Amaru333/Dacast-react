@@ -12,7 +12,16 @@ const spin = keyframes`
 `;
 
 export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
-  
+/*   
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    box-sizing: border-box;
+    font: 400 11px system-ui;
+    padding: 1px 7px 2px; */
+
+
   border-style: solid;
   border-color: ${props => props.theme.colors[props.color]} ${props => props.theme.colors[props.color]} 
   ${props => props.theme.colors["gray-9"]} ${props => props.theme.colors["gray-9"]};
@@ -41,6 +50,11 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     width: 32px;
     height: 32px;
   `}
+  ${props => (props.size == "xs") && css`
+    border-width: 3px;
+    width: 24px;
+    height: 24px;
+  `}
 
   &:before, &:after {
     content: '';
@@ -50,14 +64,17 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     background: ${props => props.theme.colors[props.color]};
     position: absolute;
     ${props => (props.size == "medium") && css`
-    width: 4.5px;
-    height: 4.5px;
-  `}
-  ${props => (props.size == "small") && css`
-    width: 3px;
-    height: 3px;
-  `}
-  } 
+        width: 4.5px;
+        height: 4.5px;
+    `}
+    ${props => (props.size == "small") && css`
+        width: 3px;
+        height: 2px;
+    `}
+    ${props => (props.size == "xs") && css`
+        display:none;
+    `}
+  }
   &:before {
     top: 2px;
     left: 3px;
@@ -79,6 +96,9 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
   ${props => (props.size == "small") && css`
     bottom: 1px;
     left: 21px;
+  `}
+  ${props => (props.size == "xs") && css`
+    display:none;
   `}
   }
 `

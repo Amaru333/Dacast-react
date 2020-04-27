@@ -38,7 +38,7 @@ export class UploadObject {
     execCancel: () => {}
     token: any
     totalUploadedBytes: number = 0
-    nextStart: number = 1
+    nextStart: number = 0
     onGoingUploads: {[partNumber: number]: true} = {}
 
     public getFileName() {
@@ -104,8 +104,8 @@ export class UploadObject {
         if(partNumber >= Math.ceil(this.file.size / this.fileChunkSize)) {
             return null
         }
-        if((partNumber - 1) in this.uploadUrls) {
-            return this.uploadUrls[partNumber - 1]
+        if((partNumber) in this.uploadUrls) {
+            return this.uploadUrls[partNumber]
         } 
         let newUrlBatch = await this.retrieveChunkPresignedURL(this.uploadUrls.length, this.uploadUrls.length + this.uploadUrlBatchSize)
         this.uploadUrls.push(...newUrlBatch)
@@ -167,12 +167,11 @@ export class UploadObject {
     }
 
     private async uploadPart(partNumber: number): Promise<void> {
-        let start = (partNumber - 1) * this.fileChunkSize
-        let end = partNumber * this.fileChunkSize        
+        let start = (partNumber) * this.fileChunkSize
+        let end = (partNumber + 1) * this.fileChunkSize        
         let uploadedBytes = 0
         let chunk = (end < this.file.size) ? this.file.slice(start, end) : this.file.slice(start)
         let uploadUrl = await this.getUploadUrl(partNumber)
-        console.log(`upload url ${uploadUrl} for part ${partNumber}`)
         this.onGoingUploads[partNumber] = true
         return uploadUrl ? await axios.put(uploadUrl, chunk, {
             cancelToken: this.token,
@@ -183,6 +182,8 @@ export class UploadObject {
             },
         }).then((response: AxiosResponse<any>) => {
             let etagStr: string = response.headers['etag']
+            console.log('partNumber', partNumber)
+            console.log('etag array', this.ETags)
             etagStr = etagStr.substring(1, etagStr.length - 1)
             this.ETags.push({
                 partNumber: partNumber, 
@@ -230,6 +231,7 @@ export class UploadObject {
 
     private async runUpload() {
         const nbChunks = Math.ceil(this.file.size / this.fileChunkSize)
+        console.log('chunks', nbChunks)
         while(this.nextStart < nbChunks) {
             let nextParts: number[] = []
             if(Object.keys(this.onGoingUploads).length > 0) {
@@ -237,7 +239,6 @@ export class UploadObject {
             }          
             nextParts.push(...Array.from({length: this.uploadUrlBatchSize}).map((_, i) => i + this.nextStart))
             this.nextStart += this.uploadUrlBatchSize
-            console.log('next parts ', nextParts)
             await this.requestBatch(nextParts)
         }
         await this.completeUpload()

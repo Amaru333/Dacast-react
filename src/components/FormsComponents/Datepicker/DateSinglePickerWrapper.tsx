@@ -31,7 +31,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                     placeholder='Select date'
                     showDefaultInputIcon
                     inputIconPosition='after'
-                    {...(props.allowOustsideDate ? {isOutsideRange: ()=> true} : {})}
+                    {...(props.allowOustsideDate ? {isOutsideRange: ()=> false} : {})}
                     date={date}
                     onDateChange={(date: any) => setDate(date)}
                     focused={focusedInput}

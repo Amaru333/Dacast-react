@@ -14,13 +14,11 @@ export interface TokenInfos {
     token: string;
     refresh: string;
     userId?: string;
-    waiting: boolean;
 }
 
 export const defaultStateLogin: TokenInfos = {
     expires: '',
     token: '',
     refresh: '',
-    userId: '',
-    waiting: false
+    userId: ''
 }

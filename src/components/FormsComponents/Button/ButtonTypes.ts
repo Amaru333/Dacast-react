@@ -14,6 +14,7 @@ export interface ButtonCustomProps {
     buttonColor?: Color;
     colorObject?: ColorObject;
     form?: string;
+    isLoading?: boolean;
 }
 
 export interface ColorObject {hoverColor: ColorsApp; primaryHoverColor: ColorsApp; color: ColorsApp; focusColor: ColorsApp; primaryFocusColor: ColorsApp; disabledColor: ColorsApp; disabledTextColor: ColorsApp; borderColor?: ColorsApp}

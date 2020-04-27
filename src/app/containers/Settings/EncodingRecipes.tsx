@@ -43,11 +43,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getEncodingRecipesPresets: () => {
             dispatch(getEncodingRecipesPresetsAction());
         },
-        createEncodingRecipe: (data: EncodingRecipeItem) => {
-            dispatch(createEncodingRecipesAction(data))
+        createEncodingRecipe: (data: EncodingRecipeItem, callback?: Function) => {
+            dispatch(createEncodingRecipesAction(data)).then(callback);
         },
-        saveEncodingRecipe: (data: EncodingRecipeItem) => {
-            dispatch(saveEncodingRecipesAction(data))
+        saveEncodingRecipe: (data: EncodingRecipeItem, callback?: Function) => {
+            dispatch(saveEncodingRecipesAction(data)).then(callback);
         },
         deleteEncodingRecipe: (data: EncodingRecipeItem) => {
             dispatch(deleteEncodingRecipesAction(data))

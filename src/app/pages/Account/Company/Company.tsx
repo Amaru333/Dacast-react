@@ -41,12 +41,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     let history = useHistory();
 
-    const onSubmit = (data: CompanyPageInfos) => { 
-        props.saveCompanyPageDetails(data, () => {
-            history.push('/confirm-email')
-        });
-    }
-
     useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
     
     let {CompanyPageDetails} = props;
@@ -54,6 +48,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
@@ -70,7 +66,13 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
-
+    const onSubmit = (data: CompanyPageInfos) => { 
+        setSubmitLoading(true);
+        props.saveCompanyPageDetails(data, () => {
+            setSubmitLoading(false);
+        });
+    }
+    
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
         if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
@@ -112,15 +114,14 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        props.getLogoUrlForUploading();
-        console.log('waiting')
-       
+        setUploadButtonLoading(true)
+        props.getLogoUrlForUploading();       
     }
 
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
             console.log('uploading at the url', props.CompanyPageDetails.uploadLogoUrl)
-            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl);
+            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl, () => setUploadButtonLoading(false) );
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
 
@@ -311,7 +312,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             { 
                 dirty ? 
                     <ButtonsArea> 
-                        <Button type='submit' form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
                             onClick={() => reset(props.CompanyPageDetails, {errors: true})}>Discard</Button>
                     </ButtonsArea> : null

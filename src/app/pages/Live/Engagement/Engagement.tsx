@@ -226,7 +226,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
             </Card>
 
             {   
-                settingsEdited ?
+                settingsEdited &&
                     <div className="mt1">
                         <Button 
                             onClick={() => {props.saveLiveEngagementSettings(engagementSettings);setSettingsEdited(false)}}
@@ -234,7 +234,7 @@ export const LiveEngagementPage = (props: LiveEngagementComponentProps) => {
                                 Save
                         </Button>
                         <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
-                    </div> : null
+                    </div> 
             }
 
             <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>

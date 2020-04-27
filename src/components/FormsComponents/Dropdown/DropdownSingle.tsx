@@ -16,9 +16,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [filteringList, setFilteringList] = React.useState<string>('');
 
     useOutsideAlerter(dropdownListRef, () => {
-        if(props.callback) {
-            props.callback(selectedItem);
-        }
         setOpen(!isOpened)
     });
 
@@ -119,9 +116,12 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
-            <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
-                {renderList()}
-            </DropdownList>
+            <div className="relative">
+                <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
+                    {renderList()}
+                </DropdownList>
+            </div>
+           
         </ContainerStyle>
     );
 }

@@ -17,10 +17,19 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
 
     let playerRef = React.useRef<HTMLDivElement>(null);
 
     let player = usePlayer(playerRef, '1552_f_297509');
+
+    const handleSubmitForm = () => {
+        setSubmitLoading(true);
+        selectedTheme.id === "-1" ?
+            props.createTheme(selectedTheme, () => setSubmitLoading(false))
+            : props.saveTheme(selectedTheme, () => setSubmitLoading(false))        
+        setCurrentPage('list')
+    }
 
     const ThemingOptions = () => {
         return (
@@ -39,11 +48,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                                 className="mr1" 
                                 disabled={!settingsEdited}
                                 onClick={
-                                    () => {{
-                                        selectedTheme.id === "-1" ?
-                                            props.createTheme(selectedTheme)
-                                            : props.saveTheme(selectedTheme)
-                                    };setCurrentPage('list')}
+                                    () => handleSubmitForm()
                                 }>
                             Save
                             </Button>

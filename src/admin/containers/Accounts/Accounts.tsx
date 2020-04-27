@@ -6,7 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { getAccountsAction} from '../../redux-flow/store/Accounts/List/actions';
 import { Account } from '../../redux-flow/store/Accounts/List/types'
-import { useQuery } from '../../utils/utils';
+import { useQuery } from '../../../utils/utils';
 
 export interface AccountsComponentProps {
     accounts: Account[] | false;

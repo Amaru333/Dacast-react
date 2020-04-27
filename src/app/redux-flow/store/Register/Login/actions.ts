@@ -22,12 +22,10 @@ export interface Logout {
 
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
-        dispatch({type: ActionTypes.LOGIN, payload: false})
         await loginService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
             }).catch(() => {
-                dispatch( {type: ActionTypes.LOGIN, payload: null} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

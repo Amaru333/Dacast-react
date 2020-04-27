@@ -238,3 +238,7 @@ export const calculateDiscount = (total: number) => {
 export const calculateAnnualPrice = (total: number) => {
     return total * 12
 }
+
+export const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+}

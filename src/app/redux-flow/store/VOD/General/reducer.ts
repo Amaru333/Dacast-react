@@ -26,27 +26,27 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
             return {
                 ...state, ...action.payload
             }
-        case ActionTypes.ADD_VOD_SUBTITLE:
-            let newArray = state.subtitles.slice()
-            newArray.splice(newArray.length, 0, action.payload)
-            return {
-                ...state,
-                subtitles: newArray
-            }
-        case ActionTypes.EDIT_VOD_SUBTITLE:
-            return {
-                ...state, subtitles: state.subtitles.map((item) => {
-                    if (item.id !== action.payload.id) {
-                        return item
-                    }
-                    return {
-                        ...item,
-                        ...action.payload
-                    }
-                })
-            }
-        case ActionTypes.DELETE_VOD_SUBTITLE:
-            return { ...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id) }
+        // case ActionTypes.ADD_VOD_SUBTITLE:
+        //     let newArray = state.subtitles.slice()
+        //     newArray.splice(newArray.length, 0, action.payload)
+        //     return {
+        //         ...state,
+        //         subtitles: newArray
+        //     }
+        // case ActionTypes.EDIT_VOD_SUBTITLE:
+        //     return {
+        //         ...state, subtitles: state.subtitles.map((item) => {
+        //             if (item.id !== action.payload.id) {
+        //                 return item
+        //             }
+        //             return {
+        //                 ...item,
+        //                 ...action.payload
+        //             }
+        //         })
+        //     }
+        // case ActionTypes.DELETE_VOD_SUBTITLE:
+        //     return { ...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id) }
         case ActionTypes.GET_UPLOAD_URL:
             return {
                 ...state,

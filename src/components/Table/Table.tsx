@@ -16,10 +16,16 @@ export const Table = (props: TableProps) => {
     }, [props.header])
 
     const handleHeaderCellClick = (sort: string) => {
+        let newVal: boolean = sortApplied.sortDesc
         if(sort === sortApplied.name) {
             setSortApplied({...sortApplied, sortDesc: !sortApplied.sortDesc})
+            newVal = !sortApplied.sortDesc
         } else {
+            newVal = true
             setSortApplied({name: sort, sortDesc: true})
+        }
+        if(props.header && props.header.sortCallback) {
+            props.header.sortCallback(sort + (newVal ? '_desc' : '_asc'))
         }
     }
 

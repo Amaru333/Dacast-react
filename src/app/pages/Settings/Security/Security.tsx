@@ -23,16 +23,12 @@ import moment from 'moment';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
 
-    const { register, handleSubmit, errors, getValues, setValue, formState } = useForm({
+    const { register, handleSubmit, errors, getValues, setValue, formState, reset } = useForm({
         reValidateMode: 'onChange',
         mode: 'onBlur',
         defaultValues: props.securityDetails
     })
     const { dirty } = formState;
-
-    const onSubmit = (data: any) => {
-        props.saveSettingsSecurityOptions({ data })
-    }
 
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
@@ -43,7 +39,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [endDateTime, setEndDateTime] = React.useState<string>(null);
     const [securityDetails, setSecurityDetails] = React.useState<SettingsSecurityDetails>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
-
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
+    
     let smScreen = useMedia('(max-width: 780px)');
 
     React.useEffect(() => {
@@ -55,6 +52,13 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     React.useEffect(() => {
         setSecurityDetails(props.securityDetails)
     }, [props.securityDetails])
+
+    const onSubmit = (data: any) => {
+        setSubmitLoading(true);
+        props.saveSettingsSecurityOptions({ data }, () => {
+            setSubmitLoading(false);
+        })
+    }
 
     const domainControlEmptyValues: DomainControl = {
         id: '',
@@ -152,14 +156,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo &&
                             <>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr12' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
+                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
                                     {startDateTime === "Set Date and Time" &&
                                         <>
                                             <input type="hidden" ref={register()} name="videoScheduling.startDate" />
                                             <DateSinglePickerWrapper
                                                 date={moment()}
                                                 callback={(date: string, ms: number) => { setValue('videoScheduling.startDate', ms) }}
-                                                className='col col-4 md-col-3 mt2' />
+                                                className='col col-4 md-col-3 mr2 mt2' />
                                             <Input
                                                 type='time'
                                                 defaultValue={props.securityDetails.contentScheduling.startTime ? props.securityDetails.contentScheduling.startTime.toString() : '00:00:00'}
@@ -225,8 +229,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             {
                 dirty &&
                 <div>
-                    <Button form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    <Button isLoading={submitLoading} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => { reset(props.securityDetails, {errors: true});}} type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }
 
@@ -246,7 +250,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 }
             </Modal>
             {/* Needs save prompt adding when connected to endpoint */}
-            <Prompt when={true} message='' />
+            <Prompt when={dirty} message='' />
         </div>
     )
 }

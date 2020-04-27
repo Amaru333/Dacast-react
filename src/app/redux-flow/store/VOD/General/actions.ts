@@ -91,9 +91,9 @@ export const getVodDetailsAction = (vodId: string): ThunkDispatch<Promise<void>,
     };
 }
 
-export const getVodListAction = (): ThunkDispatch<Promise<void>, {}, GetVodList> => {
+export const getVodListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetVodList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetVodList>) => {
-        await VodGeneralServices.getVodList()
+        await VodGeneralServices.getVodList(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_VOD_LIST, payload: response.data })
             })
@@ -115,46 +115,9 @@ export const editVodDetailsAction = (data: VodDetails): ThunkDispatch<Promise<vo
     }
 }
 
-export const addVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<void>, {}, AddVodSubtitle> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodSubtitle>) => {
-        await VodGeneralServices.addVodSubtitleService(data)
-            .then(response => {
-                dispatch({ type: ActionTypes.ADD_VOD_SUBTITLE, payload: response.data })
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-            })
-    }
-}
-
-export const editVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<void>, {}, EditVodSubtitle> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, EditVodSubtitle>) => {
-        await VodGeneralServices.editVodSubtitleService(data)
-            .then(response => {
-                dispatch({ type: ActionTypes.EDIT_VOD_SUBTITLE, payload: response.data })
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-            })
-    }
-}
-
-export const deleteVodSubtitleAction = (data: SubtitleInfo): ThunkDispatch<Promise<void>, {}, DeleteVodSubtitle> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodSubtitle>) => {
-        await VodGeneralServices.deleteVodSubtitleService(data)
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_VOD_SUBTITLE, payload: response.data })
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-            })
-    }
-}
-
-export const getUploadUrlAction = (uploadType: string, vodId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        console.log('action vod id ', vodId)
-        await VodGeneralServices.getUploadUrl(uploadType, vodId)
+        await VodGeneralServices.getUploadUrl(uploadType, vodId, subtitleInfo)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: response.data })
             })
@@ -165,9 +128,9 @@ export const getUploadUrlAction = (uploadType: string, vodId: string): ThunkDisp
     }
 }
 
-export const uploadImageAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
-        await VodGeneralServices.uploadImage(data, uploadUrl)
+        await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
             })
@@ -178,9 +141,9 @@ export const uploadImageAction = (data: File, uploadUrl: string): ThunkDispatch<
     }
 }
 
-export const deleteImageAction = (data: File): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+export const deleteFileAction = (vodId: string, targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
-        await VodGeneralServices.deleteImage(data)
+        await VodGeneralServices.deleteFile(vodId, targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
             })

@@ -67,15 +67,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedSubElement(firstSelectedItem().slug);
     }, [location])
 
-    // React.useEffect(() => {
-    //     if(location.pathname.indexOf(selectedElement) === -1) {
-    //     console.log(AppRoutes.filter( route => route.path === location.pathname)[0])
-    //     if(location.pathname.indexOf(selectedElement) === -1 && typeof AppRoutes.filter( route => location.pathname.indexOf(route.path) !== -1 )[0] !== 'undefined') {
-    //         setSelectedElement(firstSelectedItem().main)
-    //         setSelectedSubElement(firstSelectedItem().slug)
-    //     }
-    // }, [selectedElement])
-
     const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
@@ -133,8 +124,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         id={props.id + '_' + item.name} 
                         className="mt1"
                         isSelected={selectedAddDropdownItem === item.name} 
-                        onClick={() => handleClick(name)}> 
-                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        onClick={() => handleClick(item.name)}> 
+                        <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{item.name}</DropdownItemText>
                     </DropdownItem>
                 )                
             })
@@ -142,8 +133,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
 
     const handleMenuItemClick = (route: string, slug: string) => {
-        setSelectedElement(route) 
-        setSelectedSubElement(slug)
+        //setSelectedElement(route) 
+        //setSelectedSubElement(slug)
         if(props.isMobile) {
             props.setOpen(false)
         }
