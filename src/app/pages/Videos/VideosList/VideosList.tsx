@@ -18,7 +18,6 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { number } from '@storybook/addon-knobs';
 
 export interface VideosListProps {
     items: SearchResult;
@@ -42,10 +41,12 @@ export const VideosListPage = (props: VideosListProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>(null)
 
     const parseFiltersToQueryString = (filters: FilteringVodState) => {
+        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
         if(filters) {
-            let returnedString= ''
+            
             Object.keys(filters).map((filter) => {
                 if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
                     returnedString += filter + '='
@@ -58,15 +59,27 @@ export const VideosListPage = (props: VideosListProps) => {
                     returnedString = returnedString.replace(',&','&')
                 }            
             })
-            returnedString+= `created-at=${filters.beforeDate},${filters.afterDate}&size=${filters.sizeStart},${filters.sizeEnd}&page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&keyword=${searchString}`
-            return returnedString
 
+            if(filters.afterDate || filters.beforeDate) {
+                returnedString+= `created-at=${filters.beforeDate ? filters.beforeDate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+            }
+            if(filters.sizeStart || filters.sizeEnd) {
+                returnedString+= `size=${filters.sizeStart ? filters.sizeStart : ''},${filters.sizeEnd ? filters.sizeEnd : ''}&`
+            }
         }
+        if(searchString) {
+            returnedString += `keyword=${searchString}&`
+        }
+        if(sort) {
+            returnedString += `sort-by=${sort}`
+        }
+        return returnedString
+
     }
 
     React.useEffect(() => {
         props.getVodList(parseFiltersToQueryString(selectedFilters))    
-    }, [selectedFilters, searchString, paginationInfo])
+    }, [selectedFilters, searchString, paginationInfo, sort])
 
     useOutsideAlerter(bulkDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -81,25 +94,29 @@ export const VideosListPage = (props: VideosListProps) => {
     ]
 
     const vodListHeaderElement = () => {
-        return {data: [
-            {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.totalResults} defaultChecked={selectedVod.length === props.items.totalResults} id="globalCheckboxVodList"
-                onChange={(event) => {
-                    if (event.currentTarget.checked) {
-                        const editedSelectedVod = props.items.results.map(item => { return item.objectID })
-                        setSelectedVod(editedSelectedVod);
-                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                        setSelectedVod([])
-                    }
-                }} />},
-            // {cell: <></>},
-            {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
-            {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
-            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
-            {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
-            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
-            {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div style={{ width: "80px" }} ></div>},
-        ], defaultSort: 'Created Date'}
+        return {
+            data: [
+                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.totalResults} defaultChecked={selectedVod.length === props.items.totalResults} id="globalCheckboxVodList"
+                    onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                            const editedSelectedVod = props.items.results.map(item => { return item.objectID })
+                            setSelectedVod(editedSelectedVod);
+                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                            setSelectedVod([])
+                        }
+                    }} />},
+                // {cell: <></>},
+                {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
+                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
+                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created_at'},
+                {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
+                {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
+                {cell: <div style={{ width: "80px" }} ></div>},
+            ], 
+            defaultSort: 'created_at',
+            sortCallback: (value: string) => setSort(value)
+        }
     }
 
     const vodListBodyElement = () => {
@@ -163,7 +180,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string) => setSearchString(value)}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?
