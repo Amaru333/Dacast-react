@@ -51,7 +51,7 @@ export const UploaderPage = (props: UploaderProps) => {
             } else {
                 eta = Math.round(eta);
                 var etaUnit= ' seconds';
-            }      
+            }                
             return Object.assign([...currentList], {
                 [index]:
                 {
@@ -209,6 +209,8 @@ export const UploaderPage = (props: UploaderProps) => {
     }, [uploadingList]);
 
     var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item)=> {return {...reduced, [props.encodingRecipe.recipes[item].name]: false}},{})
+    var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
+    
     return (
         <UploaderContainer>
             <div className="flex space-between">
@@ -217,6 +219,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         style={{background: "#fff"}}
                         className='col col-5 mr1 pb2 '
                         dropdownTitle='Encoding Recipe'
+                        dropdownDefaultSelect={defaultRecipe.name}
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'

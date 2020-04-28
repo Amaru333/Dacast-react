@@ -51,13 +51,19 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                     </Text>
                 );
             case 'progress':
+                
                 return (
+                    props.progress < 1 ?
+                    <Text className="mr2" weight="med" size={14} color="gray-1">
+                    Upload Starting
+                    </Text>
+                 :
                     <>
-                        <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
-                        <Text className="mr2" weight="med" size={14} color="gray-1">
-                            {props.progress.toFixed(2)}%
-                        </Text>
-                    </>
+                    <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
+                    <Text className="mr2" weight="med" size={14} color="gray-1">
+                        {props.progress.toFixed(0)}%
+                    </Text>
+                </>
                 );
             case 'queue':
                 return (
