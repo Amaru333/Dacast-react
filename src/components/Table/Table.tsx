@@ -25,7 +25,7 @@ export const Table = (props: TableProps) => {
             setSortApplied({name: sort, sortDesc: true})
         }
         if(props.header && props.header.sortCallback) {
-            props.header.sortCallback(sort + (newVal ? '_desc' : '_asc'))
+            props.header.sortCallback(sort + (newVal ? '-desc' : '-asc'))
         }
     }
 

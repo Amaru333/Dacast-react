@@ -109,12 +109,12 @@ export const VideosListPage = (props: VideosListProps) => {
                 {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
                 {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
                 {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
-                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created_at'},
+                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
                 {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
                 {cell: <div style={{ width: "80px" }} ></div>},
             ], 
-            defaultSort: 'created_at',
+            defaultSort: 'created-at',
             sortCallback: (value: string) => setSort(value)
         }
     }
