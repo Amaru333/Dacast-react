@@ -14,6 +14,7 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
+import { getUserInfoItem } from '../../app/utils/token';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -25,17 +26,7 @@ export interface HeaderProps {
     getProfilePageDetails: Function 
 }
 
-
-
 const Header = (props: HeaderProps) => {
-
-    React.useEffect(() => {
-        if (!props.ProfileInfo) {
-            props.getProfilePageDetails()
-        }
-    })
-
-    
 
     let location = useLocation()
     let history = useHistory()
@@ -120,7 +111,7 @@ const Header = (props: HeaderProps) => {
                 <div>
                     {props.ProfileInfo ? 
                           
-                          <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={props.ProfileInfo.firstName + ' ' + props.ProfileInfo.lastName} />
+                          <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={getUserInfoItem('custom:first_name') + ' ' + getUserInfoItem('custom:last_name')} />
                        :
                        <HeaderIconStyle ><Icon>account_circle</Icon></HeaderIconStyle> } 
                        <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
