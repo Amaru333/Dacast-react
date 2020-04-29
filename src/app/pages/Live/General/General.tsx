@@ -95,7 +95,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         label="Folders"
                         greyBackground
                         disabled
-                        defaultTags={props.liveDetails.folder}
+                        defaultTags={props.liveDetails.folder ? props.liveDetails.folder : []}
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
@@ -179,7 +179,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                         <Input
                                             type='time'
                                             className='col col-12 sm-col-4 pl1 pr1'
-                                            defaultValue={props.liveDetails.countdown.startTime}
+                                            defaultValue={props.liveDetails.countdown.startTime.toString()}
                                             disabled={false}
                                             id='promptTime'
                                             label='Prompt Time'
@@ -342,8 +342,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Login</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.username}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.username, "Copied to clipboard!")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -351,8 +351,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Password</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.password}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.password, "Copied to clipboard!")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -360,8 +360,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Stream URL</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.primaryPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -369,8 +369,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Stream Name</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.title}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.title, "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>
@@ -378,8 +378,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Backup URL</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.backupPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.backupPublishURL, "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                         </div>

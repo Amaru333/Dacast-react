@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SettingsSecurityDetails, GeoRestriction, DomainControl } from './types';
+import { SecuritySettings, GeoRestriction, DomainControl } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 
@@ -14,7 +14,7 @@ const getSettingsSecurityOptionsService = async () => {
         }})
 }
 
-const saveSettingsSecurityOptionsService = async (data: SettingsSecurityDetails) => {
+const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security',

@@ -7,7 +7,7 @@ const reducer: Reducer<LiveDetails> = (state = initialLiveGeneralState, action: 
     switch (action.type) {
         case ActionTypes.GET_LIVE_DETAILS:
             return {
-                ...state, ...action.payload
+                ...state, ...action.payload.data
             };
         case ActionTypes.SAVE_LIVE_DETAILS:
             return {

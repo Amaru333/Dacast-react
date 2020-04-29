@@ -1,8 +1,9 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { LiveSecuritySettings, defaultStateLiveSecuritySettings, ActionTypes } from "./types";
+import { ActionTypes } from "./types";
+import { ContentSecuritySettings, defaultStateContentSecuritySettings } from '../../Settings/Security/types';
 
-const reducer: Reducer<LiveSecuritySettings> = (state = defaultStateLiveSecuritySettings, action: Action) => {
+const reducer: Reducer<ContentSecuritySettings> = (state = defaultStateContentSecuritySettings, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_LIVE_SECURITY_SETTINGS :
             return {

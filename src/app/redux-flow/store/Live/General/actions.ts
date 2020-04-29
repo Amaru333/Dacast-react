@@ -8,7 +8,7 @@ import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUp
 
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
-    payload: LiveDetails;
+    payload: {data: LiveDetails};
 }
 
 export interface GetLiveList {
@@ -56,9 +56,9 @@ export interface DeleteLiveChannel {
     payload: {id: string};
 }
 
-export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
+export const getLiveDetailsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveDetails>) => {
-        await LiveGeneralServices.getLiveDetailsService()
+        await LiveGeneralServices.getLiveDetailsService(liveId)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_DETAILS, payload: response.data });
             })
@@ -84,7 +84,7 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveLiveDetails>) => {
         await LiveGeneralServices.saveLiveDetailsService(data)
             .then(response => {
-                dispatch({ type: ActionTypes.SAVE_LIVE_DETAILS, payload: response.data });
+                dispatch({ type: ActionTypes.SAVE_LIVE_DETAILS, payload: data });
                 dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {

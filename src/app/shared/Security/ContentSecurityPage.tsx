@@ -1,29 +1,29 @@
 import React from 'react';
-import { Bubble } from '../../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledSection, Header, BubbleContent } from '../../../shared/Security/SecurityStyle';
-import { Text } from '../../../../components/Typography/Text';
-import { Toggle } from '../../../../components/Toggle/toggle';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { VodSecuritySettings, SecuritySettings } from '../../../redux-flow/store/VOD/Security/types';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { GeoRestriction, DomainControl } from '../../../redux-flow/store/Settings/Security';
-import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
-import { Card } from '../../../../components/Card/Card';
-import { IconStyle } from '../../../../shared/Common/Icon';
-import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { TextStyle, ToggleTextInfo, BorderStyle, DisabledSection, Header, BubbleContent } from './SecurityStyle';
+import { Text } from '../../../components/Typography/Text';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { GeoRestriction, DomainControl, ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security';
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
+import { Card } from '../../../components/Card/Card';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 
-interface VodSecurityComponentProps {
-    vodSecuritySettings: VodSecuritySettings;
+interface ContentSecurityComponentProps {
+    contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     getSettingsSecurityOptions: Function;
-    saveVodSecuritySettings: Function;
+    saveContentSecuritySettings: Function;
+    contentId: string;
 }
 
-export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: string}) => {
+export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     //Initial state depending on custom settings for the content
     const initvalues = () => {
@@ -35,13 +35,13 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
             startDateTime: 'Always' | 'Set Date and Time';
             endDateTime: 'Forever' | 'Set Date and Time';
         } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, contentSchedulingToggle: false, startDateTime: "Always", endDateTime: "Forever"}
-        if(props.vodSecuritySettings.securitySettings && props.globalSecuritySettings) {
-            defaultValues.editableSettings = JSON.stringify(props.globalSecuritySettings) == JSON.stringify(props.vodSecuritySettings.securitySettings) ? false : true
-            defaultValues.selectedSettings = props.vodSecuritySettings.securitySettings
-            defaultValues.passwordProtectionToggle = props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false
-            defaultValues.contentSchedulingToggle = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
-            defaultValues.startDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-            defaultValues.endDateTime = props.vodSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
+        if(props.contentSecuritySettings.securitySettings && props.globalSecuritySettings) {
+            defaultValues.editableSettings = JSON.stringify(props.globalSecuritySettings) == JSON.stringify(props.contentSecuritySettings.securitySettings) ? false : true
+            defaultValues.selectedSettings = props.contentSecuritySettings.securitySettings
+            defaultValues.passwordProtectionToggle = props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false
+            defaultValues.contentSchedulingToggle = props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
+            defaultValues.startDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
+            defaultValues.endDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
         }
         return defaultValues
     }
@@ -56,19 +56,19 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
 
     const handleReset = () => {
-        setSelectedSettings(props.vodSecuritySettings.securitySettings)
-        setTogglePasswordProtectedVideo(props.vodSecuritySettings.securitySettings.passwordProtection.password ? true : false)
+        setSelectedSettings(props.contentSecuritySettings.securitySettings)
+        setTogglePasswordProtectedVideo(props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     }
 
     React.useEffect(() => {
-        setSelectedSettings(props.vodSecuritySettings.securitySettings)
-    }, [props.vodSecuritySettings.securitySettings])
+        setSelectedSettings(props.contentSecuritySettings.securitySettings)
+    }, [props.contentSecuritySettings.securitySettings])
 
     const handlePasswordValue = () => {
         if(!settingsEditable) {
             return props.globalSecuritySettings.passwordProtection.password ? props.globalSecuritySettings.passwordProtection.password : ''
         } else {
-            return props.vodSecuritySettings.securitySettings.passwordProtection.password ? props.vodSecuritySettings.securitySettings.passwordProtection.password : ''
+            return props.contentSecuritySettings.securitySettings.passwordProtection.password ? props.contentSecuritySettings.securitySettings.passwordProtection.password : ''
 
         }
     }
@@ -228,7 +228,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
                             dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : ''} 
-                            callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.vodSecuritySettings.securitySettings.geoRestriction.filter(f => f.name === selectedItem)[0].id})} 
+                            callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.contentSecuritySettings.securitySettings.geoRestriction.filter(f => f.name === selectedItem)[0].id})} 
                         />
                     </div>
 
@@ -249,17 +249,17 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
                                 dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : ''} 
-                                callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: props.vodSecuritySettings.securitySettings.domainControl.filter(f => f.name === selectedItem)[0].id})} 
+                                callback={(selectedItem: string) => setSelectedSettings({...selectedSettings, selectedDomainControl: props.contentSecuritySettings.securitySettings.domainControl.filter(f => f.name === selectedItem)[0].id})} 
                             />
                         </div>
                     </div>
                 </DisabledSection>
             </Card>
           
-            { selectedSettings === props.vodSecuritySettings.securitySettings ? null :
+            { selectedSettings === props.contentSecuritySettings.securitySettings ? null :
                 <div>
                     <Button 
-                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveVodSecuritySettings(selectedSettings, props.vodId)}>Save</Button>
+                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveContentSecuritySettings(selectedSettings, props.contentId)}>Save</Button>
                     <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
                 </div>}
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
@@ -280,7 +280,7 @@ export const VodSecurityPage = (props: VodSecurityComponentProps & {vodId: strin
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-            <Prompt when={selectedSettings !== props.vodSecuritySettings.securitySettings} message='' />
+            <Prompt when={selectedSettings !== props.contentSecuritySettings.securitySettings} message='' />
         </div>
                     
     )

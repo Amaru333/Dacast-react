@@ -18,13 +18,23 @@ export interface LiveDetails {
     streamOnline: boolean;
     title: string;
     folder: string[];
+    username: string;
+    password: string;
+    streamKeys: string[];
+    primaryPublishURL: string;
+    backupPublishURL: string;
+    playbackURLs: PLaybackURLs;
     description: string;
-    thumbnail: string;
-    splashscreen: string;
+    thumbnail?: string;
+    splashscreen?: string;
     poster?: string;
     recording: boolean;
     countdown: LiveStreamCountdown;
     rewind: boolean;
+}
+
+interface PLaybackURLs {
+    hls: string;
 }
 
 export interface LiveItem {
@@ -37,9 +47,9 @@ export interface LiveItem {
 }
 
 interface LiveStreamCountdown {
-    enabled: boolean;
-    startDate?: string;
-    startTime?: string;
+    enabled?: boolean;
+    startDate?: number;
+    startTime?: number;
     timezone?: string;
 }
 
@@ -58,12 +68,19 @@ export interface PosterUpload {
 export const initialLiveGeneralState: LiveDetails = {
     id: null,
     streamOnline: false,
+    username: null,
+    password: null,
+    playbackURLs: null,
+    primaryPublishURL: null,
+    backupPublishURL: null,
+    streamKeys: null,
     title: null,
     folder: null,
     description: null,
     thumbnail: null,
     splashscreen: null,
     recording: false,
+    rewind: false,
     countdown: {
         enabled: false
     }

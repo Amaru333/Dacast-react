@@ -1,17 +1,18 @@
-import { ActionTypes, PlaylistSecuritySettings, SecuritySettings } from "./types";
+import { ActionTypes } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { PlaylistSecurityServices } from './services';
+import { ContentSecuritySettings, SecuritySettings } from '../../Settings/Security/types';
 
 export interface GetPlaylistSecuritySettings {
     type: ActionTypes.GET_PLAYLIST_SECURITY_SETTINGS;
-    payload: PlaylistSecuritySettings;
+    payload: ContentSecuritySettings;
 }
 
 export interface SavePlaylistSecuritySettings {
     type: ActionTypes.SAVE_PLAYLIST_SECURITY_SETTINGS;
-    payload: PlaylistSecuritySettings;
+    payload: ContentSecuritySettings;
 }
 
 export const getPlaylistSecuritySettingsAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistSecuritySettings> => {

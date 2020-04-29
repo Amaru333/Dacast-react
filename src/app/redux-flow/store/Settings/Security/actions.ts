@@ -1,4 +1,4 @@
-import { ActionTypes, SettingsSecurityDetails, GeoRestriction, DomainControl } from "./types";
+import { ActionTypes, SecuritySettings, GeoRestriction, DomainControl } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { SettingsServices } from './services';
@@ -6,12 +6,12 @@ import { showToastNotification } from '../../Toasts';
 
 export interface GetSettingsSecurityOptions {
     type: ActionTypes.GET_SETTINGS_SECURITY_OPTIONS;
-    payload: {data: SettingsSecurityDetails};
+    payload: {data: SecuritySettings};
 }
 
 export interface SaveSettingsSecurityOptions {
     type: ActionTypes.SAVE_SETTINGS_SECURITY_OPTIONS;
-    payload: SettingsSecurityDetails;
+    payload: SecuritySettings;
 }
 
 export interface CreateGeoRestrictionGroup {
@@ -55,7 +55,7 @@ export const getSettingsSecurityOptionsAction = (): ThunkDispatch<Promise<void>,
     };
 }
 
-export const saveSettingsSecurityOptionsAction = (data: SettingsSecurityDetails): ThunkDispatch<Promise<void>, {}, SaveSettingsSecurityOptions> => {
+export const saveSettingsSecurityOptionsAction = (data: SecuritySettings): ThunkDispatch<Promise<void>, {}, SaveSettingsSecurityOptions> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveSettingsSecurityOptions> ) => {
         await SettingsServices.saveSettingsSecurityOptionsService(data)
             .then( response => {
