@@ -24,6 +24,13 @@ export interface Ad {
     url: string;
 }
 
+export interface BrandImage {
+    placement: string;
+    size: number;
+    padding: number;
+    link?: string;
+}
+
 export interface InteractionsInfos {
     adEnabled: boolean;
     adList: Ad[];
@@ -34,6 +41,7 @@ export interface InteractionsInfos {
     isBrandTextAsTitle: boolean;
     endScreenText: string;
     endScreenTextLink: string;
+    brandImage: BrandImage;
 }
 
 export const interactionsDefaultState: InteractionsInfos = {
@@ -45,4 +53,5 @@ export const interactionsDefaultState: InteractionsInfos = {
     isBrandTextAsTitle: false,
     endScreenText: null,
     endScreenTextLink: null,
+    brandImage: null
 }

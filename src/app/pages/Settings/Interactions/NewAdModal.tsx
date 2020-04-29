@@ -23,7 +23,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, placement: value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, placement: value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement ? adData.placement : 'Pre-roll'} /> 
                 {
                     adData.placement === 'Mid-roll' ?
                         <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, position: event.currentTarget.value})}  />
