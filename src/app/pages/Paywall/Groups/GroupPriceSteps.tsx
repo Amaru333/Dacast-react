@@ -232,22 +232,24 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 <IconStyle>search</IconStyle>
                 <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={[]} />
             </div>
-            <ContainerHalfSelector className="col col-5" >
+            <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <div className="pl1 pr1">
                     <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
                 </div>
                 {renderContentsList()}
             </ContainerHalfSelector>
-            <div className="col col-2" style={{ marginTop: 180 }}>
+            <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
                 <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
                 <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
             </div>
-            <ContainerHalfSelector className="col col-5" >
+            <Button disabled={selectedItems.length !== 0} onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2 col-12 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
+            <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <HeaderBorder className="p2">
                     <Text color={"gray-1"} size={14} weight='med'>Selected Content</Text>
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
+            <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
         </>
     )
 }

@@ -9,6 +9,7 @@ import { UploadObject } from '../../../utils/uploaderService';
 import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -26,7 +27,7 @@ export const UploaderPage = (props: UploaderProps) => {
 
 
     React.useEffect(() => {
-       uploadNextFile()     
+        uploadNextFile()     
     }, [currentUpload && currentUpload.isCompleted])
 
     React.useEffect(() => {
@@ -45,6 +46,7 @@ export const UploaderPage = (props: UploaderProps) => {
             elapsedtime = elapsedtime / 1000;
             var uploadSpeed = percent / elapsedtime
             var eta = (100 - percent) / uploadSpeed;
+            console.log(percent);
             if(eta > 120) {
                 eta = Math.round(eta / 60);
                 var etaUnit = 'minutes'
@@ -56,7 +58,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 [index]:
                 {
                     ...currentList[index],
-                    currentState: percent === 100 ? "completed" : currentList[index].currentState,
+                    currentState: percent >= 100 ? "completed" : currentList[index].currentState,
                     progress: percent,
                     timeRemaining: {num: eta, unit: etaUnit}
                 }
@@ -200,7 +202,7 @@ export const UploaderPage = (props: UploaderProps) => {
         currentUpload.resumeUpload()
         setItemsPaused(!itemsPaused)
         setUploadingList((currentList: UploaderItemProps[]) => {
-            const updatedList = currentList.map((value, key) => { if (value.name === File.name) { value.currentState = "progress" } return value })
+            const updatedList = currentList.map((value, key) => { if (value.name === File.name && value.currentState === 'paused') { value.currentState = "progress" } return value })
             return updatedList;
         })
     }
@@ -223,7 +225,8 @@ export const UploaderPage = (props: UploaderProps) => {
                         callback={(value: string) => { console.log(value)}}
                     />
                     <Icon className="inline-block mt1" color="disabled">create</Icon>
-                    <Icon className="inline-block mt1" color="disabled">info</Icon>
+                    <Icon id="tooltipUploaderEncoding" className="inline-block mt1" color="disabled">info</Icon>
+                    <Tooltip target="tooltipUploaderEncoding">Use our STandard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>  
                 <div className="col col-4 flex items-center justify-end">
                     <Button sizeButton="small" typeButton="secondary" color="blue"> FTP/S3 Uploader </Button>
@@ -248,12 +251,17 @@ export const UploaderPage = (props: UploaderProps) => {
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
-            <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
-                Choose an Encoding Recipe then upload your videos
-            </Text>
-            <Text weight="reg" color="gray-3" size={16} className="block center">
-                Note: this will consume Encoding Credits
-            </Text>
+            {
+                !uploadingList.length && 
+                    <>
+                        <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
+                            Choose an Encoding Recipe then upload your videos
+                        </Text>
+                        <Text weight="reg" color="gray-3" size={16} className="block center">
+                            Note: this will consume Encoding Credits
+                        </Text>
+                    </>
+            }
             <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
                 {
@@ -267,6 +275,8 @@ export const UploaderPage = (props: UploaderProps) => {
             <ItemList className="col-12">
                 {renderList()}
             </ItemList>
+            <Prompt when={uploadingList.filter(item => item.currentState === 'progress' || item.currentState === 'paused' || item.currentState === 'veryfing').length > 1}
+                message='Please note that unfinished uploads will be deleted.' />     
         </UploaderContainer>
     );
 
