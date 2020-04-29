@@ -6,12 +6,14 @@ import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { UploadObject } from '../../../utils/uploaderService';
-import { Prompt } from 'react-router'
+import { Prompt, useHistory } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
 
 export const UploaderPage = (props: UploaderProps) => {
+
+    let history = useHistory();
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
@@ -229,7 +231,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Icon className="inline-block mt1" color="disabled">info</Icon>
                 </div>  
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue"> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
             
