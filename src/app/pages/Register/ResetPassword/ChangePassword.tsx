@@ -22,7 +22,7 @@ export const ChangePassword = (props: any) => {
         // request to get the token
         axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: query.get('email')})
             .then(response => {
-                setEmail(email)
+                setEmail(response.data.data)
             })
     }, [])
 
@@ -30,7 +30,7 @@ export const ChangePassword = (props: any) => {
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
     const handleChangePassword = (passwordText: string) => {
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: query.get('email'), verificationToken: '9098'})
+        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: 'whatever@dacast.com', verificationToken: '9098'})
     }
     return (
         <LoginContainer>
