@@ -18,13 +18,13 @@ export const ChangePassword = (props: any) => {
 
     const [email, setEmail] = React.useState<string>(null)
 
-    React.useEffect(() => {
-        // request to get the token
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: query.get('email')})
-            .then(response => {
-                setEmail(response.data.data)
-            })
-    }, [])
+    // React.useEffect(() => {
+    //     // request to get the token
+    //     axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: query.get('email')})
+    //         .then(response => {
+    //             setEmail(response.data.data)
+    //         })
+    // }, [])
 
     const [newPassword, setNewPassword] = React.useState<string>('')
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
