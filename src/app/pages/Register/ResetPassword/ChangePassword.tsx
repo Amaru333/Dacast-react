@@ -7,19 +7,21 @@ import { Text } from '../../../../components/Typography/Text'
 import axios from 'axios'
 import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
 import { IconStyle } from '../../../../shared/Common/Icon';
+import { useQuery } from '../../../../utils/utils';
 
 const logo = require('../../../../../public/assets/logo.png');
 
 
 export const ChangePassword = (props: any) => {
 
+    let query = useQuery()
+
     const [email, setEmail] = React.useState<string>(null)
 
     React.useEffect(() => {
         // request to get the token
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: 'jean.bernardo@dacast.com'})
+        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: query.get('email')})
             .then(response => {
-                debugger
                 setEmail(response.data.data)
             })
     }, [])
@@ -28,7 +30,7 @@ export const ChangePassword = (props: any) => {
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
     const handleChangePassword = (passwordText: string) => {
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: 'jean.bernardo@dacast.com', verificationToken: '9098'})
+        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: query.get('email'), verificationToken: '9098'})
     }
     return (
         <LoginContainer>
