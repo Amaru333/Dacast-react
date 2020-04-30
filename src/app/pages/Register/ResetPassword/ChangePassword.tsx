@@ -22,7 +22,7 @@ export const ChangePassword = (props: any) => {
         // request to get the token
         axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password/send-token', {email: query.get('email')})
             .then(response => {
-                setEmail(response.data.data)
+                setEmail(email)
             })
     }, [])
 
