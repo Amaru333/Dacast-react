@@ -260,7 +260,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </div>
             </div>
             <div className="clearfix">
-                <ContainerHalfSelector className="col col-5" >
+                <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <TabSetupContainer className="clearfix">
                         <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => { setSwitchTabOpen(true) }}>
                             <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
@@ -282,32 +282,23 @@ export const SetupPage = (props: SetupComponentProps) => {
                         {renderContentsList()}
                     </div>
                 </ContainerHalfSelector>
-                <div className="col col-2" style={{ marginTop: 180 }}>
+                <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
                     <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
                     <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
-                <ContainerHalfSelector className="col col-5" >
+                <Button  disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
+                <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
                         <Text color={"gray-1"} size={14} weight='med'>[Playlist name]</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>
+                <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
             <div>
-                <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-1 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
-                <Button onClick={() => { }} buttonColor="blue" className=" col-3 sm-col-1 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
+                <Button onClick={() => { }} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
-            <ContainerHalfSelector className="col col-5" >
-                <HeaderBorder className="p2">
-                    <Text color={"gray-1"} size={14} weight='med'>[Playlist name]</Text>
-                </HeaderBorder>
-                {renderSelectedItems()}
-            </ContainerHalfSelector>
-            <div>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
-            <Button onClick={() => {} }  buttonColor="blue" className="relative mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
-            </div>
-            
         </>
     )
 }
