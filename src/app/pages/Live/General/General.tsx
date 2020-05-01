@@ -135,7 +135,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                            <LinkText size={14} weight="reg">{'https://iframe.dacast.com/live/' + props.liveDetails.id}</LinkText>
                             <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('', "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
