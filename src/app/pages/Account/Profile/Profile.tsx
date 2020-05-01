@@ -196,7 +196,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             </form>
                         </ModalContent>
                         <ModalFooter>
-                            <Button sizeButton="large" onClick={() => { props.saveProfilePassword(currentPassword, newPassword); setPasswordModalToggle(false) }} typeButton="primary">Change Password</Button>
+                            <Button sizeButton="large" onClick={() => { props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword); setPasswordModalToggle(false) }} typeButton="primary">Change Password</Button>
                             <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
                         </ModalFooter>
                     </>
