@@ -167,16 +167,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     /** TO DO: Figure out a way to implement the styled components */
     const NavigationConfirmationModal = (props: { callback: Function; message: string }) => {
 
-        //const [isOpen, setIsOpen] = React.useState<boolean>(true);
-
-        // <Modal icon={{name: 'warning', color: 'red'}} hasClose={false} title='Unsaved Changes' opened={isOpen} toggle={() => setIsOpen(!isOpen)}>
-        //     <Text size={14} weight='reg'>{props.message}</Text>
-        //     <Text className='pt2' size={14} weight='med'>Please note any unsaved changes will be lost.</Text>
-        //     <div className='mt2'>
-        //         <Button onClick={() => props.callback(false)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' >Stay</Button>
-        //         <Button onClick={() => props.callback(true)} typeButton='tertiary' sizeButton='large' buttonColor='blue' >Leave</Button>
-        //     </div>
-        // </Modal>
         return (
             <React.Fragment>
                 <div className="unsavedChangesContainer">
@@ -187,7 +177,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     <div className="unsavedChangesBody">
                         <span className="unsavedChangesText-Body">Are you sure that you want to leave this page?</span>
                         <div className="mt2">
-                            <span className="unsavedChangesText-Body-Bold">Please note any unsaved changes will be lost.</span>
+                            <span className="unsavedChangesText-Body-Bold">{props.message ? props.message : "Please note any unsaved changes will be lost."}</span>
                         </div>
                     </div>
                     <div className="unsavedChangesFooter mt3">
@@ -228,7 +218,7 @@ const Content = styled.div<{ isOpen: boolean; isMobile: boolean }>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    overflow: hidden;
+    overflow: auto;
     ${props => props.isMobile && css`
         overflow-x: hidden;
         padding: 16px;

@@ -39,6 +39,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
+    
+    const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
@@ -201,7 +203,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         {
                             getPrivilege('privilege-dvr') && 
                             <div className="mb2 clearfix">
-                                <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
+                                <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind ? true : false} callback={() =>  { newLiveDetails.rewind ?  setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true)}  }></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
                                 </ToggleTextInfo>
@@ -391,6 +393,21 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <ModalFooter className="mt1" >
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
                         <Button typeButton="tertiary">Visit Knowledge Base</Button>
+                    </ModalFooter>
+                </Modal>
+                
+                <Modal size="large" modalTitle="Is your Encoder turned off?" opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
+                    <ModalContent>  
+                        <Text weight="reg" size={14}>
+                            Please confirm you have turned off your encoder before continuing. 
+                        </Text>
+                        <Text weight="med" size={14}>
+                            Need step by step help? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.
+                        </Text>
+                    </ModalContent>
+                    <ModalFooter className="mt1" >
+                        <Button onClick={() => { setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind }); setConfirmRewindModal(false) }  }>Yes</Button>
+                        <Button onClick={() => { setConfirmRewindModal(false) }} typeButton="tertiary">No</Button>
                     </ModalFooter>
                 </Modal>
 

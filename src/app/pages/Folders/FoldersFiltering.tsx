@@ -7,7 +7,7 @@ import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 
-export const FoldersFiltering = (props: {setCheckedItems: Function}) => {
+export const FoldersFiltering = (props: {setCheckedItems: Function; className?: string}) => {
 
 
     interface FilteringState {
@@ -66,16 +66,14 @@ export const FoldersFiltering = (props: {setCheckedItems: Function}) => {
 
     return (
         <>
-            <div className="right">
-                <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
-                    Filter
-                    {
-                        activeFilter > 0 ?
-                            <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                            : null
-                    }
-                </Button>
-            </div>
+            <Button buttonColor="gray" className={props.className} onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
+                Filter
+                {
+                    activeFilter > 0 ?
+                        <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
+                        : null
+                }
+            </Button>
             <Filtering isOpen={openFilters} >
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>

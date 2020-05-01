@@ -1,9 +1,22 @@
 import styled, { css } from 'styled-components';
 
-export const FoldersTreeSection = styled.div`
-    display: flex;
+export const FoldersTreeSection = styled.div<{smallScreen: boolean; foldersTreeHidden: boolean}>`
+    display: ${props => props.foldersTreeHidden && !props.smallScreen ? 'none' : 'flex' };
     flex-direction: column;
     overflow-x: hidden;
+    ${props => props.smallScreen && css`
+        z-index: 999;
+        height: 100vh;
+        overflow-x: scroll;
+        top: 75px;
+        left:0;
+        ${props.foldersTreeHidden && css `
+            left: -100vw;
+        `}
+        width: 100%;
+        background: ${props.theme.colors['gray-10']};
+    `}
+
 `
 export const FolderRow = styled.div<{isSelected: boolean}>`
     ${props => props.isSelected && css`

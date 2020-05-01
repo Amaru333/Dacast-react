@@ -151,22 +151,24 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                         </div>
                     </div>
-                    <AnalyticsContainerHalfSelector className="col col-5" >
+                    <AnalyticsContainerHalfSelector className="col sm-col-5 col-12" >
                         <BreadcrumbContainer className="pl1 pr1">
                             <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
                         </BreadcrumbContainer>
                         {renderContentsList()}
                     </AnalyticsContainerHalfSelector>
-                    <div className="col col-2" style={{ marginTop: 70 }}>
+                    <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 70 }}>
                         <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
                         <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                     </div>
-                    <AnalyticsContainerHalfSelector className="col col-5" >
+                    <Button  disabled={selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
+                    <AnalyticsContainerHalfSelector className="col sm-col-5 col-12" >
                         <HeaderBorder className="p2">
                             <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
                         </HeaderBorder>
                         {renderSelectedItems()}
                     </AnalyticsContainerHalfSelector>
+                    <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className={ThirdLgHalfXmFullXs}>
