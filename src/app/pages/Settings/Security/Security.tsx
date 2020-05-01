@@ -8,7 +8,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal } from '../../../../components/Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
@@ -20,6 +20,7 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
 
@@ -33,7 +34,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
-    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime !== 0 || props.securityDetails.contentScheduling.startTime !== 0 ? true : false)
+    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime || props.securityDetails.contentScheduling.startTime ? true : false)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
     const [startDateTime, setStartDateTime] = React.useState<string>(null);
     const [endDateTime, setEndDateTime] = React.useState<string>(null);
@@ -97,7 +98,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     data: [
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                         value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
-                        <IconContainer className="iconAction" key={key.toString() + value.name}><IconStyle onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</IconStyle> </IconContainer>
+                        <IconContainer className="iconAction" key={key.toString() + value.name}>
+                            <ActionIcon>
+                                <IconStyle id={"geoRestrictionDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle>
+                                <Tooltip target={"geoRestrictionDelete" + key}>Delete</Tooltip>
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
+                                <Tooltip target={"geoRestrictionEdit" + key}>Edit</Tooltip>
+                            </ActionIcon>  
+                        </IconContainer>
                     ]
                 }
             })
@@ -111,7 +121,16 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     data: [
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                         value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
-                        <IconContainer className="iconAction" key={key.toString() + value.name}><IconStyle onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</IconStyle> </IconContainer>
+                        <IconContainer className="iconAction" key={key.toString() + value.name}>
+                            <ActionIcon>
+                                <IconStyle id={"domainControlDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</IconStyle>
+                                <Tooltip target={"domainControlDelete" + key}>Delete</Tooltip>
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconStyle id={"domainControlEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</IconStyle>
+                                <Tooltip target={"domainControlEdit" + key}>Edit</Tooltip>
+                            </ActionIcon>
+                        </IconContainer>
                     ]
                 }
             })
@@ -150,10 +169,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <div className='col col-12'>
 
-                        <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling.startTime !== 0 || props.securityDetails.contentScheduling.endTime !== 0 ? true : false} />
+                        <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling.startTime || props.securityDetails.contentScheduling.endTime ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {
-                            toggleSchedulingVideo &&
+                            toggleSchedulingVideo ?
                             <>
                                 <div className='col col-12 flex items-center'>
                                     <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
@@ -200,7 +219,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     }
                                 </div>
                             </>
-                        }
+                        : null}
                     </div>
                 </form>
 
