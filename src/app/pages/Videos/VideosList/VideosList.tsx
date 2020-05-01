@@ -18,6 +18,7 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 export interface VideosListProps {
     items: SearchResult;
@@ -93,6 +94,18 @@ export const VideosListPage = (props: VideosListProps) => {
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
+    const renderStatusLabel = (status: string) => {
+        switch (status) {
+            case 'online':
+                return <Label backgroundColor="green20" color="green" label="Online" />
+            case 'offline':
+                return <Label backgroundColor="red20" color="red" label="Offline" />
+            default:
+                return <Label backgroundColor="gray-7" color="gray-1" label="Processing" />
+
+        }
+    }
+
     const vodListHeaderElement = () => {
         return {
             data: [
@@ -139,7 +152,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
                     <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === 'online' ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
+                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
                     <div className='flex'>{value.features ? handleFeatures(value, value.objectID.toString()) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.objectID}>
@@ -157,20 +170,6 @@ export const VideosListPage = (props: VideosListProps) => {
                 }
             })
         }
-    }
-
-    const emptyVodListHeader = () => {
-        return {data: [
-            {cell: <span key={'emptyVodListHeader'}></span>}
-        ]}
-    }
-
-    const emptyVodListBody = (text: string) => {
-        return [{data:[
-            <div className='center'>
-                <Text key={'emptyVodListBodyText' + text} size={14} weight='reg' color='gray-3' >{text}</Text>
-            </div> 
-        ]}]
     }
 
     const renderList = () => {
@@ -212,7 +211,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyVodListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyVodListBody('No items matched your search')} hasContainer />
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
