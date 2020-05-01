@@ -29,6 +29,7 @@ export interface EncodingRecipeItem {
     watermarkPositioningLeft?: number;
     watermarkPositioningRight?: number;
     recipePresets: string[];
+    isUploading?: boolean;
 }
 
 export interface EncodingRecipesData {
