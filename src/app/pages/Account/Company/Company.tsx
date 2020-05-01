@@ -135,10 +135,16 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
                         <>
-                            {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null}
-                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                        <Button sizeButton='xs' typeButton='secondary' style={{position:'absolute', right:'8px', top:'8px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                        <Button sizeButton='xs' typeButton='primary' style={{position:'absolute', right:'8px', top:'40px'}} buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Upload</Button>
+                            <div className="flex flex-column">
+                                {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
+                                    <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                </SpinnerContainer>: null}
+                                <div style={{width:'100%'}} className=''>
+                                    <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
+                                    <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Change</Button>
+                                </div>
+                                <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                            </div>
                         </>
                             :
                         <>
