@@ -131,7 +131,6 @@ export const LiveSecurityPage = (props: LiveSecurityComponentProps) => {
                                             callback={(startDateValue: string) => setSelectedSettings({...selectedSettings, videoScheduling:{...selectedSettings.videoScheduling, startDate: startDateValue}})}
                                         />
                                     </div>
-
                                     <Input
                                         type='time'
                                         defaultValue={props.liveSecuritySettings.securitySettings.videoScheduling.startTime ? props.liveSecuritySettings.securitySettings.videoScheduling.startTime : '00:00:00'} 

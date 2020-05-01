@@ -156,18 +156,18 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo &&
                             <>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
+                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
                                     {startDateTime === "Set Date and Time" &&
                                         <>
                                             <input type="hidden" ref={register()} name="videoScheduling.startDate" />
                                             <DateSinglePickerWrapper
                                                 date={moment()}
                                                 callback={(date: string, ms: number) => { setValue('videoScheduling.startDate', ms) }}
-                                                className='col col-4 md-col-3 mr2 mt2' />
+                                                className='col col-6 md-col-3 mr2 mt2' />
                                             <Input
                                                 type='time'
                                                 defaultValue={props.securityDetails.contentScheduling.startTime ? props.securityDetails.contentScheduling.startTime.toString() : '00:00:00'}
-                                                className='col col-3 md-col-2 mt2'
+                                                className='col col-6 md-col-2 mt2'
                                                 disabled={false}
                                                 id='endTime'
                                                 pattern="[0-9]{2}:[0-9]{2}"

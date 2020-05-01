@@ -16,6 +16,8 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
+import { updateClipboard } from '../../../utils/utils';
+import { LinkBoxContainer, LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -255,6 +257,44 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </div>
                 <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
                 <Table className="col-12" id="s3KeysTable" headerBackgroundColor="gray-10" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
+                <HrStyle />
+                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >FTP</Text>
+                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These details can be used to upload files to an FTP (File Transfer Protocol) folder that will then be automatically uploaded to your Dacast account.</Text>
+                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                    <IconStyle className="mr1" >info_outlined</IconStyle>
+                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up FTP? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                </div>
+                <div className="clearfix mxn1">
+                    <div className={"col col-12 sm-col-4 px1"}>
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Host</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <Text size={14} weight="reg">storage.ftp-auto.dacast.com</Text>
+                            <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
+                            <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
+                    <div className={"col col-12 sm-col-4 px1"}>
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Login</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <Text size={14} weight="reg">96941</Text>
+                            <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
+                            <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
+                        </LinkBox>
+                    </div>
+                    <div className={"col col-12 sm-col-4 px1"}>
+                        <LinkBoxLabel>
+                            <Text size={14} weight="med">Password</Text>
+                        </LinkBoxLabel>
+                        <LinkBox>
+                            <Text size={14} weight="reg">Use your account password</Text>
+                        </LinkBox>
+                    </div>
+                </div>
+                
                 <HrStyle />
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Google Analytics</Text>
                 <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Some text about where to find the Google Analytics number or whatever.</Text>

@@ -9,13 +9,13 @@ import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { getPrivilege } from '../../../utils/utils';
 
-export const AddStreamModal = (props: {toggle: () => void; opened: boolean}) => {
+export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(null)
 
     React.useEffect(() => {
-        setStreamSetupOptions({...streamSetupOptions, streamType: selectedStreamType })
+        setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType })
     }, [selectedStreamType])
 
     const handleCancel = () => {
@@ -27,56 +27,63 @@ export const AddStreamModal = (props: {toggle: () => void; opened: boolean}) => 
     return (
         <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
-                <StreamTypeSelectorContainer className="flex col col-12 mt25">
+                <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
-                    { getPrivilege('privilege-live') &&
-                        <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
-                            <StreamTypeSelectorContents>
-                                <IconStyle className="mb2">videocam</IconStyle>
-                                <Text size={16} weight="med">Standard</Text>
-                                <Text className="mt2" size={14}>Web, Mobile &amp; TV</Text>
-                            </StreamTypeSelectorContents>
-                            
-                        </StreamTypeSelector>
+                    {getPrivilege('privilege-live') &&
+                        <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
+                            <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
+                                <StreamTypeSelectorContents>
+                                    <IconStyle className="mb2">videocam</IconStyle>
+                                    <Text size={16} weight="med">Standard</Text>
+                                    <Text className="mt2" size={14}>Web, Mobile &amp; TV</Text>
+                                </StreamTypeSelectorContents>
+
+                            </StreamTypeSelector>
+                        </div>
+
                     }
 
-                    { getPrivilege('privilege-unsecure-m3u8') &&
-                        <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
-                            <StreamTypeSelectorContents>
-                                <IconStyle className="mb2">desktop_windows</IconStyle>
-                                <Text size={16} weight="med">Compatible</Text>
-                                <Text className="mt2" size={14}>Native Apps</Text>
-                            </StreamTypeSelectorContents>
-                        </StreamTypeSelector> 
+                    {getPrivilege('privilege-unsecure-m3u8') &&
+                        <div className="col-12 sm-col-4 col sm-pr1 sm-pl1 xs-mb2">
+                            <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
+                                <StreamTypeSelectorContents>
+                                    <IconStyle className="mb2">desktop_windows</IconStyle>
+                                    <Text size={16} weight="med">Compatible</Text>
+                                    <Text className="mt2" size={14}>Native Apps</Text>
+                                </StreamTypeSelectorContents>
+                            </StreamTypeSelector>
+                        </div>
                     }
 
-                    { getPrivilege('privilege-china') &&
-                        <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
-                            <StreamTypeSelectorContents>
-                                <IconStyle className="mb2">public</IconStyle>
-                                <Text size={16} weight="med">Premium</Text>
-                                <Text className="mt2" size={14}>Standard + China</Text>
-                            </StreamTypeSelectorContents>
-                        </StreamTypeSelector>}
+                    {getPrivilege('privilege-china') &&
+                        <div className="col-12 sm-col-4 col sm-pl1">
+                            <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
+                                <StreamTypeSelectorContents>
+                                    <IconStyle className="mb2">public</IconStyle>
+                                    <Text size={16} weight="med">Premium</Text>
+                                    <Text className="mt2" size={14}>Standard + China</Text>
+                                </StreamTypeSelectorContents>
+                            </StreamTypeSelector>
+                        </div>}
 
                 </StreamTypeSelectorContainer>
 
-                {  getPrivilege('privilege-dvr') &&
+                {getPrivilege('privilege-dvr') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
-                            <Toggle onChange={() => {setStreamSetupOptions({...streamSetupOptions, rewind: !streamSetupOptions.rewind})}} label="30 Minute Rewind" />
+                            <Toggle onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
                         </div>
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
                     </div>}
-                
+
                 <div className="flex mt2 col col-12">
-                    <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help creating a Live Stream? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
+                    <Text size={14} weight="reg">Need help creating a Live Stream? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
             </ModalContent>
             <ModalFooter>
-                <Button onClick={() => {location.href="/livestreams"}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
+                <Button onClick={() => { location.href = "/livestreams" }} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>
