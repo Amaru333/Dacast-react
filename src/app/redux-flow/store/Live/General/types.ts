@@ -38,12 +38,24 @@ interface PLaybackURLs {
 }
 
 export interface LiveItem {
-    id: string;
-    streamOnline: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
-    created: number;
-    thumbnail: string;
-    features: FeaturesList;
+    size: number;
+    views?: number;
+    duration: number;
+    thumbnail?: string;
+    createdAt: number;
+    features?: FeaturesList;
+}
+
+export interface SearchResult {
+    results: LiveItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }
 
 interface LiveStreamCountdown {
@@ -86,4 +98,4 @@ export const initialLiveGeneralState: LiveDetails = {
     }
 }
 
-export const initialLiveList: LiveItem[] | false = false;
+export const initialLiveList: SearchResult | false = false

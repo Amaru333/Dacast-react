@@ -16,8 +16,16 @@ const getLiveDetailsService = async (liveId: string) => {
     )
 }
 
-const getLiveList = () => {
-    return axios.get(urlBase + 'channels');
+const getLiveList = async (qs: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveLiveDetailsService = async (data: LiveDetails) => {

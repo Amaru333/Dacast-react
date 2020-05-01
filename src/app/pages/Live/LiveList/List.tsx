@@ -5,9 +5,9 @@ import { Text } from '../../../../components/Typography/Text';
 import { tsToLocaleDate, getPrivilege } from '../../../../utils/utils';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { LiveItem } from '../../../redux-flow/store/Live/General/types';
+import { LiveItem, SearchResult } from '../../../redux-flow/store/Live/General/types';
 import { LiveTabs } from '../../../containers/Live/LiveTabs';
-import { LivesFiltering } from './LivesFiltering';
+import { LivesFiltering, FilteringLiveState } from './LivesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
@@ -22,9 +22,10 @@ import { useLocation, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon';
 
 export interface LiveListProps {
-    liveList: LiveItem[];
+    liveList: SearchResult;
     themesList: ThemeOptions[];
     deleteLiveChannel: Function;
+    getLiveList: Function;
 }
 
 export const LiveListPage = (props: LiveListProps) => {
@@ -32,22 +33,57 @@ export const LiveListPage = (props: LiveListProps) => {
     let history = useHistory()
 
     const [selectedLive, setSelectedLive] = React.useState<string[]>([]);
+    const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
+    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [searchString, setSearchString] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>(null)
+
+    const parseFiltersToQueryString = (filters: FilteringLiveState) => {
+        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
+        if(filters) {
+            
+            Object.keys(filters).map((filter) => {
+                if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
+                    returnedString += filter + '='
+                    Object.keys(filters[filter]).map((subfilter, i) => {
+                        if(filters[filter][subfilter]) {
+                            returnedString += subfilter + ','
+                        }
+                    })  
+                    returnedString += '&'                
+                    returnedString = returnedString.replace(',&','&')
+                }            
+            })
+
+            if(filters.afterDate || filters.beforedate) {
+                returnedString+= `created-at=${filters.beforedate ? filters.beforedate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+            }
+        }
+        if(searchString) {
+            returnedString += `keyword=${searchString}&`
+        }
+        if(sort) {
+            returnedString += `sort-by=${sort}`
+        }
+        return returnedString
+
+    }
 
     React.useEffect(() => {
-
-    }, [selectedLive])
+        props.getLiveList(parseFiltersToQueryString(selectedFilters))    
+    }, [selectedFilters, searchString, paginationInfo, sort])
 
     const liveListHeaderElement = () => {
         return {data: [
             {cell: <InputCheckbox
                 className="inline-flex"
                 key="checkboxLiveListBulkAction"
-                indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.length}
-                defaultChecked={selectedLive.length === props.liveList.length}
+                indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.results.length}
+                defaultChecked={selectedLive.length === props.liveList.results.length}
                 id="globalCheckboxLiveList"
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
-                        const editedselectedLive = props.liveList.map(item => { return item.id })
+                        const editedselectedLive = props.liveList.results.map(item => { return item.objectID })
                         setSelectedLive(editedselectedLive);
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedLive([])
@@ -66,33 +102,33 @@ export const LiveListPage = (props: LiveListProps) => {
 
     const liveListBodyElement = () => {
         if (props.liveList) {
-            return props.liveList.map((value) => {
+            return props.liveList.results.map((value) => {
                 return {data: [
-                    <div key={"checkbox" + value.id} className='flex items-center'> 
-                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedLive.includes(value.id)} id={"checkbox" + value.id} onChange={(event) => {
-                            if (event.currentTarget.checked && selectedLive.length < props.liveList.length) {
-                                setSelectedLive([...selectedLive, value.id])
+                    <div key={"checkbox" + value.objectID} className='flex items-center'> 
+                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                            if (event.currentTarget.checked && selectedLive.length < props.liveList.results.length) {
+                                setSelectedLive([...selectedLive, value.objectID])
                             } else {
-                                const editedselectedLive = selectedLive.filter(item => item !== value.id)
+                                const editedselectedLive = selectedLive.filter(item => item !== value.objectID)
                                 setSelectedLive(editedselectedLive);
                             }
                         }
                         } />
-                        <img className="pl2" key={"thumbnail" + value.id} width={50} height={42} src={value.thumbnail} ></img>
+                        <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} ></img>
                     </div>,
-                    <Text key={"title" + value.id} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                    <Text key={"created" + value.id} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={"status" + value.id} size={14} weight="reg" color="gray-1">{value.streamOnline ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <div className='flex'>{handleFeatures(value, value.id)}</div>,
-                    <div key={"more" + value.id} className="iconAction right mr2" >
-                        <ActionIcon id={"editTooltip" + value.id}>
-                            <IconStyle onClick={() => {history.push('/livestreams/' + value.id + '/general') }} className="right mr1" >edit</IconStyle>
+                    <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                    <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
+                    <div className='flex'>{handleFeatures(value, value.objectID)}</div>,
+                    <div key={"more" + value.objectID} className="iconAction right mr2" >
+                        <ActionIcon id={"editTooltip" + value.objectID}>
+                            <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
-                        <ActionIcon id={"deleteTooltip" + value.id}>
-                            <IconStyle onClick={() => { {props.deleteLiveChannel(value.id)} }} className="right mr1" >delete</IconStyle>
+                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
+                        <ActionIcon id={"deleteTooltip" + value.objectID}>
+                            <IconStyle onClick={() => { {props.deleteLiveChannel(value.objectID)} }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>    
+                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
                     </div>,
                 ]}
             })
@@ -136,7 +172,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={[]}   />
+                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                     </div>
                     <div className="flex items-center" >
                         {selectedLive.length > 0 ?
@@ -150,13 +186,13 @@ export const LiveListPage = (props: LiveListProps) => {
                             </DropdownList>
                         </div>
                         <SeparatorHeader className="mx2 inline-block" />
-                        <LivesFiltering setSelectedLive={setSelectedLive} />              
+                        <LivesFiltering setSelectedFilter={setSelectedFilter} />              
                         <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
                     </div>
                 </div>
                 
                 <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer />
-                <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
+                <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm items={selectedLive} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />

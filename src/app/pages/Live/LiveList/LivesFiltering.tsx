@@ -8,24 +8,26 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { getPrivilege } from '../../../../utils/utils';
 
-export const LivesFiltering = (props: { setSelectedLive: Function }) => {
+export interface FilteringLiveState {
+    status: {
+        online: boolean;
+        offline: boolean;
+    };
+    features: {
+        paywall: boolean;
+        advertising: boolean;
+        playlists: boolean;
+        rewind: boolean;
+        recording: boolean;
+    };
+    afterDate: number | boolean;
+    beforedate: number | boolean;
+}
+
+export const LivesFiltering = (props: { setSelectedFilter: Function }) => {
 
 
-    interface FilteringState {
-        status: {
-            online: boolean;
-            offline: boolean;
-        };
-        features: {
-            paywall: boolean;
-            advertising: boolean;
-            playlists: boolean;
-            rewind: boolean;
-            recording: boolean;
-        };
-        afterDate: number | boolean;
-        beforedate: number | boolean;
-    }
+
 
     var filteringDefault = {
         status: {
@@ -43,7 +45,7 @@ export const LivesFiltering = (props: { setSelectedLive: Function }) => {
         beforedate: false
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringLiveState>(filteringDefault);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
@@ -116,10 +118,10 @@ export const LivesFiltering = (props: { setSelectedLive: Function }) => {
                 </div>
 
                 <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false); props.setSelectedLive([]) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault); props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

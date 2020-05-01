@@ -2,7 +2,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
 import { LiveGeneralServices } from './services';
-import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem } from './types';
+import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem, SearchResult } from './types';
 
 
 
@@ -13,7 +13,7 @@ export interface GetLiveDetails {
 
 export interface GetLiveList {
     type: ActionTypes.GET_LIVE_LIST;
-    payload: LiveItem[];
+    payload: {data: SearchResult};
 }
 
 export interface SaveLiveDetails {
@@ -68,9 +68,9 @@ export const getLiveDetailsAction = (liveId: string): ThunkDispatch<Promise<void
     };
 }
 
-export const getLiveListAction = (): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
+export const getLiveListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveList>) => {
-        await LiveGeneralServices.getLiveList()
+        await LiveGeneralServices.getLiveList(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_LIST, payload: response.data });
             })
