@@ -33,7 +33,7 @@ import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
 import Uploader from '../containers/Videos/Uploader';
 import ForgotPassword from '../containers/Register/ForgotPassword';
-import { ChangePassword } from '../pages/Register/ResetPassword/ChangePassword';
+import ChangePassword from '../pages/Register/ResetPassword/ChangePassword';
 import { ActivatedAccountPage } from '../pages/Register/ActivatedAccount';
 import General from '../containers/Videos/General';
 import VodRenditions from '../containers/Videos/Renditions';

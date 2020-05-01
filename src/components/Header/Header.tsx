@@ -14,6 +14,7 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
+import { getUserInfoItem, isLoggedIn } from '../../app/utils/token';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -25,17 +26,7 @@ export interface HeaderProps {
     getProfilePageDetails: Function;
 }
 
-
-
 const Header = (props: HeaderProps) => {
-
-    React.useEffect(() => {
-        if (!props.ProfileInfo) {
-            props.getProfilePageDetails()
-        }
-    })
-
-
 
     let location = useLocation()
     let history = useHistory()
@@ -48,6 +39,15 @@ const Header = (props: HeaderProps) => {
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
     const userOptionsDropdownListRef = React.useRef<HTMLUListElement>(null);
     const [selectedUserOptionDropdownItem, setSelectedUserOptionDropdownItem] = React.useState<string>('');
+    const [avatarFirstName, setAvatarFirstName] = React.useState<string>(null)
+    const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
+
+    React.useEffect(() => {
+        
+        setAvatarFirstName(getUserInfoItem('custom:first_name'))
+        setAvatarLastName(getUserInfoItem('custom:last_name'))
+        
+    }, [isLoggedIn()])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 
@@ -118,11 +118,12 @@ const Header = (props: HeaderProps) => {
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
-                    {props.ProfileInfo ?
-                        <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={props.ProfileInfo.firstName + ' ' + props.ProfileInfo.lastName} />
-                        :
-                        <HeaderIconStyle ><Icon>account_circle</Icon></HeaderIconStyle>}
-                    <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
+                    {avatarFirstName && avatarLastName ? 
+                          
+                          <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={avatarFirstName + ' ' + avatarLastName} />
+                       :
+                       <HeaderIconStyle ><Icon>account_circle</Icon></HeaderIconStyle> } 
+                       <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
                         {renderAddList()}
                     </UserOptionsDropdownList>
                 </div>

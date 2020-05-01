@@ -43,17 +43,17 @@ export const SignupPage = (props: SignupContainerProps) => {
         <ModalCard className="mx-auto" size="small" title="Sign Up">
             <ModalContent className="clearfix">
                 <form id="formSignUp" onSubmit={handleSubmit(onSubmit)}>
-                    <Input {...handleValidationForm('firstName', errors)} ref={register({ required: "Required"})} type="text" className="col col-6 pr1" label="First Name" placeholder="First Name" />
-                    <Input {...handleValidationForm('lastName', errors)} ref={register({ required: "Required" })} name="lastName" type="text" className="col col-6 pl1" label="Last Name" placeholder="Last Name" />
-                    <Input {...handleValidationForm('website', errors, 'url', register)} className="col col-12" label="Company Website" placeholder="Company Website"  />
-                    <Input {...handleValidationForm('email', errors, 'email', register)} className="col col-12" label="Email Address" placeholder="Email Address" />
-                    <Input {...handleValidationForm('phone', errors, 'tel', register)} className="col col-12" label="Phone Number" placeholder="Phone Number" />
-                    <div className='flex relative col col-12'>
+                    <Input {...handleValidationForm('firstName', errors)} ref={register({ required: "Required"})} type="text" className="col col-6 pr1 pt1" label="First Name" placeholder="First Name" />
+                    <Input {...handleValidationForm('lastName', errors)} ref={register({ required: "Required" })} name="lastName" type="text" className="col col-6 pl1 pt1" label="Last Name" placeholder="Last Name" />
+                    <Input {...handleValidationForm('website', errors, 'url', register)} className="col col-12 pt2" label="Company Website" placeholder="Company Website"  />
+                    <Input {...handleValidationForm('email', errors, 'email', register)} className="col col-12 pt2" label="Email Address" placeholder="Email Address" />
+                    <Input {...handleValidationForm('phone', errors, 'tel', register)} className="col col-12 pt2" label="Phone Number" placeholder="Phone Number" />
+                    <div className='flex relative col col-12 pt2 pb25'>
                         <Input {...handleValidationForm('password', errors, 'password', register)} className="col col-12" type={passwordVisible ? "text" : "password"} label="Create Password" placeholder="Password" />
-                        <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
+                        <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-1 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
                     </div>
                     <Text className="left" color="gray-1" size={12} weight="reg">Already have an account? <a href="/login">Log in.</a></Text><br />
-                    <Text className="left" color="gray-1" size={12} weight="reg">By signing up, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></Text>
+                    <Text className="left mt1" color="gray-1" size={12} weight="reg">By signing up, you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></Text>
                 </form>
                 
             </ModalContent>

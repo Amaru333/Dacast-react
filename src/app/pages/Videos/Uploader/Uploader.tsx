@@ -6,13 +6,15 @@ import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { UploadObject } from '../../../utils/uploaderService';
-import { Prompt } from 'react-router'
+import { Prompt, useHistory } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 
 export const UploaderPage = (props: UploaderProps) => {
+
+    let history = useHistory();
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
@@ -53,7 +55,7 @@ export const UploaderPage = (props: UploaderProps) => {
             } else {
                 eta = Math.round(eta);
                 var etaUnit= ' seconds';
-            }      
+            }                
             return Object.assign([...currentList], {
                 [index]:
                 {
@@ -211,6 +213,8 @@ export const UploaderPage = (props: UploaderProps) => {
     }, [uploadingList]);
 
     var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item)=> {return {...reduced, [props.encodingRecipe.recipes[item].name]: false}},{})
+    var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
+    
     return (
         <UploaderContainer>
             <div className="flex space-between">
@@ -219,6 +223,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         style={{background: "#fff"}}
                         className='col col-5 mr1 pb2 '
                         dropdownTitle='Encoding Recipe'
+                        dropdownDefaultSelect={defaultRecipe.name}
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
@@ -229,7 +234,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Tooltip target="tooltipUploaderEncoding">Use our STandard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>  
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue"> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
             

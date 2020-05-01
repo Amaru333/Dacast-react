@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { Modal } from '../../../../components/Modal/Modal';
 import { MailCatcherModal } from  './MailCatcherModal';
@@ -23,6 +23,8 @@ import { SpinnerContainer } from '../../../../components/FormsComponents/Progres
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -97,8 +99,14 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <IconStyle onClick={(event) => {props.deleteAd(item)}} >delete</IconStyle>
-                    <IconStyle onClick={() => editAd(item)}>edit</IconStyle> 
+                    <ActionIcon>
+                        <IconStyle id={'adTableCopy' + i} onClick={(event) => {props.deleteAd(item)}} >delete</IconStyle>
+                        <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={'adTableEdit' + i} onClick={() => editAd(item)}>edit</IconStyle> 
+                        <Tooltip target={'adTableEdit' + i}>Edit</Tooltip>
+                    </ActionIcon>  
                 </IconContainer>
             ]}
         })
@@ -197,7 +205,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}}></DropdownSingle>
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImage ? props.interactionsInfos.brandImage.placement : 'Top Right'}></DropdownSingle>
                         <Input className="col col-4 pr2" label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                         <Input className="col col-4" label="Padding (px)" />
                         <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" />
@@ -265,8 +273,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         : null
                 }
             </Modal>
-            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
-                <div className="mt2" ref={playerRef}></div>
+            <Modal modalTitle='Preview Ads' hasClose toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+                <PlayerContainer>
+                    <div className="mt2" ref={playerRef}></div>
+                </PlayerContainer>   
             </Modal>
             <Prompt when={interactionInfos !== props.interactionsInfos} message='' />
         </div>
