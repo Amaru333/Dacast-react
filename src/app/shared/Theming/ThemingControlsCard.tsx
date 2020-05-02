@@ -116,12 +116,12 @@ export const ThemingControlsCard = (props: {selectedTheme: ThemeOptions; setSele
                 <DisabledSection enabled={customEnabled}>
                     <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
                     <ControlToggleContainer>
-                        <Toggle className={togglePadding} label='Player Controls' defaultChecked={props.selectedTheme.playerControls} onChange={() => {props.setSelectedTheme({...props.selectedTheme, playerControls: !props.selectedTheme.bigPlayButton});}} />
+                        <Toggle className={togglePadding} label='Player Controls' defaultChecked={props.selectedTheme.playerControls} onChange={() => {props.setSelectedTheme({...props.selectedTheme, playerControls: !props.selectedTheme.playerControls});}} />
                         <IconStyle id="playerControlsTooltip">info_outlined</IconStyle>
                         <Tooltip target="playerControlsTooltip">Play/Pause</Tooltip>
                     </ControlToggleContainer>
                     <ControlToggleContainer>
-                        <Toggle className={togglePadding} label='Big Play Button' defaultChecked={props.selectedTheme.bigPlayButton} onChange={() => {props.setSelectedTheme({...props.selectedTheme, bigPlayButton: !props.selectedTheme.bigPlayButton});}} />
+                        <Toggle className={togglePadding} label='Big Play Button' defaultChecked={props.selectedTheme.bigPlayButton === 'visible'} onChange={() => {props.setSelectedTheme({...props.selectedTheme, bigPlayButton: props.selectedTheme.bigPlayButton === 'visible' ? 'hidden' : 'visible'});}} />
                         <IconStyle id="bigPlayTooltip">info_outlined</IconStyle>
                         <Tooltip target="bigPlayTooltip">Big Play Button</Tooltip>
                     </ControlToggleContainer>

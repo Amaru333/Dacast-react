@@ -5,8 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { tsToLocaleDate, getPrivilege } from '../../../../utils/utils';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { LiveItem, SearchResult } from '../../../redux-flow/store/Live/General/types';
-import { LiveTabs } from '../../../containers/Live/LiveTabs';
+import { SearchResult } from '../../../redux-flow/store/Live/General/types';
 import { LivesFiltering, FilteringLiveState } from './LivesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
@@ -18,7 +17,7 @@ import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { handleFeatures } from '../../../shared/Common/Features';
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon';
 
 export interface LiveListProps {
@@ -74,30 +73,34 @@ export const LiveListPage = (props: LiveListProps) => {
     }, [selectedFilters, searchString, paginationInfo, sort])
 
     const liveListHeaderElement = () => {
-        return {data: [
-            {cell: <InputCheckbox
-                className="inline-flex"
-                key="checkboxLiveListBulkAction"
-                indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.results.length}
-                defaultChecked={selectedLive.length === props.liveList.results.length}
-                id="globalCheckboxLiveList"
-                onChange={(event) => {
-                    if (event.currentTarget.checked) {
-                        const editedselectedLive = props.liveList.results.map(item => { return item.objectID })
-                        setSelectedLive(editedselectedLive);
-                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                        setSelectedLive([])
+        return {
+            data: [
+                {cell: <InputCheckbox
+                    className="inline-flex"
+                    key="checkboxLiveListBulkAction"
+                    indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.results.length}
+                    defaultChecked={selectedLive.length === props.liveList.results.length}
+                    id="globalCheckboxLiveList"
+                    onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                            const editedselectedLive = props.liveList.results.map(item => { return item.objectID })
+                            setSelectedLive(editedselectedLive);
+                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                            setSelectedLive([])
+                        }
                     }
-                }
-                }
-            />},
-            // {cell: <></>},
-            {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'Name'},
-            {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'Created Date'},
-            {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
-            {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
-            {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
-        ], defaultSort: 'Created Date'}
+                    }
+                />},
+                // {cell: <></>},
+                {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
+                {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
+                {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
+                {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
+            ], 
+            defaultSort: 'created-at',
+            sortCallback: (value: string) => setSort(value)    
+        }
     }
 
     const liveListBodyElement = () => {

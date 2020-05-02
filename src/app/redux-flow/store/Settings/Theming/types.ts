@@ -19,7 +19,7 @@ export interface ThemeOptions {
     createdDate: number;
     themeType: ThemeType;
     playerControls: boolean;
-    bigPlayButton: boolean;
+    bigPlayButton: 'visible' | 'hidden';
     scrubbingThumbnail: boolean;
     thumbnailPosition: string;
     isViewerCounterEnabled: boolean;
@@ -64,7 +64,7 @@ export const defaultTheme: ThemeOptions = {
     isDefault: false,
     createdDate: 980989080,
     themeType: 'vod',
-    bigPlayButton: true,
+    bigPlayButton: 'visible',
     playerControls: true,
     scrubbingThumbnail: true,
     thumbnailPosition: 'Top',

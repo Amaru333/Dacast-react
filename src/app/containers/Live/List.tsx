@@ -7,8 +7,6 @@ import { Action, getLiveListAction, deleteLiveChannelAction } from '../../redux-
 import { LiveItem } from '../../redux-flow/store/Live/General/types';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveListContainerProps {
     liveList: LiveItem[];

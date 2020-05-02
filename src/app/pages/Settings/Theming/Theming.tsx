@@ -47,7 +47,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         <div className="mt25">
                             <Button 
                                 className="mr1" 
-                                disabled={!settingsEdited}
+                                disabled={selectedTheme.themeName.length === 0}
                                 onClick={
                                     () => handleSubmitForm()
                                 }>
