@@ -1,12 +1,12 @@
 import React from 'react';
-import { Ad } from '../../../redux-flow/store/Settings/Interactions/types';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { VodEngagementComponentProps } from '../../../containers/Videos/Engagement';
+import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ContentEngagementComponentProps } from './ContentEngagement';
 
 
-export const VodNewAdModal = (props: VodEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
+export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
 
@@ -16,7 +16,7 @@ export const VodNewAdModal = (props: VodEngagementComponentProps & {toggle: Func
 
     const defineAdAction = () => {
         props.selectedAd.id === "-1" ?
-            props.createVodAd(adData) : props.saveVodAd(adData)
+            props.createContentAd(adData) : props.saveContentAd(adData)
     }
 
     return (

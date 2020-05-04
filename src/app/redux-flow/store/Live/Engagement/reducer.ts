@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
-import { LiveEngagementSettings, ActionTypes, liveEngagementDefaultState } from './types';
+import { ActionTypes } from './types';
 import { Action } from './actions';
-import { Ad } from '../../Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, contentEngagementDefaultState } from '../../Settings/Interactions/types';
 
-const reducer: Reducer<LiveEngagementSettings> = (state = liveEngagementDefaultState, action: Action) => {
+const reducer: Reducer<ContentEngagementSettings> = (state = contentEngagementDefaultState, action: Action) => {
     let ads: Ad[] = []
     switch (action.type) {
         case ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS:

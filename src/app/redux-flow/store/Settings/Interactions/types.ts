@@ -55,3 +55,13 @@ export const interactionsDefaultState: InteractionsInfos = {
     endScreenTextLink: null,
     brandImage: null
 }
+
+export interface ContentEngagementSettings {
+    contentId: string;
+    engagementSettings: InteractionsInfos;
+}
+
+export const contentEngagementDefaultState: ContentEngagementSettings = {
+    contentId: "-1",
+    engagementSettings: interactionsDefaultState
+}

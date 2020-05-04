@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
-import { VodEngagementSettings, ActionTypes, vodEngagementDefaultState } from './types';
+import { ActionTypes } from './types';
 import { Action } from './actions';
-import { Ad } from '../../Settings/Interactions/types';
+import { Ad, contentEngagementDefaultState, ContentEngagementSettings } from '../../Settings/Interactions/types';
 
-const reducer: Reducer<VodEngagementSettings> = (state = vodEngagementDefaultState, action: Action) => {
+const reducer: Reducer<ContentEngagementSettings> = (state = contentEngagementDefaultState, action: Action) => {
     let ads: Ad[] = []
     switch (action.type) {
         case ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS:

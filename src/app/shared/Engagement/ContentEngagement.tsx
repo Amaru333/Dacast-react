@@ -1,25 +1,33 @@
 import React from 'react';
-import { Bubble } from '../../../../components/Bubble/Bubble';
-import { Card } from '../../../../components/Card/Card';
-import { Text } from '../../../../components/Typography/Text';
-import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
-import { Table } from '../../../../components/Table/Table';
-import { TextStyle, Header, DisabledSection } from '../../../shared/Engagement/EngagementStyle';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { Modal } from '../../../../components/Modal/Modal';
-import { Ad, MailCatcher, InteractionsInfos } from '../../../redux-flow/store/Settings/Interactions/types';
-import { VodEngagementComponentProps } from '../../../containers/Videos/Engagement';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { VodNewAdModal } from './VodNewAdModal';
-import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { usePlayer } from '../../../utils/player';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { Card } from '../../../components/Card/Card';
+import { Text } from '../../../components/Typography/Text';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Icon';
+import { Table } from '../../../components/Table/Table';
+import { TextStyle, Header, DisabledSection } from './EngagementStyle';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Modal } from '../../../components/Modal/Modal';
+import { Ad, MailCatcher, InteractionsInfos, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ContentNewAdModal } from './ContentNewAdModal';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { usePlayer } from '../../utils/player';
 import { Prompt } from 'react-router';
-import { getPrivilege } from '../../../../utils/utils';
+import { getPrivilege } from '../../../utils/utils';
 
-export const VodEngagementPage = (props: VodEngagementComponentProps) => {
+export interface ContentEngagementComponentProps {
+    contentEngagementSettings: ContentEngagementSettings;
+    getContentEngagementSettings: Function;
+    saveContentEngagementSettings: Function;
+    saveContentAd: Function;
+    createContentAd: Function;
+    deleteContentAd: Function;
+}
+
+export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
 
     const emptyAd: Ad = {
         id: "-1",
@@ -29,7 +37,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
-    const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.vodEngagementSettings.engagementSettings);
+    const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.contentEngagementSettings.engagementSettings);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
@@ -54,8 +62,8 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
 
 
     React.useEffect(() => {
-        setEngagementSettings(props.vodEngagementSettings.engagementSettings)
-    }, [props.vodEngagementSettings.engagementSettings])
+        setEngagementSettings(props.contentEngagementSettings.engagementSettings)
+    }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
         return {
@@ -74,7 +82,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
     const advertisingTableBody = () => {
-        return props.vodEngagementSettings.engagementSettings.adList.map((item, i) => {
+        return props.contentEngagementSettings.engagementSettings.adList.map((item, i) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
@@ -83,7 +91,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteVodAd(item) }}
+                                onClick={() => { props.deleteContentAd(item) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>
@@ -99,7 +107,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
     }
 
     const revertSettings = () => {
-        setEngagementSettings(props.vodEngagementSettings.engagementSettings);
+        setEngagementSettings(props.contentEngagementSettings.engagementSettings);
         setSettingsEdited(false)
         setAdSectionEditable(false);
         setMailSectionEditable(false);
@@ -166,7 +174,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                         id="vodMailCatcherList"
                         dropdownTitle="Email Catcher"
                         dropdownDefaultSelect={engagementSettings.selectedMailCatcher}
-                        list={props.vodEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher) => { return { ...reduced, [item.type]: false } }, {})}
+                        list={props.contentEngagementSettings.engagementSettings.mailCatcher.reduce((reduced: DropdownListType, item: MailCatcher) => { return { ...reduced, [item.type]: false } }, {})}
                         callback={
                             (selectedMailCatcher: string) => {
                                 setEngagementSettings({ ...engagementSettings, selectedMailCatcher: selectedMailCatcher }); setSettingsEdited(true)
@@ -237,7 +245,7 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
                 settingsEdited ?
                     <div className="mt1">
                         <Button
-                            onClick={() => { props.saveVodEngagementSettings(engagementSettings); setSettingsEdited(false) }}
+                            onClick={() => { props.saveContentEngagementSettings(engagementSettings); setSettingsEdited(false) }}
                         >
                             Save
                         </Button>
@@ -246,12 +254,12 @@ export const VodEngagementPage = (props: VodEngagementComponentProps) => {
             }
 
             <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <VodNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
+                <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
             <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
                 <div className="mt2" ref={playerRef}></div>
             </Modal>
-            <Prompt when={engagementSettings !== props.vodEngagementSettings.engagementSettings} message='' />
+            <Prompt when={engagementSettings !== props.contentEngagementSettings.engagementSettings} message='' />
         </div>
     )
 }
