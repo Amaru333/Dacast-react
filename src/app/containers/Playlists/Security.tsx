@@ -4,7 +4,6 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getPlaylistSecuritySettingsAction, savePlaylistSecuritySettingsAction } from '../../redux-flow/store/Playlists/Security/actions';
 import { connect } from 'react-redux';
-import { PlaylistSecuritySettings, SecuritySettings } from '../../redux-flow/store/Playlists/Security';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -12,9 +11,11 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
+import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security/types';
+import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 
 export interface PlaylistSecurityContainerProps {
-    playlistSecuritySettings: PlaylistSecuritySettings;
+    playlistSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     getPlaylistSecuritySettings: Function;
     savePlaylistSecuritySettings: Function;
@@ -38,7 +39,13 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
         props.playlistSecuritySettings && props.globalSecuritySettings ? 
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
-                <PlaylistSecurityPage {...props} />
+                <ContentSecurityPage 
+                    contentSecuritySettings={props.playlistSecuritySettings} 
+                    contentId={playlistId}
+                    globalSecuritySettings={props.globalSecuritySettings}
+                    saveContentSecuritySettings={props.savePlaylistSecuritySettings}
+                    getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                />            
             </div>            
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )

@@ -8,7 +8,7 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
         case ActionTypes.GET_SETTING_THEMING_LIST :
             return {
                 ...state,
-                themes: action.payload,
+                themes: action.payload.data.themes,
             }
         case ActionTypes.CREATE_SETTING_THEME :
             themes = state.themes.slice()

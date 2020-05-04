@@ -1,22 +1,23 @@
-import { ActionTypes, LiveSecuritySettings, SecuritySettings } from "../Security/types";
+import { ActionTypes } from "../Security/types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { LiveSecurityServices } from '../Security/services';
+import { ContentSecuritySettings, SecuritySettings } from '../../Settings/Security';
 
 export interface GetLiveSecuritySettings {
     type: ActionTypes.GET_LIVE_SECURITY_SETTINGS;
-    payload: LiveSecuritySettings;
+    payload: ContentSecuritySettings;
 }
 
 export interface SaveLiveSecuritySettings {
     type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS;
-    payload: LiveSecuritySettings;
+    payload: ContentSecuritySettings;
 }
 
-export const getLiveSecuritySettingsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveSecuritySettings> => {
+export const getLiveSecuritySettingsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveSecuritySettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveSecuritySettings> ) => {
-        await LiveSecurityServices.getLiveSecuritySettingsService()
+        await LiveSecurityServices.getLiveSecuritySettingsService(liveId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_LIVE_SECURITY_SETTINGS, payload: response.data} );
             })
@@ -26,9 +27,9 @@ export const getLiveSecuritySettingsAction = (): ThunkDispatch<Promise<void>, {}
     };
 }
 
-export const saveLiveSecuritySettingsAction = (data: SecuritySettings): ThunkDispatch<Promise<void>, {}, SaveLiveSecuritySettings> => {
+export const saveLiveSecuritySettingsAction = (data: SecuritySettings, liveId: string): ThunkDispatch<Promise<void>, {}, SaveLiveSecuritySettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveSecuritySettings> ) => {
-        await LiveSecurityServices.saveLiveSecuritySettingsService(data)
+        await LiveSecurityServices.saveLiveSecuritySettingsService(data, liveId)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: response.data} );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));

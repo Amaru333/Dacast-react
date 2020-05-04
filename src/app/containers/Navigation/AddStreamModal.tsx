@@ -8,6 +8,8 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { getPrivilege } from '../../../utils/utils';
+import { addTokenToHeader, isTokenExpired } from '../../utils/token';
+import axios from 'axios'
 
 export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -21,6 +23,25 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const handleCancel = () => {
         setSelectedStreamType(null)
         props.toggle()
+    }
+
+    const handleCreateLiveStreams = async () => {
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels',
+            { 
+            }, 
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            debugger
+            console.log(error)
+        })
     }
 
 
@@ -83,7 +104,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 </div>
             </ModalContent>
             <ModalFooter>
-                <Button onClick={() => { location.href = "/livestreams" }} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
+                <Button onClick={() => {handleCreateLiveStreams()}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>

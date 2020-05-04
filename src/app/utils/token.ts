@@ -35,7 +35,12 @@ export function addTokenToHeader() {
     if(localStorage.getItem('userToken')) {
         if(userInfo) {
             var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
-            return {token: userInfo.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken, vodStorageId: userInfo['vod-storage-id']}
+            return {
+                token: userInfo.token, 
+                userId: userInfo['custom:dacast_user_id'], 
+                accessToken: tokenObject.accessToken, 
+                vodStorageId: userInfo['vod-storage-id']
+            }
         }
         var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
         let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))

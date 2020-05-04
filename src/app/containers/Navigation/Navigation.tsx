@@ -82,7 +82,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     }
 
-    const AddItemsList = [{name: "Vod", enabled: getPrivilege('privilege-vod')}, {name: "Stream", enabled: getPrivilege('privilege-live')}, {name: "Playlist", enabled: getPrivilege('privilege-playlists')}]
+    const AddItemsList = [{name: "Video", enabled: getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: getPrivilege('privilege-live')}, {name: "Playlist", enabled: getPrivilege('privilege-playlists')}]
 
     
 
@@ -95,10 +95,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const handleClick = (name: string) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
-            case "Vod":
+            case "Video":
                 history.push('/uploader')
                 break
-            case "Stream":
+            case "Live Stream":
                 setAddDropdownIsOpened(false)
                 if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")

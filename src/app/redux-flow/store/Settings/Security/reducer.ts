@@ -1,8 +1,8 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, SettingsSecurityDetails, defaultStateSettingsSecurity, GeoRestriction, DomainControl } from "./types";
+import { ActionTypes, SecuritySettings, defaultStateSettingsSecurity, GeoRestriction, DomainControl } from "./types";
 
-const reducer: Reducer<SettingsSecurityDetails> = (state = defaultStateSettingsSecurity, action: Action) => {
+const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity, action: Action) => {
     let savedGeoRestriction
     let savedDomainControl
     switch (action.type) {

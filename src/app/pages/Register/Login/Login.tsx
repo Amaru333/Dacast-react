@@ -35,8 +35,8 @@ export const LoginPage = (props: LoginComponentProps) => {
             <ImageStyle className="mx-auto" src={logo} />
             <ModalCard className="mx-auto" size="small" title="User Login" >
                 <ModalContent className="clearfix">
-                    <Input type="email" className="col col-12" label="Email Address" placeholder="Email Address" value={username} onChange={event => setUsername(event.currentTarget.value)} />
-                    <div className=" relative col col-12 flex">
+                    <Input type="email" className="col col-12 pt1" label="Email Address" placeholder="Email Address" value={username} onChange={event => setUsername(event.currentTarget.value)} />
+                    <div className=" relative col col-12 flex pt1">
                         <div className='relative flex col col-12'>
                             <Input type={passwordVisible ? "text" : "password"} className='col col-12'  label="Password" placeholder="Password" value={password} onChange={event => setPassword(event.currentTarget.value)}/>
                             <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>

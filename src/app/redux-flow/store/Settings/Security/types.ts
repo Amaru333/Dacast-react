@@ -36,14 +36,16 @@ export interface VideoScheduling {
     endTime: number;
 }
 
-export interface SettingsSecurityDetails {
+export interface SecuritySettings {
     passwordProtection: PasswordProtectedVideo;
     contentScheduling: VideoScheduling;
     geoRestriction?: GeoRestriction[];
+    selectedGeoRestriction?: string;
     domainControl?: DomainControl[];
+    selectedDomainControl?: string;
 }
 
-export const defaultStateSettingsSecurity: SettingsSecurityDetails = {
+export const defaultStateSettingsSecurity: SecuritySettings = {
     passwordProtection: {
         password: null
     },
@@ -53,4 +55,27 @@ export const defaultStateSettingsSecurity: SettingsSecurityDetails = {
     },
     geoRestriction: [],
     domainControl: [],
+}
+
+
+export interface ContentSecuritySettings {
+    contentId: string;
+    securitySettings: SecuritySettings;
+}
+
+const defaultStateSecuritySettings: SecuritySettings = {
+    passwordProtection: {
+        password: ''
+    },
+    contentScheduling: {
+        startTime: 0,
+        endTime: 0
+    },
+    geoRestriction: [],
+    domainControl: [],
+}
+
+export const defaultStateContentSecuritySettings: ContentSecuritySettings = {
+    contentId: null,
+    securitySettings: defaultStateSecuritySettings
 }
