@@ -1,31 +1,46 @@
 export enum ActionTypes {
-    GET_ANALYTICS_REALTIME_DETAILS = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_DETAILS",
+    GET_ANALYTICS_REALTIME_VIEWERS_TIME = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_VIEWERS_TIME",
+    GET_ANALYTICS_REALTIME_PLAYBACK_TIME = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_PLAYBACK_TIME",
+    GET_ANALYTICS_REALTIME_GB_TIME = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_GB_TIME",
+    GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION",
+}
+
+export interface GetAnalyticsRealtimeOptions {
+    timePeriod: number;
+    liveChannel: string;
 }
 
 export interface AnalyticsRealTimeInfos {
-    concurentViewersPerTime: {
-        time: number[];
-        data: number[];
-    };
-    newPlaybackSessionsPerTime: {
-        time: number[];
-        data: number[];
-    };
-    gbPerTime: {
-        time: number[];
-        data: number[];
-    };
-    consumptionPerLocation:
-    {
-        data: {
-            city: string;
-            position: {
-                latitude: number;
-                longitude: number;
-            };
-            consumedMB: number;
-        }[];
-    };
+    concurentViewersPerTime: AnalyticsRealTimeViewersTime | false;
+    newPlaybackSessionsPerTime: AnalyticsRealTimePlaybackTime | false;
+    gbPerTime: AnalyticsRealTimePlaybackTime | false;
+    consumptionPerLocation: AnalyticsRealTimeConsumptionLocation | false;
+}
+
+export interface AnalyticsRealTimeConsumptionLocation {
+    data: {
+        city: string;
+        position: {
+            latitude: number;
+            longitude: number;
+        };
+        consumedMB: number;
+    }[];
+}
+
+export interface AnalyticsRealTimeViewersTime {
+    time: number[];
+    data: number[];
+}
+
+export interface AnalyticsRealTimePlaybackTime {
+    time: number[];
+    data: number[];
+}
+
+export interface AnalyticsRealTimeGbTime {
+    time: number[];
+    data: number[];
 }
 
 interface TopContentData {
@@ -36,13 +51,17 @@ interface TopContentData {
     revenueEur: number;
 }
 
-
 export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = {
-    data: false,
+    data: {
+        concurentViewersPerTime: false,
+        newPlaybackSessionsPerTime: false,
+        gbPerTime: false,
+        consumptionPerLocation: false,
+    },
 };
 
 export interface AnalyticsRealTimeState {
-    readonly data: false | AnalyticsRealTimeInfos;
+    readonly data:  AnalyticsRealTimeInfos;
 }
 
 
