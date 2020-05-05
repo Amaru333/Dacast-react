@@ -8,7 +8,6 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
@@ -112,11 +111,8 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
 export const presetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; staticStepperData: {[key: string]: any}}) => {
 
-    useStepperFinalStepAction('stepperNextButton', props.finalFunction)
-
     const createRecipeHeaderElement = () => {
         return {data: [
-            {cell: <></>},
             {cell: <Text key={'encodingRecipesPage_Present'} size={14} weight="med">Rendition</Text>},
             {cell: <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>},
             {cell: <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>},
@@ -133,7 +129,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             return presets.map((value, key) => {
     
                 return {data: [
-                    <InputCheckbox key={key + value.name} defaultChecked={props.stepperData.recipePresets.includes(value.name)} id={value.name} onChange={(event) => {
+                    <InputCheckbox key={key + value.name} label={value.description} defaultChecked={props.stepperData.recipePresets.includes(value.name)} id={value.name} onChange={(event) => {
                         if (event.currentTarget.checked && props.stepperData.recipePresets.length < 6) {
                             props.updateStepperData({ ...props.stepperData }, props.stepperData.recipePresets.push(value.name))
                             props.setStepValidated(props.stepperData.recipePresets.length >= 1)
@@ -144,7 +140,6 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
                         }
                     }
                     } />,
-                    <Text key={'encodingRecipesPage_' + value.description + key} size={14} weight="reg">{value.description}</Text>,
                     <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
                     <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>,
                 ]}
