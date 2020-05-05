@@ -3,6 +3,7 @@ import { Action } from "./actions";
 import { ActionTypes, defaultEncodingRecipes} from "../EncodingRecipes/EncodingRecipesTypes";
 import { EncodingRecipesData } from './EncodingRecipesTypes';
 const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , action: Action) => {
+    let recipes = null
     switch (action.type) {
         case ActionTypes.GET_ENCODING_RECIPES:
             return {
@@ -15,7 +16,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 defaultRecipePresets: action.payload.data.presets
             }
         case ActionTypes.CREATE_ENCODING_RECIPES:   
-            let recipes = state.recipes.slice()
+             recipes = state.recipes.slice()
             if(action.payload.isDefault) {
                 recipes = recipes.map((item) => {return {...item, isDefault: false}})
             }
@@ -24,6 +25,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 recipes  
             }
         case ActionTypes.SAVE_ENCODING_RECIPES:
+            recipes = state.recipes.slice()
             if(action.payload.isDefault) {  
                 recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
             }

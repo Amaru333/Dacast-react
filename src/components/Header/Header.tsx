@@ -33,7 +33,10 @@ const Header = (props: HeaderProps) => {
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
     React.useEffect(() => {
-        setBreadcrumbItems(location.pathname.replace('-', ' ').split('/').filter((f: string) => f).map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        let pathArray = location.pathname.split('-').join(' ').split('/').map(path => path.split(' ').map(f => f.charAt(0).toUpperCase() + f.slice(1)))
+        let breadcrumbNames = pathArray.map(path => path.join(' '))
+        let removedSpace = breadcrumbNames.shift()
+        setBreadcrumbItems(breadcrumbNames)
     }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)

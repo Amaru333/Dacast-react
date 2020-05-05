@@ -322,7 +322,7 @@ export const AppRoutes: Routes[] = [
                 component: DashboardAnalytics
             },
             {
-                path: '/analytics/realtime',
+                path: '/analytics/real-time',
                 name: 'Real Time',
                 component: RealTime
             },
@@ -403,7 +403,7 @@ export const AppRoutes: Routes[] = [
                 component: Security
             },
             {
-                path: '/settings/api-integrations',
+                path: '/settings/api-&-integrations',
                 name: 'API & Integrations',
                 component: ApiIntegration,
                 associatePrivilege: 'privilege-api'

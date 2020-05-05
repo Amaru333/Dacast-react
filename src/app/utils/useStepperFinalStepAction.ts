@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
-
     function doAThing(){if(document.getElementById(buttonId).innerText !== 'Next') {
         callback()
     }}
@@ -12,5 +11,5 @@ export const useStepperFinalStepAction = (buttonId: string, callback: Function) 
             document.getElementById(buttonId).removeEventListener('click', doAThing)
         }
 
-    }, [])
+    }, [callback])
 }
