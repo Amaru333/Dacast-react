@@ -3,32 +3,30 @@ import { Action } from "./actions";
 import { ActionTypes, InteractionsInfos, interactionsDefaultState, MailCatcher, Ad } from './types';
 
 const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, action: Action) => {
-    let ads: Ad[] = []
     let mailCatcherList: MailCatcher[] = [];
     switch (action.type) {
         case ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS:
-            return {...action.payload};
+            return {
+                ...action.payload.data, 
+                ads: action.payload.data.ads ?action.payload.data.ads.map((ad) => {return {...ad, id: ad.url + ad.timestamp + ad["ad-type"]}}) : [],
+                adEnabled: action.payload.data.ads && action.payload.data.ads.length > 0 ? true : false,
+                mailCatcher: []
+            };
         case ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS:
             return {...action.payload};
         case ActionTypes.SAVE_AD :
-            ads = state.adList.slice();
-            return  {...state, adList: ads.map((item) => {
-                if (item.id !== action.payload.id) {
-                    return item
-                }
-                return {
-                    ...item,
-                    ...action.payload
-                }
-            })}
+            return  {
+                ...state, 
+                ads: action.payload
+            }
         case ActionTypes.CREATE_AD:
-            ads = state.adList.slice();
-            ads.splice(ads.length, 0, action.payload )
-            return {...state,
-                adList: ads  
+            return {
+                ...state,
+                ads: action.payload.ads,
+                adsId: action.payload.adsId  
             }
         case ActionTypes.DELETE_AD:
-            return {...state, adList: state.adList.filter((item) => item.id != action.payload.id)}
+            return {...state, ads: state.ads.filter((item) => item.id !== action.payload.id)}
         
         case ActionTypes.SAVE_MAIL_CATCHER :
             mailCatcherList = state.mailCatcher.slice();
@@ -48,7 +46,7 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
                 mailCatcher: mailCatcherList  
             }
         case ActionTypes.DELETE_MAIL_CATCHER:
-            return {...state, mailCatcher: state.mailCatcher.filter((item) => item.type != action.payload.type)}
+            return {...state, mailCatcher: state.mailCatcher.filter((item) => item.type !== action.payload.type)}
         default:
             return state;
     }
