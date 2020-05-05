@@ -31,8 +31,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const emptyAd: Ad = {
         id: "-1",
-        placement: "",
-        position: "",
+        "ad-type": "",
+        timestamp: "",
         url: "test"
     }
 
@@ -82,11 +82,11 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }
 
     const advertisingTableBody = () => {
-        return props.contentEngagementSettings.engagementSettings.adList.map((item, i) => {
+        return props.contentEngagementSettings.engagementSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
-                    <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
+                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{item.timestamp}</Text>,
                     <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>

@@ -21,12 +21,12 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
 
     return (
         <div>
-            <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, ["url"]: event.currentTarget.value})} />
+            <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, placement: value})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData.placement} />              
+                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
                 {
-                    adData.placement === 'Mid-roll' ?
-                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.position} onChange={(event) => setAdData({...adData, position: event.currentTarget.value})} />
+                    adData["ad-type"] === 'Mid-roll' ?
+                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp} onChange={(event) => setAdData({...adData, timestamp: event.currentTarget.value})} />
                         : null
                 }
             </div>
