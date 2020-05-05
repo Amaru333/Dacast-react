@@ -26,8 +26,10 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
                 adsId: action.payload.adsId  
             }
         case ActionTypes.DELETE_AD:
-            return {...state, ads: state.ads.filter((item) => item.id !== action.payload.id)}
-        
+            return {
+                ...state, 
+                ads: action.payload
+            }
         case ActionTypes.SAVE_MAIL_CATCHER :
             mailCatcherList = state.mailCatcher.slice();
             return  {...state, mailCatcher: mailCatcherList.map((item) => {

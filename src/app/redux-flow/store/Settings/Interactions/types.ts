@@ -20,7 +20,7 @@ export interface MailCatcher {
 export interface Ad {
     id?: string;
     "ad-type": string;
-    timestamp: string;
+    timestamp: number;
     url: string;
 }
 

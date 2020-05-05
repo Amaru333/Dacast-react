@@ -26,7 +26,7 @@ export interface CreateAd {
 
 export interface DeleteAd {
     type: ActionTypes.DELETE_AD;
-    payload: Ad;
+    payload: Ad[];
 }
 
 export interface SaveMailCatcher {
@@ -84,7 +84,7 @@ export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, Cre
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateAd> ) => {
         await interactionsServices.createAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_AD, payload: {ads: data, adsId: response.data.data.id}} );
+                dispatch( {type: ActionTypes.CREATE_AD, payload: {ads: data, adsId: response.data.data.adsId}} );
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -96,7 +96,7 @@ export const deleteAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteAd> ) => {
         await interactionsServices.saveAd(data, adsId)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_AD, payload: data} );
                 dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

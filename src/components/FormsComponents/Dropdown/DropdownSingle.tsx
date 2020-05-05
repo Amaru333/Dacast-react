@@ -48,7 +48,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
             if(Object.keys(test).length === 0) {
                 test = {["No options macthing your selection"]: false}
             }
-            debugger
         setItemsList(test);
     }
 

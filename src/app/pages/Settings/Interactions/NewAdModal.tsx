@@ -10,8 +10,8 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
 
     const emptyAd: Ad = { 
         id: "-1",
-        timestamp: "",
-        "ad-type": "",
+        timestamp: NaN,
+        "ad-type": "pre-roll",
         url: ""
     }
 
@@ -21,14 +21,22 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
         setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
     }, [props.selectedAd])
 
+    React.useEffect(() => console.log("modal props", props.interactionsInfos), [props.interactionsInfos])
+
     const defineAdAction = () => {
         let tempArray: Ad[] = []
         if(props.selectedAd === -1) {
-            tempArray.push(adData)
-            props.createAd(tempArray)
+            if(props.interactionsInfos.adsId) {
+                tempArray.push(...props.interactionsInfos.ads, adData)
+                props.saveAd(tempArray, props.interactionsInfos.adsId)
+            } else {
+                tempArray.push(adData)
+                props.createAd(tempArray)
+            }
         } else {
             tempArray = props.interactionsInfos.ads
             tempArray[props.selectedAd] = adData
+            console.log('modal adsId', props.interactionsInfos.adsId)
             props.saveAd(tempArray, props.interactionsInfos.adsId)
         }
     }
@@ -37,10 +45,10 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, "ad-type": value})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] ? adData["ad-type"] : 'Pre-roll'} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, "ad-type": value.toLocaleLowerCase()})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] ? adData["ad-type"] : 'Pre-roll'} /> 
                 {
                     adData["ad-type"] === 'Mid-roll' ?
-                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, timestamp: event.currentTarget.value})}  />
+                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})}  />
                         : null
                 }             
             </div>
