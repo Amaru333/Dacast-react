@@ -17,7 +17,6 @@ import { updateClipboard } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useForm } from 'react-hook-form';
-import { UserInfo } from 'os';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 
 interface CompanyComponentProps {
@@ -45,7 +44,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     
     let {CompanyPageDetails} = props;
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.CompanyPageDetails.uploadLogoUrl);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -54,8 +53,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
             setValue('country', "United States");
-        }
-        setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        }   
     }, []);
 
     React.useEffect(() => {
@@ -152,7 +150,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                 </label>
                                     </Button>
                                 </div>
-                                <ImageStyle src={props.CompanyPageDetails.uploadLogoUrl}></ImageStyle>
+                                <ImageStyle src={uploadedFileUrl}></ImageStyle>
                             </div>
                         </>
                             :

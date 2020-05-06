@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer } from './FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
@@ -151,9 +151,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.contentType) {
             case 'playlist':
-                return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">playlist_play</IconStyle>
             case 'folder':
-                return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">folder_open</IconStyle>
             case 'live':
             case 'vod':
                 return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
@@ -200,7 +200,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     data: [
                         <div key={'foldersTableInputCheckbox' + row.id} className='flex items-center'>
                             <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
-                            {handleRowIconType(row)}
+                            <RowIconContainer>
+                                {handleRowIconType(row)}
+                            </RowIconContainer>
                         </div>,
                         <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                         <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,

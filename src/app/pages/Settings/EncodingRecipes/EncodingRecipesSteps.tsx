@@ -141,7 +141,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
                     }
                     } />,
                     <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
-                    <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>,
+                    <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate ? value.bitrate / 1000 : null}</Text>,
                 ]}
             })
         }

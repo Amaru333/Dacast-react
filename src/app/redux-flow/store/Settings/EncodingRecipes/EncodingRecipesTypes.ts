@@ -17,7 +17,7 @@ export interface RecipePreset {
     name: string;
     description: string;
     size: string;
-    bitrate: string;
+    bitrate: number;
 }
 
 export interface EncodingRecipeItem {

@@ -98,7 +98,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "LD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);

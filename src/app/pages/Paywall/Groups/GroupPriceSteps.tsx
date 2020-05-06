@@ -239,8 +239,8 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 {renderContentsList()}
             </ContainerHalfSelector>
             <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
-                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
+                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
+                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
             </div>
             <Button disabled={selectedItems.length !== 0} onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2 col-12 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
             <ContainerHalfSelector className="col sm-col-5 col-12" >

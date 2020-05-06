@@ -49,3 +49,8 @@ export const MoveFoldersContainer = styled.div`
     overflow-y: auto;
     border: 1px solid ${props => props.theme.colors['gray-7']};
 `
+
+export const RowIconContainer = styled.div`
+    width: 50px;
+    text-align: center;
+`
