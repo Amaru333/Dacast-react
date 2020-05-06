@@ -39,7 +39,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         ).then((response) => {
             console.log(response)
         }).catch((error) => {
-            debugger
+            
             console.log(error)
         })
     }

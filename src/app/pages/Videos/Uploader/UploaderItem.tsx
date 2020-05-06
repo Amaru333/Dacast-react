@@ -11,7 +11,7 @@ export type UploaderItemStates = 'completed' | 'queue' | 'progress' | 'paused' |
 export interface UploaderItemProps {
     currentState: UploaderItemStates;
     progress: number;
-    timeRemaining: {num: number; unit: string};
+    timeRemaining: { num: number; unit: string };
     size: number;
     name: string;
     idItem?: number;
@@ -51,19 +51,19 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                     </Text>
                 );
             case 'progress':
-                
+
                 return (
                     props.progress < 1 ?
-                    <Text className="mr2" weight="med" size={14} color="gray-1">
-                    Upload Starting
+                        <Text className="mr2" weight="med" size={14} color="gray-1">
+                            Upload Starting
+                        </Text>
+                        :
+                        <>
+                            <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
+                            <Text className="mr2" weight="med" size={14} color="gray-1">
+                                {props.progress.toFixed(0)}%
                     </Text>
-                 :
-                    <>
-                    <Text className="mr2 nowrap" size={14} weight="reg" color="gray-3" >{props.timeRemaining.num} {props.timeRemaining.unit} remaining</Text>
-                    <Text className="mr2" weight="med" size={14} color="gray-1">
-                        {props.progress.toFixed(0)}%
-                    </Text>
-                </>
+                        </>
                 );
             case 'queue':
                 return (
@@ -98,9 +98,7 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
                 <Text className="relative ml1 nowrap" size={14} weight="reg" color="gray-3" >{readableBytes(props.size)}</Text>
                 <ProgressItemEndInfos>
                     {renderEndItem()}
-                    <IconStyle className='pointer' coloricon='gray-3' onClick={() => props.actionFunction()} id={"closeIcon" + props.idItem}>{
-                        props.currentState==='paused' ? "play_for_work" : "close"
-                    }</IconStyle>
+                    <IconStyle className='pointer' coloricon='gray-3' onClick={() => props.actionFunction()} id={"closeIcon" + props.idItem}>close</IconStyle>
                     <Tooltip target={"closeIcon" + props.idItem} >{handleTooltipCloseText()}</Tooltip>
                 </ProgressItemEndInfos>
             </UploaderItemStyle>
@@ -129,7 +127,7 @@ export const UploaderItemLabel = styled.div<{}>`
 `
 
 export const ProgressItem = styled.div<{ progress: number; currentState: UploaderItemStates }>`
-    width: ${props => props.progress}%;
+    width: ${props => props.progress >= 100 ? 100 : props.progress}%;
     ${props => props.currentState === "completed" && css`
         background-color: ${props.theme.colors["green10"]};
         border-bottom: 4px solid ${props.theme.colors["green"]};
@@ -175,4 +173,4 @@ export const UploaderItemStyle = styled.div<UploaderItemProps>`
     min-width: 260px;
 `
 
-export {UploaderItem};
+export { UploaderItem };

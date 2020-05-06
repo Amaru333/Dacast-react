@@ -96,6 +96,10 @@ export class UploadObject {
                     Authorization: token
                 }
             })
+            .catch((error: any) => {
+                this.onError('init')  
+                throw new Error(error)
+            })
         this.uploadId = res.data.data.uploaderID
         this.urlS3 = res.data.data.s3Path
     }
@@ -162,6 +166,10 @@ export class UploadObject {
                     Authorization: token
                 }
             })
+            .catch(function (error) {
+                this.onError('multipart') 
+                throw new Error(error)
+            });
     
         return res.data.data.presignedURLs
     }
@@ -225,7 +233,11 @@ export class UploadObject {
                     Authorization: token
                 }
             })
-            this.isCompleted = true
+            .catch((error: any) => {
+                this.onError('complete')  
+                throw new Error(error)
+            })
+        this.isCompleted = true
         this.onProgressUpdate(100)
     }
 
