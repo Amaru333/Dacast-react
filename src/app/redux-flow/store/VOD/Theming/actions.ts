@@ -7,7 +7,7 @@ import { ContentTheme } from '../../Settings/Theming/types';
 
 export interface GetVodTheme {
     type: ActionTypes.GET_VOD_THEME;
-    payload: ContentTheme;
+    payload: {data: ContentTheme};
 }
 
 export interface SaveVodTheme {
@@ -15,9 +15,9 @@ export interface SaveVodTheme {
     payload: ContentTheme;
 }
 
-export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
+export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
-        await VodThemingServices.getVodThemeService()
+        await VodThemingServices.getVodThemeService(vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_VOD_THEME, payload: response.data} );
             })

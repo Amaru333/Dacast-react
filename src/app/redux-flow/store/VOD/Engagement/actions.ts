@@ -1,18 +1,18 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, VodEngagementSettings } from './types';
+import { ActionTypes } from './types';
 import { vodEngagementServices } from './services';
-import { InteractionsInfos, Ad } from '../../Settings/Interactions';
+import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
 
 export interface GetVodEngagementSettings {
     type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS;
-    payload: VodEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SaveVodEngagementSettings {
     type: ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS;
-    payload: VodEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SaveVodAd {
@@ -41,7 +41,7 @@ export const getVodEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {
     };
 }
 
-export const saveVodEngagementSettingsAction = (data: VodEngagementSettings): ThunkDispatch<Promise<void>, {}, SaveVodEngagementSettings> => {
+export const saveVodEngagementSettingsAction = (data: ContentEngagementSettings): ThunkDispatch<Promise<void>, {}, SaveVodEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodEngagementSettings> ) => {
         await vodEngagementServices.saveVodEngagementSettings(data)
             .then( response => {

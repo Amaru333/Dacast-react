@@ -1,20 +1,19 @@
 import React from 'react';
-import { PlaylistEngagementPage } from '../../pages/Playlist/Engagement/Engagement';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { PlaylistEngagementSettings } from "../../redux-flow/store/Playlists/Engagement/types"
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
-import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
+import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 
 export interface PlaylistEngagementComponentProps {
-    playlistEngagementSettings: PlaylistEngagementSettings;
+    playlistEngagementSettings: ContentEngagementSettings;
     getPlaylistEngagementSettings: Function;
     savePlaylistEngagementSettings: Function;
     savePlaylistAd: Function;
@@ -37,8 +36,14 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
         props.playlistEngagementSettings ?
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
-                <PlaylistEngagementPage {...props} />
-            </div>
+                <ContentEngagementPage 
+                    contentEngagementSettings={props.playlistEngagementSettings}
+                    getContentEngagementSettings={props.getPlaylistEngagementSettings}
+                    saveContentEngagementSettings={props.savePlaylistEngagementSettings}
+                    saveContentAd={props.savePlaylistAd}
+                    createContentAd={props.createPlaylistAd}
+                    deleteContentAd={props.deletePlaylistAd}
+                />            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
@@ -54,7 +59,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistEngagementSettings: () => {
             dispatch(getPlaylistEngagementSettingsAction());
         },
-        savePlaylistEngagementSettings: (data: PlaylistEngagementSettings) => {
+        savePlaylistEngagementSettings: (data: ContentEngagementSettings) => {
             dispatch(savePlaylistEngagementSettingsAction(data))
         },
         savePlaylistAd: (data: Ad) => {

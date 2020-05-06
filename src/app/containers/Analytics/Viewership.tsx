@@ -9,7 +9,7 @@ import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types'
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { GetAnalyticsViewershipOptions, getAnalyticsViewershipDetailsAction, AnalyticsViewershipState } from '../../redux-flow/store/Analytics/Viewership';
+import { GetAnalyticsViewershipOptions, getAnalyticsViewershipDetailsAction, AnalyticsViewershipState, getAnalyticsViewershipViewingTimeAction, getAnalyticsViewershipConsumptionBreakdownAction, getAnalyticsViewershipPlaysViewersTimeAction, getAnalyticsViewershipConsumptionDeviceAction, getAnalyticsViewershipConsumptionDomainAction, getAnalyticsViewershipConcurrentPlaybackAction } from '../../redux-flow/store/Analytics/Viewership';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -21,8 +21,13 @@ export interface ViewershipComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
-    getAnalyticsViewership: Function;
     viewershipAnalytics: AnalyticsViewershipState;
+    getAnalyticsViewershipViewingTime: Function;
+    getAnalyticsViewershipConsumptionBreakdown: Function;
+    getAnalyticsViewershipPlaysViewersTime: Function;
+    getAnalyticsViewershipConsumptionDevice: Function;
+    getAnalyticsViewershipConsumptionDomain: Function;
+    getAnalyticsViewershipConcurrentPlayback: Function;
 }
 
 const Viewership = (props: ViewershipComponentProps) => {
@@ -34,12 +39,28 @@ const Viewership = (props: ViewershipComponentProps) => {
             }
             wait()
         }
-        if (!props.viewershipAnalytics.data) {
-            props.getAnalyticsViewership();
+        console.log(props);
+        if(!props.viewershipAnalytics.data.consumptionPerDomain) {
+            props.getAnalyticsViewershipConsumptionDomain();
+        }
+        if(!props.viewershipAnalytics.data.consumptionPerDevices) {
+            props.getAnalyticsViewershipConsumptionDevice();
+        }
+        if(!props.viewershipAnalytics.data.playsViewersPerTime) {
+            props.getAnalyticsViewershipPlaysViewersTime();
+        }
+        if(!props.viewershipAnalytics.data.consumptionBreakdown) {
+            props.getAnalyticsViewershipConsumptionBreakdown();
+        }
+        if(!props.viewershipAnalytics.data.concurrentPlaybackDevice) {
+            props.getAnalyticsViewershipConcurrentPlayback();
+        }
+        if(!props.viewershipAnalytics.data.viewingTimeBreakdown) {
+            props.getAnalyticsViewershipViewingTime();
         }
     }, [])
     return (
-        props.folderData && props.viewershipAnalytics.data ? 
+        props.folderData ? 
             <ViewershipAnalytics {...props} viewershipAnalytics={props.viewershipAnalytics} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -64,9 +85,25 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         restoreContent: (content: FolderAsset[]) => {
             dispatch(restoreContentAction(content))
         },
-        getAnalyticsViewership: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipDetailsAction(dates));
+        getAnalyticsViewershipViewingTime: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipViewingTimeAction(dates));
+        },
+        getAnalyticsViewershipConsumptionBreakdown: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipConsumptionBreakdownAction(dates));
+        },
+        getAnalyticsViewershipPlaysViewersTime: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipPlaysViewersTimeAction(dates));
+        },
+        getAnalyticsViewershipConsumptionDevice: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipConsumptionDeviceAction(dates));
+        },
+        getAnalyticsViewershipConsumptionDomain: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipConsumptionDomainAction(dates));
+        },
+        getAnalyticsViewershipConcurrentPlayback: (dates: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipConcurrentPlaybackAction(dates));
         }
+
     };
 }
 

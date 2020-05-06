@@ -31,7 +31,7 @@ const saveTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/themes/' + data.id,
-        {...data}, 
+        {...data, offlineMessagePosition: 1}, 
         {
             headers: {
                 Authorization: token

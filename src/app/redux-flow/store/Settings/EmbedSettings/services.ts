@@ -9,9 +9,12 @@ const getEmbedSettingsOptionsService = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/embed',
-        {headers: {
-            'Authorization': token
-        }})
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveEmbedSettingsOptionsService = async(data: EmbedSettingsOptionType) => {
@@ -19,9 +22,11 @@ const saveEmbedSettingsOptionsService = async(data: EmbedSettingsOptionType) => 
     let {token} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/settings/embed',
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 

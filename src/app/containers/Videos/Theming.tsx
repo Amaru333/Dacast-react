@@ -27,7 +27,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
 
     React.useEffect(() => {
         if(!props.theme) {
-            props.getVodTheme();
+            props.getVodTheme(vodId);
         }
         if(!props.themeList) {
             props.getThemingList();
@@ -59,8 +59,8 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodTheme: () => {
-            dispatch(getVodThemeAction());
+        getVodTheme: (vodId: string) => {
+            dispatch(getVodThemeAction(vodId));
         },
         saveVodTheme: (theme: ContentTheme) => {
             dispatch(saveVodThemeAction(theme));

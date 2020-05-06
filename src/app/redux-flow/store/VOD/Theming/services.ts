@@ -1,10 +1,19 @@
 import axios from 'axios'
 import { ContentTheme } from '../../Settings/Theming';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getVodThemeService = () => {
-    return axios.get(urlBase + 'vod-themes');
+const getVodThemeService = async (vodId: string) => {    
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/themes',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveVodThemeService = (data: ContentTheme) => {

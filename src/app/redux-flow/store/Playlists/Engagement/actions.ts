@@ -1,18 +1,18 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, PlaylistEngagementSettings } from './types';
+import { ActionTypes } from './types';
 import { playlistEngagementServices } from './services';
-import { InteractionsInfos, Ad } from '../../Settings/Interactions';
+import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
 
 export interface GetPlaylistEngagementSettings {
     type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS;
-    payload: PlaylistEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SavePlaylistEngagementSettings {
     type: ActionTypes.SAVE_PLAYLIST_ENGAGEMENT_SETTINGS;
-    payload: PlaylistEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SavePlaylistAd {
@@ -41,7 +41,7 @@ export const getPlaylistEngagementSettingsAction = (): ThunkDispatch<Promise<voi
     };
 }
 
-export const savePlaylistEngagementSettingsAction = (data: PlaylistEngagementSettings): ThunkDispatch<Promise<void>, {}, SavePlaylistEngagementSettings> => {
+export const savePlaylistEngagementSettingsAction = (data: ContentEngagementSettings): ThunkDispatch<Promise<void>, {}, SavePlaylistEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistEngagementSettings> ) => {
         await playlistEngagementServices.savePlaylistEngagementSettings(data)
             .then( response => {

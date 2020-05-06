@@ -1,18 +1,17 @@
 import React from 'react';
-import { VodEngagementPage } from '../../pages/Videos/Engagement/Engagement';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { VodEngagementSettings } from "../../redux-flow/store/VOD/Engagement/types"
 import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
-import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
+import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 
 export interface VodEngagementComponentProps {
-    vodEngagementSettings: VodEngagementSettings;
+    vodEngagementSettings: ContentEngagementSettings;
     getVodEngagementSettings: Function;
     saveVodEngagementSettings: Function;
     saveVodAd: Function;
@@ -34,7 +33,14 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
         props.vodEngagementSettings ?
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
-                <VodEngagementPage {...props} />
+                <ContentEngagementPage 
+                    contentEngagementSettings={props.vodEngagementSettings}
+                    getContentEngagementSettings={props.getVodEngagementSettings}
+                    saveContentEngagementSettings={props.saveVodEngagementSettings}
+                    saveContentAd={props.saveVodAd}
+                    createContentAd={props.createVodAd}
+                    deleteContentAd={props.deleteVodAd}
+                />
             </div>            
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -51,7 +57,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodEngagementSettings: () => {
             dispatch(getVodEngagementSettingsAction());
         },
-        saveVodEngagementSettings: (data: VodEngagementSettings) => {
+        saveVodEngagementSettings: (data: ContentEngagementSettings) => {
             dispatch(saveVodEngagementSettingsAction(data))
         },
         saveVodAd: (data: Ad) => {
