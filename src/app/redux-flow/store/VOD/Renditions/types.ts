@@ -29,6 +29,6 @@ export interface Rendition {
     id: string;
     name: string;
     size: string;
-    bitrate: string;
+    bitrate: number;
     encoded?: boolean;
 }

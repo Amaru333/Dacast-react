@@ -2,8 +2,6 @@ import axios from 'axios'
 import { Rendition } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
-
 const getVodRenditionsService = async (vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()

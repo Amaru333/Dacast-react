@@ -31,9 +31,9 @@ export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<voi
     };
 }
 
-export const addVodRenditionsAction = (data: Rendition[]): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+export const addVodRenditionsAction = (data: Rendition[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
-        await VodRenditionsServices.addVodRenditionsService(data)
+        await VodRenditionsServices.addVodRenditionsService(data, vodId)
             .then(response => {
                 dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: response.data });
             })
@@ -43,9 +43,9 @@ export const addVodRenditionsAction = (data: Rendition[]): ThunkDispatch<Promise
     };
 }
 
-export const deleteVodRenditionsAction = (data: Rendition[]): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+export const deleteVodRenditionsAction = (data: Rendition[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodRenditions>) => {
-        await VodRenditionsServices.deleteVodRenditionsService(data)
+        await VodRenditionsServices.deleteVodRenditionsService(data, vodId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: response.data });
             })
