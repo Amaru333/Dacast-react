@@ -33,7 +33,8 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
                 <div className='flex flex-column'>
                     <VideoTabs videoId={vodId} />
                     <VodRenditionsPage {...props} vodId={vodId} />
-                </div>            )
+                </div>            
+            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }

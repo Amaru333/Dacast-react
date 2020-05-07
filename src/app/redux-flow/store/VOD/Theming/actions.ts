@@ -4,10 +4,11 @@ import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from "../Theming/types"
 import { VodThemingServices } from './services';
 import { ContentTheme } from '../../Settings/Theming/types';
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 export interface GetVodTheme {
     type: ActionTypes.GET_VOD_THEME;
-    payload: {data: ContentTheme};
+    payload: ContentTheme;
 }
 
 export interface SaveVodTheme {
@@ -19,7 +20,7 @@ export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
         await VodThemingServices.getVodThemeService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
