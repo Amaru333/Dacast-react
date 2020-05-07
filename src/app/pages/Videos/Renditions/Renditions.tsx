@@ -31,15 +31,21 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const notEncodedRenditionsTableHeader = () => {
         return {data: [
-            {cell: <InputCheckbox className="inline-flex" id="globalCheckboxNotEncoded" disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
-                onChange={(event) => {
-                    if (event.currentTarget.checked) {
-                        const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.id })
-                        setSelectedNotEncodedRendition(editedSelectedRenditions);
-                    } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                        setSelectedNotEncodedRendition([])
-                    }
-                }} />},
+            {cell: 
+                <InputCheckbox 
+                    className="inline-flex" id="globalCheckboxNotEncoded" 
+                    disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} 
+                    defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
+                    onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                            const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.name })
+                            setSelectedNotEncodedRendition(editedSelectedRenditions);
+                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                            setSelectedNotEncodedRendition([])
+                        }
+                    }} 
+            />
+            },
             {cell: <Text size={14} weight="med">Rendition</Text>},
             {cell: <Text size={14} weight="med">Size (px)</Text>},
             {cell: <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>}
@@ -49,20 +55,20 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     const notEncodedRenditionsTableBody = () => {
         return notEncodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedEncodedRendition.length > 0}
-                    defaultChecked={selectedNotEncodedRendition.includes(value.id)}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0}
+                    defaultChecked={selectedNotEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
-                            setSelectedNotEncodedRendition([...selectedNotEncodedRendition, value.id])
+                            setSelectedNotEncodedRendition([...selectedNotEncodedRendition, value.name])
                         } else {
-                            const editedSelectedRenditions = selectedNotEncodedRendition.filter(item => item !== value.id)
+                            const editedSelectedRenditions = selectedNotEncodedRendition.filter(item => item !== value.name)
                             setSelectedNotEncodedRendition(editedSelectedRenditions);
                         }
                     }
                     } />,
                 <Text key={value.name} size={14} weight="reg">{value.name}</Text>,
                 <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
-                <Text key={"bitrate" + value.bitrate} size={14} weight="reg">{value.bitrate}</Text>,
+                <Text key={"bitrate" + value.bitrate} size={14} weight="reg">{value.bitrate ? value.bitrate / 1000 : null}</Text>,
             ]}
         })
     }
@@ -72,7 +78,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
             {cell: <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
-                        const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.id })
+                        const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.name })
                         setSelectedEncodedRendition(editedSelectedEncodedRendition);
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedEncodedRendition([])
@@ -88,19 +94,19 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.id} id={"checkbox" + value.id} disabled={selectedNotEncodedRendition.length > 0}
-                    defaultChecked={selectedEncodedRendition.includes(value.id)}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
+                    defaultChecked={selectedEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
-                            setSelectedEncodedRendition([...selectedEncodedRendition, value.id])
+                            setSelectedEncodedRendition([...selectedEncodedRendition, value.name])
                         } else {
-                            const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.id)
+                            const editedSelectedEncodedRendition = selectedEncodedRendition.filter(item => item !== value.name)
                             setSelectedEncodedRendition(editedSelectedEncodedRendition);
                         }
                     }} />,
                 <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.size}</Text>,
-                <Text size={14} weight="reg">{value.bitrate}</Text>,
+                <Text size={14} weight="reg">{value.bitrate / 1000}</Text>,
                 value.encoded ? 
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
@@ -111,13 +117,13 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const encodeRenditions = () => {
         event.preventDefault();
-        props.addVodRenditions(selectedNotEncodedRendition)
+        props.addVodRenditions(selectedNotEncodedRendition, props.vodId)
         setSelectedNotEncodedRendition([])
     }
 
     const deleteRenditions = () => {
         event.preventDefault();
-        props.deleteVodRenditions(selectedEncodedRendition)
+        props.deleteVodRenditions(selectedEncodedRendition, props.vodId)
         setSelectedEncodedRendition([])
     }
 
@@ -136,18 +142,18 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
             <div className="widgets flex items-baseline mt25">
                 <RenditionsWidget>
                     <div >
-                        <Text size={24} weight="reg">{props.renditions.videoInfo ? props.renditions.videoInfo.fileSize : ''}</Text>
+                        <Text size={24} weight="reg">{props.renditions.videoInfo ? (props.renditions.videoInfo.fileSize / 1000000).toFixed(2) : ''} MB</Text>
                     </div>
                     <div className="mt1">
-                        <Text size={14} weight="reg">Source File Size</Text>
+                        <Text color="gray-4" size={14} weight="reg">Source File Size</Text>
                     </div>
                 </RenditionsWidget>
                 <RenditionsWidget>
                     <div>
-                        <Text size={24} weight="reg">{props.renditions.videoInfo ? props.renditions.videoInfo.videoBitrateBytePerSec: ''}</Text>
+                        <Text size={24} weight="reg">{props.renditions.videoInfo ? (props.renditions.videoInfo.videoBitrateBytePerSec / 1000000).toFixed(0): ''} Mbps</Text>
                     </div>
                     <div className="mt1">
-                        <Text size={14} weight="reg">Source File Bitrate</Text>
+                        <Text color="gray-4" size={14} weight="reg">Source File Bitrate</Text>
                     </div>
                 </RenditionsWidget>
                 <RenditionsWidget>
@@ -155,15 +161,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                         <Text size={24} weight="reg">100 GB</Text>
                     </div>
                     <div className="mt1">
-                        <Text size={14} weight="reg">Storage Remaining</Text>
-                    </div>
-                </RenditionsWidget>
-                <RenditionsWidget>
-                    <div>
-                        <Text size={24} weight="reg">15 GB</Text>
-                    </div>
-                    <div className="mt1">
-                        <Text size={14} weight="reg">Encoding Remaining</Text>
+                        <Text color="gray-4" size={14} weight="reg">Storage Remaining</Text>
                     </div>
                 </RenditionsWidget>
             </div>
