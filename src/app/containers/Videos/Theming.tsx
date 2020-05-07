@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContentTheme } from '../../redux-flow/store/Settings/Theming/types';
+import { ContentTheme, ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
@@ -35,6 +35,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
                     saveTheme={props.saveVodTheme}
                     contentType='vod'
                     actionType='Save'
+                    contentId={vodId}
                 />
             </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -52,8 +53,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodTheme: (vodId: string) => {
             dispatch(getVodThemeAction(vodId));
         },
-        saveVodTheme: (theme: ContentTheme) => {
-            dispatch(saveVodThemeAction(theme));
+        saveVodTheme: (theme: ThemeOptions, vodId: string) => {
+            dispatch(saveVodThemeAction(theme, vodId));
         },
     }
 }

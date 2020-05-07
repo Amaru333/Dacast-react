@@ -24,6 +24,7 @@ export interface ControlCardThemingComponentProps {
     cancelFunction?: Function;
     contentType: 'vod' | 'live' | 'playlist' | 'settings';
     actionType: 'Create' | 'Save';
+    contentId?: string;
 }
 
 export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => {
@@ -52,7 +53,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
         if(props.actionType === 'Create') {
             props.createTheme(selectedTheme)
         } else {
-            props.saveTheme(selectedTheme)
+            props.saveTheme(selectedTheme, props.contentId)
         }
     }
 
