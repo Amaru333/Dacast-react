@@ -1,6 +1,5 @@
 import React from 'react';
-import { LiveThemingPage } from '../../pages/Live/Theming/Theming';
-import { ThemesData, Action, getThemingListAction, ContentTheme } from '../../redux-flow/store/Settings/Theming';
+import { Action, ContentTheme } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
@@ -9,17 +8,14 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import { handleCustomTheme } from '../../shared/Theming/handleCustomTheme';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
+import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
-    themeList: ThemesData;
     getLiveTheme: Function;
     saveLiveTheme: Function;
-    getThemingList: Function;
-    setCustomThemeList: Function;
     showDiscardToast: Function;
 }
 
@@ -31,22 +27,18 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
         if(!props.theme) {
             props.getLiveTheme();            
         }
-        if(!props.themeList) {
-            props.getThemingList();
-        }
     }, [])
     
-    const [customThemeList, setCustomThemeList] = React.useState<ThemesData>(null)
-    
-    React.useEffect(() => {
-        handleCustomTheme(props.theme, props.themeList, setCustomThemeList) 
-    }, [props.themeList, props.theme])
-    
     return (
-        props.theme && customThemeList ?
+        props.theme ?
             <div className='flex flex-column'>
                 <LiveTabs liveId={liveId} />
-                <LiveThemingPage setCustomThemeList={setCustomThemeList} themeList={customThemeList} {...props} />
+                <ThemingControlsCard
+                    theme={props.theme} 
+                    saveTheme={props.saveLiveTheme}
+                    contentType='live'
+                    actionType='Save'
+                />            
             </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -56,7 +48,6 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
 export function mapStateToProps( state: ApplicationState ) {
     return {
         theme: state.live.theming,
-        themeList: state.settings.theming
     }
 }
 
@@ -67,9 +58,6 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveLiveTheme: (theme: ContentTheme) => {
             dispatch(saveLiveThemeAction(theme));
-        },
-        getThemingList: () => {
-            dispatch(getThemingListAction())
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

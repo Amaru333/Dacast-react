@@ -43,7 +43,8 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
                     saveContentAd={props.savePlaylistAd}
                     createContentAd={props.createPlaylistAd}
                     deleteContentAd={props.deletePlaylistAd}
-                />            </div>
+                />            
+            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }

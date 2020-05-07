@@ -40,6 +40,7 @@ export const saveThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void
         await themingServices.saveTheme(theme)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_SETTING_THEME, payload: theme} );
+                dispatch(showToastNotification(`${theme.themeName} has been updated`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -51,6 +52,7 @@ export const createThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
         await themingServices.createTheme(theme)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_SETTING_THEME, payload: {...theme, id: response.data.data.id}} );
+                dispatch(showToastNotification(`${theme.themeName} has been created`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -62,6 +64,7 @@ export const deleteThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
         await themingServices.deleteTheme(theme)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_SETTING_THEME, payload: theme} );
+                dispatch(showToastNotification(`${theme.themeName} has been deleted`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
