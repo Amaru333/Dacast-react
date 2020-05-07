@@ -18,9 +18,9 @@ export interface MailCatcher {
 }
 
 export interface Ad {
-    id: string;
-    placement: string;
-    position: string;
+    id?: string;
+    "ad-type": string;
+    timestamp: number;
     url: string;
 }
 
@@ -32,9 +32,10 @@ export interface BrandImage {
 }
 
 export interface InteractionsInfos {
+    adsId?: string;
     adEnabled: boolean;
-    adList: Ad[];
-    mailCatcher: MailCatcher[];
+    ads: Ad[];
+    mailCatcher?: MailCatcher[];
     selectedMailCatcher?: string;
     brandText: string;
     brandTextLink: string;
@@ -46,7 +47,7 @@ export interface InteractionsInfos {
 
 export const interactionsDefaultState: InteractionsInfos = {
     adEnabled: false,
-    adList: [],
+    ads: [],
     mailCatcher: [],
     brandText: null,
     brandTextLink: null,
@@ -54,4 +55,14 @@ export const interactionsDefaultState: InteractionsInfos = {
     endScreenText: null,
     endScreenTextLink: null,
     brandImage: null
+}
+
+export interface ContentEngagementSettings {
+    contentId: string;
+    engagementSettings: InteractionsInfos;
+}
+
+export const contentEngagementDefaultState: ContentEngagementSettings = {
+    contentId: "-1",
+    engagementSettings: interactionsDefaultState
 }

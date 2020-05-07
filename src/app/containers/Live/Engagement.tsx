@@ -1,18 +1,17 @@
 import React from 'react';
-import { LiveEngagementPage } from '../../pages/Live/Engagement/Engagement';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { LiveEngagementSettings } from "../../redux-flow/store/Live/Engagement/types"
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
-import { Ad } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
+import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 
 export interface LiveEngagementComponentProps {
-    liveEngagementSettings: LiveEngagementSettings;
+    liveEngagementSettings: ContentEngagementSettings;
     getLiveEngagementSettings: Function;
     saveLiveEngagementSettings: Function;
     saveLiveAd: Function;
@@ -34,8 +33,14 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
         props.liveEngagementSettings ?
             <div className='flex flex-column'>
                 <LiveTabs liveId={liveId} />
-                <LiveEngagementPage {...props} />
-            </div>
+                <ContentEngagementPage 
+                    contentEngagementSettings={props.liveEngagementSettings}
+                    getContentEngagementSettings={props.getLiveEngagementSettings}
+                    saveContentEngagementSettings={props.saveLiveEngagementSettings}
+                    saveContentAd={props.saveLiveAd}
+                    createContentAd={props.createLiveAd}
+                    deleteContentAd={props.deleteLiveAd}
+                />            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
@@ -51,7 +56,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveEngagementSettings: () => {
             dispatch(getLiveEngagementSettingsAction());
         },
-        saveLiveEngagementSettings: (data: LiveEngagementSettings) => {
+        saveLiveEngagementSettings: (data: ContentEngagementSettings) => {
             dispatch(saveLiveEngagementSettingsAction(data))
         },
         saveLiveAd: (data: Ad) => {

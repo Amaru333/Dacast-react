@@ -3,7 +3,7 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from "../Theming/types"
 import { VodThemingServices } from './services';
-import { ContentTheme } from '../../Settings/Theming/types';
+import { ContentTheme, ThemeOptions } from '../../Settings/Theming/types';
 
 export interface GetVodTheme {
     type: ActionTypes.GET_VOD_THEME;
@@ -12,14 +12,14 @@ export interface GetVodTheme {
 
 export interface SaveVodTheme {
     type: ActionTypes.SAVE_VOD_THEME;
-    payload: ContentTheme;
+    payload: ThemeOptions;
 }
 
-export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
+export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
-        await VodThemingServices.getVodThemeService()
+        await VodThemingServices.getVodThemeService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -27,11 +27,12 @@ export const getVodThemeAction = (): ThunkDispatch<Promise<void>, {}, GetVodThem
     };
 }
 
-export const saveVodThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SaveVodTheme> => {
+export const saveVodThemeAction = (data: ThemeOptions, vodId: string): ThunkDispatch<Promise<void>, {}, SaveVodTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
-        await VodThemingServices.saveVodThemeService(data)
+        await VodThemingServices.saveVodThemeService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: data} );
+                dispatch(showToastNotification("Theme for content updated!", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

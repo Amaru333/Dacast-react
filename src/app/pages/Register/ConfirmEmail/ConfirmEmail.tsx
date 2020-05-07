@@ -13,10 +13,6 @@ const logo = require('../../../../../public/assets/logo.png');
 export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
 
     let history = useHistory()
-
-    React.useEffect(() => {
-        props.confirmEmail(props.email)
-    }, [])
     
     return(
         <LoginContainer>

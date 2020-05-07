@@ -17,7 +17,6 @@ import { updateClipboard } from '../../../utils/utils';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useForm } from 'react-hook-form';
-import { UserInfo } from 'os';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 
 interface CompanyComponentProps {
@@ -54,8 +53,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
             setValue('country', "United States");
-        }
-        setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        }   
     }, []);
 
     React.useEffect(() => {
@@ -87,6 +85,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     setUploadedFileUrl(reader.result.toString())
                     setLogoFile(file[0])
                     setErrorMessage('')
+                    setUploadButtonLoading(true)
+                    props.getLogoUrlForUploading();
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -100,6 +100,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('hey')
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
@@ -114,8 +115,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        setUploadButtonLoading(true)
-        props.getLogoUrlForUploading();       
+               
     }
 
     React.useEffect(() => {
@@ -141,7 +141,14 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                 </SpinnerContainer>: null}
                                 <div style={{width:'100%'}} className=''>
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                                    <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleUpload(e)}>Change</Button>
+                                    <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
+                                    <label htmlFor='changeButton'>
+                                    <LinkStyle>
+                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
+                                        Change
+                                    </LinkStyle>
+                                </label>
+                                    </Button>
                                 </div>
                                 <ImageStyle src={uploadedFileUrl}></ImageStyle>
                             </div>

@@ -4,7 +4,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterStyle'
-import { useKeyboardSubmit } from '../../../../utils/utils';
+import { useKeyboardSubmit, useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 
@@ -12,10 +12,19 @@ const logo = require('../../../../../public/assets/logo.png');
 
 export const LoginPage = (props: LoginComponentProps) => {
 
+    let query = useQuery()
+
     const [username, setUsername] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        if(query.get('email')){
+            props.confirmEmail(query.get('email'))
+            console.log('sup')
+        }
+    }, [])
 
     const enableSubmit = () => {
         return username.length > 0 && password.length > 0
