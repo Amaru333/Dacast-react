@@ -11,7 +11,7 @@ export interface GetVodRenditions {
 
 export interface AddVodRenditions {
     type: ActionTypes.ADD_VOD_RENDITIONS;
-    payload: Rendition[];
+    payload: string[];
 }
 
 export interface DeleteVodRenditions {
@@ -31,7 +31,7 @@ export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<voi
     };
 }
 
-export const addVodRenditionsAction = (data: Rendition[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
         await VodRenditionsServices.addVodRenditionsService(data, vodId)
             .then(response => {

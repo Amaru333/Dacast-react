@@ -14,12 +14,13 @@ const getVodRenditionsService = async (vodId: string) => {
     )
 }
 
-const addVodRenditionsService = async (data: Rendition[], vodId: string) => {
+const addVodRenditionsService = async (data: string[], vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/renditions', 
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/renditions/bulk/create', 
         {
-            ...data[0]
+            resourceType: 'vods',
+            items: data
         },
         {
             headers: {
@@ -28,11 +29,14 @@ const addVodRenditionsService = async (data: Rendition[], vodId: string) => {
         }
     )
 }
-
 const deleteVodRenditionsService = async (data: Rendition[], vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/renditions'  + data[0].id, 
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/renditions/bulk/delete', 
+        {
+            resourceType: 'vods',
+            items: data
+        },
         {
             headers: {
                 Authorization: token

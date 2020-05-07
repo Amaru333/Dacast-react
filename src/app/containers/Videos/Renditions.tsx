@@ -50,7 +50,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodRenditions: (vodId: string) => {
             dispatch(getVodRenditionsAction(vodId));
         },
-        addVodRenditions: (data: Rendition[], vodId: string) => {
+        addVodRenditions: (data: string[], vodId: string) => {
             dispatch(addVodRenditionsAction(data, vodId));
         },
         deleteVodRenditions: (data: Rendition[], vodId: string) => {
