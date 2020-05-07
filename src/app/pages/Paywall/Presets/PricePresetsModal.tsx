@@ -56,16 +56,16 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
         return presetsList.price.map((price, key) => {
             return( 
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.price.length - 1 ? '' : 'mb2' )}>
-                    <div className='col col-12 sm-col-6 clearfix mxn1 flex'>
-                        <Input className={"col sm-col-6 col-5 px1"} value={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
-                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
-                    </div>
+                    <div className='col col-12 sm-col-12 clearfix flex'>
+                        <Input className={"col sm-col-3 col-5 pr1"} value={price.amount > 0 ? price.amount.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
+                        <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
 
-                    {
-                        key === presetsList.price.length - 1 ? 
-                            <div onClick={() => setPresetsList({...presetsList, price: [...presetsList.price, {amount: NaN, currency: 'USD'}]})} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show ' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div> 
-                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() => { var newList= presetsList.price.filter((item, index) => {return index !== key}); setPresetsList({...presetsList, price: newList})}} >close</IconStyle></div>
-                    }
+                        {
+                            key === presetsList.price.length - 1 ? 
+                                <div onClick={() => setPresetsList({...presetsList, price: [...presetsList.price, {amount: NaN, currency: 'USD'}]})} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex items-center xs-justify-center ' + (key === 0 ? 'mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show ' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div> 
+                                : <div className={'pointer col col-2 sm-col-6 sm-ml2 px1 flex items-center xs-justify-center ' + (key === 0 ? 'mt3' : '')} ><IconStyle onClick={() => { var newList= presetsList.price.filter((item, index) => {return index !== key}); setPresetsList({...presetsList, price: newList})}} >close</IconStyle></div>
+                        }
+                    </div>
                 </div>
             )
         })

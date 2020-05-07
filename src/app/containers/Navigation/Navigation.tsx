@@ -54,7 +54,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
-    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
@@ -103,7 +102,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")
                 } else {
-                    setAddStreamModalOpen(true)
+                    props.openAddStream();
                 }
                 break
             case "Playlist":
@@ -218,7 +217,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     </SectionStyle>
                 </Scrollbar>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
-                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
            
                   
             </ContainerStyle>

@@ -77,10 +77,10 @@ export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: b
     overflow-x: hidden;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
+    box-sizing: border-box;
     ${props => props.isNavigation && css`
-        top: 42px;
-        width: 97.5%;
-        z-index: 99;
+        top: 0;
+        width: 100%;
     `}
 `;
 

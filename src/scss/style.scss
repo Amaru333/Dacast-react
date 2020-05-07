@@ -355,6 +355,9 @@ a {
     .xs-mt2 {
         margin-top: 1rem;
     }
+    .xs-justify-center {
+        justify-content: center;
+    }
 }
 
 /** SM custom class */ 
@@ -386,5 +389,8 @@ a {
     }
     .sm-mt3 {
         margin-top: 2rem;
+    }
+    .sm-justify-center {
+        justify-content: center;
     }
 }

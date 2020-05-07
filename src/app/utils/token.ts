@@ -17,6 +17,11 @@ export const initUserInfo = () => {
     }
 }
 
+export const resetUserInfo = () => {
+    localStorage.removeItem('userToken')
+    userInfo = false;
+}
+
 export function addToken(data: TokenInfos) {
     if(data) {
         localStorage.setItem('userToken', JSON.stringify(data));

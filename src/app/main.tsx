@@ -31,6 +31,7 @@ import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
 import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
+import { AddStreamModal } from './containers/Navigation/AddStreamModal';
 
 // Any additional component props go here.
 interface MainProps {
@@ -75,6 +76,7 @@ const AppContent = () => {
     let mobileWidth = useMedia('(max-width:780px');
 
     const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(null)
 
     React.useEffect(() => {
         updateStateTitle(location.pathname)
@@ -90,18 +92,26 @@ const AppContent = () => {
         }
     };
 
+    React.useEffect(() => {
+        if(isMobile && addStreamModalOpen) {
+            setOpen(false);
+        }
+    }, [addStreamModalOpen]);
+
     const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
 
         if(isLoggedIn()) {
             if(props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
                 return <NotFound />
             }
+            console.log(addStreamModalOpen)
             return (
                 <Route
                     path={props.path}
                     exact={props.exact ? true : false}
                 >
-                    <MainMenu menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+                    <MainMenu openAddStream={ () => { setAddStreamModalOpen(true);} } menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+                    <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
