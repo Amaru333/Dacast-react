@@ -20,6 +20,7 @@ import { updateClipboard } from '../../../utils/utils';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { getPrivilege } from '../../../../utils/utils';
+import { addTokenToHeader } from '../../../utils/token';
 
 interface LiveGeneralComponentProps {
     liveDetails: LiveDetails;
@@ -32,6 +33,8 @@ interface LiveGeneralComponentProps {
 var moment = require('moment-timezone');
 
 export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
+
+    const {userId} = addTokenToHeader()
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
@@ -138,8 +141,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{'https://iframe.dacast.com/live/' + props.liveDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('', "Share Link Copied")}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -372,8 +375,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Stream Name</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg">{props.liveDetails.title}</LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.title, "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.streamKeys[0]}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.streamKeys[0], "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>
@@ -382,7 +385,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg">{props.liveDetails.backupPublishURL}</LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.backupPublishURL, "JS here")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                         </div>
