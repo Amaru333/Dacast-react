@@ -123,7 +123,15 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const deleteRenditions = () => {
         event.preventDefault();
-        props.deleteVodRenditions(selectedEncodedRendition, props.vodId)
+        console.log(selectedEncodedRendition)
+        let ids: string[] = []
+        props.renditions.encodedRenditions.map(rendition => {
+            if(selectedEncodedRendition.includes(rendition.name)) {
+                console.log(rendition.renditionID)
+                ids.push(rendition.renditionID)
+            }
+        })
+        props.deleteVodRenditions(ids, props.vodId)
         setSelectedEncodedRendition([])
     }
 

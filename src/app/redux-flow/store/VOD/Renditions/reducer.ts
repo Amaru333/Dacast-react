@@ -24,9 +24,8 @@ const reducer: Reducer<RenditionsList> = (state = initialRenditionsState, action
                 ...state, encodedRenditions: renditions
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
-            let renditionsId = action.payload.map((renditions) => {return renditions.name})
             return { 
-                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !renditionsId.includes(rendition.name))
+                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !action.payload.includes(rendition.name))
             }
         default:
             return state;
