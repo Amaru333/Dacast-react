@@ -91,7 +91,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon>
-                        <IconStyle id={'adTableCopy' + i} onClick={() => {console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item));props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId)}} >delete</IconStyle>
+                        <IconStyle id={'adTableCopy' + i} onClick={() => {console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item));props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item))}} >delete</IconStyle>
                         <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                     </ActionIcon>
                     <ActionIcon>
@@ -132,7 +132,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>Advertising</Text>
                 <DisabledSection settingsEditable={props.interactionsInfos.ads.length > 0}>
-                    <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.ads.length > 0 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
+                    <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adsEnabled} onChange={() => {setInteractionsInfos({...interactionInfos, adsEnabled: !interactionInfos.adsEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 </DisabledSection>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex mb2'>
@@ -197,10 +197,10 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImage ? props.interactionsInfos.brandImage.placement : 'Top Right'}></DropdownSingle>
-                        <Input className="col col-4 pr2" label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" />
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}></DropdownSingle>
+                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageSize: parseInt(event.currentTarget.value)})} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value)})}  />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageLink: event.currentTarget.value})}  />
                     </div>
                 </div>
                 
