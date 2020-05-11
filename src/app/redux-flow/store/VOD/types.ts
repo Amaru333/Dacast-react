@@ -9,10 +9,10 @@ import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsList } from './Renditions/types';
 import { VodTheme } from './Theming/types';
 import { VodThemingReducer } from './Theming/reducer';
-import { VodEngagementSettings } from './Engagement/types';
 import { VodEngagementReducer } from './Engagement/reducer';
 import { VodPaywallPageInfos, VodPaywallReducer } from './Paywall';
 import { ContentTheme } from '../Settings/Theming/types';
+import { ContentEngagementSettings } from '../Settings/Interactions';
 
 
 export const vodInitialState: VodState = {
@@ -34,7 +34,7 @@ export interface  VodState {
     list: false | SearchResult;
     renditions: false | RenditionsList;
     theming: false | ContentTheme;
-    engagement: false | VodEngagementSettings;
+    engagement: false | ContentEngagementSettings;
     paywall: false | VodPaywallPageInfos;
 }
 
