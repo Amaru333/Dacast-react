@@ -232,7 +232,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Tooltip target="tooltipUploaderEncoding">Use our STandard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-integrations")}> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-&-integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
 

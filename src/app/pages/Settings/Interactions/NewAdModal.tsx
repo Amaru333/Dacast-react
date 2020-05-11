@@ -26,18 +26,12 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     const defineAdAction = () => {
         let tempArray: Ad[] = []
         if(props.selectedAd === -1) {
-            if(props.interactionsInfos.adsId) {
-                tempArray.push(...props.interactionsInfos.ads, adData)
-                props.saveAd(tempArray, props.interactionsInfos.adsId)
-            } else {
-                tempArray.push(adData)
-                props.createAd(tempArray)
-            }
+            tempArray.push(adData)
+            props.createAd(tempArray)
         } else {
             tempArray = props.interactionsInfos.ads
             tempArray[props.selectedAd] = adData
-            console.log('modal adsId', props.interactionsInfos.adsId)
-            props.saveAd(tempArray, props.interactionsInfos.adsId)
+            props.saveAd(tempArray)
         }
     }
 

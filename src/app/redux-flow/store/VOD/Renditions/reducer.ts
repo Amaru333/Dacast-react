@@ -11,21 +11,21 @@ const initialRenditionsState: RenditionsList = {
 }
 
 const reducer: Reducer<RenditionsList> = (state = initialRenditionsState, action: Action) => {
+    let renditions = null
     switch (action.type) {
         case ActionTypes.GET_VOD_RENDITIONS:
             return {
                 ...state, ...action.payload.data
             };
         case ActionTypes.ADD_VOD_RENDITIONS:
-            let renditions = state.encodedRenditions.slice()
+             renditions = state.encodedRenditions.slice()
             renditions.splice(renditions.length, 0, ...action.payload)
             return {
                 ...state, encodedRenditions: renditions
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
-            let renditionsId = action.payload.map((renditions) => {return renditions.id})
             return { 
-                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !renditionsId.includes(rendition.id))
+                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !action.payload.includes(rendition.name))
             }
         default:
             return state;

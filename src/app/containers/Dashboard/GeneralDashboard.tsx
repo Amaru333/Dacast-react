@@ -10,6 +10,7 @@ import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
 import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { PurchaseStepperCartStep, PurchaseStepperPaymentStep } from './PurchaseStepper';
+import { useHistory } from 'react-router';
 
 interface PlanType {
     libelle: string;
@@ -22,6 +23,8 @@ interface PlanType {
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: DashboardPayingPlan | DashboardTrial; profile: DashboardGeneral}) => {
 
+    let history = useHistory()
+    
     let smallScreen = useMedia('(max-width: 40em)')
 
     const mockPaymentMethod = "none"
@@ -134,7 +137,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <WidgetElement className={classItemFullWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
-                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => alert('Go to purchase page')}>Upgrade</Button>
+                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade</Button>
                             </WidgetHeader>
                             <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
                             <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
