@@ -7,10 +7,12 @@ import { loginAction, Action } from '../../../redux-flow/store/Register/Login/ac
 import { addToken } from '../../../utils/token';
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
+import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 
 export interface LoginComponentProps {
     login: Function;
     loginInfos: TokenInfos;
+    confirmEmail: Function;
 }
 const Login = (props: LoginComponentProps) => {
 
@@ -44,6 +46,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         login: (data: LoginInfos, callback: Function) => {
             console.log(callback)
             dispatch(loginAction(data)).then(callback) ;
+        },
+        confirmEmail: (email: string) => {
+            dispatch(confirmEmailAction(email));
         },
 
     };

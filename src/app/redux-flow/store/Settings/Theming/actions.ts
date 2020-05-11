@@ -6,7 +6,7 @@ import { themingServices } from './services';
 
 export interface GetThemesList {
     type: ActionTypes.GET_SETTING_THEMING_LIST;
-    payload: ThemeOptions[];
+    payload: {data: {themes: ThemeOptions[]}};
 }
 
 export interface SaveTheme {
@@ -39,7 +39,8 @@ export const saveThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveTheme> ) => {
         await themingServices.saveTheme(theme)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_SETTING_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_SETTING_THEME, payload: theme} );
+                dispatch(showToastNotification(`${theme.themeName} has been updated`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -50,7 +51,8 @@ export const createThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateTheme> ) => {
         await themingServices.createTheme(theme)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_SETTING_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.CREATE_SETTING_THEME, payload: {...theme, id: response.data.data.id}} );
+                dispatch(showToastNotification(`${theme.themeName} has been created`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -61,7 +63,8 @@ export const deleteThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteTheme> ) => {
         await themingServices.deleteTheme(theme)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_SETTING_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_SETTING_THEME, payload: theme} );
+                dispatch(showToastNotification(`${theme.themeName} has been deleted`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

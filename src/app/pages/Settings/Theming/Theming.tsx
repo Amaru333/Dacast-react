@@ -1,62 +1,34 @@
 import React from 'react';
-import { ThemingContainer, PlayerSection, PlayerContainer, TextStyle } from '../../../shared/Theming/ThemingStyle'
+import { TextStyle } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions, defaultTheme } from '../../../redux-flow/store/Settings/Theming';
 import { usePlayer } from '../../../utils/player';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
-    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
-
-    let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, '1552_f_297509');
-
-    const handleSubmitForm = () => {
-        setSubmitLoading(true);
-        selectedTheme.id === "-1" ?
-            props.createTheme(selectedTheme, () => setSubmitLoading(false))
-            : props.saveTheme(selectedTheme, () => setSubmitLoading(false))        
-        setCurrentPage('list')
-    }
 
     const ThemingOptions = () => {
         return (
-            <>
-                <ThemingContainer>
-                    <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
-                        <PlayerContainer>
-                            <div ref={playerRef}>
-                            </div>
-                        </PlayerContainer>
-                    </PlayerSection>
-                    <div className='col col-12 md-col-4 sm-pr1 flex flex-column' >
-                        <ThemingControlsCard selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} contentType={'settings'} />
-                        <div className="mt25">
-                            <Button 
-                                className="mr1" 
-                                disabled={!settingsEdited}
-                                onClick={
-                                    () => handleSubmitForm()
-                                }>
-                            Save
-                            </Button>
-                            <Button typeButton="tertiary" onClick={() => {setCurrentPage('list');setSelectedTheme(null)}}>Cancel</Button>
-                        </div>
-                    </div>
-                </ThemingContainer>
-            </>
+            <ThemingControlsCard
+                theme={{themes: [selectedTheme], id: null}} 
+                saveTheme={props.saveTheme}
+                createTheme={props.createTheme}
+                cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}
+                contentType='settings'
+                actionType={selectedTheme.id === '-1'? 'Create' : 'Save'}
+            />
         )
     }
 
@@ -72,14 +44,42 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
         const themingTableBody = () => {
             return props.themingList.themes.map((theme, key) => {
-                return {data: [
+                return ( key === 0 ?
+                    {data: [
+                        <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
+                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
+                        <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
+                            <ActionIcon>
+                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
+                                <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                            </ActionIcon>
+                            
+                        </IconContainer>
+    
+                    ]}
+                    :            
+                    {data: [
                     <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                     theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
-                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}><IconStyle onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle><IconStyle onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle><IconStyle onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle> </IconContainer>
+                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
+                        <ActionIcon>
+                            <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
+                            <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle>
+                            <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                        </ActionIcon>
+                        <ActionIcon>
+                            <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
+                            <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                        </ActionIcon>                      
+                    </IconContainer>
 
                 ]}
-            })
+            )})
         }
 
         return (

@@ -6,13 +6,16 @@ import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { UploadObject } from '../../../utils/uploaderService';
-import { Prompt } from 'react-router'
+import { Prompt, useHistory } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { IconStyle } from '../../../../shared/Common/Icon';
 
 
 export const UploaderPage = (props: UploaderProps) => {
+
+    let history = useHistory();
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
@@ -27,17 +30,17 @@ export const UploaderPage = (props: UploaderProps) => {
 
 
     React.useEffect(() => {
-        uploadNextFile()     
+        uploadNextFile()
     }, [currentUpload && currentUpload.isCompleted])
 
     React.useEffect(() => {
         setUploadingList((currentList: UploaderItemProps[]) => {
-            const updatedList = currentList.map((value, key) => { if (value.name === currentUpload.getFileName()) {value.currentState = "progress"; value.timeRemaining.num = 0} return value })
+            const updatedList = currentList.map((value, key) => { if (value.name === currentUpload.getFileName()) { value.currentState = "progress"; value.timeRemaining.num = 0 } return value })
             return updatedList;
         })
     }, [currentUpload && currentUpload.getFileName()])
 
-    const updateItem = (percent: number, name: string, startTime: number) => {    
+    const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
             //Calcul ETA
@@ -46,21 +49,20 @@ export const UploaderPage = (props: UploaderProps) => {
             elapsedtime = elapsedtime / 1000;
             var uploadSpeed = percent / elapsedtime
             var eta = (100 - percent) / uploadSpeed;
-            console.log(percent);
-            if(eta > 120) {
+            if (eta > 120) {
                 eta = Math.round(eta / 60);
                 var etaUnit = 'minutes'
             } else {
                 eta = Math.round(eta);
-                var etaUnit= ' seconds';
-            }      
+                var etaUnit = ' seconds';
+            }
             return Object.assign([...currentList], {
                 [index]:
                 {
                     ...currentList[index],
                     currentState: percent >= 100 ? "completed" : currentList[index].currentState,
                     progress: percent,
-                    timeRemaining: {num: eta, unit: etaUnit}
+                    timeRemaining: { num: eta, unit: etaUnit }
                 }
             })
         });
@@ -68,22 +70,23 @@ export const UploaderPage = (props: UploaderProps) => {
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4', 'video/mov'];
+        console.log(fileList, "test21");
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            if (fileList.length > 0 ) {
+            console.log(file);
+            if (fileList.length > 0) {
                 var startTime = (new Date()).getTime();
-                setFile(file)
                 let newUpload = new UploadObject(
-                    file, 
-                    MAX_REQUEST_PER_BATCH, 
-                    NB_CONCURRENT_REQUESTS, 
-                    FILE_CHUNK_SIZE, 
-                    (percent: number) => {updateItem(percent, file.name, startTime)}, 
+                    file,
+                    MAX_REQUEST_PER_BATCH,
+                    NB_CONCURRENT_REQUESTS,
+                    FILE_CHUNK_SIZE,
+                    (percent: number) => { updateItem(percent, file.name, startTime) },
                     (err: any) => {
                         console.log(err)
-                        if(err === 'Cancel') {
+                        if (err === 'Cancel') {
                             setUploadingList((currentList: UploaderItemProps[]) => {
-                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) {value.currentState = "paused"; value.timeRemaining.num = 0} return value })
+                                const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "paused"; value.timeRemaining.num = 0 } return value })
                                 return updatedList;
                             })
                         } else {
@@ -91,37 +94,36 @@ export const UploaderPage = (props: UploaderProps) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;
                             })
+                            uploadNextFile()
                         }
                     }
                 )
-                
-                setUploadFileQueue(uploadFileQueue.concat(newUpload)) 
-                if (uploadFileQueue.length < 1){
-                    
+                if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress')) {
                     newUpload.startUpload()
-                setCurrentUpload(newUpload)
+                    setCurrentUpload(newUpload)
 
-                setUploadingList((currentList: UploaderItemProps[]) => {
-                    return [
-                        ...currentList,
-                        {
-                            currentState: 'progress',
-                            progress: 0,
-                            timeRemaining: {num: 0, unit: ''},
-                            size: file.size,
-                            name: file.name,
-                            idItem: 0,
-                            embedCode: ""
-                        }]
-                })
+                    setUploadingList((currentList: UploaderItemProps[]) => {
+                        return [
+                            ...currentList,
+                            {
+                                currentState: 'progress',
+                                progress: 0,
+                                timeRemaining: { num: 0, unit: '' },
+                                size: file.size,
+                                name: file.name,
+                                idItem: 0,
+                                embedCode: ""
+                            }]
+                    })
                 } else {
+                    setUploadFileQueue(uploadFileQueue.concat(newUpload))
                     setUploadingList((currentList: UploaderItemProps[]) => {
                         return [
                             ...currentList,
                             {
                                 currentState: 'queue',
                                 progress: 0,
-                                timeRemaining: {num: 0, unit: ''},
+                                timeRemaining: { num: 0, unit: '' },
                                 size: file.size,
                                 name: file.name,
                                 idItem: 0,
@@ -131,18 +133,17 @@ export const UploaderPage = (props: UploaderProps) => {
                 }
 
 
-                
+
             }
         }
 
     }
 
     const uploadNextFile = () => {
-        if (uploadFileQueue.length > 1) {
-            setUploadFileQueue(uploadFileQueue.slice(1))
-            //could be a bit dodgy
-        setCurrentUpload(uploadFileQueue[1])
-        uploadFileQueue[1].startUpload()
+        if (uploadFileQueue.length >= 1) {
+            uploadFileQueue[0].startUpload()
+            setCurrentUpload(uploadFileQueue[0])
+            setUploadFileQueue(uploadFileQueue.filter( (e, key) => key !== 0))
         }
     }
 
@@ -202,7 +203,7 @@ export const UploaderPage = (props: UploaderProps) => {
         currentUpload.resumeUpload()
         setItemsPaused(!itemsPaused)
         setUploadingList((currentList: UploaderItemProps[]) => {
-            const updatedList = currentList.map((value, key) => { if (value.name === File.name && value.currentState === 'paused') { value.currentState = "progress" } return value })
+            const updatedList = currentList.map((value, key) => { if (value.currentState === 'paused') { value.currentState = "progress" } return value })
             return updatedList;
         })
     }
@@ -210,29 +211,31 @@ export const UploaderPage = (props: UploaderProps) => {
     React.useEffect(() => {
     }, [uploadingList]);
 
-    var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item)=> {return {...reduced, [props.encodingRecipe.recipes[item].name]: false}},{})
+    var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item) => { return { ...reduced, [props.encodingRecipe.recipes[item].name]: false } }, {})
+    var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
+
     return (
         <UploaderContainer>
             <div className="flex space-between">
                 <div className="col col-8 flex items-center">
-                    <DropdownSingle 
-                        style={{background: "#fff"}}
+                    <DropdownSingle
+                        style={{ background: "#fff" }}
                         className='col col-5 mr1 pb2 '
                         dropdownTitle='Encoding Recipe'
+                        dropdownDefaultSelect={defaultRecipe.name}
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
-                        callback={(value: string) => { console.log(value)}}
+                        callback={(value: string) => { console.log(value) }}
                     />
-                    <Icon className="inline-block mt1" color="disabled">create</Icon>
-                    <Icon id="tooltipUploaderEncoding" className="inline-block mt1" color="disabled">info</Icon>
+                    <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" color="disabled">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our STandard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
-                </div>  
+                </div>
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue"> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
-            
+
             <Prompt
                 when={uploadingList.filter((value, index) => value.currentState === "progress").length > 0}
                 message={"Are you sure you want to leave? " + uploadingList.filter((value, index) => value.currentState === "progress").length + "item(s) still uploading"}
@@ -252,15 +255,15 @@ export const UploaderPage = (props: UploaderProps) => {
                 </ButtonStyle>
             </DragAndDrop>
             {
-                !uploadingList.length && 
-                    <>
-                        <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
-                            Choose an Encoding Recipe then upload your videos
+                !uploadingList.length &&
+                <>
+                    <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
+                        Choose an Encoding Recipe then upload your videos
                         </Text>
-                        <Text weight="reg" color="gray-3" size={16} className="block center">
-                            Note: this will consume Encoding Credits
+                    <Text weight="reg" color="gray-3" size={16} className="block center">
+                        Note: this will consume Encoding Credits
                         </Text>
-                    </>
+                </>
             }
             <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
@@ -268,7 +271,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     itemsPaused ?
                         <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume All</Button>
                         :
-                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => {currentUpload.pauseUpload();setItemsPaused(!itemsPaused)}} >Pause All</Button>
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => { currentUpload.pauseUpload(); setItemsPaused(!itemsPaused) }} >Pause All</Button>
 
                 }
             </div>
@@ -276,7 +279,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 {renderList()}
             </ItemList>
             <Prompt when={uploadingList.filter(item => item.currentState === 'progress' || item.currentState === 'paused' || item.currentState === 'veryfing').length > 1}
-                message='Please note that unfinished uploads will be deleted.' />     
+                message='Please note that unfinished uploads will be deleted.' />
         </UploaderContainer>
     );
 

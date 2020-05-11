@@ -30,7 +30,6 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
         border: none;
         width: 100%;
         margin: auto;
-        margin-bottom: 24px;
     `} 
 `;
 

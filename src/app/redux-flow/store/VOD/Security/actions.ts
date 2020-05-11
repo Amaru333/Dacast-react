@@ -1,8 +1,10 @@
-import { ActionTypes, VodSecuritySettings, SecuritySettings } from "./types";
+import { ActionTypes } from "./types";
+
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { VodSecurityServices } from './services';
+import { ContentSecuritySettings, SecuritySettings } from '../../Settings/Security/types';
 
 export interface GetVodSecuritySettings {
     type: ActionTypes.GET_VOD_SECURITY_SETTINGS;
@@ -11,7 +13,7 @@ export interface GetVodSecuritySettings {
 
 export interface SaveVodSecuritySettings {
     type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS;
-    payload: VodSecuritySettings;
+    payload: ContentSecuritySettings;
 }
 
 export const getVodSecuritySettingsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodSecuritySettings> => {

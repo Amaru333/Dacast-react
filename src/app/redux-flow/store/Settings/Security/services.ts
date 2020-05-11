@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SettingsSecurityDetails, GeoRestriction, DomainControl } from './types';
+import { SecuritySettings, GeoRestriction, DomainControl } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 
@@ -9,19 +9,24 @@ const getSettingsSecurityOptionsService = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security',
-        {headers: {
-            'Authorization': token
-        }})
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveSettingsSecurityOptionsService = async (data: SettingsSecurityDetails) => {
+const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security',
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -30,9 +35,11 @@ const createGeoRestrictionGroupService = async (data: GeoRestriction) => {
     let {token, userId} = addTokenToHeader();
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions',
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -41,9 +48,11 @@ const saveGeoRestrictionGroupService = async (data: GeoRestriction) => {
     let {token, userId} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -51,9 +60,11 @@ const deleteGeoRestrictionGroupService = async (data: GeoRestriction) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -62,9 +73,11 @@ const createDomainControlGroupService = async (data: DomainControl) => {
     let {token, userId} = addTokenToHeader();
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions',
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -73,9 +86,11 @@ const saveDomainControlGroupService = async (data: DomainControl) => {
     let {token, userId} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -83,9 +98,11 @@ const deleteDomainControlGroupService = async (data: DomainControl) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 

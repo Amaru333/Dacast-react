@@ -74,7 +74,7 @@ export const createEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateEncodingRecipeDetails> ) => {
         await EncodingRecipesServices.createEncodingRecipeService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: data} );
+                dispatch( {type: ActionTypes.CREATE_ENCODING_RECIPES, payload: {...data, id: response.data.data.id}} );
                 dispatch(showToastNotification(`${data.name} created`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

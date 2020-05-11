@@ -16,10 +16,11 @@ export interface ThemeOptions {
     id: string;
     themeName: string;
     isDefault: boolean;
+    isCustom: boolean
     createdDate: number;
     themeType: ThemeType;
     playerControls: boolean;
-    bigPlayButton: boolean;
+    bigPlayButton: 'visible' | 'hidden';
     scrubbingThumbnail: boolean;
     thumbnailPosition: string;
     isViewerCounterEnabled: boolean;
@@ -51,7 +52,7 @@ export interface ThemesData {
 
 export interface ContentTheme {
     id: string;
-    selectedTheme: ThemeOptions;
+    themes: ThemeOptions[];
 }
 
 export const defaultStateThemesType: ThemesData = {
@@ -64,7 +65,8 @@ export const defaultTheme: ThemeOptions = {
     isDefault: false,
     createdDate: 980989080,
     themeType: 'vod',
-    bigPlayButton: true,
+    isCustom: false,
+    bigPlayButton: 'visible',
     playerControls: true,
     scrubbingThumbnail: true,
     thumbnailPosition: 'Top',
@@ -88,5 +90,5 @@ export const defaultTheme: ThemeOptions = {
 
 export const defaultStateContentTheme: ContentTheme = {
     id: null,
-    selectedTheme: defaultTheme
+    themes: null
 }

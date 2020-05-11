@@ -8,7 +8,8 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 //STEPS
 export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}; staticStepperData: {[key: string]: any}}) => {
@@ -48,13 +49,13 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
         <StepContent className="clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
 
-                <RecipeNameInput isMobile={isMobile} className="col md-col-6 col-12" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
+                <RecipeNameInput isMobile={isMobile} className="col md-col-6 col-12 pr2" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
                     event.preventDefault();
                     props.updateStepperData({ ...props.stepperData, ["name"]: event.currentTarget.value });
                     props.setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-pl1 sm-col-6 col-6 pt3" defaultChecked={props.stepperData.isDefault} style={{ marginLeft: "16px" }} id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-col-6 col-12 pt3" defaultChecked={props.stepperData.isDefault}  id="defaultRecipe" label="Save as default Recipe"
                     onChange={(event) => {
                         props.updateStepperData({ ...props.stepperData, ["isDefault"]: event.currentTarget.checked })
                     }
@@ -72,22 +73,27 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                 {props.stepperData.watermarkFilename ?
                     <div>
-                        <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
+                        {props.stepperData.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
+                                    <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                </SpinnerContainer>: 
+                            <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
                             <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</Text>
                             <WatermarkDeleteButton>
                                 <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
                             </WatermarkDeleteButton>
                         </WatermarkFile>
+                            }
+                        
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : null} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningLeft"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : null} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: parseInt(event.currentTarget.value) })
@@ -105,11 +111,8 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
 export const presetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; staticStepperData: {[key: string]: any}}) => {
 
-    useStepperFinalStepAction('stepperNextButton', props.finalFunction)
-
     const createRecipeHeaderElement = () => {
         return {data: [
-            {cell: <></>},
             {cell: <Text key={'encodingRecipesPage_Present'} size={14} weight="med">Rendition</Text>},
             {cell: <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>},
             {cell: <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>},
@@ -126,7 +129,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             return presets.map((value, key) => {
     
                 return {data: [
-                    <InputCheckbox key={key + value.name} defaultChecked={props.stepperData.recipePresets.includes(value.name)} id={value.name} onChange={(event) => {
+                    <InputCheckbox key={key + value.name} label={value.description} defaultChecked={props.stepperData.recipePresets.includes(value.name)} id={value.name} onChange={(event) => {
                         if (event.currentTarget.checked && props.stepperData.recipePresets.length < 6) {
                             props.updateStepperData({ ...props.stepperData }, props.stepperData.recipePresets.push(value.name))
                             props.setStepValidated(props.stepperData.recipePresets.length >= 1)
@@ -137,9 +140,8 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
                         }
                     }
                     } />,
-                    <Text key={'encodingRecipesPage_' + value.description + key} size={14} weight="reg">{value.description}</Text>,
                     <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
-                    <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate}</Text>,
+                    <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate ? value.bitrate / 1000 : null}</Text>,
                 ]}
             })
         }

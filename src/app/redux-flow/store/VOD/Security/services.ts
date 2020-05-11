@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { SecuritySettings } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { SecuritySettings } from '../../Settings/Security/types';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 

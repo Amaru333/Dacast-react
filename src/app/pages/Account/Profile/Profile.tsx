@@ -131,19 +131,19 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <ToggleContainer>
                         <Toggle name="marketing" refForwarded={register()}  
-                            id="marketingToggle" label='Marketing'  />
+                            id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing}  />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
                         <Toggle name="lowData" refForwarded={register()} 
-                            id="lowData" label='Low Data' />
+                            id="lowData" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when the your remaining Data falls below 10%.</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
                         <Toggle name="videoUpload" refForwarded={register()} 
-                            id="uploadToggle" label='Video Uploaded' />
+                            id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.videoUpload} />
                         <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
                     </ToggleContainer>
                 </form>
@@ -196,7 +196,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             </form>
                         </ModalContent>
                         <ModalFooter>
-                            <Button sizeButton="large" onClick={() => { props.saveProfilePassword(currentPassword, newPassword); setPasswordModalToggle(false) }} typeButton="primary">Change Password</Button>
+                            <Button sizeButton="large" onClick={() => { props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword); setPasswordModalToggle(false) }} typeButton="primary">Change Password</Button>
                             <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
                         </ModalFooter>
                     </>

@@ -17,7 +17,7 @@ export interface RecipePreset {
     name: string;
     description: string;
     size: string;
-    bitrate: string;
+    bitrate: number;
 }
 
 export interface EncodingRecipeItem {
@@ -29,6 +29,7 @@ export interface EncodingRecipeItem {
     watermarkPositioningLeft?: number;
     watermarkPositioningRight?: number;
     recipePresets: string[];
+    isUploading?: boolean;
 }
 
 export interface EncodingRecipesData {

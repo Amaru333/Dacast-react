@@ -169,9 +169,6 @@ export const StreamTypeSelector = styled.div<{selected: boolean}>`
     align-items: center;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.theme.colors["gray-10"]};
-    & + & {
-        margin-left: 16px;
-    }
     ${props => props.selected && css`
         background-color: ${props.theme.colors["violet10"]};
         border: 1px solid ${props.theme.colors["dark-violet"]};
@@ -180,7 +177,7 @@ export const StreamTypeSelector = styled.div<{selected: boolean}>`
 export const StreamTypeSelectorContents = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 30px 35px 24px 35px;
+    margin: 24px;
     justify-content: space-between;
     align-items: center;
 

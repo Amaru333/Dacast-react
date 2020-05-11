@@ -15,6 +15,7 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -28,16 +29,24 @@ export interface EncodingRecipesComponentProps {
     deleteWatermark: Function;
 }
 
-const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function, emptyRecipe: EncodingRecipeItem) => {
+const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe: Function, setDeleteWarningModalOpen: Function, setDeletedRecipe: Function) => {
+    let sortedRecipes = encodingRecipeData.recipes.reduce((acc, rec) => {
+        if(rec.name === 'Standard') {
+            return [rec, ...acc]
+        } else {
+            return [...acc, rec]
+        }
+    }, [])
+    console.log('sorted recipes', sortedRecipes)
     return ( 
-        encodingRecipeData.recipes.map((value, key) => {
+        sortedRecipes.map((value, key) => {
         
             return (
                 key === 0 ? 
-                    {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{encodingRecipeData.recipes[0].name}</Text>,
-                        <IconStyle key={'encodingRecipesPage_isDefaultIcon'} coloricon='green'>{encodingRecipeData.recipes[0].isDefault ? "check" : null}</IconStyle>,
+                    {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{value.name}</Text>,
+                        <IconStyle key={'encodingRecipesPage_isDefaultIcon'} coloricon='green'>{value.isDefault ? "check" : null}</IconStyle>,
                         <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
-                            {    encodingRecipeData.recipes[0].recipePresets.map((recipe, key) => {
+                            {    value.recipePresets.map((recipe, key) => {
                                 return (
                                     <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                                 )
@@ -89,7 +98,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["2K", "4K", "HD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "LD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -97,7 +106,6 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const [deletedRecipe, setDeletedRecipe] = React.useState<EncodingRecipeItem>(emptyRecipe)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
-    
     const FunctionRecipe = (value: boolean) => {setCreateRecipeStepperOpen(value)}
 
     const editRecipe = (recipe: EncodingRecipeItem) => {
@@ -110,16 +118,16 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         FunctionRecipe(true);
     }
 
-    const submitRecipe = (selectedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
+    const submitRecipe = (submittedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function, createEncodingRecipe: Function, saveEncodingRecipe: Function) => {
         setSubmitLoading(true);
-        if(selectedRecipe) {
-            if (selectedRecipe.id) {
-                saveEncodingRecipe(selectedRecipe, () => {
+        if(submittedRecipe) {
+            if (submittedRecipe.id) {
+                saveEncodingRecipe(submittedRecipe, () => {
                     setSubmitLoading(false)
                 })
             } else
             {
-                createEncodingRecipe(selectedRecipe, () => {
+                createEncodingRecipe(submittedRecipe, () => {
                     setSubmitLoading(false)
                 })
             }
@@ -128,7 +136,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         console.log('submitting')
     }
 
-    // useStepperFinalStepAction('stepperNextButton', () => {submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)})
+    useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))
 
     return(
         !props.encodingRecipeData? 
@@ -144,7 +152,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
-                <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe, emptyRecipe)} />
+                <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
@@ -155,7 +163,6 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     stepTitles={["Settings", "Presets"]}
                     lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
                     functionCancel={FunctionRecipe}
-                    finalFunction={() => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
                     stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}

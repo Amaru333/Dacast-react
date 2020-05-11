@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader } from './FoldersStyle';
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer } from './FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
@@ -11,7 +11,7 @@ import { FoldersFiltering } from './FoldersFiltering';
 import { Modal } from '../../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
-import { getNameFromFullPath, useOutsideAlerter, tsToLocaleDate } from '../../../utils/utils';
+import { getNameFromFullPath, useOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils';
 import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 import { FoldersComponentProps } from '../../containers/Folders/Folders';
@@ -49,13 +49,15 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         loadingStatus: 'loaded',
         children
     }
+    let smallScreen = useMedia('(max-width: 40em)')
+
 
     const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [selectedFolder, setSelectedFolder] = React.useState<string>('Library');
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [checkedItems, setCheckedItems] = React.useState<string[]>([])
-    const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(false);
+    const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(smallScreen);
     const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder');
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false);
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
@@ -66,6 +68,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [folderAssetSelected, setFolderAssetSelected] = React.useState<number>(0);
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
+
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {
         setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
@@ -148,9 +151,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.contentType) {
             case 'playlist':
-                return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">playlist_play</IconStyle>
             case 'folder':
-                return <IconStyle coloricon={"gray-7"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">folder_open</IconStyle>
             case 'live':
             case 'vod':
                 return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
@@ -197,7 +200,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     data: [
                         <div key={'foldersTableInputCheckbox' + row.id} className='flex items-center'>
                             <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.includes(row.id + row.contentType)} onChange={(event) => handleCheckboxChange(row.id + row.contentType, event.currentTarget.checked)} />
-                            {handleRowIconType(row)}
+                            <RowIconContainer>
+                                {handleRowIconType(row)}
+                            </RowIconContainer>
                         </div>,
                         <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
                         <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
@@ -207,7 +212,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
                             <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
                                 <IconGreyActionsContainer >
-                                    <IconStyle>more_vert</IconStyle> 
+                                    <IconStyle>more_vert</IconStyle>
                                 </IconGreyActionsContainer>
                             </DropdownCustom>
                         </div>
@@ -357,8 +362,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     return (
         <div>
-            <div className='mb2 col col-12 flex items-center'>
-                <div className='col col-10 flex items-center'>
+            <div className='mb2 col col-12 flex items-center sm-show'>
+                <div className='col col-9 flex items-center'>
                     <div className={(foldersTreeHidden ? '' : 'col col-2 mr3 ') + 'flex items-center'}>
                         <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
                         <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
@@ -373,7 +378,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                                 dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
                             />
-                            <SeparatorHeader className={(selectedFolder.split('/').length > 1 ? '' : 'hide ') + "mx2 inline-block"} />
+                            <SeparatorHeader className={(selectedFolder.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
                             <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
                         </div>
@@ -389,28 +394,64 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     : null
                                 }
                                 <div>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                                    <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{ }} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+
+                                    <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}
                                     </DropdownList>
                                 </div>
-                                
 
                                 <SeparatorHeader className="mx2 inline-block" />
                             </>
                             : null
                     }
-
-                    <FoldersFiltering setCheckedItems={setCheckedItems} />
-                    {
-                        selectedFolder === 'Trash' ?
-                            <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
-                            : null
+                    <FoldersFiltering className="right relative" setCheckedItems={setCheckedItems} />
+                    {selectedFolder === 'Trash' ?
+                        <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
+                        : null
                     }
                 </div>
             </div>
+            <div className='mb2 col col-12 clearfix xs-show'>
+                <div className='col flex items-center mb2 col-12'>
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
+                </div>
+                <div className='col-12 col mb2 clearfix'>
+                    <div className='col-3 col pr1'>
+                        <Button className="col-12" onClick={() => setFoldersTreeHidden(false)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                            Folders
+                        </Button>
+                    </div>
+                    <div className="col-3 col pr1 ">
+                        <Button className="col-12" onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" sizeButton="small" typeButton="secondary" >
+                            Actions
+                        </Button>
+                        <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                            {renderList()}
+                        </DropdownList>
+                    </div>
+                    <div className='col-3 col pr1'>
+                        <FoldersFiltering className="col-12" setCheckedItems={setCheckedItems} />
+                    </div>
+                    <div className='col-3 col '>
+                        <Button className="col-12" onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>
+                            Create
+                        </Button>
+                    </div>
+                </div>
+                <div className='col-12 col clearfix'>
+                    <BreadcrumbDropdown
+                        options={selectedFolder}
+                        callback={(value: string) => setSelectedFolder(value)}
+                        dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
+                        dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
+                    />
+                </div>
+            </div>
             <ContentSection>
-                <FoldersTreeSection className={foldersTreeHidden ? 'hide' : 'col col-2 mr2'}>
+                <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
+                    <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
                     <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => setSelectedFolder("Library")}>
                         <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
                     </FolderRow>

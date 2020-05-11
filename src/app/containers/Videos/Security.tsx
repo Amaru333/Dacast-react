@@ -1,18 +1,18 @@
 import React from 'react';
-import { VodSecurityPage } from '../../pages/Videos/Security/Security';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodSecuritySettingsAction, saveVodSecuritySettingsAction } from '../../redux-flow/store/VOD/Security/actions';
 import { connect } from 'react-redux';
-import { VodSecuritySettings, SecuritySettings } from '../../redux-flow/store/VOD/Security';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
+import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
+import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security/types';
 
 interface VodSecurityContainerProps {
-    vodSecuritySettings: VodSecuritySettings;
+    vodSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     getVodSecuritySettings: Function;
     saveVodSecuritySettings: Function;
@@ -34,7 +34,13 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
         props.vodSecuritySettings && props.globalSecuritySettings ? 
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
-                <VodSecurityPage {...props} vodId={vodId} />
+                <ContentSecurityPage 
+                    contentSecuritySettings={props.vodSecuritySettings} 
+                    contentId={vodId}
+                    globalSecuritySettings={props.globalSecuritySettings}
+                    saveContentSecuritySettings={props.saveVodSecuritySettings}
+                    getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                />
             </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )

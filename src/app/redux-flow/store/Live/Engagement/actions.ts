@@ -1,18 +1,18 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, LiveEngagementSettings } from './types';
+import { ActionTypes } from './types';
 import { liveEngagementServices } from './services';
-import { Ad } from '../../Settings/Interactions';
+import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
 
 export interface GetLiveEngagementSettings {
     type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS;
-    payload: LiveEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SaveLiveEngagementSettings {
     type: ActionTypes.SAVE_LIVE_ENGAGEMENT_SETTINGS;
-    payload: LiveEngagementSettings;
+    payload: ContentEngagementSettings;
 }
 
 export interface SaveLiveAd {
@@ -41,7 +41,7 @@ export const getLiveEngagementSettingsAction = (): ThunkDispatch<Promise<void>, 
     };
 }
 
-export const saveLiveEngagementSettingsAction = (data: LiveEngagementSettings): ThunkDispatch<Promise<void>, {}, SaveLiveEngagementSettings> => {
+export const saveLiveEngagementSettingsAction = (data: ContentEngagementSettings): ThunkDispatch<Promise<void>, {}, SaveLiveEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveEngagementSettings> ) => {
         await liveEngagementServices.saveLiveEngagementSettings(data)
             .then( response => {

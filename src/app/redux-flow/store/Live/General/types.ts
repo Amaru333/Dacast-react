@@ -18,28 +18,50 @@ export interface LiveDetails {
     streamOnline: boolean;
     title: string;
     folder: string[];
+    username: string;
+    password: string;
+    streamKeys: string[];
+    primaryPublishURL: string;
+    backupPublishURL: string;
+    playbackURLs: PLaybackURLs;
     description: string;
-    thumbnail: string;
-    splashscreen: string;
+    thumbnail?: string;
+    splashscreen?: string;
     poster?: string;
     recording: boolean;
     countdown: LiveStreamCountdown;
     rewind: boolean;
 }
 
+interface PLaybackURLs {
+    hls: string;
+}
+
 export interface LiveItem {
-    id: string;
-    streamOnline: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
-    created: number;
-    thumbnail: string;
-    features: FeaturesList;
+    size: number;
+    views?: number;
+    duration: number;
+    thumbnail?: string;
+    createdAt: number;
+    features?: FeaturesList;
+}
+
+export interface SearchResult {
+    results: LiveItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }
 
 interface LiveStreamCountdown {
-    enabled: boolean;
-    startDate?: string;
-    startTime?: string;
+    enabled?: boolean;
+    startDate?: number;
+    startTime?: number;
     timezone?: string;
 }
 
@@ -58,15 +80,22 @@ export interface PosterUpload {
 export const initialLiveGeneralState: LiveDetails = {
     id: null,
     streamOnline: false,
+    username: null,
+    password: null,
+    playbackURLs: null,
+    primaryPublishURL: null,
+    backupPublishURL: null,
+    streamKeys: null,
     title: null,
     folder: null,
     description: null,
     thumbnail: null,
     splashscreen: null,
     recording: false,
+    rewind: false,
     countdown: {
         enabled: false
     }
 }
 
-export const initialLiveList: LiveItem[] | false = false;
+export const initialLiveList: SearchResult | false = false

@@ -10,7 +10,6 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface ConfirmEmailComponentProps {
-    confirmEmail: Function;
     userInfos?: UserInfo;
     email?: string;
 }
@@ -36,9 +35,7 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        confirmEmail: (email: string) => {
-            dispatch(confirmEmailAction(email));
-        },
+        
 
     };
 }

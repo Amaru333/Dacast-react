@@ -40,6 +40,9 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
 
+    const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
+    const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
+
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
     }, [props.liveDetails]);
@@ -95,7 +98,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         label="Folders"
                         greyBackground
                         disabled
-                        defaultTags={props.liveDetails.folder}
+                        defaultTags={props.liveDetails.folder ? props.liveDetails.folder : []}
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
@@ -104,7 +107,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         value={newLiveDetails.description}
                         onChange={event => setNewLiveDetails({ ...newLiveDetails, ["description"]: event.currentTarget.value })}
                     />
-                    <div className={"col col-3 flex flex-column"}>
+                    <div className={"col col-12 sm-col-3 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
@@ -135,7 +138,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                            <LinkText size={14} weight="reg">{'https://iframe.dacast.com/live/' + props.liveDetails.id}</LinkText>
                             <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard('', "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
@@ -146,7 +149,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
                         {
-                            getPrivilege('privilege-recording') && 
+                            getPrivilege('privilege-recording') &&
                             <div className="mb2">
                                 <Toggle label="Live Stream Recording" defaultChecked={newLiveDetails.recording} onChange={() => setNewLiveDetails({ ...newLiveDetails, recording: !newLiveDetails.recording })}></Toggle>
                                 <ToggleTextInfo className="mt1">
@@ -154,7 +157,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 </ToggleTextInfo>
                             </div>
                         }
-                        
+
                         <div className="mb2 clearfix">
                             <Toggle
                                 label="Live Stream Start Countdown"
@@ -179,7 +182,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                         <Input
                                             type='time'
                                             className='col col-12 sm-col-4 pl1 pr1'
-                                            defaultValue={props.liveDetails.countdown.startTime}
+                                            defaultValue={props.liveDetails.countdown.startTime.toString()}
                                             disabled={false}
                                             id='promptTime'
                                             label='Prompt Time'
@@ -199,9 +202,9 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             }
                         </div>
                         {
-                            getPrivilege('privilege-dvr') && 
+                            getPrivilege('privilege-dvr') &&
                             <div className="mb2 clearfix">
-                                <Toggle label="30 Minutes Rewind" defaultChecked={newLiveDetails.rewind} onChange={() => setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind })}></Toggle>
+                                <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind ? true : false} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
                                 </ToggleTextInfo>
@@ -211,11 +214,11 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                             <Bubble type='warning' className='my2'>
                                                 <BubbleContent>
                                                     <Text weight="reg" size={16}>
-                                                        30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder. 
+                                                        30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder.
                                                     </Text>
                                                 </BubbleContent>
                                             </Bubble>
-                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => {console.log("free the niples")}}>Purge Live Stream</Button>
+                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { console.log("free the niples") }}>Purge Live Stream</Button>
                                         </div> :
                                         null
                                 }
@@ -310,7 +313,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {liveAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                             return (
-                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd+"mb2"}>
+                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd + "mb2"}>
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
@@ -342,8 +345,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Login</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.username}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.username, "Copied to clipboard!")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -351,8 +354,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Password</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.password}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.password, "Copied to clipboard!")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -360,8 +363,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Stream URL</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.primaryPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -369,8 +372,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Stream Name</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.title}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.title, "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>
@@ -378,8 +381,8 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                     <Text size={14} weight="med">Backup URL</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg"></LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard('', "JS here")}>file_copy</IconStyle>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.backupPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.backupPublishURL, "JS here")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                         </div>
@@ -392,6 +395,41 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
                         <Button typeButton="tertiary">Visit Knowledge Base</Button>
                     </ModalFooter>
+                </Modal>
+
+                <Modal icon={ stepModalRewind === 1 ? {name:'info_outlined', color: 'yellow'} : {name:'check', color: 'green'} } size="large" modalTitle={stepModalRewind === 1 ? "Is your Encoder turned off?" : "30 Minute Rewind Enabled"} opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
+                    {stepModalRewind === 1 ?
+                        <>
+                            <ModalContent>
+                                <Text weight="reg" size={14}>
+                                    Please confirm you have turned off your encoder before continuing.
+                                </Text>
+                                <Text weight="med" size={14}>
+                                    Need step by step help? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.
+                                </Text>
+                            </ModalContent>
+                            <ModalFooter className="mt1" >
+                                <Button onClick={() => { setStepModalRewind(2) }}>Yes</Button>
+                                <Button onClick={() => { setConfirmRewindModal(false) }} typeButton="tertiary">No</Button>
+                            </ModalFooter>
+                        </>
+                        :
+                        <>
+                            <ModalContent>
+                                <Text weight="reg" size={14}>
+                                    You must now purge your live stream. 30min rewind will take effect in 2 hours.
+                                </Text>
+                                <Text weight="med" size={14}>
+                                    Need step by step help? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.
+                                </Text>
+                            </ModalContent>
+                            <ModalFooter className="mt1" >
+                                <Button onClick={() => { setNewLiveDetails({ ...newLiveDetails, rewind: !newLiveDetails.rewind }); setConfirmRewindModal(false); setStepModalRewind(1) }}>Confirm</Button>
+                            </ModalFooter>
+                        </>
+                    }
+
+
                 </Modal>
 
             </Card>

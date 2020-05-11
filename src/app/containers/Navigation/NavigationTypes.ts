@@ -9,6 +9,7 @@ export interface MainMenuSpecificProps {
     navWidth: string;
     menuLocked: boolean;
     setMenuLocked: Function;
+    openAddStream?: Function;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

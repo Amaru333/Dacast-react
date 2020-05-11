@@ -29,7 +29,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 
     React.useEffect(() => {
         if (!props.liveDetails) {
-            props.getLiveDetails();
+            props.getLiveDetails(liveId);
         }
     }, [])
 
@@ -52,8 +52,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveDetails: () => {
-            dispatch(getLiveDetailsAction());
+        getLiveDetails: (liveId: string) => {
+            dispatch(getLiveDetailsAction(liveId));
         },
         saveLiveDetails: (data: LiveDetails) => {
             dispatch(saveLiveDetailsAction(data));

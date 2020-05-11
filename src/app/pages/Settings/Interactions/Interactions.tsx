@@ -3,7 +3,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
+import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Table } from '../../../../components/Table/Table';
 import { Modal } from '../../../../components/Modal/Modal';
 import { MailCatcherModal } from  './MailCatcherModal';
@@ -19,19 +19,12 @@ import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
-import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
-
-    const emptyAd: Ad = { 
-        id: "-1",
-        placement: "",
-        position: "",
-        url: "test"
-    }
 
     const emptyMailCatcher: MailCatcher = {
         type: "",
@@ -42,18 +35,18 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
     const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
-    const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
+    const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
 
     const newAd = () => {
-        setSelectedAd(emptyAd);
+        setSelectedAd(-1);
         setNewAdModalOpened(true) 
     }
 
-    const editAd = (ad: Ad) => {
-        setSelectedAd(ad);
+    const editAd = (adIndex: number) => {
+        setSelectedAd(adIndex);
         setNewAdModalOpened(true);
     }
 
@@ -84,21 +77,27 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
             {cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text>},
             {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {setPlayerModalOpened(true)}}>Preview</Button>
+                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
             </div>}
         ]}
     }
 
     const advertisingTableBody = () => {
-        return props.interactionsInfos.adList.map((item, i) => {
+        return props.interactionsInfos.ads.map((item, i) => {
             return {data: [
-                <Text key={'advertisingTableBodyPlacement' + item.placement + i} size={14} weight='med'>{item.placement}</Text>,
-                <Text key={'advertisingTableBodyPosition' + item.position + i} size={14} weight='med'>{item.position}</Text>,
+                <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
+                <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{item.timestamp}</Text>,
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
-                    <IconStyle onClick={(event) => {props.deleteAd(item)}} >delete</IconStyle>
-                    <IconStyle onClick={() => editAd(item)}>edit</IconStyle> 
+                    <ActionIcon>
+                        <IconStyle id={'adTableCopy' + i} onClick={() => {console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item));props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId)}} >delete</IconStyle>
+                        <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={'adTableEdit' + i} onClick={() => editAd(i)}>edit</IconStyle> 
+                        <Tooltip target={'adTableEdit' + i}>Edit</Tooltip>
+                    </ActionIcon>  
                 </IconContainer>
             ]}
         })
@@ -123,6 +122,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         })
     }
 
+    React.useEffect(() => console.log("component props", props.interactionsInfos), [props.interactionsInfos])
 
  
     return (
@@ -131,8 +131,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             { getPrivilege('privilege-advertising') && 
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>Advertising</Text>
-                <DisabledSection settingsEditable={props.interactionsInfos.adList.length > 1}>
-                    <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adList.length > 1 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
+                <DisabledSection settingsEditable={props.interactionsInfos.ads.length > 0}>
+                    <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.ads.length > 0 ? interactionInfos.adEnabled : false} onChange={() => {setInteractionsInfos({...interactionInfos, adEnabled: !interactionInfos.adEnabled});setSettingsEdited(true)}} label='Advertising enabled' />
                 </DisabledSection>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                 <div className='flex mb2'>
@@ -197,7 +197,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}}></DropdownSingle>
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImage ? props.interactionsInfos.brandImage.placement : 'Top Right'}></DropdownSingle>
                         <Input className="col col-4 pr2" label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                         <Input className="col col-4" label="Padding (px)" />
                         <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" />
@@ -258,15 +258,17 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened ? 
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd}/>
                         : null
                 }
             </Modal>
-            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
-                <div className="mt2" ref={playerRef}></div>
+            <Modal modalTitle='Preview Ads' hasClose toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
+                <PlayerContainer>
+                    <div className="mt2" ref={playerRef}></div>
+                </PlayerContainer>   
             </Modal>
             <Prompt when={interactionInfos !== props.interactionsInfos} message='' />
         </div>

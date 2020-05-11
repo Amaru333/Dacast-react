@@ -3,32 +3,36 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getAnalyticsRealTimeDetailsAction, Action, AnalyticsRealTimeState } from '../../redux-flow/store/Analytics/RealTime';
+import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
 export interface RealTimePageProps {
     realTimeAnalytics: AnalyticsRealTimeState;
-    getAnalyticsRealTimeDetailsAction: Function;
+    getAnalyticsRealTimeViewersTimes: Function;
+    getAnalyticsRealTimePlaybackTime: Function;
+    getAnalyticsRealTimeGbTime: Function;
+    getAnalyticsRealTimeConsumptionLocation: Function;
 }
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
     React.useEffect(() => {
-        if (!props.realTimeAnalytics) {
-            props.getAnalyticsRealTimeDetailsAction();
+        if (!props.realTimeAnalytics.data.concurentViewersPerTime) {
+            props.getAnalyticsRealTimeViewersTimes();
+        }
+        if (!props.realTimeAnalytics.data.consumptionPerLocation) {
+            props.getAnalyticsRealTimeConsumptionLocation();
+        }
+        if (!props.realTimeAnalytics.data.gbPerTime) {
+            props.getAnalyticsRealTimeGbTime();
+        }
+        if (!props.realTimeAnalytics.data.newPlaybackSessionsPerTime) {
+            props.getAnalyticsRealTimePlaybackTime();
         }
     }, [])
-
-    return (
-        props.realTimeAnalytics.data ?
-            (
-                <RealTimeAnalyticsPage {...props.realTimeAnalytics.data} />
-            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-    )
-
+    return <RealTimeAnalyticsPage {...props} />  
 }
 
 export function mapStateToProps(state: ApplicationState) {
@@ -39,9 +43,18 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTimeDetailsAction: () => {
-            dispatch(getAnalyticsRealTimeDetailsAction());
-        }
+        getAnalyticsRealTimeViewersTimes: (options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeViewersTimesAction(options));
+        },
+        getAnalyticsRealTimePlaybackTime: (options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimePlaybackTimeAction(options));
+        },
+        getAnalyticsRealTimeGbTime: (options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeGbTimeAction(options));
+        },
+        getAnalyticsRealTimeConsumptionLocation: (options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeConsumptionLocationAction(options));
+        },
     };
 }
 

@@ -2,18 +2,18 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
 import { LiveGeneralServices } from './services';
-import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem } from './types';
+import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem, SearchResult } from './types';
 
 
 
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
-    payload: LiveDetails;
+    payload: {data: LiveDetails};
 }
 
 export interface GetLiveList {
     type: ActionTypes.GET_LIVE_LIST;
-    payload: LiveItem[];
+    payload: {data: SearchResult};
 }
 
 export interface SaveLiveDetails {
@@ -56,9 +56,9 @@ export interface DeleteLiveChannel {
     payload: {id: string};
 }
 
-export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
+export const getLiveDetailsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveDetails>) => {
-        await LiveGeneralServices.getLiveDetailsService()
+        await LiveGeneralServices.getLiveDetailsService(liveId)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_DETAILS, payload: response.data });
             })
@@ -68,9 +68,9 @@ export const getLiveDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetLive
     };
 }
 
-export const getLiveListAction = (): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
+export const getLiveListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetLiveList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetLiveList>) => {
-        await LiveGeneralServices.getLiveList()
+        await LiveGeneralServices.getLiveList(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_LIVE_LIST, payload: response.data });
             })
@@ -84,7 +84,7 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveLiveDetails>) => {
         await LiveGeneralServices.saveLiveDetailsService(data)
             .then(response => {
-                dispatch({ type: ActionTypes.SAVE_LIVE_DETAILS, payload: response.data });
+                dispatch({ type: ActionTypes.SAVE_LIVE_DETAILS, payload: data });
                 dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {

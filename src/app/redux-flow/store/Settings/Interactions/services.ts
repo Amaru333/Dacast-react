@@ -1,26 +1,63 @@
 import axios from 'axios';
 import { InteractionsInfos, Ad, MailCatcher } from './types';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getInteractionsInfos = () => {
-    return axios.get(urlBase + 'settings-interactions');
+const getInteractionsInfos = async () => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveInteractionsInfos = (data: InteractionsInfos) => {
-    return axios.put(urlBase + 'settings-interactions', {data: data});
+const saveInteractionsInfos = async (data: InteractionsInfos) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement',
+        {...data}, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveAd = (data: Ad) => {
-    return axios.put(urlBase + 'settings-interactions-ad', {data: data})
+const saveAd = async (data: Ad[], adsId: string) => {
+    await isTokenExpired()
+    console.log('adsId: ',adsId)
+    let {token, userId} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement/ads/' + adsId,
+        {
+            ads: data
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const createAd = (data: Ad) => {
-    return axios.post(urlBase + 'settings-interactions-ad', {data: data})
-}
-
-const deleteAd = (data: Ad) => {
-    return axios.delete(urlBase + 'settings-interactions-ad', {data: data})
+const createAd = async (data: Ad[]) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement/ads',
+        {
+            ads: data
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveMailCatcher = (data: MailCatcher) => {
@@ -40,7 +77,6 @@ export const interactionsServices = {
     saveInteractionsInfos,
     saveAd,
     createAd,
-    deleteAd,
     saveMailCatcher,
     createMailCatcher,
     deleteMailCatcher

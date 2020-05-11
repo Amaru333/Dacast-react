@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, TokenInfos, defaultStateLogin } from './types'
+import { resetUserInfo } from '../../../../utils/token';
 
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {
@@ -11,7 +12,7 @@ const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action)
                 ...returnedState
             }
         case ActionTypes.LOGOUT :
-            localStorage.removeItem('userToken')
+            resetUserInfo()
             return action.payload
         default :
             return {...state}
