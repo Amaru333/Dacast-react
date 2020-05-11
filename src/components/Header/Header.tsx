@@ -132,7 +132,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             </IconContainerStyle>
             <VerticalDivider />
-            <a href="/account/plans"><Button className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button></a>
+           <Button onClick={() => history.push('/account/plans')} className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
         </HeaderStyle>
     )
 }

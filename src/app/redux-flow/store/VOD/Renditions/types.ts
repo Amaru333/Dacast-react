@@ -26,7 +26,7 @@ export interface RenditionsList {
 }
 
 export interface Rendition {
-    id: string;
+    renditionID: string;
     name: string;
     size: string;
     bitrate: number;

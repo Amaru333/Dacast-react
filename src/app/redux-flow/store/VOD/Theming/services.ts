@@ -19,14 +19,38 @@ const getVodThemeService = async (vodId: string) => {
 const saveVodThemeService = async (data: ThemeOptions, vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/themes/' + (data.themeName !== 'Custom Theme' ? data.id + '/set' : ''),
-        {...data}, 
-        {
-            headers: {
-                Authorization: token
+    if(!data.isCustom) {
+        return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/themes/' + data.id + '/set',
+            {...data}, 
+            {
+                headers: {
+                    Authorization: token
+                }
             }
+        )
+    } else {
+        if(data.id === '-1') {
+            return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/themes/',
+                {...data, offlineMessagePosition: 1}, 
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
+        } else {
+            return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/themes/' + data.id,
+                {...data, offlineMessagePosition: 1}, 
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
+            )
         }
-    )
+
+    }
+    
 }
 
 export const VodThemingServices = {

@@ -16,7 +16,7 @@ export interface AddVodRenditions {
 
 export interface DeleteVodRenditions {
     type: ActionTypes.DELETE_VOD_RENDITIONS;
-    payload: Rendition[];
+    payload: string[];
 }
 
 export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
@@ -35,7 +35,7 @@ export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
         await VodRenditionsServices.addVodRenditionsService(data, vodId)
             .then(response => {
-                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: response.data });
+                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: data });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -43,11 +43,11 @@ export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDisp
     };
 }
 
-export const deleteVodRenditionsAction = (data: Rendition[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
+export const deleteVodRenditionsAction = (data: string[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodRenditions>) => {
         await VodRenditionsServices.deleteVodRenditionsService(data, vodId)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: response.data });
+                dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: data });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

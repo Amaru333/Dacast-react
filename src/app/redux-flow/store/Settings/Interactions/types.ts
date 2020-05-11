@@ -24,16 +24,9 @@ export interface Ad {
     url: string;
 }
 
-export interface BrandImage {
-    placement: string;
-    size: number;
-    padding: number;
-    link?: string;
-}
-
 export interface InteractionsInfos {
     adsId?: string;
-    adEnabled: boolean;
+    adsEnabled: boolean;
     ads: Ad[];
     mailCatcher?: MailCatcher[];
     selectedMailCatcher?: string;
@@ -42,11 +35,15 @@ export interface InteractionsInfos {
     isBrandTextAsTitle: boolean;
     endScreenText: string;
     endScreenTextLink: string;
-    brandImage: BrandImage;
+    brandImagePosition: string;
+    brandImagePadding: number;
+    brandImageText: string;
+    brandImageLink?: string;
+    brandImageSize: number;
 }
 
 export const interactionsDefaultState: InteractionsInfos = {
-    adEnabled: false,
+    adsEnabled: false,
     ads: [],
     mailCatcher: [],
     brandText: null,
@@ -54,7 +51,11 @@ export const interactionsDefaultState: InteractionsInfos = {
     isBrandTextAsTitle: false,
     endScreenText: null,
     endScreenTextLink: null,
-    brandImage: null
+    brandImagePosition: null,
+    brandImagePadding: 0,
+    brandImageText: null,
+    brandImageLink: null,
+    brandImageSize: 0
 }
 
 export interface ContentEngagementSettings {

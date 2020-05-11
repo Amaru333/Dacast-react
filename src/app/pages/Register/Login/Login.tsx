@@ -30,17 +30,18 @@ export const LoginPage = (props: LoginComponentProps) => {
         return username.length > 0 && password.length > 0
     }
 
-    const submitLogin = () => {
-        setButtonLoading(true);
-        if(enableSubmit()) {
+    const submitLogin = (username: string, password: string) => {     
+        if(enableSubmit() && !buttonLoading) {
+            setButtonLoading(true);
             props.login(username, password,() =>  setButtonLoading(false))
         }
     }
 
-    useKeyboardSubmit(submitLogin)
+    useKeyboardSubmit(() => {submitLogin(username, password)})
 
     return (
         <LoginContainer>
+            <form>
             <ImageStyle className="mx-auto" src={logo} />
             <ModalCard className="mx-auto" size="small" title="User Login" >
                 <ModalContent className="clearfix">
@@ -56,9 +57,10 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
+                    <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
+            </form>
         </LoginContainer>
 
     )

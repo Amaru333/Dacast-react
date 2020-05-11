@@ -1,6 +1,6 @@
 import React from 'react';
 import { VodRenditionsPage } from '../../pages/Videos/Renditions/Renditions';
-import { RenditionsList, Rendition } from '../../redux-flow/store/VOD/Renditions/types';
+import { RenditionsList } from '../../redux-flow/store/VOD/Renditions/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
@@ -53,7 +53,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         addVodRenditions: (data: string[], vodId: string) => {
             dispatch(addVodRenditionsAction(data, vodId));
         },
-        deleteVodRenditions: (data: Rendition[], vodId: string) => {
+        deleteVodRenditions: (data: string[], vodId: string) => {
             dispatch(deleteVodRenditionsAction(data, vodId));
         }
     }

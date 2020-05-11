@@ -68,9 +68,9 @@ export const saveSettingsInteractionsInfosAction = (data: InteractionsInfos): Th
     };
 }
 
-export const saveAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<void>, {}, SaveAd> => {
+export const saveAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, SaveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveAd> ) => {
-        await interactionsServices.saveAd(data, adsId)
+        await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_AD, payload: data} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
@@ -82,7 +82,7 @@ export const saveAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<v
 
 export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, CreateAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateAd> ) => {
-        await interactionsServices.createAd(data)
+        await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_AD, payload: {ads: data, adsId: response.data.data.adsId}} );
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
@@ -92,9 +92,9 @@ export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, Cre
     };
 }
 
-export const deleteAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
+export const deleteAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteAd> ) => {
-        await interactionsServices.saveAd(data, adsId)
+        await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_AD, payload: data} );
                 dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
