@@ -1,5 +1,5 @@
 import React from 'react';
-import { Action, ContentTheme } from '../../redux-flow/store/Settings/Theming';
+import { Action, ContentTheme, ThemeOptions } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
@@ -25,7 +25,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
 
     React.useEffect(() => {
         if(!props.theme) {
-            props.getLiveTheme();            
+            props.getLiveTheme(liveId);            
         }
     }, [])
     
@@ -53,11 +53,11 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveTheme: () => {
-            dispatch(getLiveThemeAction());
+        getLiveTheme: (liveId: string) => {
+            dispatch(getLiveThemeAction(liveId));
         },
-        saveLiveTheme: (theme: ContentTheme) => {
-            dispatch(saveLiveThemeAction(theme));
+        saveLiveTheme: (theme: ThemeOptions, liveId: string) => {
+            dispatch(saveLiveThemeAction(theme, liveId));
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

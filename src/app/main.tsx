@@ -9,6 +9,7 @@ import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
+import TagManager from 'react-gtm-module'
 
 const history = createBrowserHistory();
 import {
@@ -20,7 +21,7 @@ import "../scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
-import { isLoggedIn } from './utils/token';
+import { isLoggedIn, getUserInfoItem } from './utils/token';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
 import ScrollToTop, { useMedia, getPrivilege } from '../utils/utils'
@@ -64,6 +65,7 @@ const AppContent = () => {
     let location = useLocation()
     let history = useHistory()
 
+
     ScrollToTop()
 
     React.useEffect(() => {
@@ -79,7 +81,7 @@ const AppContent = () => {
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(null)
 
     React.useEffect(() => {
-        updateStateTitle(location.pathname)
+        updateStateTitle(location.pathname);
     }, [])
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
@@ -154,6 +156,27 @@ const AppContent = () => {
             })
         )
     }
+
+    if(isLoggedIn()) {
+        let tagManagerArgs = {
+            gtmId: 'GTM-PHZ3Z7F',
+            dataLayer: {
+                'accountId': getUserInfoItem('custom:dacast_user_id'),
+                'companyName': getUserInfoItem('custom:website'),
+                'plan': 'Unknown yet',
+                'signedUp': 'Unknown yet',
+                'userId': getUserInfoItem('custom:dacast_user_id'),
+                'userFirstName': getUserInfoItem('custom:first_name'),
+                'userLastName': getUserInfoItem('custom:last_name'),
+                'userEmail' : getUserInfoItem('email'),
+            }
+        }
+        TagManager.initialize(tagManagerArgs);
+    } else {
+        let tagManagerArgs = {gtmId: 'GTM-PHZ3Z7F'};
+        TagManager.initialize(tagManagerArgs);
+    }
+
 
     return (
         <>

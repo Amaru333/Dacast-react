@@ -4,13 +4,17 @@ export enum ActionTypes {
     GET_LIVE_DETAILS = "@@live_general/GET_LIVE_DETAILS",
     GET_LIVE_LIST = "@@live_general/GET_LIVE_LIST",
     SAVE_LIVE_DETAILS = "@@live_general/SAVE_LIVE_DETAILS",
-    CHANGE_LIVE_THUMBNAIL = "@@live_general/CHANGE_LIVE_THUMBNAIL",
-    DELETE_LIVE_THUMBNAIL = "@@live_general/DELETE_LIVE_THUMBNAIL",
-    CHANGE_LIVE_SPLASHSCREEN = "@@live_general/CHANGE_LIVE_SPLASHSCREEN",
-    DELETE_LIVE_SPLASHSCREEN = "@@live_general/DELETE_LIVE_SPLASHSCREEN",
-    CHANGE_LIVE_POSTER = "@@live_general/CHANGE_LIVE_POSTER",
-    DELETE_LIVE_POSTER = "@@live_general/DELETE_LIVE_POSTER",
-    DELETE_LIVE_CHANNEL = "@@live_list/DELETE_LIVE_CHANNEL"
+    DELETE_LIVE_CHANNEL = "@@live_list/DELETE_LIVE_CHANNEL",
+    GET_UPLOAD_URL = "@@live_general/GET_UPLOAD_URL",
+    UPLOAD_IMAGE = "@@live_general/UPLOAD_IMAGE",
+    DELETE_IMAGE = "@@live_general/DELETE_IMAGE",
+}
+
+interface AssetType {
+    assetGroupID: string;
+    targetType: string;
+    targetID: string;
+    url: string;
 }
 
 export interface LiveDetails {
@@ -25,9 +29,9 @@ export interface LiveDetails {
     backupPublishURL: string;
     playbackURLs: PLaybackURLs;
     description: string;
-    thumbnail?: string;
-    splashscreen?: string;
-    poster?: string;
+    thumbnail?: AssetType;
+    splashscreen?: AssetType;
+    poster?: AssetType;
     recording: boolean;
     countdown: LiveStreamCountdown;
     rewind: boolean;

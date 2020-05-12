@@ -25,7 +25,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
 
     React.useEffect(() => {
         if(!props.vodEngagementSettings) {
-            props.getVodEngagementSettings();
+            props.getVodEngagementSettings(vodId);
         }
     }, []);
 
@@ -40,6 +40,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
                     saveContentAd={props.saveVodAd}
                     createContentAd={props.createVodAd}
                     deleteContentAd={props.deleteVodAd}
+                    contentType='vod'
                 />
             </div>            
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
@@ -54,8 +55,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodEngagementSettings: () => {
-            dispatch(getVodEngagementSettingsAction());
+        getVodEngagementSettings: (vodId: string) => {
+            dispatch(getVodEngagementSettingsAction(vodId));
         },
         saveVodEngagementSettings: (data: ContentEngagementSettings) => {
             dispatch(saveVodEngagementSettingsAction(data))

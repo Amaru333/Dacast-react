@@ -25,7 +25,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
     React.useEffect(() => {
         if(!props.liveEngagementSettings) {
-            props.getLiveEngagementSettings();
+            props.getLiveEngagementSettings(liveId);
         }
     }, []);
 
@@ -40,7 +40,9 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
                     saveContentAd={props.saveLiveAd}
                     createContentAd={props.createLiveAd}
                     deleteContentAd={props.deleteLiveAd}
-                />            </div>
+                    contentType='live'
+                />            
+            </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
@@ -53,8 +55,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveEngagementSettings: () => {
-            dispatch(getLiveEngagementSettingsAction());
+        getLiveEngagementSettings: (liveId: string) => {
+            dispatch(getLiveEngagementSettingsAction(liveId));
         },
         saveLiveEngagementSettings: (data: ContentEngagementSettings) => {
             dispatch(saveLiveEngagementSettingsAction(data))

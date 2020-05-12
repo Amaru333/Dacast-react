@@ -10,11 +10,16 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { getPrivilege } from '../../../utils/utils';
 import { addTokenToHeader, isTokenExpired } from '../../utils/token';
 import axios from 'axios'
+import { showToastNotification } from '../../redux-flow/store/Toasts';
+import { useHistory } from 'react-router';
 
 export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
 
+    let history = useHistory()
+
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(null)
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, streamType: null})
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType })
@@ -26,10 +31,13 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     }
 
     const handleCreateLiveStreams = async () => {
+        setButtonLoading(true)
         await isTokenExpired()
         let {token} = addTokenToHeader();
+        
         return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels',
-            { 
+            {
+                title: "My Live Channel"
             }, 
             {
                 headers: {
@@ -37,10 +45,13 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 }
             }
         ).then((response) => {
-            console.log(response)
+            setButtonLoading(false)
+            showToastNotification('Live channel created!', 'fixed', 'success')
+            history.push(`/livestreams/${response.data.data.id}/general`)
+            props.toggle()
         }).catch((error) => {
-            
-            console.log(error)
+            setButtonLoading(false)
+            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
         })
     }
 
@@ -92,7 +103,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 {getPrivilege('privilege-dvr') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
-                            <Toggle onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
+                            <Toggle defaultChecked={streamSetupOptions.rewind ? true : false} onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
                         </div>
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
@@ -104,7 +115,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 </div>
             </ModalContent>
             <ModalFooter>
-                <Button onClick={() => {handleCreateLiveStreams()}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>

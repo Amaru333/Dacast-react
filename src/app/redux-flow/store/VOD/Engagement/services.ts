@@ -1,14 +1,22 @@
 import axios from 'axios';
-import { Ad } from '../../Settings/Interactions';
-import { VodEngagementSettings } from './types';
+import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getVodEngagementSettings = () => {
-    return axios.get(urlBase + 'vod-engagements')
+const getVodEngagementSettings = async (vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId + '/settings/engagement',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveVodEngagementSettings = (data: VodEngagementSettings) => {
+const saveVodEngagementSettings = (data: ContentEngagementSettings) => {
     return axios.post(urlBase + 'vod-engagements', {data: data})
 }
 

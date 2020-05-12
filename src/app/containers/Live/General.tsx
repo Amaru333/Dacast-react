@@ -1,25 +1,22 @@
 import React from 'react';
 import { LiveGeneralPage } from '../../pages/Live/General/General'
-import { LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from '../../redux-flow/store/Live/General/types';
+import { LiveDetails } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveDetailsAction, saveLiveDetailsAction, changeLiveThumbnailAction, changeLiveSplashscreenAction, changeLivePosterAction, deleteLiveThumbnailAction, deleteLiveSplashscreenAction, deleteLivePosterAction } from '../../redux-flow/store/Live/General/actions';
+import { Action, getLiveDetailsAction, saveLiveDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Live/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router-dom';
 
-interface LiveGeneralProps {
+export interface LiveGeneralProps {
     liveDetails: LiveDetails;
     getLiveDetails: Function;
     saveLiveDetails: Function;
-    changeLiveThumbnail: Function;
-    deleteLiveThumbnail: Function;
-    changeLiveSplashscreen: Function;
-    deleteLiveSplashscreen: Function;
-    changeLivePoster: Function;
-    deleteLivePoster: Function;
+    getUploadUrl: Function;
+    uploadFile: Function;
+    deleteFile: Function;
 }
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
@@ -58,24 +55,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveLiveDetails: (data: LiveDetails) => {
             dispatch(saveLiveDetailsAction(data));
         },
-        changeLiveThumbnail: (data: ThumbnailUpload) => {
-            dispatch(changeLiveThumbnailAction(data))
+        getUploadUrl: (uploadType: string, liveId: string) => {
+            dispatch(getUploadUrlAction(uploadType, liveId))
         },
-        deleteLiveThumbnail: () => {
-            dispatch(deleteLiveThumbnailAction())
+        uploadFile: (data: File, uploadUrl: string) => {
+            dispatch(uploadFileAction(data, uploadUrl))
         },
-        changeLiveSplashscreen: (data: SplashscreenUpload) => {
-            dispatch(changeLiveSplashscreenAction(data))
-        },
-        deleteLiveSplashscreen: () => {
-            dispatch(deleteLiveSplashscreenAction())
-        },
-        changeLivePoster: (data: PosterUpload) => {
-            dispatch(changeLivePosterAction(data))
-        },
-        deleteLivePoster: () => {
-            dispatch(deleteLivePosterAction())
-        },
+        deleteFile: (liveId: string, targetId: string) => {
+            dispatch(deleteFileAction(liveId, targetId))
+        }
 
     }
 }

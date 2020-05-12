@@ -21,18 +21,11 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { getPrivilege } from '../../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
-
-interface LiveGeneralComponentProps {
-    liveDetails: LiveDetails;
-    saveLiveDetails: Function;
-    changeLiveThumbnail: Function;
-    changeLiveSplashscreen: Function;
-    changeLivePoster: Function;
-}
+import { LiveGeneralProps } from '../../../containers/Live/General';
 
 var moment = require('moment-timezone');
 
-export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
+export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
     const {userId} = addTokenToHeader()
 
@@ -42,7 +35,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
-
+    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
 
@@ -58,11 +51,13 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            return props.changeLiveSplashscreen()
+            return  'live-splashscreen'
         } else if (imageModalTitle === "Change Thumbnail") {
-            return props.changeLiveThumbnail()
+            return 'live-thumbnail'
+        } else if(imageModalTitle === 'Change Poster') {
+            return 'live-poster'
         } else {
-            return props.changeLivePoster()
+            return ''
         }
     }
 
@@ -248,17 +243,17 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         splashScreenEnable ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID) } } >Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                        onClick={() => { setImageModalTitle("Change Splashscreen"); setImageModalOpen(true) }}>
+                                        onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
                                         {
                                             splashScreenEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {splashScreenEnable && <ImageSection><SelectedImage src={props.liveDetails.splashscreen} /></ImageSection>}
+                                {splashScreenEnable && <ImageSection><SelectedImage src={props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -272,16 +267,16 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         thumbnailEnable ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID)}}>Delete</Button> : null
                                     }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
                                             thumbnailEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { thumbnailEnable && <ImageSection> <SelectedImage src={props.liveDetails.thumbnail} /></ImageSection>}
+                                { thumbnailEnable && <ImageSection> <SelectedImage src={props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -293,15 +288,15 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                    { posterEnable && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { }}>Delete</Button> }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
+                                    { posterEnable && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
                                             posterEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {posterEnable && <ImageSection> <SelectedImage src={props.liveDetails.poster} /></ImageSection>}
+                                {posterEnable && <ImageSection> <SelectedImage src={props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -331,9 +326,23 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                         })}
                     </AdvancedLinksContainer>
                 </div>
-                <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
 
-                <Modal size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
+                {
+                    imageModalOpen && <ImageModal  
+                        imageFileName={selectedImageName} 
+                        uploadUrl={''} 
+                        getUploadUrl={props.getUploadUrl} 
+                        contentId={props.liveDetails.id} 
+                        contentType='live'
+                        imageType={handleImageModalFunction()} 
+                        toggle={() => setImageModalOpen(false)} 
+                        opened={imageModalOpen === true} 
+                        submit={props.uploadFile} 
+                        title={imageModalTitle} 
+                    />
+                }
+
+                <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
                     <ModalContent>
                         <div className="col col-12">
                             <Bubble type='info' className='my2'>
@@ -400,7 +409,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                     </ModalFooter>
                 </Modal>
 
-                <Modal icon={ stepModalRewind === 1 ? {name:'info_outlined', color: 'yellow'} : {name:'check', color: 'green'} } size="large" modalTitle={stepModalRewind === 1 ? "Is your Encoder turned off?" : "30 Minute Rewind Enabled"} opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
+                <Modal hasClose={false} icon={ stepModalRewind === 1 ? {name:'info_outlined', color: 'yellow'} : {name:'check', color: 'green'} } size="large" modalTitle={stepModalRewind === 1 ? "Is your Encoder turned off?" : "30 Minute Rewind Enabled"} opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
                     {stepModalRewind === 1 ?
                         <>
                             <ModalContent>
@@ -440,7 +449,7 @@ export const LiveGeneralPage = (props: LiveGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
-            <Prompt when={newLiveDetails !== props.liveDetails} message='' />
+            <Prompt when={JSON.stringify(newLiveDetails) !== JSON.stringify(props.liveDetails)} message='' />
         </React.Fragment>
     )
 }

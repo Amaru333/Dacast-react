@@ -3,7 +3,7 @@ import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from './types';
 import { ApplicationState } from '../..';
 import { LiveThemingServices } from './services';
-import { ContentTheme } from '../../Settings/Theming';
+import { ContentTheme, ThemeOptions } from '../../Settings/Theming';
 
 export interface GetLiveTheme {
     type: ActionTypes.GET_LIVE_THEME;
@@ -12,14 +12,14 @@ export interface GetLiveTheme {
 
 export interface SaveLiveTheme {
     type: ActionTypes.SAVE_LIVE_THEME;
-    payload: ContentTheme;
+    payload: ThemeOptions;
 }
 
-export const getLiveThemeAction = (): ThunkDispatch<Promise<void>, {}, GetLiveTheme> => {
+export const getLiveThemeAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveTheme> ) => {
-        await LiveThemingServices.getLiveThemeService()
+        await LiveThemingServices.getLiveThemeService(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -27,11 +27,11 @@ export const getLiveThemeAction = (): ThunkDispatch<Promise<void>, {}, GetLiveTh
     };
 }
 
-export const saveLiveThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SaveLiveTheme> => {
+export const saveLiveThemeAction = (data: ThemeOptions, liveId: string): ThunkDispatch<Promise<void>, {}, SaveLiveTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveTheme> ) => {
-        await LiveThemingServices.saveLiveThemeService(data)
+        await LiveThemingServices.saveLiveThemeService(data, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_LIVE_THEME, payload: data} );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
