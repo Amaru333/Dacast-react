@@ -23,6 +23,7 @@ export interface RenditionsList {
     videoInfo: VodInfo;
     presets: Rendition[];
     encodedRenditions: Rendition[];
+    storageRemaining: number;
 }
 
 export interface Rendition {
@@ -31,4 +32,5 @@ export interface Rendition {
     size: string;
     bitrate: number;
     encoded?: boolean;
+    width: number;
 }
