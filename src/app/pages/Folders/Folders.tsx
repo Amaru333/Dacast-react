@@ -364,9 +364,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         <div>
             <div className='mb2 col col-12 flex items-center sm-show'>
                 <div className='col col-9 flex items-center'>
-                    <div className={(foldersTreeHidden ? '' : 'col col-2 mr3 ') + 'flex items-center'}>
+                    <div className={'flex items-center'}>
                         <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
-                        <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
+                        <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='gray'>
                             New Folder
                         </Button>
                     </div>
@@ -394,7 +394,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     : null
                                 }
                                 <div>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
 
                                     <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} style={{}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}
