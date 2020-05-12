@@ -86,9 +86,9 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
 
-    let customEnabled = selectedTheme.themeName === "Custom Theme" || props.contentType === 'settings'
-    const liveEnabled = (selectedTheme.themeName === "Custom Theme" && props.contentType === 'live') || props.contentType === 'settings'
-    const playlistEnabled = (selectedTheme.themeName === "Custom Theme" && props.contentType === 'playlist') || props.contentType === 'settings'
+    let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
+    const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
+    const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
     
     return (
         <div>
@@ -171,7 +171,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             setSelectedTheme(props.theme.themes.filter(theme => theme.themeName === selectedTheme).length === 0 ? {...defaultTheme, themeName: 'Custom Theme', isCustom: true} : props.theme.themes.filter(theme => theme.themeName === selectedTheme)[0])
                                         }} />
                                     <Bubble className="mt25" type="info">
-                                        { selectedTheme.themeName === "Custom Theme" ?
+                                        { selectedTheme.isCustom ?
                                             "Custom Settings override any Theme settings."
                                             :
                                             "If you wish to create a new Theme or edit a Theme, go to Theming."
