@@ -25,6 +25,7 @@ export interface ContentEngagementComponentProps {
     saveContentAd: Function;
     createContentAd: Function;
     deleteContentAd: Function;
+    contentType?: string;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -32,7 +33,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const emptyAd: Ad = {
         id: "-1",
         "ad-type": "",
-        timestamp: "",
+        timestamp: 0,
         url: "test"
     }
 
@@ -58,7 +59,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef, '104301_f_713989');
+    let player = usePlayer(playerRef, props.contentType + '-' + props.contentEngagementSettings.contentId);
 
 
     React.useEffect(() => {
@@ -132,8 +133,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Toggle
                             className="mb2"
                             id='advertisingEnabled'
-                            defaultChecked={engagementSettings.adEnabled}
-                            onChange={() => { setEngagementSettings({ ...engagementSettings, adEnabled: !engagementSettings.adEnabled }); setSettingsEdited(true) }} label='Advertising enabled'
+                            defaultChecked={engagementSettings.adsEnabled}
+                            onChange={() => { setEngagementSettings({ ...engagementSettings, adsEnabled: !engagementSettings.adsEnabled }); setSettingsEdited(true) }} label='Advertising enabled'
                         />
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>

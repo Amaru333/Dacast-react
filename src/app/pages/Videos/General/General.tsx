@@ -365,7 +365,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </Modal>
                     {
                         imageModalOpen ?
-                            <ImageModal imageFileName={selectedImageName} imageType={handleImageModalFunction()} contentId={props.vodId} uploadUrl={props.vodDetails.uploadurl} getUploadUrl={props.getUploadUrl} title={imageModalTitle} toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={props.uploadFile} />
+                            <ImageModal 
+                                imageFileName={selectedImageName} 
+                                imageType={handleImageModalFunction()} 
+                                contentId={props.vodId} 
+                                contentType='vod'
+                                uploadUrl={props.vodDetails.uploadurl} 
+                                getUploadUrl={props.getUploadUrl} 
+                                title={imageModalTitle} 
+                                toggle={() => setImageModalOpen(false)} 
+                                opened={imageModalOpen === true} 
+                                submit={props.uploadFile} 
+                            />
                             : null
                     }
 
@@ -374,7 +385,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
                     <Button typeButton="tertiary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
-                <Prompt when={VodDetails !== props.vodDetails} message='' />
+                <Prompt when={JSON.stringify(VodDetails) !== JSON.stringify(props.vodDetails)} message='' />
             </React.Fragment>
             : null
     )

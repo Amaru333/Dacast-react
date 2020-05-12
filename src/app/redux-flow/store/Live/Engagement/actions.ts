@@ -30,9 +30,9 @@ export interface DeleteLiveAd {
     payload: Ad; 
 }
 
-export const getLiveEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetLiveEngagementSettings> => {
+export const getLiveEngagementSettingsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveEngagementSettings> ) => {
-        await liveEngagementServices.getLiveEngagementSettings()
+        await liveEngagementServices.getLiveEngagementSettings(liveId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS, payload: response.data} );
             }).catch(() => {

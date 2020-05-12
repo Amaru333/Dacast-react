@@ -47,7 +47,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
-    let player = usePlayer(playerRef, '104301_f_713989')
+    let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
 
     const handleThemeSave = () => {
         if(props.actionType === 'Create') {
@@ -323,7 +323,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                     <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
                 </div>
             </div>
-            <Prompt when={selectedTheme !== props.theme.themes[0]} message='' />
+            <Prompt when={selectedTheme.isCustom && JSON.stringify(selectedTheme) !== JSON.stringify(props.theme.themes.filter(t => t.isCustom)[0])} message='' />
         </div>
     )
 }

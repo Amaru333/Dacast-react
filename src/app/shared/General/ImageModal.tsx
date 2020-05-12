@@ -7,7 +7,7 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {imageType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
+export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -16,7 +16,7 @@ export const ImageModal = (props: {imageType: string; imageFileName: string; con
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
 
-    let player = usePlayer(playerRef, '104301_f_713989')
+    let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
         if (selectedOption === "frame") {

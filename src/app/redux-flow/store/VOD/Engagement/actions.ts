@@ -30,11 +30,11 @@ export interface DeleteVodAd {
     payload: Ad; 
 }
 
-export const getVodEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
+export const getVodEngagementSettingsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodEngagementSettings> ) => {
-        await vodEngagementServices.getVodEngagementSettings()
+        await vodEngagementServices.getVodEngagementSettings(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS, payload: {contentId: vodId, engagementSettings: response.data.data}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

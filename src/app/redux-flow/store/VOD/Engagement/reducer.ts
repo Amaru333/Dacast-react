@@ -7,7 +7,15 @@ const reducer: Reducer<ContentEngagementSettings> = (state = contentEngagementDe
     let ads: Ad[] = []
     switch (action.type) {
         case ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS:
-            return {...action.payload}
+            return {
+                ...action.payload, 
+                engagementSettings: {
+                    ...action.payload.engagementSettings,
+                    ads: action.payload.engagementSettings.ads ?action.payload.engagementSettings.ads.map((ad) => {return {...ad, id: ad.url + ad.timestamp + ad["ad-type"]}}) : [],
+                    mailCatcher: []
+                }
+
+            }
         case ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS:
             return {...action.payload}
         case ActionTypes.SAVE_VOD_AD :

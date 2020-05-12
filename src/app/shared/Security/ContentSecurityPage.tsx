@@ -280,7 +280,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-            <Prompt when={selectedSettings !== props.contentSecuritySettings.securitySettings} message='' />
+            <Prompt when={JSON.stringify(selectedSettings) !== JSON.stringify(props.contentSecuritySettings.securitySettings)} message='' />
         </div>
                     
     )
