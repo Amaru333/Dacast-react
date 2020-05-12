@@ -38,45 +38,57 @@ const saveLiveDetailsService = async (data: LiveDetails) => {
                 Authorization: token
             }
         }
-    )}
-
-const changeLiveThumbnailService = (data: ThumbnailUpload) => {
-    return axios.put(urlBase + 'live/thumbnail', {...data})
+    )
 }
 
-const deleteLiveThumbnailService = () => {
-    return axios.delete(urlBase + 'live/thumbnail')
+const deleteLiveChannelService = async (data: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + data, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const changeLiveSplashscrenService = (data: SplashscreenUpload) => {
-    return axios.put(urlBase + 'live/splashscreen', {...data})
+const getUploadUrl = async (data: string, liveId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/' + data,
+        {
+            channelID: liveId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
 }
 
-const deleteLiveSplashscrenService = () => {
-    return axios.delete(urlBase + 'live/splashscreen')
+const uploadFile = (data: File, uploadUrl: string) => {
+    return axios.put(uploadUrl, {...data})
 }
 
-const changeLivePosterService = (data: PosterUpload) => {
-    return axios.put(urlBase + 'live/poster', {...data})
-}
-
-const deleteLivePosterService = () => {
-    return axios.delete(urlBase + 'live/poster')
-}
-
-const deleteLiveChannelService = (data: string) => {
-    return axios.delete(urlBase + 'channel', {data}); 
+const deleteFile = async (liveId: string, targetId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + liveId + '/targets/' + targetId,
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const LiveGeneralServices = {
     getLiveDetailsService,
     getLiveList,
     saveLiveDetailsService,
-    changeLiveThumbnailService,
-    deleteLiveThumbnailService,
-    changeLiveSplashscrenService,
-    deleteLiveSplashscrenService,
-    changeLivePosterService,
-    deleteLivePosterService,
-    deleteLiveChannelService
+    deleteLiveChannelService,
+    getUploadUrl,
+    uploadFile,
+    deleteFile
 }

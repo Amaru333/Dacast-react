@@ -21,7 +21,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-    let player = usePlayer(playerRef, '104301_f_713989');
+    let player = usePlayer(playerRef, 'vod-' + props.vodId);
 
 
     const tableHeaderElement = () => {

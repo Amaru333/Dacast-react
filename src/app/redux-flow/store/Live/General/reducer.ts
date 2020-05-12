@@ -13,33 +13,15 @@ const reducer: Reducer<LiveDetails> = (state = initialLiveGeneralState, action: 
             return {
                 ...state, ...action.payload
             };  
-        case ActionTypes.CHANGE_LIVE_THUMBNAIL:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case ActionTypes.DELETE_LIVE_THUMBNAIL:
-            return {
-                ...state, thumbnail: ""
-            };
-        case ActionTypes.CHANGE_LIVE_SPLASHSCREEN:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case ActionTypes.DELETE_LIVE_SPLASHSCREEN:
-            return {
-                ...state, splashscreen: ""
-            };
-        case ActionTypes.CHANGE_LIVE_POSTER:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case ActionTypes.DELETE_LIVE_POSTER:
-            return {
-                ...state, poster: ""
-            };
+        case ActionTypes.GET_UPLOAD_URL:
+                return {
+                    ...state,
+                    uploadurl: action.payload.data.presignedURL
+                }
+        case ActionTypes.UPLOAD_IMAGE:
+                return state
+        case ActionTypes.DELETE_IMAGE:
+                return state
         default:
             return state;
     }
@@ -52,7 +34,7 @@ export const reducerList: Reducer<SearchResult| false> = (state = initialLiveLis
             return {...action.payload.data, results: liveList}
         case ActionTypes.DELETE_LIVE_CHANNEL:
             if(state) {
-                var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
+                var newList = state.results.filter(elem => elem.objectID !== action.payload)
                 return {...state, results: newList}
             }
         default:

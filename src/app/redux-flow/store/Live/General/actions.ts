@@ -5,7 +5,6 @@ import { LiveGeneralServices } from './services';
 import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem, SearchResult } from './types';
 
 
-
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
     payload: {data: LiveDetails};
@@ -21,39 +20,24 @@ export interface SaveLiveDetails {
     payload: LiveDetails;
 }
 
-export interface ChangeLiveThumbnail {
-    type: ActionTypes.CHANGE_LIVE_THUMBNAIL;
-    payload: {thumbnail: string};
+export interface GetUploadUrl {
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string }};
 }
 
-export interface DeleteLiveThumbnail {
-    type: ActionTypes.DELETE_LIVE_THUMBNAIL;
-    payload: {thumbnail: string};
+export interface UploadImage {
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
 }
 
-export interface ChangeLiveSplashscreen {
-    type: ActionTypes.CHANGE_LIVE_SPLASHSCREEN;
-    payload: {splashscreen: string};
-}
-
-export interface DeleteLiveSplashscreen {
-    type: ActionTypes.DELETE_LIVE_SPLASHSCREEN;
-    payload: {splashscreen: string};
-}
-
-export interface ChangeLivePoster {
-    type: ActionTypes.CHANGE_LIVE_POSTER;
-    payload: {poster: string};
-}
-
-export interface DeleteLivePoster {
-    type: ActionTypes.DELETE_LIVE_POSTER;
-    payload: {poster: string};
+export interface DeleteImage {
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
 }
 
 export interface DeleteLiveChannel {
     type: ActionTypes.DELETE_LIVE_CHANNEL;
-    payload: {id: string};
+    payload: string;
 }
 
 export const getLiveDetailsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveDetails> => {
@@ -93,37 +77,11 @@ export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<
     };
 }
 
-export const changeLiveThumbnailAction = (data: ThumbnailUpload): ThunkDispatch<Promise<void>, {}, ChangeLiveThumbnail> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeLiveThumbnail>) => {
-        await LiveGeneralServices.changeLiveThumbnailService(data)
-            .then(response => {
-                dispatch({ type: ActionTypes.CHANGE_LIVE_THUMBNAIL, payload: response.data });
-                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-}
-
-export const deleteLiveThumbnailAction = (): ThunkDispatch<Promise<void>, {}, DeleteLiveThumbnail> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveThumbnail>) => {
-        await LiveGeneralServices.deleteLiveThumbnailService()
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_LIVE_THUMBNAIL, payload: response.data });
-                dispatch(showToastNotification(`Thumbnail has been deleted`, 'flexible', "success"));
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-}
-
 export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<void>, {}, DeleteLiveChannel> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveChannel>) => {
         await LiveGeneralServices.deleteLiveChannelService(data)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: response.data });
+                dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: data });
                 dispatch(showToastNotification("Channel has been deleted", 'fixed', "success"));
             })
             .catch(() => {
@@ -132,62 +90,45 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
     };
 }
 
-export const changeLiveSplashscreenAction = (data: SplashscreenUpload): ThunkDispatch<Promise<void>, {}, ChangeLiveSplashscreen> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeLiveSplashscreen>) => {
-        await LiveGeneralServices.changeLiveSplashscrenService(data)
+export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
+        await LiveGeneralServices.getUploadUrl(uploadType, liveId)
             .then(response => {
-                dispatch({ type: ActionTypes.CHANGE_LIVE_SPLASHSCREEN, payload: response.data });
-                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: response.data })
             })
             .catch((error) => {
                 console.log(error)
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
-    };
+    }
 }
 
-export const deleteLiveSplashscreenAction = (): ThunkDispatch<Promise<void>, {}, DeleteLiveSplashscreen> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveSplashscreen>) => {
-        await LiveGeneralServices.deleteLiveSplashscrenService()
+export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
+        await LiveGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_LIVE_SPLASHSCREEN, payload: response.data });
-                dispatch(showToastNotification(`Splashscreen has been deleted`, 'flexible', "success"));
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
             })
             .catch((error) => {
                 console.log(error)
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
-    };
+    }
 }
 
-export const changeLivePosterAction = (data: PosterUpload): ThunkDispatch<Promise<void>, {}, ChangeLivePoster> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, ChangeLivePoster>) => {
-        await LiveGeneralServices.changeLivePosterService(data)
+export const deleteFileAction = (liveId: string, targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
+        await LiveGeneralServices.deleteFile(liveId, targetId)
             .then(response => {
-                dispatch({ type: ActionTypes.CHANGE_LIVE_POSTER, payload: response.data });
-                dispatch(showToastNotification(`${data} has been saved`, 'flexible', "success"));
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
             })
             .catch((error) => {
                 console.log(error)
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
-    };
-}
-
-export const deleteLivePosterAction = (): ThunkDispatch<Promise<void>, {}, DeleteLivePoster> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLivePoster>) => {
-        await LiveGeneralServices.deleteLivePosterService()
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_LIVE_POSTER, payload: response.data });
-                dispatch(showToastNotification(`Poster has been deleted`, 'flexible', "success"));
-            })
-            .catch((error) => {
-                console.log(error)
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-            })
-    };
+    }
 }
 
 
 
-export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails | ChangeLiveThumbnail | DeleteLiveThumbnail | ChangeLiveSplashscreen | DeleteLiveSplashscreen | ChangeLivePoster | DeleteLivePoster  | DeleteLiveChannel
+export type Action = GetLiveDetails | GetLiveList | SaveLiveDetails | GetUploadUrl | DeleteImage | UploadImage | DeleteLiveChannel
