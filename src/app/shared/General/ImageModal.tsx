@@ -50,7 +50,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
 
     React.useEffect(() => {
         if(props.uploadUrl) {
-            if (selectedOption === "upload") {
+            if (selectedOption === "upload" && logoFile) {
                 props.submit(logoFile, props.uploadUrl)
             } else {
                 props.submit(player.getPlayerInstance().currentTime.toString())
