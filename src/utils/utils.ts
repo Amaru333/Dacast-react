@@ -62,6 +62,22 @@ export function getPercentage(num: number, max: number): number {
     return Math.round((num * 100) / max);
 }
 
+
+export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
+    function handleClickOutside(event: MouseEvent): void {
+        if (ref.current && !ref.current.contains(event.target)) {
+            callback()
+        }
+    }
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
+}
+
+
 export function useOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {
         if (ref.current && ref.current.offsetParent !== null && event.target instanceof Node && !ref.current.contains(event.target) && !ref.current.offsetParent.contains(event.target)) {

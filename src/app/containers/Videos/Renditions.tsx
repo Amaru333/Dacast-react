@@ -22,9 +22,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.renditions) {
-            props.getVodRenditions(vodId);
-        }
+        props.getVodRenditions(vodId);
     }, [])
 
     return (

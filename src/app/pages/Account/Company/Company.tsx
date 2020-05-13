@@ -100,7 +100,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('hey')
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
@@ -114,8 +113,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-               
+        e.preventDefault();     
     }
 
     React.useEffect(() => {

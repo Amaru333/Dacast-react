@@ -169,6 +169,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 break;
             case 'progress':
                 const itemsProgress = uploadingList.filter(obj => obj.name !== item.name);
+                currentUpload.cancelUpload();
                 setUploadingList(itemsProgress);
                 // var event = new CustomEvent('paused' + item.name);
                 // document.dispatchEvent(event);
@@ -180,7 +181,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 // document.dispatchEvent(event);
                 break;
             case 'veryfing':
-
+                break;
         }
     }
 
@@ -229,8 +230,8 @@ export const UploaderPage = (props: UploaderProps) => {
                         id='dropdownUploaderEncoding'
                         callback={(value: string) => { console.log(value) }}
                     />
-                    <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" color="disabled">info_outlined</IconStyle>
-                    <Tooltip target="tooltipUploaderEncoding">Use our STandard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
+                    <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" color="grey-3">info_outlined</IconStyle>
+                    <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
                 <div className="col col-4 flex items-center justify-end">
                     <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-&-integrations")}> FTP/S3 Uploader </Button>
@@ -260,19 +261,19 @@ export const UploaderPage = (props: UploaderProps) => {
                 <>
                     <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
                         Choose an Encoding Recipe then upload your videos
-                        </Text>
+                    </Text>
                     <Text weight="reg" color="gray-3" size={16} className="block center">
                         Note: this will consume Encoding Credits
-                        </Text>
+                    </Text>
                 </>
             }
             <div hidden={uploadingList.length === 0} className=" mt2 right">
                 <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
                 {
                     itemsPaused ?
-                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume All</Button>
+                        <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume</Button>
                         :
-                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => { currentUpload.pauseUpload(); setItemsPaused(!itemsPaused) }} >Pause All</Button>
+                        <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => { currentUpload.pauseUpload(); setItemsPaused(!itemsPaused) }} >Pause</Button>
 
                 }
             </div>
@@ -280,7 +281,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 {renderList()}
             </ItemList>
             <Prompt when={uploadingList.filter(item => item.currentState === 'progress' || item.currentState === 'paused' || item.currentState === 'veryfing').length > 1}
-                message='Please note that unfinished uploads will be deleted.' />
+                message='Unfinished uploads will be deleted.' />
         </UploaderContainer>
     );
 

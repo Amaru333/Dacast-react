@@ -3,7 +3,7 @@ import { BlockPicker, Color } from 'react-color';
 import { Text } from '../Typography/Text';
 import { ColorPickerHeader, SelectedColor, ColorPickerBlock } from './ColorPickerStyle';
 import { IconStyle } from '../../shared/Common/Icon';
-import { useOutsideAlerter } from '../../utils/utils';
+import { useEasyOutsideAlerter } from '../../utils/utils';
 
 export const ColorPicker = (props: {defaultColor: string; callback?: Function; className?: string}) => {
 
@@ -11,11 +11,11 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
     const colorPickerRef = React.useRef<HTMLDivElement>(null);
 
-    useOutsideAlerter(colorPickerRef, () => {
-        if(props.callback) {
+    useEasyOutsideAlerter(colorPickerRef, () => {
+        if(props.callback && isOpened) {
             props.callback(selectedColor);
+            setIsOpened(!isOpened)
         }
-        setIsOpened(!isOpened)
     });
 
     React.useEffect(() => {

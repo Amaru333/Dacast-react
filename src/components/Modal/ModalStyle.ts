@@ -9,7 +9,7 @@ export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
     margin-right: 8px;
 `;
 
-export const OverlayStyle = styled.div<{ opened: boolean }>`
+export const OverlayStyle = styled.div<{ opened: boolean; index?: number; }>`
     display: none;
     position: fixed;
     top: 0;
@@ -20,7 +20,7 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
     ${props => props.opened && css`
         display: block;
     `}
-    z-index: 9998;
+    z-index: ${props => props.index ? props.index : 9998 };
 `;
 
 

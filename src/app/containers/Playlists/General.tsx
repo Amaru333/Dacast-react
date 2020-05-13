@@ -31,9 +31,7 @@ const GeneralPlaylist = (props: GeneralProps) => {
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        if (!props.playlistDetails) {
-            props.getPlaylistDetails();
-        }
+        props.getPlaylistDetails();
     }, [])
 
     return (

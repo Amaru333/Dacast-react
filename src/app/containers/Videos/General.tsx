@@ -22,12 +22,10 @@ export interface GeneralComponentProps {
 
 const General = (props: GeneralComponentProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams();
 
     React.useEffect(() => {
-        if (!props.vodDetails) {
-            props.getVodDetails(vodId);
-        }
+        props.getVodDetails(vodId);
     }, [])
 
     return (

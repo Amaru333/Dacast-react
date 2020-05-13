@@ -12,6 +12,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
+    const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
     let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
@@ -45,7 +46,10 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
 
 
     const handleSubmit = () => {
-        props.getUploadUrl(props.imageType, props.contentId)
+        if(!saveButtonLoading && !isSaveDisabled) {
+            setSaveButtonLoading(true);
+            props.getUploadUrl(props.imageType, props.contentId, () => { setSaveButtonLoading(false) })
+        }
     }
 
     React.useEffect(() => {
@@ -57,7 +61,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
             }
             props.toggle()
         }
-    }, [props.uploadUrl])
+    }, [props.uploadUrl, saveButtonLoading])
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -99,8 +103,8 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                     <div className="col col-12">
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                         <Button className="mt2" sizeButton="xs" typeButton="secondary">
-                            <label htmlFor='browseButton'>
-                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                            <label className="pointer"  htmlFor='browseButton'>
+                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
                                 Upload File
                             </label>
                         </Button>
@@ -135,7 +139,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                 </RadioButtonOption>
             </ModalContent>
             <ModalFooter>
-                <Button disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
+                <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
                 <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
             </ModalFooter>
         </Modal>

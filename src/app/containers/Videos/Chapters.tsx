@@ -23,10 +23,9 @@ const Chapters = (props: ChapterComponentProps) => {
     let { vodId } = useParams()
     
     React.useEffect(() => {
-        if(!props.chapterPageDetails) {
-            props.getVodChapterMarkers(vodId);
-        }
+        props.getVodChapterMarkers(vodId);
     }, [])
+    
     return (
         props.chapterPageDetails ? 
             <div className='flex flex-column'>

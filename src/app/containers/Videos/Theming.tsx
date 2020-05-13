@@ -21,9 +21,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.theme) {
-            props.getVodTheme(vodId);
-        }
+        props.getVodTheme(vodId);
     }, [])
     
     return (

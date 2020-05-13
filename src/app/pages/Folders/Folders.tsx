@@ -25,9 +25,7 @@ import { handleFeatures } from '../../shared/Common/Features';
 import { DateTime } from 'luxon';
 
 const folderTreeConst = [
-    'folder1',
     'folder2',
-    'folder3'
 ]
 
 export const FoldersPage = (props: FoldersComponentProps) => {
@@ -167,7 +165,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             return ['Restore']
         }
         if (item.contentType === 'folder') {
-            return ['Rename', 'Move', 'Delete']
+            return ['Rename', 'Move', 'Delete', 'View']
         }
         return ['Edit', 'Move', 'Delete']
     }
@@ -187,6 +185,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setNewFolderModalOpened(true);
                 break;
             case 'Delete':
+                break;
+            case 'View' :
+                navigateToFolder(foldersTree.children[assetName])
                 break;
             default:
                 break;
@@ -224,8 +225,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     }
 
-
-
     const wait = async () => {
         return new Promise((resolve) => setTimeout(resolve, 1000))
     }
@@ -246,13 +245,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     React.useEffect(() => { }, [foldersTree])
 
     const getChild = async (node: FolderTreeNode) => {
-        await wait();
-        let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        node.children = {
-            [name1]: makeNode(node, name1, 10),
-            [name2]: makeNode(node, name2, 0)
-        }
+        // let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        // let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        // node.children = {
+        //     [name1]: makeNode(node, name1, 10),
+        //     [name2]: makeNode(node, name2, 0)
+        // }
+        await props.getFolderContent(node)
         return node.children;
     }
 
@@ -292,73 +291,39 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         return currentNode
     }
 
-    // const findNode3 = async (node: FolderTreeNode, searchedFolder: string): Promise<FolderTreeNode> => {
-    //     if(node.fullPath === searchedFolder) {
-    //         if(Object.keys(node.children).length === 0 && node.subfolders !== 0) {
-    //             console.log('node has no children, fecthing')
-    //             await loadChildren(node)
-    //         }
-    //         return node
-    //     }
-    //     if(!searchedFolder.startsWith(node.fullPath)) {
-    //         throw new Error('searching for a folder with a node of a different branch of the folder structure')
-    //     }
-
-    //     if(Object.keys(node.children).length === 0 && node.subfolders !== 0) {
-    //         console.log('node has no children, fecthing')
-    //         await loadChildren(node)
-    //     }
-
-    //     let leftoverSearch = searchedFolder.substr(node.fullPath.length)
-    //     let pathElement = leftoverSearch.split('/').filter(f => f)[0]
-    //     let foundChild = node.children[pathElement]
-    //     if(!foundChild) {
-    //         throw new Error('path doesnt exist: ' + pathElement + ' (of ' + searchedFolder + ')')
-    //     }
-    //     return await findNode3(foundChild, searchedFolder)
-    // }
-
     const goToNode = async (searchedFolder: string) => {
         return await getNode(foldersTree, searchedFolder);
+    }
+
+    const navigateToFolder = (node: FolderTreeNode) => {
+        setSelectedFolder(node.fullPath);
+        if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
+            loadChildren(node)
+            return
+        }
+        if (node.loadingStatus === 'loading') {
+            console.log('blocked double loading')
+            return
+        }
+        node.isExpanded = !node.isExpanded
+        setFoldersTree({ ...foldersTree });
+        
     }
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length - 1
         return (
             <div key={node.fullPath}>
-                <FolderRow isSelected={node.fullPath === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {
-                    setSelectedFolder(node.fullPath);
-                    if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
-                        loadChildren(node)
-                        return
-                    }
-                    if (node.loadingStatus === 'loading') {
-                        console.log('blocked double loading')
-                        return
-                    }
-                    node.isExpanded = !node.isExpanded
-                    setFoldersTree({ ...foldersTree })
-                }}>
-                    {
-                        node.subfolders > 0 ?
-                            <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle>
-                            : null
-
-                    }
+                <FolderRow isSelected={node.fullPath === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {navigateToFolder(node)}}>
+                    { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                     <Text size={14} weight='reg' color={node.fullPath === selectedFolder ? 'dark-violet' : 'gray-1'}>{getNameFromFullPath(node.fullPath)}</Text>
                 </FolderRow>
                 <div>
-                    {
-                        node.isExpanded ?
-                            Object.values(node.children).map((childNode) => renderNode(childNode))
-                            : null
-                    }
+                    { node.isExpanded && Object.values(node.children).map((childNode) => renderNode(childNode))}
                 </div>
             </div>
         )
     }
-
-
 
     return (
         <div>
@@ -470,7 +435,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => { }} />
                 </div>
             </ContentSection>
-            <Modal style={{ zIndex: 10000 }} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 <NewFolderModal toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
