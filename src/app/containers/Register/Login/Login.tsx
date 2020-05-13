@@ -44,7 +44,6 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         login: (data: LoginInfos, callback: Function) => {
-            console.log(callback)
             dispatch(loginAction(data)).then(callback) ;
         },
         confirmEmail: (email: string) => {
