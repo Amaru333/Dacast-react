@@ -10,7 +10,10 @@ const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter, getPrivilege } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
-import { initUserInfo } from '../../utils/token';
+import { initUserInfo, isTokenExpired, addTokenToHeader } from '../../utils/token';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import axios from 'axios'
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -55,6 +58,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         initUserInfo();
@@ -91,6 +95,31 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setAddDropdownIsOpened(!addDropdownIsOpened)
     });
 
+    const handleCreatePlaylist = async () => {
+    
+        setButtonLoading(true)
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        
+        return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/PLAYLIST',
+            {
+                title: "My Playlist"
+            }, 
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then((response) => {
+            setButtonLoading(false)
+            showToastNotification('Live channel created!', 'fixed', 'success')
+            history.push(`PLAYLIST/${response.data.data.id}/general`)
+        }).catch((error) => {
+            setButtonLoading(false)
+            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
+        })
+    }
+
     const handleClick = (name: string) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
@@ -106,7 +135,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 }
                 break
             case "Playlist":
-                history.push("/playlists")
+                handleCreatePlaylist()
                 break
             default:
                 return
@@ -204,7 +233,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
-                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
+                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
                         <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
                             {renderAddList()}
                         </DropdownList>

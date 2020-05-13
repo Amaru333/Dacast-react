@@ -18,17 +18,43 @@ import { handleFeatures } from '../../../shared/Common/Features';
 import { PlaylistFiltering } from './PlaylistFilter';
 import { DateTime } from 'luxon';
 import { useHistory } from 'react-router';
+import { isTokenExpired } from '../../../../admin/utils/token';
+import { addTokenToHeader } from '../../../utils/token';
+import axios from 'axios'
+import { showToastNotification } from '../../../redux-flow/store/Toasts/actions';
+import { PlaylistListContainerProps } from '../../../containers/Playlists/List';
 
-export interface LiveListProps {
-    playlistItems: PlaylistItem[];
-    themesList: ThemeOptions[];
-}
-
-export const PlaylistListPage = (props: LiveListProps) => {
+export const PlaylistListPage = (props: PlaylistListContainerProps & {playlistItems: PlaylistItem[], themesList: ThemeOptions[]}) => {
 
     const [selectedPlaylist, setSelectedPlaylist] = React.useState<string[]>([]);
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     let history = useHistory()
+
+    const handleCreatePlaylist = async () => {
+    
+        setButtonLoading(true)
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        
+        return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/PLAYLIST',
+            {
+                title: "My Playlist"
+            }, 
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then((response) => {
+            setButtonLoading(false)
+            showToastNotification('Live channel created!', 'fixed', 'success')
+            history.push(`PLAYLIST/${response.data.data.id}/general`)
+        }).catch((error) => {
+            setButtonLoading(false)
+            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
+        })
+    }
 
     const liveListHeaderElement = () => {
         return {data: [
@@ -84,7 +110,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <IconStyle onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { props.deletePlaylist(value.id) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
                     </div>,
@@ -143,7 +169,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         </div>
                         <SeparatorHeader className="mx2 inline-block" />
                         <PlaylistFiltering setSelectedPlaylist={setSelectedPlaylist} />
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Playlist</Button>
+                        <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => handleCreatePlaylist()} >Create Playlist</Button>
                     </div>
                 </HeaderPlaylistList>
                 <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
