@@ -6,6 +6,11 @@ export const reducerPlaylistList: Reducer<PlaylistListState> = (state = playlist
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_LIST:
             return {items: [...action.payload] };
+        case ActionTypes.DELETE_PLAYLIST:
+                if(state) {
+                    var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
+                    return {...state, results: newList}
+                }
         default:
             return state;
     }

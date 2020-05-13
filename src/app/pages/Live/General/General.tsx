@@ -15,7 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../../components/Modal/M
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Prompt } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
@@ -26,6 +26,8 @@ import { LiveGeneralProps } from '../../../containers/Live/General';
 var moment = require('moment-timezone');
 
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
+
+    let history = useHistory()
 
     const {userId} = addTokenToHeader()
 
@@ -62,11 +64,11 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     }
 
     const liveAdvancedLinksOptions = [
-        { id: "splashscreen", label: "Splashscreen", enabled: true },
-        { id: "thumbnail", label: "Thumbnail", enabled: true },
-        { id: "poster", label: "Poster", enabled: true },
-        { id: "embed", label: "Embed Code", enabled: true },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.liveDetails.thumbnail.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.liveDetails.thumbnail.url },
+        { id: "poster", label: "Poster", enabled: true, link: props.liveDetails.poster.url },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=live-${props.liveDetails.id}"  class="dacast-video"></script>` },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
 
     return (
@@ -314,7 +316,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
-                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        <LinkText size={14} weight="reg">{item.link}</LinkText>
                                         <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
@@ -346,7 +348,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Bubble type='info' className='my2'>
                                 <BubbleContent>
                                     <Text weight="reg" size={16} >
-                                        Correct <a href="www.dacast.com" target="_blank">Encoder Setup</a> is required — <a href="www.dacast.com" target="_blank">contact us</a> if you need help.
+                                        Correct <a href="https://www.dacast.com/support/knowledgebase/live-encoder-configuration/" target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                     </Text>
                                 </BubbleContent>
                             </Bubble>
@@ -398,12 +400,11 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </div>
                         <div className="flex col col-12 mt2">
                             <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                            <Text size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                            <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                     </ModalContent>
                     <ModalFooter className="mt1" >
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
-                        <Button typeButton="tertiary">Visit Knowledge Base</Button>
                     </ModalFooter>
                 </Modal>
 

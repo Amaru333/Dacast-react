@@ -58,10 +58,10 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     }
 
     const playlistAdvancedLinksOptions = [
-        { id: "thumb", label: "Thumbnail" },
-        { id: "splashscreen", label: "Splashscreen" },
-        { id: "poster", label: "Poster" },
-        { id: "embed", label: "Embed Code" }
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url },
+        { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
     return (
@@ -223,7 +223,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
-                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        <LinkText size={14} weight="reg">{item.link}</LinkText>
                                         <IconStyle className='pointer' id={item.id} onClick={() => {copyKey("embed code here");props.showToast(`${item.label} Link Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
