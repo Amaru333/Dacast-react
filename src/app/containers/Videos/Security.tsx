@@ -24,10 +24,10 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
     let { vodId } = useParams()
     
     React.useEffect(() => {
-        if(!props.vodSecuritySettings ||  (!props.vodSecuritySettings && !props.globalSecuritySettings)) {
-            props.getVodSecuritySettings(vodId);
+        if(!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
+        props.getVodSecuritySettings(vodId);
     }, [])
 
     return (

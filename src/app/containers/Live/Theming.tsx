@@ -24,9 +24,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.theme) {
-            props.getLiveTheme(liveId);            
-        }
+        props.getLiveTheme(liveId);            
     }, [])
     
     return (

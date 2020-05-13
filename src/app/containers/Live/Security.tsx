@@ -26,10 +26,11 @@ const LiveSecurity = (props: LiveSecurityProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.liveSecuritySettings || (!props.liveSecuritySettings && !props.globalSecuritySettings)) {
-            props.getLiveSecuritySettings(liveId);
+        if(!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
+        props.getLiveSecuritySettings(liveId);
+
     }, [])
 
     return (

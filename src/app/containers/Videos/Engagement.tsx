@@ -24,9 +24,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.vodEngagementSettings) {
-            props.getVodEngagementSettings(vodId);
-        }
+        props.getVodEngagementSettings(vodId);
     }, []);
 
     return (

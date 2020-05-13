@@ -24,9 +24,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
     let {liveId} = useParams()
 
     React.useEffect(() => {
-        if(!props.liveEngagementSettings) {
-            props.getLiveEngagementSettings(liveId);
-        }
+        props.getLiveEngagementSettings(liveId);
     }, []);
 
     return (
