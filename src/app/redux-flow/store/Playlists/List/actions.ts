@@ -9,6 +9,11 @@ export interface GetPlaylistList {
     payload: PlaylistItem[];
 }
 
+export interface DeletePlaylist {
+    type: ActionTypes.DELETE_PLAYLIST;
+    payload: {id: string};
+}
+
 export const getPlaylistListAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistList>) => {
         await PlaylistGeneralServices.getPlaylistListAction()
@@ -21,5 +26,17 @@ export const getPlaylistListAction = (): ThunkDispatch<Promise<void>, {}, GetPla
     };
 }
 
+export const deletePlaylistAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylist> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylist>) => {
+        await PlaylistGeneralServices.deletePlaylistService(playlistId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_PLAYLIST, payload: {id: playlistId} })
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
 
-export type Action = GetPlaylistList
+
+export type Action = GetPlaylistList | DeletePlaylist

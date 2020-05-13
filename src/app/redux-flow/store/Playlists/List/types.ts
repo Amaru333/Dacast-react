@@ -2,6 +2,7 @@ import { FeaturesList } from '../../../../shared/Common/Features';
 
 export enum ActionTypes {
     GET_PLAYLIST_LIST = "@@playlists/GET_PLAYLIST_LIST",
+    DELETE_PLAYLIST = '@@playlists/DELETE_PLAYLIST'
 }
 
 export interface PlaylistItem {

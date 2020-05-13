@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PlaylistListState } from '../../redux-flow/store/Playlists/List/types';
-import { getPlaylistListAction, Action } from '../../redux-flow/store/Playlists/List/actions';
+import { getPlaylistListAction, Action, deletePlaylistAction } from '../../redux-flow/store/Playlists/List/actions';
 import { PlaylistListPage } from '../../pages/Playlist/List/PlaylistList';
 import { getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -14,6 +14,7 @@ export interface PlaylistListContainerProps {
     getPlaylistList: Function;
     themeList: ThemesData;
     getThemingList: Function;
+    deletePlaylist: Function;
 }
 
 const PlaylistList = (props: PlaylistListContainerProps) => {
@@ -37,7 +38,7 @@ const PlaylistList = (props: PlaylistListContainerProps) => {
     } else {
         return (
             <>
-                <PlaylistListPage themesList={props.themeList.themes} playlistItems={props.playlistList.items}  />
+                <PlaylistListPage {...props} themesList={props.themeList.themes} playlistItems={props.playlistList.items}  />
             </>
         )
     }
@@ -58,6 +59,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getThemingList: () => {
             dispatch(getThemingListAction());
         },
+        deletePlaylist: (playlistId: string) => {
+            dispatch(deletePlaylistAction(playlistId));
+        }
     };
 }
 

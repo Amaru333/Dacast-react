@@ -22,13 +22,9 @@ import { isTokenExpired } from '../../../../admin/utils/token';
 import { addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
 import { showToastNotification } from '../../../redux-flow/store/Toasts/actions';
+import { PlaylistListContainerProps } from '../../../containers/Playlists/List';
 
-export interface LiveListProps {
-    playlistItems: PlaylistItem[];
-    themesList: ThemeOptions[];
-}
-
-export const PlaylistListPage = (props: LiveListProps) => {
+export const PlaylistListPage = (props: PlaylistListContainerProps & {playlistItems: PlaylistItem[], themesList: ThemeOptions[]}) => {
 
     const [selectedPlaylist, setSelectedPlaylist] = React.useState<string[]>([]);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -114,7 +110,7 @@ export const PlaylistListPage = (props: LiveListProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.id}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.id}>
-                            <IconStyle onClick={() => { props.deleteLiveChannel(value.id) }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { props.deletePlaylist(value.id) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
                     </div>,
