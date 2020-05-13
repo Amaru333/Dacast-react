@@ -15,7 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../../components/Modal/M
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Prompt } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
@@ -26,6 +26,8 @@ import { LiveGeneralProps } from '../../../containers/Live/General';
 var moment = require('moment-timezone');
 
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
+
+    let history = useHistory()
 
     const {userId} = addTokenToHeader()
 
@@ -346,7 +348,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Bubble type='info' className='my2'>
                                 <BubbleContent>
                                     <Text weight="reg" size={16} >
-                                        Correct <a href="www.dacast.com" target="_blank">Encoder Setup</a> is required — <a href="www.dacast.com" target="_blank">contact us</a> if you need help.
+                                        Correct <a href="https://www.dacast.com/support/knowledgebase/live-encoder-configuration/" target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                     </Text>
                                 </BubbleContent>
                             </Bubble>
@@ -398,12 +400,11 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </div>
                         <div className="flex col col-12 mt2">
                             <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                            <Text size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                            <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                     </ModalContent>
                     <ModalFooter className="mt1" >
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
-                        <Button typeButton="tertiary">Visit Knowledge Base</Button>
                     </ModalFooter>
                 </Modal>
 
