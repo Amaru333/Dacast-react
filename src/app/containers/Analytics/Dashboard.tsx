@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardConsumptionLocationAction, getAnalyticsDashboardTopContentsAction, getAnalyticsDashboardConsumptionDeviceAction, getAnalyticsDashboardPlaysViewersTimeAction, getAnalyticsDashboardConsumptionTimeAction } from '../../redux-flow/store/Analytics/Dashboard';
+import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardConsumptionLocationAction, getAnalyticsDashboardTopContentsAction, getAnalyticsDashboardConsumptionDeviceAction, getAnalyticsDashboardPlaysViewersTimeAction, getAnalyticsDashboardConsumptionTimeAction, getAnalyticsDashboardJobIdsAction } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
@@ -15,28 +15,33 @@ export interface DashboardPageProps {
     getAnalyticsDashboardConsumptionDevice: Function;
     getAnalyticsDashboardPlaysViewersTime: Function;
     getAnalyticsDashboardConsumptionTime: Function;
+    getAnalyticsDashboardJobIds: Function;
 
 }
 
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        if(!props.dashboardAnalytics.data.consumptionPerLocation) {
-            props.getAnalyticsDashboardConsumptionLocation();
-        }
-        if(!props.dashboardAnalytics.data.topContents) {
-            props.getAnalyticsDashboardTopContents();
-        }
-        if(!props.dashboardAnalytics.data.consumptionPerDevice) {
-            props.getAnalyticsDashboardConsumptionDevice();
-        }
-        if(!props.dashboardAnalytics.data.playsViewersPerTime) {
-            props.getAnalyticsDashboardPlaysViewersTime();
-        }
-        if(!props.dashboardAnalytics.data.consumptionPerTime) {
-            props.getAnalyticsDashboardConsumptionTime();
-        }
+        props.getAnalyticsDashboardJobIds();
     }, [])
+
+    React.useEffect(() => {
+        if(!props.dashboardAnalytics.data.consumptionPerLocation && props.dashboardAnalytics.jobIds) {
+            props.getAnalyticsDashboardConsumptionLocation(null, props.dashboardAnalytics.jobIds.consumptionPerLocation.jobID);
+        }
+        if(!props.dashboardAnalytics.data.topContents && props.dashboardAnalytics.jobIds) {
+            props.getAnalyticsDashboardTopContents(null, props.dashboardAnalytics.jobIds.topContents.jobID);
+        }
+        if(!props.dashboardAnalytics.data.consumptionPerDevice && props.dashboardAnalytics.jobIds) {
+            props.getAnalyticsDashboardConsumptionDevice(null, props.dashboardAnalytics.jobIds.consumptionPerDevice.jobID);
+        }
+        if(!props.dashboardAnalytics.data.playsViewersPerTime && props.dashboardAnalytics.jobIds) {
+            props.getAnalyticsDashboardPlaysViewersTime(null, props.dashboardAnalytics.jobIds.playsViewersPerTime.jobID);
+        }
+        if(!props.dashboardAnalytics.data.consumptionPerTime && props.dashboardAnalytics.jobIds) {
+            props.getAnalyticsDashboardConsumptionTime(null, props.dashboardAnalytics.jobIds.consumptionPerTime.jobID);
+        }
+    }, [props.dashboardAnalytics.jobIds])
     
 
     return <DashboardAnalyticsPage {...props} />
@@ -51,20 +56,23 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsDashboardConsumptionLocation: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardConsumptionLocationAction(dates));
+        getAnalyticsDashboardJobIds: () => {
+            dispatch(getAnalyticsDashboardJobIdsAction());
         },
-        getAnalyticsDashboardTopContents: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardTopContentsAction(dates));
+        getAnalyticsDashboardConsumptionLocation: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
+            dispatch(getAnalyticsDashboardConsumptionLocationAction(dates, jobId));
         },
-        getAnalyticsDashboardConsumptionDevice: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardConsumptionDeviceAction(dates));
+        getAnalyticsDashboardTopContents: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
+            dispatch(getAnalyticsDashboardTopContentsAction(dates, jobId));
         },
-        getAnalyticsDashboardPlaysViewersTime: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardPlaysViewersTimeAction(dates));
+        getAnalyticsDashboardConsumptionDevice: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
+            dispatch(getAnalyticsDashboardConsumptionDeviceAction(dates, jobId));
         },
-        getAnalyticsDashboardConsumptionTime: (dates: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardConsumptionTimeAction(dates));
+        getAnalyticsDashboardPlaysViewersTime: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
+            dispatch(getAnalyticsDashboardPlaysViewersTimeAction(dates, jobId));
+        },
+        getAnalyticsDashboardConsumptionTime: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
+            dispatch(getAnalyticsDashboardConsumptionTimeAction(dates, jobId));
         },
     };
 }

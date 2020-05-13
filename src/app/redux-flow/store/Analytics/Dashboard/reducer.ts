@@ -4,25 +4,35 @@ import { ActionTypes, AnalyticsDashboardInitialState, AnalyticsDashboardState } 
 
 const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardInitialState, action: Action) => {
     switch (action.type) {
+        case ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS: 
+            return {
+                ...state,
+                jobIds: action.payload.data
+            }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE :
             return {
-                data: { ...state.data, consumptionPerDevice:  action.payload}
+                ...state,
+                data: { ...state.data, consumptionPerDevice:  action.payload.data}
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME :
             return {
-                data: { ...state.data, consumptionPerTime:  action.payload}
+                ...state,
+                data: { ...state.data, consumptionPerTime:  action.payload.data}
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION :
             return {
-                data: { ...state.data, consumptionPerLocation:  action.payload}
+                ...state,
+                data: { ...state.data, consumptionPerLocation:  action.payload.data}
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME :
             return {
-                data: { ...state.data, playsViewersPerTime:  action.payload}
+                ...state,
+                data: { ...state.data, playsViewersPerTime:  action.payload.data}
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS :
             return {
-                data: { ...state.data, topContents:  action.payload}
+                ...state,
+                data: { ...state.data, topContents:  action.payload.data}
             }
         default:
             return state;

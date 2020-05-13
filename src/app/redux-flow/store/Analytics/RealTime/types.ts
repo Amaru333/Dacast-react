@@ -3,6 +3,7 @@ export enum ActionTypes {
     GET_ANALYTICS_REALTIME_PLAYBACK_TIME = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_PLAYBACK_TIME",
     GET_ANALYTICS_REALTIME_GB_TIME = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_GB_TIME",
     GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION = "@@ANALYTICSREALTIME/GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION",
+    GET_ANALYTICS_REALTIME_JOB_IDS = "@@analytics_realtime/GET_ANALYTICS_REALTIME_JOB_IDS"
 }
 
 export interface GetAnalyticsRealtimeOptions {
@@ -43,12 +44,28 @@ export interface AnalyticsRealTimeGbTime {
     data: number[];
 }
 
-interface TopContentData {
-    content: string;
-    watchTime: number;
-    views: number;
-    revenueUsd: number;
-    revenueEur: number;
+export interface RealTimeJobIDs {
+    concurentViewersPerTime: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    consumptionPerLocation: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    gbPerTime: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    newPlaybackSessionsPerTime: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    errors?: boolean
 }
 
 export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = {
@@ -58,10 +75,12 @@ export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = {
         gbPerTime: false,
         consumptionPerLocation: false,
     },
+    jobIds: null
 };
 
 export interface AnalyticsRealTimeState {
     readonly data:  AnalyticsRealTimeInfos;
+    jobIds: any;
 }
 
 

@@ -86,7 +86,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 }} />},
             {cell: <Text size={14} weight="med">Rendition</Text>},
             {cell: <Text size={14} weight="med">Size (px)</Text>},
-            {cell: <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>},
+            {cell: <Text size={14} weight="med">Bitrate(Mbps)</Text>},
             {cell: <Text size={14} weight="med">Status</Text>}
         ]}
     }
@@ -105,8 +105,8 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                         }
                     }} />,
                 <Text size={14} weight="reg">{value.name}</Text>,
-                <Text size={14} weight="reg">{value.size}</Text>,
-                <Text size={14} weight="reg">{value.bitrate / 1000}</Text>,
+                <Text size={14} weight="reg">{value.width}</Text>,
+                <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
                 value.encoded ? 
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
                     :
@@ -166,7 +166,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 </RenditionsWidget>
                 <RenditionsWidget>
                     <div>
-                        <Text size={24} weight="reg">100 GB</Text>
+                        <Text size={24} weight="reg">{(props.renditions.storageRemaining / 10000000).toFixed(2)} GB</Text>
                     </div>
                     <div className="mt1">
                         <Text color="gray-4" size={14} weight="reg">Storage Remaining</Text>

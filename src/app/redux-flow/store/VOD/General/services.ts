@@ -78,7 +78,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, {...data})
+    return axios.put(uploadUrl, data)
 }
 
 const deleteFile = async (vodId: string, targetId: string) => {

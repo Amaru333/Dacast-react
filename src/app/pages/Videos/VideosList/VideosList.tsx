@@ -79,7 +79,8 @@ export const VideosListPage = (props: VideosListProps) => {
     }
 
     React.useEffect(() => {
-        props.getVodList(parseFiltersToQueryString(selectedFilters))    
+        props.getVodList(parseFiltersToQueryString(selectedFilters)) 
+        console.log(props.items)   
     }, [selectedFilters, searchString, paginationInfo, sort])
 
     useOutsideAlerter(bulkDropdownRef, () => {
@@ -134,6 +135,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListBodyElement = () => {
         if (props.items) {
+            console.log('we have items')
             return props.items.results.map((value) => {
                 return {data: [
                     <div key={"checkbox" + value.objectID} className='flex items-center'>
@@ -201,7 +203,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         : null
                     }
                     <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
                         <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                             {renderList()}
                         </DropdownList>
@@ -211,7 +213,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />

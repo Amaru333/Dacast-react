@@ -1,38 +1,55 @@
-import { ActionTypes, GetAnalyticsDashboardOptions, AnalyticsDashboardConsumptionPerTime, AnalyticsDashboardPlaysViewersPerTime, AnalyticsDashboardConsumptionPerDevice, AnalyticsDashboardTopContents, AnalyticsDashboardConsumptionPerLocation } from "./types";
+import { ActionTypes, GetAnalyticsDashboardOptions, AnalyticsDashboardConsumptionPerTime, AnalyticsDashboardPlaysViewersPerTime, AnalyticsDashboardConsumptionPerDevice, AnalyticsDashboardTopContents, AnalyticsDashboardConsumptionPerLocation, DashboardJobIDs } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { AnalyticsDashboardServices } from './services';
 import { showToastNotification } from '../../Toasts';
 
+export interface GetAnalyticsDashboardJobIds {
+    type: ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS;
+    payload:  {data: DashboardJobIDs};
+}
+
 export interface GetAnalyticsDashboardConsumptionTime {
     type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME;
-    payload: AnalyticsDashboardConsumptionPerTime | false;
+    payload: {data: AnalyticsDashboardConsumptionPerTime} | false;
 }
 
 export interface GetAnalyticsDashboardPlaysViewersTime {
     type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME;
-    payload: AnalyticsDashboardPlaysViewersPerTime | false;
+    payload: {data: AnalyticsDashboardPlaysViewersPerTime} | false;
 }
 
 export interface GetAnalyticsDashboardConsumptionDevice {
     type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE;
-    payload: AnalyticsDashboardConsumptionPerDevice | false;
+    payload: {data: AnalyticsDashboardConsumptionPerDevice} | false;
 }
 
 export interface GetAnalyticsDashboardTopContents {
     type: ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS;
-    payload: AnalyticsDashboardTopContents | false;
+    payload: {data: AnalyticsDashboardTopContents} | false;
 }
 
 export interface GetAnalyticsDashboardConsumptionLocation {
     type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION;
-    payload: AnalyticsDashboardConsumptionPerLocation | false;
+    payload: {data: AnalyticsDashboardConsumptionPerLocation} | false;
 }
 
-export const getAnalyticsDashboardConsumptionLocationAction = (dates: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionLocation> => {
+
+export const getAnalyticsDashboardJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardJobIds> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardJobIds> ) => {
+        await AnalyticsDashboardServices.getAnalyticsDashboardJobIds()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsDashboardConsumptionLocationAction = (dates: GetAnalyticsDashboardOptions, jobId: string): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionLocation> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardConsumptionLocation> ) => {
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: false} );
-        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionLocation(dates)
+        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionLocation(dates, jobId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: response.data} );
             }).catch(() => {
@@ -41,10 +58,10 @@ export const getAnalyticsDashboardConsumptionLocationAction = (dates: GetAnalyti
     };
 }
 
-export const getAnalyticsDashboardTopContentsAction = (dates: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardTopContents> => {
+export const getAnalyticsDashboardTopContentsAction = (dates: GetAnalyticsDashboardOptions, jobId: string): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardTopContents> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardTopContents> ) => {
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS, payload: false} );
-        await AnalyticsDashboardServices.getAnalyticsDashboardTopContent(dates)
+        await AnalyticsDashboardServices.getAnalyticsDashboardTopContent(dates, jobId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS, payload: response.data} );
             }).catch(() => {
@@ -53,10 +70,10 @@ export const getAnalyticsDashboardTopContentsAction = (dates: GetAnalyticsDashbo
     };
 }
 
-export const getAnalyticsDashboardConsumptionDeviceAction = (dates: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionDevice> => {
+export const getAnalyticsDashboardConsumptionDeviceAction = (dates: GetAnalyticsDashboardOptions, jobId: string): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionDevice> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardConsumptionDevice> ) => {
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE, payload: false} );
-        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionDevice(dates)
+        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionDevice(dates, jobId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE, payload: response.data} );
             }).catch(() => {
@@ -65,10 +82,10 @@ export const getAnalyticsDashboardConsumptionDeviceAction = (dates: GetAnalytics
     };
 }
 
-export const getAnalyticsDashboardPlaysViewersTimeAction = (dates: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardPlaysViewersTime> => {
+export const getAnalyticsDashboardPlaysViewersTimeAction = (dates: GetAnalyticsDashboardOptions, jobId: string): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardPlaysViewersTime> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardPlaysViewersTime> ) => {
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: false} );
-        await AnalyticsDashboardServices.getAnalyticsDashboardPlaysViewersTime(dates)
+        await AnalyticsDashboardServices.getAnalyticsDashboardPlaysViewersTime(dates, jobId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: response.data} );
             }).catch(() => {
@@ -77,10 +94,10 @@ export const getAnalyticsDashboardPlaysViewersTimeAction = (dates: GetAnalyticsD
     };
 }
 
-export const getAnalyticsDashboardConsumptionTimeAction = (dates: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionTime> => {
+export const getAnalyticsDashboardConsumptionTimeAction = (dates: GetAnalyticsDashboardOptions, jobId: string): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardConsumptionTime> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardConsumptionTime> ) => {
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME, payload: false} );
-        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionTime(dates)
+        await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionTime(dates, jobId)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME, payload: response.data} );
             }).catch(() => {
@@ -90,4 +107,4 @@ export const getAnalyticsDashboardConsumptionTimeAction = (dates: GetAnalyticsDa
 }
 
 
-export type Action = GetAnalyticsDashboardConsumptionTime | GetAnalyticsDashboardPlaysViewersTime | GetAnalyticsDashboardConsumptionDevice | GetAnalyticsDashboardTopContents | GetAnalyticsDashboardConsumptionLocation;
+export type Action = GetAnalyticsDashboardConsumptionTime | GetAnalyticsDashboardPlaysViewersTime | GetAnalyticsDashboardConsumptionDevice | GetAnalyticsDashboardTopContents | GetAnalyticsDashboardConsumptionLocation | GetAnalyticsDashboardJobIds;

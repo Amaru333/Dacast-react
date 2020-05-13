@@ -344,7 +344,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             />
                             <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
                                 <label htmlFor='browseButton'>
-                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
                                     Select Files
                                 </label>                                    
                             </Button>

@@ -184,7 +184,7 @@ export const LiveListPage = (props: LiveListProps) => {
                             : null
                         }
                         <div className="relative">
-                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedLive.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedLive.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
                             <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
