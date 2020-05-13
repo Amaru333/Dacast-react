@@ -12,13 +12,14 @@ import { addTokenToHeader, isTokenExpired } from '../../utils/token';
 import axios from 'axios'
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
+import { Input } from '../../../components/FormsComponents/Input/Input';
 
 export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
 
     let history = useHistory()
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, streamType: null})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -37,7 +38,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         
         return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels',
             {
-                title: "My Live Channel"
+                title: streamSetupOptions.title
             }, 
             {
                 headers: {
@@ -60,6 +61,8 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
+
+                    <Input id='liveStreamModalInput' className='col col-12 mb2' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
                     {getPrivilege('privilege-live') &&
                         <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
