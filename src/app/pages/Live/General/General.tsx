@@ -62,11 +62,11 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     }
 
     const liveAdvancedLinksOptions = [
-        { id: "splashscreen", label: "Splashscreen", enabled: true },
-        { id: "thumbnail", label: "Thumbnail", enabled: true },
-        { id: "poster", label: "Poster", enabled: true },
-        { id: "embed", label: "Embed Code", enabled: true },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.liveDetails.thumbnail.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.liveDetails.thumbnail.url },
+        { id: "poster", label: "Poster", enabled: true, link: props.liveDetails.poster.url },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=live-${props.liveDetails.id}"  class="dacast-video"></script>` },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
 
     return (
@@ -314,7 +314,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
-                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
+                                        <LinkText size={14} weight="reg">{item.link}</LinkText>
                                         <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
