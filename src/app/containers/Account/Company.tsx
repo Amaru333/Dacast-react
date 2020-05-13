@@ -53,8 +53,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getCompanyPageLogoUrl: () => {
             dispatch(getCompanyPageLogoUrlAction());
         },
-        saveCompanyPageDetails: (data: CompanyPageInfos) => {
-            dispatch(saveCompanyPageDetailsAction(data));
+        saveCompanyPageDetails: (data: CompanyPageInfos, callback: Function) => {
+            dispatch(saveCompanyPageDetailsAction(data)).then(callback);
         },
         getLogoUrlForUploading: () => {
             dispatch(getUploadLogoUrlAction());
