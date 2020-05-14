@@ -22,7 +22,7 @@ export interface SaveLiveDetails {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string }};
+    payload: {id: string; data:  {presignedURL: string }};
 }
 
 export interface UploadImage {
@@ -94,7 +94,7 @@ export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDis
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await LiveGeneralServices.getUploadUrl(uploadType, liveId)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: response.data })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: { id: liveId, data: response.data} })
             })
             .catch((error) => {
                 console.log(error)

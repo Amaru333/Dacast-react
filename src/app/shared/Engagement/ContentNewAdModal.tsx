@@ -9,7 +9,7 @@ import { ContentEngagementComponentProps } from './ContentEngagement';
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
-    const [buttonLoading, setButtonLoading] = React.useState<bool>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setAdData(props.selectedAd)
@@ -33,7 +33,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
                 }
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={buttonLoading} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
                 <Button onClick={() => {setAdData(props.selectedAd);props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

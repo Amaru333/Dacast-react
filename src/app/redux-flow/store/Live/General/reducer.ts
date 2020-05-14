@@ -1,27 +1,27 @@
 import { Reducer } from "redux";
-import { LiveDetails, initialLiveGeneralState, ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
+import { LiveDetails, LiveDetailsState,  initialLiveGeneralState, ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
 import { Action } from './actions';
 
 
-const reducer: Reducer<LiveDetails> = (state = initialLiveGeneralState, action: Action) => {
+const reducer: Reducer<LiveDetailsState> = (state = initialLiveGeneralState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_LIVE_DETAILS:
             return {
-                ...state, ...action.payload.data
+                ...state, [action.payload.data.id] : {...action.payload.data}
             };
         case ActionTypes.SAVE_LIVE_DETAILS:
             return {
-                ...state, ...action.payload
+                ...state, [action.payload.id]: {...action.payload}
             };  
         case ActionTypes.GET_UPLOAD_URL:
-                return {
-                    ...state,
-                    uploadurl: action.payload.data.presignedURL
-                }
+            return {
+                ...state,
+                [action.payload.id]: { ...state[action.payload.id], uploadurl: action.payload.data.presignedURL}
+            }
         case ActionTypes.UPLOAD_IMAGE:
-                return state
+            return state
         case ActionTypes.DELETE_IMAGE:
-                return state
+            return state
         default:
             return state;
     }
