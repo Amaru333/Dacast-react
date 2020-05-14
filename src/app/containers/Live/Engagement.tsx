@@ -56,14 +56,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveEngagementSettings: (liveId: string) => {
             dispatch(getLiveEngagementSettingsAction(liveId));
         },
-        saveLiveEngagementSettings: (data: ContentEngagementSettings) => {
-            dispatch(saveLiveEngagementSettingsAction(data))
+        saveLiveEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
+            dispatch(saveLiveEngagementSettingsAction(data)).then(callback)
         },
-        saveLiveAd: (data: Ad) => {
-            dispatch(saveLiveAdAction(data))
+        saveLiveAd: (data: Ad, callback?: Function) => {
+            dispatch(saveLiveAdAction(data)).then(callback)
         },
-        createLiveAd: (data: Ad) => {
-            dispatch(createLiveAdAction(data))
+        createLiveAd: (data: Ad, callback?: Function) => {
+            dispatch(createLiveAdAction(data)).then(callback)
         },
         deleteLiveAd: (data: Ad) => {
             dispatch(deleteLiveAdAction(data))

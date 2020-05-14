@@ -9,14 +9,16 @@ import { ContentEngagementComponentProps } from './ContentEngagement';
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
+    const [buttonLoading, setButtonLoading] = React.useState<bool>(false)
 
     React.useEffect(() => {
         setAdData(props.selectedAd)
     }, [props.selectedAd])
 
     const defineAdAction = () => {
+        setButtonLoading(true);
         props.selectedAd.id === "-1" ?
-            props.createContentAd(adData) : props.saveContentAd(adData)
+            props.createContentAd(adData, () => setButtonLoading(false)) : props.saveContentAd(adData, () => setButtonLoading(false))
     }
 
     return (
@@ -31,7 +33,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
                 }
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
                 <Button onClick={() => {setAdData(props.selectedAd);props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

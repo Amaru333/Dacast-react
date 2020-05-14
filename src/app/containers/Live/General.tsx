@@ -50,8 +50,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveDetails: (liveId: string) => {
             dispatch(getLiveDetailsAction(liveId));
         },
-        saveLiveDetails: (data: LiveDetails) => {
-            dispatch(saveLiveDetailsAction(data));
+        saveLiveDetails: (data: LiveDetails, callback?: Function) => {
+            dispatch(saveLiveDetailsAction(data)).then(callback);
         },
         getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
             dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)

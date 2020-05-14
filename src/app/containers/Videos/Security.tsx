@@ -58,8 +58,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodSecuritySettings: (vodId: string) => {
             dispatch(getVodSecuritySettingsAction(vodId));
         },
-        saveVodSecuritySettings: (data: SecuritySettings, vodId: string) => {
-            dispatch(saveVodSecuritySettingsAction(data, vodId));
+        saveVodSecuritySettings: (data: SecuritySettings, vodId: string, callback?: Function) => {
+            dispatch(saveVodSecuritySettingsAction(data, vodId)).then(callback);
         },
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());

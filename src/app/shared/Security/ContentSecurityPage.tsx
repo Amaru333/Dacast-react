@@ -54,7 +54,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(initvalues().selectedSettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
         setTogglePasswordProtectedVideo(props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
@@ -259,7 +261,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             { selectedSettings === props.contentSecuritySettings.securitySettings ? null :
                 <div>
                     <Button 
-                        type='button' className="my2" typeButton='primary' buttonColor='blue' onClick={() => props.saveContentSecuritySettings(selectedSettings, props.contentId)}>Save</Button>
+                        type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { setButtonLoading(true); props.saveContentSecuritySettings(selectedSettings, props.contentId, () => setButtonLoading(false))}}>Save</Button>
                     <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
                 </div>}
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>

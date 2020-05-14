@@ -62,8 +62,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveSecuritySettings: (liveId: string) => {
             dispatch(getLiveSecuritySettingsAction(liveId));
         },
-        saveLiveSecuritySettings: (data: SecuritySettings, liveId: string) => {
-            dispatch(saveLiveSecuritySettingsAction(data, liveId));
+        saveLiveSecuritySettings: (data: SecuritySettings, liveId: string, callback?: Function) => {
+            dispatch(saveLiveSecuritySettingsAction(data, liveId)).then(callback);
         },
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
