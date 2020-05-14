@@ -14,6 +14,9 @@ import { initUserInfo, isTokenExpired, addTokenToHeader } from '../../utils/toke
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import axios from 'axios'
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -59,6 +62,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = React.useState<boolean>(true)
+    const [newPlaylistTitle, setNewPlaylistTitle] = React.useState<string>('My Playlist')
 
     React.useEffect(() => {
         initUserInfo();
@@ -113,7 +118,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         ).then((response) => {
             setButtonLoading(false)
             showToastNotification('Live channel created!', 'fixed', 'success')
-            history.push(`PLAYLIST/${response.data.data.id}/general`)
+            history.push(`PLAYLIST/${response.data.data.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
             showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
@@ -135,7 +140,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 }
                 break
             case "Playlist":
-                handleCreatePlaylist()
+                setCreatePlaylistModalOpen(true)
                 break
             default:
                 return
@@ -249,7 +254,15 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
            
                   
             </ContainerStyle>
-        
+            <Modal size="small" modalTitle="Create Playlist" opened={createPlaylistModalOpen} hasClose={false}>
+                <ModalContent>
+                    <Input id='playlistModalInput' className='col col-12 mb2' defaultValue={newPlaylistTitle} onChange={(event) => {setNewPlaylistTitle(event.currentTarget.value)}} label='Title' />
+                </ModalContent>
+                <ModalFooter>
+                    <Button isLoading={buttonLoading} onClick={() => {handleCreatePlaylist()}} disabled={newPlaylistTitle === ''} typeButton="primary" >Create</Button>
+                    <Button typeButton="tertiary" onClick={() => setCreatePlaylistModalOpen(false)}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
         </>
     )
 }
