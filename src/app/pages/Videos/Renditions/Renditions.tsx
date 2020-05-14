@@ -8,6 +8,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditions/types';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
+import { useWebSocket } from '../../../utils/customHooks';
 
 interface VodRenditionsProps {
     renditions: RenditionsList;
@@ -23,6 +24,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     const [encodeRenditionsModalOpen, setEncodeRenditionsModalOpen] = React.useState<boolean>(false)
     const [deleteRenditionsModalOpen, setDeleteRenditionsModalOpen] = React.useState<boolean>(false)
     const [replaceSourceModalOpen, setReplaceSourceModalOpen] = React.useState<boolean>(false)
+
+    // the data from the WS to know when the processing renditions are completed
+    let wsData = useWebSocket()
 
     React.useEffect(() => {
         let renditionName = props.renditions.encodedRenditions.map((renditions) => {return renditions.name})
