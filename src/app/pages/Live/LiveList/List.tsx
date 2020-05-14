@@ -195,7 +195,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     </div>
                 </div>
                 
-                <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 1 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 1 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+                <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
                 <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
