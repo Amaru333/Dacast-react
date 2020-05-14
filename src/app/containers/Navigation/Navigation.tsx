@@ -62,7 +62,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = React.useState<boolean>(true)
+    const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = React.useState<boolean>(false)
     const [newPlaylistTitle, setNewPlaylistTitle] = React.useState<string>('My Playlist')
 
     React.useEffect(() => {

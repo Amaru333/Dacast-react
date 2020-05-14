@@ -11,7 +11,7 @@ export interface GetVodRenditions {
 
 export interface AddVodRenditions {
     type: ActionTypes.ADD_VOD_RENDITIONS;
-    payload: string[];
+    payload: Rendition[];
 }
 
 export interface DeleteVodRenditions {
@@ -34,9 +34,20 @@ export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<voi
 export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDispatch<Promise<void>, {}, AddVodRenditions> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
         await VodRenditionsServices.addVodRenditionsService(data, vodId)
-            .then(response => {
-                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: data });
+        .then(response => {
+            let array: Rendition[] = [] 
+            response.data.data.items.map((item: any, i: number) => {
+                let rendition: Rendition = {
+                    renditionID: item.id,
+                    name: data[i],
+                    size: null,
+                    bitrate: null,
+                    width: null
+                } 
+                array.push(rendition)
             })
+            dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: array });
+        })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

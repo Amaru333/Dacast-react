@@ -98,7 +98,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0 || (wsData && !wsData.data.completed)}
                     defaultChecked={selectedEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
@@ -111,10 +111,11 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.width}</Text>,
                 <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
-                value.encoded ? 
-                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
-                    :
+                wsData && wsData.data.id === value.renditionID && !wsData.data.completed ? 
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
+                    :
+                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
+                    
             ]}
         })
     }
