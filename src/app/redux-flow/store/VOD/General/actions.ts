@@ -107,7 +107,8 @@ export const editVodDetailsAction = (data: VodDetails): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState, {}, EditVodDetails>) => {
         await VodGeneralServices.editVodDetailsService(data)
             .then(response => {
-                dispatch({ type: ActionTypes.EDIT_VOD_DETAILS, payload: response.data })
+                dispatch({ type: ActionTypes.EDIT_VOD_DETAILS, payload: data })
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

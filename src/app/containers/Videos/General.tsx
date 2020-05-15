@@ -55,8 +55,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodDetails: (vodId: string) => {
             dispatch(getVodDetailsAction(vodId));
         },
-        editVodDetails: (data: VodDetails) => {
-            dispatch(editVodDetailsAction(data));
+        editVodDetails: (data: VodDetails, callback?: Function) => {
+            dispatch(editVodDetailsAction(data)).then(callback);
         },
         getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
             dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))

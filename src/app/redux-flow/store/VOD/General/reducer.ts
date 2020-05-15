@@ -25,9 +25,9 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     ...state[action.payload.data.id],
                     ...action.payload.data
                 }
-               
             }
         case ActionTypes.EDIT_VOD_DETAILS:
+            console.log(action);
             return {
                 ...state, 
                 [action.payload.id] : {

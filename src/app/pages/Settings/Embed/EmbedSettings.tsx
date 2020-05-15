@@ -35,6 +35,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
             return false;
         }
     }
+    console.log(inputOptions, props.embedSettingsOption)
     return (
         <React.Fragment>
             <form>
@@ -88,13 +89,13 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     <br />
                 </Card>
                 {
-                    inputOptions === props.embedSettingsOption ? null :
+                    Object.entries(inputOptions).toString() === Object.entries(props.embedSettingsOption).toString() ? null :
                         <ButtonContainer>
                             <ButtonStyle isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
                             <ButtonStyle typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>
-            <Prompt when={inputOptions !== props.embedSettingsOption} message='' />
+            <Prompt when={Object.entries(inputOptions).toString() !== Object.entries(props.embedSettingsOption).toString() } message='' />
         </React.Fragment>
 
     )

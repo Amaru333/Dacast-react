@@ -32,13 +32,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
-    const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
+    const [VodDetails, setVodDetails] = React.useState<VodDetails>(props.vodDetails)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [subtitleFile, setSubtitleFile] = React.useState<File>(null);
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
+    
     React.useEffect(() => {
-        setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -143,7 +144,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
-
+    
     return (
         VodDetails ?
             <React.Fragment>
@@ -382,10 +383,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
                 </Card>
                 <ButtonContainer>
-                    <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
+                    <Button isLoading={saveLoading} className="mr2" onClick={() => {setSaveLoading(true); props.editVodDetails(VodDetails, () => setSaveLoading(false)) } }>Save</Button>
                     <Button typeButton="tertiary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
                 </ButtonContainer>
-                <Prompt when={JSON.stringify(VodDetails) !== JSON.stringify(props.vodDetails)} message='' />
+                <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>
             : null
     )
