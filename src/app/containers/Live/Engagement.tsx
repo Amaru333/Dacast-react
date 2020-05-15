@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
@@ -12,6 +12,7 @@ import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement
 
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: ContentEngagementSettings;
+    liveEngagementSettingsState: ContentEngagementSettingsState;
     getLiveEngagementSettings: Function;
     saveLiveEngagementSettings: Function;
     saveLiveAd: Function;
@@ -24,15 +25,17 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
     let {liveId} = useParams()
 
     React.useEffect(() => {
-        props.getLiveEngagementSettings(liveId);
+        if(!props.liveEngagementSettingsState[liveId]) {
+            props.getLiveEngagementSettings(liveId);
+        }
     }, []);
 
     return (
-        props.liveEngagementSettings ?
+        props.liveEngagementSettingsState[liveId] ?
             <div className='flex flex-column'>
                 <LiveTabs liveId={liveId} />
                 <ContentEngagementPage 
-                    contentEngagementSettings={props.liveEngagementSettings}
+                    contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
                     getContentEngagementSettings={props.getLiveEngagementSettings}
                     saveContentEngagementSettings={props.saveLiveEngagementSettings}
                     saveContentAd={props.saveLiveAd}
@@ -47,7 +50,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveEngagementSettings: state.live.engagement
+        liveEngagementSettingsState: state.live.engagement
     };
 }
 

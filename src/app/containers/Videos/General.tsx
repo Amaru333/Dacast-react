@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
-import { VodDetails, SubtitleInfo } from '../../redux-flow/store/VOD/General/types';
+import { VodDetails, SubtitleInfo, VodDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GeneralPage } from '../../pages/Videos/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -13,6 +13,7 @@ import { VideoTabs } from './VideoTabs';
 
 export interface GeneralComponentProps {
     vodDetails: VodDetails;
+    vodDetailsState: VodDetailsState;
     editVodDetails: Function;
     getVodDetails: Function;
     getUploadUrl: Function;
@@ -25,15 +26,17 @@ const General = (props: GeneralComponentProps) => {
     let { vodId } = useParams();
 
     React.useEffect(() => {
-        props.getVodDetails(vodId);
+        if(!props.vodDetailsState[vodId]) {
+            props.getVodDetails(vodId);
+        }
     }, [])
 
     return (
-        props.vodDetails ?
+        props.vodDetailsState[vodId] ?
             (
                 <div className='flex flex-column'>
                     <VideoTabs videoId={vodId} />
-                    <GeneralPage {...props} vodId={vodId} />
+                    <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} vodId={vodId} />
                 </div>
             )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -43,7 +46,7 @@ const General = (props: GeneralComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        vodDetails: state.vod.general
+        vodDetailsState: state.vod.general
     };
 }
 

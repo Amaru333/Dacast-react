@@ -21,6 +21,8 @@ interface AssetType {
     url: string;
 }
 
+export interface VodDetailsState { [key: string]: VodDetails }
+
 export interface VodDetails {
     id: string;
     online: boolean;

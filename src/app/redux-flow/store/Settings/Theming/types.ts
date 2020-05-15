@@ -16,7 +16,7 @@ export interface ThemeOptions {
     id: string;
     themeName: string;
     isDefault: boolean;
-    isCustom: boolean
+    isCustom: boolean;
     createdDate: number;
     themeType: ThemeType;
     playerControls: boolean;
@@ -55,6 +55,9 @@ export interface ContentTheme {
     themes: ThemeOptions[];
 }
 
+
+export interface ContentThemeState { [key: string]: ContentTheme }
+
 export const defaultStateThemesType: ThemesData = {
     themes: []
 }
@@ -88,7 +91,4 @@ export const defaultTheme: ThemeOptions = {
     regionSettings: 'standard'
 }
 
-export const defaultStateContentTheme: ContentTheme = {
-    id: null,
-    themes: null
-}
+export const defaultStateContentTheme: ContentThemeState = {}

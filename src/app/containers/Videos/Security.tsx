@@ -9,10 +9,11 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
-import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security/types';
+import { ContentSecuritySettings, SecuritySettings, ContentSecuritySettingsState } from '../../redux-flow/store/Settings/Security/types';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: ContentSecuritySettings;
+    vodSecuritySettingsState: ContentSecuritySettingsState;
     globalSecuritySettings: SecuritySettings;
     getVodSecuritySettings: Function;
     saveVodSecuritySettings: Function;
@@ -27,15 +28,16 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
         if(!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
-        props.getVodSecuritySettings(vodId);
+        if(!props.vodSecuritySettingsState[vodId]){
+            props.getVodSecuritySettings(vodId);
+        }
     }, [])
-
     return (
-        props.vodSecuritySettings && props.globalSecuritySettings ? 
+        props.vodSecuritySettingsState[vodId] && props.globalSecuritySettings ? 
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
                 <ContentSecurityPage 
-                    contentSecuritySettings={props.vodSecuritySettings} 
+                    contentSecuritySettings={props.vodSecuritySettingsState[vodId]} 
                     contentId={vodId}
                     globalSecuritySettings={props.globalSecuritySettings}
                     saveContentSecuritySettings={props.saveVodSecuritySettings}
@@ -48,7 +50,7 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        vodSecuritySettings: state.vod.security,
+        vodSecuritySettingsState: state.vod.security,
         globalSecuritySettings: state.settings.security
     }
 }

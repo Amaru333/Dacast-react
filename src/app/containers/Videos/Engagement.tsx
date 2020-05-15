@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement
 
 export interface VodEngagementComponentProps {
     vodEngagementSettings: ContentEngagementSettings;
+    vodEngagementSettingsState: ContentEngagementSettingsState;
     getVodEngagementSettings: Function;
     saveVodEngagementSettings: Function;
     saveVodAd: Function;
@@ -24,15 +25,16 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        props.getVodEngagementSettings(vodId);
+        if(!props.vodEngagementSettingsState[vodId])
+            props.getVodEngagementSettings(vodId);
     }, []);
 
     return (
-        props.vodEngagementSettings ?
+        props.vodEngagementSettingsState[vodId] ?
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
                 <ContentEngagementPage 
-                    contentEngagementSettings={props.vodEngagementSettings}
+                    contentEngagementSettings={props.vodEngagementSettingsState[vodId]}
                     getContentEngagementSettings={props.getVodEngagementSettings}
                     saveContentEngagementSettings={props.saveVodEngagementSettings}
                     saveContentAd={props.saveVodAd}
@@ -47,7 +49,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        vodEngagementSettings: state.vod.engagement
+        vodEngagementSettingsState: state.vod.engagement
     };
 }
 

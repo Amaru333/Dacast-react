@@ -7,29 +7,29 @@ import { ChapterMarker } from './types'
 
 export interface GetVodChapterMarkers {
     type: ActionTypes.GET_VOD_CHAPTER_MARKERS;
-    payload: {data: {chapterMarkers: ChapterMarker[]}};
+    payload: {id: string; data: { chapterMarkers: ChapterMarker[]}};
 }
 
 export interface SaveVodChapterMarker {
     type: ActionTypes.SAVE_VOD_CHAPTER_MARKER;
-    payload: ChapterMarker[];
+    payload: {id: string; data: ChapterMarker[]};
 }
 
 export interface AddVodChapterMarker {
     type: ActionTypes.ADD_VOD_CHAPTER_MARKER;
-    payload: ChapterMarker[];
+    payload: {id: string; data: ChapterMarker[]};
 }
 
 export interface DeleteVodChapterMarker {
     type: ActionTypes.DELETE_VOD_CHAPTER_MARKER;
-    payload: ChapterMarker[];
+    payload: {id: string; data: ChapterMarker[]};
 }
 
 export const getVodChapterMarkersAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodChapterMarkers> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodChapterMarkers> ) => {
         await VodChaptersServices.getVodChapterMarkersService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_CHAPTER_MARKERS, payload: response.data} )
+                dispatch( {type: ActionTypes.GET_VOD_CHAPTER_MARKERS, payload:{id: vodId, data: response.data.data} } )
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -41,7 +41,7 @@ export const saveVodChapterMarkerAction = (vodId: string, data: ChapterMarker[])
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodChapterMarker> ) => {
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
-                dispatch( {type: ActionTypes.SAVE_VOD_CHAPTER_MARKER, payload: data} )
+                dispatch( {type: ActionTypes.SAVE_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -53,7 +53,7 @@ export const addVodChapterMarkerAction = (vodId: string, data: ChapterMarker[]):
     return async (dispatch: ThunkDispatch<ApplicationState , {}, AddVodChapterMarker> ) => {
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
-                dispatch( {type: ActionTypes.ADD_VOD_CHAPTER_MARKER, payload: data} )
+                dispatch( {type: ActionTypes.ADD_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -65,7 +65,7 @@ export const deleteVodChapterMarkerAction = (vodId: string, data: ChapterMarker[
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodChapterMarker> ) => {
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
-                dispatch( {type: ActionTypes.DELETE_VOD_CHAPTER_MARKER, payload: data} )
+                dispatch( {type: ActionTypes.DELETE_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

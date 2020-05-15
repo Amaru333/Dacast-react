@@ -19,7 +19,7 @@ export const getLiveSecuritySettingsAction = (liveId: string): ThunkDispatch<Pro
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveSecuritySettings> ) => {
         await LiveSecurityServices.getLiveSecuritySettingsService(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_SECURITY_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_LIVE_SECURITY_SETTINGS, payload: { contentId: liveId, securitySettings: response.data.data } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -31,7 +31,7 @@ export const saveLiveSecuritySettingsAction = (data: SecuritySettings, liveId: s
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveSecuritySettings> ) => {
         await LiveSecurityServices.saveLiveSecuritySettingsService(data, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: { contentId: liveId, securitySettings: response.data.data } } );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {

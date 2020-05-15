@@ -1,6 +1,6 @@
 import React from 'react';
 import { VodRenditionsPage } from '../../pages/Videos/Renditions/Renditions';
-import { RenditionsList } from '../../redux-flow/store/VOD/Renditions/types';
+import { RenditionsList, RenditionsListState } from '../../redux-flow/store/VOD/Renditions/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 interface VodRenditionsContainerProps {
     renditions: RenditionsList;
+    renditionsState: RenditionsListState;
     getVodRenditions: Function;
     addVodRenditions: Function;
     deleteVodRenditions: Function;
@@ -22,15 +23,17 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        props.getVodRenditions(vodId);
+        if(!props.renditionsState[vodId]) {
+            props.getVodRenditions(vodId);
+        }
     }, [])
 
     return (
-        props.renditions ?
+        props.renditionsState[vodId] ?
             (
                 <div className='flex flex-column'>
                     <VideoTabs videoId={vodId} />
-                    <VodRenditionsPage {...props} vodId={vodId} />
+                    <VodRenditionsPage {...props} renditions={props.renditionsState[vodId]} vodId={vodId} />
                 </div>            
             )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -39,7 +42,7 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        renditions: state.vod.renditions
+        renditionsState: state.vod.renditions
     }
 }
 

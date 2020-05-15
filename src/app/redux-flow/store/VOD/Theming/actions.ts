@@ -12,7 +12,7 @@ export interface GetVodTheme {
 
 export interface SaveVodTheme {
     type: ActionTypes.SAVE_VOD_THEME;
-    payload: ThemeOptions;
+    payload: { id: string; data: ThemeOptions};
 }
 
 export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
@@ -31,7 +31,7 @@ export const saveVodThemeAction = (data: ThemeOptions, vodId: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
         await VodThemingServices.saveVodThemeService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: data} );
+                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: { id: vodId, data } } );
                 dispatch(showToastNotification("Theme for content updated!", 'fixed', "success"));
             })
             .catch(() => {

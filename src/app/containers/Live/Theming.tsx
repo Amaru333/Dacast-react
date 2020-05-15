@@ -1,5 +1,5 @@
 import React from 'react';
-import { Action, ContentTheme, ThemeOptions } from '../../redux-flow/store/Settings/Theming';
+import { Action, ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
@@ -14,6 +14,7 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
+    themeState: ContentThemeState;
     getLiveTheme: Function;
     saveLiveTheme: Function;
     showDiscardToast: Function;
@@ -24,15 +25,16 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        props.getLiveTheme(liveId);            
+        if(!props.themeState[liveId]) 
+            props.getLiveTheme(liveId);            
     }, [])
     
     return (
-        props.theme ?
+        props.themeState[liveId] ?
             <div className='flex flex-column'>
                 <LiveTabs liveId={liveId} />
                 <ThemingControlsCard
-                    theme={props.theme} 
+                    theme={props.themeState[liveId]} 
                     saveTheme={props.saveLiveTheme}
                     contentType='live'
                     actionType='Save'
@@ -45,7 +47,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        theme: state.live.theming,
+        themeState: state.live.theming,
     }
 }
 

@@ -16,6 +16,6 @@ export interface ChapterMarkerInfos {
     chapterMarkers: ChapterMarker[];
 }
 
-export const defaultStateChapter: ChapterMarkerInfos = {
-    chapterMarkers: []
-}
+export interface ChapterMarkerInfosState { [key: string]: ChapterMarkerInfos }
+
+export const defaultStateChapter: ChapterMarkerInfosState = {}

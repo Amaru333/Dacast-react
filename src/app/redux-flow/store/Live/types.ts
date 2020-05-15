@@ -1,29 +1,29 @@
 import { combineReducers, Reducer } from 'redux';
 import { LiveGeneralReducer, reducerList } from "../Live/General/reducer"
-import { LiveDetails, LiveItem, LiveDetailsState } from './General/types';
-import { LiveSecuritySettings, LiveSecurityReducer } from './Security'
-import { LiveTheme } from './Theming/types';
+import { LiveItem, LiveDetailsState, SearchResult } from './General/types';
+import { LiveSecurityReducer } from './Security'
 import { LiveThemingReducer } from './Theming/reducer';
-import { LiveEngagementSettings } from './Engagement/types';
 import { LiveEngagementReducer } from './Engagement/reducer';
 import { LivePaywallPageInfos, LivePaywallReducer } from './Paywall';
-import { ContentTheme } from '../Settings/Theming/types';
+import { ContentTheme, ContentThemeState } from '../Settings/Theming/types';
+import { ContentEngagementSettingsState } from '../Settings/Interactions';
+import { ContentSecuritySettingsState } from '../Settings/Security';
 
 export const liveInitialState: LiveState = {
     general: {},
     list: false,
-    security: false,
-    theming: false,
-    engagement: false,
+    security: {},
+    theming: {},
+    engagement: {},
     paywall: false
 };
 
 export interface LiveState {
     general: LiveDetailsState;
-    list: false | LiveItem[];
-    security: false | LiveSecuritySettings;
-    theming: false | ContentTheme;
-    engagement: false | LiveEngagementSettings;
+    list: false | SearchResult;
+    security: ContentSecuritySettingsState;
+    theming: ContentThemeState;
+    engagement: ContentEngagementSettingsState;
     paywall: false | LivePaywallPageInfos;
 };
 

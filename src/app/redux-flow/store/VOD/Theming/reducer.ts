@@ -1,19 +1,26 @@
 import { Reducer } from "redux";
 import { ActionTypes } from './types';
 import { Action } from './actions';
-import { defaultStateContentTheme, ContentTheme } from '../../Settings/Theming';
+import { defaultStateContentTheme, ContentThemeState } from '../../Settings/Theming';
 
 
-const reducer: Reducer<ContentTheme> = (state = defaultStateContentTheme, action: Action) => {
+const reducer: Reducer<ContentThemeState> = (state = defaultStateContentTheme, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_VOD_THEME :
+            console.log(action);
             return {
-                ...action.payload,
+                ...state,
+                [action.payload.id] : {
+                    ...action.payload
+                }
             }
         case ActionTypes.SAVE_VOD_THEME :
             return {
                 ...state,
-                ...action.payload
+                [action.payload.id] : {
+                    ...state[action.payload.id],
+                    ...action.payload.data
+                }
             }
         default:
             return state;

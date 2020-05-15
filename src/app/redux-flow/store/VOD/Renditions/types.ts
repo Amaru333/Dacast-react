@@ -26,6 +26,8 @@ export interface RenditionsList {
     storageRemaining: number;
 }
 
+export interface RenditionsListState { [key: string]: RenditionsList }
+
 export interface Rendition {
     renditionID: string;
     name: string;

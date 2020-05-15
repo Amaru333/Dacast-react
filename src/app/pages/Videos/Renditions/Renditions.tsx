@@ -48,7 +48,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                             setSelectedNotEncodedRendition([])
                         }
                     }} 
-            />
+                />
             },
             {cell: <Text size={14} weight="med">Rendition</Text>},
             {cell: <Text size={14} weight="med">Size (px)</Text>},
@@ -97,6 +97,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
+            console.log(value)
             return {data: [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
                     defaultChecked={selectedEncodedRendition.includes(value.name)}

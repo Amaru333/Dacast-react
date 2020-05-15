@@ -3,7 +3,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { ChapterMarkerInfos, ChapterMarker } from '../../redux-flow/store/VOD/Chapters/types';
+import { ChapterMarkerInfos, ChapterMarker, ChapterMarkerInfosState } from '../../redux-flow/store/VOD/Chapters/types';
 import { Action, getVodChapterMarkersAction, saveVodChapterMarkerAction, addVodChapterMarkerAction, deleteVodChapterMarkerAction } from '../../redux-flow/store/VOD/Chapters/actions';
 import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
+    chapterPageDetailsState: ChapterMarkerInfosState;
     getVodChapterMarkers: Function;
     saveVodChapterMarker: Function;
     addVodChapterMarker: Function;
@@ -23,14 +24,16 @@ const Chapters = (props: ChapterComponentProps) => {
     let { vodId } = useParams()
     
     React.useEffect(() => {
-        props.getVodChapterMarkers(vodId);
+        if(!props.chapterPageDetailsState[vodId]) {
+            props.getVodChapterMarkers(vodId);
+        }
     }, [])
     
     return (
-        props.chapterPageDetails ? 
+        props.chapterPageDetailsState[vodId] ? 
             <div className='flex flex-column'>
                 <VideoTabs videoId={vodId} />
-                <ChaptersPage {...props} vodId={vodId} />
+                <ChaptersPage {...props} chapterPageDetails={props.chapterPageDetailsState[vodId]} vodId={vodId} />
             </div>
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -38,7 +41,7 @@ const Chapters = (props: ChapterComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        chapterPageDetails: state.vod.chapters
+        chapterPageDetailsState: state.vod.chapters
     };
 }
 
