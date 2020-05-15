@@ -2,12 +2,14 @@ import React from 'react';
 import {Input} from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 
-export const NewFolderModal = (props: {toggle: Function}) => {
+export const NewFolderModal = (props: {submit: Function; toggle: Function; folderPath: string}) => {
+    const [folderName, setFolderName] =React.useState<string>('')
+
     return (
         <div className='flex flex-column'>
-            <Input className='mb2' id='newFolderModalFolderInput' label='Name' />
+            <Input className='mb2' id='newFolderModalFolderInput' defaultValue={folderName} onChange={(event) => setFolderName(event.currentTarget.value)} label='Name' />
             <div className='mt2'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button disabled={folderName.length === 0} onClick={() => props.submit(props.folderPath + '/' + folderName)}className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue' >Cancel</Button>
             </div>
         </div>

@@ -21,16 +21,16 @@ export interface FoldersComponentProps {
 
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
-        if(!props.folderData) {
+        if(!props.folderData.requestedFolder || !props.folderData.requestedContent) {
             const wait = async () => {
                 await props.getFolderContent('/folder1/')
-                //await props.getFolders('/');
+                await props.getFolders('');
             }
             wait()
         }
     }, [])
     return (
-        props.folderData ? 
+        props.folderData.requestedFolder && props.folderData.requestedContent ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -57,8 +57,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         addFolder: (folderPath: string) => {
             dispatch(addFolderAction(folderPath))
         },
-        deleteFolder: (folderPath: string) => {
-            dispatch(deleteFolderAction(folderPath))
+        deleteFolder: (foldersIds: string[]) => {
+            dispatch(deleteFolderAction(foldersIds))
         },
         deleteContent: (content: FolderAsset[]) => {
             dispatch(deleteContentAction(content))

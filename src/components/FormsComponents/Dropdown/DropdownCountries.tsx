@@ -158,7 +158,6 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             }
         }, {})
 
-        console.log(initCountriesList)
         setCheckedContinents(initCountriesList);
         setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
         handleTitle();
