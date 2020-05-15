@@ -36,6 +36,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [subtitleFile, setSubtitleFile] = React.useState<File>(null);
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
@@ -243,7 +244,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection> 
-                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen.url} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.vodDetails.splashscreen.url} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -266,7 +267,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail.url} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.vodDetails.thumbnail.url} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -290,7 +291,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.poster.url} /></ImageSection>  
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -365,7 +366,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </Modal>
                     {
                         imageModalOpen ?
-                            <ImageModal 
+                            <ImageModal
                                 imageFileName={selectedImageName} 
                                 imageType={handleImageModalFunction()} 
                                 contentId={props.vodId} 
@@ -375,7 +376,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 title={imageModalTitle} 
                                 toggle={() => setImageModalOpen(false)} 
                                 opened={imageModalOpen === true} 
-                                submit={props.uploadFile} 
+                                submit={props.uploadFile}
+                                uploadedImageFiles={uploadedImageFiles}
+                                setUploadedImageFiles={setUploadedImageFiles}
                             />
                             : null
                     }

@@ -7,7 +7,7 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
+export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string, uploadedImageFiles: any, setUploadedImageFiles: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -16,6 +16,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
+    const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
 
     let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
 
@@ -47,6 +48,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
 
     const handleSubmit = () => {
         if(!saveButtonLoading && !isSaveDisabled) {
+            props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
             props.getUploadUrl(props.imageType, props.contentId, () => { setSaveButtonLoading(false) })
         }
@@ -63,6 +65,19 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
         }
     }, [props.uploadUrl, saveButtonLoading])
 
+    const handleTempImage = (modalTitle: string, reader: FileReader) => {
+        switch (modalTitle) {
+            case 'Change Splashscreen':
+                setTempUploadedFiles({...tempUploadedFiles, splashscreen: reader.result})
+                break;
+            case 'Change Thumbnail':
+                setTempUploadedFiles({...tempUploadedFiles, thumbnail: reader.result})
+                break;
+            case 'Change Poster':
+                setTempUploadedFiles({...tempUploadedFiles, poster: reader.result});
+        }
+    }
+
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
         if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
@@ -76,9 +91,10 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                 if(acceptedRatio) {
                     setLogoFile(file[0])
                     setFileName(file[0].name)
+                    handleTempImage(props.title, reader)
                 }
             }
-            reader.readAsDataURL(file[0])
+            reader.readAsDataURL(file[0])          
         }
     }
     
