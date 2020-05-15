@@ -31,6 +31,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>({
         isExpanded: true,
+        name: '',
+        id: '',
+        path: '',
+        hasChild: true,
         subfolders: 2,
         nbChildren: 2,
         fullPath: '/',
