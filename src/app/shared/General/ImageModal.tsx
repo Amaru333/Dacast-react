@@ -110,7 +110,8 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     }, [logoFile])
 
     return (
-        <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+            { props.contentType === 'vod' ?
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
@@ -154,6 +155,28 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                         
                 </RadioButtonOption>
             </ModalContent>
+            :
+            <ModalContent>
+                <div className="col col-12 mt2">
+                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary">
+                            <label className="pointer"  htmlFor='browseButton'>
+                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                                Upload File
+                            </label>
+                        </Button>
+                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                        { !logoFile ? null : 
+                            <ThumbnailFile className="col col-6 mt1">
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
+                                <button style={{border: "none", backgroundColor:"inherit"}}>
+                                    <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
+                                </button>   
+                            </ThumbnailFile>
+                        }
+                    </div>
+            </ModalContent>
+            }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
                 <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
