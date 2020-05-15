@@ -6,7 +6,7 @@ import { FoldersServices } from './services';
 
 export interface GetFolders {
     type: ActionTypes.GET_FOLDERS;
-    payload: FolderTreeNode;
+    payload: {data: any};
 }
 
 export interface GetFolderContent {
@@ -91,9 +91,9 @@ export const addFolderAction = (foldersPath: string): ThunkDispatch<Promise<void
     };
 }
 
-export const deleteFolderAction = (foldersPath: string): ThunkDispatch<Promise<void>, {}, DeleteFolder> => {
+export const deleteFolderAction = (foldersIds: string[]): ThunkDispatch<Promise<void>, {}, DeleteFolder> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteFolder> ) => {
-        await FoldersServices.deleteFolder(foldersPath)
+        await FoldersServices.deleteFolder(foldersIds)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_FOLDER, payload: response.data} );
             }).catch(() => {

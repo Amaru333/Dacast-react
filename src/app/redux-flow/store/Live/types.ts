@@ -1,6 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 import { LiveGeneralReducer, reducerList } from "../Live/General/reducer"
-import { LiveDetails, LiveItem } from './General/types';
+import { LiveDetails, LiveItem, LiveDetailsState } from './General/types';
 import { LiveSecuritySettings, LiveSecurityReducer } from './Security'
 import { LiveTheme } from './Theming/types';
 import { LiveThemingReducer } from './Theming/reducer';
@@ -10,7 +10,7 @@ import { LivePaywallPageInfos, LivePaywallReducer } from './Paywall';
 import { ContentTheme } from '../Settings/Theming/types';
 
 export const liveInitialState: LiveState = {
-    general: false,
+    general: {},
     list: false,
     security: false,
     theming: false,
@@ -19,7 +19,7 @@ export const liveInitialState: LiveState = {
 };
 
 export interface LiveState {
-    general: false | LiveDetails;
+    general: LiveDetailsState;
     list: false | LiveItem[];
     security: false | LiveSecuritySettings;
     theming: false | ContentTheme;

@@ -12,6 +12,10 @@ export enum ActionTypes {
 }
 
 export interface FolderTreeNode {
+    id: string;
+    name: string;
+    path: string;
+    hasChild: boolean;
     fullPath: string;
     loadingStatus: 'not-loaded' | 'loading' | 'loaded';
     nbChildren: number;
@@ -35,7 +39,9 @@ export interface FolderAsset {
 }
 
 export interface FoldersInfos {
-    requestedFolder: FolderTreeNode;
+    requestedFolder: {
+        [childPath: string]: FolderTreeNode;
+    };
     requestedContent: FolderAsset[];
 }
 
@@ -44,5 +50,8 @@ export interface FoldersState {
 }
 
 export const foldersInitialState: FoldersState = {
-    data: null
+    data: {
+        requestedContent: null,
+        requestedFolder: null
+    }
 }

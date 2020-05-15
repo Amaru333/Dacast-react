@@ -48,10 +48,12 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
     let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleThemeSave = () => {
+        setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme)
+            props.createTheme(selectedTheme, () => setButtonLoading(true))
         } else {
             props.saveTheme(selectedTheme, props.contentId)
         }
@@ -319,7 +321,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                     }              
                 </ControlsCard>
                 <div className="mt25">
-                    <Button onClick={() => handleThemeSave()}>{props.actionType}</Button>
+                    <Button isLoading={buttonLoading} onClick={() => handleThemeSave()}>{props.actionType}</Button>
                     <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
                 </div>
             </div>

@@ -29,8 +29,10 @@ export const useWebSocket = () => {
         setWebSocketConnection()
 
         return () => {
-            ws.current.onclose = () => console.log("ws closed")
-            ws.current.close()
+            if(ws.current) {
+                ws.current.onclose = () => console.log("ws closed")
+                ws.current.close()
+            }
         }
     }, [])
 

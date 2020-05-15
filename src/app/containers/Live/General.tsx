@@ -1,6 +1,6 @@
 import React from 'react';
 import { LiveGeneralPage } from '../../pages/Live/General/General'
-import { LiveDetails } from '../../redux-flow/store/Live/General/types';
+import { LiveDetails, LiveDetailsState } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getLiveDetailsAction, saveLiveDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Live/General/actions';
@@ -11,7 +11,8 @@ import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router-dom';
 
 export interface LiveGeneralProps {
-    liveDetails: LiveDetails;
+    liveDetails:  LiveDetails;
+    liveDetailsState: LiveDetailsState;
     getLiveDetails: Function;
     saveLiveDetails: Function;
     getUploadUrl: Function;
@@ -25,23 +26,27 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 
 
     React.useEffect(() => {
-        props.getLiveDetails(liveId);
+        if(!props.liveDetailsState[liveId]) {
+            props.getLiveDetails(liveId);
+        }
     }, [])
 
     return (
-        props.liveDetails ? 
+        props.liveDetailsState[liveId] ? 
             (
                 <div className='flex flex-column'>
                     <LiveTabs liveId={liveId} />
-                    <LiveGeneralPage {...props} />
-                </div>            )
+                    <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
+                </div>            
+            )
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
 }
 
 export function mapStateToProps(state: ApplicationState) {
+    //let {liveId} = useParams()
     return {
-        liveDetails: state.live.general
+        liveDetailsState: state.live.general
     };
 }
 
@@ -50,8 +55,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveDetails: (liveId: string) => {
             dispatch(getLiveDetailsAction(liveId));
         },
-        saveLiveDetails: (data: LiveDetails) => {
-            dispatch(saveLiveDetailsAction(data));
+        saveLiveDetails: (data: LiveDetails, callback?: Function) => {
+            dispatch(saveLiveDetailsAction(data)).then(callback);
         },
         getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
             dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)

@@ -24,33 +24,23 @@ import { Badge } from '../../../components/Badge/Badge';
 import { handleFeatures } from '../../shared/Common/Features';
 import { DateTime } from 'luxon';
 
-const folderTreeConst = [
-    'folder2',
-]
-
 export const FoldersPage = (props: FoldersComponentProps) => {
 
-    let children = folderTreeConst.map(path => ({
-        isExpanded: false,
-        subfolders: 2,
-        nbChildren: 64,
-        fullPath: '/' + path + '/',
-        loadingStatus: 'not-loaded',
-        children: {}
-    })).reduce((acc, next) => ({ ...acc, [getNameFromFullPath(next.fullPath)]: next }), {})
+    let smallScreen = useMedia('(max-width: 40em)')
 
-    let rootNode: FolderTreeNode = {
+
+    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>({
         isExpanded: true,
+        name: '',
+        id: '',
+        path: '',
+        hasChild: true,
         subfolders: 2,
         nbChildren: 2,
         fullPath: '/',
         loadingStatus: 'loaded',
-        children
-    }
-    let smallScreen = useMedia('(max-width: 40em)')
-
-
-    const [foldersTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
+        children: {...props.folderData.requestedFolder}
+    })
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [selectedFolder, setSelectedFolder] = React.useState<string>('Library');
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
@@ -185,6 +175,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setNewFolderModalOpened(true);
                 break;
             case 'Delete':
+                props.deleteFolder(selectedFolder)
                 break;
             case 'View' :
                 navigateToFolder(foldersTree.children[assetName])
@@ -225,40 +216,25 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     }
 
-    const wait = async () => {
-        return new Promise((resolve) => setTimeout(resolve, 1000))
-    }
-
-    const makeNode = (parent: FolderTreeNode, name: string, subfolders: number): FolderTreeNode => {
-        return {
-            children: {},
-            nbChildren: 10,
-            subfolders: subfolders,
-            fullPath: parent.fullPath + name + '/',
-            isExpanded: false,
-            loadingStatus: 'not-loaded'
-        }
-    }
-
-
-
-    React.useEffect(() => { }, [foldersTree])
-
-    const getChild = async (node: FolderTreeNode) => {
-        // let name1 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        // let name2 = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        // node.children = {
-        //     [name1]: makeNode(node, name1, 10),
-        //     [name2]: makeNode(node, name2, 0)
-        // }
-        await props.getFolderContent(node)
-        return node.children;
-    }
-
     const loadChildren = async (node: FolderTreeNode) => {
         node.loadingStatus = 'loading'
         setFoldersTree({ ...foldersTree })
-        node.children = await getChild(node);
+        await props.getFolders(node.id)
+        console.log(props.folderData.requestedFolder)
+        node.children = {
+            ['/folder1/subfolder']: {
+                hasChild: false,
+                id: "59",
+                name: "subfolder",
+                path: "/folder1/",
+                loadingStatus: 'not-loaded',
+                nbChildren: 0,
+                subfolders: 0,
+                fullPath: '/folder1/subfolder',
+                children: null,
+                isExpanded: false
+            }
+        }
         node.isExpanded = true
         node.loadingStatus = 'loaded'
         setFoldersTree({ ...foldersTree })
@@ -286,6 +262,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
         if (Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
             console.log('node has no children, fecthing')
+            debugger
             await loadChildren(currentNode)
         }
         return currentNode
@@ -296,7 +273,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const navigateToFolder = (node: FolderTreeNode) => {
-        setSelectedFolder(node.fullPath);
+        setSelectedFolder(node.fullPath)
+        if(!node.subfolders) {
+            return
+        }
         if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
             loadChildren(node)
             return
@@ -316,10 +296,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div key={node.fullPath}>
                 <FolderRow isSelected={node.fullPath === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {navigateToFolder(node)}}>
                     { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
-                    <Text size={14} weight='reg' color={node.fullPath === selectedFolder ? 'dark-violet' : 'gray-1'}>{getNameFromFullPath(node.fullPath)}</Text>
+                    <Text size={14} weight='reg' color={node.fullPath === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                 </FolderRow>
                 <div>
-                    { node.isExpanded && Object.values(node.children).map((childNode) => renderNode(childNode))}
+                    { node.isExpanded && node.children !== null && Object.values(node.children).map((childNode) => renderNode(childNode))}
                 </div>
             </div>
         )
@@ -352,11 +332,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
                 <div className="relative flex justify-end items-center col col-3">
                     {
-                        selectedFolder !== 'Trash' ?
+                        selectedFolder !== 'Trash' &&
                             <>
-                                {checkedItems.length > 0 ?
+                                {checkedItems.length > 0 &&
                                     <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
-                                    : null
                                 }
                                 <div>
                                     <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
@@ -368,12 +347,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
                                 <SeparatorHeader className="mx2 inline-block" />
                             </>
-                            : null
                     }
                     <FoldersFiltering className="right relative" setCheckedItems={setCheckedItems} />
-                    {selectedFolder === 'Trash' ?
+                    {selectedFolder === 'Trash' &&
                         <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
-                        : null
                     }
                 </div>
             </div>
@@ -422,11 +399,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => setSelectedFolder("Unsorted")}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
-                        <Badge number={foldersTree.children['Unsorted'] ? foldersTree.children['Unsorted'].nbChildren : 6} color='gray-5' />
+                        <Badge number={6} color='gray-5' />
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => setSelectedFolder("Trash")}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
-                        <Badge number={foldersTree.children['Trash'] ? foldersTree.children['Trash'].nbChildren : 54} color='gray-5' />
+                        <Badge number={54} color='gray-5' />
                     </FolderRow>
                     {renderNode(foldersTree)}
                 </FoldersTreeSection>
@@ -436,13 +413,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
-                <NewFolderModal toggle={setNewFolderModalOpened} />
+                <NewFolderModal folderPath={selectedFolder} submit={props.addFolder} toggle={setNewFolderModalOpened} />
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
-                    moveItemsModalOpened ?
-                        <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
-                        : null
+                    moveItemsModalOpened && 
+                    <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : selectedFolder} goToNode={goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
