@@ -63,7 +63,10 @@ export const LiveListPage = (props: LiveListProps) => {
             returnedString += `keyword=${searchString}&`
         }
         if(sort) {
-            returnedString += `sort-by=${sort}`
+            returnedString += `sort-by=${sort}&`
+        }
+        if(returnedString.indexOf('status') === -1) {
+            returnedString += 'status=online,offline,processing'
         }
         return returnedString
 
