@@ -41,6 +41,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     
     React.useEffect(() => {
+        setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -145,6 +146,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
+
+    let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
+    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
     
     return (
         VodDetails ?
@@ -232,16 +237,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
-                                        {
-                                            !VodDetails.splashscreen.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.splashscreen.targetID)}}>Delete</Button>
-                                        }
                                         <Button 
                                             className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                             onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(VodDetails.splashscreen.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.splashscreen.url  ?
-                                                    "Add" : "Change"
+                                                splashScreenEnable || uploadedImageFiles.splashscreen  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection> 
@@ -257,14 +258,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
-                                        {
-                                            !VodDetails.thumbnail.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.thumbnail.targetID)}}>Delete</Button>
-                                        }
                                         <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(VodDetails.thumbnail.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.thumbnail.url  ?
-                                                    "Add" : "Change"
+                                                thumbnailEnable  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
@@ -281,14 +278,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
-                                            !VodDetails.poster.url ? null :
+                                            (posterEnable || uploadedImageFiles.poster) && 
                                                 <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID)}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(VodDetails.poster.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.poster.url  ?
-                                                    "Add" : "Change"
+                                                posterEnable || uploadedImageFiles.poster  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
@@ -315,26 +312,29 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
-                                return (
-                                    <LinkBoxContainer key={item.id} className="col col-6 mt2">
-                                        <LinkBoxLabel>
-                                            <Text size={14} weight="med">{item.label}</Text>
-                                        </LinkBoxLabel>
-                                        <LinkBox>
-                                            <LinkText>
-                                                <Text size={14} weight="reg">{item.link}</Text>
-                                            </LinkText>
-                                            <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                            <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                        </LinkBox>
-                                    </LinkBoxContainer>
-
-                                )
+                                {
+                                    if(item.link && item.link !== ''){
+                                        return (
+                                            <LinkBoxContainer key={item.id} className="col col-6 mt2">
+                                                <LinkBoxLabel>
+                                                    <Text size={14} weight="med">{item.label}</Text>
+                                                </LinkBoxLabel>
+                                                <LinkBox>
+                                                    <LinkText>
+                                                        <Text size={14} weight="reg">{item.link}</Text>
+                                                    </LinkText>
+                                                    <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                    <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                                </LinkBox>
+                                            </LinkBoxContainer>
+                                        )
+                                    }
+                                }
                             })}
                         </AdvancedLinksContainer>
                     </div>
 
-                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
+                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
                         <ModalContent>
                             <DropdownSingle
                                 className="col col-12"
