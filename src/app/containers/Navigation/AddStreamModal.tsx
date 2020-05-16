@@ -24,8 +24,8 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const localeTimezone: string = moment.tz.guess()
 
 
-    const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: ''})
+    const [selectedStreamType, setSelectedStreamType] = React.useState<string>("standard")
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: "standard", region: ''})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
