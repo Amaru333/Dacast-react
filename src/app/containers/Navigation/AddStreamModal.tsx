@@ -23,9 +23,17 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const localeTimezone: string = moment.tz.guess()
 
+    const handleLocaleCountry = (): string => {
+        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
+            return 'Australia'
+        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
+            return 'Europe'
+        } 
+        return 'North America'
+    }
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: ''})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: handleLocaleCountry()})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -35,16 +43,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const handleCancel = () => {
         setSelectedStreamType(null)
         props.toggle()
-    }
-
-    const handleLocaleCountry = (): string => {
-        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
-            return 'Australia'
-        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
-            return 'Europe'
-        } 
-
-        return 'North America'
     }
 
     const handleRegionParse =(region: string): string => {
@@ -69,9 +67,9 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             {
                 title: streamSetupOptions.title,
                 streamOnline: true,
-                type: streamSetupOptions.streamType,
+                streamType: streamSetupOptions.streamType,
                 rewind: streamSetupOptions.rewind ? true : false,
-                region: handleRegionParse(streamSetupOptions.region)
+                region: handleRegionParse(streamSetupOptions.region),
             }, 
             {
                 headers: {
@@ -99,16 +97,16 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         <Input id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
                         <div className='col col-6 pl1 flex' >
-                        <DropdownSingle 
-                            dropdownTitle='Source Region' 
-                            className='col col-12' 
-                            id='channelRegionTypeDropdown' 
-                            dropdownDefaultSelect={handleLocaleCountry()}
-                            list={{'Australia': false, 'Europe': false, 'North America': false}} 
-                            callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
-                        />
-                        <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
-                        <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
+                            <DropdownSingle 
+                                dropdownTitle='Source Region' 
+                                className='col col-12' 
+                                id='channelRegionTypeDropdown' 
+                                dropdownDefaultSelect={handleLocaleCountry()}
+                                list={{'Australia': false, 'Europe': false, 'North America': false}} 
+                                callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
+                            />
+                            <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
+                            <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
                         </div>
 
                     </div>
