@@ -186,7 +186,6 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debugger
         e.preventDefault();
         if (e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);

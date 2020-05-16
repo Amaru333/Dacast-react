@@ -1,14 +1,6 @@
 import { Reducer } from "redux";
-import { RenditionsList, ActionTypes, RenditionsListState } from './types';
+import { ActionTypes, RenditionsListState } from './types';
 import { Action } from './actions';
-
-
-// const initialRenditionsState: RenditionsList = {
-//     id: null,
-//     presets: [],
-//     encodedRenditions: [],
-//     videoInfo: null
-// }
 
 const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
     let renditions = null
@@ -34,12 +26,7 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
             return { 
-                ...state, 
-                [action.payload.contentId] : {
-                    ...state[action.payload.contentId],
-                    encodedRenditions: state[action.payload.contentId].encodedRenditions.filter((rendition) => !action.payload.data.includes(rendition.name))
-                }
-                
+                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !action.payload.includes(rendition.renditionID))
             }
         default:
             return state;

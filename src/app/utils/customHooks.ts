@@ -40,7 +40,7 @@ export const useWebSocket = () => {
         if (!ws.current) return;
         ws.current.onmessage = (e: any) => {
             setWsData(JSON.parse(e.data))
-            console.log("e", wsData)
+            console.log("e", e.data)
         }
     })
 

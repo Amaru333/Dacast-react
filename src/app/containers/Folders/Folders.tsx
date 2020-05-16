@@ -45,8 +45,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
+        getFolders: async (folderPath: string) => {
+            await dispatch(getFoldersAction(folderPath));
         },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))

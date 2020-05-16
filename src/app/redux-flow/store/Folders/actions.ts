@@ -47,7 +47,7 @@ export interface RenameFolder {
 
 export const getFoldersAction = (folderPath: string): ThunkDispatch<Promise<void>, {}, GetFolders> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetFolders> ) => {
-        await FoldersServices.getFolders(folderPath)
+        return await FoldersServices.getFolders(folderPath)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_FOLDERS, payload: response.data} );
             }).catch(() => {

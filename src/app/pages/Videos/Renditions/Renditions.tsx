@@ -14,6 +14,7 @@ interface VodRenditionsProps {
     renditions: RenditionsList;
     addVodRenditions: Function;
     deleteVodRenditions: Function;
+    getVodRenditions: Function;
 }
 
 export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) => {
@@ -27,6 +28,15 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     // the data from the WS to know when the processing renditions are completed
     let wsData = useWebSocket()
+    
+    React.useEffect(() => {
+        if(wsData){
+            setTimeout(() => {
+                props.getVodRenditions(props.vodId)
+                console.log('get has worked?')
+            }, 10000)
+        }  
+    }, [wsData])
 
     React.useEffect(() => {
         let renditionName = props.renditions.encodedRenditions.map((renditions) => {return renditions.name})
@@ -59,7 +69,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     const notEncodedRenditionsTableBody = () => {
         return notEncodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0 || (value.size != null && value.size > props.renditions.videoInfo.width)}
                     defaultChecked={selectedNotEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
@@ -99,7 +109,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
         return props.renditions.encodedRenditions.map((value) => {
             console.log(value)
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0 || (wsData && !wsData.data.completed)}
                     defaultChecked={selectedEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
@@ -112,10 +122,11 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.width}</Text>,
                 <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
-                value.encoded ? 
-                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
-                    :
+                !value.transcodingJobID ? 
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
+                    :
+                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
+                    
             ]}
         })
     }

@@ -220,21 +220,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         node.loadingStatus = 'loading'
         setFoldersTree({ ...foldersTree })
         await props.getFolders(node.id)
+        debugger
         console.log(props.folderData.requestedFolder)
-        node.children = {
-            ['/folder1/subfolder']: {
-                hasChild: false,
-                id: "59",
-                name: "subfolder",
-                path: "/folder1/",
-                loadingStatus: 'not-loaded',
-                nbChildren: 0,
-                subfolders: 0,
-                fullPath: '/folder1/subfolder',
-                children: null,
-                isExpanded: false
-            }
-        }
+        node.children = {...props.folderData.requestedFolder}
         node.isExpanded = true
         node.loadingStatus = 'loaded'
         setFoldersTree({ ...foldersTree })
@@ -262,7 +250,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
         if (Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
             console.log('node has no children, fecthing')
-            debugger
             await loadChildren(currentNode)
         }
         return currentNode

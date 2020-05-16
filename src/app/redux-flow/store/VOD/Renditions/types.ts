@@ -30,9 +30,11 @@ export interface RenditionsListState { [key: string]: RenditionsList }
 
 export interface Rendition {
     renditionID: string;
+    transcodingJobID: string;
     name: string;
-    size: string;
+    size: number;
     bitrate: number;
     encoded?: boolean;
     width: number;
+    height: number;
 }
