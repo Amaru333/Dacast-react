@@ -13,13 +13,19 @@ import axios from 'axios'
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+
+const moment = require('moment-timezone')
 
 export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
 
     let history = useHistory()
 
+    const localeTimezone: string = moment.tz.guess()
+
+
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: ''})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -31,6 +37,29 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         props.toggle()
     }
 
+    const handleLocaleCountry = (): string => {
+        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
+            return 'Australia'
+        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
+            return 'Europe'
+        } 
+
+        return 'North America'
+    }
+
+    const handleRegionParse =(region: string): string => {
+        switch(region) {
+            case 'North America':
+                return 'north-america'
+            case 'Australia':
+                return 'asia'
+            case 'Europe':
+                return 'europe'
+            default: 
+                return ''
+        }
+    }
+
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
         await isTokenExpired()
@@ -38,7 +67,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         
         return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels',
             {
-                title: streamSetupOptions.title
+                title: streamSetupOptions.title,
+                streamOnline: true,
+                type: streamSetupOptions.streamType,
+                rewind: streamSetupOptions.rewind ? true : false,
+                region: handleRegionParse(streamSetupOptions.region)
             }, 
             {
                 headers: {
@@ -47,7 +80,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             }
         ).then((response) => {
             setButtonLoading(false)
-            showToastNotification('Live channel created!', 'fixed', 'success')
+            showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
             history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
         }).catch((error) => {
@@ -62,7 +95,23 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             <ModalContent>
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
-                    <Input id='liveStreamModalInput' className='col col-12 mb2' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
+                    <div className='col col-12 flex mb2 relative'> 
+                        <Input id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
+
+                        <div className='col col-6 pl1 flex' >
+                        <DropdownSingle 
+                            dropdownTitle='Source Region' 
+                            className='col col-12' 
+                            id='channelRegionTypeDropdown' 
+                            dropdownDefaultSelect={handleLocaleCountry()}
+                            list={{'Australia': false, 'Europe': false, 'North America': false}} 
+                            callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
+                        />
+                        <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
+                        <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
+                        </div>
+
+                    </div>
 
                     {getPrivilege('privilege-live') &&
                         <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">

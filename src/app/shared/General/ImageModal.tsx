@@ -7,7 +7,7 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string}) => {
+export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string, uploadedImageFiles: any, setUploadedImageFiles: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -16,6 +16,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
+    const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
 
     let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
 
@@ -47,14 +48,16 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
 
     const handleSubmit = () => {
         if(!saveButtonLoading && !isSaveDisabled) {
+            props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
-            props.getUploadUrl(props.imageType, props.contentId, () => { setSaveButtonLoading(false) })
+            props.getUploadUrl(props.imageType, props.contentId, () => {})
         }
     }
 
     React.useEffect(() => {
-        if(props.uploadUrl) {
+        if(props.uploadUrl && saveButtonLoading) {
             if (selectedOption === "upload" && logoFile) {
+                debugger
                 props.submit(logoFile, props.uploadUrl)
             } else {
                 props.submit(player.getPlayerInstance().currentTime.toString())
@@ -62,6 +65,19 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
             props.toggle()
         }
     }, [props.uploadUrl, saveButtonLoading])
+
+    const handleTempImage = (modalTitle: string, reader: FileReader) => {
+        switch (modalTitle) {
+            case 'Change Splashscreen':
+                setTempUploadedFiles({...tempUploadedFiles, splashscreen: reader.result})
+                break;
+            case 'Change Thumbnail':
+                setTempUploadedFiles({...tempUploadedFiles, thumbnail: reader.result})
+                break;
+            case 'Change Poster':
+                setTempUploadedFiles({...tempUploadedFiles, poster: reader.result});
+        }
+    }
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -76,9 +92,10 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                 if(acceptedRatio) {
                     setLogoFile(file[0])
                     setFileName(file[0].name)
+                    handleTempImage(props.title, reader)
                 }
             }
-            reader.readAsDataURL(file[0])
+            reader.readAsDataURL(file[0])          
         }
     }
     
@@ -94,7 +111,8 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     }, [logoFile])
 
     return (
-        <Modal size="large" modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
+            { props.contentType === 'vod' ?
             <ModalContent>
                 <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
                     <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
@@ -138,6 +156,28 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                         
                 </RadioButtonOption>
             </ModalContent>
+            :
+            <ModalContent>
+                <div className="col col-12 mt2">
+                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
+                        <Button className="mt2" sizeButton="xs" typeButton="secondary">
+                            <label className="pointer"  htmlFor='browseButtonImageModal'>
+                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' />
+                                Upload File
+                            </label>
+                        </Button>
+                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                        { !logoFile ? null : 
+                            <ThumbnailFile className="col col-6 mt1">
+                                <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
+                                <button style={{border: "none", backgroundColor:"inherit"}}>
+                                    <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
+                                </button>   
+                            </ThumbnailFile>
+                        }
+                    </div>
+            </ModalContent>
+            }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
                 <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 

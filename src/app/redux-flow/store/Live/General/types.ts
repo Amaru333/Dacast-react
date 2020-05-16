@@ -37,6 +37,7 @@ export interface LiveDetails {
     recording: boolean;
     countdown: LiveStreamCountdown;
     rewind: boolean;
+    uploadurl?: string;
 }
 
 interface PLaybackURLs {

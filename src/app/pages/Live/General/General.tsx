@@ -41,6 +41,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
+    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
@@ -256,7 +257,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {splashScreenEnable && <ImageSection><SelectedImage src={props.liveDetails.splashscreen.url} /></ImageSection>}
+                                {splashScreenEnable && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -279,7 +280,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { thumbnailEnable && <ImageSection> <SelectedImage src={props.liveDetails.thumbnail.url} /></ImageSection>}
+                                { thumbnailEnable && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -299,7 +300,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {posterEnable && <ImageSection> <SelectedImage src={props.liveDetails.poster.url} /></ImageSection>}
+                                {posterEnable && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -333,7 +334,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 {
                     imageModalOpen && <ImageModal  
                         imageFileName={selectedImageName} 
-                        uploadUrl={''} 
+                        uploadUrl={props.liveDetails.uploadurl} 
                         getUploadUrl={props.getUploadUrl} 
                         contentId={props.liveDetails.id} 
                         contentType='live'
@@ -341,7 +342,9 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         toggle={() => setImageModalOpen(false)} 
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
-                        title={imageModalTitle} 
+                        title={imageModalTitle}
+                        uploadedImageFiles={uploadedImageFiles}
+                        setUploadedImageFiles={setUploadedImageFiles}
                     />
                 }
 

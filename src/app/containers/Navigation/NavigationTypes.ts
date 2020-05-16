@@ -49,4 +49,5 @@ export interface StreamSetupOptions {
     streamType: string;
     title: string;
     rewind?: boolean;
+    region: string;
 }

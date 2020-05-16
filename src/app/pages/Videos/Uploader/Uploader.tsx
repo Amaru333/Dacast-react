@@ -186,7 +186,6 @@ export const UploaderPage = (props: UploaderProps) => {
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debugger
         e.preventDefault();
         if (e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
@@ -230,7 +229,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         id='dropdownUploaderEncoding'
                         callback={(value: string) => { console.log(value) }}
                     />
-                    <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" color="grey-3">info_outlined</IconStyle>
+                    <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
                 <div className="col col-4 flex items-center justify-end">
