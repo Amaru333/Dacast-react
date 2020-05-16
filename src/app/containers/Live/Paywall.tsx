@@ -106,7 +106,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             <LiveTabs liveId={liveId} />
             <LivePaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
         </div>
-        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        : <><LiveTabs liveId={liveId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
 
 export function mapStateToProps(state: ApplicationState) {

@@ -22,29 +22,33 @@ export interface LiveEngagementComponentProps {
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
-    let {liveId} = useParams()
+    let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.liveEngagementSettingsState[liveId]) {
+        if (!props.liveEngagementSettingsState[liveId]) {
             props.getLiveEngagementSettings(liveId);
         }
     }, []);
 
     return (
-        props.liveEngagementSettingsState[liveId] ?
-            <div className='flex flex-column'>
-                <LiveTabs liveId={liveId} />
-                <ContentEngagementPage 
-                    contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
-                    getContentEngagementSettings={props.getLiveEngagementSettings}
-                    saveContentEngagementSettings={props.saveLiveEngagementSettings}
-                    saveContentAd={props.saveLiveAd}
-                    createContentAd={props.createLiveAd}
-                    deleteContentAd={props.deleteLiveAd}
-                    contentType='live'
-                />            
-            </div>
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.liveEngagementSettingsState[liveId] ?
+                    <div className='flex flex-column'>
+                        <ContentEngagementPage
+                            contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
+                            getContentEngagementSettings={props.getLiveEngagementSettings}
+                            saveContentEngagementSettings={props.saveLiveEngagementSettings}
+                            saveContentAd={props.saveLiveAd}
+                            createContentAd={props.createLiveAd}
+                            deleteContentAd={props.deleteLiveAd}
+                            contentType='live'
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+            }
+        </>
     )
 }
 

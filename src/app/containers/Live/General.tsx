@@ -11,7 +11,7 @@ import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router-dom';
 
 export interface LiveGeneralProps {
-    liveDetails:  LiveDetails;
+    liveDetails: LiveDetails;
     liveDetailsState: LiveDetailsState;
     getLiveDetails: Function;
     saveLiveDetails: Function;
@@ -22,24 +22,28 @@ export interface LiveGeneralProps {
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
 
-    let {liveId} = useParams()
+    let { liveId } = useParams()
 
 
     React.useEffect(() => {
-        if(!props.liveDetailsState[liveId]) {
+        if (!props.liveDetailsState[liveId]) {
             props.getLiveDetails(liveId);
         }
     }, [])
 
     return (
-        props.liveDetailsState[liveId] ? 
-            (
-                <div className='flex flex-column'>
-                    <LiveTabs liveId={liveId} />
-                    <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
-                </div>            
-            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.liveDetailsState[liveId] ?
+                    (
+                        <div className='flex flex-column'>
+                            <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
+                        </div>
+                    )
+                    : <><LiveTabs liveId={liveId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
+            }
+        </>
     )
 }
 

@@ -25,27 +25,31 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.themeState[liveId]) 
-            props.getLiveTheme(liveId);            
+        if (!props.themeState[liveId])
+            props.getLiveTheme(liveId);
     }, [])
-    
+
     return (
-        props.themeState[liveId] ?
-            <div className='flex flex-column'>
-                <LiveTabs liveId={liveId} />
-                <ThemingControlsCard
-                    theme={props.themeState[liveId]} 
-                    saveTheme={props.saveLiveTheme}
-                    contentType='live'
-                    actionType='Save'
-                />            
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.themeState[liveId] ?
+                    <div className='flex flex-column'>
+                        <ThemingControlsCard
+                            theme={props.themeState[liveId]}
+                            saveTheme={props.saveLiveTheme}
+                            contentType='live'
+                            actionType='Save'
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
-    
+
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         themeState: state.live.theming,
     }

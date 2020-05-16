@@ -35,7 +35,6 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
             return false;
         }
     }
-    console.log(inputOptions, props.embedSettingsOption)
     return (
         <React.Fragment>
             <form>

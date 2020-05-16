@@ -27,52 +27,56 @@ const LiveSecurity = (props: LiveSecurityProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.globalSecuritySettings) {
+        if (!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
-        if(!props.liveSecuritySettingsState[liveId]) {
+        if (!props.liveSecuritySettingsState[liveId]) {
             props.getLiveSecuritySettings(liveId);
         }
 
     }, [])
 
     return (
-        props.liveSecuritySettingsState[liveId] && props.globalSecuritySettings ? 
-            <div className='flex flex-column'>
-                <LiveTabs liveId={liveId} />
-                <ContentSecurityPage 
-                    contentSecuritySettings={props.liveSecuritySettingsState[liveId]} 
-                    contentId={liveId}
-                    globalSecuritySettings={props.globalSecuritySettings}
-                    saveContentSecuritySettings={props.saveLiveSecuritySettings}
-                    getSettingsSecurityOptions={props.getSettingsSecurityOptions}
-                />
-            </div>            
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.liveSecuritySettingsState[liveId] && props.globalSecuritySettings ?
+                    <div className='flex flex-column'>
+                        <ContentSecurityPage
+                            contentSecuritySettings={props.liveSecuritySettingsState[liveId]}
+                            contentId={liveId}
+                            globalSecuritySettings={props.globalSecuritySettings}
+                            saveContentSecuritySettings={props.saveLiveSecuritySettings}
+                            getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
-    
+
 }
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        liveSecuritySettingsState: state.live.security,
+                liveSecuritySettingsState: state.live.security,
         globalSecuritySettings: state.settings.security
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveSecuritySettings: (liveId: string) => {
-            dispatch(getLiveSecuritySettingsAction(liveId));
+                getLiveSecuritySettings: (liveId: string) => {
+                dispatch(getLiveSecuritySettingsAction(liveId));
         },
         saveLiveSecuritySettings: (data: SecuritySettings, liveId: string, callback?: Function) => {
-            dispatch(saveLiveSecuritySettingsAction(data, liveId)).then(callback);
+                dispatch(saveLiveSecuritySettingsAction(data, liveId)).then(callback);
         },
         getSettingsSecurityOptions: () => {
-            dispatch(getSettingsSecurityOptionsAction());
+                dispatch(getSettingsSecurityOptionsAction());
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType));
+                dispatch(showToastNotification(text, size, notificationType));
         }
     }
 }
