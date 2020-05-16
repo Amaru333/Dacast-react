@@ -42,7 +42,9 @@ export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDisp
                     name: data[i],
                     size: null,
                     bitrate: null,
-                    width: null
+                    width: null,
+                    transcodingJobID: null,
+                    height: null
                 } 
                 array.push(rendition)
             })

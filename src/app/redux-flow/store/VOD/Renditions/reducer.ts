@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { ActionTypes, RenditionsListState } from './types';
+import { ActionTypes, RenditionsListState, Rendition } from './types';
 import { Action } from './actions';
 
 const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
@@ -26,7 +26,7 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
             return { 
-                ...state, encodedRenditions: state.encodedRenditions.filter((rendition) => !action.payload.includes(rendition.renditionID))
+                ...state, encodedRenditions: state.encodedRenditions.filter((rendition: Rendition) => !action.payload.data.includes(rendition.renditionID))
             }
         default:
             return state;

@@ -121,7 +121,14 @@ export const LiveListPage = (props: LiveListProps) => {
                             }
                         }
                         } />
-                        <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} ></img>
+                        {
+                            value.thumbnail ? 
+                                <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} />
+                                :
+                                    <div className='ml2 border relative' style={{width: 50, height: 42, backgroundColor: '#F5F7FA'}}>
+                                        <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                    </div>
+                        }
                     </div>,
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,

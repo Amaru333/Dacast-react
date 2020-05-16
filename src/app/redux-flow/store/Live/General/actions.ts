@@ -94,7 +94,7 @@ export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDis
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await LiveGeneralServices.getUploadUrl(uploadType, liveId)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: { id: liveId, data: response.data} })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: { id: liveId, data: response.data.data} })
             })
             .catch((error) => {
                 console.log(error)

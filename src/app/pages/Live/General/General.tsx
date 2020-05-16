@@ -334,7 +334,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 {
                     imageModalOpen && <ImageModal  
                         imageFileName={selectedImageName} 
-                        uploadUrl={''} 
+                        uploadUrl={props.liveDetails.uploadurl} 
                         getUploadUrl={props.getUploadUrl} 
                         contentId={props.liveDetails.id} 
                         contentType='live'

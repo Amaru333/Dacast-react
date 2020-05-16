@@ -50,13 +50,14 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
         if(!saveButtonLoading && !isSaveDisabled) {
             props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
-            props.getUploadUrl(props.imageType, props.contentId, () => { setSaveButtonLoading(false) })
+            props.getUploadUrl(props.imageType, props.contentId, () => {})
         }
     }
 
     React.useEffect(() => {
-        if(props.uploadUrl) {
+        if(props.uploadUrl && saveButtonLoading) {
             if (selectedOption === "upload" && logoFile) {
+                debugger
                 props.submit(logoFile, props.uploadUrl)
             } else {
                 props.submit(player.getPlayerInstance().currentTime.toString())
@@ -160,8 +161,8 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                 <div className="col col-12 mt2">
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                         <Button className="mt2" sizeButton="xs" typeButton="secondary">
-                            <label className="pointer"  htmlFor='browseButton'>
-                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                            <label className="pointer"  htmlFor='browseButtonImageModal'>
+                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' />
                                 Upload File
                             </label>
                         </Button>
