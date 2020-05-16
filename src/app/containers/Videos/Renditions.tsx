@@ -23,24 +23,28 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.renditionsState[vodId]) {
+        if (!props.renditionsState[vodId]) {
             props.getVodRenditions(vodId);
         }
     }, [])
 
     return (
-        props.renditionsState[vodId] ?
-            (
-                <div className='flex flex-column'>
-                    <VideoTabs videoId={vodId} />
-                    <VodRenditionsPage {...props} renditions={props.renditionsState[vodId]} vodId={vodId} />
-                </div>            
-            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.renditionsState[vodId] ?
+                    (
+                        <div className='flex flex-column'>
+                            <VodRenditionsPage {...props} renditions={props.renditionsState[vodId]} vodId={vodId} />
+                        </div>
+                    )
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         renditionsState: state.vod.renditions
     }

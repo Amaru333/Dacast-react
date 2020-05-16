@@ -26,20 +26,24 @@ const General = (props: GeneralComponentProps) => {
     let { vodId } = useParams();
 
     React.useEffect(() => {
-        if(!props.vodDetailsState[vodId]) {
+        if (!props.vodDetailsState[vodId]) {
             props.getVodDetails(vodId);
         }
     }, [])
 
     return (
-        props.vodDetailsState[vodId] ?
-            (
-                <div className='flex flex-column'>
-                    <VideoTabs videoId={vodId} />
-                    <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} vodId={vodId} />
-                </div>
-            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.vodDetailsState[vodId] ?
+                    (
+                        <div className='flex flex-column'>
+                            <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} vodId={vodId} />
+                        </div>
+                    )
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 
 }

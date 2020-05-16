@@ -104,7 +104,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             <VideoTabs videoId={vodId} />
             <VodPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
         </div>
-        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        : <><VideoTabs videoId={vodId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
 
 export function mapStateToProps(state: ApplicationState) {

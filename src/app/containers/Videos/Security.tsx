@@ -23,32 +23,36 @@ interface VodSecurityContainerProps {
 export const VodSecurity = (props: VodSecurityContainerProps) => {
 
     let { vodId } = useParams()
-    
+
     React.useEffect(() => {
-        if(!props.globalSecuritySettings) {
+        if (!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
-        if(!props.vodSecuritySettingsState[vodId]){
+        if (!props.vodSecuritySettingsState[vodId]) {
             props.getVodSecuritySettings(vodId);
         }
     }, [])
     return (
-        props.vodSecuritySettingsState[vodId] && props.globalSecuritySettings ? 
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ContentSecurityPage 
-                    contentSecuritySettings={props.vodSecuritySettingsState[vodId]} 
-                    contentId={vodId}
-                    globalSecuritySettings={props.globalSecuritySettings}
-                    saveContentSecuritySettings={props.saveVodSecuritySettings}
-                    getSettingsSecurityOptions={props.getSettingsSecurityOptions}
-                />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.vodSecuritySettingsState[vodId] && props.globalSecuritySettings ?
+                    <div className='flex flex-column'>
+                        <ContentSecurityPage
+                            contentSecuritySettings={props.vodSecuritySettingsState[vodId]}
+                            contentId={vodId}
+                            globalSecuritySettings={props.globalSecuritySettings}
+                            saveContentSecuritySettings={props.saveVodSecuritySettings}
+                            getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         vodSecuritySettingsState: state.vod.security,
         globalSecuritySettings: state.settings.security

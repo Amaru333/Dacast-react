@@ -22,28 +22,32 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.themeState[vodId]) {
+        if (!props.themeState[vodId]) {
             props.getVodTheme(vodId);
         }
     }, [])
-    
+
     return (
-        props.themeState[vodId] ?
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ThemingControlsCard
-                    theme={props.themeState[vodId]} 
-                    saveTheme={props.saveVodTheme}
-                    contentType='vod'
-                    actionType='Save'
-                    contentId={vodId}
-                />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.themeState[vodId] ?
+                    <div className='flex flex-column'>
+                        <ThemingControlsCard
+                            theme={props.themeState[vodId]}
+                            saveTheme={props.saveVodTheme}
+                            contentType='vod'
+                            actionType='Save'
+                            contentId={vodId}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         themeState: state.vod.theming,
     }

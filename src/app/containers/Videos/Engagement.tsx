@@ -25,25 +25,29 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.vodEngagementSettingsState[vodId])
+        if (!props.vodEngagementSettingsState[vodId])
             props.getVodEngagementSettings(vodId);
     }, []);
 
     return (
-        props.vodEngagementSettingsState[vodId] ?
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ContentEngagementPage 
-                    contentEngagementSettings={props.vodEngagementSettingsState[vodId]}
-                    getContentEngagementSettings={props.getVodEngagementSettings}
-                    saveContentEngagementSettings={props.saveVodEngagementSettings}
-                    saveContentAd={props.saveVodAd}
-                    createContentAd={props.createVodAd}
-                    deleteContentAd={props.deleteVodAd}
-                    contentType='vod'
-                />
-            </div>            
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.vodEngagementSettingsState[vodId] ?
+                    <div className='flex flex-column'>
+                        <ContentEngagementPage
+                            contentEngagementSettings={props.vodEngagementSettingsState[vodId]}
+                            getContentEngagementSettings={props.getVodEngagementSettings}
+                            saveContentEngagementSettings={props.saveVodEngagementSettings}
+                            saveContentAd={props.saveVodAd}
+                            createContentAd={props.createVodAd}
+                            deleteContentAd={props.deleteVodAd}
+                            contentType='vod'
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+            }
+        </>
     )
 }
 

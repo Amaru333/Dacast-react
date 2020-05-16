@@ -41,7 +41,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
                             <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
                         </div>
                     )
-                    : <><LiveTabs liveId={liveId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </>
     )

@@ -22,24 +22,28 @@ export interface ChapterComponentProps {
 const Chapters = (props: ChapterComponentProps) => {
 
     let { vodId } = useParams()
-    
+
     React.useEffect(() => {
-        if(!props.chapterPageDetailsState[vodId]) {
+        if (!props.chapterPageDetailsState[vodId]) {
             props.getVodChapterMarkers(vodId);
         }
     }, [])
-    
+
     return (
-        props.chapterPageDetailsState[vodId] ? 
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ChaptersPage {...props} chapterPageDetails={props.chapterPageDetailsState[vodId]} vodId={vodId} />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.chapterPageDetailsState[vodId] ?
+                    <div className='flex flex-column'>
+                        <ChaptersPage {...props} chapterPageDetails={props.chapterPageDetailsState[vodId]} vodId={vodId} />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         chapterPageDetailsState: state.vod.chapters
     };
@@ -62,4 +66,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Chapters);
+export default connect(mapStateToProps, mapDispatchToProps)(Chapters);
