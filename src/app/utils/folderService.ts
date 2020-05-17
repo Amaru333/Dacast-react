@@ -202,16 +202,49 @@ export class FolderTree {
     }
 
     private changeSubfoldersPaths(previousPath: string, newPath: string, node: FolderTreeNode) {
-        console.log(`node ${node.name} children `, node.children)
-
         if(node.path + node.name !== newPath) {
             node.path = node.path.replace(previousPath, newPath)
         }
         node.fullPath = node.fullPath.replace(previousPath, newPath)
-        console.log('changing the name of node', node)
+
         if(Object.values(node.children).length === 0) {
             return
         }
         Object.values(node.children).map((child: FolderTreeNode) => this.changeSubfoldersPaths(previousPath, newPath, child))
+    }
+
+    public async deleteFolders(foldersToDelete: string[], fullPath: string) {
+        let node = await this.getNode(this.tree, fullPath)
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/delete', 
+            {
+                folderIds: foldersToDelete
+
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then( async () => {
+            if(foldersToDelete.indexOf(node.id) > -1) {
+                let parentNode = await this.getNode(this.tree, node.path)
+                parentNode.children = Object.values(parentNode.children).filter((child) => child.id !== node.id).reduce((reduced: SubFolder, child) => {
+                    return {
+                        ...reduced, [child.name]: {...child}
+                    }
+                }, {})
+            } else {
+                node.children = Object.values(node.children).filter((child) => foldersToDelete.indexOf(child.id) === -1).reduce((reduced: SubFolder, child) => {
+                    return {
+                        ...reduced, [child.name]: {...child}
+                    }
+                }, {})
+            }
+            this.setTree({...this.tree})
+        }).catch(error => {
+            throw new Error(error)
+        })
     }
 }

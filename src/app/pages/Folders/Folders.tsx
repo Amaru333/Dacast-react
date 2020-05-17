@@ -178,7 +178,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setNewFolderModalOpened(true);
                 break;
             case 'Delete':
-                props.deleteFolder(selectedFolder)
+               foldersTree.deleteFolders([assetName], currentFolder.fullPath)
                 break;
             case 'View' :
                 // foldersTree.navigateToFolder(foldersTree.children[assetName])
