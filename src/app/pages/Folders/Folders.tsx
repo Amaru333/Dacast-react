@@ -240,7 +240,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 <div className='col col-9 flex items-center'>
                     <div className={'flex items-center'}>
                         <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
-                        <Button className='ml2' onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='secondary' buttonColor='gray'>
+                        <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
                             New Folder
                         </Button>
                     </div>
