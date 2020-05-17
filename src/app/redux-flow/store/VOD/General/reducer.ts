@@ -56,6 +56,7 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
         // case ActionTypes.DELETE_VOD_SUBTITLE:
         //     return { ...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id) }
         case ActionTypes.GET_UPLOAD_URL:
+            debugger
             return {
                 ...state, 
                 [action.payload.id] : {

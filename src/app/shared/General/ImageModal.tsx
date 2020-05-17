@@ -57,7 +57,6 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading) {
             if (selectedOption === "upload" && logoFile) {
-                debugger
                 props.submit(logoFile, props.uploadUrl)
             } else {
                 props.submit(player.getPlayerInstance().currentTime.toString())

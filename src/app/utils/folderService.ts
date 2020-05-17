@@ -23,6 +23,8 @@ export class FolderTree {
         this.setSelectedFolder = setSelectedFolder
         this.goToNode = this.goToNode.bind(this)
         this.addFolder = this.addFolder.bind(this)
+        this.renameFolder = this.renameFolder.bind(this)
+        this.changeSubfoldersPaths = this.changeSubfoldersPaths.bind(this)
     }
 
     private tree: FolderTreeNode
@@ -100,7 +102,7 @@ export class FolderTree {
             }
             currentNode = foundChild
         }
-        if (Object.keys(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
+        if (Object.values(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
             console.log('node has no children, fecthing')
             await this.loadChildren(currentNode)
         }
@@ -157,7 +159,7 @@ export class FolderTree {
                 }
             }
 
-            if(Object.keys(node.children).length === 0) {
+            if(Object.values(node.children).length === 0) {
                 node.hasChild = true
                 node.isExpanded = true
                 node.loadingStatus = 'loaded'
@@ -173,5 +175,43 @@ export class FolderTree {
         }).catch(error => {
             throw new Error(error)
         })
+    }
+
+    public async renameFolder(newName: string, fullPath: string) {
+        let node = await this.getNode(this.tree, fullPath)
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
+            {
+                newName: newName,
+                id: node.id
+
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then(() => {
+            node.name = newName
+            this.changeSubfoldersPaths(node.fullPath, node.path + newName, node)
+            this.setTree({...this.tree})
+        }).catch(error => {
+            throw new Error(error)
+        })
+    }
+
+    private changeSubfoldersPaths(previousPath: string, newPath: string, node: FolderTreeNode) {
+        console.log(`node ${node.name} children `, node.children)
+
+        if(node.path + node.name !== newPath) {
+            node.path = node.path.replace(previousPath, newPath)
+        }
+        node.fullPath = node.fullPath.replace(previousPath, newPath)
+        console.log('changing the name of node', node)
+        if(Object.values(node.children).length === 0) {
+            return
+        }
+        Object.values(node.children).map((child: FolderTreeNode) => this.changeSubfoldersPaths(previousPath, newPath, child))
     }
 }

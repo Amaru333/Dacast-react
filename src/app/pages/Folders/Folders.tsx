@@ -313,7 +313,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
                 <div className='col-12 col clearfix'>
                     <BreadcrumbDropdown
-                        options={selectedFolder}
+                        options={currentFolder.fullPath}
                         callback={(value: string) => setSelectedFolder(value)}
                         dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                         dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
@@ -342,7 +342,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
-                <NewFolderModal folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} />
+                {
+                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={currentFolder.fullPath} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} />
+                }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {

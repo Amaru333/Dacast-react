@@ -120,7 +120,7 @@ export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleIn
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await VodGeneralServices.getUploadUrl(uploadType, vodId, subtitleInfo)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload:{ id: vodId, data: response.data } })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload:{ id: vodId, data: response.data.data } })
             })
             .catch((error) => {
                 console.log(error)

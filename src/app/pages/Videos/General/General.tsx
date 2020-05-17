@@ -345,7 +345,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
                             />
                             <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                <label htmlFor='browseButton'>
+                                <label htmlFor='browseButtonSubtitle'>
                                     <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
                                     Select Files
                                 </label>                                    

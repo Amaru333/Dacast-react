@@ -20,6 +20,10 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
         setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)
     });
 
+    React.useEffect(() => {
+        console.log(props.options)
+    }, [props.options])
+
 
     const renderBreadcrumbDropdownList = () => {
         return (
@@ -41,10 +45,10 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/');
-        const filteredListLength = options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).length
+        const filteredListLength = options.filter((value, i) => i !== 0 && i!== options.length - 1 && i !== options.length - 2).length
         return (
-            options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).map((name, i) => {
-                return i < filteredListLength - 1 ? (
+            options.filter((value, i) => i !== 0 && i!== options.length - 1 && i !== options.length - 2).map((name, i) => {
+                return i < filteredListLength ? (
                     <DropdownItem 
                         isSingle
                         key={name + i} 
@@ -61,12 +65,12 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     const renderOptions = () => {
         if(props.options) {
-            const optionsLength = props.options.split('/').length - 1; 
+            const optionsLength = props.options.split('/').length; 
             if(optionsLength <= 3) {
                 return props.options.split('/').map((option, i) => {
                     return i < optionsLength ? (
                         <div key={'breadcrumbOption' + option + i} className='flex items-center'>
-                            { i < optionsLength - 1 || i === 0 ?
+                            { i < optionsLength - 1  || i === 0 ?
                                 <>
                                     <span className='pointer' onClick={() => props.callback(props.options.split(option)[0] + option + '/')}>
                                         <Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 ? 'All folders' : option}</Text>
@@ -109,12 +113,12 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                       
                         <div className='flex items-center'>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>                            
-                            <span className='pointer' onClick={() => {props.callback(props.options.split(options[options.length - 3])[0] + options[options.length - 3] +'/')}}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 3]}</Text></span>
+                            <span className='pointer' onClick={() => {props.callback(props.options.split(options[options.length - 2])[0] + options[options.length - 2] +'/')}}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                         </div>
                         <div className='flex items-center relative'>
                             <div className='flex items-center pointer' onClick={() => setBreadcrumbDropdownIsOpened(!breadcrumbDropdownIsOpened)}>
-                                <Text size={14} weight='reg'>{options[options.length - 2]}</Text>
+                                <Text size={14} weight='reg'>{options[options.length - 1]}</Text>
                                 <IconStyle coloricon='gray-1'>{breadcrumbDropdownIsOpened ? 'arrow_drop_up' : 'arrow_drop_down'}</IconStyle>
                             </div>
                             <DropdownList hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
