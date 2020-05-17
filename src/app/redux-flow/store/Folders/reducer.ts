@@ -5,7 +5,6 @@ import { ActionTypes, FoldersState, foldersInitialState, FolderTreeNode } from '
 const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_FOLDERS: 
-        debugger
             return {
                 ...state,
                 data: {

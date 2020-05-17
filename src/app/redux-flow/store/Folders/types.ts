@@ -11,6 +11,11 @@ export enum ActionTypes {
     RENAME_FOLDER = "@@folders/RENAME_FOLDER"
 }
 
+
+export interface SubFolder {
+    [childPath: string]: FolderTreeNode;
+}
+
 export interface FolderTreeNode {
     id: string;
     name: string;
@@ -20,9 +25,7 @@ export interface FolderTreeNode {
     loadingStatus: 'not-loaded' | 'loading' | 'loaded';
     nbChildren: number;
     subfolders: number;
-    children: {
-        [childPath: string]: FolderTreeNode;
-    };
+    children: SubFolder;
     isExpanded: boolean;
 }
 
@@ -39,9 +42,7 @@ export interface FolderAsset {
 }
 
 export interface FoldersInfos {
-    requestedFolder: {
-        [childPath: string]: FolderTreeNode;
-    };
+    requestedFolder: SubFolder;
     requestedContent: FolderAsset[];
 }
 

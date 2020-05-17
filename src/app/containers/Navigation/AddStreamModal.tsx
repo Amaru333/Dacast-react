@@ -32,7 +32,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         return 'North America'
     }
 
-    const [selectedStreamType, setSelectedStreamType] = React.useState<string>(null)
+    const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: handleLocaleCountry()})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -50,7 +50,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             case 'North America':
                 return 'north-america'
             case 'Australia':
-                return 'asia'
+                return 'asia-pacific'
             case 'Europe':
                 return 'europe'
             default: 

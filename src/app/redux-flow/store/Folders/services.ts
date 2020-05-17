@@ -7,7 +7,6 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getFolders = async (folderPath: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    debugger
     let promise = await axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders?parentID=' + folderPath, 
         {
             headers: {
@@ -15,7 +14,6 @@ const getFolders = async (folderPath: string) => {
             }
         }
     )
-    debugger
     return promise
 }
 

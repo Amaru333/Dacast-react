@@ -246,18 +246,18 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        splashScreenEnable ?
+                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID) } } >Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
                                         {
-                                            splashScreenEnable ?
+                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {splashScreenEnable && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -270,17 +270,17 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        thumbnailEnable ?
+                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID)}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
-                                            thumbnailEnable ?
+                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { thumbnailEnable && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
+                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -292,15 +292,15 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                    { posterEnable && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
+                                    { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
-                                            posterEnable ?
+                                            posterEnable || uploadedImageFiles.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {posterEnable && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -314,19 +314,22 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                     </div>
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {liveAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
-                            return (
-                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd + "mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">{item.label}</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{item.link}</LinkText>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                        <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-
-                            )
+                            {
+                                if(item.link && item.link !== ''){
+                                    return (
+                                        <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd + "mb2"}>
+                                            <LinkBoxLabel>
+                                                <Text size={14} weight="med">{item.label}</Text>
+                                            </LinkBoxLabel>
+                                            <LinkBox>
+                                                <LinkText size={14} weight="reg">{item.link}</LinkText>
+                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                            </LinkBox>
+                                        </LinkBoxContainer>
+                                    )
+                                }
+                            }
                         })}
                     </AdvancedLinksContainer>
                 </div>
