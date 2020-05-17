@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { FolderTreeNode, SubFolder } from '../redux-flow/store/Folders/types';
 import { addTokenToHeader, isTokenExpired } from './token';
+import { showToastNotification } from '../redux-flow/store/Toasts/actions';
+import { store } from '..';
 
 export const rootNode: FolderTreeNode = {
     isExpanded: true,
@@ -172,6 +174,7 @@ export class FolderTree {
                 ...newChild
             }
             this.setTree({...this.tree})
+            store.dispatch(showToastNotification(`${folderName} has been added`, 'flexible', "success"));
         }).catch(error => {
             throw new Error(error)
         })
@@ -196,6 +199,7 @@ export class FolderTree {
             node.name = newName
             this.changeSubfoldersPaths(node.fullPath, node.path + newName, node)
             this.setTree({...this.tree})
+            store.dispatch(showToastNotification(`${newName} has been saved`, 'flexible', "success"));
         }).catch(error => {
             throw new Error(error)
         })
