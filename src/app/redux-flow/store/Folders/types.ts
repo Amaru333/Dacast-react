@@ -38,7 +38,7 @@ export interface FolderAsset {
     title: string;
     size?: number;
     thumbnail?: string;
-    type: 'playlist' | 'vod' | 'channel' | 'folder';
+    type: 'playlist' | 'vod' | 'channel' | 'folder' | 'live';
     createdAt: number;
     duration: string;
     featuresList: FeaturesList;

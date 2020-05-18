@@ -17,10 +17,11 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
 
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/').filter(f => f);
-        const filteredListLength = options.filter((value, i) => i !== 0 && i !== options.length - 2).length
+        const filteredListLength = options.length
+        console.log(options);
         return (
-            options.filter((value, i) => i !== 0 && i !== options.length - 2).map((name, i) => {
-                return i < filteredListLength - 1 ? (
+            options.map((name, i) => {
+                return i < filteredListLength - 2 ? (
                     <DropdownItem 
                         isSingle
                         key={name + i} 
@@ -38,14 +39,25 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderOptions = () => {
         if(props.options) {
             const optionsLength = props.options.split('/').filter(f => f).length; 
-            if(optionsLength <= 3) {
+            console.log(props.options.split('/').filter(f => f));
+            if(optionsLength <= 2) {
                 return props.options.split('/').filter(f => f).map((option, i) => {
-                    return i < optionsLength ? (
-                        <div key={'breadcrumbOption' + option + i} className='flex items-center'>
-                            <span onClick={() => props.callback(props.options.split(option)[0] + option + '/')}><Text size={14} weight={i === optionsLength - 1 ? 'reg' : 'med'} color={i === optionsLength - 1 ? 'gray-1' : 'dark-violet'}>{i === 0 && !props.isNavigation ? 'All folders' : option}</Text></span>
-                            <Text className={i >= optionsLength  - 1 ? 'hide' : ''} size={14} weight='reg'> &nbsp;/&nbsp; </Text>
-                        </div>
-                    )   : null
+                    console.log(option);
+                    console.log(props.options.split(option)[0] + option + '/');
+                    return(
+                        <>
+                            {i === 0 &&
+                                <div key={'breadcrumbOption' + option + i} className='flex items-center'>
+                                    <span className="pointer" onClick={() => props.callback('/')}><Text size={14} weight={'med'} color={'dark-violet'}>{!props.isNavigation ? 'All folders' : option}</Text></span>
+                                    <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
+                                </div>
+                            }
+                            <div key={'breadcrumbOption' + option + i} className='flex items-center'>
+                                <span className="pointer" onClick={() => props.callback(props.options.split(option)[0] + option + '/')}><Text size={14} weight={'med'} color={'dark-violet'}>{option}</Text></span>
+                                <Text className={i >= optionsLength  - 1 ? 'hide' : ''} size={14} weight='reg'> &nbsp;/&nbsp; </Text>
+                            </div>
+                        </>
+                    )   
                 })
             }
             else {
@@ -60,7 +72,7 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
                             <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
                             <DropdownList hasSearch={false} style={{width: 'fit-content', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
                                 {renderHiddenFoldersDropdownList()}
-                            </DropdownList>                       
+                            </DropdownList>                      
                         </div>                         
                         <div className='flex items-center'>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>

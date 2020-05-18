@@ -265,9 +265,7 @@ export class FolderTree {
                     Authorization: token
                 }
             }
-        ).then(() => {
-
-        }).catch(error => {
+        ).catch(error => {
             throw new Error(error)
         })
     }

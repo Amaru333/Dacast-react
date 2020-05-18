@@ -47,7 +47,7 @@ interface DropdownButtonSpecificProps {
 }
 
 
-export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement>;
+export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement> & { direction?: 'up' | 'down' };
 
 export type DropdownCountriesProps =  DropdownCountriesSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 

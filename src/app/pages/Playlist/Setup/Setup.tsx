@@ -6,39 +6,79 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import styled, { css } from 'styled-components';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, IconGreyActionsContainer } from '../../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 import { useOutsideAlerter } from '../../../../utils/utils';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
+import { Badge } from '../../../../components/Badge/Badge';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { PlaylistSetupState } from '../../../redux-flow/store/Playlists/Setup/types';
+
 
 export const SetupPage = (props: SetupComponentProps) => {
 
+    const formateData: FolderAsset[] = props.playlistData.contentList ? props.playlistData.contentList.map(item =>{
+        return {
+            ownerID: "",
+            objectID: item['live-channel-id'] ? item['live-channel-id'] : item['vod-id'],
+            title: item.title,
+            thumbnail: item.thumbnailURL,
+            type: item["content-type"],
+            createdAt: 0,
+            duration: '',
+            featuresList: {},
+            status: 'online'
+        }
+    }) : [];
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const [selectedTab, setSelectedTab] = React.useState<"folders" | "content">("folders");
     const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
+    const [selectedItems, setSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>(formateData);
+    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
+    const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.playlistData.folderId ? props.playlistData.folderId : null);
 
-    const [checkedFolders, setCheckedFolders] = React.useState<FolderAsset[]>([]);
+    const [checkedFolders, setCheckedFolders] = React.useState<FolderTreeNode[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [playlistSettingsOpen, setPlaylistSettingsOpen] = React.useState<boolean>(false);
 
-    const [sortSettings, setSortSettings] = React.useState<string>("Sort");
+    const [sortSettings, setSortSettings] = React.useState<{name: string; value: string}>({name: 'Sort', value: ''});
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
+    const [maxNumberItems, setMaxNumberItems] = React.useState<number>(NaN);
 
+    
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
+    const [searchString, setSearchString] = React.useState<string>(null)
 
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
 
-    React.useEffect(() => { setDropdownIsOpened(false) }, [sortSettings])
+    const parseFiltersToQueryString = () => {
+        let returnedString= `page=1&per-page=200&content-types=channel,vod&`
+        if(searchString) {
+            returnedString += `keyword=${searchString}&`
+        }
+        if(sortSettings) {
+            returnedString += `sort-by=${sortSettings.value}&`
+        }
+        if(returnedString.indexOf('status') === -1) {
+            returnedString += 'status=online,offline,processing'
+        }
+        return returnedString
+
+    }
+
+    React.useEffect(() => { 
+        setDropdownIsOpened(false); 
+        props.getFolderContent(parseFiltersToQueryString())
+    }, [sortSettings, searchString])
 
     React.useEffect(() => {
         if (!selectedFolder) {
@@ -49,8 +89,8 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }, [selectedFolder])
 
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
+    const handleRowIconType = (item: 'playlist' | 'vod' | 'channel' | 'folder') => {
+        switch (item) {
             case 'playlist':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
             case 'folder':
@@ -70,7 +110,18 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleMoveFoldersToSelected = () => {
-        setSelectedItems([...selectedItems, ...checkedFolders]);
+        if(checkedFolders.length < 1 ) return;
+        const wait = async () => {
+            await props.getFolderContent("status=online,offline,processing&page=1&per-page=10&content-types=channel,vod&folders="+checkedFolders[0].id, 
+                (data) => {
+                    if(data.data.data.results) {
+                        setSelectedItems(data.data.data.results);
+                        setSelectedFolderId(checkedFolders[0].id)
+                    }
+                });
+        }
+        wait();
+        //setSelectedItems([...checkedFolders]);
         setCheckedFolders([]);
     }
 
@@ -88,7 +139,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }
 
-    const handleCheckboxFolder = (checkedOption: FolderAsset) => {
+    const handleClickFolder = (checkedOption: FolderTreeNode) => {
         if (checkedFolders.includes(checkedOption)) {
             setCheckedFolders(checkedFolders.filter(option => option !== checkedOption));
         } else {
@@ -104,7 +155,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }
 
-    const handleCheckboxSelected = (checkedOption: FolderAsset) => {
+    const handleCheckboxSelected = (checkedOption: FolderAsset | FolderTreeNode) => {
         if (checkedSelectedItems.includes(checkedOption)) {
             setCheckedSelectedItems(checkedSelectedItems.filter(option => option !== checkedOption));
         } else {
@@ -115,7 +166,11 @@ export const SetupPage = (props: SetupComponentProps) => {
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.objectID === elChecked.objectID;
+                if( (el as FolderAsset).type) {
+                    return el.objectID === elChecked.objectID;
+                } else {
+                    return el.id === el.id;
+                }
             })
         });
         setSelectedItems(newSelectedItems);
@@ -153,21 +208,21 @@ export const SetupPage = (props: SetupComponentProps) => {
         return currentNode ? Object.values(currentNode.children).map((row) => {
           
             return (
-                <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    onClick={() => {}}
-                    selected={false}>
+                <ItemSetupRow  className='col col-12 flex items-center p2 pointer'
+                    onClick={() => {handleClickFolder(row)}}
+                    selected={checkedFolders.includes(row)}>
                     <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
                     <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
 
-                    {row.hasChild && <div className="flex-auto justify-end">
-                        <IconStyle className="right" onClick={() => setSelectedFolder(row.fullPath)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
-                    </div>
-                    }
+                    {row.hasChild && <div className="flex justify-between  items-center" style={{flexGrow: 1}} >
+                        <Badge color="gray-5" className='ml2' number={row.nbChildren} />
+                        <IconGreyActionsContainer id={"iconGoTo"+row.id} >
+                            <IconStyle  onClick={(e) => { setSelectedFolder(row.fullPath); e.stopPropagation() } } coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                        </IconGreyActionsContainer>
+                        <Tooltip target={"iconGoTo"+row.id}> Go to folder</Tooltip>
+                    </div>}
                 </ItemSetupRow>
             )
-            // } else {
-            //     return;
-            // }
         })
             : null
     }
@@ -185,13 +240,13 @@ export const SetupPage = (props: SetupComponentProps) => {
                     onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
                     {row.type !== "folder" ?
-                        <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
+                        <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckboxTab'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
                             defaultChecked={checkedContents.includes(row)}
 
                         />
                         : null}
-                    {handleRowIconType(row)}
+                    {handleRowIconType(row.type ? row.type : 'folder')}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
                         row.type === "folder" ?
@@ -206,7 +261,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             : null
     }
 
-    const handleDecreaseOrder = (element: FolderAsset) => {
+    const handleDecreaseOrder = (element: FolderAsset | FolderTreeNode) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
@@ -214,7 +269,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         setSelectedItems(newArray);
     }
 
-    const handleIncreaseOrder = (element: FolderAsset) => {
+    const handleIncreaseOrder = (element: FolderAsset | FolderTreeNode) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
@@ -226,12 +281,12 @@ export const SetupPage = (props: SetupComponentProps) => {
         return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
+                    <InputCheckbox className='mr2' id={(element.objectID ? element.objectID : element.id) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID ? element.objectID : element.id)}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
-                    {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
+                    {handleRowIconType(element.type ? element.type : 'folder')}
+                    <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                     <div className="iconAction flex-auto justify-end">
                         <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
                         <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
@@ -241,15 +296,37 @@ export const SetupPage = (props: SetupComponentProps) => {
         })
     }
 
+    const removePrefix = (objectId: string) => {
+        return objectId.replace(/channel_|live_|vod_/, '');
+    }
+
+    const handleSave = () => {
+        setSaveLoading(true);
+        let newContent = selectedItems.map(item => {
+            (item as FolderAsset)
+            return {
+                'content-type': item.type === 'channel' ? 'live' : item.type,
+                'title': item.title,
+                'thumbnailURL': item.thumbnail,
+                'vod-id': item.type === 'vod'? removePrefix(item.objectID) : null ,
+                'live-channel-id': item.type === 'channel'? removePrefix(item.objectID): null ,
+            }
+        })
+        let newData = {...props.playlistData};
+        newData.contentList = newContent;
+        newData.folderId = selectedFolderId;
+        newData.maxItems = maxNumberItems;
+        props.savePlaylistSetup(newData, props.playlistData.id, () => {
+            setSaveLoading(false)
+        })
+    }
+
     const bulkActions = [
-        { name: 'Name (A-Z)', function: () => setSortSettings('Name (A-Z)') },
-        { name: 'Name (Z-A)', function: () => setSortSettings('Name (Z-A)') },
-        { name: 'Date Created (Newest First)', function: () => setSortSettings('Date Created (Newest First)') },
-        { name: 'Date Created (Oldest First)', function: () => setSortSettings('Date Created (Oldest First)') },
-        { name: 'Custom', function: () => setSortSettings('Custom') },
+        { name: 'Name (A-Z)', value: 'title-asc' },
+        { name: 'Name (Z-A)', value: 'title-desc' },
+        { name: 'Date Created (Newest First)', value: 'created-at-asc'},
+        { name: 'Date Created (Oldest First)', value: 'created-at-desc'},
     ]
-
-
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
@@ -260,8 +337,8 @@ export const SetupPage = (props: SetupComponentProps) => {
                     key={item.name}
                     id={item.name}
                     className={key === 1 ? 'mt1' : ''}
-                    isSelected={sortSettings === item.name}
-                    onClick={() => item.function()}>
+                    isSelected={sortSettings.name === item.name}
+                    onClick={() => setSortSettings(item)}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
@@ -270,16 +347,16 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     return (
         <>
-            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => { setSelectedTab(selectedTab === "content" ? 'folders' : 'content'); setSelectedItems([]); }} />
-            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={() => setPlaylistSettingsOpen(false)} />
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => { setSelectedFolderId(null); setSelectedTab(selectedTab === "content" ? 'folders' : 'content'); setSelectedItems([]); }} />
+            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
+                    <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings}</Button>
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name}</Button>
                         <DropdownList style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
@@ -298,16 +375,13 @@ export const SetupPage = (props: SetupComponentProps) => {
                             <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
                         </TabSetupStyle>
                     </TabSetupContainer>
+                    <div className="pl1 pr1">
+                        <Breadcrumb options={selectedFolder} callback={(value: string) => {  console.log(value); setSelectedFolder(value) } } />
+                    </div>
                     <div hidden={selectedTab !== "folders"} >
-                        <div className="pl1 pr1">
-                            <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                        </div>
                         {renderFoldersList()}
                     </div>
                     <div hidden={selectedTab !== "content"} >
-                        <div className="pl1 pr1">
-                            <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                        </div>
                         {renderContentsList()}
                     </div>
                 </ContainerHalfSelector>
@@ -326,10 +400,12 @@ export const SetupPage = (props: SetupComponentProps) => {
             </div>
             <div>
                 <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
-                <Button onClick={() => {props.savePlaylistSetup() }} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
         </>
     )
+
+    
 }
 
 export const ContainerHalfSelector = styled.div<{}>`

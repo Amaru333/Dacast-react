@@ -24,11 +24,13 @@ const SwitchTabConfirmation = (props: PropsBulkModal & {tab: string}) => {
 }
 
 const PlaylistSettings = (props: PropsBulkModal) => {    
+    const [inputValue, setInputValue] = React.useState<string>("");
+
     return (
         <Modal toggle={() => props.toggle(!props.open)} modalTitle={"Playlist Settings"} size="small" opened={props.open}>
             <form>
-                <Input  disabled={false} required id="encoder" type="text" className="col col-12 mb3" label="Max Number of Items" placeholder="100"  />
-                <Button sizeButton="large" typeButton="primary" buttonColor="blue" onClick={(e) => {e.preventDefault();props.callBackSuccess();props.toggle(false) } } >Save</Button>
+                <Input type="number" value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)} disabled={false} required id="encoder" type="text" className="col col-12 mb3" label="Max Number of Items" placeholder="100"  />
+                <Button sizeButton="large" typeButton="primary" buttonColor="blue" onClick={(e) => {e.preventDefault();props.callBackSuccess(parseInt(inputValue));props.toggle(false) } } >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </form>
         </Modal>

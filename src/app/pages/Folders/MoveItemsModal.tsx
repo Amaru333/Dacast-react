@@ -16,7 +16,9 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
     const [checkedFolders, setCheckedFolders] = React.useState<{name: string; id: string}[]>([]);
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
+    
     React.useEffect( () => {
         if(!selectedModalFolder) {
             setSelectedModalFolder(props.initialSelectedFolder);
@@ -99,9 +101,9 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             </div>
 
             <div className='mt2'>
-                <Button onClick={() => {{props.submit(checkedFolders.map((folder) => {return folder.id}));props.toggle(false)}}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
+                <Button isLoading={saveLoading} onClick={() => {setSaveLoading(true);props.submit(checkedFolders.map((folder) => {return folder.id}), () => {setSaveLoading(false); props.toggle(false);})}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
-                <Button style={{marginTop: 8}}onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
+                <Button style={{marginTop: 8}} onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>
         </div>
     )

@@ -23,6 +23,10 @@ input[type=time]::-webkit-datetime-edit-ampm-field {
     min-height: 94px;
 }
 
+.x-visible {
+    overflow-x: visible !important;;
+}
+
 body {
     margin: 0px;
 }

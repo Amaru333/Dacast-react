@@ -49,19 +49,22 @@ export const IconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']};
 `;
 
-export const DropdownList = styled.ul<{displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
+export const DropdownList = styled.ul<{direction: 'up' | 'down'; displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
     display: none;
     position: absolute;
     z-index: 999;
     right: 0;
     left: 0;
     ${props => props.isSingle && props.isInModal && css `
-    right: .5rem;
-    left: .5rem;
+    /* right: .5rem;
+    left: .5rem; */
     `}
     ${props => props.isSingle && props.hasSearch && css `
-    right: .5rem;
-    left: .5rem;
+    /* right: .5rem;
+    left: .5rem; */
+    `}
+    ${props => props.direction === 'down' && css `
+        top: -240px;
     `}
 
     background-color: ${props => props.theme.colors.white};
