@@ -30,11 +30,11 @@ export interface DeletePlaylistAd {
     payload: Ad; 
 }
 
-export const getPlaylistEngagementSettingsAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistEngagementSettings> => {
+export const getPlaylistEngagementSettingsAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistEngagementSettings> ) => {
-        await playlistEngagementServices.getPlaylistEngagementSettings()
+        await playlistEngagementServices.getPlaylistEngagementSettings(playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS, payload: {contentId: playlistId, engagementSettings: response.data.data}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

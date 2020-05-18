@@ -19,7 +19,7 @@ export const getLiveThemeAction = (liveId: string): ThunkDispatch<Promise<void>,
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveTheme> ) => {
         await LiveThemingServices.getLiveThemeService(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: { id: liveId, themes: response.data.data.themes } } );
+                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: { contentId: liveId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

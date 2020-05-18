@@ -10,13 +10,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 import { useOutsideAlerter } from '../../../../utils/utils';
-
-export interface SetupComponentProps {
-    folderData: FoldersInfos;
-    getFolders: Function;
-    getFolderContent: Function;
-    restoreContent: Function;
-}
+import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 
 export const SetupPage = (props: SetupComponentProps) => {
 
@@ -127,7 +121,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const renderFoldersList = () => {
-        return props.folderData.requestedContent.map((row) => {
+        return props.folderData.requestedContent ? props.folderData.requestedContent.map((row) => {
             if (row.contentType === "folder" && !selectedItems.includes(row)) {
                 return (
                     <ItemSetupRow className='col col-12 flex items-center p2 pointer'
@@ -144,10 +138,11 @@ export const SetupPage = (props: SetupComponentProps) => {
                 return;
             }
         })
+        : null
     }
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent.map((row) => {
+        return props.folderData.requestedContent ? props.folderData.requestedContent.map((row) => {
             if (row.contentType === "playlist" || selectedItems.includes(row)) {
                 return;
             }
@@ -175,6 +170,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </ItemSetupRow>
             )
         })
+        : null
     }
 
     const handleDecreaseOrder = (element: FolderAsset) => {
@@ -289,7 +285,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <Button  disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>[Playlist name]</Text>
+                        <Text color={"gray-1"} size={14} weight='med'>{props.playlistData.title}</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>

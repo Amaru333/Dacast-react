@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
@@ -13,7 +13,7 @@ import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 
 export interface PlaylistEngagementComponentProps {
-    playlistEngagementSettings: ContentEngagementSettings;
+    playlistEngagementSettingsState: ContentEngagementSettingsState;
     getPlaylistEngagementSettings: Function;
     savePlaylistEngagementSettings: Function;
     savePlaylistAd: Function;
@@ -27,17 +27,17 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        if (!props.playlistEngagementSettings) {
-            props.getPlaylistEngagementSettings();
+        if (!props.playlistEngagementSettingsState) {
+            props.getPlaylistEngagementSettings(playlistId);
         }
     }, []);
 
     return (
-        props.playlistEngagementSettings ?
+        props.playlistEngagementSettingsState ?
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
                 <ContentEngagementPage 
-                    contentEngagementSettings={props.playlistEngagementSettings}
+                    contentEngagementSettings={props.playlistEngagementSettingsState[playlistId]}
                     getContentEngagementSettings={props.getPlaylistEngagementSettings}
                     saveContentEngagementSettings={props.savePlaylistEngagementSettings}
                     saveContentAd={props.savePlaylistAd}
@@ -52,14 +52,14 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistEngagementSettings: state.playlist.engagement
+        playlistEngagementSettingsState: state.playlist.engagement
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistEngagementSettings: () => {
-            dispatch(getPlaylistEngagementSettingsAction());
+        getPlaylistEngagementSettings: (playlistId: string) => {
+            dispatch(getPlaylistEngagementSettingsAction(playlistId));
         },
         savePlaylistEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
             dispatch(savePlaylistEngagementSettingsAction(data)).then(callback)

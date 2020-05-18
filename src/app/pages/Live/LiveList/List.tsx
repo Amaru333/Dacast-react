@@ -186,7 +186,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
                     </div>
                     <div className="flex items-center" >
                         {selectedLive.length > 0 ?

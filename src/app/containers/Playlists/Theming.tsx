@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContentTheme } from '../../redux-flow/store/Settings/Theming/types';
+import { ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getPlaylistThemeAction, savePlaylistThemeAction } from '../../redux-flow/store/Playlists/Theming/actions';
@@ -11,7 +11,7 @@ import { PlaylistsTabs } from './PlaylistTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface PlaylistThemingComponentProps {
-    theme: ContentTheme;
+    themeState: ContentThemeState;
     getPlaylistTheme: Function;
     savePlaylistTheme: Function;
 }
@@ -21,20 +21,21 @@ const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
     let { playlistId } = useParams() 
 
     React.useEffect(() => {
-        if(!props.theme) {
-            props.getPlaylistTheme();
+        if(!props.themeState[playlistId]) {
+            props.getPlaylistTheme(playlistId);
         }
     }, [])
 
     return (
-        props.theme ?
+        props.themeState[playlistId] ?
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
                 <ThemingControlsCard
-                    theme={props.theme} 
+                    theme={props.themeState[playlistId]} 
                     saveTheme={props.savePlaylistTheme}
                     contentType='playlist'
                     actionType='Save'
+                    contentId={playlistId}
                 />            
             </div>  
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -43,17 +44,17 @@ const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState ) {
     return {
-        theme: state.playlist.theming,
+        themeState: state.playlist.theming,
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistTheme: () => {
-            dispatch(getPlaylistThemeAction());
+        getPlaylistTheme: (playlistId: string) => {
+            dispatch(getPlaylistThemeAction(playlistId));
         },
-        savePlaylistTheme: (theme: ContentTheme) => {
-            dispatch(savePlaylistThemeAction(theme));
+        savePlaylistTheme: (theme: ThemeOptions, playlistId: string) => {
+            dispatch(savePlaylistThemeAction(theme, playlistId));
         },
     }
 }

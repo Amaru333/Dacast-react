@@ -10,7 +10,7 @@ const reducer: Reducer<ContentThemeState> = (state = defaultStateContentTheme, a
             console.log(action);
             return {
                 ...state,
-                [action.payload.id] : {
+                [action.payload.contentId] : {
                     ...action.payload
                 }
             }

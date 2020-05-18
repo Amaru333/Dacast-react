@@ -32,7 +32,7 @@ export const saveVodSecuritySettingsAction = (data: SecuritySettings, vodId: str
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodSecuritySettings> ) => {
         await VodSecurityServices.saveVodSecuritySettingsService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload:  { contentId: vodId, securitySettings: response.data.data } } );
+                dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload:  { contentId: vodId, securitySettings: data } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

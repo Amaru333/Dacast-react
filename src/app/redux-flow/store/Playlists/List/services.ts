@@ -3,14 +3,22 @@ import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 
-const getPlaylistListAction = () => {
-    return axios.get(urlBase + 'playlists');
-}
+const getPlaylistListAction = async (qs: string) => {
+    console.log(qs)
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )}
 
 const deletePlaylistService = async (playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/PLAYLISTS/' + playlistId, 
+    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + playlistId, 
         {
             headers: {
                 Authorization: token

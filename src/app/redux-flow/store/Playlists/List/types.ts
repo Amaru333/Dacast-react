@@ -5,19 +5,21 @@ export enum ActionTypes {
     DELETE_PLAYLIST = '@@playlists/DELETE_PLAYLIST'
 }
 
+
 export interface PlaylistItem {
-    id: string;
-    online: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
-    thumbnail: string;
-    created: number;
-    features: FeaturesList;
+    thumbnail?: string;
+    createdAt: number;
+    features?: FeaturesList;
 }
 
-export interface PlaylistListState {
-    items: PlaylistItem[];
-}
-
-export const playlistDefaultState: PlaylistListState = {
-    items: []
+export interface SearchResult {
+    results: PlaylistItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }

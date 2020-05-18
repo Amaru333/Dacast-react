@@ -10,8 +10,13 @@ import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
-export interface FoldersComponentProps {
+import { getPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
+import { PlaylistSetupState } from '../../redux-flow/store/Playlists/Setup/types';
+
+export interface SetupComponentProps {
     folderData: FoldersInfos;
+    playlistData: PlaylistSetupState;
+    getPlaylistSetup: Function;
     getFolders: Function;
     getFolderContent: Function;
     moveItemsToFolder: Function;
@@ -22,22 +27,25 @@ export interface FoldersComponentProps {
     renameFolder: Function;
 }
 
-const Setup = (props: FoldersComponentProps) => {
+const Setup = (props: SetupComponentProps) => {
 
     let { playlistId } = useParams()
     
     React.useEffect(() => {
+        props.getPlaylistSetup(playlistId)
+
         if(!props.folderData) {
+
             const wait = async () => {
+
                 await props.getFolderContent('/')
-                //await props.getFolders('/');
+                // await props.getFolders(null);
             }
             wait()
         }
-        console.log(props.folderData);
     }, [])
     return (
-        props.folderData ? 
+        props.folderData  ? 
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
                 <SetupPage {...props} />
@@ -49,12 +57,16 @@ const Setup = (props: FoldersComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders.data
+        folderData: state.folders.data,
+        playlistData: state.playlist.setup
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
+        getPlaylistSetup: (playlistId: string) => {
+            dispatch(getPlaylistSetupAction(playlistId))
+        },
         getFolders: (folderPath: string) => {
             dispatch(getFoldersAction(folderPath));
         },

@@ -46,9 +46,11 @@ const editVodDetailsService = async (data: VodDetails) => {
     let {token} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + data.id,
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 

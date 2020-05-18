@@ -51,7 +51,8 @@ export interface ThemesData {
 }
 
 export interface ContentTheme {
-    id: string;
+    contentId: string;
+    contentThemeId: string;
     themes: ThemeOptions[];
 }
 

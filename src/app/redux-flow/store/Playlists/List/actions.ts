@@ -1,4 +1,4 @@
-import { ActionTypes, PlaylistItem} from "./types";
+import { ActionTypes, SearchResult} from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -6,7 +6,7 @@ import { PlaylistGeneralServices } from './services';
 
 export interface GetPlaylistList {
     type: ActionTypes.GET_PLAYLIST_LIST;
-    payload: PlaylistItem[];
+    payload: {data: SearchResult};
 }
 
 export interface DeletePlaylist {
@@ -14,9 +14,9 @@ export interface DeletePlaylist {
     payload: {id: string};
 }
 
-export const getPlaylistListAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistList> => {
+export const getPlaylistListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetPlaylistList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistList>) => {
-        await PlaylistGeneralServices.getPlaylistListAction()
+        await PlaylistGeneralServices.getPlaylistListAction(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_PLAYLIST_LIST, payload: response.data });
             })

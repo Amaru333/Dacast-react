@@ -19,7 +19,7 @@ export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
         await VodThemingServices.getVodThemeService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
+                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: { contentId: vodId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
