@@ -147,9 +147,9 @@ export class UploadObject {
                     this.onProgressUpdate(event.loaded / this.file.size * 100)
                 },
             }).then(() => {
-                this.isCompleted = true;
-                this.onProgressUpdate(100);
-            } )
+            this.isCompleted = true;
+            this.onProgressUpdate(100);
+        } )
             .catch((error: any) => {
                 if (!axios.isCancel(error)) {
                     this.onError(error)

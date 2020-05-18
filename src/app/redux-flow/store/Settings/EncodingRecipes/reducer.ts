@@ -16,7 +16,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 defaultRecipePresets: action.payload.data.presets
             }
         case ActionTypes.CREATE_ENCODING_RECIPES:   
-             recipes = state.recipes.slice()
+            recipes = state.recipes.slice()
             if(action.payload.isDefault) {
                 recipes = recipes.map((item) => {return {...item, isDefault: false}})
             }

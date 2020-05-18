@@ -144,30 +144,32 @@ export const SetupPage = (props: SetupComponentProps) => {
         foldersTree.goToNode(selectedFolder)
             .then((node) => {
                 setCurrentNode(node);
+            }).catch((error) => {
+                throw Error(error)
             })
     }, [selectedFolder])
 
     const renderFoldersList = () => {
         return currentNode ? Object.values(currentNode.children).map((row) => {
           
-                return (
-                    <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                        onClick={() => {}}
-                        selected={false}>
-                        <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
-                        <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+            return (
+                <ItemSetupRow className='col col-12 flex items-center p2 pointer'
+                    onClick={() => {}}
+                    selected={false}>
+                    <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
+                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
 
-                        {row.hasChild && <div className="flex-auto justify-end">
-                                <IconStyle className="right" onClick={() => setSelectedFolder(row.fullPath)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
-                            </div>
-                        }
-                    </ItemSetupRow>
-                )
+                    {row.hasChild && <div className="flex-auto justify-end">
+                        <IconStyle className="right" onClick={() => setSelectedFolder(row.fullPath)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                    </div>
+                    }
+                </ItemSetupRow>
+            )
             // } else {
             //     return;
             // }
         })
-        : null
+            : null
     }
 
     /** END OF FOLDER SERVICE STUFF */
@@ -201,7 +203,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 </ItemSetupRow>
             )
         })
-        : null
+            : null
     }
 
     const handleDecreaseOrder = (element: FolderAsset) => {

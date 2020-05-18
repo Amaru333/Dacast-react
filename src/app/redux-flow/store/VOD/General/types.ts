@@ -47,7 +47,7 @@ export interface VodItem {
     duration: number;
     thumbnail?: string;
     createdAt: number;
-    features?: FeaturesList;
+    featuresList?: FeaturesList;
 }
 
 export interface SearchResult {

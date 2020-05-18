@@ -8,7 +8,7 @@ export const reducerPlaylistList: Reducer<SearchResult | false> = (state = false
             let playlistList = action.payload.data.results.map((playlist: PlaylistItem) => {
                 return {
                     ...playlist, 
-                    objectID: playlist.objectID.substring(8)
+                    objectID: playlist.objectID.substring(9)
                 }
             })
             return {...action.payload.data, results: playlistList}        

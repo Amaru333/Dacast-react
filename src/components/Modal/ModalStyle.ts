@@ -9,7 +9,7 @@ export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
     margin-right: 8px;
 `;
 
-export const OverlayStyle = styled.div<{ opened: boolean; index?: number; }>`
+export const OverlayStyle = styled.div<{ opened: boolean; index?: number }>`
     display: none;
     position: fixed;
     top: 0;

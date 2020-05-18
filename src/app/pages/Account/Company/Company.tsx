@@ -140,12 +140,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                 <div style={{width:'100%'}} className=''>
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
-                                    <label htmlFor='changeButton'>
-                                    <LinkStyle>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
+                                        <label htmlFor='changeButton'>
+                                            <LinkStyle>
+                                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                         Change
-                                    </LinkStyle>
-                                </label>
+                                            </LinkStyle>
+                                        </label>
                                     </Button>
                                 </div>
                                 <ImageStyle src={uploadedFileUrl}></ImageStyle>

@@ -15,7 +15,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
-    const [checkedFolders, setCheckedFolders] = React.useState<{name: string; id: string;}[]>([]);
+    const [checkedFolders, setCheckedFolders] = React.useState<{name: string; id: string}[]>([]);
 
     React.useEffect( () => {
         if(!selectedModalFolder) {
@@ -36,7 +36,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
             })
     }, [selectedModalFolder])
 
-    const handleCheckboxChange = (checkedOption: {name: string, id: string}) => {
+    const handleCheckboxChange = (checkedOption: {name: string; id: string}) => {
         if(checkedFolders.find(f => f.id === checkedOption.id)) {
             setCheckedFolders(checkedFolders.filter(option => {return option.id !== checkedOption.id}));
         } else {

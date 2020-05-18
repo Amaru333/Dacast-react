@@ -65,9 +65,9 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     }
 
     const playlistAdvancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url },
-        { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}` },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`},
+        { id: "poster", label: "Poster", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`},
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
@@ -166,7 +166,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.playlistDetails.splashscreen.url} /></ImageSection>  
+                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`} /></ImageSection>  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -188,7 +188,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>  
-                                <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail.url} /></ImageSection>
+                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}`} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -210,7 +210,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.playlistDetails.poster.url} /></ImageSection>
+                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`} /></ImageSection>
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>

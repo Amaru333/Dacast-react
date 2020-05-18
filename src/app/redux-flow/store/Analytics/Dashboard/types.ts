@@ -92,7 +92,7 @@ export interface DashboardJobIDs {
         error?: string;
         status?: string;
     };
-    errors?: boolean
+    errors?: boolean;
 }
 
 

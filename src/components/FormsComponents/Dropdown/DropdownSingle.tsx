@@ -24,7 +24,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
             setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
         }
     }, [props.dropdownDefaultSelect])
-    console.log(isOpened);
 
 
     React.useEffect(() => { setOpen(false) }, [selectedItem])
@@ -84,7 +83,6 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     }
 
 
-    let initialOpen = isOpened;
     return (
         <ContainerStyle className={props.className}>
             {

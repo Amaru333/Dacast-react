@@ -7,7 +7,7 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 
-export const ImageModal = (props: {imageType: string; contentType:string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string, uploadedImageFiles: any, setUploadedImageFiles: Function}) => {
+export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -112,52 +112,52 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
     return (
         <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             { props.contentType === 'vod' ?
-            <ModalContent>
-                <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
-                    <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
-                </RadioButtonContainer>
-                <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
-                    <div className="col col-12">
-                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary">
-                            <label className="pointer"  htmlFor='browseButton'>
-                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                <ModalContent>
+                    <RadioButtonContainer className="col col-12 mt25" isSelected={selectedOption === "upload"}>
+                        <InputRadio name="addThumbnail" value="upload" defaultChecked={selectedOption === "upload"} label={"Upload "+objectContext} onChange={() => setSelectedOption('upload')}/>
+                    </RadioButtonContainer>
+                    <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
+                        <div className="col col-12">
+                            <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
+                            <Button className="mt2" sizeButton="xs" typeButton="secondary">
+                                <label className="pointer"  htmlFor='browseButton'>
+                                    <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
                                 Upload File
-                            </label>
-                        </Button>
-                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { !logoFile ? null : 
-                            <ThumbnailFile className="col col-6 mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
-                                <button style={{border: "none", backgroundColor:"inherit"}}>
-                                    <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                </button>   
-                            </ThumbnailFile>
-                        }
-                    </div>
-                </RadioButtonOption>
-                <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
-                    <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
-                </RadioButtonContainer>
-                <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
-                    <div className="col col-12">
-                        <PlayerSection className='col col-12 mr2 mb1'>
-                            <PlayerContainer className="col col-12 mx2 my2">
-                                <div ref={playerRef}>
-                                </div>
-                            </PlayerContainer>
-                            <ButtonsArea className='my2 mx2'>
-                                <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
-                                <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
-                            </ButtonsArea>
-                        </PlayerSection>
-                    </div>
+                                </label>
+                            </Button>
+                            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                            { !logoFile ? null : 
+                                <ThumbnailFile className="col col-6 mt1">
+                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
+                                    <button style={{border: "none", backgroundColor:"inherit"}}>
+                                        <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
+                                    </button>   
+                                </ThumbnailFile>
+                            }
+                        </div>
+                    </RadioButtonOption>
+                    <RadioButtonContainer className="col col-12 px2 mt1" isSelected={selectedOption === "frame"}>
+                        <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
+                    </RadioButtonContainer>
+                    <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
+                        <div className="col col-12">
+                            <PlayerSection className='col col-12 mr2 mb1'>
+                                <PlayerContainer className="col col-12 mx2 my2">
+                                    <div ref={playerRef}>
+                                    </div>
+                                </PlayerContainer>
+                                <ButtonsArea className='my2 mx2'>
+                                    <Button onClick={(event) =>handleClickPrevFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Previous Frame</Button>
+                                    <Button onClick={(event) => handleClickNextFrame(event)} className="mr2" sizeButton="xs" typeButton="secondary" buttonColor="blue">Next Frame</Button>
+                                </ButtonsArea>
+                            </PlayerSection>
+                        </div>
                         
-                </RadioButtonOption>
-            </ModalContent>
-            :
-            <ModalContent>
-                <div className="col col-12 mt2">
+                    </RadioButtonOption>
+                </ModalContent>
+                :
+                <ModalContent>
+                    <div className="col col-12 mt2">
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                         <Button className="mt2" sizeButton="xs" typeButton="secondary">
                             <label className="pointer"  htmlFor='browseButtonImageModal'>
@@ -175,7 +175,7 @@ export const ImageModal = (props: {imageType: string; contentType:string; imageF
                             </ThumbnailFile>
                         }
                     </div>
-            </ModalContent>
+                </ModalContent>
             }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
