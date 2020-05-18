@@ -138,9 +138,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     }
 
     const vodAdvancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
-        { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: `https://universe-files-dev.dacast.com/${props.vodDetails.thumbnail.assetGroupID}` },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: `https://universe-files-dev.dacast.com/${props.vodDetails.splashscreen.assetGroupID}` },
+        { id: "poster", label: "Poster", enabled: true, link: `https://universe-files-dev.dacast.com/${props.vodDetails.poster.assetGroupID}` },
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
@@ -239,14 +239,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         <Button 
                                             className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(VodDetails.splashscreen.url);setImageModalOpen(true)}}>
+                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(`https://universe-files-dev.dacast.com/${props.vodDetails.splashscreen.assetGroupID}`);setImageModalOpen(true)}}>
                                             {
                                                 splashScreenEnable || uploadedImageFiles.splashscreen  ?
                                                     "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection> 
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.vodDetails.splashscreen.url} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.vodDetails.splashscreen.assetGroupID}`} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -258,14 +258,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
-                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(VodDetails.thumbnail.url);setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(`https://universe-files-dev.dacast.com/${props.vodDetails.thumbnail.assetGroupID}`);setImageModalOpen(true)}}>
                                             {
                                                 thumbnailEnable  ?
                                                     "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.vodDetails.thumbnail.url} /></ImageSection>   
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.vodDetails.thumbnail.assetGroupID}`} /></ImageSection>   
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -279,17 +279,17 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID)}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.assetGroupID)}}>Delete</Button>
                                         }
                                         
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(VodDetails.poster.url);setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(`https://universe-files-dev.dacast.com/${props.vodDetails.poster.targetID}`);setImageModalOpen(true)}}>
                                             {
                                                 posterEnable || uploadedImageFiles.poster  ?
                                                     "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>  
+                                    <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.vodDetails.poster.assetGroupID}`} /></ImageSection>  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>

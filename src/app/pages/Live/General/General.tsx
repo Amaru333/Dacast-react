@@ -66,9 +66,9 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     }
 
     const liveAdvancedLinksOptions = [
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.liveDetails.thumbnail.url },
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.liveDetails.thumbnail.url },
-        { id: "poster", label: "Poster", enabled: true, link: props.liveDetails.poster.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: `https://universe-files-dev.dacast.com/${props.liveDetails.splashscreen.assetGroupID}` },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: `https://universe-files-dev.dacast.com/${props.liveDetails.thumbnail.assetGroupID}` },
+        { id: "poster", label: "Poster", enabled: true, link: `https://universe-files-dev.dacast.com/${props.liveDetails.poster.assetGroupID}` },
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=live-${props.liveDetails.id}"  class="dacast-video"></script>` },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
     ]
@@ -250,14 +250,14 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID) } } >Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                        onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
+                                        onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(`https://universe-files-dev.dacast.com/${props.liveDetails.splashscreen.assetGroupID}`);setImageModalOpen(true) }}>
                                         {
                                             splashScreenEnable || uploadedImageFiles.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.liveDetails.splashscreen.assetGroupID}`} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -273,14 +273,14 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         thumbnailEnable || uploadedImageFiles.thumbnail ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID)}}>Delete</Button> : null
                                     }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(`https://universe-files-dev.dacast.com/${props.liveDetails.thumbnail.assetGroupID}`);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
                                             thumbnailEnable || uploadedImageFiles.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
+                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.liveDetails.thumbnail.assetGroupID}`} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -293,14 +293,14 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(`https://universe-files-dev.dacast.com/${props.liveDetails.poster.assetGroupID}`); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
                                             posterEnable || uploadedImageFiles.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.liveDetails.poster.assetGroupID}`} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
