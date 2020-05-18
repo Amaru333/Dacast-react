@@ -10,6 +10,7 @@ export interface MainMenuSpecificProps {
     menuLocked: boolean;
     setMenuLocked: Function;
     openAddStream?: Function;
+    openPlaylist?: Function;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

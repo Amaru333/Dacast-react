@@ -16,10 +16,8 @@ import { handleFeatures } from '../../../shared/Common/Features';
 import { PlaylistFiltering, FilteringPlaylistState } from './PlaylistFilter';
 import { DateTime } from 'luxon';
 import { useHistory } from 'react-router';
-import { addTokenToHeader, isTokenExpired } from '../../../utils/token';
-import axios from 'axios'
-import { showToastNotification } from '../../../redux-flow/store/Toasts/actions';
 import { PlaylistListComponentProps } from '../../../containers/Playlists/List';
+import { AddPlaylistModal } from '../../../containers/Navigation/AddPlaylistModal';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -29,6 +27,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
+    const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
+
 
     let history = useHistory()
 
@@ -69,31 +69,6 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     React.useEffect(() => {
         props.getPlaylistList(parseFiltersToQueryString(selectedFilters))    
     }, [selectedFilters, searchString, paginationInfo, sort])
-
-    const handleCreatePlaylist = async () => {
-    
-        setButtonLoading(true)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        
-        return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists',
-            {
-                title: "My Playlist"
-            }, 
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        ).then((response) => {
-            setButtonLoading(false)
-            showToastNotification('Live channel created!', 'fixed', 'success')
-            history.push(`/playlists/${response.data.data.id}/general`)
-        }).catch((error) => {
-            setButtonLoading(false)
-            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
-        })
-    }
 
     const liveListHeaderElement = () => {
         return {
@@ -219,7 +194,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         </div>
                         <SeparatorHeader className="mx2 inline-block" />
                         <PlaylistFiltering setSelectedFilter={setSelectedFilter} />
-                        <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => handleCreatePlaylist()} >Create Playlist</Button>
+                        <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                     </div>
                 </HeaderPlaylistList>
                 <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
@@ -228,6 +203,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                 <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm items={selectedPlaylist} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
                 <ThemeBulkForm themes={props.themeList.themes} items={selectedPlaylist} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+
 
             </>
     )

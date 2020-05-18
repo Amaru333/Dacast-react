@@ -5,18 +5,13 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter, getPrivilege } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
-import { initUserInfo, isTokenExpired, addTokenToHeader } from '../../utils/token';
+import { initUserInfo } from '../../utils/token';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import axios from 'axios'
-import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
-import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Button } from '../../../components/FormsComponents/Button/Button';
+
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -60,10 +55,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
-    const addDropdownListRef = React.useRef<HTMLUListElement>(null);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = React.useState<boolean>(false)
-    const [newPlaylistTitle, setNewPlaylistTitle] = React.useState<string>('My Playlist')
+    const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
         initUserInfo();
@@ -100,31 +93,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setAddDropdownIsOpened(!addDropdownIsOpened)
     });
 
-    const handleCreatePlaylist = async () => {
-    
-        setButtonLoading(true)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        
-        return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/PLAYLIST',
-            {
-                title: "My Playlist"
-            }, 
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        ).then((response) => {
-            setButtonLoading(false)
-            showToastNotification('Live channel created!', 'fixed', 'success')
-            history.push(`PLAYLIST/${response.data.data.id}/setup`)
-        }).catch((error) => {
-            setButtonLoading(false)
-            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
-        })
-    }
-
     const handleClick = (name: string) => {
         setSelectedAddDropdownItem(name);
         switch (name) {
@@ -136,11 +104,11 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")
                 } else {
-                    props.openAddStream();
+                    props.openAddStream()
                 }
                 break
             case "Playlist":
-                setCreatePlaylistModalOpen(true)
+                props.openPlaylist()
                 break
             default:
                 return
@@ -254,15 +222,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
            
                   
             </ContainerStyle>
-            <Modal size="small" modalTitle="Create Playlist" opened={createPlaylistModalOpen} hasClose={false}>
-                <ModalContent>
-                    <Input id='playlistModalInput' className='col col-12 mb2' defaultValue={newPlaylistTitle} onChange={(event) => {setNewPlaylistTitle(event.currentTarget.value)}} label='Title' />
-                </ModalContent>
-                <ModalFooter>
-                    <Button isLoading={buttonLoading} onClick={() => {handleCreatePlaylist()}} disabled={newPlaylistTitle === ''} typeButton="primary" >Create</Button>
-                    <Button typeButton="tertiary" onClick={() => setCreatePlaylistModalOpen(false)}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
+
         </>
     )
 }
