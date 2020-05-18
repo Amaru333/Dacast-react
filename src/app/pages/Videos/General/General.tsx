@@ -246,7 +246,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection> 
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.vodDetails.splashscreen.assetGroupID}`} /></ImageSection>   
+                                    {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.vodDetails.splashscreen.assetGroupID}`} /></ImageSection>   }
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -265,7 +265,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.vodDetails.thumbnail.assetGroupID}`} /></ImageSection>   
+                                    {(thumbnailEnable || uploadedImageFiles.thumbnail) &&<ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.vodDetails.thumbnail.assetGroupID}`} /></ImageSection> }  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -289,7 +289,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.vodDetails.poster.assetGroupID}`} /></ImageSection>  
+                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.vodDetails.poster.assetGroupID}`} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>

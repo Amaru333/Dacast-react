@@ -71,6 +71,10 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
+    let splashScreenEnable = Object.keys(props.playlistDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.playlistDetails.thumbnail).length !== 0;
+    let posterEnable = Object.keys(props.playlistDetails.poster).length !== 0;
+
     return (
         <React.Fragment>
             <Card className="col-12 clearfix">
@@ -155,18 +159,18 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.splashscreen ?
+                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.splashscreen ?
+                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`} /></ImageSection>  
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`} /></ImageSection>}  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -178,17 +182,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.thumbnail ?
+                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.thumbnail ?
+                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
-                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}`} /></ImageSection>
+                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}`} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -200,17 +204,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.poster ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                        posterEnable || uploadedImageFiles.poster && 
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.poster ?
+                                            posterEnable || uploadedImageFiles.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={`https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`} /></ImageSection>
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>

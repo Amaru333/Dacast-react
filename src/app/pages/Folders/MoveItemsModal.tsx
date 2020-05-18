@@ -99,7 +99,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             </div>
 
             <div className='mt2'>
-                <Button onClick={() => {props.submit(checkedFolders.map((folder) => {return folder.id}))}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
+                <Button onClick={() => {{props.submit(checkedFolders.map((folder) => {return folder.id}));props.toggle(false)}}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
                 <Button style={{marginTop: 8}}onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>
