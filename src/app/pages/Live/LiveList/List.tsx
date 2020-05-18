@@ -125,9 +125,9 @@ export const LiveListPage = (props: LiveListProps) => {
                             value.thumbnail ? 
                                 <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} />
                                 :
-                                    <div className='ml2 relative' style={{width: 50, height: 42, backgroundColor: '#AFBACC'}}>
-                                        <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
-                                    </div>
+                                <div className='ml2 relative' style={{width: 50, height: 42, backgroundColor: '#AFBACC'}}>
+                                    <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                </div>
                         }
                     </div>,
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,

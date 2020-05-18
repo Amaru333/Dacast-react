@@ -21,7 +21,7 @@ export interface SaveAd {
 
 export interface CreateAd {
     type: ActionTypes.CREATE_AD;
-    payload: {ads: Ad[]; adsId: string;};
+    payload: {ads: Ad[]; adsId: string};
 }
 
 export interface DeleteAd {

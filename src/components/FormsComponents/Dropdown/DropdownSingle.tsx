@@ -45,9 +45,9 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                     return {...reduced}
                 }
             }, {})
-            if(Object.keys(test).length === 0) {
-                test = {["No options macthing your selection"]: false}
-            }
+        if(Object.keys(test).length === 0) {
+            test = {["No options macthing your selection"]: false}
+        }
         setItemsList(test);
     }
 
@@ -97,31 +97,31 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                 <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
                     {
                         props.hasSearch ?
-                        <SearchItem 
-                            key={props.id + '_search'} 
-                            id={props.id + '_search'} 
-                        > 
-                            <SearchIconStyle>
-                                <Icon>search</Icon>
-                            </SearchIconStyle>
+                            <SearchItem 
+                                key={props.id + '_search'} 
+                                id={props.id + '_search'} 
+                            > 
+                                <SearchIconStyle>
+                                    <Icon>search</Icon>
+                                </SearchIconStyle>
 
-                            <Input
-                                style={{border: 'none', backgroundColor:'white'}}
-                                required={false}
-                                placeholder='Search'
-                                disabled={false}
-                                className="col-12"
-                                value={filteringList}
-                                onChange={event => setFilteringList(event.currentTarget.value)}
-                            />
-                            {
-                                filteringList.length > 0 ?
-                                    <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
-                                    : 
-                                    null
-                            }
-                        </SearchItem>
-                        : null
+                                <Input
+                                    style={{border: 'none', backgroundColor:'white'}}
+                                    required={false}
+                                    placeholder='Search'
+                                    disabled={false}
+                                    className="col-12"
+                                    value={filteringList}
+                                    onChange={event => setFilteringList(event.currentTarget.value)}
+                                />
+                                {
+                                    filteringList.length > 0 ?
+                                        <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
+                                        : 
+                                        null
+                                }
+                            </SearchItem>
+                            : null
                     }
                     {
                         renderList()

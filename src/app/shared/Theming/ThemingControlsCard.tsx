@@ -158,7 +158,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         
                         
                     </>
-                    :
+                        :
                     <>
                         {
                             props.contentType !== 'settings' ?

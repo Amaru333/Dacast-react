@@ -15,7 +15,7 @@ import { PlaylistsTabs } from './PlaylistTabs';
 
 interface GeneralProps {
     playlistDetails: PlaylistDetails;
-    playlistDetailsState: PlaylistDetailsState
+    playlistDetailsState: PlaylistDetailsState;
     editPlaylistDetails: Function;
     getPlaylistDetails: Function;
     getUploadUrl: Function;

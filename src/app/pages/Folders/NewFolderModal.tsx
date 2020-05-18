@@ -2,7 +2,7 @@ import React from 'react';
 import {Input} from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 
-export const NewFolderModal = (props: {submit: Function; toggle: Function; folderPath: string; buttonLabel: 'Create' | 'Rename', showToast: Function}) => {
+export const NewFolderModal = (props: {submit: Function; toggle: Function; folderPath: string; buttonLabel: 'Create' | 'Rename'; showToast: Function}) => {
     const [folderName, setFolderName] =React.useState<string>('')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 

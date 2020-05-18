@@ -65,7 +65,7 @@ export interface RealTimeJobIDs {
         error?: string;
         status?: string;
     };
-    errors?: boolean
+    errors?: boolean;
 }
 
 export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = {

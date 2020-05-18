@@ -60,26 +60,26 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     ]}
                     :            
                     {data: [
-                    <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                    theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
-                    <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
-                    <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
-                        <ActionIcon>
-                            <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
-                            <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle>
-                            <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
-                            <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
-                        </ActionIcon>                      
-                    </IconContainer>
+                        <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
+                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
+                        <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
+                            <ActionIcon>
+                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
+                                <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deleteTheme(theme)}} >delete</IconStyle>
+                                <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                            </ActionIcon>
+                            <ActionIcon>
+                                <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
+                                <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                            </ActionIcon>                      
+                        </IconContainer>
 
-                ]}
-            )})
+                    ]}
+                )})
         }
 
         return (

@@ -27,7 +27,7 @@ import { FolderTree, rootNode } from '../../utils/folderService';
 
 interface ContentType  {
     id: string; 
-    contentType: 'live' | 'vod' | 'playlist' | 'folder'
+    contentType: 'live' | 'vod' | 'playlist' | 'folder';
 }
 
 
@@ -65,7 +65,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         console.log(currentFolder)
         setSelectedFolder(currentFolder.id)
-     }, [currentFolder])
+    }, [currentFolder])
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {
         setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
@@ -184,7 +184,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setNewFolderModalOpened(true);
                 break;
             case 'Delete':
-               foldersTree.deleteFolders([assetName], currentFolder.fullPath)
+                foldersTree.deleteFolders([assetName], currentFolder.fullPath)
                 break;
             case 'View' :
                 // foldersTree.navigateToFolder(foldersTree.children[assetName])

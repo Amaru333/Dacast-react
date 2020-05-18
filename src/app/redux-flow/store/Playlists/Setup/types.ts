@@ -13,12 +13,12 @@ export interface Content {
 }
 
 export interface PlaylistSetupState {
-    contentList: Content[]
+    contentList: Content[];
     folderId: string;
     id: string;
-    maxItems: number
+    maxItems: number;
     playlistType: string;
-    sortType: "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc"
+    sortType: "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc";
     title: string;
 }
 

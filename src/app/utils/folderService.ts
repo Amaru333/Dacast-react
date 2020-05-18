@@ -183,7 +183,7 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullPath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-       return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
+        return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
             {
                 newName: newName,
                 id: node.id
