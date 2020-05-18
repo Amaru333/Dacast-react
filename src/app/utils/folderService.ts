@@ -1,12 +1,10 @@
 import axios from 'axios'
 import { FolderTreeNode, SubFolder } from '../redux-flow/store/Folders/types';
 import { addTokenToHeader, isTokenExpired } from './token';
-import { showToastNotification } from '../redux-flow/store/Toasts/actions';
-import { store } from '..';
 
 export const rootNode: FolderTreeNode = {
     isExpanded: true,
-    name: '',
+    name: 'All folders',
     id: '',
     path: '',
     hasChild: true,
@@ -26,6 +24,7 @@ export class FolderTree {
         this.goToNode = this.goToNode.bind(this)
         this.addFolder = this.addFolder.bind(this)
         this.renameFolder = this.renameFolder.bind(this)
+        this.deleteFolders = this.deleteFolders.bind(this)
         this.changeSubfoldersPaths = this.changeSubfoldersPaths.bind(this)
     }
 
@@ -43,7 +42,7 @@ export class FolderTree {
         await this.loadChildren(rootNode)
     }
 
-    public async fetchChildren(parentNodeId: string) {
+    private async fetchChildren(parentNodeId: string) {
         let fetchedNode: SubFolder
         await isTokenExpired()
         let {token} = addTokenToHeader()
@@ -62,7 +61,7 @@ export class FolderTree {
                         loadingStatus: 'not-loaded',
                         nbChildren: item.hasChild ? 1 : 0,
                         subfolders: item.hasChild ? 1 : 0,
-                        fullPath: item.path + item.name,
+                        fullPath: item.path + item.name + '/',
                         children: {},
                         isExpanded: false
                     }
@@ -74,7 +73,7 @@ export class FolderTree {
         })    
     }
 
-    public async loadChildren(node: FolderTreeNode) {
+    private async loadChildren(node: FolderTreeNode) {
         node.loadingStatus = 'loading'
         let children: SubFolder  = await this.fetchChildren(node.id)
         node.children = {...children}
@@ -84,7 +83,7 @@ export class FolderTree {
 
     }
 
-    public async getNode(root: FolderTreeNode, searchedFolder: string) {
+    private async getNode(root: FolderTreeNode, searchedFolder: string) {
         let pathElements = searchedFolder.split('/').filter(f => f)
 
         if (pathElements.length === 0) {
@@ -136,9 +135,9 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullpath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders', 
+        return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders', 
             {
-                fullPath: fullpath + '/' + folderName
+                fullPath: fullpath + folderName
             },
             {
                 headers: {
@@ -155,7 +154,7 @@ export class FolderTree {
                     hasChild: false,
                     subfolders: 0,
                     nbChildren: 0,
-                    fullPath: fullpath + '/' + folderName,
+                    fullPath: fullpath + folderName + '/',
                     loadingStatus: 'not-loaded',
                     children: {}
                 }
@@ -174,7 +173,7 @@ export class FolderTree {
                 ...newChild
             }
             this.setTree({...this.tree})
-            store.dispatch(showToastNotification(`${folderName} has been added`, 'flexible', "success"));
+            return folderName
         }).catch(error => {
             throw new Error(error)
         })
@@ -184,7 +183,7 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullPath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
+       return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
             {
                 newName: newName,
                 id: node.id
@@ -199,7 +198,7 @@ export class FolderTree {
             node.name = newName
             this.changeSubfoldersPaths(node.fullPath, node.path + newName, node)
             this.setTree({...this.tree})
-            store.dispatch(showToastNotification(`${newName} has been saved`, 'flexible', "success"));
+            return newName
         }).catch(error => {
             throw new Error(error)
         })
@@ -234,21 +233,21 @@ export class FolderTree {
         ).then( async () => {
             if(foldersToDelete.indexOf(node.id) > -1) {
                 let parentNode = await this.getNode(this.tree, node.path)
-                parentNode.children = Object.values(parentNode.children).filter((child) => child.id !== node.id).reduce((reduced: SubFolder, child) => {
-                    return {
-                        ...reduced, [child.name]: {...child}
-                    }
-                }, {})
+                this.removeNodeFromTree(parentNode, foldersToDelete)
             } else {
-                node.children = Object.values(node.children).filter((child) => foldersToDelete.indexOf(child.id) === -1).reduce((reduced: SubFolder, child) => {
-                    return {
-                        ...reduced, [child.name]: {...child}
-                    }
-                }, {})
+                this.removeNodeFromTree(node, foldersToDelete)
             }
             this.setTree({...this.tree})
         }).catch(error => {
             throw new Error(error)
         })
+    }
+
+    private removeNodeFromTree(parentNode: FolderTreeNode, nodesIdToRemove: string[]) {
+        parentNode.children = Object.values(parentNode.children).filter((child) => nodesIdToRemove.indexOf(child.id) === -1).reduce((reduced: SubFolder, child) => {
+            return {
+                ...reduced, [child.name]: {...child}
+            }
+        }, {})
     }
 }

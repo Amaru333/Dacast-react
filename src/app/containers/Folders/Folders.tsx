@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -17,6 +19,7 @@ export interface FoldersComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
+    showToast: Function;
 }
 
 const Folders = (props: FoldersComponentProps) => {
@@ -68,6 +71,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         renameFolder: (folderPath: string, newName: string) => {
             dispatch(renameFolderAction(folderPath, newName))
+        },
+        showToast: (text: string, size: Size, type: NotificationType) => {
+            dispatch(showToastNotification(text, size, type))
         }
     };
 }

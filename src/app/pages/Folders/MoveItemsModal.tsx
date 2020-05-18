@@ -56,11 +56,11 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
         }
         return currentNode ? Object.values(currentNode.children).map((childNode, i) => {            
             return (
-                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} key={childNode.fullPath} className='col col-12 flex items-center py2 pl2 pointer'>
+                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(childNode.id)} key={childNode.id} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className="col col-11 flex">
-                        <InputCheckbox className="mr2" id={childNode.fullPath + 'Checkbox'} defaultChecked={checkedFolders.includes(getNameFromFullPath(childNode.fullPath))} onChange={() => {handleCheckboxChange(getNameFromFullPath(childNode.fullPath))}} />
+                        <InputCheckbox className="mr2" id={childNode.id + 'Checkbox'} defaultChecked={checkedFolders.includes(childNode.id)} onChange={() => {handleCheckboxChange(childNode.id)}} />
                         <IconStyle coloricon='gray-7'>folder_open</IconStyle>
-                        <Text className='pl2' size={14} weight='reg'>{getNameFromFullPath(childNode.fullPath)}</Text>
+                        <Text className='pl2' size={14} weight='reg'>{childNode.name}</Text>
                     </div>
                     
                     <div  className='flex justify-end col col-1'>
@@ -73,7 +73,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
                                         <IconStyle   onClick={() => handleModalFolderRowClick(childNode)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                                     </ActionIcon>
                                     
-                                    <Tooltip target={"subfolderTooltip" + i}>Go to {getNameFromFullPath(childNode.fullPath)}</Tooltip>
+                                    <Tooltip target={"subfolderTooltip" + i}>Go to {childNode.name}</Tooltip>
                                 </div>
                                 
                         }
