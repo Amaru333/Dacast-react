@@ -313,6 +313,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                         <input type="hidden" name="country" ref={register()} />
                         <DropdownSingle hasSearch 
+                            direction='up'
                             callback={(value: string) => setValue('country', value)}
                             dropdownDefaultSelect={!props.CompanyPageDetails.country ? "United States" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='country' dropdownTitle='Country' 

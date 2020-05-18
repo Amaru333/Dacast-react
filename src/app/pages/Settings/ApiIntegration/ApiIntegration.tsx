@@ -321,7 +321,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </Modal> :
                 null
             }
-            <Modal modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
+            <Modal className="x-visible" modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
                 <EncoderKeysForm toggle={setPostEncoderKeyModalOpened} />
             </Modal>
             {selectedEditEncoderKey ?

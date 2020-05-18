@@ -85,9 +85,9 @@ export function useOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: F
         }
     }
     useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("click", handleClickOutside);
         };
     });
 }

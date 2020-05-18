@@ -14,6 +14,8 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         setPlayer(player)
     }
 
+    console.log("here?")
+
     React.useEffect(() => {
         if(playerRef && playerRef.current)
         {

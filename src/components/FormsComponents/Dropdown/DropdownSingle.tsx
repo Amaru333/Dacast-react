@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton} from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton } from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -16,21 +16,22 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [filteringList, setFilteringList] = React.useState<string>('');
 
     useOutsideAlerter(dropdownListRef, () => {
-        setOpen(!isOpened)
+        isOpened &&  setOpen(false)
     });
 
     React.useEffect(() => {
-        if(selectedItem === 'Select' || props.dropdownDefaultSelect) {
+        if (selectedItem === 'x' || props.dropdownDefaultSelect) {
             setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
-        } 
+        }
     }, [props.dropdownDefaultSelect])
+    console.log(isOpened);
 
-    
-    React.useEffect(() => {setOpen(false)}, [selectedItem])
+
+    React.useEffect(() => { setOpen(false) }, [selectedItem])
 
     const handleClick = (name: string) => {
         setSelectedItem(name);
-        if(props.callback && name !== "Select"){
+        if (props.callback && name !== "Select") {
             props.callback(name);
         }
     }
@@ -38,16 +39,16 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const filterList = (filterString: string) => {
         let test = Object.keys(props.list).reduce(
             (reduced: DropdownListType, item: string) => {
-                if(item.toLowerCase().includes(filterString.toLowerCase())){
-                    return {...reduced, [item]: false}
-                } 
+                if (item.toLowerCase().includes(filterString.toLowerCase())) {
+                    return { ...reduced, [item]: false }
+                }
                 else {
-                    return {...reduced}
+                    return { ...reduced }
                 }
             }, {})
-            if(Object.keys(test).length === 0) {
-                test = {["No options macthing your selection"]: false}
-            }
+        if (Object.keys(test).length === 0) {
+            test = { ["No options macthing your selection"]: false }
+        }
         setItemsList(test);
     }
 
@@ -57,80 +58,82 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
         return (
             Object.keys(itemsList).map((name, key) => {
                 return (
-                    props.isNavigation ? 
+                    props.isNavigation ?
                         <Link to={name.toLowerCase()} key={props.id + '_' + name} >
-                            <DropdownItem  
-                                isSingle                          
-                                id={props.id + '_' + name} 
-                                isSelected={selectedItem === name} 
-                                onClick={() => handleClick(name)}> 
+                            <DropdownItem
+                                isSingle
+                                id={props.id + '_' + name}
+                                isSelected={selectedItem === name}
+                                onClick={() => handleClick(name)}>
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
                             </DropdownItem>
-                        </Link>               
-                        : 
-                        <DropdownItem 
+                        </Link>
+                        :
+                        <DropdownItem
                             isSingle
-                            key={props.id + '_' + name} 
-                            id={props.id + '_' + name} 
+                            key={props.id + '_' + name}
+                            id={props.id + '_' + name}
                             className={key === 0 ? 'mt1' : ''}
-                            isSelected={selectedItem === name} 
-                            onClick={() => handleClick(name)}> 
+                            isSelected={selectedItem === name}
+                            onClick={() => handleClick(name)}>
                             <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText> {selectedItem === name ? <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle> : null}
                         </DropdownItem>
-                )                
+                )
             })
         )
     }
-    
+
+
+    let initialOpen = isOpened;
     return (
-        <ContainerStyle  className={props.className}>
+        <ContainerStyle className={props.className}>
             {
                 props.dropdownTitle !== '' ?
                     <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
                     : null
             }
-            <TitleContainer isWhiteBackground={props.isWhiteBackground} disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <TitleContainer isWhiteBackground={props.isWhiteBackground} disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() =>  !isOpened && setOpen(true)}>
                 <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>
                 <IconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
             </TitleContainer>
             <div className="relative">
-                <DropdownList isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
+                <DropdownList direction={props.direction} isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
                     {
                         props.hasSearch ?
-                        <SearchItem 
-                            key={props.id + '_search'} 
-                            id={props.id + '_search'} 
-                        > 
-                            <SearchIconStyle>
-                                <Icon>search</Icon>
-                            </SearchIconStyle>
+                            <SearchItem
+                                key={props.id + '_search'}
+                                id={props.id + '_search'}
+                            >
+                                <SearchIconStyle>
+                                    <Icon>search</Icon>
+                                </SearchIconStyle>
 
-                            <Input
-                                style={{border: 'none', backgroundColor:'white'}}
-                                required={false}
-                                placeholder='Search'
-                                disabled={false}
-                                className="col-12"
-                                value={filteringList}
-                                onChange={event => setFilteringList(event.currentTarget.value)}
-                            />
-                            {
-                                filteringList.length > 0 ?
-                                    <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
-                                    : 
-                                    null
-                            }
-                        </SearchItem>
-                        : null
+                                <Input
+                                    style={{ border: 'none', backgroundColor: 'white' }}
+                                    required={false}
+                                    placeholder='Search'
+                                    disabled={false}
+                                    className="col-12"
+                                    value={filteringList}
+                                    onChange={event => setFilteringList(event.currentTarget.value)}
+                                />
+                                {
+                                    filteringList.length > 0 ?
+                                        <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
+                                        :
+                                        null
+                                }
+                            </SearchItem>
+                            : null
                     }
                     {
                         renderList()
                     }
                 </DropdownList>
             </div>
-           
+
         </ContainerStyle>
     );
 }
 
-DropdownSingle.defaultProps = {isInModal: false}
+DropdownSingle.defaultProps = { isInModal: false, direction: 'up' }
