@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FolderTreeNode, SubFolder } from '../redux-flow/store/Folders/types';
+import { FolderTreeNode, SubFolder, ContentType } from '../redux-flow/store/Folders/types';
 import { addTokenToHeader, isTokenExpired } from './token';
 
 export const rootNode: FolderTreeNode = {
@@ -249,5 +249,26 @@ export class FolderTree {
                 ...reduced, [child.name]: {...child}
             }
         }, {})
+    }
+
+    public async moveToFolder(folderIds: string[], movedContent: ContentType[]) {
+        await isTokenExpired()
+        let {token} = addTokenToHeader();
+        return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/move', 
+            {
+                destinationFolderIds: folderIds,
+                movedContent: movedContent
+
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        ).then(() => {
+
+        }).catch(error => {
+            throw new Error(error)
+        })
     }
 }

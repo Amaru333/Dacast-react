@@ -11,7 +11,10 @@ export enum ActionTypes {
     RENAME_FOLDER = "@@folders/RENAME_FOLDER"
 }
 
-
+export interface ContentType {
+    id: string;
+    type: 'channel' | 'vod' | 'playlist' | 'folder';
+}
 export interface SubFolder {
     [childPath: string]: FolderTreeNode;
 }
@@ -30,20 +33,29 @@ export interface FolderTreeNode {
 }
 
 export interface FolderAsset {
-    id: string;
-    name: string;
+    ownerID: string;
+    objectID: string;
+    title: string;
+    size?: number;
     thumbnail?: string;
-    contentType: 'playlist' | 'vod' | 'live' | 'folder';
-    created: number;
+    type: 'playlist' | 'vod' | 'channel' | 'folder';
+    createdAt: number;
     duration: string;
     featuresList: FeaturesList;
-    status: 'Deleted' | 'Offline' | 'Online';
+    status: 'deleted' | 'offline' | 'online' | 'processing';
 
+}
+
+export interface SearchResult {
+    results: FolderAsset[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }
 
 export interface FoldersInfos {
     requestedFolder: SubFolder;
-    requestedContent: FolderAsset[];
+    requestedContent: SearchResult;
 }
 
 export interface FoldersState {
@@ -52,7 +64,12 @@ export interface FoldersState {
 
 export const foldersInitialState: FoldersState = {
     data: {
-        requestedContent: null,
+        requestedContent: {
+            results: [],
+            perPage: 0,
+            totalResults: 0,
+            pageNumber: 0
+        },
         requestedFolder: null
     }
 }

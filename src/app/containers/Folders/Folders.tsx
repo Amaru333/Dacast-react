@@ -26,7 +26,7 @@ const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData.requestedFolder || !props.folderData.requestedContent) {
             const wait = async () => {
-                await props.getFolderContent('/folder1/')
+                await props.getFolderContent(null)
                 await props.getFolders('');
             }
             wait()
@@ -51,8 +51,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getFolders: async (folderPath: string) => {
             await dispatch(getFoldersAction(folderPath));
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: (qs: string) => {
+            dispatch(getFolderContentAction(qs))
         },
         moveItemsToFolder: (folderPath: string[], items: FolderAsset[]) => {
             dispatch(moveItemsToFolderAction(folderPath, items))
