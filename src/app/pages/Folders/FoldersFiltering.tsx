@@ -7,26 +7,25 @@ import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 
-export const FoldersFiltering = (props: {setCheckedItems: Function; className?: string}) => {
+export interface FoldersFilteringState {
+    status: {
+        online: boolean;
+        offline: boolean;
+        processing: boolean;
+        deleted: boolean;
+    };
+    features: {
+        paywall: boolean;
+        advertising: boolean;
+        playlists: boolean;
+        rewind: boolean;
+        recording: boolean;
+    };
+    afterDate: number | boolean;
+    beforedate: number | boolean;
+}
 
-
-    interface FilteringState {
-        status: {
-            online: boolean;
-            offline: boolean;
-            processing: boolean;
-            deleted: boolean;
-        };
-        features: {
-            paywall: boolean;
-            advertising: boolean;
-            playlists: boolean;
-            rewind: boolean;
-            recording: boolean;
-        };
-        afterDate: number | boolean;
-        beforedate: number | boolean;
-    }
+export const FoldersFiltering = (props: {setSelectedFilter: Function; className?: string}) => {
 
     var filteringDefault = {
         status: {
@@ -46,7 +45,7 @@ export const FoldersFiltering = (props: {setCheckedItems: Function; className?: 
         beforedate: false
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FoldersFilteringState>(filteringDefault);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
@@ -121,10 +120,10 @@ export const FoldersFiltering = (props: {setCheckedItems: Function; className?: 
                 </div>
                 
                 <div className="flex" id="folderFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false); props.setCheckedItems([]) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

@@ -23,7 +23,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
     const [selectedPlaylist, setSelectedPlaylist] = React.useState<string[]>([]);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
+    const [selectedFilters, setSelectedFilter] = React.useState<FilteringPlaylistState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
