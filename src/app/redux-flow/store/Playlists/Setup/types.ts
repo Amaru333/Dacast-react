@@ -9,7 +9,7 @@ export interface Content {
     title: string;
     thumbnailURL: string;
     'vod-id': string;
-    'channel-id': string;
+    'live-channel-id': string;
 }
 
 export interface PlaylistSetupState {

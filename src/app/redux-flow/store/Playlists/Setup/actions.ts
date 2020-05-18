@@ -35,10 +35,7 @@ export const postPlaylistSetupAction = (data: PlaylistSetupState, playlistId: st
                 dispatch(showToastNotification("Playlist saved", 'fixed', "success"));
             })
             .catch(() => {
-                //UPDATE THAT AFTER DEMO PLZ
-                dispatch(showToastNotification("Playlist saved", 'fixed', "success"));
-
-                //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }

@@ -39,7 +39,7 @@ const Setup = (props: SetupComponentProps) => {
         }
     }, [])
     return (
-        props.folderData  ? 
+        (props.folderData && props.playlistData) ? 
             <div className='flex flex-column'>
                 <PlaylistsTabs playlistId={playlistId} />
                 <SetupPage {...props} />
