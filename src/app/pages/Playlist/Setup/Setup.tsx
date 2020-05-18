@@ -11,14 +11,13 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../../compon
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 import { useOutsideAlerter } from '../../../../utils/utils';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
+import { FolderTree, rootNode } from '../../../utils/folderService';
 
 export const SetupPage = (props: SetupComponentProps) => {
 
-    const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const [selectedTab, setSelectedTab] = React.useState<"folders" | "content">("folders");
-    const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
 
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -31,6 +30,8 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     const [sortSettings, setSortSettings] = React.useState<string>("Sort");
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
+
+
 
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -120,26 +121,56 @@ export const SetupPage = (props: SetupComponentProps) => {
         setCheckedSelectedItems([]);
     }
 
+    /** LOADING FOLDERS USING FOLDER SERVICE */
+    const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(rootNode);
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
+
+
+    let foldersTree = new FolderTree(() => {}, setCurrentNode)
+
+    React.useEffect(() => {
+        const wait = async () => {
+            await foldersTree.initTree()
+        }
+        wait()
+    }, [])
+
+    React.useEffect(() => {
+        setCurrentNode({
+            ...currentNode,
+            loadingStatus: 'loading',
+            children: {}
+        });
+        foldersTree.goToNode(selectedFolder)
+            .then((node) => {
+                setCurrentNode(node);
+            })
+    }, [selectedFolder])
+
     const renderFoldersList = () => {
-        return props.folderData.requestedContent ? props.folderData.requestedContent.map((row) => {
-            if (row.contentType === "folder" && !selectedItems.includes(row)) {
+        return currentNode ? Object.values(currentNode.children).map((row) => {
+          
                 return (
                     <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                        onClick={() => handleCheckboxFolder(row)}
-                        selected={checkedFolders.includes(row)}>
+                        onClick={() => {}}
+                        selected={false}>
                         <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
                         <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
-                        <div className="flex-auto justify-end">
-                            <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
-                        </div>
+
+                        {row.hasChild && <div className="flex-auto justify-end">
+                                <IconStyle className="right" onClick={() => setSelectedFolder(row.fullPath)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                            </div>
+                        }
                     </ItemSetupRow>
                 )
-            } else {
-                return;
-            }
+            // } else {
+            //     return;
+            // }
         })
         : null
     }
+
+    /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
         return props.folderData.requestedContent ? props.folderData.requestedContent.map((row) => {

@@ -1,6 +1,6 @@
 
 import { combineReducers, Reducer } from 'redux';
-import { PlaylistListState } from './List/types';
+import { SearchResult } from './List/types';
 import { reducerPlaylistList } from './List/reducer';
 import { PlaylistDetailsState } from './General/types';
 import { GeneralReducerPlaylist } from './General/reducer';
@@ -27,7 +27,7 @@ export const playlistInitialState: PlaylistState = {
 
 
 export interface  PlaylistState {
-    list: false | PlaylistListState;
+    list: false | SearchResult;
     general: false | PlaylistDetailsState;
     setup: false | PlaylistSetupState;
     security: false | ContentSecuritySettingsState;

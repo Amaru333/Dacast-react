@@ -15,7 +15,7 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
-    const [checkedFolders, setCheckedFolders] = React.useState<string[]>([]);
+    const [checkedFolders, setCheckedFolders] = React.useState<{name: string; id: string;}[]>([]);
 
     React.useEffect( () => {
         if(!selectedModalFolder) {
@@ -36,9 +36,9 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
             })
     }, [selectedModalFolder])
 
-    const handleCheckboxChange = (checkedOption: string) => {
-        if(checkedFolders.includes(checkedOption)) {
-            setCheckedFolders(checkedFolders.filter(option => {return option !== checkedOption}));
+    const handleCheckboxChange = (checkedOption: {name: string, id: string}) => {
+        if(checkedFolders.find(f => f.id === checkedOption.id)) {
+            setCheckedFolders(checkedFolders.filter(option => {return option.id !== checkedOption.id}));
         } else {
             setCheckedFolders([...checkedFolders, checkedOption]);
         }
@@ -56,9 +56,9 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
         }
         return currentNode ? Object.values(currentNode.children).map((childNode, i) => {            
             return (
-                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.includes(childNode.id)} key={childNode.id} className='col col-12 flex items-center py2 pl2 pointer'>
+                <ModalItemFolderRow onDoubleClick={() => handleModalFolderRowClick(childNode)} selected={checkedFolders.find(f => f.id === childNode.id) ? true : false} key={childNode.id} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className="col col-11 flex">
-                        <InputCheckbox className="mr2" id={childNode.id + 'Checkbox'} defaultChecked={checkedFolders.includes(childNode.id)} onChange={() => {handleCheckboxChange(childNode.id)}} />
+                        <InputCheckbox className="mr2" id={childNode.id + 'Checkbox'} defaultChecked={checkedFolders.find(f => f.id === childNode.id) ? true : false} onChange={() => {handleCheckboxChange({id: childNode.id, name: childNode.name})}} />
                         <IconStyle coloricon='gray-7'>folder_open</IconStyle>
                         <Text className='pl2' size={14} weight='reg'>{childNode.name}</Text>
                     </div>
@@ -93,8 +93,8 @@ export const MoveItemModal = (props: {initialSelectedFolder: string; goToNode: (
             <div className='col col-12 my2'>
                 <InputTags   
                     className='col col-12'            
-                    defaultTags={checkedFolders.map(folder => folder ? getNameFromFullPath(folder) : null)} 
-                    callback={(checkedOptions: string[]) => {console.log(checkedOptions);checkedOptions[0] ? setCheckedFolders(checkedOptions) : setCheckedFolders([])}}
+                    defaultTags={checkedFolders.map(folder => folder ? folder.name : null)} 
+                    callback={(checkedOptions: string[]) => {checkedOptions[0] ? setCheckedFolders(checkedFolders.filter(option => checkedOptions.indexOf(option.name) === -1)) : setCheckedFolders([])}}
                 />
             </div>
 
