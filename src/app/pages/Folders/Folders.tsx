@@ -59,7 +59,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         console.log(currentFolder)
         setSelectedFolder(currentFolder.id)
-        props.getFolderContent(`status=online,offline,processing&page=1&per-page=10&content-types=channel,vod,playlist&folders=${currentFolder.id}`)
+        props.getFolderContent(`status=online,offline,processing&page=1&per-page=10&content-types=channel,vod,playlist`+ (currentFolder.id ? `&folders=${currentFolder.id}` : '') )
     }, [currentFolder])
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {

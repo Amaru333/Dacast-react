@@ -6,12 +6,14 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import styled, { css } from 'styled-components';
-import { IconStyle } from '../../../../shared/Common/Icon';
+import { IconStyle, IconGreyActionsContainer } from '../../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 import { useOutsideAlerter } from '../../../../utils/utils';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
+import { Badge } from '../../../../components/Badge/Badge';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
 export const SetupPage = (props: SetupComponentProps) => {
 
@@ -20,10 +22,10 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [selectedTab, setSelectedTab] = React.useState<"folders" | "content">("folders");
     const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
+    const [selectedItems, setSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
+    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
 
-    const [checkedFolders, setCheckedFolders] = React.useState<FolderAsset[]>([]);
+    const [checkedFolders, setCheckedFolders] = React.useState<FolderTreeNode[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
@@ -32,7 +34,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [sortSettings, setSortSettings] = React.useState<string>("Sort");
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
 
-
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -49,8 +51,8 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }, [selectedFolder])
 
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
+    const handleRowIconType = (item: 'playlist' | 'vod' | 'channel' | 'folder') => {
+        switch (item) {
             case 'playlist':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
             case 'folder':
@@ -70,7 +72,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleMoveFoldersToSelected = () => {
-        setSelectedItems([...selectedItems, ...checkedFolders]);
+        setSelectedItems([...checkedFolders]);
         setCheckedFolders([]);
     }
 
@@ -88,7 +90,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }
 
-    const handleCheckboxFolder = (checkedOption: FolderAsset) => {
+    const handleClickFolder = (checkedOption: FolderTreeNode) => {
         if (checkedFolders.includes(checkedOption)) {
             setCheckedFolders(checkedFolders.filter(option => option !== checkedOption));
         } else {
@@ -104,7 +106,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }
 
-    const handleCheckboxSelected = (checkedOption: FolderAsset) => {
+    const handleCheckboxSelected = (checkedOption: FolderAsset | FolderTreeNode) => {
         if (checkedSelectedItems.includes(checkedOption)) {
             setCheckedSelectedItems(checkedSelectedItems.filter(option => option !== checkedOption));
         } else {
@@ -115,7 +117,11 @@ export const SetupPage = (props: SetupComponentProps) => {
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.objectID === elChecked.objectID;
+                if( (el as FolderAsset).type) {
+                    return el.objectID === elChecked.objectID;
+                } else {
+                    return el.id === el.id;
+                }
             })
         });
         setSelectedItems(newSelectedItems);
@@ -153,21 +159,21 @@ export const SetupPage = (props: SetupComponentProps) => {
         return currentNode ? Object.values(currentNode.children).map((row) => {
           
             return (
-                <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    onClick={() => {}}
-                    selected={false}>
+                <ItemSetupRow  className='col col-12 flex items-center p2 pointer'
+                    onClick={() => {handleClickFolder(row)}}
+                    selected={checkedFolders.includes(row)}>
                     <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
                     <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
 
-                    {row.hasChild && <div className="flex-auto justify-end">
-                        <IconStyle className="right" onClick={() => setSelectedFolder(row.fullPath)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
-                    </div>
-                    }
+                    {row.hasChild && <div className="flex justify-between  items-center" style={{flexGrow: 1}} >
+                        <Badge color="gray-5" className='ml2' number={row.nbChildren} />
+                        <IconGreyActionsContainer id={"iconGoTo"+row.id} >
+                            <IconStyle  onClick={(e) => { setSelectedFolder(row.fullPath); e.stopPropagation() } } coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                        </IconGreyActionsContainer>
+                        <Tooltip target={"iconGoTo"+row.id}> Go to folder</Tooltip>
+                    </div>}
                 </ItemSetupRow>
             )
-            // } else {
-            //     return;
-            // }
         })
             : null
     }
@@ -191,7 +197,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
                         />
                         : null}
-                    {handleRowIconType(row)}
+                    {handleRowIconType(row.type ? row.type : 'folder')}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
                         row.type === "folder" ?
@@ -206,7 +212,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             : null
     }
 
-    const handleDecreaseOrder = (element: FolderAsset) => {
+    const handleDecreaseOrder = (element: FolderAsset | FolderTreeNode) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
@@ -214,7 +220,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         setSelectedItems(newArray);
     }
 
-    const handleIncreaseOrder = (element: FolderAsset) => {
+    const handleIncreaseOrder = (element: FolderAsset | FolderTreeNode) => {
         var currentIndex = selectedItems.findIndex(el => el === element);
         var newArray = [...selectedItems];
         newArray.splice(currentIndex, 1);
@@ -226,18 +232,63 @@ export const SetupPage = (props: SetupComponentProps) => {
         return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
+                    <InputCheckbox className='mr2' id={(element.objectID ? element.objectID : element.id) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID ? element.objectID : element.id)}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
-                    {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
+                    {handleRowIconType(element.type ? element.type : 'folder')}
+                    <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                     <div className="iconAction flex-auto justify-end">
                         <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
                         <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
                     </div>
                 </ItemSetupRow>
             )
+        })
+    }
+
+    const handleSave = () => {
+        setSaveLoading(true);
+        let newContent = selectedItems.map(item => {
+            if((item as FolderTreeNode).name) {
+                return {};
+                //uncomment after fix 500 
+                //
+                // 
+                // var test;
+                // const wait = async () => {
+                //     await props.getFolderContent("status=online,offline,processing&page=1&per-page=10&content-types=channel,vod&folders="+item.id, 
+                //         (data) => {
+                //             test = data.data.data.results.map(item => {
+                //                 return {
+                //                     'content-type': item.type === 'channel' ? 'live' : item.type,
+                //                     'title': item.title,
+                //                     'thumbnailURL': item.thumbnail,
+                //                     'vod-id': item.type === 'vod'? item.objectID : null ,
+                //                     'channel-id': item.type === 'channel'? item.objectID : null ,
+                //                 }
+                //             })
+                //             console.log("real tets", test)
+                //         });
+                // }
+                // wait();
+                // console.log(test);
+            } else {
+                (item as FolderAsset)
+                return {
+                    'content-type': item.type === 'channel' ? 'live' : item.type,
+                    'title': item.title,
+                    'thumbnailURL': item.thumbnail,
+                    'vod-id': item.type === 'vod'? item.objectID : null ,
+                    'channel-id': item.type === 'channel'? item.objectID : null ,
+                }
+            }
+            
+        })
+        let newData = {...props.playlistData};
+        newData.contentList = newContent;
+        props.savePlaylistSetup(newData, props.playlistData.id, () => {
+            setSaveLoading(false)
         })
     }
 
@@ -248,8 +299,6 @@ export const SetupPage = (props: SetupComponentProps) => {
         { name: 'Date Created (Oldest First)', function: () => setSortSettings('Date Created (Oldest First)') },
         { name: 'Custom', function: () => setSortSettings('Custom') },
     ]
-
-
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
@@ -326,10 +375,12 @@ export const SetupPage = (props: SetupComponentProps) => {
             </div>
             <div>
                 <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
-                <Button onClick={() => {props.savePlaylistSetup() }} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
         </>
     )
+
+    
 }
 
 export const ContainerHalfSelector = styled.div<{}>`

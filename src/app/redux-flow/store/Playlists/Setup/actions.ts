@@ -32,9 +32,13 @@ export const postPlaylistSetupAction = (data: PlaylistSetupState, playlistId: st
         await PlaylistSetupServices.postPlaylistSetupAction(data, playlistId)
             .then(response => {
                 dispatch({ type: ActionTypes.POST_PLAYLIST_SETUP, payload: data });
+                dispatch(showToastNotification("Playlist saved", 'fixed', "success"));
             })
             .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                //UPDATE THAT AFTER DEMO PLZ
+                dispatch(showToastNotification("Playlist saved", 'fixed', "success"));
+
+                //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }

@@ -12,13 +12,14 @@ import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { getPlaylistSetupAction, postPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
 import { PlaylistSetupState } from '../../redux-flow/store/Playlists/Setup/types';
+import { callbackify } from 'util';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
     playlistData: PlaylistSetupState;
     getPlaylistSetup: Function;
     getFolderContent: Function;
-    savePlaylistSetup: Function
+    savePlaylistSetup: Function;
 }
 
 const Setup = (props: SetupComponentProps) => {
@@ -60,11 +61,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistSetup: (playlistId: string) => {
             dispatch(getPlaylistSetupAction(playlistId))
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: (folderPath: string, callback?: Function) => {
+            dispatch(getFolderContentAction(folderPath, callback));
         },
-        savePlaylistSetup: (playlistData: PlaylistSetupState, playlistId: string) => {
-            dispatch(postPlaylistSetupAction(playlistData, playlistId))
+        savePlaylistSetup: (playlistData: PlaylistSetupState, playlistId: string, callback?: Function) => {
+            dispatch(postPlaylistSetupAction(playlistData, playlistId)).then(callback)
         }
     };
 }
