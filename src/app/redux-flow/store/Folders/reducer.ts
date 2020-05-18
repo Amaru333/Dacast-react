@@ -27,7 +27,18 @@ const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Act
         case ActionTypes.GET_FOLDER_CONTENT:
             return {
                 ...state,
-                data: {...state.data, requestedContent: action.payload}
+                data: {
+                    ...state.data, 
+                    requestedContent: {
+                        ...action.payload.data,
+                        results: action.payload.data.results.map((item) => {
+                            return {
+                                ...item,
+                                objectID: item.objectID.split('_')[1]
+                            }
+                        })
+                    }
+                }
             }
         case ActionTypes.MOVE_ITEMS_TO_FOLDER:
             return {

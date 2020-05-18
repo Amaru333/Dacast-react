@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '..';
 import { showToastNotification } from '../Toasts';
-import { ActionTypes, FolderTreeNode, FolderAsset } from './types'
+import { ActionTypes, FolderTreeNode, FolderAsset, SearchResult } from './types'
 import { FoldersServices } from './services';
 
 export interface GetFolders {
@@ -11,7 +11,7 @@ export interface GetFolders {
 
 export interface GetFolderContent {
     type: ActionTypes.GET_FOLDER_CONTENT;
-    payload: FolderAsset[];
+    payload: {data: SearchResult};
 }
 
 export interface MoveItemsToFolder {
@@ -56,9 +56,9 @@ export const getFoldersAction = (folderPath: string): ThunkDispatch<Promise<void
     };
 }
 
-export const getFolderContentAction = (folderPath: string): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
+export const getFolderContentAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetFolderContent> ) => {
-        await FoldersServices.getFolderContent(folderPath)
+        await FoldersServices.getFolderContent(qs)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_FOLDER_CONTENT, payload: response.data} );
             }).catch(() => {

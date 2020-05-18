@@ -10,21 +10,15 @@ import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
-import { getPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
+import { getPlaylistSetupAction, postPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
 import { PlaylistSetupState } from '../../redux-flow/store/Playlists/Setup/types';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
     playlistData: PlaylistSetupState;
     getPlaylistSetup: Function;
-    getFolders: Function;
     getFolderContent: Function;
-    moveItemsToFolder: Function;
-    addFolder: Function;
-    deleteFolder: Function;
-    deleteContent: Function;
-    restoreContent: Function;
-    renameFolder: Function;
+    savePlaylistSetup: Function
 }
 
 const Setup = (props: SetupComponentProps) => {
@@ -39,7 +33,6 @@ const Setup = (props: SetupComponentProps) => {
             const wait = async () => {
 
                 await props.getFolderContent('/')
-                // await props.getFolders(null);
             }
             wait()
         }
@@ -67,14 +60,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistSetup: (playlistId: string) => {
             dispatch(getPlaylistSetupAction(playlistId))
         },
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
-        },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: FolderAsset[]) => {
-            dispatch(restoreContentAction(content))
+        savePlaylistSetup: (playlistData: PlaylistSetupState, playlistId: string) => {
+            dispatch(postPlaylistSetupAction(playlistData, playlistId))
         }
     };
 }

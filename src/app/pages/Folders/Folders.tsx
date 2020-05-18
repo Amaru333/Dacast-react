@@ -12,7 +12,7 @@ import { Modal } from '../../../components/Modal/Modal';
 import { NewFolderModal } from './NewFolderModal';
 import { MoveItemModal } from './MoveItemsModal';
 import { getNameFromFullPath, useOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils';
-import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
+import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types';
 import { BreadcrumbDropdown } from './BreadcrumbDropdown';
 import { FoldersComponentProps } from '../../containers/Folders/Folders';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
@@ -24,12 +24,6 @@ import { Badge } from '../../../components/Badge/Badge';
 import { handleFeatures } from '../../shared/Common/Features';
 import { DateTime } from 'luxon';
 import { FolderTree, rootNode } from '../../utils/folderService';
-
-interface ContentType  {
-    id: string; 
-    contentType: 'live' | 'vod' | 'playlist' | 'folder';
-}
-
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -65,6 +59,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         console.log(currentFolder)
         setSelectedFolder(currentFolder.id)
+        props.getFolderContent(`status=online,offline,processing&page=1&per-page=10&content-types=channel,vod,playlist&folders=${currentFolder.id}`)
     }, [currentFolder])
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {
@@ -100,16 +95,16 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             data: [
                 {
                     cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox'
-                        indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.length}
-                        defaultChecked={checkedItems.length === props.folderData.requestedContent.length}
+                        indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.results.length}
+                        defaultChecked={checkedItems.length === props.folderData.requestedContent.results.length}
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 let folderCounter = 0
-                                const editedItem: ContentType[] = props.folderData.requestedContent.map(item => {
-                                    if (item.contentType === 'folder') {
+                                const editedItem: ContentType[] = props.folderData.requestedContent.results.map(item => {
+                                    if (item.type === 'folder') {
                                         folderCounter += 1
                                     }
-                                    return {id: item.id, contentType: item.contentType}
+                                    return {id: item.objectID, type: item.type}
                                 })
                                 setFolderAssetSelected(folderCounter);
                                 setCheckedItems(editedItem);
@@ -138,32 +133,32 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         } else {
             setCheckedItems([...checkedItems, item]);
         }
-        if (isChecked && item.contentType === 'folder') {
+        if (isChecked && item.type === 'folder') {
             setFolderAssetSelected(folderAssetSelected + 1)
-        } else if (!isChecked && item.contentType === 'folder') {
+        } else if (!isChecked && item.type === 'folder') {
             setFolderAssetSelected(folderAssetSelected > 0 ? folderAssetSelected - 1 : 0)
         }
     }
 
     const handleRowIconType = (item: FolderAsset) => {
-        switch (item.contentType) {
+        switch (item.type) {
             case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">playlist_play</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID} fontSize="large">playlist_play</IconStyle>
             case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id} fontSize="large">folder_open</IconStyle>
-            case 'live':
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID} fontSize="large">folder_open</IconStyle>
+            case 'channel':
             case 'vod':
-                return <img key={"thumbnail" + item.id} width={50} height={42} src={item.thumbnail} ></img>
+                return <img key={"thumbnail" + item.objectID} width={50} height={42} src={item.thumbnail} ></img>
             default:
                 return
         }
     }
 
     const handleMoreActions = (item: FolderAsset): string[] => {
-        if (item.status === 'Deleted') {
+        if (item.status === 'deleted') {
             return ['Restore']
         }
-        if (item.contentType === 'folder') {
+        if (item.type === 'folder') {
             return ['Rename', 'Move', 'Delete', 'View']
         }
         return ['Edit', 'Move', 'Delete']
@@ -196,28 +191,28 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const foldersContentTableBody = () => {
         if (props.folderData.requestedContent) {
-            return props.folderData.requestedContent.map((row) => {
+            return props.folderData.requestedContent.results.map((row) => {
                 return {
                     data: [
-                        <div key={'foldersTableInputCheckbox' + row.id} className='flex items-center'>
-                            <InputCheckbox id={row.id + row.contentType + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.id) ? true : false} onChange={(event) => handleCheckboxChange({id: row.id, contentType: row.contentType}, event.currentTarget.checked)} />
+                        <div key={'foldersTableInputCheckbox' + row.objectID} className='flex items-center'>
+                            <InputCheckbox id={row.objectID + row.type + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.objectID) ? true : false} onChange={(event) => handleCheckboxChange({id: row.objectID, type: row.type}, event.currentTarget.checked)} />
                             <RowIconContainer>
                                 {handleRowIconType(row)}
                             </RowIconContainer>
                         </div>,
-                        <Text key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-3'>{row.name}</Text>,
-                        <Text key={'foldersTableDuration' + row.id} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                        <Text key={'foldersTableCreated' + row.id} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.created, DateTime.DATETIME_SHORT)}</Text>,
-                        row.status ? <Label key={'foldersTableStatus' + row.id} label={row.status} size={14} weight='reg' color={row.status === 'Online' ? 'green' : 'red'} backgroundColor={row.status === 'Online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.id}></span>,
-                        <div className='flex' key={'foldersTableFeatures' + row.id}>{handleFeatures(row, row.id)}</div>,
-                        <div key={'foldersTableMoreActionButton' + row.id} className='right mr2'>
-                            <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.id} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.name)}>
+                        <Text key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</Text>,
+                        <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
+                        <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
+                        <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
+                        <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
+                            <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.objectID} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.title)}>
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
                                 </IconGreyActionsContainer>
                             </DropdownCustom>
                         </div>
-                    ], callback: (row: FolderAsset) => { handleCheckboxChange({id: row.id, contentType: row.contentType}, checkedItems.find(value => value.id === row.id) ? true : false) }
+                    ], callback: (row: FolderAsset) => { handleCheckboxChange({id: row.objectID, type: row.type}, checkedItems.find(value => value.id === row.objectID) ? true : false) }
                     , callbackData: row
                 }
             })
@@ -355,7 +350,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal submit={(folderIds: string[]) => {foldersTree.moveToFolder(folderIds, checkedItems)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >

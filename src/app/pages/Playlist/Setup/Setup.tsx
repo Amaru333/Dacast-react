@@ -18,6 +18,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const [selectedTab, setSelectedTab] = React.useState<"folders" | "content">("folders");
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -49,14 +50,14 @@ export const SetupPage = (props: SetupComponentProps) => {
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {
-        switch (item.contentType) {
+        switch (item.type) {
             case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
             case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
-            case 'live':
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
+            case 'channel':
             case 'vod':
-                return <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
+                return <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
             default:
                 return;
         }
@@ -114,7 +115,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.id === elChecked.id;
+                return el.objectID === elChecked.objectID;
             })
         });
         setSelectedItems(newSelectedItems);
@@ -123,7 +124,6 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     /** LOADING FOLDERS USING FOLDER SERVICE */
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(rootNode);
-    const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
 
     let foldersTree = new FolderTree(() => {}, setCurrentNode)
@@ -175,28 +175,28 @@ export const SetupPage = (props: SetupComponentProps) => {
     /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent ? props.folderData.requestedContent.map((row) => {
-            if (row.contentType === "playlist" || selectedItems.includes(row)) {
+        return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
+            if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer'
                     selected={checkedContents.includes(row)}
-                    onDoubleClick={() => { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null }}
+                    onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
-                    {row.contentType !== "folder" ?
-                        <InputCheckbox className='mr2' id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id}
+                    {row.type !== "folder" ?
+                        <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
                             defaultChecked={checkedContents.includes(row)}
 
                         />
                         : null}
                     {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+                    <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
-                        row.contentType === "folder" ?
+                        row.type === "folder" ?
                             <div className="flex-auto justify-end">
-                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
                             : null
                     }
@@ -226,12 +226,12 @@ export const SetupPage = (props: SetupComponentProps) => {
         return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id}
+                    <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.name}</Text>
+                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
                     <div className="iconAction flex-auto justify-end">
                         <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
                         <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
@@ -294,7 +294,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                         <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => { setSwitchTabOpen(true) }}>
                             <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
                         </TabSetupStyle>
-                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { setSwitchTabOpen(true) }}>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { setSwitchTabOpen(true);props.getFolderContent(null) }}>
                             <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
                         </TabSetupStyle>
                     </TabSetupContainer>
@@ -326,7 +326,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             </div>
             <div>
                 <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
-                <Button onClick={() => { }} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => {props.savePlaylistSetup() }} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
         </>
     )

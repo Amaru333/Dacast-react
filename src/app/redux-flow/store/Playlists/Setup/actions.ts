@@ -27,11 +27,11 @@ export const getPlaylistSetupAction = (playlistId: string): ThunkDispatch<Promis
     };
 }
 
-export const postPlaylistSetupAction = (data: any[]): ThunkDispatch<Promise<void>, {}, GetPlaylistSetup> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistSetup>) => {
-        await PlaylistSetupServices.postPlaylistSetupAction(data)
+export const postPlaylistSetupAction = (data: PlaylistSetupState, playlistId: string): ThunkDispatch<Promise<void>, {}, PostPlaylistSetup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, PostPlaylistSetup>) => {
+        await PlaylistSetupServices.postPlaylistSetupAction(data, playlistId)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_PLAYLIST_SETUP, payload: response.data });
+                dispatch({ type: ActionTypes.POST_PLAYLIST_SETUP, payload: data });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
