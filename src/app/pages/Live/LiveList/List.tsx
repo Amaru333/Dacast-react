@@ -133,7 +133,7 @@ export const LiveListPage = (props: LiveListProps) => {
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <div className='flex'>{value.features ? handleFeatures(value, value.objectID) : null}</div>,
+                    <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.objectID}>
                             <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>

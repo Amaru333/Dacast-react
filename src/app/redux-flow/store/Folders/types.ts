@@ -36,7 +36,7 @@ export interface FolderAsset {
     contentType: 'playlist' | 'vod' | 'live' | 'folder';
     created: number;
     duration: string;
-    features: FeaturesList;
+    featuresList: FeaturesList;
     status: 'Deleted' | 'Offline' | 'Online';
 
 }

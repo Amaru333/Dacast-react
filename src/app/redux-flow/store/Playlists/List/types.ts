@@ -14,7 +14,7 @@ export interface PlaylistItem {
     title: string;
     thumbnail?: string;
     createdAt: number;
-    features?: FeaturesList;
+    featuresList?: FeaturesList;
 }
 
 export interface SearchResult {

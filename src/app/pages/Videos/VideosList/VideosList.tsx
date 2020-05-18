@@ -165,7 +165,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
-                    <div className='flex'>{value.features ? handleFeatures(value, value.objectID.toString()) : null}</div>,
+                    <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID.toString()) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.objectID}>
                             <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>

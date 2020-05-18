@@ -55,7 +55,7 @@ export interface LiveItem {
     duration: number;
     thumbnail?: string;
     createdAt: number;
-    features?: FeaturesList;
+    featuresList?: FeaturesList;
 }
 
 export interface SearchResult {
