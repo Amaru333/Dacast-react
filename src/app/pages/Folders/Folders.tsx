@@ -347,7 +347,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         <Button className="col-12" onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" sizeButton="small" typeButton="secondary" >
                             Actions
                         </Button>
-                        <DropdownList direction='down' hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                        <DropdownList direction='up' hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                             {renderList()}
                         </DropdownList>
                     </div>

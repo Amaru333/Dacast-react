@@ -103,7 +103,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         label="Folders"
                         greyBackground
                         disabled
-                        defaultTags={props.liveDetails.folder ? props.liveDetails.folder : []}
+                        defaultTags={props.liveDetails.folders ? props.liveDetails.folders : []}
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}

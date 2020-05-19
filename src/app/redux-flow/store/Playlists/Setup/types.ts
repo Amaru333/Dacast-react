@@ -17,7 +17,7 @@ export interface PlaylistSetupState {
     folderId: string;
     id: string;
     maxItems: number;
-    playlistType: string;
+    playlistType: 'content' | 'folder';
     sortType: "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc";
     title: string;
 }

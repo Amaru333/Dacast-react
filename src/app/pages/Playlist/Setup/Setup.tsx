@@ -34,7 +34,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }) : [];
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
-    const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">("folder");
+    const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">(props.playlistData.playlistType);
     const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
     const [selectedItems, setSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>(formateData);
