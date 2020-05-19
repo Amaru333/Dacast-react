@@ -26,7 +26,8 @@ const savePlaylistSecuritySettingsService = async (data: SecuritySettings, playl
                 Authorization: token
             }
         }
-    )}
+    )
+}
 
 export const PlaylistSecurityServices = {
     getPlaylistSecuritySettingsService,

@@ -31,7 +31,7 @@ export const saveLiveSecuritySettingsAction = (data: SecuritySettings, liveId: s
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveSecuritySettings> ) => {
         await LiveSecurityServices.saveLiveSecuritySettingsService(data, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: { contentId: liveId, securitySettings: response.data.data } } );
+                dispatch( {type: ActionTypes.SAVE_LIVE_SECURITY_SETTINGS, payload: { contentId: liveId, securitySettings: data } } );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
