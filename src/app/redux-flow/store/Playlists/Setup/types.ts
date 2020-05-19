@@ -12,7 +12,7 @@ export interface Content {
     'live-channel-id': string;
 }
 
-export interface PlaylistSetupState {
+export interface PlaylistSetupObject {
     contentList: Content[];
     folderId: string;
     id: string;
@@ -22,12 +22,17 @@ export interface PlaylistSetupState {
     title: string;
 }
 
+export interface PlaylistSetupState { [key: string]: PlaylistSetupObject }
+
+
 export const playlistDefaultState: PlaylistSetupState = {
-    contentList: [],
-    folderId: null,
-    id: null,
-    maxItems: NaN,
-    playlistType: null,
-    sortType: 'custom',
-    title: null
+    "default": {
+        contentList: [],
+        folderId: null,
+        id: null,
+        maxItems: NaN,
+        playlistType: null,
+        sortType: 'custom',
+        title: null
+    } 
 }

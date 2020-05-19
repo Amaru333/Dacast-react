@@ -33,21 +33,25 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
     }, []);
 
     return (
-        props.playlistEngagementSettingsState ?
-            <div className='flex flex-column'>
-                <PlaylistsTabs playlistId={playlistId} />
-                <ContentEngagementPage 
-                    contentEngagementSettings={props.playlistEngagementSettingsState[playlistId]}
-                    getContentEngagementSettings={props.getPlaylistEngagementSettings}
-                    saveContentEngagementSettings={props.savePlaylistEngagementSettings}
-                    saveContentAd={props.savePlaylistAd}
-                    createContentAd={props.createPlaylistAd}
-                    deleteContentAd={props.deletePlaylistAd}
-                    contentType='playlist'
-                    contentId={playlistId}
-                />            
-            </div>
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+
+        <>
+            <PlaylistsTabs playlistId={playlistId} />
+            {props.playlistEngagementSettingsState ?
+                <div className='flex flex-column'>
+                    <ContentEngagementPage 
+                        contentEngagementSettings={props.playlistEngagementSettingsState[playlistId]}
+                        getContentEngagementSettings={props.getPlaylistEngagementSettings}
+                        saveContentEngagementSettings={props.savePlaylistEngagementSettings}
+                        saveContentAd={props.savePlaylistAd}
+                        createContentAd={props.createPlaylistAd}
+                        deleteContentAd={props.deletePlaylistAd}
+                        contentType='playlist'
+                        contentId={playlistId}
+                    />            
+                </div>
+                : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+            }
+        </>
     )
 }
 

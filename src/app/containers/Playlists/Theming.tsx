@@ -18,31 +18,34 @@ export interface PlaylistThemingComponentProps {
 
 const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
 
-    let { playlistId } = useParams() 
+    let { playlistId } = useParams()
 
     React.useEffect(() => {
-        if(!props.themeState[playlistId]) {
+        if (!props.themeState[playlistId]) {
             props.getPlaylistTheme(playlistId);
         }
     }, [])
 
     return (
-        props.themeState[playlistId] ?
-            <div className='flex flex-column'>
-                <PlaylistsTabs playlistId={playlistId} />
-                <ThemingControlsCard
-                    theme={props.themeState[playlistId]} 
-                    saveTheme={props.savePlaylistTheme}
-                    contentType='playlist'
-                    actionType='Save'
-                    contentId={playlistId}
-                />            
-            </div>  
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <PlaylistsTabs playlistId={playlistId} />
+            {props.themeState[playlistId] ?
+                <div className='flex flex-column'>
+                    <ThemingControlsCard
+                        theme={props.themeState[playlistId]}
+                        saveTheme={props.savePlaylistTheme}
+                        contentType='playlist'
+                        actionType='Save'
+                        contentId={playlistId}
+                    />
+                </div>
+                : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
         themeState: state.playlist.theming,
     }

@@ -209,10 +209,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             case 'channel':
             case 'vod':
                 return item.thumbnail ? 
-                    <img key={"thumbnail" + item.objectID} width={50} height={42} src={item.thumbnail} ></img> 
-                    :                                 
-                    <div className='relative' style={{width: 50, height: 42, backgroundColor: '#AFBACC'}}>
-                        <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    <img key={"thumbnail" + item.objectID} width={74} height={42} src={item.thumbnail} ></img> 
+                    :
+                    <div className='relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                     </div>
             default:
                 return

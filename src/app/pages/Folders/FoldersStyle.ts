@@ -51,6 +51,6 @@ export const MoveFoldersContainer = styled.div`
 `
 
 export const RowIconContainer = styled.div`
-    width: 50px;
+    width: 74px;
     text-align: center;
 `
