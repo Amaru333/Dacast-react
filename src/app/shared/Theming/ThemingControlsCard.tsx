@@ -238,11 +238,24 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                             <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
                             <div className='relative'>
-                                <Text className='pb1' size={14} weight='med'>Overlay Color</Text>
+                                <div className='flex justify-between'>
+                                    <Text size={14} weight='med'>Overlay Color</Text>
+                                    <div>
+                                    <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="overlayColorTooltip">The primary colour of the player</Tooltip>
+                                    </div>
+                                </div>
                                 <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customOverlayColor: value});}} />
                             </div>
                             <div className='my2 relative'>
-                                <Text className='pb1' size={14} weight='med'>Menu Color</Text>
+                                <div className='flex justify-between'>
+                                    <Text size={14} weight='med'>Menu Color</Text>
+                                    <div>
+                                        <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="menuColorTooltip">The secondary colour of the player</Tooltip>
+                                    </div>
+                                </div>
+                                
                                 <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => {setSelectedTheme({...selectedTheme, customMenuColor: value});}} />
                             </div>
                                 
@@ -301,7 +314,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Playlists</Text></TextStyle>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Top': false, 'Left': false, 'Right': false, 'Bottom': false}} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});}}} />
+                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Top': false, 'Left': false, 'Right': false, 'Bottom': false}} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});}}} tooltip="The position of the links to other content in the Playlist" />
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => {setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay});}} />
@@ -312,7 +325,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Skip Videos' defaultChecked={selectedTheme.skipVideos} onChange={() => {setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos});}} />
                                             <IconStyle id="skipVideosTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="skipVideosTooltip">Skip Videos</Tooltip>
+                                            <Tooltip target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
                                 </>

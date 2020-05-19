@@ -1,11 +1,13 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton } from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle } from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
 import { Input } from '../Input/Input';
+import { IconStyle } from '../../../shared/Common/Icon'
+import { Tooltip } from '../../Tooltip/Tooltip';
 
 export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) => {
 
@@ -86,13 +88,21 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     return (
         <ContainerStyle className={props.className}>
             {
-                props.dropdownTitle !== '' ?
-                    <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
-                    : null
+                props.dropdownTitle !== '' && 
+                    <DropdownLabel>
+                        <Text size={14} weight="med">{props.dropdownTitle}</Text>
+                        {
+                            props.tooltip &&
+                                <div>
+                                    <IconStyle id={props.tooltip}>info_outlined</IconStyle>
+                                    <Tooltip target={props.tooltip}>{props.tooltip}</Tooltip>
+                                </div>
+                        }
+                    </DropdownLabel>                
             }
             <TitleContainer isWhiteBackground={props.isWhiteBackground} disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() =>  !isOpened && setOpen(true)}>
                 <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>
-                <IconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
+                <ArrowIconStyle disabled={props.disabled}><Icon >{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></ArrowIconStyle>
             </TitleContainer>
             <div className="relative">
                 <DropdownList direction={props.direction} isSingle isInModal={props.isInModal} isNavigation={props.isNavigation} displayDropdown={isOpened} ref={dropdownListRef} hasSearch={props.hasSearch}>
