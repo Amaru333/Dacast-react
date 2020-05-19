@@ -43,6 +43,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
                             createContentAd={props.createVodAd}
                             deleteContentAd={props.deleteVodAd}
                             contentType='vod'
+                            contentId={vodId}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>

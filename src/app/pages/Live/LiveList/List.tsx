@@ -20,6 +20,11 @@ import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon';
 import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
+import { Modal } from '../../../../components/Modal/Modal';
+import { MoveItemModal } from '../../Folders/MoveItemsModal';
+import { NewFolderModal } from '../../Folders/NewFolderModal';
+import { FolderTree, rootNode } from '../../../utils/folderService';
+import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 
 export interface LiveListProps {
     liveList: SearchResult;
@@ -37,6 +42,16 @@ export const LiveListPage = (props: LiveListProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
+    const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
+    const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
+    const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+
+
+    let foldersTree = new FolderTree(() => {}, setCurrentFolder)
+
+    React.useEffect(() => {
+        foldersTree.initTree()
+    }, [])
 
     const parseFiltersToQueryString = (filters: FilteringLiveState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
@@ -158,7 +173,7 @@ export const LiveListPage = (props: LiveListProps) => {
         { name: 'Online/Offline', function: setBulkOnlineOpen, enabled: true },
         { name: 'Paywall On/Off', function: setBulkPaywallOpen, enabled: getPrivilege('privilege-paywall') },
         { name: 'Change Theme', function: setBulkThemeOpen, enabled: true },
-        { name: 'Move To', function: setBulkThemeOpen, enabled: getPrivilege('privilege-folders') },
+        { name: 'Move To', function: setMoveItemsModalOpened, enabled: getPrivilege('privilege-folders') },
         { name: 'Delete', function: setBulkDeleteOpen, enabled: true },
     ]
 
@@ -195,7 +210,7 @@ export const LiveListPage = (props: LiveListProps) => {
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedLive.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            <DropdownList direction='up' hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
                         </div>
@@ -211,6 +226,17 @@ export const LiveListPage = (props: LiveListProps) => {
                 <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm items={selectedLive} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
                 <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+                <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+                {
+                    moveItemsModalOpened && 
+                    <MoveItemModal submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedLive.map(vodId => {return {id: vodId, type: 'channel'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                }
+            </Modal>
+            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+                {
+                    newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                }
+            </Modal>
             </>
     )
 }

@@ -34,7 +34,7 @@ export const getLiveEngagementSettingsAction = (liveId: string): ThunkDispatch<P
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveEngagementSettings> ) => {
         await liveEngagementServices.getLiveEngagementSettings(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS, payload: {contentId: liveId, engagementSettings: response.data.data}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

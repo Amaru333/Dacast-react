@@ -19,7 +19,7 @@ export interface PlaylistDetails {
     id: string;
     online: boolean;
     title: string;
-    folder: string[];
+    folders: string[];
     description: string;
     thumbnail: AssetType;
     splashscreen: AssetType;

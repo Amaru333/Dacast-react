@@ -52,6 +52,19 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
         }
     }
 
+    const handleSubmit = () => {
+        setSaveLoading(true)
+        props.submit(checkedFolders.map((folder) => {return folder.id}))
+        .then(() => {
+            debugger
+            setSaveLoading(false)
+            props.toggle(false)
+        }).catch(() => {
+            setSaveLoading(false)
+
+        })
+    } 
+
     const renderModalNode = () => {
         if(currentNode && currentNode.loadingStatus === 'loading') {
             return <LoadingSpinner center size='medium' className="mx-auto block" color='blue'/> 
@@ -101,7 +114,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             </div>
 
             <div className='mt2'>
-                <Button isLoading={saveLoading} onClick={() => {setSaveLoading(true);props.submit(checkedFolders.map((folder) => {return folder.id}), () => {setSaveLoading(false); props.toggle(false);})}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
+                <Button isLoading={saveLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
                 <Button style={{marginTop: 8}} onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>

@@ -18,6 +18,11 @@ import { DateTime } from 'luxon';
 import { useHistory } from 'react-router';
 import { PlaylistListComponentProps } from '../../../containers/Playlists/List';
 import { AddPlaylistModal } from '../../../containers/Navigation/AddPlaylistModal';
+import { FolderTree, rootNode } from '../../../utils/folderService';
+import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
+import { Modal } from '../../../../components/Modal/Modal';
+import { MoveItemModal } from '../../Folders/MoveItemsModal';
+import { NewFolderModal } from '../../Folders/NewFolderModal';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -28,6 +33,16 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
+    const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
+    const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
+    const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+
+
+    let foldersTree = new FolderTree(() => {}, setCurrentFolder)
+
+    React.useEffect(() => {
+        foldersTree.initTree()
+    }, [])
 
 
     let history = useHistory()
@@ -153,7 +168,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
         { name: 'Online/Offline', function: setBulkOnlineOpen },
         { name: 'Paywall On/Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
-        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Move To', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
@@ -176,7 +191,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
     return (
         <>
-                <HeaderPlaylistList className="mb2 flex" >
+            <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
                         <InputTags  noBorder={true} placeholder="Search Playlists..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}    />
@@ -188,7 +203,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            <DropdownList direction='up' hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
                         </div>
@@ -196,17 +211,27 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         <PlaylistFiltering setSelectedFilter={setSelectedFilter} />
                         <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                     </div>
-                </HeaderPlaylistList>
-                <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
-                <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-                <OnlineBulkForm items={selectedPlaylist} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-                <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-                <PaywallBulkForm items={selectedPlaylist} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-                <ThemeBulkForm themes={props.themeList.themes} items={selectedPlaylist} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
-                <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+            </HeaderPlaylistList>
+            <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
+            <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+            <OnlineBulkForm items={selectedPlaylist} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm items={selectedPlaylist} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <ThemeBulkForm themes={props.themeList.themes} items={selectedPlaylist} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+            <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+                {
+                    moveItemsModalOpened && 
+                    <MoveItemModal submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedPlaylist.map(vodId => {return {id: vodId, type: 'playlist'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                }
+            </Modal>
+            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+                {
+                    newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                }
+            </Modal>
 
-
-            </>
+        </>
     )
 }
 const HeaderPlaylistList = styled.div<{}>`

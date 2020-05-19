@@ -23,7 +23,7 @@ export interface LiveDetails {
     id: string;
     streamOnline: boolean;
     title: string;
-    folder: string[];
+    folders: string[];
     username: string;
     password: string;
     streamKeys: string[];

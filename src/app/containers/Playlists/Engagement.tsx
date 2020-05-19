@@ -44,6 +44,7 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
                     createContentAd={props.createPlaylistAd}
                     deleteContentAd={props.deletePlaylistAd}
                     contentType='playlist'
+                    contentId={playlistId}
                 />            
             </div>
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>

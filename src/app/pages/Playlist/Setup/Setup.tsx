@@ -34,7 +34,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     }) : [];
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
-    const [selectedTab, setSelectedTab] = React.useState<"folders" | "content">("folders");
+    const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">("folder");
     const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
     const [selectedItems, setSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>(formateData);
@@ -134,7 +134,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         if (selectedTab === 'content') {
             handleMoveContentsToSelected();
         }
-        if (selectedTab === 'folders') {
+        if (selectedTab === 'folder') {
             handleMoveFoldersToSelected();
         }
     }
@@ -316,6 +316,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         newData.contentList = newContent;
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
+        newData.playlistType = selectedTab
         props.savePlaylistSetup(newData, props.playlistData.id, () => {
             setSaveLoading(false)
         })
@@ -347,7 +348,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     return (
         <>
-            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folders' : 'content'} callBackSuccess={() => { setSelectedFolderId(null); setSelectedTab(selectedTab === "content" ? 'folders' : 'content'); setSelectedItems([]); }} />
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { setSelectedFolderId(null); setSelectedTab(selectedTab === "content" ? 'folder' : 'content'); setSelectedItems([]); }} />
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
@@ -357,7 +358,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name}</Button>
-                        <DropdownList style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
+                        <DropdownList direction='up' style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
                     </div>
@@ -368,8 +369,8 @@ export const SetupPage = (props: SetupComponentProps) => {
             <div className="clearfix">
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <TabSetupContainer className="clearfix">
-                        <TabSetupStyle className="pointer" selected={selectedTab === "folders"} onClick={() => { setSwitchTabOpen(true) }}>
-                            <Text color={selectedTab === "folders" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { setSwitchTabOpen(true) }}>
+                            <Text color={selectedTab === "folder" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
                         </TabSetupStyle>
                         <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { setSwitchTabOpen(true);props.getFolderContent(null) }}>
                             <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
@@ -378,7 +379,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                     <div className="pl1 pr1">
                         <Breadcrumb options={selectedFolder} callback={(value: string) => {  console.log(value); setSelectedFolder(value) } } />
                     </div>
-                    <div hidden={selectedTab !== "folders"} >
+                    <div hidden={selectedTab !== "folder"} >
                         {renderFoldersList()}
                     </div>
                     <div hidden={selectedTab !== "content"} >
@@ -386,10 +387,10 @@ export const SetupPage = (props: SetupComponentProps) => {
                     </div>
                 </ContainerHalfSelector>
                 <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                    <Button disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
                     <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
-                <Button  disabled={selectedTab === 'folders' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
+                <Button  disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
                         <Text color={"gray-1"} size={14} weight='med'>{props.playlistData.title}</Text>

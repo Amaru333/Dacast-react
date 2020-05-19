@@ -44,6 +44,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
                             createContentAd={props.createLiveAd}
                             deleteContentAd={props.deleteLiveAd}
                             contentType='live'
+                            contentId={liveId}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>

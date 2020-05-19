@@ -28,7 +28,7 @@ export interface VodDetails {
     online: boolean;
     title: string;
     description: string;
-    folder?: string[];
+    folders: string[];
     thumbnail: AssetType;
     splashscreen: AssetType;
     poster?: AssetType;

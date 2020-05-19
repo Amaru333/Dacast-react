@@ -26,6 +26,7 @@ export interface ContentEngagementComponentProps {
     createContentAd: Function;
     deleteContentAd: Function;
     contentType?: string;
+    contentId: string
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -249,7 +250,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true);  props.saveContentEngagementSettings(engagementSettings, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
+                            onClick={() => { setSaveAllButtonLoading(true);  props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: engagementSettings}, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
                         >
                             Save
                         </Button>

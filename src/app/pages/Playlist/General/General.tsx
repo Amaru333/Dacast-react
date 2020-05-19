@@ -65,9 +65,9 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     }
 
     const playlistAdvancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}` },
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`},
-        { id: "poster", label: "Poster", enabled: true, link: `https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`},
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url},
+        { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url},
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
@@ -99,7 +99,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         label="Folders"
                         disabled
                         greyBackground
-                        defaultTags={props.playlistDetails.folder} 
+                        defaultTags={props.playlistDetails.folders} 
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
@@ -139,7 +139,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
+                            <LinkText size={14} weight="reg">{`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`}</LinkText>
                             <IconStyle className='pointer' id="copyShareTooltip" onClick={() =>  updateClipboard(`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
@@ -170,7 +170,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : `https://universe-files-dev.dacast.com/${props.playlistDetails.splashscreen.assetGroupID}`} /></ImageSection>}  
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.playlistDetails.splashscreen.url} /></ImageSection>}  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -192,7 +192,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>  
-                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : `https://universe-files-dev.dacast.com/${props.playlistDetails.thumbnail.assetGroupID}`} /></ImageSection>}
+                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.playlistDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -214,7 +214,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : `https://universe-files-dev.dacast.com/${props.playlistDetails.poster.assetGroupID}`} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -235,7 +235,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <LinkText size={14} weight="reg">{item.link}</LinkText>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => {copyKey("embed code here");props.showToast(`${item.label} Link Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Copied`)}>file_copy_outlined</IconStyle>
                                         <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                     </LinkBox>
                                 </LinkBoxContainer>

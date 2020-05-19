@@ -15,8 +15,17 @@ const getPlaylistEngagementSettings = async (playlistId: string) => {
         }
     )}
 
-const savePlaylistEngagementSettings = (data: ContentEngagementSettings) => {
-    return axios.post(urlBase + 'playlist-engagements', {data: data})
+const savePlaylistEngagementSettings = async (data: ContentEngagementSettings) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + data.contentId + '/settings/engagement',
+        {...data.engagementSettings}, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const savePlaylistAd = (data: Ad) => {
