@@ -44,11 +44,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         left: props.profile.bandwidth.limit-props.profile.bandwidth.consumed,
         limit: props.profile.bandwidth.limit,
     } 
-    const encoding = {
-        percentage: getPercentage(props.profile.encoding.limit-props.profile.encoding.consumed, props.profile.encoding.limit),
-        left: numberFormatter(props.profile.encoding.limit-props.profile.encoding.consumed, 'twoDecimalPlace'),
-        limit: numberFormatter(props.profile.encoding.limit, 'twoDecimalPlace'),
-    }
     
     const handlePurchaseStepper = (purchaseItem: string) => {
         setSelectedPurchaseItem(purchaseItem);
@@ -110,17 +105,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>
 
-
-                <WidgetElement className={classItemFullWidthContainer}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Encoding Remaining </Text>
-                        {handleButtonToPurchase(encoding.percentage, "Encoding")}
-                    </WidgetHeader>
-                    <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {encoding.left}</Text><Text size={16} weight="reg" color="gray-4" >/{encoding.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{encoding.percentage}%</Text>
-                    </div>
-                    <ProgressBarDashboard percentage={encoding.percentage} widget="encoding" />
-                </WidgetElement>
 
                 {
                     (props.plan as DashboardTrial).daysLeft  ?

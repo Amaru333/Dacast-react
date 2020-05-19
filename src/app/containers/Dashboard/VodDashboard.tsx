@@ -6,23 +6,17 @@ import { numberFormatter, getPercentage } from '../../../utils/utils';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DoughnutChart } from '../../../components/Analytics/DoughnutChart/DoughnutChart';
+import { DashboardVod } from '../../redux-flow/store/Dashboard/types';
 
-interface VodDashboardProps {
-    totalVideos: number;
-    videoPlays: number;
-    impressions: number;
-    topVideos: { name: string; viewers: number }[];
-}
-
-const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: VodDashboardProps }) => {
+const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: DashboardVod }) => {
 
     var classTopContainer = (props.rightSide ? "right border-box " : "col ") + (props.fullWidth ? "lg-col-12" : "lg-col-6") + " sm-col-12 " + (props.fullWidth ? "" : "pl2 right");
     var itemClass = props.fullWidth ? classItemFullWidthContainer : classItemHalfWidthContainer;
 
     var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
-    var videoPlays = numberFormatter(props.profile.videoPlays, 'comma');
-    var impressions = numberFormatter(props.profile.impressions, 'comma');
-    var rateVsImpressions = getPercentage(props.profile.videoPlays, props.profile.impressions);
+    var videoPlays = numberFormatter(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, 'comma');
+    var impressions = numberFormatter(props.profile.impressions.data ? props.profile.impressions.data : 0, 'comma');
+    var rateVsImpressions = getPercentage(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, props.profile.impressions.data ? props.profile.impressions.data : 0);
 
     var { rightSide, fullWidth, ...other } = props;
 
@@ -92,7 +86,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                             </thead>
                             <tbody>
                                 {
-                                    props.profile.topVideos.map((value, key) => {
+                                    props.profile.topVideos.data && props.profile.topVideos.data.map((value, key) => {
                                         return (
                                             <tr key={value.viewers+"-"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>

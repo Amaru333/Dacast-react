@@ -4,19 +4,13 @@ import { classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFul
 import { WidgetElement } from "./WidgetElement";
 import { numberFormatter } from '../../../utils/utils';
 import { IconStyle } from '../../../shared/Common/Icon'
+import { DashboardLive } from '../../redux-flow/store/Dashboard/types';
 
-interface LiveDashboardProps {
-    activeChannels: number;
-    totalChannels: number;
-    liveViewers: number;
-    topChannels: { name: string; viewers: number }[];
-}
-
-export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: LiveDashboardProps }) => {
+export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { profile: DashboardLive }) => {
 
     var totalChannels = numberFormatter(props.profile.totalChannels, 'comma');
     var activeChannels = numberFormatter(props.profile.activeChannels, 'comma');
-    var liveViewers = numberFormatter(props.profile.liveViewers, 'comma');
+    var liveViewers = numberFormatter(props.profile.liveViewers.data, 'comma');
 
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
@@ -61,7 +55,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                             </thead>
                             <tbody>
                                 {
-                                    props.profile.topChannels.map((value, key) => {
+                                    props.profile.topChannels.data && props.profile.topChannels.data.map((value, key) => {
                                         return (
                                             <tr key={value.viewers+"_"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key + 1}</Text></td>
