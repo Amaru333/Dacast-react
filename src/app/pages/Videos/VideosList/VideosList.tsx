@@ -168,10 +168,10 @@ export const VideosListPage = (props: VideosListProps) => {
                         } />
                         {
                             value.thumbnail ? 
-                                <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} />
+                                <img className="pl2" key={"thumbnail" + value.objectID} width={74} height={42} src={value.thumbnail} />
                                 :
-                                <div className='ml2 relative' style={{width: 50, height: 42, backgroundColor: '#AFBACC'}}>
-                                    <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                <div className='ml2 relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                                    <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                 </div>
                         }                    
                     </div>,
@@ -207,7 +207,7 @@ export const VideosListPage = (props: VideosListProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => { item.function(true); setDropdownIsOpened(false); }}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )

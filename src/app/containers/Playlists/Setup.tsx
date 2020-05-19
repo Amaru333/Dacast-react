@@ -10,11 +10,12 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { getPlaylistSetupAction, postPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
-import { PlaylistSetupState } from '../../redux-flow/store/Playlists/Setup/types';
+import { PlaylistSetupState, PlaylistSetupObject } from '../../redux-flow/store/Playlists/Setup/types';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
-    playlistData: PlaylistSetupState;
+    playlistData: PlaylistSetupObject;
+    playlistDataState: PlaylistSetupState;
     getPlaylistSetup: Function;
     getFolderContent: Function;
     savePlaylistSetup: Function;
@@ -37,12 +38,15 @@ const Setup = (props: SetupComponentProps) => {
         }
     }, [])
     return (
-        (props.folderData && props.playlistData) ? 
-            <div className='flex flex-column'>
-                <PlaylistsTabs playlistId={playlistId} />
-                <SetupPage {...props} />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <PlaylistsTabs playlistId={playlistId} />
+            { (props.folderData && props.playlistDataState[playlistId]) ? 
+                <div className='flex flex-column'>
+                    <SetupPage {...props}  playlistData={props.playlistDataState[playlistId]}/>
+                </div>
+                : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
@@ -50,7 +54,7 @@ const Setup = (props: SetupComponentProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         folderData: state.folders.data,
-        playlistData: state.playlist.setup
+        playlistDataState: state.playlist.setup
     };
 }
 
@@ -62,7 +66,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getFolderContent: (folderPath: string, callback?: Function) => {
             dispatch(getFolderContentAction(folderPath, callback));
         },
-        savePlaylistSetup: (playlistData: PlaylistSetupState, playlistId: string, callback?: Function) => {
+        savePlaylistSetup: (playlistData: PlaylistSetupObj, playlistId: string, callback?: Function) => {
             dispatch(postPlaylistSetupAction(playlistData, playlistId)).then(callback)
         }
     };

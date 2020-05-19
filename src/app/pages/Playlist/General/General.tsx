@@ -228,19 +228,22 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     </div>                 
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
-                            return (
-                                <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">{item.label}</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{item.link}</LinkText>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Copied`)}>file_copy_outlined</IconStyle>
-                                        <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-
-                            )
+                            {
+                                if(item.link && item.link !== ''){
+                                    return (
+                                        <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
+                                            <LinkBoxLabel>
+                                                <Text size={14} weight="med">{item.label}</Text>
+                                            </LinkBoxLabel>
+                                            <LinkBox>
+                                                <LinkText size={14} weight="reg">{item.link}</LinkText>
+                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Copied`)}>file_copy_outlined</IconStyle>
+                                                <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                            </LinkBox>
+                                        </LinkBoxContainer>
+                                    )
+                                }
+                            }
                         })}
                     </AdvancedLinksContainer>
                 </div>

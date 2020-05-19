@@ -73,6 +73,7 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
         await PlaylistGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

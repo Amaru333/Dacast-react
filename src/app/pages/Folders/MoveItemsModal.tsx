@@ -56,7 +56,6 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
         setSaveLoading(true)
         props.submit(checkedFolders.map((folder) => {return folder.id}))
         .then(() => {
-            debugger
             setSaveLoading(false)
             props.toggle(false)
         }).catch(() => {
