@@ -50,7 +50,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
         if(!saveButtonLoading && !isSaveDisabled) {
             props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
-            props.getUploadUrl(props.imageType, props.contentId, () => {})
+            props.getUploadUrl(props.imageType, props.contentId, () => {setSaveButtonLoading(false)})
         }
     }
 
