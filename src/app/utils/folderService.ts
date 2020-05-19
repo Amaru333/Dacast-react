@@ -251,14 +251,14 @@ export class FolderTree {
         }, {})
     }
 
-    public async moveToFolder(folderIds: string[], movedContent: ContentType[]) {
+    public async moveToFolder(folderIds: string[], movedContent: ContentType[], oldFolderId?: string) {
         await isTokenExpired()
         let {token} = addTokenToHeader();
         return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/move', 
             {
-                destinationFolderIds: folderIds,
-                movedContent: movedContent
-
+                destinationFolderIds: folderIds.length == 0 ? null : folderIds,
+                movedContent: movedContent,
+                oldFolderId: oldFolderId
             },
             {
                 headers: {

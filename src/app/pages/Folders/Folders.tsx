@@ -79,11 +79,17 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         if(sort) {
             returnedString += `sort-by=${sort}&`
         }
-        if(returnedString.indexOf('status') === -1) {
+        if(returnedString.indexOf('status') === -1 && selectedFolder !== 'Trash') {
             returnedString += 'status=online,offline,processing'
+        } else if(selectedFolder === 'Trash') {
+            returnedString += 'status=deleted'
         }
-        if(currentFolder.id) {
+
+        if(currentFolder.id && selectedFolder !== 'Trash' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Library') {
             returnedString += `&folders=${currentFolder.id}`
+        }
+        if(selectedFolder === 'Unsorted') {
+            returnedString += '&tags=no_folder'
         }
         return returnedString
 
@@ -103,10 +109,16 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }, [])
 
     React.useEffect(() => {
-        console.log(currentFolder)
         setSelectedFolder(currentFolder.id)
         props.getFolderContent(parseFiltersToQueryString(selectedFilters))
     }, [currentFolder])
+
+    React.useEffect(() => {
+        setCheckedItems([])
+        if(selectedFolder === 'Trash' || selectedFolder === 'Unsorted' || selectedFolder === 'Library') {
+            props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        }
+    }, [selectedFolder])
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {
         setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
@@ -196,7 +208,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID} fontSize="large">folder_open</IconStyle>
             case 'channel':
             case 'vod':
-                return <img key={"thumbnail" + item.objectID} width={50} height={42} src={item.thumbnail} ></img>
+                return item.thumbnail ? 
+                    <img key={"thumbnail" + item.objectID} width={50} height={42} src={item.thumbnail} ></img> 
+                    :                                 
+                    <div className='relative' style={{width: 50, height: 42, backgroundColor: '#AFBACC'}}>
+                        <IconStyle className='absolute' style={{left:13, top:9}} coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    </div>
             default:
                 return
         }
@@ -251,7 +268,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         <Text key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</Text>,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                         <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
+                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
                             <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.objectID} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, row.title)}>
@@ -296,7 +313,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
                         <div className='col col-12 pl2 flex flex-auto items-center '>
                             <BreadcrumbDropdown
-                                options={currentFolder.fullPath}
+                                options={selectedFolder !== 'Library' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Trash' ?currentFolder.fullPath : selectedFolder}
                                 callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
                                 dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                                 dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
@@ -362,7 +379,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
                 <div className='col-12 col clearfix'>
                     <BreadcrumbDropdown
-                        options={currentFolder.fullPath}
+                        options={selectedFolder !== 'Library' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Trash' ? currentFolder.fullPath :''}
                         callback={(value: string) => setSelectedFolder(value)}
                         dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                         dropdownCallback={(value: string) => { handleAssetDropdownOptions(value, selectedFolder) }}
@@ -398,7 +415,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal submit={(folderIds: string[], callback: Function) => {foldersTree.moveToFolder(folderIds, checkedItems)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal submit={(folderIds: string[], callback: Function) => {foldersTree.moveToFolder(folderIds, checkedItems, currentFolder.id)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
