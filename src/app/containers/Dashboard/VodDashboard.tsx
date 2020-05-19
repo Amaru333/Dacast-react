@@ -34,7 +34,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
                         <IconStyle id="totalVideosTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="totalVideosTooltip">The number of videos in your account today</Tooltip>
+                        <Tooltip target="totalVideosTooltip">The number of VOD assets in your account</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
@@ -45,7 +45,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="impressionsTooltip">The number of times your videos have been presented to viewers, regardless of whether they clicked "play" or not.</Tooltip>
+                        <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
@@ -65,7 +65,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="playrateVsImpressionsTooltip">The ratio of people who played your videos against those who did not click play.</Tooltip>
+                        <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <DoughnutChart value={rateVsImpressions}/>

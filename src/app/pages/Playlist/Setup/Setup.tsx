@@ -356,6 +356,11 @@ export const SetupPage = (props: SetupComponentProps) => {
                     <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
+                    <div>
+                        <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
+                        <Tooltip target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
+                    </div>
+                
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name}</Button>
                         <DropdownList direction='up' style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >

@@ -36,7 +36,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurent Viewers by Time (UTC)">
+                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="The number of viewers consuming your content at the same time" title="Concurent Viewers by Time (UTC)">
                         {
                             props.realTimeAnalytics.data.concurentViewersPerTime ?
                                 <BarChart
@@ -52,7 +52,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="New Playback Sessions by Time (UTC)">
+                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime} infoText="The number of new viewers who haven't consumed your content before" title="New Playback Sessions by Time (UTC)">
                         {
                             props.realTimeAnalytics.data.newPlaybackSessionsPerTime ?
                                 <BarChart
@@ -68,7 +68,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="gbPerTime" data={props.realTimeAnalytics.data.gbPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="GBytes by Time (UTC)">
+                    <AnalyticsCard realTime dataName="gbPerTime" data={props.realTimeAnalytics.data.gbPerTime} infoText="Data consumption over time" title="GBytes by Time (UTC)">
                         {
                             props.realTimeAnalytics.data.gbPerTime ?
                                 <BarChart
@@ -85,7 +85,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
+                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="Where viewers are consuming your data" title="Consumption by Location">
                         {
                             props.realTimeAnalytics.data.consumptionPerLocation ?
                                 renderMap(props.realTimeAnalytics.data.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')

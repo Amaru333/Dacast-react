@@ -196,17 +196,17 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Player Controls' defaultChecked={selectedTheme.playerControls} onChange={() => {setSelectedTheme({...selectedTheme, playerControls: !selectedTheme.playerControls});}} />
                                 <IconStyle id="playerControlsTooltip">info_outlined</IconStyle>
-                                <Tooltip target="playerControlsTooltip">Play/Pause</Tooltip>
+                                <Tooltip target="playerControlsTooltip">The controls at the bottom of the player</Tooltip>
                             </ControlToggleContainer>
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Big Play Button' defaultChecked={selectedTheme.bigPlayButton === 'visible'} onChange={() => {setSelectedTheme({...selectedTheme, bigPlayButton: selectedTheme.bigPlayButton === 'visible' ? 'hidden' : 'visible'});}} />
                                 <IconStyle id="bigPlayTooltip">info_outlined</IconStyle>
-                                <Tooltip target="bigPlayTooltip">Big Play Button</Tooltip>
+                                <Tooltip target="bigPlayTooltip">The big button in the middle before playback starts</Tooltip>
                             </ControlToggleContainer>
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' defaultChecked={selectedTheme.scrubbingThumbnail} onChange={() => {setSelectedTheme({...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail});}} />
                                 <IconStyle id="scrubberThumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="scrubberThumbnailTooltip">Show Scrubbing Thumbnail</Tooltip>
+                                <Tooltip target="scrubberThumbnailTooltip">Thumbnails when hovering over the video scrubber (time bar)</Tooltip>
                             </ControlToggleContainer>
                             
 
@@ -218,20 +218,20 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Download Button' defaultChecked={selectedTheme.downloadButton} onChange={() => {setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton});}} />
                                 <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Download Button</Tooltip>}
+                                { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>}
                             </ControlToggleContainer>
 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Social Sharing' defaultChecked={selectedTheme.socialSharing} onChange={() => {setSelectedTheme({...selectedTheme, socialSharing: !selectedTheme.socialSharing});}} />
                                 <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
-                                <Tooltip target="socialSharingTooltip">Social Sharing</Tooltip>
+                                <Tooltip target="socialSharingTooltip">Whether viewers can see links to share content on social media</Tooltip>
                             </ControlToggleContainer>
 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Embed Code' defaultChecked={selectedTheme.embedCode} onChange={() => {setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode});}} />
                                 <BorderStyle className="p1" />
                                 <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
-                                <Tooltip target="embedCodeTooltip">Embed Code</Tooltip>
+                                <Tooltip target="embedCodeTooltip">Whether viewers can see and copy the embed code for the content</Tooltip>
                             </ControlToggleContainer>
                             
                             <BorderStyle className="p1" />
@@ -253,19 +253,19 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Autoplay' defaultChecked={selectedTheme.autoplay} onChange={() => {setSelectedTheme({...selectedTheme, autoplay: !selectedTheme.autoplay});}} />
                                 <IconStyle id="autoplayTooltip">info_outlined</IconStyle>
-                                <Tooltip target="autoplayTooltip">Autoplay</Tooltip>
+                                <Tooltip target="autoplayTooltip">Whether the content starts automatically</Tooltip>
                             </ControlToggleContainer>
 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Start Video Muted' defaultChecked={selectedTheme.startVideoMuted} onChange={() => {setSelectedTheme({...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted});}} />
                                 <IconStyle id="startMutedTooltip">info_outlined</IconStyle>
-                                <Tooltip target="startMutedTooltip">Start Video Muted</Tooltip>
+                                <Tooltip target="startMutedTooltip">Whether the content is muted by default</Tooltip>
                             </ControlToggleContainer>
 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Looping' defaultChecked={selectedTheme.looping} onChange={() => {setSelectedTheme({...selectedTheme, looping: !selectedTheme.looping});}} />
                                 <IconStyle id="loopingTooltip">info_outlined</IconStyle>
-                                <Tooltip target="loopingTooltip">Looping</Tooltip>
+                                <Tooltip target="loopingTooltip">Whether the content will start again when it reaches the end</Tooltip>
                             </ControlToggleContainer>
                         
                         </DisabledSection>
@@ -281,7 +281,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='View Counter' defaultChecked={selectedTheme.isViewerCounterEnabled} onChange={() => {setSelectedTheme({...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled});}} />
                                             <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="viewCounterTooltip">View Counter</Tooltip>
+                                            <Tooltip target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
                                         </ControlToggleContainer>
                                         {
                                             selectedTheme.isViewerCounterEnabled ?
@@ -306,7 +306,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' defaultChecked={selectedTheme.continuousPlay} onChange={() => {setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay});}} />
                                             <IconStyle id="continuousPlayTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="continuousPlayTooltip">Continuous Play</Tooltip>
+                                            <Tooltip target="continuousPlayTooltip">Whether the next piece of content will start automatically when the current one finishes</Tooltip>
                                         </ControlToggleContainer>
                                         
                                         <ControlToggleContainer>
