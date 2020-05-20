@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '..';
 import { showToastNotification } from '../Toasts';
-import { ActionTypes, FolderAsset, SearchResult, ContentType } from './types'
+import { ActionTypes, SearchResult, ContentType } from './types'
 import { FoldersServices } from './services';
 
 export interface GetFolderContent {
@@ -11,12 +11,12 @@ export interface GetFolderContent {
 
 export interface DeleteContent {
     type: ActionTypes.DELETE_CONTENT;
-    payload: FolderAsset[];
+    payload: ContentType[];
 }
 
 export interface RestoreContent {
     type: ActionTypes.RESTORE_CONTENT;
-    payload: FolderAsset[];
+    payload: ContentType[];
 }
 
 export const getFolderContentAction = (qs: string, callback?: Function): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
@@ -37,7 +37,7 @@ export const deleteContentAction = (content: ContentType[]): ThunkDispatch<Promi
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteContent> ) => {
         await FoldersServices.deleteContent(content)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_CONTENT, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_CONTENT, payload: content} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -48,7 +48,7 @@ export const restoreContentAction = (content: ContentType[]): ThunkDispatch<Prom
     return async (dispatch: ThunkDispatch<ApplicationState , {}, RestoreContent> ) => {
         await FoldersServices.restoreContent(content)
             .then( response => {
-                dispatch( {type: ActionTypes.RESTORE_CONTENT, payload: response.data} );
+                dispatch( {type: ActionTypes.RESTORE_CONTENT, payload: content} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

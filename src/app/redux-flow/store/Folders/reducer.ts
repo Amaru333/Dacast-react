@@ -20,16 +20,9 @@ const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Act
                     }
                 }
             }
-        case ActionTypes.DELETE_CONTENT:
-            return {
-                ...state,
-                data: {...state.data, requestedContent: action.payload}
-            }
+        case ActionTypes.DELETE_CONTENT:    
         case ActionTypes.RESTORE_CONTENT:
-            return {
-                ...state,
-                data: {...state.data, requestedContent: action.payload}
-            }
+            return state
         default: 
             return state
     }
