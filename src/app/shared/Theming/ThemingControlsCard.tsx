@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlsCard, TitleSection, TextStyle, BorderStyle, ControlToggleContainer, DisabledSection, ThemingContainer, PlayerSection, PlayerContainer } from './ThemingStyle';
+import { ControlsCard, TitleSection, TextStyle, BorderStyle, ControlToggleContainer, DisabledSection, PlayerSection, PlayerContainer, RadioButtonContainer } from './ThemingStyle';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -126,7 +126,14 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                     { showAdvancedPanel ?
                     <>
                         <DisabledSection enabled={customEnabled}>
-                            <TextStyle className="pt25" ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
+                            <div className="pt25 flex justify-between">
+                                <TextStyle  ><Text size={20} weight='med'>Offline Message</Text></TextStyle>
+                                <div>
+                                    <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                </div>
+                            </div>
+                            
                             <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => {setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value});}} />
                             
                             <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{'Top': false, 'Middle': false, 'Fullscreen': false}} dropdownDefaultSelect={selectedTheme.offlineMessagePosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, offlineMessagePosition: value})}}} />
@@ -138,8 +145,22 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         <DisabledSection enabled={customEnabled && getPrivilege('privilege-aes')}>
                             <TextStyle className="my2" ><Text size={20} weight='med'>Delivery Method</Text></TextStyle>
                             <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
-                            <InputRadio className="mt2" name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod:'compatible'});}}/>
-                            <InputRadio className="mt1" name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod: 'secure'});}} />
+                            <RadioButtonContainer className="mt2">
+                                <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod:'compatible'});}}/>
+                                <div>
+                                    <IconStyle id="compatibleDeliveryTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="compatibleDeliveryTooltip">Whether the content will start again when it reaches the end</Tooltip>
+                                </div>
+                            </RadioButtonContainer>
+                            
+                            <RadioButtonContainer className="mt1">
+                                <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => {setSelectedTheme({...selectedTheme, deliveryMethod: 'secure'});}} />
+                                <div>
+                                    <IconStyle id="secureDeliveryTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="secureDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatability</Tooltip>
+                                </div>
+                            </RadioButtonContainer>
+                            
                         </DisabledSection>
                             
                         <BorderStyle className="p1" />
@@ -152,8 +173,20 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </Button>
                             </TitleSection>
                             <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
-                            <InputRadio className="mt2" name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'standard'});}} />
-                            <InputRadio className="mt1" name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'premium'});}} /> 
+                            <RadioButtonContainer className="mt2">
+                                <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'standard'});}} />
+                                <div>
+                                    <IconStyle id="standardPoPsTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="standardPoPsTooltip">Our standard delivery method that may be slow in China</Tooltip>
+                                </div>
+                            </RadioButtonContainer>
+                            <RadioButtonContainer className="mt1">
+                                <InputRadio  name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => {setSelectedTheme({...selectedTheme, regionSettings: 'premium'});}} /> 
+                                <div>
+                                    <IconStyle id="premiumPoPsTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="premiumPoPsTooltip">Our premium delivery method with increased performance in China</Tooltip>
+                                </div>
+                            </RadioButtonContainer> 
                         </DisabledSection>
                         
                         
