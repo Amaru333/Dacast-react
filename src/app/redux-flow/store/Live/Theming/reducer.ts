@@ -8,7 +8,7 @@ const reducer: Reducer<ContentThemeState> = (state = defaultStateContentTheme, a
         case ActionTypes.GET_LIVE_THEME :
             return {
                 ...state,
-                [action.payload.id] : {
+                [action.payload.contentId] : {
                     ...action.payload
                 }
             }

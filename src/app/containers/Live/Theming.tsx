@@ -40,6 +40,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
                             saveTheme={props.saveLiveTheme}
                             contentType='live'
                             actionType='Save'
+                            contentId={liveId}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
