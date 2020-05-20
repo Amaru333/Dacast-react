@@ -11,7 +11,7 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import { getNameFromFullPath, useOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils'
+import {  useEasyOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -125,8 +125,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }, [selectedFolder])
 
-    useOutsideAlerter(bulkActionsDropdownListRef, () => {
-        setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
+    useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
+        setBulkActionsDropdownIsOpened(false)
     });
 
     const bulkActions = [
@@ -251,21 +251,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleDeleteAsset = (asset: ContentType) => {
-        switch(asset.type) {
-            case 'vod':
-                break
-            case 'channel':
-                break
-            case 'playlist':
-                break
-            case 'folder':
-                break
-            default:
-                break 
-        }
-    }
-
     const handleAssetDropdownOptions = (option: string, asset: ContentType) => {
         switch (option) {
             case 'Edit': 
@@ -276,12 +261,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setMoveItemsModalOpened(true)
                 break
             case 'Delete':
-                handleDeleteAsset(asset)
+                props.deleteContent(asset)
                 break
             case 'View' :
                 // foldersTree.navigateToFolder()
                 break
             case 'Restore':
+                props.restoreContent(asset)
                 break
             default:
                 break
@@ -377,7 +363,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             />
                             <SeparatorHeader className={(currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                            <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                         </div>
                     </div>
 
@@ -409,7 +395,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
+                    <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
                 </div>
                 <div className='col-12 col mb2 clearfix'>
                     <div className='col-3 col pr1'>

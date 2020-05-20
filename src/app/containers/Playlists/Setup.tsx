@@ -66,7 +66,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getFolderContent: (folderPath: string, callback?: Function) => {
             dispatch(getFolderContentAction(folderPath, callback));
         },
-        savePlaylistSetup: (playlistData: PlaylistSetupObj, playlistId: string, callback?: Function) => {
+        savePlaylistSetup: (playlistData: PlaylistSetupObject, playlistId: string, callback?: Function) => {
             dispatch(postPlaylistSetupAction(playlistData, playlistId)).then(callback)
         }
     };

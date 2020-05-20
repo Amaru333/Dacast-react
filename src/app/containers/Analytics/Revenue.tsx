@@ -1,12 +1,10 @@
 import React from 'react';
 import {LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { SetupPage } from '../../pages/Playlist/Setup/Setup';
+import { Action, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { AnalyticsRevenueState, getAnalyticsRevenueRevenueTimeAction, GetAnalyticsRevenueOptions, getAnalyticsRevenueSalesTimeAction, getAnalyticsRevenueSalesCountryAction } from '../../redux-flow/store/Analytics/Revenue';
@@ -62,13 +60,10 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
-        },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: FolderAsset[]) => {
+        restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
         getRevenueByTime: (options: GetAnalyticsRevenueOptions) => {
