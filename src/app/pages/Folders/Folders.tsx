@@ -25,6 +25,7 @@ import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/folderService'
 import { useHistory } from 'react-router'
+import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -59,7 +60,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     let foldersTree = new FolderTree(setFoldersTree, setCurrentFolder)
 
     const parseFiltersToQueryString = (filters: FoldersFilteringState) => {
-        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&content-types=channel,vod,playlist,folder&`
+        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
         if(filters) {
             
             Object.keys(filters).map((filter) => {
@@ -93,6 +94,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
         if(currentFolder.id && selectedFolder !== 'Trash' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Library') {
             returnedString += `&folders=${currentFolder.id}`
+        }
+
+        if(selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') {
+            returnedString += `&content-types=channel,vod,playlist`
+        } else {
+            returnedString += `&content-types=channel,vod,playlist,folder`
         }
         if(selectedFolder === 'Unsorted') {
             returnedString += '&tags=no_folder'
@@ -251,7 +258,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleAssetDropdownOptions = (option: string, asset: ContentType) => {
+    const handleAssetDropdownOptions = (option: string, asset: ContentType, folderNode?: FolderTreeNode) => {
         switch (option) {
             case 'Edit': 
                 handleEditAsset(asset)
@@ -261,13 +268,17 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setMoveItemsModalOpened(true)
                 break
             case 'Delete':
-                props.deleteContent(asset)
+                if(asset.type !== 'folder') {
+                    props.deleteContent(asset)
+                } else {
+                    foldersTree.deleteFolders([asset.id], asset.fullPath)
+                }
                 break
             case 'View' :
-                // foldersTree.navigateToFolder()
+                foldersTree.navigateToFolder(folderNode)
                 break
             case 'Restore':
-                props.restoreContent(asset)
+                props.restoreContent([asset])
                 break
             default:
                 break
@@ -297,6 +308,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
+    const handleBulkAction = (contentList: ContentType[], action: string) => {
+        bulkActionsService(contentList, action).then((response) => {
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     const foldersContentTableBody = () => {
         if (props.folderData.requestedContent) {
             return props.folderData.requestedContent.results.map((row) => {
@@ -314,7 +333,20 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
-                            <DropdownCustom backgroundColor="transparent" id={'foldersTableMoreActionDropdown' + row.objectID} list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type})}>
+                            <DropdownCustom 
+                                backgroundColor="transparent" 
+                                id={'foldersTableMoreActionDropdown' + row.objectID} 
+                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type}, row.type == 'folder' ? {    isExpanded: true,
+                                    name: row.title,
+                                    id: row.objectID,
+                                    path: row.path,
+                                    hasChild: false,
+                                    subfolders: 0,
+                                    nbChildren: 0,
+                                    fullPath: row.path,
+                                    loadingStatus: 'not-loaded',
+                                    children: {}} : null)}
+                            >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
                                 </IconGreyActionsContainer>
@@ -462,10 +494,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
                 <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
             </Modal>
-            <OnlineBulkForm items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm themes={[]} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <OnlineBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <ThemeBulkForm actionFunction={handleBulkAction} themes={[]} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
         </div>
     )
 }

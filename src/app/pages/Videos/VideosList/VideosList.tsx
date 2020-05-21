@@ -22,8 +22,9 @@ import { emptyContentListHeader, emptyContentListBody } from '../../../shared/Li
 import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
+import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 
 export interface VideosListProps {
     items: SearchResult;
@@ -214,13 +215,21 @@ export const VideosListPage = (props: VideosListProps) => {
         })
     }
 
+    const handleBulkAction = (contentList: ContentType[], action: string) => {
+        bulkActionsService(contentList, action).then((response) => {
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
 
     return (
         <>
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?
@@ -240,9 +249,9 @@ export const VideosListPage = (props: VideosListProps) => {
             </div>        
             <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-            <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 

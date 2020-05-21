@@ -27,7 +27,8 @@ export const getFolderContentAction = (qs: string, callback?: Function): ThunkDi
                 if(callback) {
                     callback(response);
                 }
-            }).catch(() => {
+            }).catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

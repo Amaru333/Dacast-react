@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { ContentType } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import { VodGeneralServices } from '../VOD/General/services';
+import { LiveGeneralServices } from '../Live/General/services';
+import { PlaylistListServices } from '../Playlists/List/services';
+import { bulkActionsService } from '../Common/bulkService';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
@@ -16,12 +20,34 @@ const getFolderContent = async (qs: string) => {
     )
 }
 
-const deleteContent = (content: ContentType[]) => {
-    return axios.delete(urlBase + 'folder/content', {data: content})
+const deleteContent = async (content: ContentType[]) => {
+    content.map(async (c) => {
+        switch(c.type) {
+            case 'vod':
+                return await VodGeneralServices.deleteVodService(c.id)
+            case 'channel':
+                return await LiveGeneralServices.deleteLiveChannelService(c.id)
+            case'playlist':
+                return await PlaylistListServices.deletePlaylistService(c.id)
+            default:
+                return
+        }
+    })
+
 }
 
-const restoreContent = (content: ContentType[]) => {
-    return axios.put(urlBase + 'folder/content', {data: content})
+const restoreContent = async (content: ContentType[]) => {
+    content.map(async (c) => {
+        switch(c.type) {
+            case 'vod':
+                return await VodGeneralServices.restoreVodService(c.id)
+            case 'channel':
+            case'playlist':
+                return
+            default:
+                return
+        }
+    })
 }
 
 export const FoldersServices = {
