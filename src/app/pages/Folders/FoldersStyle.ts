@@ -7,7 +7,7 @@ export const FoldersTreeSection = styled.div<{smallScreen: boolean; foldersTreeH
     ${props => props.smallScreen && css`
         z-index: 999;
         height: 100vh;
-        overflow-x: scroll;
+        overflow-x: auto;
         top: 75px;
         left:0;
         ${props.foldersTreeHidden && css `

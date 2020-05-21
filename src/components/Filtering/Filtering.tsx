@@ -38,7 +38,7 @@ const ContainerFilters = styled.div<{ isOpen: boolean }>`
     right: -360px;
     top: 0;
     box-sizing: border-box;
-    overflow-x: scroll;
+    overflow-x: auto;
     background: #fff;
     ${props => props.isOpen && css`
         right: 0px;
