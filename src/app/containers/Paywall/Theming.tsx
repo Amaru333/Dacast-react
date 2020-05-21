@@ -6,6 +6,7 @@ import { PaywallThemingPage } from '../../pages/Paywall/Theming/Theming';
 import { Action, PaywallThemingData, getPaywallThemesAction, PaywallTheme, savePaywallThemeAction, createPaywallThemeAction, deletePaywallThemeAction } from '../../redux-flow/store/Paywall/Theming';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/store/Account/Company';
 
 export interface PaywallThemingComponentProps {
     paywallThemes: PaywallThemingData;
@@ -13,6 +14,8 @@ export interface PaywallThemingComponentProps {
     savePaywallTheme: Function;
     createPaywallTheme: Function;
     deletePaywallTheme: Function;
+    companyState: CompanyPageInfos;
+    getCompanyState: Function;
 }
 
 const PaywallTheming = (props: PaywallThemingComponentProps) => {
@@ -21,10 +24,13 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
         if(!props.paywallThemes) {
             props.getPaywallThemes();
         }
+        if(!props.companyState) {
+            props.getCompanyState()
+        }
     }, [])
 
     return (
-        props.paywallThemes ?
+        props.paywallThemes && props.companyState?
             <PaywallThemingPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -32,7 +38,8 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        paywallThemes: state.paywall.theming
+        paywallThemes: state.paywall.theming,
+        companyState: state.account.company
     };
 }
 
@@ -49,7 +56,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deletePaywallTheme: (data: PaywallTheme) => {
             dispatch(deletePaywallThemeAction(data));
-        }
+        },
+        getCompanyState: () => {
+            dispatch(getCompanyPageDetailsAction());
+        },
     }
 }
 
