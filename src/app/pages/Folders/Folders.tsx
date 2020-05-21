@@ -132,9 +132,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }, [selectedFolder])
 
-    useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
-        setBulkActionsDropdownIsOpened(false)
-    });
+    // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
+    //     setBulkActionsDropdownIsOpened(false)
+    // });
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
@@ -497,7 +497,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <OnlineBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm actionFunction={handleBulkAction} themes={[]} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
         </div>
     )
 }

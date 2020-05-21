@@ -9,6 +9,7 @@ import { VideosListProps, VideosListPage } from '../../pages/Videos/VideosList/V
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 
 const VideosList = (props: VideosListProps) => {
 
@@ -16,9 +17,12 @@ const VideosList = (props: VideosListProps) => {
         if (!props.items) {
             props.getVodList();
         }
+        if(!props.themesList.themes) {
+            props.getThemesList()
+        }
     }, [])
 
-    if (!props.items) {
+    if (!props.items || !props.themesList.themes) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
@@ -29,7 +33,8 @@ const VideosList = (props: VideosListProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        items: state.vod.list
+        items: state.vod.list,
+        themesList: state.settings.theming
     };
 }
 
@@ -40,6 +45,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteVodList: (vodId: string) => {
             dispatch(deleteVodAction(vodId));
+        },
+        getThemesList: () => {
+            dispatch(getThemingListAction())
         },
         showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

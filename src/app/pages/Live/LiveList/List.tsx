@@ -14,7 +14,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
-import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom'
@@ -26,15 +26,9 @@ import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
+import { LiveListComponentProps } from '../../../containers/Live/List';
 
-export interface LiveListProps {
-    liveList: SearchResult;
-    themesList: ThemeOptions[];
-    deleteLiveChannel: Function;
-    getLiveList: Function;
-}
-
-export const LiveListPage = (props: LiveListProps) => {
+export const LiveListPage = (props: LiveListComponentProps) => {
 
     let history = useHistory()
 
@@ -234,6 +228,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 <OnlineBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
                 <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
