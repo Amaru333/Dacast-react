@@ -33,14 +33,17 @@ const GeneralPlaylist = (props: GeneralProps) => {
     }, [])
 
     return (
-        props.playlistDetailsState[playlistId] ?
-            (
-                <div className='flex flex-column'>
-                    <PlaylistsTabs playlistId={playlistId} />
-                    <PlaylistGeneralPage playlistDetails={props.playlistDetailsState[playlistId]} {...props} />
-                </div>            
-            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <PlaylistsTabs playlistId={playlistId} />
+            { props.playlistDetailsState[playlistId] ?
+                (
+                    <div className='flex flex-column'>
+                        <PlaylistGeneralPage playlistDetails={props.playlistDetailsState[playlistId]} {...props} />
+                    </div>            
+                )
+                : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 
 }

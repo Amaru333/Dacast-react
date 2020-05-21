@@ -17,9 +17,9 @@ import { ContentEngagementSettingsState } from '../Settings/Interactions/types';
 
 export const playlistInitialState: PlaylistState = {
     list: false,
-    general: false,
-    security: false,
-    setup: false,
+    general: {},
+    security: {},
+    setup: {},
     theming: false,
     engagement: false,
     paywall: false
@@ -28,9 +28,9 @@ export const playlistInitialState: PlaylistState = {
 
 export interface  PlaylistState {
     list: false | SearchResult;
-    general: false | PlaylistDetailsState;
-    setup: false | PlaylistSetupState;
-    security: false | ContentSecuritySettingsState;
+    general: PlaylistDetailsState;
+    setup: PlaylistSetupState;
+    security: ContentSecuritySettingsState;
     theming: false | ContentThemeState;
     engagement: false | ContentEngagementSettingsState;
     paywall: false | PlaylistPaywallPageInfos;

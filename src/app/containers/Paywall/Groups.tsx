@@ -5,8 +5,8 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getFoldersAction, getFolderContentAction, restoreContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
+import { getFolderContentAction, restoreContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface GroupsComponentProps {
@@ -76,13 +76,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteGroupPromo: (data: GroupPromo) => {
             dispatch(deleteGroupPromoAction(data));
         },
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
-        },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: FolderAsset[]) => {
+        restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         }
     }

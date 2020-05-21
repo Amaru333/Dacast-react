@@ -19,6 +19,8 @@ import { LiveDetailsState } from '../../app/redux-flow/store/Live/General/types'
 import { VodDetailsState } from '../../app/redux-flow/store/VOD/General/types';
 import { getVodDetailsAction } from '../../app/redux-flow/store/VOD/General/actions';
 import { getLiveDetailsAction } from '../../app/redux-flow/store/Live/General/actions';
+import { PlaylistDetailsState } from '../../app/redux-flow/store/Playlists/General/types';
+import { getPlaylistDetailsAction } from '../../app/redux-flow/store/Playlists/General/actions';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -32,6 +34,8 @@ export interface HeaderProps {
     VodGeneralState: VodDetailsState;
     getVodDetails: Function;
     getLiveGeneralDetails: Function;
+    getPlaylistGeneralDetails: Function;
+    PlaylisyGeneralState: PlaylistDetailsState;
 }
 
 const Header = (props: HeaderProps) => {
@@ -59,6 +63,13 @@ const Header = (props: HeaderProps) => {
                     props.getLiveGeneralDetails(realUid);
                     return [realUid]
                 }
+            case 'playlists':
+                if (props.PlaylisyGeneralState[realUid]) {
+                    return [props.PlaylisyGeneralState[realUid].title];
+                } else {
+                    props.getPlaylistGeneralDetails(realUid);
+                    return [realUid]
+                }
             default: return ["Unknown Asset Type"]
         }
     }
@@ -66,11 +77,10 @@ const Header = (props: HeaderProps) => {
     React.useEffect(() => {
         let pathArray = location.pathname.split('-').join(' ').split('/')
         let breadCrumbString = pathArray.map( path => path.match(UuidRegex) ? handleUid(path, pathArray[1]) : path.split(' ').map(f => f.charAt(0).toUpperCase() + f.slice(1)) )
-        console.log(breadCrumbString);
         let breadcrumbNames = breadCrumbString.map(path => path.join(' '))
         let removedSpace = breadcrumbNames.shift()
         setBreadcrumbItems(breadcrumbNames)
-    }, [location, props.VodGeneralState, props.LiveGeneralState])
+    }, [location, props.VodGeneralState, props.LiveGeneralState, props.PlaylisyGeneralState])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
     const userOptionsDropdownListRef = React.useRef<HTMLUListElement>(null);
@@ -176,6 +186,7 @@ export function mapStateToProps(state: ApplicationState) {
         ProfileInfo: state.account.profile,
         VodGeneralState: state.vod.general,
         LiveGeneralState: state.live.general,
+        PlaylisyGeneralState: state.playlist.general
     };
 }
 
@@ -193,7 +204,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getLiveGeneralDetails: (liveId: string) => {
             dispatch(getLiveDetailsAction(liveId));
-        }
+        },
+        getPlaylistGeneralDetails: (playlistId: string) => {
+            dispatch(getPlaylistDetailsAction(playlistId));
+        },
     }
 
 }

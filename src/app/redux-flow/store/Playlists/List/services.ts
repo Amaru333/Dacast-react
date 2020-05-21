@@ -27,7 +27,7 @@ const deletePlaylistService = async (playlistId: string) => {
     )
 }
 
-export const PlaylistGeneralServices = {
+export const PlaylistListServices = {
     getPlaylistListAction,
     deletePlaylistService
 }

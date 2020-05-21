@@ -45,9 +45,9 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/');
-        const filteredListLength = options.filter((value, i) => i !== 0 && i!== options.length - 1 && i !== options.length - 2).length
+        const filteredListLength = options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).length
         return (
-            options.filter((value, i) => i !== 0 && i!== options.length - 1 && i !== options.length - 2).map((name, i) => {
+            options.filter((value, i) => i !== 0 && i!== options.length - 2 && i !== options.length - 3).map((name, i) => {
                 return i < filteredListLength ? (
                     <DropdownItem 
                         isSingle
@@ -65,7 +65,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
 
     const renderOptions = () => {
         if(props.options) {
-            const optionsLength = props.options.split('/').length; 
+            const optionsLength = props.options.split('/').length -1; 
             if(optionsLength <= 3) {
                 return props.options.split('/').map((option, i) => {
                     return i < optionsLength ? (
@@ -84,7 +84,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                                             <Text size={14} weight='reg'>{option}</Text>
                                             <IconStyle coloricon='gray-1'>{breadcrumbDropdownIsOpened ? 'arrow_drop_up' : 'arrow_drop_down'}</IconStyle>
                                         </div>
-                                        <DropdownList hasSearch={false} style={{width: '128px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
+                                        <DropdownList direction='up' hasSearch={false} style={{width: '128px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
                                             {renderBreadcrumbDropdownList()}
                                         </DropdownList>
                                     </div>
@@ -104,7 +104,7 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                             <div className='relative pointer'>
                                 <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
-                                <DropdownList hasSearch={false} style={{width: 'fit-content', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
+                                <DropdownList direction='up' hasSearch={false} style={{width: 'fit-content', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
                                     {renderHiddenFoldersDropdownList()}
                                 </DropdownList>                       
                             </div>
@@ -113,15 +113,15 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
                       
                         <div className='flex items-center'>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>                            
-                            <span className='pointer' onClick={() => {props.callback(props.options.split(options[options.length - 2])[0] + options[options.length - 2] +'/')}}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 2]}</Text></span>
+                            <span className='pointer' onClick={() => {props.callback(props.options.split(options[options.length - 3])[0] + options[options.length - 3] +'/')}}><Text size={14} weight='med' color='dark-violet'>{options[options.length - 3]}</Text></span>
                             <Text size={14} weight='reg'> &nbsp;/&nbsp; </Text>
                         </div>
                         <div className='flex items-center relative'>
                             <div className='flex items-center pointer' onClick={() => setBreadcrumbDropdownIsOpened(!breadcrumbDropdownIsOpened)}>
-                                <Text size={14} weight='reg'>{options[options.length - 1]}</Text>
+                                <Text size={14} weight='reg'>{options[options.length - 2]}</Text>
                                 <IconStyle coloricon='gray-1'>{breadcrumbDropdownIsOpened ? 'arrow_drop_up' : 'arrow_drop_down'}</IconStyle>
                             </div>
-                            <DropdownList hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
+                            <DropdownList direction='up' hasSearch={false} style={{width: '100px', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={breadcrumbDropdownIsOpened} ref={breadcrumbDropdownListRef}>
                                 {renderBreadcrumbDropdownList()}
                             </DropdownList>                         
                         </div>

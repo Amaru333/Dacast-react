@@ -1,21 +1,12 @@
 import axios from 'axios';
-import { FolderAsset } from './types';
+import { ContentType } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import { VodGeneralServices } from '../VOD/General/services';
+import { LiveGeneralServices } from '../Live/General/services';
+import { PlaylistListServices } from '../Playlists/List/services';
+import { bulkActionsService } from '../Common/bulkService';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
-
-const getFolders = async (folderPath: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    let promise = await axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders?parentID=' + folderPath, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
-    return promise
-}
 
 const getFolderContent = async (qs: string) => {
     await isTokenExpired()
@@ -29,69 +20,38 @@ const getFolderContent = async (qs: string) => {
     )
 }
 
-const moveItemsToFolder = (foldersPath: string[], items: FolderAsset[]) => {
-    return axios.post(urlBase + 'folder/moveItems', {data: {foldersPath: foldersPath, items: items}})
-}
-
-const addFolder = async (folderPath: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders', 
-        {
-            fullPath: folderPath
-        },
-        {
-            headers: {
-                Authorization: token
-            }
+const deleteContent = async (content: ContentType[]) => {
+    content.map(async (c) => {
+        switch(c.type) {
+            case 'vod':
+                return await VodGeneralServices.deleteVodService(c.id)
+            case 'channel':
+                return await LiveGeneralServices.deleteLiveChannelService(c.id)
+            case'playlist':
+                return await PlaylistListServices.deletePlaylistService(c.id)
+            default:
+                return
         }
-    )
+    })
+
 }
 
-const deleteFolder = async (folderIds: string[]) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/delete', 
-        {
-            folderIds: folderIds
-        },
-        {
-            headers: {
-                Authorization: token
-            }
+const restoreContent = async (content: ContentType[]) => {
+    content.map(async (c) => {
+        switch(c.type) {
+            case 'vod':
+                return await VodGeneralServices.restoreVodService(c.id)
+            case 'channel':
+            case'playlist':
+                return
+            default:
+                return
         }
-    )
+    })
 }
-
-const deleteContent = (content: FolderAsset[]) => {
-    return axios.delete(urlBase + 'folder/content', {data: content})
-}
-
-const restoreContent = (content: FolderAsset[]) => {
-    return axios.put(urlBase + 'folder/content', {data: content})
-}
-const renameFolder = async (folderPath: string, newName: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
-        {
-            oldPath: folderPath,
-            newName: newName
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )}
 
 export const FoldersServices = {
-    getFolders,
     getFolderContent,
-    moveItemsToFolder,
-    addFolder,
-    deleteFolder,
     deleteContent,
-    restoreContent,
-    renameFolder
+    restoreContent
 }

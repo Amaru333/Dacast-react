@@ -1,4 +1,4 @@
-import { ActionTypes, PlaylistSetupState} from "./types";
+import { ActionTypes, PlaylistSetupState, PlaylistSetupObject} from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -7,12 +7,12 @@ import { FolderAsset } from '../../Folders/types';
 
 export interface GetPlaylistSetup {
     type: ActionTypes.GET_PLAYLIST_SETUP;
-    payload: {data: PlaylistSetupState};
+    payload: {data: PlaylistSetupObject};
 }
 
 export interface PostPlaylistSetup {
     type: ActionTypes.POST_PLAYLIST_SETUP;
-    payload: PlaylistSetupState;
+    payload: PlaylistSetupObject;
 }
 
 export const getPlaylistSetupAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistSetup> => {
@@ -27,7 +27,7 @@ export const getPlaylistSetupAction = (playlistId: string): ThunkDispatch<Promis
     };
 }
 
-export const postPlaylistSetupAction = (data: PlaylistSetupState, playlistId: string): ThunkDispatch<Promise<void>, {}, PostPlaylistSetup> => {
+export const postPlaylistSetupAction = (data: PlaylistSetupObject, playlistId: string): ThunkDispatch<Promise<void>, {}, PostPlaylistSetup> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, PostPlaylistSetup>) => {
         await PlaylistSetupServices.postPlaylistSetupAction(data, playlistId)
             .then(response => {

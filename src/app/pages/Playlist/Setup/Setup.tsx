@@ -14,7 +14,6 @@ import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { Badge } from '../../../../components/Badge/Badge';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { PlaylistSetupState } from '../../../redux-flow/store/Playlists/Setup/types';
 
 
 export const SetupPage = (props: SetupComponentProps) => {
