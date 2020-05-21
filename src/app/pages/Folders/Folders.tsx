@@ -358,7 +358,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     hasChild: false,
                                     subfolders: 0,
                                     nbChildren: 0,
-                                    fullPath: row.path,
+                                    fullPath: row.path + row.title,
                                     loadingStatus: 'not-loaded',
                                     children: {}} : null)}
                             >
