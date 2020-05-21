@@ -248,7 +248,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Button style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         <label htmlFor='browseButton'>
                             <LinkStyleUploader>
-                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                                <input type='file' multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                                 Browse Files
                             </LinkStyleUploader>
                         </label>
