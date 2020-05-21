@@ -14,7 +14,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
-import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm } from '../../Playlist/List/BulkModals';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom'
@@ -24,16 +24,11 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
+import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
+import { LiveListComponentProps } from '../../../containers/Live/List';
 
-export interface LiveListProps {
-    liveList: SearchResult;
-    themesList: ThemeOptions[];
-    deleteLiveChannel: Function;
-    getLiveList: Function;
-}
-
-export const LiveListPage = (props: LiveListProps) => {
+export const LiveListPage = (props: LiveListComponentProps) => {
 
     let history = useHistory()
 
@@ -193,6 +188,14 @@ export const LiveListPage = (props: LiveListProps) => {
         })
     }
 
+    const handleBulkAction = (contentList: ContentType[], action: string) => {
+        bulkActionsService(contentList, action).then((response) => {
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
 
@@ -201,7 +204,7 @@ export const LiveListPage = (props: LiveListProps) => {
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search Lives..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
+                        <InputTags  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
                     </div>
                     <div className="flex items-center" >
                         {selectedLive.length > 0 ?
@@ -222,10 +225,11 @@ export const LiveListPage = (props: LiveListProps) => {
                 
                 <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
                 <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-                <OnlineBulkForm items={selectedLive} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-                <DeleteBulkForm items={selectedLive} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-                <PaywallBulkForm items={selectedLive} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-                <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+                <OnlineBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 

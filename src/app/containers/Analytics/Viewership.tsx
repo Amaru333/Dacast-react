@@ -4,8 +4,8 @@ import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
+import { Action, deleteContentAction, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FolderAsset, FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -34,7 +34,7 @@ const Viewership = (props: ViewershipComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData) {
             const wait = async () => {
-                await props.getFolderContent('/')
+                await props.getFolderContent(null)
                 //await props.getFolders('/');
             }
             wait()
@@ -76,13 +76,10 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
-        },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: FolderAsset[]) => {
+        restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
         getAnalyticsViewershipViewingTime: (dates: GetAnalyticsViewershipOptions) => {

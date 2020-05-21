@@ -19,10 +19,11 @@ import { useHistory } from 'react-router';
 import { PlaylistListComponentProps } from '../../../containers/Playlists/List';
 import { AddPlaylistModal } from '../../../containers/Navigation/AddPlaylistModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
 import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
+import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -187,6 +188,14 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
         })
     }
 
+    const handleBulkAction = (contentList: ContentType[], action: string) => {
+        bulkActionsService(contentList, action).then((response) => {
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     return (
@@ -194,7 +203,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search Playlists..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}    />
+                        <InputTags  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}    />
                     </div>
                     <div className="flex items-center" >
                         {selectedPlaylist.length > 0 ?
@@ -214,10 +223,10 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             </HeaderPlaylistList>
             <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
             <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-            <OnlineBulkForm items={selectedPlaylist} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm items={selectedPlaylist} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm items={selectedPlaylist} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm themes={props.themeList.themes} items={selectedPlaylist} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})}  open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm  actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})}  open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {

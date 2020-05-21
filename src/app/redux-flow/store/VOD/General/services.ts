@@ -41,6 +41,19 @@ const deleteVodService = async (vodId: string) => {
     )
 }
 
+const restoreVodService = async (vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId, 
+        {},
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 const editVodDetailsService = async (data: VodDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
@@ -103,5 +116,6 @@ export const VodGeneralServices = {
     uploadFile,
     deleteFile,
     getVodList,
-    deleteVodService
+    deleteVodService,
+    restoreVodService
 }
