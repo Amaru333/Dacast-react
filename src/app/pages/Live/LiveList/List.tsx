@@ -188,9 +188,24 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string) => {
-        bulkActionsService(contentList, action).then((response) => {
-
+    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        bulkActionsService(contentList, action, targetValue).then((response) => {
+            switch(action) {
+                case 'online':
+                    setBulkOnlineOpen(false)
+                    break
+                case 'delete':
+                    setBulkDeleteOpen(false)
+                    break
+                case 'theme': 
+                    setBulkThemeOpen(false)
+                    break
+                case 'paywall': 
+                    setBulkPaywallOpen(false)
+                    break
+                default:
+                    break
+            }
         }).catch((error) => {
             console.log(error)
         })

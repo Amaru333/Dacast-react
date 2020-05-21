@@ -39,11 +39,11 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[] }) => {
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
                 <DropdownSingle className="mb3"
-                    dropdownTitle='Thumbnail Position' 
+                    dropdownTitle='Theme' 
                     id='thumbnailPositionDropdown' 
                     list={props.themes.reduce((reduced: DropdownListType, item: ThemeOptions) => {return {...reduced, [item.themeName]: false}}, {})}
                     isInModal={true} 
-                    callback={(value: string) => setSelectedTheme(props.themes.filter(theme => theme.themeName === value)[0].id)} />
+                    callback={(value: string) => {setSelectedTheme(props.themes.filter(theme => theme.themeName === value)[0].id)}} />
                 <Button onClick={() => {props.actionFunction(props.items, 'theme', selectedTheme)}} sizeButton="large" disabled={selectedTheme === null} typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
@@ -59,8 +59,8 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
         <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for "+ props.items.length +" selected items?"}</Text>
-                <Toggle defaultChecked={online} onChange={() => {setOnline(!online)}}label="Online" className="mb3" />
-                <Button onClick={() => {props.actionFunction(props.items, 'online', online)}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                <Toggle defaultChecked={online} onChange={(event) => {setOnline(!online)}}label={online ? "Online" : 'Offline'} className="mb3" />
+                <Button onClick={() => {props.actionFunction(props.items, 'online', false)}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </Modal>

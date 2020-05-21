@@ -2,7 +2,7 @@ import axios from 'axios'
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token'
 import { ContentType } from '../Folders/types'
 
-export const bulkActionsService = async (data: ContentType[], action: string, targetValue?: string) => {
+export const bulkActionsService = async (data: ContentType[], action: string, targetValue?: string | boolean) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/bulk', 
