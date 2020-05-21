@@ -261,10 +261,13 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                 action: 'setThemeLogo',
                                 value: selectedTheme.loginScreen.hasCompanyLogo
                             });
-                            inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
-                                action: 'setLogoSrc',
-                                value: props.companyState.logoURL
-                            });
+                            if(props.companyState.logoURL) {
+                                inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
+                                    action: 'setLogoSrc',
+                                    value: props.companyState.logoURL 
+                                });
+                            }
+                            
                         }}
                     />
                 </Card>
