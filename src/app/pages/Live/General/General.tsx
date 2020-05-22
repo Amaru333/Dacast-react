@@ -241,7 +241,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -265,7 +265,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                 <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -288,7 +288,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Poster</Text>
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

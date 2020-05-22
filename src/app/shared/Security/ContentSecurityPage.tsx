@@ -21,6 +21,7 @@ interface ContentSecurityComponentProps {
     getSettingsSecurityOptions: Function;
     saveContentSecuritySettings: Function;
     contentId: string;
+    showToast: Function
 }
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
@@ -262,7 +263,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 <div>
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { setButtonLoading(true); props.saveContentSecuritySettings(selectedSettings, props.contentId, () => setButtonLoading(false))}}>Save</Button>
-                    <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => handleReset()}>Discard</Button>
+                    <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {{handleReset();props.showToast(`Changes have been discarded`, 'fixed', "success")}}}>Discard</Button>
                 </div>}
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>

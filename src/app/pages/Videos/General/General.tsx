@@ -233,7 +233,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                     <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                    <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
@@ -254,7 +254,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                     <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                    <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
@@ -273,13 +273,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text className="mr1" size={16} weight="med">Poster</Text>  
                                     <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                    <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.assetGroupID)}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster Image")}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.vodDetails.poster.url);setImageModalOpen(true)}}>
@@ -387,7 +387,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                 </Card>
                 <ButtonContainer>
                     <Button isLoading={saveLoading} className="mr2" onClick={() => {setSaveLoading(true); props.editVodDetails(VodDetails, () => setSaveLoading(false)) } }>Save</Button>
-                    <Button typeButton="tertiary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
+                    <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                 </ButtonContainer>
                 <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>

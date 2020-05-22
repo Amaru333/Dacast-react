@@ -50,7 +50,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
             <DateFilteringAnalytics refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={ThirdLgHalfXmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Time">
+                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="How much data is consumed over time" title="Consumption by Time">
                         {
                             props.dashboardAnalytics.data.consumptionPerTime ?
                                 <BarChart
@@ -66,7 +66,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={ThirdLgHalfXmFullXs}>
-                    <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
                         {
                             props.dashboardAnalytics.data.playsViewersPerTime ?
                                 <DoubleLineChart
@@ -85,7 +85,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={ThirdLgHalfXmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerDevice" data={props.dashboardAnalytics.data.consumptionPerDevice ? props.dashboardAnalytics.data.consumptionPerDevice : false} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
+                    <AnalyticsCard dataName="consumptionPerDevice" data={props.dashboardAnalytics.data.consumptionPerDevice ? props.dashboardAnalytics.data.consumptionPerDevice : false} infoText="The proportion of views from each type of device" title="Consumption by Device">
                         {
                             props.dashboardAnalytics.data.consumptionPerDevice ?
                                 <CheeseChart
@@ -98,7 +98,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div style={{ float:"right" }} className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="topContents" data={props.dashboardAnalytics.data.topContents ? props.dashboardAnalytics.data.topContents.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Top Content">
+                    <AnalyticsCard dataName="topContents" data={props.dashboardAnalytics.data.topContents ? props.dashboardAnalytics.data.topContents.data : []} infoText="Viewership and revenue for your content" title="Top Content">
                         {
                             props.dashboardAnalytics.data.topContents ?
                                 <ReactTable
@@ -111,7 +111,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation.data : []} infoText="Where viewers are consuming your data" title="Consumption by Location">
                         {
                             props.dashboardAnalytics.data.consumptionPerLocation ?
                                 renderMap(props.dashboardAnalytics.data.consumptionPerLocation.data, 'dashbordMapConsumptionPerLocation') :

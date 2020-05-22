@@ -10,6 +10,7 @@ export const ContainerStyle = styled.div<{}>`
 export const DropdownLabel = styled.div`
     display: flex;
     margin: 4px 0;
+    justify-content: space-between;
 `;
 
 export const TitleContainer = styled.div<{isWhiteBackground: boolean; isOpened: boolean; isNavigation: boolean | undefined; disabled: boolean}>`
@@ -42,7 +43,7 @@ export const Title = styled.div`
     overflow: hidden;
 `;
 
-export const IconStyle = styled.div<{disabled: boolean}>`
+export const ArrowIconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 19px;
     top: 17%;
