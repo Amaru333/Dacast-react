@@ -77,7 +77,7 @@ export const DropdownList = styled.ul<{direction: 'up' | 'down'; displayDropdown
     padding-inline-end: 0px;
     padding-block-end: 8px;
     max-height: 218px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);
