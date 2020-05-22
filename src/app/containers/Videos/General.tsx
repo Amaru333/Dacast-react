@@ -9,6 +9,8 @@ import { GeneralPage } from '../../pages/Videos/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 
 export interface GeneralComponentProps {
@@ -19,6 +21,7 @@ export interface GeneralComponentProps {
     getUploadUrl: Function;
     uploadFile: Function;
     deleteFile: Function;
+    showToast: Function
 }
 
 const General = (props: GeneralComponentProps) => {
@@ -68,8 +71,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))
         },
-        deleteFile: (vodId: string, targetId: string) => {
-            dispatch(deleteFileAction(vodId, targetId))
+        deleteFile: (vodId: string, targetId: string, fileType: string) => {
+            dispatch(deleteFileAction(vodId, targetId, fileType))
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         }
     };
 }

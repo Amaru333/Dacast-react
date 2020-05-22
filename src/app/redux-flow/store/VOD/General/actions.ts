@@ -134,7 +134,7 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
-                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -143,11 +143,12 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
     }
 }
 
-export const deleteFileAction = (vodId: string, targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+export const deleteFileAction = (vodId: string, targetId: string, fileType: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await VodGeneralServices.deleteFile(vodId, targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification(`${fileType} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

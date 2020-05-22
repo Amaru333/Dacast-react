@@ -58,8 +58,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getThemingList: () => {
             dispatch(getThemingListAction());
         },
-        deletePlaylist: (playlistId: string) => {
-            dispatch(deletePlaylistAction(playlistId));
+        deletePlaylist: (playlistId: string, title: string) => {
+            dispatch(deletePlaylistAction(playlistId, title));
         }
     };
 }

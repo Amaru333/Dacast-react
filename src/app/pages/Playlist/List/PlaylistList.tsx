@@ -151,7 +151,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { props.deletePlaylist(value.objectID) }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { props.deletePlaylist(value.objectID, value.title) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
                     </div>,
