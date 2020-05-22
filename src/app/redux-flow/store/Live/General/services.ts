@@ -58,7 +58,7 @@ const getUploadUrl = async (data: string, liveId: string) => {
     let {token} = addTokenToHeader()
     return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/' + data,
         {
-            channelID: liveId
+            liveID: liveId
         },
         {
             headers: {
@@ -68,7 +68,7 @@ const getUploadUrl = async (data: string, liveId: string) => {
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, {...data})
+    return axios.put(uploadUrl, data)
 }
 
 const deleteFile = async (liveId: string, targetId: string) => {

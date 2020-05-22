@@ -1,4 +1,4 @@
-import { ActionTypes} from "./types";
+import { ActionTypes, PlaylistSetupState, PlaylistSetupObject} from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -7,17 +7,17 @@ import { FolderAsset } from '../../Folders/types';
 
 export interface GetPlaylistSetup {
     type: ActionTypes.GET_PLAYLIST_SETUP;
-    payload: FolderAsset[];
+    payload: {data: PlaylistSetupObject};
 }
 
 export interface PostPlaylistSetup {
     type: ActionTypes.POST_PLAYLIST_SETUP;
-    payload: FolderAsset[];
+    payload: PlaylistSetupObject;
 }
 
-export const getPlaylistSetupAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistSetup> => {
+export const getPlaylistSetupAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistSetup> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistSetup>) => {
-        await PlaylistSetupServices.getPlaylistSetupAction()
+        await PlaylistSetupServices.getPlaylistSetupAction(playlistId)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_PLAYLIST_SETUP, payload: response.data });
             })
@@ -27,11 +27,12 @@ export const getPlaylistSetupAction = (): ThunkDispatch<Promise<void>, {}, GetPl
     };
 }
 
-export const postPlaylistSetupAction = (data: any[]): ThunkDispatch<Promise<void>, {}, GetPlaylistSetup> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistSetup>) => {
-        await PlaylistSetupServices.postPlaylistSetupAction(data)
+export const postPlaylistSetupAction = (data: PlaylistSetupObject, playlistId: string): ThunkDispatch<Promise<void>, {}, PostPlaylistSetup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, PostPlaylistSetup>) => {
+        await PlaylistSetupServices.postPlaylistSetupAction(data, playlistId)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_PLAYLIST_SETUP, payload: response.data });
+                dispatch({ type: ActionTypes.POST_PLAYLIST_SETUP, payload: data });
+                dispatch(showToastNotification("Playlist saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

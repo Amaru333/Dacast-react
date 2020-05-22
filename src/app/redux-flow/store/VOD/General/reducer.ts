@@ -1,30 +1,38 @@
 import { Reducer } from "redux"
 import { Action } from "./actions"
-import { ActionTypes, VodDetails, VodItem, SearchResult } from './types'
+import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState } from './types'
 
-const initialVodGeneralState: VodDetails = {
-    id: null,
-    title: null,
-    description: null,
-    online: null,
-    thumbnail: null,
-    splashscreen: null,
-    subtitles: [],
-    uploadurl: null
-}
+// const initialVodGeneralState: VodDetails = {
+//     id: null,
+//     title: null,
+//     description: null,
+//     online: null,
+//     thumbnail: null,
+//     splashscreen: null,
+//     subtitles: [],
+//     uploadurl: null
+//}
 
 const initialVodList: SearchResult | false = false
 
 
-const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Action) => {
+const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_VOD_DETAILS:
             return {
-                ...state, ...action.payload.data
+                ...state, 
+                [action.payload.data.id] : {
+                    ...state[action.payload.data.id],
+                    ...action.payload.data
+                }
             }
         case ActionTypes.EDIT_VOD_DETAILS:
             return {
-                ...state, ...action.payload
+                ...state, 
+                [action.payload.id] : {
+                    ...state[action.payload.id],
+                    ...action.payload
+                }
             }
         // case ActionTypes.ADD_VOD_SUBTITLE:
         //     let newArray = state.subtitles.slice()
@@ -49,8 +57,11 @@ const reducer: Reducer<VodDetails> = (state = initialVodGeneralState, action: Ac
         //     return { ...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id) }
         case ActionTypes.GET_UPLOAD_URL:
             return {
-                ...state,
-                uploadurl: action.payload.data.presignedURL
+                ...state, 
+                [action.payload.id] : {
+                    ...state[action.payload.id],
+                    uploadurl: action.payload.data.presignedURL
+                }
             }
         case ActionTypes.UPLOAD_IMAGE:
             return state

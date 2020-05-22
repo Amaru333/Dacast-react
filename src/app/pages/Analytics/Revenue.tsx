@@ -169,7 +169,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={ThirdLgHalfXmFullXs}>
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Time">
+                    <AnalyticsCard infoText="Number of sales over time" title="Sales by Time">
                         {
                             props.analyticsRevenueData.data.salesByTime ?
                                 <BarChart
@@ -184,7 +184,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={ThirdLgHalfXmFullXs}>
-                    <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Revenue by Time">
+                    <AnalyticsCard infoText="Revenue generation over time" title="Revenue by Time">
                         {
                             props.analyticsRevenueData.data.revenueByTime ?
                                 <BarChart

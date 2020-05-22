@@ -15,7 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../../components/Modal/M
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Prompt } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
@@ -26,6 +26,8 @@ import { LiveGeneralProps } from '../../../containers/Live/General';
 var moment = require('moment-timezone');
 
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
+
+    let history = useHistory()
 
     const {userId} = addTokenToHeader()
 
@@ -38,6 +40,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
+    const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
+    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
@@ -62,12 +66,17 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     }
 
     const liveAdvancedLinksOptions = [
-        { id: "splashscreen", label: "Splashscreen", enabled: true },
-        { id: "thumbnail", label: "Thumbnail", enabled: true },
-        { id: "poster", label: "Poster", enabled: true },
-        { id: "embed", label: "Embed Code", enabled: true },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8') }
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.liveDetails.splashscreen.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.liveDetails.thumbnail.url },
+        { id: "poster", label: "Poster", enabled: true, link: props.liveDetails.poster.url },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=live-${props.liveDetails.id}"  class="dacast-video"></script>` },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
     ]
+
+    let splashScreenEnable = Object.keys(props.liveDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.liveDetails.thumbnail).length !== 0;
+    let posterEnable = Object.keys(props.liveDetails.poster).length !== 0;
+
 
     return (
         <React.Fragment>
@@ -94,7 +103,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         label="Folders"
                         greyBackground
                         disabled
-                        defaultTags={props.liveDetails.folder ? props.liveDetails.folder : []}
+                        defaultTags={props.liveDetails.folders ? props.liveDetails.folders : []}
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
@@ -124,8 +133,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard('', "Embed Code Copied")}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, "Embed Code Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -232,23 +241,23 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.liveDetails.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID) }}>Delete</Button> : null
+                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID) } } >Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
                                         {
-                                            props.liveDetails.splashscreen ?
+                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection><SelectedImage src={props.liveDetails.splashscreen.url} /></ImageSection>
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -256,22 +265,22 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                 <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.liveDetails.thumbnail ?
+                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID)}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
-                                            props.liveDetails.thumbnail ?
+                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.liveDetails.thumbnail.url} /></ImageSection>
+                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -279,22 +288,19 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Poster</Text>
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                    {
-                                        props.liveDetails.poster ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> : null
-                                    }
-                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
+                                    { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
+                                    <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
-                                            props.liveDetails.poster ?
+                                            posterEnable || uploadedImageFiles.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.liveDetails.poster.url} /></ImageSection>
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -308,19 +314,22 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                     </div>
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {liveAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
-                            return (
-                                <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd + "mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">{item.label}</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard('', `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                        <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-
-                            )
+                            {
+                                if(item.link && item.link !== ''){
+                                    return (
+                                        <LinkBoxContainer key={item.id} className={ClassHalfXsFullMd + "mb2"}>
+                                            <LinkBoxLabel>
+                                                <Text size={14} weight="med">{item.label}</Text>
+                                            </LinkBoxLabel>
+                                            <LinkBox>
+                                                <LinkText size={14} weight="reg">{item.link}</LinkText>
+                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                            </LinkBox>
+                                        </LinkBoxContainer>
+                                    )
+                                }
+                            }
                         })}
                     </AdvancedLinksContainer>
                 </div>
@@ -328,7 +337,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 {
                     imageModalOpen && <ImageModal  
                         imageFileName={selectedImageName} 
-                        uploadUrl={''} 
+                        uploadUrl={props.liveDetails.uploadurl} 
                         getUploadUrl={props.getUploadUrl} 
                         contentId={props.liveDetails.id} 
                         contentType='live'
@@ -336,7 +345,9 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         toggle={() => setImageModalOpen(false)} 
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
-                        title={imageModalTitle} 
+                        title={imageModalTitle}
+                        uploadedImageFiles={uploadedImageFiles}
+                        setUploadedImageFiles={setUploadedImageFiles}
                     />
                 }
 
@@ -346,7 +357,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Bubble type='info' className='my2'>
                                 <BubbleContent>
                                     <Text weight="reg" size={16} >
-                                        Correct <a href="www.dacast.com" target="_blank">Encoder Setup</a> is required — <a href="www.dacast.com" target="_blank">contact us</a> if you need help.
+                                        Correct <a href="https://www.dacast.com/support/knowledgebase/live-encoder-configuration/" target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                     </Text>
                                 </BubbleContent>
                             </Bubble>
@@ -398,12 +409,11 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </div>
                         <div className="flex col col-12 mt2">
                             <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                            <Text size={14} weight="reg">Need help setting up an encoder Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                            <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                         </div>
                     </ModalContent>
                     <ModalFooter className="mt1" >
                         <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
-                        <Button typeButton="tertiary">Visit Knowledge Base</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -444,7 +454,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
             </Card>
             <ButtonContainer>
-                <Button className="mr2" type="button" onClick={() => props.saveLiveDetails(newLiveDetails)}>Save</Button>
+                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails(newLiveDetails, () => setLoadingButton(false)) }  }>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
             <Prompt when={JSON.stringify(newLiveDetails) !== JSON.stringify(props.liveDetails)} message='' />

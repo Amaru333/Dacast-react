@@ -1,3 +1,5 @@
+import { string } from 'prop-types';
+
 export enum ActionTypes {
     GET_SETTINGS_SECURITY_OPTIONS = "@@settings_security/GET_SETTINGS_SECURITY_OPTIONS",
     SAVE_SETTINGS_SECURITY_OPTIONS = "@@settings_security/SAVE_SETTINGS_SECURITY_OPTIONS",
@@ -63,6 +65,8 @@ export interface ContentSecuritySettings {
     securitySettings: SecuritySettings;
 }
 
+export interface ContentSecuritySettingsState {[key: string]: ContentSecuritySettings};
+
 const defaultStateSecuritySettings: SecuritySettings = {
     passwordProtection: {
         password: ''
@@ -75,7 +79,4 @@ const defaultStateSecuritySettings: SecuritySettings = {
     domainControl: [],
 }
 
-export const defaultStateContentSecuritySettings: ContentSecuritySettings = {
-    contentId: null,
-    securitySettings: defaultStateSecuritySettings
-}
+export const defaultStateContentSecuritySettings: ContentSecuritySettingsState = {};

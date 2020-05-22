@@ -32,11 +32,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
-    const [VodDetails, setVodDetails] = React.useState<VodDetails>(null)
+    const [VodDetails, setVodDetails] = React.useState<VodDetails>(props.vodDetails)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [subtitleFile, setSubtitleFile] = React.useState<File>(null);
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
+    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
+    
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
@@ -139,11 +142,15 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
         { id: "embed", label: "Embed Code", enabled: true, link: `<script id="vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
-        { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
+        // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: 'todo' }
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
     ]
 
+    let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
+    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
+    
     return (
         VodDetails ?
             <React.Fragment>
@@ -170,7 +177,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             label="Folders"
                             disabled
                             greyBackground
-                            defaultTags={props.vodDetails.folder} 
+                            defaultTags={props.vodDetails.folders} 
                         />
 
                         <Input
@@ -226,24 +233,20 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                     <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                    <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
-                                        {
-                                            !VodDetails.splashscreen.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.splashscreen.targetID)}}>Delete</Button>
-                                        }
                                         <Button 
                                             className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(VodDetails.splashscreen.url);setImageModalOpen(true)}}>
+                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(props.vodDetails.splashscreen.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.splashscreen.url  ?
-                                                    "Add" : "Change"
+                                                splashScreenEnable || uploadedImageFiles.splashscreen  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection> 
-                                    <ImageSection> <SelectedImage src={props.vodDetails.splashscreen.url} /></ImageSection>   
+                                    {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.vodDetails.splashscreen.url} /></ImageSection>   }
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -251,22 +254,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                     <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                    <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
-                                        {
-                                            !VodDetails.thumbnail.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.thumbnail.targetID)}}>Delete</Button>
-                                        }
-                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(VodDetails.thumbnail.url);setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(props.vodDetails.thumbnail.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.thumbnail.url  ?
-                                                    "Add" : "Change"
+                                                thumbnailEnable  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.thumbnail.url} /></ImageSection>   
+                                    {(thumbnailEnable || uploadedImageFiles.thumbnail) &&<ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.vodDetails.thumbnail.url} /></ImageSection> }  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -274,23 +273,23 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text className="mr1" size={16} weight="med">Poster</Text>  
                                     <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                    <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
-                                            !VodDetails.poster.url ? null :
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID)}}>Delete</Button>
+                                            (posterEnable || uploadedImageFiles.poster) && 
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster Image")}}>Delete</Button>
                                         }
                                         
-                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(VodDetails.poster.url);setImageModalOpen(true)}}>
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.vodDetails.poster.url);setImageModalOpen(true)}}>
                                             {
-                                                !VodDetails.poster.url  ?
-                                                    "Add" : "Change"
+                                                posterEnable || uploadedImageFiles.poster  ?
+                                                    "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    <ImageSection> <SelectedImage src={props.vodDetails.poster.url} /></ImageSection>  
+                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -313,26 +312,29 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         </div>                  
                         <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
-                                return (
-                                    <LinkBoxContainer key={item.id} className="col col-6 mt2">
-                                        <LinkBoxLabel>
-                                            <Text size={14} weight="med">{item.label}</Text>
-                                        </LinkBoxLabel>
-                                        <LinkBox>
-                                            <LinkText>
-                                                <Text size={14} weight="reg">{item.link}</Text>
-                                            </LinkText>
-                                            <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                            <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                        </LinkBox>
-                                    </LinkBoxContainer>
-
-                                )
+                                {
+                                    if(item.link && item.link !== ''){
+                                        return (
+                                            <LinkBoxContainer key={item.id} className="col col-6 mt2">
+                                                <LinkBoxLabel>
+                                                    <Text size={14} weight="med">{item.label}</Text>
+                                                </LinkBoxLabel>
+                                                <LinkBox>
+                                                    <LinkText>
+                                                        <Text size={14} weight="reg">{item.link}</Text>
+                                                    </LinkText>
+                                                    <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                    <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                                </LinkBox>
+                                            </LinkBoxContainer>
+                                        )
+                                    }
+                                }
                             })}
                         </AdvancedLinksContainer>
                     </div>
 
-                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles">
+                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
                         <ModalContent>
                             <DropdownSingle
                                 className="col col-12"
@@ -343,8 +345,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
                             />
                             <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                <label htmlFor='browseButton'>
-                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                                <label htmlFor='browseButtonSubtitle'>
+                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
                                     Select Files
                                 </label>                                    
                             </Button>
@@ -365,7 +367,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </Modal>
                     {
                         imageModalOpen ?
-                            <ImageModal 
+                            <ImageModal
                                 imageFileName={selectedImageName} 
                                 imageType={handleImageModalFunction()} 
                                 contentId={props.vodId} 
@@ -375,17 +377,19 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 title={imageModalTitle} 
                                 toggle={() => setImageModalOpen(false)} 
                                 opened={imageModalOpen === true} 
-                                submit={props.uploadFile} 
+                                submit={props.uploadFile}
+                                uploadedImageFiles={uploadedImageFiles}
+                                setUploadedImageFiles={setUploadedImageFiles}
                             />
                             : null
                     }
 
                 </Card>
                 <ButtonContainer>
-                    <Button className="mr2" onClick={() => props.editVodDetails(VodDetails)}>Save</Button>
-                    <Button typeButton="tertiary" onClick={() => setVodDetails(props.vodDetails)}>Discard</Button>
+                    <Button isLoading={saveLoading} className="mr2" onClick={() => {setSaveLoading(true); props.editVodDetails(VodDetails, () => setSaveLoading(false)) } }>Save</Button>
+                    <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                 </ButtonContainer>
-                <Prompt when={JSON.stringify(VodDetails) !== JSON.stringify(props.vodDetails)} message='' />
+                <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>
             : null
     )

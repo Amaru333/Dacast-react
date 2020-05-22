@@ -30,7 +30,7 @@ export const DropdownCustom: React.FC<DropdownButtonProps> = (props: DropdownBut
                         isSingle
                         key={props.id + '_' + name} 
                         id={props.id + '_' + name} 
-                        className={key === 1 ? 'mt1' : ''}
+                        className={key === 0 ? 'mt1' : ''}
                         isSelected={selectedItem === name} 
                         onClick={() => handleClick(name)}> 
                         <DropdownItemText size={14} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>

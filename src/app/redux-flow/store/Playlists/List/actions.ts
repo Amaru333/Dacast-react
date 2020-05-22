@@ -1,17 +1,22 @@
-import { ActionTypes, PlaylistItem} from "./types";
+import { ActionTypes, SearchResult} from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { PlaylistGeneralServices } from './services';
+import { PlaylistListServices } from './services';
 
 export interface GetPlaylistList {
     type: ActionTypes.GET_PLAYLIST_LIST;
-    payload: PlaylistItem[];
+    payload: {data: SearchResult};
 }
 
-export const getPlaylistListAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistList> => {
+export interface DeletePlaylist {
+    type: ActionTypes.DELETE_PLAYLIST;
+    payload: {id: string};
+}
+
+export const getPlaylistListAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetPlaylistList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistList>) => {
-        await PlaylistGeneralServices.getPlaylistListAction()
+        await PlaylistListServices.getPlaylistListAction(qs)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_PLAYLIST_LIST, payload: response.data });
             })
@@ -21,5 +26,18 @@ export const getPlaylistListAction = (): ThunkDispatch<Promise<void>, {}, GetPla
     };
 }
 
+export const deletePlaylistAction = (playlistId: string, title: string): ThunkDispatch<Promise<void>, {}, DeletePlaylist> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylist>) => {
+        await PlaylistListServices.deletePlaylistService(playlistId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_PLAYLIST, payload: {id: playlistId} })
+                dispatch(showToastNotification(`${title} deleted`, 'fixed', "success"));
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
 
-export type Action = GetPlaylistList
+
+export type Action = GetPlaylistList | DeletePlaylist

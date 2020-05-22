@@ -4,33 +4,36 @@ import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
+import { Action, deleteContentAction, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts';
+import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
+import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
-    getFolders: Function;
+    themesList: ThemesData
     getFolderContent: Function;
-    moveItemsToFolder: Function;
-    addFolder: Function;
-    deleteFolder: Function;
     deleteContent: Function;
     restoreContent: Function;
-    renameFolder: Function;
+    showToast: Function;
+    getThemesList: Function;
 }
 
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
-        if(!props.folderData) {
-            const wait = async () => {
-                await props.getFolderContent('/folder1/')
-                //await props.getFolders('/');
-            }
-            wait()
+        if(!props.folderData.requestedContent) {
+                props.getFolderContent(null)
+               
         }
+        if(!props.themesList.themes) {
+            props.getThemesList()
+        }
+        
     }, [])
     return (
-        props.folderData ? 
+        props.folderData.requestedContent && props.themesList.themes ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -39,35 +42,27 @@ const Folders = (props: FoldersComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders.data
+        folderData: state.folders.data,
+        themesList: state.settings.theming
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
+        getFolderContent: (qs: string) => {
+            dispatch(getFolderContentAction(qs))
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
-        },
-        moveItemsToFolder: (folderPath: string[], items: FolderAsset[]) => {
-            dispatch(moveItemsToFolderAction(folderPath, items))
-        },
-        addFolder: (folderPath: string) => {
-            dispatch(addFolderAction(folderPath))
-        },
-        deleteFolder: (folderPath: string) => {
-            dispatch(deleteFolderAction(folderPath))
-        },
-        deleteContent: (content: FolderAsset[]) => {
+        deleteContent: (content: ContentType[]) => {
             dispatch(deleteContentAction(content))
         },
-        restoreContent: (content: FolderAsset[]) => {
+        restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
-        renameFolder: (folderPath: string, newName: string) => {
-            dispatch(renameFolderAction(folderPath, newName))
+        showToast: (text: string, size: Size, type: NotificationType) => {
+            dispatch(showToastNotification(text, size, type))
+        },
+        getThemesList: () => {
+            dispatch(getThemingListAction())
         }
     };
 }

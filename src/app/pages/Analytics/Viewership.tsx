@@ -45,7 +45,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.id === elChecked.id;
+                return el.objectID === elChecked.objectID;
             })
         });
         setSelectedItems(newSelectedItems);
@@ -88,12 +88,12 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
         return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id}
+                    <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.name}</Text>
+                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
                     <div className="iconAction flex-auto justify-end">
                         <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
                         <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
@@ -104,7 +104,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
 
     const updateData = (dates: any) => {
-        let options = { ...dates, selectedContents: selectedItems.map(e => e.id) };
+        let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
         props.getAnalyticsViewershipConcurrentPlayback(options);
         props.getAnalyticsViewershipConsumptionBreakdown(options);
         props.getAnalyticsViewershipConsumptionDevice(options);
@@ -113,28 +113,28 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent.map((row) => {
-            if (row.contentType === "playlist" || selectedItems.includes(row)) {
+        return props.folderData.requestedContent.results.map((row) => {
+            if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer'
                     selected={checkedContents.includes(row)}
-                    onDoubleClick={() => { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null }}
+                    onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
-                    {row.contentType !== "folder" ?
-                        <InputCheckbox className='mr2' id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id}
+                    {row.type !== "folder" ?
+                        <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
                             defaultChecked={checkedContents.includes(row)}
 
                         />
                         : null}
                     {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+                    <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
-                        row.contentType === "folder" ?
+                        row.type === "folder" ?
                             <div className="flex-auto justify-end">
-                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
                             : null
                     }
@@ -177,7 +177,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Domain">
+                        <AnalyticsCard infoText="On which domains viewers are consuming your data" title="Consumption by Domain">
                             {
                                 viewershipAnalytics.consumptionPerDomain ?
                                     <BarChart
@@ -193,7 +193,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Device">
+                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Consumption by Device">
                             {
                                 viewershipAnalytics.consumptionPerDevices ?
                                     <CheeseChart
@@ -206,7 +206,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Plays and Viewers by Time">
+                        <AnalyticsCard infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
                             {
                                 viewershipAnalytics.playsViewersPerTime ?
                                     <DoubleLineChart
@@ -225,7 +225,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div style={{ float: "right" }} className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption Breakdown">
+                        <AnalyticsCard infoText="Reports on your data consumption" title="Consumption Breakdown">
                             {
                                 viewershipAnalytics.consumptionBreakdown ?
                                     <>
@@ -266,7 +266,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Viewing Time Breakdown">
+                        <AnalyticsCard infoText="Reports on the duration of content consumption" title="Viewing Time Breakdown">
                             {
                                 viewershipAnalytics.viewingTimeBreakdown ?
                                     <>
@@ -304,7 +304,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Concurrent Playback Sessions">
+                        <AnalyticsCard infoText="The number of viewers consuming your content at the same time" title="Concurrent Playback Sessions">
                             {
                                 viewershipAnalytics.concurrentPlaybackDevice ?
                                     <>

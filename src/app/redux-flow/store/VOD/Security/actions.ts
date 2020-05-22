@@ -8,7 +8,7 @@ import { ContentSecuritySettings, SecuritySettings } from '../../Settings/Securi
 
 export interface GetVodSecuritySettings {
     type: ActionTypes.GET_VOD_SECURITY_SETTINGS;
-    payload: {data: SecuritySettings};
+    payload: ContentSecuritySettings;
 }
 
 export interface SaveVodSecuritySettings {
@@ -20,7 +20,7 @@ export const getVodSecuritySettingsAction = (vodId: string): ThunkDispatch<Promi
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodSecuritySettings> ) => {
         await VodSecurityServices.getVodSecuritySettingsService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_SECURITY_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_VOD_SECURITY_SETTINGS, payload: { contentId: vodId, securitySettings: response.data.data } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -32,7 +32,8 @@ export const saveVodSecuritySettingsAction = (data: SecuritySettings, vodId: str
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodSecuritySettings> ) => {
         await VodSecurityServices.saveVodSecuritySettingsService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload:  { contentId: vodId, securitySettings: data } } );
+                dispatch(showToastNotification(`Changes have been saved`, 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

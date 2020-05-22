@@ -11,32 +11,55 @@ export enum ActionTypes {
     RENAME_FOLDER = "@@folders/RENAME_FOLDER"
 }
 
+export interface ContentType {
+    id: string;
+    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition';
+    fullPath?: string
+}
+export interface SubFolder {
+    [childPath: string]: FolderTreeNode;
+}
+
 export interface FolderTreeNode {
+    id: string;
+    name: string;
+    path: string;
+    hasChild: boolean;
     fullPath: string;
     loadingStatus: 'not-loaded' | 'loading' | 'loaded';
     nbChildren: number;
     subfolders: number;
-    children: {
-        [childPath: string]: FolderTreeNode;
-    };
+    children: SubFolder;
     isExpanded: boolean;
 }
 
 export interface FolderAsset {
-    id: string;
-    name: string;
+    ownerID: string;
+    objectID: string;
+    title: string;
+    size?: number;
     thumbnail?: string;
-    contentType: 'playlist' | 'vod' | 'live' | 'folder';
-    created: number;
+    type: 'playlist' | 'vod' | 'channel' | 'folder' | 'live';
+    createdAt: number;
     duration: string;
-    features: FeaturesList;
-    status: 'Deleted' | 'Offline' | 'Online';
+    featuresList: FeaturesList;
+    status: 'deleted' | 'offline' | 'online' | 'processing';
+    splitPath?: string[];
+    path?: string;
+    name?: string;
 
 }
 
+export interface SearchResult {
+    results: FolderAsset[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
+}
+
 export interface FoldersInfos {
-    requestedFolder: FolderTreeNode;
-    requestedContent: FolderAsset[];
+    requestedFolder: SubFolder;
+    requestedContent: SearchResult;
 }
 
 export interface FoldersState {
@@ -44,5 +67,13 @@ export interface FoldersState {
 }
 
 export const foldersInitialState: FoldersState = {
-    data: null
+    data: {
+        requestedContent: {
+            results: [],
+            perPage: 0,
+            totalResults: 0,
+            pageNumber: 0
+        },
+        requestedFolder: null
+    }
 }

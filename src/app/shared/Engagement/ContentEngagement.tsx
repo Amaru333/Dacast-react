@@ -26,6 +26,7 @@ export interface ContentEngagementComponentProps {
     createContentAd: Function;
     deleteContentAd: Function;
     contentType?: string;
+    contentId: string
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -45,7 +46,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [mailSectionEditable, setMailSectionEditable] = React.useState<boolean>(false);
     const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
+    const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
 
+    
     const newAd = () => {
         setSelectedAd(emptyAd);
         setNewAdModalOpened(true)
@@ -246,7 +249,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 settingsEdited ?
                     <div className="mt1">
                         <Button
-                            onClick={() => { props.saveContentEngagementSettings(engagementSettings); setSettingsEdited(false) }}
+                            isLoading={saveAllButtonLoading}
+                            onClick={() => { setSaveAllButtonLoading(true);  props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: engagementSettings}, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
                         >
                             Save
                         </Button>

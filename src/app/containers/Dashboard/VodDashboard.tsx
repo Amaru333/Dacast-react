@@ -6,23 +6,17 @@ import { numberFormatter, getPercentage } from '../../../utils/utils';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DoughnutChart } from '../../../components/Analytics/DoughnutChart/DoughnutChart';
+import { DashboardVod } from '../../redux-flow/store/Dashboard/types';
 
-interface VodDashboardProps {
-    totalVideos: number;
-    videoPlays: number;
-    impressions: number;
-    topVideos: { name: string; viewers: number }[];
-}
-
-const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: VodDashboardProps }) => {
+const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: DashboardVod }) => {
 
     var classTopContainer = (props.rightSide ? "right border-box " : "col ") + (props.fullWidth ? "lg-col-12" : "lg-col-6") + " sm-col-12 " + (props.fullWidth ? "" : "pl2 right");
     var itemClass = props.fullWidth ? classItemFullWidthContainer : classItemHalfWidthContainer;
 
     var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
-    var videoPlays = numberFormatter(props.profile.videoPlays, 'comma');
-    var impressions = numberFormatter(props.profile.impressions, 'comma');
-    var rateVsImpressions = getPercentage(props.profile.videoPlays, props.profile.impressions);
+    var videoPlays = numberFormatter(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, 'comma');
+    var impressions = numberFormatter(props.profile.impressions.data ? props.profile.impressions.data : 0, 'comma');
+    var rateVsImpressions = getPercentage(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, props.profile.impressions.data ? props.profile.impressions.data : 0);
 
     var { rightSide, fullWidth, ...other } = props;
 
@@ -40,7 +34,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
                         <IconStyle id="totalVideosTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="totalVideosTooltip">The number of videos in your account today</Tooltip>
+                        <Tooltip target="totalVideosTooltip">The number of VOD assets in your account</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
@@ -51,7 +45,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="impressionsTooltip">The number of times your videos have been presented to viewers, regardless of whether they clicked "play" or not.</Tooltip>
+                        <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
@@ -71,7 +65,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="playrateVsImpressionsTooltip">The ratio of people who played your videos against those who did not click play.</Tooltip>
+                        <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <DoughnutChart value={rateVsImpressions}/>
@@ -92,7 +86,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                             </thead>
                             <tbody>
                                 {
-                                    props.profile.topVideos.map((value, key) => {
+                                    props.profile.topVideos.data && props.profile.topVideos.data.map((value, key) => {
                                         return (
                                             <tr key={value.viewers+"-"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>

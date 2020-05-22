@@ -13,10 +13,20 @@ const getLiveEngagementSettings = async (liveId: string) => {
                 Authorization: token
             }
         }
-    )}
+    )
+}
 
-const saveLiveEngagementSettings = (data: ContentEngagementSettings) => {
-    return axios.put(urlBase + 'live-engagements', {data: data})
+const saveLiveEngagementSettings = async (data: ContentEngagementSettings) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + data.contentId + '/settings/engagement',
+        {...data.engagementSettings}, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveLiveAd = (data: Ad) => {

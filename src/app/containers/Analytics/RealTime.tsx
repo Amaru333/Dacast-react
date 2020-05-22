@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction } from '../../redux-flow/store/Analytics/RealTime';
+import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction, getAnalyticsRealTimeJobIdsAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
@@ -14,24 +14,29 @@ export interface RealTimePageProps {
     getAnalyticsRealTimePlaybackTime: Function;
     getAnalyticsRealTimeGbTime: Function;
     getAnalyticsRealTimeConsumptionLocation: Function;
+    getAnalyticsRealTimeJobIds: Function;
 }
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
     React.useEffect(() => {
-        if (!props.realTimeAnalytics.data.concurentViewersPerTime) {
-            props.getAnalyticsRealTimeViewersTimes();
-        }
-        if (!props.realTimeAnalytics.data.consumptionPerLocation) {
-            props.getAnalyticsRealTimeConsumptionLocation();
-        }
-        if (!props.realTimeAnalytics.data.gbPerTime) {
-            props.getAnalyticsRealTimeGbTime();
-        }
-        if (!props.realTimeAnalytics.data.newPlaybackSessionsPerTime) {
-            props.getAnalyticsRealTimePlaybackTime();
-        }
+        props.getAnalyticsRealTimeJobIds()
     }, [])
+
+    React.useEffect(() => {
+        if (!props.realTimeAnalytics.data.concurentViewersPerTime && props.realTimeAnalytics.jobIds) {
+            props.getAnalyticsRealTimeViewersTimes(props.realTimeAnalytics.jobIds.concurentViewersPerTime.jobID);
+        }
+        if (!props.realTimeAnalytics.data.consumptionPerLocation && props.realTimeAnalytics.jobIds) {
+            props.getAnalyticsRealTimeConsumptionLocation(props.realTimeAnalytics.jobIds.consumptionPerLocation.jobID);
+        }
+        if (!props.realTimeAnalytics.data.gbPerTime && props.realTimeAnalytics.jobIds) {
+            props.getAnalyticsRealTimeGbTime(props.realTimeAnalytics.jobIds.gbPerTime.jobID);
+        }
+        if (!props.realTimeAnalytics.data.newPlaybackSessionsPerTime && props.realTimeAnalytics.jobIds) {
+            props.getAnalyticsRealTimePlaybackTime(props.realTimeAnalytics.jobIds.newPlaybackSessionsPerTime.jobID);
+        }
+    }, [props.realTimeAnalytics.jobIds])
     return <RealTimeAnalyticsPage {...props} />  
 }
 
@@ -43,17 +48,20 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTimeViewersTimes: (options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeViewersTimesAction(options));
+        getAnalyticsRealTimeJobIds: () => {
+            dispatch(getAnalyticsRealTimeJobIdsAction());
         },
-        getAnalyticsRealTimePlaybackTime: (options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimePlaybackTimeAction(options));
+        getAnalyticsRealTimeViewersTimes: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeViewersTimesAction(jobId, options));
         },
-        getAnalyticsRealTimeGbTime: (options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeGbTimeAction(options));
+        getAnalyticsRealTimePlaybackTime: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimePlaybackTimeAction(jobId, options));
         },
-        getAnalyticsRealTimeConsumptionLocation: (options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeConsumptionLocationAction(options));
+        getAnalyticsRealTimeGbTime: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeGbTimeAction(jobId, options));
+        },
+        getAnalyticsRealTimeConsumptionLocation: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
+            dispatch(getAnalyticsRealTimeConsumptionLocationAction(jobId, options));
         },
     };
 }

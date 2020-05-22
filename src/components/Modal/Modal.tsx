@@ -16,20 +16,15 @@ export const Modal = (props: ModalProps) => {
         <React.Fragment>
             <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>
                 <ModalTitleStyle>
-                    {icon ? (
-                        <IconStyle  iconColor={icon.color} ><Icon fontSize="large">{icon.name}</Icon></IconStyle>
-                    ) : null}
+                    {icon && <IconStyle  iconColor={icon.color} ><Icon fontSize="large">{icon.name}</Icon></IconStyle>}
                     <Text color="gray-1" size={24} weight="med">
                         {props.modalTitle}
                     </Text>
-                    {
-                        hasClose ? 
-                        <ModalCloseButtonStyle onClick={() => props.toggle()}><Icon fontSize="small">close</Icon></ModalCloseButtonStyle> : null
-                    }
+                    { hasClose && <ModalCloseButtonStyle onClick={() => props.toggle()}><Icon fontSize="small">close</Icon></ModalCloseButtonStyle>}
                 </ModalTitleStyle>
                 {props.children}
             </ModalContainerStyle>
-            <OverlayStyle opened={props.opened } />
+            <OverlayStyle index={props.overlayIndex} opened={props.opened} />
         </React.Fragment>
     );
 

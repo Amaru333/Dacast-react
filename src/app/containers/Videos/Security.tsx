@@ -9,46 +9,56 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
-import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security/types';
+import { ContentSecuritySettings, SecuritySettings, ContentSecuritySettingsState } from '../../redux-flow/store/Settings/Security/types';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: ContentSecuritySettings;
+    vodSecuritySettingsState: ContentSecuritySettingsState;
     globalSecuritySettings: SecuritySettings;
     getVodSecuritySettings: Function;
     saveVodSecuritySettings: Function;
     getSettingsSecurityOptions: Function;
+    showToast: Function;
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
 
     let { vodId } = useParams()
-    
+
     React.useEffect(() => {
-        if(!props.vodSecuritySettings ||  (!props.vodSecuritySettings && !props.globalSecuritySettings)) {
-            props.getVodSecuritySettings(vodId);
+        if (!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
+        if (!props.vodSecuritySettingsState[vodId]) {
+            props.getVodSecuritySettings(vodId);
+        }
     }, [])
-
     return (
-        props.vodSecuritySettings && props.globalSecuritySettings ? 
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ContentSecurityPage 
-                    contentSecuritySettings={props.vodSecuritySettings} 
-                    contentId={vodId}
-                    globalSecuritySettings={props.globalSecuritySettings}
-                    saveContentSecuritySettings={props.saveVodSecuritySettings}
-                    getSettingsSecurityOptions={props.getSettingsSecurityOptions}
-                />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.vodSecuritySettingsState[vodId] && props.globalSecuritySettings ?
+                    <div className='flex flex-column'>
+                        <ContentSecurityPage
+                            contentSecuritySettings={props.vodSecuritySettingsState[vodId]}
+                            contentId={vodId}
+                            globalSecuritySettings={props.globalSecuritySettings}
+                            saveContentSecuritySettings={props.saveVodSecuritySettings}
+                            getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                            showToast={props.showToast}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
-        vodSecuritySettings: state.vod.security,
+        vodSecuritySettingsState: state.vod.security,
         globalSecuritySettings: state.settings.security
     }
 }
@@ -58,12 +68,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodSecuritySettings: (vodId: string) => {
             dispatch(getVodSecuritySettingsAction(vodId));
         },
-        saveVodSecuritySettings: (data: SecuritySettings, vodId: string) => {
-            dispatch(saveVodSecuritySettingsAction(data, vodId));
+        saveVodSecuritySettings: (data: SecuritySettings, vodId: string, callback?: Function) => {
+            dispatch(saveVodSecuritySettingsAction(data, vodId)).then(callback);
         },
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     }
 }
 

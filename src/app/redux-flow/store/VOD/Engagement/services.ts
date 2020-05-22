@@ -16,8 +16,17 @@ const getVodEngagementSettings = async (vodId: string) => {
     )
 }
 
-const saveVodEngagementSettings = (data: ContentEngagementSettings) => {
-    return axios.post(urlBase + 'vod-engagements', {data: data})
+const saveVodEngagementSettings = async (data: ContentEngagementSettings) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + data.contentId + '/settings/engagement',
+        {...data.engagementSettings}, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveVodAd = (data: Ad) => {

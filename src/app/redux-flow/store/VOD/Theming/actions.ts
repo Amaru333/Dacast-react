@@ -12,14 +12,14 @@ export interface GetVodTheme {
 
 export interface SaveVodTheme {
     type: ActionTypes.SAVE_VOD_THEME;
-    payload: ThemeOptions;
+    payload: { id: string; data: ThemeOptions};
 }
 
 export const getVodThemeAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodTheme> ) => {
         await VodThemingServices.getVodThemeService(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
+                dispatch( {type: ActionTypes.GET_VOD_THEME, payload: { contentId: vodId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -31,8 +31,8 @@ export const saveVodThemeAction = (data: ThemeOptions, vodId: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
         await VodThemingServices.saveVodThemeService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: data} );
-                dispatch(showToastNotification("Theme for content updated!", 'fixed', "success"));
+                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: { id: vodId, data } } );
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

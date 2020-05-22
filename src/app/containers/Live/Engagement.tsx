@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
@@ -12,6 +12,7 @@ import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement
 
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: ContentEngagementSettings;
+    liveEngagementSettingsState: ContentEngagementSettingsState;
     getLiveEngagementSettings: Function;
     saveLiveEngagementSettings: Function;
     saveLiveAd: Function;
@@ -21,35 +22,40 @@ export interface LiveEngagementComponentProps {
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
-    let {liveId} = useParams()
+    let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.liveEngagementSettings) {
+        if (!props.liveEngagementSettingsState[liveId]) {
             props.getLiveEngagementSettings(liveId);
         }
     }, []);
 
     return (
-        props.liveEngagementSettings ?
-            <div className='flex flex-column'>
-                <LiveTabs liveId={liveId} />
-                <ContentEngagementPage 
-                    contentEngagementSettings={props.liveEngagementSettings}
-                    getContentEngagementSettings={props.getLiveEngagementSettings}
-                    saveContentEngagementSettings={props.saveLiveEngagementSettings}
-                    saveContentAd={props.saveLiveAd}
-                    createContentAd={props.createLiveAd}
-                    deleteContentAd={props.deleteLiveAd}
-                    contentType='live'
-                />            
-            </div>
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.liveEngagementSettingsState[liveId] ?
+                    <div className='flex flex-column'>
+                        <ContentEngagementPage
+                            contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
+                            getContentEngagementSettings={props.getLiveEngagementSettings}
+                            saveContentEngagementSettings={props.saveLiveEngagementSettings}
+                            saveContentAd={props.saveLiveAd}
+                            createContentAd={props.createLiveAd}
+                            deleteContentAd={props.deleteLiveAd}
+                            contentType='live'
+                            contentId={liveId}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveEngagementSettings: state.live.engagement
+        liveEngagementSettingsState: state.live.engagement
     };
 }
 
@@ -58,14 +64,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveEngagementSettings: (liveId: string) => {
             dispatch(getLiveEngagementSettingsAction(liveId));
         },
-        saveLiveEngagementSettings: (data: ContentEngagementSettings) => {
-            dispatch(saveLiveEngagementSettingsAction(data))
+        saveLiveEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
+            dispatch(saveLiveEngagementSettingsAction(data)).then(callback)
         },
-        saveLiveAd: (data: Ad) => {
-            dispatch(saveLiveAdAction(data))
+        saveLiveAd: (data: Ad, callback?: Function) => {
+            dispatch(saveLiveAdAction(data)).then(callback)
         },
-        createLiveAd: (data: Ad) => {
-            dispatch(createLiveAdAction(data))
+        createLiveAd: (data: Ad, callback?: Function) => {
+            dispatch(createLiveAdAction(data)).then(callback)
         },
         deleteLiveAd: (data: Ad) => {
             dispatch(deleteLiveAdAction(data))

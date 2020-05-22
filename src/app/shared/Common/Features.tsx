@@ -18,7 +18,7 @@ export interface FeaturesList {
 
 export const handleFeatures = (item: FolderAsset | VodItem | LiveItem | PlaylistItem, id: string): JSX.Element[] => {
     var element = []
-    if (item.features.paywall) {
+    if (item.featuresList.paywall) {
         element.push(
             <IconGreyContainer key={'featureIconPaywall' + id} className="mr1" >
                 <IconStyle fontSize="small" id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>
@@ -26,28 +26,28 @@ export const handleFeatures = (item: FolderAsset | VodItem | LiveItem | Playlist
             </IconGreyContainer>
         )
     }
-    if (item.features.recording) {
+    if (item.featuresList.recording) {
         element.push(
             <IconGreyContainer key={'featureIconRecording' + id} className="mr1" >
                 <IconStyle id={"recordingTooltip" + id} fontSize="small" coloricon='gray-3'>videocam</IconStyle>
                 <Tooltip target={"recordingTooltip" + id}>Recording</Tooltip>
             </IconGreyContainer>)
     }
-    if (item.features.playlist) {
+    if (item.featuresList.playlist) {
         element.push(
             <IconGreyContainer key={'featureIconPlaylist' + id} className="mr1" >
                 <IconStyle className="material-icons-outlined" fontSize="small" id={"playlistTooltip" + id} coloricon='gray-3'>video_library_outlined</IconStyle>
                 <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
             </IconGreyContainer>)
     }
-    if (item.features.rewind) {
+    if (item.featuresList.rewind) {
         element.push(
             <IconGreyContainer key={'featureIconRewind' + id} className="mr1" >
                 <IconStyle fontSize="small" id={"rewindTooltip" + id} coloricon='gray-3'>replay_30</IconStyle>
                 <Tooltip target={"rewindTooltip" + id}>30 min Rewind</Tooltip>
             </IconGreyContainer>)
     }
-    if (item.features.advertising) {
+    if (item.featuresList.advertising) {
         element.push(
             <IconGreyContainer key={'featureIconAdvertising' + id} className="mr1" >
                 <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>
@@ -59,7 +59,7 @@ export const handleFeatures = (item: FolderAsset | VodItem | LiveItem | Playlist
                 <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
             </IconGreyContainer>)
     }
-    if (item.features.folder) {
+    if (item.featuresList.folder) {
         element.push(
             <IconGreyContainer key={'featureIconFolder' + id} className="mr1" >
                 <IconStyle fontSize="small" id={"folderTooltip" + id} coloricon='gray-3'>folder</IconStyle>

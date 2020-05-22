@@ -36,7 +36,7 @@ export interface DeleteVodSubtitle {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string }};
+    payload: { id: string; data:  {presignedURL: string } };
 }
 
 export interface UploadImage {
@@ -107,7 +107,8 @@ export const editVodDetailsAction = (data: VodDetails): ThunkDispatch<Promise<vo
     return async (dispatch: ThunkDispatch<ApplicationState, {}, EditVodDetails>) => {
         await VodGeneralServices.editVodDetailsService(data)
             .then(response => {
-                dispatch({ type: ActionTypes.EDIT_VOD_DETAILS, payload: response.data })
+                dispatch({ type: ActionTypes.EDIT_VOD_DETAILS, payload: data })
+                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -119,7 +120,7 @@ export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleIn
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await VodGeneralServices.getUploadUrl(uploadType, vodId, subtitleInfo)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: response.data })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload:{ id: vodId, data: response.data.data } })
             })
             .catch((error) => {
                 console.log(error)
@@ -133,6 +134,7 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -141,11 +143,12 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
     }
 }
 
-export const deleteFileAction = (vodId: string, targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+export const deleteFileAction = (vodId: string, targetId: string, fileType: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await VodGeneralServices.deleteFile(vodId, targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification(`${fileType} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

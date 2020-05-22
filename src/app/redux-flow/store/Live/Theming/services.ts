@@ -20,7 +20,7 @@ const saveLiveThemeService = async (data: ThemeOptions, liveId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     if(!data.isCustom) {
-        return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + liveId + '/settings/themes/' + data.id + '/set',
+        return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + liveId + '/settings/themes/' + data.id + '/set',
             {...data}, 
             {
                 headers: {
@@ -30,7 +30,7 @@ const saveLiveThemeService = async (data: ThemeOptions, liveId: string) => {
         )
     } else {
         if(data.id === '-1') {
-            return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + liveId + '/settings/themes/',
+            return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + liveId + '/settings/themes/',
                 {...data, offlineMessagePosition: 1}, 
                 {
                     headers: {
@@ -39,7 +39,7 @@ const saveLiveThemeService = async (data: ThemeOptions, liveId: string) => {
                 }
             )
         } else {
-            return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + liveId + '/settings/themes/' + data.id,
+            return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + liveId + '/settings/themes/' + data.id,
                 {...data, offlineMessagePosition: 1}, 
                 {
                     headers: {

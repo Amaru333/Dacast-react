@@ -4,27 +4,32 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getLiveListAction, deleteLiveChannelAction } from '../../redux-flow/store/Live/General/actions';
-import { LiveItem } from '../../redux-flow/store/Live/General/types';
+import { SearchResult } from '../../redux-flow/store/Live/General/types';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
+import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 
-export interface LiveListContainerProps {
-    liveList: LiveItem[];
+export interface LiveListComponentProps {
+    liveList: SearchResult;
     getLiveList: Function;
     deleteLiveChannel: Function;
+    getThemesList: Function;
+    themesList: ThemesData
 }
 
-export const LiveList = (props: LiveListContainerProps) => {
-
-   
+export const LiveList = (props: LiveListComponentProps) => {
 
     React.useEffect(() => {
         if (!props.liveList) {
             props.getLiveList();
         }
+        if(!props.themesList.themes) {
+            props.getThemesList()
+        }
     }, [])
 
-    if (!props.liveList) {
+    if (!props.liveList || !props.themesList.themes) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
@@ -35,7 +40,8 @@ export const LiveList = (props: LiveListContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveList: state.live.list
+        liveList: state.live.list,
+        themesList: state.settings.theming
     };
 }
 
@@ -46,6 +52,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteLiveChannel: (id: string) => {
             dispatch(deleteLiveChannelAction(id));
+        },
+        getThemesList: () => {
+            dispatch(getThemingListAction())
         }
     };
 }

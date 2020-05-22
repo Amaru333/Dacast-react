@@ -11,12 +11,12 @@ export interface GetVodRenditions {
 
 export interface AddVodRenditions {
     type: ActionTypes.ADD_VOD_RENDITIONS;
-    payload: string[];
+    payload: Rendition[];
 }
 
 export interface DeleteVodRenditions {
     type: ActionTypes.DELETE_VOD_RENDITIONS;
-    payload: string[];
+    payload: { contentId: string; data: string[] } ;
 }
 
 export const getVodRenditionsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodRenditions> => {
@@ -35,7 +35,20 @@ export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodRenditions>) => {
         await VodRenditionsServices.addVodRenditionsService(data, vodId)
             .then(response => {
-                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: data });
+                let array: Rendition[] = [] 
+                response.data.data.items.map((item: any, i: number) => {
+                    let rendition: Rendition = {
+                        renditionID: item.id,
+                        name: data[i],
+                        size: null,
+                        bitrate: null,
+                        width: null,
+                        transcodingJobID: null,
+                        height: null
+                    } 
+                    array.push(rendition)
+                })
+                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: array });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -47,7 +60,7 @@ export const deleteVodRenditionsAction = (data: string[], vodId: string): ThunkD
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodRenditions>) => {
         await VodRenditionsServices.deleteVodRenditionsService(data, vodId)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: data });
+                dispatch({ type: ActionTypes.DELETE_VOD_RENDITIONS, payload: { contentId: vodId, data: data } });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

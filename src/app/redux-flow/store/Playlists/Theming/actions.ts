@@ -3,7 +3,7 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from "../Theming/types"
 import { PlaylistThemingServices } from './services';
-import { ContentTheme } from '../../Settings/Theming/types';
+import { ContentTheme, ThemeOptions } from '../../Settings/Theming/types';
 
 export interface GetPlaylistTheme {
     type: ActionTypes.GET_PLAYLIST_THEME;
@@ -12,14 +12,14 @@ export interface GetPlaylistTheme {
 
 export interface SavePlaylistTheme {
     type: ActionTypes.SAVE_PLAYLIST_THEME;
-    payload: ContentTheme;
+    payload: { id: string; data: ThemeOptions};
 }
 
-export const getPlaylistThemeAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistTheme> => {
+export const getPlaylistThemeAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistTheme> ) => {
-        await PlaylistThemingServices.getPlaylistThemeService()
+        await PlaylistThemingServices.getPlaylistThemeService(playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PLAYLIST_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_PLAYLIST_THEME, payload: { contentId: playlistId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -27,11 +27,11 @@ export const getPlaylistThemeAction = (): ThunkDispatch<Promise<void>, {}, GetPl
     };
 }
 
-export const savePlaylistThemeAction = (data: ContentTheme): ThunkDispatch<Promise<void>, {}, SavePlaylistTheme> => {
+export const savePlaylistThemeAction = (data: ThemeOptions, playlistId: string): ThunkDispatch<Promise<void>, {}, SavePlaylistTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistTheme> ) => {
-        await PlaylistThemingServices.savePlaylistThemeService(data)
+        await PlaylistThemingServices.savePlaylistThemeService(data, playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PLAYLIST_THEME, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_THEME, payload: { id: playlistId, data }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

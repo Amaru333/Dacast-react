@@ -41,24 +41,39 @@ const deleteVodService = async (vodId: string) => {
     )
 }
 
+const restoreVodService = async (vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + vodId, 
+        {},
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 const editVodDetailsService = async (data: VodDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/vods/' + data.id,
         {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
 const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
-    let requestData: {vodID: string; fileName?: string; languageLongName?: string; languageShortName?: string;} = {
+    let requestData: {vodID: string; fileName?: string; languageLongName?: string; languageShortName?: string} = {
         vodID: vodId
     }
     if(subtitleInfo) {
         requestData = {
-           vodID: vodId,
+            vodID: vodId,
             fileName: subtitleInfo.fileName,
             languageLongName: subtitleInfo.languageLongName,
             languageShortName: subtitleInfo.languageShortName
@@ -78,7 +93,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, {...data})
+    return axios.put(uploadUrl, data)
 }
 
 const deleteFile = async (vodId: string, targetId: string) => {
@@ -101,5 +116,6 @@ export const VodGeneralServices = {
     uploadFile,
     deleteFile,
     getVodList,
-    deleteVodService
+    deleteVodService,
+    restoreVodService
 }

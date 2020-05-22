@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton, SelectAllItem } from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton, SelectAllItem, ArrowIconStyle } from './DropdownStyle';
 import { dropdownIcons, ContinentListType, DropdownCountriesProps} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -158,7 +158,6 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             }
         }, {})
 
-        console.log(initCountriesList)
         setCheckedContinents(initCountriesList);
         setToggleContinent({...Object.keys(initCountriesList).reduce((reduced, continent) => ({...reduced, [continent]: false}), {})})
         handleTitle();
@@ -365,7 +364,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
             <TitleContainer isNavigation={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title><Text size={14} weight='reg'>{selectedItem}</Text></Title>
-                <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
+                <ArrowIconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></ArrowIconStyle>
             </TitleContainer>
             <DropdownList isSingle={false} isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}

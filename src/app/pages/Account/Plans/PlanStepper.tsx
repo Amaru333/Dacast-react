@@ -62,8 +62,10 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
         <div>
             
             <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
-            <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'ott'}>
+            <RadioButtonContainer className="mt2 flex justify-between" isSelected={selectedPlan === 'ott'}>
                 <InputRadio name='scalePlanSelection' value='ott' defaultChecked={true} label='OTT' onChange={() => setSelectedPlan('ott')} />
+                <Text size={14} weight='reg' color='gray-1'>2,000 GB Data /mo</Text>
+                <Text size={14} weight='reg' color='gray-1'>200 GB Storage</Text>
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'ott'}>
                 <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
@@ -71,6 +73,8 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
 
             <RadioButtonContainer isSelected={selectedPlan === 'live'} className="mt2">
                 <InputRadio name='scalePlanSelection' value='live' defaultChecked={false} label='Live' onChange={() => setSelectedPlan('live')} />
+                <Text size={14} weight='reg' color='gray-1'>3,000 GB Data /mo</Text>
+                <Text size={14} weight='reg' color='gray-1'>20 GB Storage</Text>
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'live'}>
                 <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
@@ -78,6 +82,8 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
 
             <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'vod'}>
                 <InputRadio name='scalePlanSelection' value='vod' defaultChecked={false} label='VOD' onChange={() => setSelectedPlan('vod')} />
+                <Text size={14} weight='reg' color='gray-1'>1,000 GB Data /mo</Text>
+                <Text size={14} weight='reg' color='gray-1'>1,000 GB Storage</Text>
             </RadioButtonContainer>
             <RadioButtonOption className="p2" isOpen={selectedPlan === 'vod'}>
                 <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>

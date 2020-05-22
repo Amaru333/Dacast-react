@@ -1,5 +1,5 @@
 import React from 'react';
-import { Action, ContentTheme, ThemeOptions } from '../../redux-flow/store/Settings/Theming';
+import { Action, ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
@@ -14,6 +14,7 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
+    themeState: ContentThemeState;
     getLiveTheme: Function;
     saveLiveTheme: Function;
     showDiscardToast: Function;
@@ -24,30 +25,34 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.theme) {
-            props.getLiveTheme(liveId);            
-        }
+        if (!props.themeState[liveId])
+            props.getLiveTheme(liveId);
     }, [])
-    
+
     return (
-        props.theme ?
-            <div className='flex flex-column'>
-                <LiveTabs liveId={liveId} />
-                <ThemingControlsCard
-                    theme={props.theme} 
-                    saveTheme={props.saveLiveTheme}
-                    contentType='live'
-                    actionType='Save'
-                />            
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.themeState[liveId] ?
+                    <div className='flex flex-column'>
+                        <ThemingControlsCard
+                            theme={props.themeState[liveId]}
+                            saveTheme={props.saveLiveTheme}
+                            contentType='live'
+                            actionType='Save'
+                            contentId={liveId}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
-    
+
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
-        theme: state.live.theming,
+        themeState: state.live.theming,
     }
 }
 

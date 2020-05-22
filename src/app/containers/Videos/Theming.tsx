@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContentTheme, ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
+import { ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
@@ -12,6 +12,7 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface VodThemingComponentProps {
     theme: ContentTheme;
+    themeState: ContentThemeState;
     getVodTheme: Function;
     saveVodTheme: Function;
 }
@@ -21,30 +22,34 @@ export const VodTheming = (props: VodThemingComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.theme) {
+        if (!props.themeState[vodId]) {
             props.getVodTheme(vodId);
         }
     }, [])
-    
+
     return (
-        props.theme ?
-            <div className='flex flex-column'>
-                <VideoTabs videoId={vodId} />
-                <ThemingControlsCard
-                    theme={props.theme} 
-                    saveTheme={props.saveVodTheme}
-                    contentType='vod'
-                    actionType='Save'
-                    contentId={vodId}
-                />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <VideoTabs videoId={vodId} />
+            {
+                props.themeState[vodId] ?
+                    <div className='flex flex-column'>
+                        <ThemingControlsCard
+                            theme={props.themeState[vodId]}
+                            saveTheme={props.saveVodTheme}
+                            contentType='vod'
+                            actionType='Save'
+                            contentId={vodId}
+                        />
+                    </div>
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
-export function mapStateToProps( state: ApplicationState ) {
+export function mapStateToProps(state: ApplicationState) {
     return {
-        theme: state.vod.theming,
+        themeState: state.vod.theming,
     }
 }
 

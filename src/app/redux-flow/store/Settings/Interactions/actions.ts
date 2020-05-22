@@ -21,7 +21,7 @@ export interface SaveAd {
 
 export interface CreateAd {
     type: ActionTypes.CREATE_AD;
-    payload: {ads: Ad[]; adsId: string;};
+    payload: {ads: Ad[]; adsId: string};
 }
 
 export interface DeleteAd {
@@ -50,7 +50,6 @@ export const getSettingsInteractionsInfosAction = (): ThunkDispatch<Promise<void
             .then( response => {
                 dispatch( {type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, payload: response.data} );
             }).catch((error) => {
-                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

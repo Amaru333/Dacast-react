@@ -1,34 +1,30 @@
 export enum ActionTypes {
     GET_PLAYLIST_DETAILS = "@@playlist_general/GET_PLAYLIST_DETAILS",
     EDIT_PLAYLIST_DETAILS = "@@playlist_general/EDIT_PLAYLIST_DETAILS",
-    CHANGE_PLAYLIST_THUMBNAIL = "@@playlist_general/CHANGE_PLAYLIST_THUMBNAIL",
-    DELETE_PLAYLIST_THUMBNAIL = "@@playlist_general/DELETE_PLAYLIST_THUMBNAIL",
-    CHANGE_PLAYLIST_SPLASHSCREEN = "@@playlist_general/CHANGE_PLAYLIST_SPLASHSCREEN",
-    DELETE_PLAYLIST_SPLASHSCREEN = "@@playlist_general/DELETE_PLAYLIST_SPLASHSCREEN",
-    CHANGE_PLAYLIST_POSTER = "@@playlist_general/CHANGE_PLAYLIST_POSTER",
-    DELETE_PLAYLIST_POSTER = "@@playlist_general/DELETE_LIVE_POSTER",
-    DELETE_PLAYLIST_CHANNEL = "@@playlist_list/DELETE_PLAYLIST_CHANNEL"
+    GET_UPLOAD_URL = "@@playlist_general/GET_UPLOAD_URL",
+    UPLOAD_IMAGE = "@@playlist_general/UPLOAD_IMAGE",
+    DELETE_IMAGE = "@@playlist_general/DELETE_IMAGE",
+}
+
+export interface PlaylistDetailsState { [key: string]: PlaylistDetails }
+
+interface AssetType {
+    assetGroupID: string;
+    targetType: string;
+    targetID: string;
+    url: string;
 }
 
 export interface PlaylistDetails {
     id: string;
     online: boolean;
     title: string;
-    folder: string[];
+    folders: string[];
     description: string;
-    thumbnail: string;
-    splashscreen: string;
-    poster?: string;
+    thumbnail: AssetType;
+    splashscreen: AssetType;
+    poster?: AssetType;
+    uploadurl?: string;
 }
 
-export interface ThumbnailUpload {
-    thumbnail: File | string;
-}
-
-export interface SplashscreenUpload {
-    splashscreen: File | string;
-}
-
-export interface PosterUpload {
-    poster: File | string;
-}
+export const initialPlaylistGeneralState: PlaylistDetailsState = {}

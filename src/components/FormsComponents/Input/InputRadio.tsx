@@ -29,13 +29,15 @@ export const InputRadio = (props: RadioProps) => {
                 ref={radioButtonRef}
             />
             <RadioLabelStyle htmlFor={props.label} >
-                {label ? <RadioTextStyle 
-                    color={props.disabled ? "gray-4" : "gray-1"} 
-                    size={props.labelSize} weight={props.labelWeight}                   
-                > 
-                    {label} 
-                </RadioTextStyle> 
-                    : null} 
+                {label && 
+                    <RadioTextStyle 
+                        color={props.disabled ? "gray-4" : "gray-1"} 
+                        size={props.labelSize} 
+                        weight={props.labelWeight}                   
+                    > 
+                        {label} 
+                    </RadioTextStyle> 
+                } 
             </RadioLabelStyle>
         </RelativeContainer>
         

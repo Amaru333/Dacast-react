@@ -21,12 +21,14 @@ interface AssetType {
     url: string;
 }
 
+export interface VodDetailsState { [key: string]: VodDetails }
+
 export interface VodDetails {
     id: string;
     online: boolean;
     title: string;
     description: string;
-    folder?: string[];
+    folders: string[];
     thumbnail: AssetType;
     splashscreen: AssetType;
     poster?: AssetType;
@@ -45,7 +47,7 @@ export interface VodItem {
     duration: number;
     thumbnail?: string;
     createdAt: number;
-    features?: FeaturesList;
+    featuresList?: FeaturesList;
 }
 
 export interface SearchResult {

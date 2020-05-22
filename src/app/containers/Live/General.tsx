@@ -1,6 +1,6 @@
 import React from 'react';
 import { LiveGeneralPage } from '../../pages/Live/General/General'
-import { LiveDetails } from '../../redux-flow/store/Live/General/types';
+import { LiveDetails, LiveDetailsState } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getLiveDetailsAction, saveLiveDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Live/General/actions';
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 export interface LiveGeneralProps {
     liveDetails: LiveDetails;
+    liveDetailsState: LiveDetailsState;
     getLiveDetails: Function;
     saveLiveDetails: Function;
     getUploadUrl: Function;
@@ -21,29 +22,35 @@ export interface LiveGeneralProps {
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
 
-    let {liveId} = useParams()
+    let { liveId } = useParams()
 
 
     React.useEffect(() => {
-        if (!props.liveDetails) {
+        if (!props.liveDetailsState[liveId]) {
             props.getLiveDetails(liveId);
         }
     }, [])
 
     return (
-        props.liveDetails ? 
-            (
-                <div className='flex flex-column'>
-                    <LiveTabs liveId={liveId} />
-                    <LiveGeneralPage {...props} />
-                </div>            )
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <LiveTabs liveId={liveId} />
+            {
+                props.liveDetailsState[liveId] ?
+                    (
+                        <div className='flex flex-column'>
+                            <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
+                        </div>
+                    )
+                    : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
 export function mapStateToProps(state: ApplicationState) {
+    //let {liveId} = useParams()
     return {
-        liveDetails: state.live.general
+        liveDetailsState: state.live.general
     };
 }
 
@@ -52,11 +59,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveDetails: (liveId: string) => {
             dispatch(getLiveDetailsAction(liveId));
         },
-        saveLiveDetails: (data: LiveDetails) => {
-            dispatch(saveLiveDetailsAction(data));
+        saveLiveDetails: (data: LiveDetails, callback?: Function) => {
+            dispatch(saveLiveDetailsAction(data)).then(callback);
         },
-        getUploadUrl: (uploadType: string, liveId: string) => {
-            dispatch(getUploadUrlAction(uploadType, liveId))
+        getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)
         },
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))

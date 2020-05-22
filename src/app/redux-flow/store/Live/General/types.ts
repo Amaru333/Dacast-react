@@ -17,11 +17,13 @@ interface AssetType {
     url: string;
 }
 
+export interface LiveDetailsState  {[key: string]: LiveDetails};
+
 export interface LiveDetails {
     id: string;
     streamOnline: boolean;
     title: string;
-    folder: string[];
+    folders: string[];
     username: string;
     password: string;
     streamKeys: string[];
@@ -35,6 +37,7 @@ export interface LiveDetails {
     recording: boolean;
     countdown: LiveStreamCountdown;
     rewind: boolean;
+    uploadurl?: string;
 }
 
 interface PLaybackURLs {
@@ -52,7 +55,7 @@ export interface LiveItem {
     duration: number;
     thumbnail?: string;
     createdAt: number;
-    features?: FeaturesList;
+    featuresList?: FeaturesList;
 }
 
 export interface SearchResult {
@@ -81,25 +84,28 @@ export interface PosterUpload {
     poster: File | string;
 }
 
-export const initialLiveGeneralState: LiveDetails = {
-    id: null,
-    streamOnline: false,
-    username: null,
-    password: null,
-    playbackURLs: null,
-    primaryPublishURL: null,
-    backupPublishURL: null,
-    streamKeys: null,
-    title: null,
-    folder: null,
-    description: null,
-    thumbnail: null,
-    splashscreen: null,
-    recording: false,
-    rewind: false,
-    countdown: {
-        enabled: false
-    }
-}
+// export const initialLiveGeneralState: LiveDetails = {
+//     id: null,
+//     streamOnline: false,
+//     username: null,
+//     password: null,
+//     playbackURLs: null,
+//     primaryPublishURL: null,
+//     backupPublishURL: null,
+//     streamKeys: null,
+//     title: null,
+//     folder: null,
+//     description: null,
+//     thumbnail: null,
+//     splashscreen: null,
+//     recording: false,
+//     rewind: false,
+//     countdown: {
+//         enabled: false
+//     }
+// }
+
+
+export const initialLiveGeneralState: LiveDetailsState = {};
 
 export const initialLiveList: SearchResult | false = false

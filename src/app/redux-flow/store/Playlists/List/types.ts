@@ -2,21 +2,24 @@ import { FeaturesList } from '../../../../shared/Common/Features';
 
 export enum ActionTypes {
     GET_PLAYLIST_LIST = "@@playlists/GET_PLAYLIST_LIST",
+    DELETE_PLAYLIST = '@@playlists/DELETE_PLAYLIST'
 }
+
 
 export interface PlaylistItem {
-    id: string;
-    online: boolean;
+    ownerID: string;
+    objectID: string;
+    type: string;
+    status: string;
     title: string;
-    thumbnail: string;
-    created: number;
-    features: FeaturesList;
+    thumbnail?: string;
+    createdAt: number;
+    featuresList?: FeaturesList;
 }
 
-export interface PlaylistListState {
-    items: PlaylistItem[];
-}
-
-export const playlistDefaultState: PlaylistListState = {
-    items: []
+export interface SearchResult {
+    results: PlaylistItem[];
+    perPage: number;
+    totalResults: number;
+    pageNumber: number;
 }

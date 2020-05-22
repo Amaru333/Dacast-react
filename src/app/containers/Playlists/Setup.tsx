@@ -1,68 +1,73 @@
 import React from 'react';
 import {LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getFoldersAction, moveItemsToFolderAction, Action, addFolderAction, deleteFolderAction, deleteContentAction, restoreContentAction, renameFolderAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos } from '../../redux-flow/store/Folders/types';
+import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
-export interface FoldersComponentProps {
+import { getPlaylistSetupAction, postPlaylistSetupAction } from '../../redux-flow/store/Playlists/Setup/actions';
+import { PlaylistSetupState, PlaylistSetupObject } from '../../redux-flow/store/Playlists/Setup/types';
+
+export interface SetupComponentProps {
     folderData: FoldersInfos;
-    getFolders: Function;
+    playlistData: PlaylistSetupObject;
+    playlistDataState: PlaylistSetupState;
+    getPlaylistSetup: Function;
     getFolderContent: Function;
-    moveItemsToFolder: Function;
-    addFolder: Function;
-    deleteFolder: Function;
-    deleteContent: Function;
-    restoreContent: Function;
-    renameFolder: Function;
+    savePlaylistSetup: Function;
 }
 
-const Setup = (props: FoldersComponentProps) => {
+const Setup = (props: SetupComponentProps) => {
 
     let { playlistId } = useParams()
     
     React.useEffect(() => {
+        props.getPlaylistSetup(playlistId)
+
         if(!props.folderData) {
+
             const wait = async () => {
+
                 await props.getFolderContent('/')
-                //await props.getFolders('/');
             }
             wait()
         }
-        console.log(props.folderData);
     }, [])
     return (
-        props.folderData ? 
-            <div className='flex flex-column'>
-                <PlaylistsTabs playlistId={playlistId} />
-                <SetupPage {...props} />
-            </div>
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            <PlaylistsTabs playlistId={playlistId} />
+            { (props.folderData && props.playlistDataState[playlistId]) ? 
+                <div className='flex flex-column'>
+                    <SetupPage {...props}  playlistData={props.playlistDataState[playlistId]}/>
+                </div>
+                : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+            }
+        </>
     )
 }
 
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        folderData: state.folders.data
+        folderData: state.folders.data,
+        playlistDataState: state.playlist.setup
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolders: (folderPath: string) => {
-            dispatch(getFoldersAction(folderPath));
+        getPlaylistSetup: (playlistId: string) => {
+            dispatch(getPlaylistSetupAction(playlistId))
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: (folderPath: string, callback?: Function) => {
+            dispatch(getFolderContentAction(folderPath, callback));
         },
-        restoreContent: (content: FolderAsset[]) => {
-            dispatch(restoreContentAction(content))
+        savePlaylistSetup: (playlistData: PlaylistSetupObject, playlistId: string, callback?: Function) => {
+            dispatch(postPlaylistSetupAction(playlistData, playlistId)).then(callback)
         }
     };
 }

@@ -4,46 +4,28 @@ import { ActionTypes, FoldersState, foldersInitialState } from './types';
 
 const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Action) => {
     switch(action.type) {
-        case ActionTypes.GET_FOLDERS: 
-            return {
-                ...state,
-                data: {...state.data, requestedFolder: {...action.payload}}
-            }
         case ActionTypes.GET_FOLDER_CONTENT:
             return {
                 ...state,
-                data: {...state.data, requestedContent: action.payload}
+                data: {
+                    ...state.data, 
+                    requestedContent: {
+                        ...action.payload.data,
+                        results: action.payload.data.results.map((item) => {
+                            return {
+                                ...item,
+                                objectID: item.splitPath ? item.objectID : item.objectID.split('_')[1],
+                                title: item.name ? item.name : item.title,
+                                type: item.splitPath ? 'folder' : item.type
+
+                            }
+                        })
+                    }
+                }
             }
-        case ActionTypes.MOVE_ITEMS_TO_FOLDER:
-            return {
-                ...state,
-                data: {...state.data, requestedContent: action.payload}
-            }
-        case ActionTypes.ADD_FOLDER: 
-            return {
-                ...state,
-                data: {...state.data, requestedFolder: {...action.payload}}
-            }
-        case ActionTypes.DELETE_FOLDER: 
-            return {
-                ...state,
-                data: {...state.data, requestedFolder: action.payload}
-            }
-        case ActionTypes.DELETE_CONTENT:
-            return {
-                ...state,
-                data: {...state.data, requestedContent: action.payload}
-            }
+        case ActionTypes.DELETE_CONTENT:    
         case ActionTypes.RESTORE_CONTENT:
-            return {
-                ...state,
-                data: {...state.data, requestedContent: action.payload}
-            }
-        case ActionTypes.RENAME_FOLDER: 
-            return {
-                ...state,
-                data: {...state.data, requestedFolder: {...action.payload}}
-            }
+            return state
         default: 
             return state
     }

@@ -33,6 +33,7 @@ import Login from './containers/Register/Login/Login';
 import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
 import { AddStreamModal } from './containers/Navigation/AddStreamModal';
+import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 
 // Any additional component props go here.
 interface MainProps {
@@ -78,7 +79,8 @@ const AppContent = () => {
     let mobileWidth = useMedia('(max-width:780px');
 
     const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
-    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(null)
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+    const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
@@ -95,10 +97,10 @@ const AppContent = () => {
     };
 
     React.useEffect(() => {
-        if(isMobile && addStreamModalOpen) {
+        if(isMobile && (addStreamModalOpen || addPlaylistModalOpen)) {
             setOpen(false);
         }
-    }, [addStreamModalOpen]);
+    }, [addStreamModalOpen, addPlaylistModalOpen]);
 
     const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
 
@@ -106,14 +108,15 @@ const AppContent = () => {
             if(props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
                 return <NotFound />
             }
-            console.log(addStreamModalOpen)
             return (
                 <Route
                     path={props.path}
                     exact={props.exact ? true : false}
                 >
-                    <MainMenu openAddStream={ () => { setAddStreamModalOpen(true);} } menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+                    <MainMenu openAddStream={ () => { setAddStreamModalOpen(true);} } openPlaylist={() => {setAddPlaylistModalOpen(true)}} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+                    <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>

@@ -12,14 +12,14 @@ export interface GetLiveTheme {
 
 export interface SaveLiveTheme {
     type: ActionTypes.SAVE_LIVE_THEME;
-    payload: ThemeOptions;
+    payload: {id: string; data: ThemeOptions};
 }
 
 export const getLiveThemeAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveTheme> ) => {
         await LiveThemingServices.getLiveThemeService(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: {themes: response.data.data.themes, id: response.data.data.contentThemeID}} );
+                dispatch( {type: ActionTypes.GET_LIVE_THEME, payload: { contentId: liveId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -31,7 +31,7 @@ export const saveLiveThemeAction = (data: ThemeOptions, liveId: string): ThunkDi
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveTheme> ) => {
         await LiveThemingServices.saveLiveThemeService(data, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_THEME, payload: data} );
+                dispatch( {type: ActionTypes.SAVE_LIVE_THEME,  payload: {id: liveId, data} } );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {

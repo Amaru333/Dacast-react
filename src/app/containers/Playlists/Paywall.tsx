@@ -103,7 +103,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             <PlaylistsTabs playlistId={playlistId} />
             <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
         </div>
-        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        : <><PlaylistsTabs playlistId={playlistId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
 
 export function mapStateToProps(state: ApplicationState) {

@@ -5,12 +5,13 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { AddStreamModal } from "./AddStreamModal"
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter, getPrivilege } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
 import { initUserInfo } from '../../utils/token';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -54,6 +55,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
@@ -102,11 +104,11 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")
                 } else {
-                    props.openAddStream();
+                    props.openAddStream()
                 }
                 break
             case "Playlist":
-                history.push("/playlists")
+                props.openPlaylist()
                 break
             default:
                 return
@@ -204,8 +206,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
-                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+</ButtonMenuStyle>
-                        <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
+                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
+                        <DropdownList direction='up' isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
                             {renderAddList()}
                         </DropdownList>
                     </div>
@@ -220,7 +222,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
            
                   
             </ContainerStyle>
-        
+
         </>
     )
 }

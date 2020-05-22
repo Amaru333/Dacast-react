@@ -11,24 +11,29 @@ import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { Toggle } from '../../../../components/Toggle/toggle';
+import { updateClipboard } from '../../../utils/utils';
+import { addTokenToHeader } from '../../../utils/token';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
     editPlaylistDetails: Function;
-    changePlaylistThumbnail: Function;
-    changePlaylistSplashscreen: Function;
-    changePlaylistPoster: Function;
+    getUploadUrl: Function;
+    uploadFile: Function;
+    deleteFile: Function;
     showToast: Function;
 }
 
-var moment = require('moment-timezone');
-
 export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
+
+    const {userId} = addTokenToHeader()
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [newPlaylistDetails, setNewPlaylistDetails] = React.useState<PlaylistDetails>(props.playlistDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
+    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
+
 
     React.useEffect(() => {
         setNewPlaylistDetails(props.playlistDetails)
@@ -46,23 +51,29 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         textArea.remove();
     }
 
+
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
-            return  props.changePlaylistSplashscreen()
-           
+            return  'playlist-splashscreen'
         } else if (imageModalTitle === "Change Thumbnail") {
-            return props.changePlaylistThumbnail()
+            return 'playlist-thumbnail'
+        } else if(imageModalTitle === 'Change Poster') {
+            return 'playlist-poster'
         } else {
-            return props.changePlaylistPoster()
+            return ''
         }
     }
 
     const playlistAdvancedLinksOptions = [
-        { id: "thumb", label: "Thumbnail" },
-        { id: "splashscreen", label: "Splashscreen" },
-        { id: "poster", label: "Poster" },
-        { id: "embed", label: "Embed Code" }
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url},
+        { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url},
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
+
+    let splashScreenEnable = Object.keys(props.playlistDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.playlistDetails.thumbnail).length !== 0;
+    let posterEnable = Object.keys(props.playlistDetails.poster).length !== 0;
 
     return (
         <React.Fragment>
@@ -88,7 +99,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         label="Folders"
                         disabled
                         greyBackground
-                        defaultTags={props.playlistDetails.folder} 
+                        defaultTags={props.playlistDetails.folders} 
                     />
                     <Input
                         className={ClassHalfXsFullMd + "pr2 mb2"}
@@ -118,8 +129,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">&lt;iframe src="//iframe.streamingasaservice.net&gt;</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => {copyKey("embed code here");props.showToast("Embed Code Copied", 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -128,8 +139,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">https://iframe.dacast.com/b/1234/f/929020</LinkText>
-                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() => {copyKey("share link here");props.showToast("Share Link Copied", 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() =>  updateClipboard(`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -143,67 +154,67 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.splashscreen ?
+                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.splashscreen ?
+                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.playlistDetails.splashscreen} /></ImageSection>  
+                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.playlistDetails.splashscreen.url} /></ImageSection>}  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
                         <ImageContainer className="mr2 xs-mb25 xs-mr0">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.thumbnail ?
+                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.thumbnail ?
+                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
-                                <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail} /></ImageSection>
+                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.playlistDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
                         <ImageContainer>
                             <div className="flex flex-center">
                                 <Text className="mr1" size={16} weight="med">Poster</Text>  <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        props.playlistDetails.poster ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                        posterEnable || uploadedImageFiles.poster && 
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
-                                            props.playlistDetails.poster ?
+                                            posterEnable || uploadedImageFiles.poster ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                <ImageSection> <SelectedImage src={props.playlistDetails.poster} /></ImageSection>
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -217,24 +228,42 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     </div>                 
                     <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
-                            return (
-                                <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">{item.label}</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <Text size={14} weight="reg">https://view.vzaar.com/20929875/{item.id}</Text>
-                                        <IconStyle className='pointer' id={item.id} onClick={() => {copyKey("embed code here");props.showToast(`${item.label} Link Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
-                                        <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-
-                            )
+                            {
+                                if(item.link && item.link !== ''){
+                                    return (
+                                        <LinkBoxContainer className={ClassHalfXsFullMd+"mb2"}>
+                                            <LinkBoxLabel>
+                                                <Text size={14} weight="med">{item.label}</Text>
+                                            </LinkBoxLabel>
+                                            <LinkBox>
+                                                <LinkText size={14} weight="reg">{item.link}</LinkText>
+                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Copied`)}>file_copy_outlined</IconStyle>
+                                                <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                            </LinkBox>
+                                        </LinkBoxContainer>
+                                    )
+                                }
+                            }
                         })}
                     </AdvancedLinksContainer>
                 </div>
     
-                <ImageModal toggle={() => setImageModalOpen(false)} opened={imageModalOpen === true} submit={handleImageModalFunction} title={imageModalTitle} />
+                {
+                    imageModalOpen && <ImageModal  
+                        imageFileName={selectedImageName} 
+                        uploadUrl={props.playlistDetails.uploadurl} 
+                        getUploadUrl={props.getUploadUrl} 
+                        contentId={props.playlistDetails.id} 
+                        contentType='playlist'
+                        imageType={handleImageModalFunction()} 
+                        toggle={() => setImageModalOpen(false)} 
+                        opened={imageModalOpen === true} 
+                        submit={props.uploadFile} 
+                        title={imageModalTitle}
+                        uploadedImageFiles={uploadedImageFiles}
+                        setUploadedImageFiles={setUploadedImageFiles}
+                    />
+                }            
             </Card>
             <ButtonContainer>
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>

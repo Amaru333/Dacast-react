@@ -9,7 +9,7 @@ export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
     margin-right: 8px;
 `;
 
-export const OverlayStyle = styled.div<{ opened: boolean }>`
+export const OverlayStyle = styled.div<{ opened: boolean; index?: number }>`
     display: none;
     position: fixed;
     top: 0;
@@ -20,7 +20,7 @@ export const OverlayStyle = styled.div<{ opened: boolean }>`
     ${props => props.opened && css`
         display: block;
     `}
-    z-index: 9998;
+    z-index: ${props => props.index ? props.index : 9998 };
 `;
 
 
@@ -50,7 +50,7 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     background-color: ${props => props.theme.colors["white"]};
     z-index: 9999;
     max-height: 90%;
-    overflow-x: scroll;
+    overflow-x: auto;
 `;
 export const ModalTitleStyle = styled.div`
     margin-bottom: 8px;

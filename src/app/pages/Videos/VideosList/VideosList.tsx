@@ -11,20 +11,27 @@ import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
-import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm } from '../../Playlist/List/BulkModals';
+import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
+import { ThemeOptions, ThemesData } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
+import { Modal } from '../../../../components/Modal/Modal';
+import { MoveItemModal } from '../../Folders/MoveItemsModal';
+import { FolderTree, rootNode } from '../../../utils/folderService';
+import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
+import { NewFolderModal } from '../../Folders/NewFolderModal';
+import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 
 export interface VideosListProps {
     items: SearchResult;
-    themesList: ThemeOptions[];
+    themesList: ThemesData;
     getVodList: Function;
     deleteVodList: Function;
+    getThemesList: Function;
     showVodDeletedToast: Function;
 }
 
@@ -36,6 +43,7 @@ export const VideosListPage = (props: VideosListProps) => {
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
+    const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
@@ -43,6 +51,16 @@ export const VideosListPage = (props: VideosListProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
+    const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
+    const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+
+
+    let foldersTree = new FolderTree(() => {}, setCurrentFolder)
+
+    React.useEffect(() => {
+        foldersTree.initTree()
+    }, [])
+
 
     const parseFiltersToQueryString = (filters: FilteringVodState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
@@ -72,14 +90,17 @@ export const VideosListPage = (props: VideosListProps) => {
             returnedString += `keyword=${searchString}&`
         }
         if(sort) {
-            returnedString += `sort-by=${sort}`
+            returnedString += `sort-by=${sort}&`
+        }
+        if(returnedString.indexOf('status') === -1) {
+            returnedString += 'status=online,offline,processing'
         }
         return returnedString
 
     }
 
     React.useEffect(() => {
-        props.getVodList(parseFiltersToQueryString(selectedFilters))    
+        props.getVodList(parseFiltersToQueryString(selectedFilters)) 
     }, [selectedFilters, searchString, paginationInfo, sort])
 
     useOutsideAlerter(bulkDropdownRef, () => {
@@ -90,7 +111,7 @@ export const VideosListPage = (props: VideosListProps) => {
         { name: 'Online/Offline', function: setBulkOnlineOpen },
         { name: 'Paywall On/Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
-        { name: 'Move To', function: setBulkThemeOpen },
+        { name: 'Move To', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
@@ -134,6 +155,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const vodListBodyElement = () => {
         if (props.items) {
+            console.log('we have items')
             return props.items.results.map((value) => {
                 return {data: [
                     <div key={"checkbox" + value.objectID} className='flex items-center'>
@@ -146,14 +168,21 @@ export const VideosListPage = (props: VideosListProps) => {
                             }
                         }
                         } />
-                        <img className="pl2" key={"thumbnail" + value.objectID} width={50} height={42} src={value.thumbnail} />
+                        {
+                            value.thumbnail ? 
+                                <img className="pl2" key={"thumbnail" + value.objectID} width={74} height={42} src={value.thumbnail} />
+                                :
+                                <div className='ml2 relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                                    <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                </div>
+                        }                    
                     </div>,
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
                     <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
-                    <div className='flex'>{value.features ? handleFeatures(value, value.objectID.toString()) : null}</div>,
+                    <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID.toString()) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
                         <ActionIcon id={"editTooltip" + value.objectID}>
                             <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
@@ -180,10 +209,33 @@ export const VideosListPage = (props: VideosListProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => { item.function(true); setDropdownIsOpened(false); }}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
+        })
+    }
+
+    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        bulkActionsService(contentList, action, targetValue).then((response) => {
+            switch(action) {
+                case 'online':
+                    setBulkOnlineOpen(false)
+                    break
+                case 'delete':
+                    setBulkDeleteOpen(false)
+                    break
+                case 'theme': 
+                    setBulkThemeOpen(false)
+                    break
+                case 'paywall': 
+                    setBulkPaywallOpen(false)
+                    break
+                default:
+                    break
+            }
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -193,7 +245,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search Videos..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?
@@ -201,8 +253,8 @@ export const VideosListPage = (props: VideosListProps) => {
                         : null
                     }
                     <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                        <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                        <DropdownList direction='up' ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                             {renderList()}
                         </DropdownList>
                     </div>
@@ -211,11 +263,23 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 1 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 1 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Table className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-            <OnlineBulkForm items={selectedVod} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm items={selectedVod} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm items={selectedVod} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+                {
+                    moveItemsModalOpened && 
+                    <MoveItemModal submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedVod.map(vodId => {return {id: vodId, type: 'vod'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                }
+            </Modal>
+            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+                {
+                    newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                }
+            </Modal>
         </>
 
     )

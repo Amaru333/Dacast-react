@@ -63,7 +63,6 @@ export interface ContentEngagementSettings {
     engagementSettings: InteractionsInfos;
 }
 
-export const contentEngagementDefaultState: ContentEngagementSettings = {
-    contentId: "-1",
-    engagementSettings: interactionsDefaultState
-}
+export interface ContentEngagementSettingsState {[key: string]: ContentEngagementSettings};
+
+export const contentEngagementDefaultState: ContentEngagementSettingsState = {}

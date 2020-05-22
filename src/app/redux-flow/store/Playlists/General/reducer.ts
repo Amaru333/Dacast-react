@@ -1,56 +1,41 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, PlaylistDetails } from './types';
+import { ActionTypes, PlaylistDetailsState, initialPlaylistGeneralState } from './types';
 
-const initialPlaylistGeneralState: PlaylistDetails = {
-    id: "",
-    online: false,
-    title: "",
-    folder: "",
-    description: "",
-    thumbnail: null,
-    splashscreen: null
-}
 
-const reducer: Reducer<PlaylistDetails> = (state = initialPlaylistGeneralState, action: Action) => {
+
+const reducer: Reducer<PlaylistDetailsState> = (state = initialPlaylistGeneralState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_DETAILS:
             return {
-                ...state, ...action.payload
+                ...state, 
+                [action.payload.data.id] : {
+                    ...state[action.payload.data.id],
+                    ...action.payload.data
+                }
             };
         case ActionTypes.EDIT_PLAYLIST_DETAILS:
             return {
-                ...state, ...action.payload
-            };
-        case ActionTypes.CHANGE_PLAYLIST_THUMBNAIL:
-            return {
                 ...state,
-                ...action.payload
+                [action.payload.id] : {
+                    ...state[action.payload.id],
+                    ...action.payload
+                }
             };
-        case ActionTypes.DELETE_PLAYLIST_THUMBNAIL:
+        case ActionTypes.GET_UPLOAD_URL:
             return {
-                ...state, thumbnail: ""
-            };
-        case ActionTypes.CHANGE_PLAYLIST_SPLASHSCREEN:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case ActionTypes.DELETE_PLAYLIST_SPLASHSCREEN:
-            return {
-                ...state, splashscreen: ""
-            };
-        case ActionTypes.CHANGE_PLAYLIST_POSTER:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case ActionTypes.DELETE_PLAYLIST_POSTER:
-            return {
-                ...state, poster: ""
-            };
+                ...state, 
+                [action.payload.id] : {
+                    ...state[action.payload.id],
+                    uploadurl: action.payload.data.presignedURL
+                }
+            }
+        case ActionTypes.UPLOAD_IMAGE:
+            return state
+        case ActionTypes.DELETE_IMAGE:
+            return state
         default:
-            return state;
+            return state
     }
 };
 

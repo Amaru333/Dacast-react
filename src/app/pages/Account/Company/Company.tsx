@@ -44,7 +44,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     
     let {CompanyPageDetails} = props;
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.CompanyPageDetails.logoURL);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -57,10 +57,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }, []);
 
     React.useEffect(() => {
-        if(props.CompanyPageDetails.logoUrl && !props.CompanyPageDetails.uploadLogoUrl) {
-            setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        if(!props.CompanyPageDetails.logoURL && !props.CompanyPageDetails.uploadLogoUrl) {
+            setUploadedFileUrl(CompanyPageDetails.logoURL)
         }
-    }, [props.CompanyPageDetails.logoUrl])
+    }, [props.CompanyPageDetails.logoURL])
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
@@ -100,7 +100,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('hey')
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
@@ -114,8 +113,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-               
+        e.preventDefault();     
     }
 
     React.useEffect(() => {
@@ -142,12 +140,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                 <div style={{width:'100%'}} className=''>
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
-                                    <label htmlFor='changeButton'>
-                                    <LinkStyle>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
+                                        <label htmlFor='changeButton'>
+                                            <LinkStyle>
+                                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                         Change
-                                    </LinkStyle>
-                                </label>
+                                            </LinkStyle>
+                                        </label>
                                     </Button>
                                 </div>
                                 <ImageStyle src={uploadedFileUrl}></ImageStyle>
@@ -315,6 +313,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                         <input type="hidden" name="country" ref={register()} />
                         <DropdownSingle hasSearch 
+                            direction='up'
                             callback={(value: string) => setValue('country', value)}
                             dropdownDefaultSelect={!props.CompanyPageDetails.country ? "United States" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='country' dropdownTitle='Country' 

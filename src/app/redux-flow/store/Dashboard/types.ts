@@ -1,13 +1,15 @@
 export enum ActionTypes {
     GET_DASHBOARD_DETAILS = "@@dashboard/GET_DASHBOARD_DETAILS",
+    GET_DASHBOARD_VOD_PLAY_RATE = "@@dashboard/GET_DASHBOARD_VOD_PLAY_RATE",
+    GET_DASHBOARD_VOD_PLAY = "@@dasboard/GET_DASHBOARD_VOD_PLAY"
 }
 
 export interface DashboardInfos {
-    isVod: false | DashboardVod;
+    vod: false | DashboardVod;
     isTrial: false | DashboardTrial;
     isPayingPlan: false | DashboardPayingPlan;
     isPaywall: false | DashboardPaywall;
-    isLive: false | DashboardLive;
+    live: false | DashboardLive;
     generalInfos: DashboardGeneral;
 }
 
@@ -43,16 +45,17 @@ interface TopContent { name: string; viewers: number }
 
 export interface DashboardVod {
     totalVideos: number;
-    videoPlays: number;
-    impressions: number;
-    topVideos: TopContent[];
+    videoPlays: {jobID: string; data: number};
+    impressions: {jobID: string; data: number};
+    topVideos:{ jobID: string; data: TopContent[]};
+    'play-rate': {jobID: string; data: any;}
 }
 
 export interface DashboardLive {
     activeChannels: number;
     totalChannels: number;
-    liveViewers: number;
-    topChannels: TopContent[];
+    liveViewers: {jobID: string;data: number};
+    topChannels:{jobID: string; data: TopContent[]};
 }
 
 export interface DashboardPaywall {
