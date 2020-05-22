@@ -15,7 +15,7 @@ const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Act
                             return {
                                 ...item,
                                 objectID: item.splitPath ? item.objectID : item.objectID.split('_')[1],
-                                title: item.splitPath ? item.splitPath.filter(f => f)[item.splitPath.filter(f => f).length - 1] : item.title,
+                                title: item.name ? item.name : item.title,
                                 type: item.splitPath ? 'folder' : item.type
 
                             }

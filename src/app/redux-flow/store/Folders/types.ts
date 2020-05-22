@@ -46,6 +46,7 @@ export interface FolderAsset {
     status: 'deleted' | 'offline' | 'online' | 'processing';
     splitPath?: string[];
     path?: string;
+    name?: string;
 
 }
 

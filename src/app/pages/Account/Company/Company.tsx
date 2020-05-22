@@ -44,7 +44,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     
     let {CompanyPageDetails} = props;
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.CompanyPageDetails.logoURL);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -57,10 +57,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }, []);
 
     React.useEffect(() => {
-        if(props.CompanyPageDetails.logoUrl && !props.CompanyPageDetails.uploadLogoUrl) {
-            setUploadedFileUrl(CompanyPageDetails.logoUrl)
+        if(!props.CompanyPageDetails.logoURL && !props.CompanyPageDetails.uploadLogoUrl) {
+            setUploadedFileUrl(CompanyPageDetails.logoURL)
         }
-    }, [props.CompanyPageDetails.logoUrl])
+    }, [props.CompanyPageDetails.logoURL])
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 

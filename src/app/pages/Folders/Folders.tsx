@@ -358,7 +358,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     hasChild: false,
                                     subfolders: 0,
                                     nbChildren: 0,
-                                    fullPath: row.path,
+                                    fullPath: row.path + row.title,
                                     loadingStatus: 'not-loaded',
                                     children: {}} : null)}
                             >
@@ -423,7 +423,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
                                 }
                                 <div>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(false) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
 
                                     <DropdownList direction='up' hasSearch={false} ref={bulkActionsDropdownListRef} style={{}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}

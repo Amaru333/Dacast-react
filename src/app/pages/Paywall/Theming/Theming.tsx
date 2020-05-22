@@ -259,8 +259,15 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             });  
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setThemeLogo',
-                                value: !selectedTheme.loginScreen.hasCompanyLogo
-                            });  
+                                value: selectedTheme.loginScreen.hasCompanyLogo
+                            });
+                            if(props.companyState.logoURL) {
+                                inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
+                                    action: 'setLogoSrc',
+                                    value: props.companyState.logoURL 
+                                });
+                            }
+                            
                         }}
                     />
                 </Card>
