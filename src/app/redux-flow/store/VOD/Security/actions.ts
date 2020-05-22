@@ -33,6 +33,7 @@ export const saveVodSecuritySettingsAction = (data: SecuritySettings, vodId: str
         await VodSecurityServices.saveVodSecuritySettingsService(data, vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_VOD_SECURITY_SETTINGS, payload:  { contentId: vodId, securitySettings: data } } );
+                dispatch(showToastNotification(`Changes have been saved`, 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

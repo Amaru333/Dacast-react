@@ -10,6 +10,8 @@ import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecuritySettings, SecuritySettings, ContentSecuritySettingsState } from '../../redux-flow/store/Settings/Security/types';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 interface VodSecurityContainerProps {
     vodSecuritySettings: ContentSecuritySettings;
@@ -18,6 +20,7 @@ interface VodSecurityContainerProps {
     getVodSecuritySettings: Function;
     saveVodSecuritySettings: Function;
     getSettingsSecurityOptions: Function;
+    showToast: Function;
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
@@ -44,6 +47,7 @@ export const VodSecurity = (props: VodSecurityContainerProps) => {
                             globalSecuritySettings={props.globalSecuritySettings}
                             saveContentSecuritySettings={props.saveVodSecuritySettings}
                             getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                            showToast={props.showToast}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -70,6 +74,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     }
 }
 
