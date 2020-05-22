@@ -53,7 +53,7 @@ export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, 
             .then( response => {
                 dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
             }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }

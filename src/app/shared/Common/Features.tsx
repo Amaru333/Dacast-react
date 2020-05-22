@@ -18,7 +18,7 @@ export interface FeaturesList {
 
 export const handleFeatures = (item: FolderAsset | VodItem | LiveItem | PlaylistItem, id: string): JSX.Element[] => {
     var element = []
-    if (item.featuresList.paywall || (item.title && item.title.indexOf('Yoga') > 0) || (item.title &&  item.title.indexOf('Classroom') > 0) ) {
+    if (item.featuresList.paywall) {
         element.push(
             <IconGreyContainer key={'featureIconPaywall' + id} className="mr1" >
                 <IconStyle fontSize="small" id={"paywallTooltip" + id} coloricon='gray-3'>attach_money</IconStyle>

@@ -77,9 +77,7 @@ export const reducerList: Reducer<SearchResult | false> = (state = initialVodLis
         case ActionTypes.POST_VOD:
             return state           
         case ActionTypes.GET_VOD_LIST:
-            //TODO DELETE AFTER DEMO
-            let vodList = action.payload.data.results.map((vod: VodItem) => {return {...vod, views: Math.floor(Math.random() * (20 - 1 + 1) ) + 1, objectID: vod.objectID.substring(4)}})
-            //let vodList = action.payload.data.results.map((vod: VodItem) => {return {...vod, objectID: vod.objectID.substring(4)}})
+            let vodList = action.payload.data.results.map((vod: VodItem) => {return {...vod, objectID: vod.objectID.substring(4)}})
             return {...action.payload.data, results: vodList}
         case ActionTypes.DELETE_VOD:
             if(state) {

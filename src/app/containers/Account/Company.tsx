@@ -23,7 +23,6 @@ const Company = (props: CompanyContainerProps) => {
     React.useEffect( () => {
         if(!props.CompanyInfos) {
             props.getCompanyPageDetails();
-            props.getCompanyPageLogoUrl()
         }
 
     }, [])
@@ -49,9 +48,6 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getCompanyPageDetails: () => {
             dispatch(getCompanyPageDetailsAction());
-        },
-        getCompanyPageLogoUrl: () => {
-            dispatch(getCompanyPageLogoUrlAction());
         },
         saveCompanyPageDetails: (data: CompanyPageInfos, callback: Function) => {
             dispatch(saveCompanyPageDetailsAction(data)).then(callback);
