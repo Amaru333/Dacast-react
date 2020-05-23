@@ -38,13 +38,13 @@ export const DragAndDrop = (props: {hasError: boolean; handleDrop: Function} & R
     React.useEffect(() => {
         if(dropRef.current !== null) {
             dropRef.current.addEventListener('dragenter', handleDragIn)
-            dropRef.current.addEventListener('dragleave', handleDragOut)
+            dropRef.current.addEventListener('dragend', handleDragOut)
             dropRef.current.addEventListener('dragover', handleDrag)
             dropRef.current.addEventListener('drop', handleDrop)
     
             return () => {
                 dropRef.current!.removeEventListener('dragenter', handleDragIn)
-                dropRef.current!.removeEventListener('dragleave', handleDragOut)
+                dropRef.current!.removeEventListener('dragend', handleDragOut)
                 dropRef.current!.removeEventListener('dragover', handleDrag)
                 dropRef.current!.removeEventListener('drop', handleDrop)
             }
