@@ -24,7 +24,7 @@ import { languages } from 'countries-list';
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
-    const emptySubtitle = { id: "", fileName: "", languageLongName: "", languageShortName: "" }
+    const emptySubtitle = { targetID: "", fileName: "", languageLongName: "", languageShortName: "" }
 
     const {userId} = addTokenToHeader()
 
@@ -63,9 +63,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                 <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
                 <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
                 <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
-                    <ActionIcon id={"downloadSubtitleTooltip" + key}><IconStyle>get_app</IconStyle></ActionIcon>
+                    <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
                     <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
-                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteFile(props.vodDetails.id, value.id)}>delete</IconStyle></ActionIcon>
+                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.vodDetails.id, value.targetID, value.fileName)}>delete</IconStyle></ActionIcon>
                     <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
                     <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
                     <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
@@ -90,7 +90,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         if(props.vodDetails.uploadurl && subtitleModalOpen) {
-            props.uploadFile(props.vodDetails.uploadurl, SubtitleFile)
+            props.addSubtitle(subtitleFile, props.vodDetails.uploadurl, uploadedSubtitleFile, props.vodDetails.id)
             setUploadedSubtitleFile(emptySubtitle)
             setSubtitleModalOpen(false);
         }
@@ -114,17 +114,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['.srt', '.vtt'];
-        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+        if(file.length > 0) {
             const reader = new FileReader();
             reader.onload = () => {
-                let acceptedRatio = true;
-                const img = new Image();
-                img.onload = () => {
-                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
-                }
-                if(acceptedRatio) {
-                    setSubtitleFile(file[0])
-                }
+                setSubtitleFile(file[0])
+                setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: file[0].name})
             }
             reader.readAsDataURL(file[0])
         }
@@ -141,7 +135,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
-        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
@@ -320,7 +314,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                                     <Text size={14} weight="med">{item.label}</Text>
                                                 </LinkBoxLabel>
                                                 <LinkBox>
-                                                    <LinkText>
+                                                    <LinkText size={14}>
                                                         <Text size={14} weight="reg">{item.link}</Text>
                                                     </LinkText>
                                                     <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
@@ -337,6 +331,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
                         <ModalContent>
                             <DropdownSingle
+                                hasSearch
                                 className="col col-12"
                                 id="subtitleLanguage"
                                 dropdownTitle="Subtitle Language"
