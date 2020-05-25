@@ -17,6 +17,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
+    console.log(props);
+
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -100,7 +102,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     }
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent.map((row) => {
+        return props.folderData.requestedContent.results.map((row) => {
             if (row.contentType === "playlist" || selectedItems.includes(row)) {
                 return;
             }

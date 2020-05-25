@@ -111,10 +111,10 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation.data : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
+                    <AnalyticsCard dataName="consumptionPerLocation" data={props.dashboardAnalytics.data.consumptionPerLocation ? props.dashboardAnalytics.data.consumptionPerLocation : []} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
                             props.dashboardAnalytics.data.consumptionPerLocation ?
-                                renderMap(props.dashboardAnalytics.data.consumptionPerLocation.data, 'dashbordMapConsumptionPerLocation') :
+                                renderMap(props.dashboardAnalytics.data.consumptionPerLocation, 'dashbordMapConsumptionPerLocation') :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
                     </AnalyticsCard>

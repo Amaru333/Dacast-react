@@ -77,6 +77,7 @@ export const getAnalyticsRealTimeConsumptionLocationAction = (jobId: string, opt
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRealTimeConsumptionLocation> ) => {
         await AnalyticsRealTimeServices.getAnalyticsRealTimeConsumptionLocationService(jobId, options)
             .then( response => {
+                console.log(response);
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

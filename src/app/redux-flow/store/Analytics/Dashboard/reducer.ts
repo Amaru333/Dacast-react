@@ -22,7 +22,7 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION :
             return {
                 ...state,
-                data: { ...state.data, consumptionPerLocation:  action.payload.data}
+                data: { ...state.data, consumptionPerLocation:  action.payload ? action.payload.data.map.filter(element => element.consumedMB !== undefined) : false }
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME :
             return {

@@ -88,7 +88,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Consumption by Location">
                         {
                             props.realTimeAnalytics.data.consumptionPerLocation ?
-                                renderMap(props.realTimeAnalytics.data.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')
+                                renderMap(props.realTimeAnalytics.data.consumptionPerLocation, 'realTimeAnalyticsConsumptionPerLocation')
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
