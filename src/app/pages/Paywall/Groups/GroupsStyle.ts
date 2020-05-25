@@ -9,7 +9,7 @@ export const ContainerHalfSelector = styled.div<{}>`
     background-color: white;
     border: 1px solid ${props => props.theme.colors["gray-7"]};;
     height: 430px; 
-    overflow-x: scroll;
+    overflow-x: auto;
 `
 
 export const HeaderBorder = styled.div<{}>`

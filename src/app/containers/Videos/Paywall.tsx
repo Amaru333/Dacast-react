@@ -11,6 +11,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { PresetsPageInfos, getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 var moment = require('moment-timezone');
 
 export interface VodPaywallComponentProps {
@@ -33,6 +35,7 @@ export interface VodPaywallComponentProps {
     customPromoPresetList: Promo[];
     createPromoPreset: Function;
     createPricePreset: Function;
+    showToast: Function;
 }
 
 const VodPaywall = (props: VodPaywallComponentProps) => {
@@ -157,6 +160,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         createPromoPreset: (data: Promo) => {
             dispatch(createPromoPresetAction(data));
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
 
     }
 }

@@ -69,7 +69,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.liveDetails.splashscreen.url },
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.liveDetails.thumbnail.url },
         { id: "poster", label: "Poster", enabled: true, link: props.liveDetails.poster.url },
-        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=live-${props.liveDetails.id}"  class="dacast-video"></script>` },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-live-${props.liveDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-live-${props.liveDetails.id}"  class="dacast-video"></script>` },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
     ]
 
@@ -241,7 +241,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -265,7 +265,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>
                                 <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -288,7 +288,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Poster</Text>
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

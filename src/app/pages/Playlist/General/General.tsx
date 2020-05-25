@@ -68,7 +68,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url},
         { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url},
-        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
     let splashScreenEnable = Object.keys(props.playlistDetails.splashscreen).length !== 0;
@@ -154,7 +154,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Splashscreen Tooltip</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -177,7 +177,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <ImageContainer className="mr2 xs-mb25 xs-mr0">
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Thumbnail</Text>  <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                <Tooltip target="thumbnailTooltip">Thumbnail Tooltip</Tooltip>
+                                <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
@@ -199,7 +199,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <ImageContainer>
                             <div className="flex flex-center">
                                 <Text className="mr1" size={16} weight="med">Poster</Text>  <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                <Tooltip target="posterTooltip">Poster Tooltip</Tooltip>
+                                <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

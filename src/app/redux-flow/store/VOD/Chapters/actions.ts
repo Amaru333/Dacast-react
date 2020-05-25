@@ -42,6 +42,7 @@ export const saveVodChapterMarkerAction = (vodId: string, data: ChapterMarker[])
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
                 dispatch( {type: ActionTypes.SAVE_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
+                dispatch(showToastNotification(`Chapter has been saved`, 'fixed', "success"))
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -54,6 +55,7 @@ export const addVodChapterMarkerAction = (vodId: string, data: ChapterMarker[]):
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
                 dispatch( {type: ActionTypes.ADD_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
+                dispatch(showToastNotification(`Chapter has been saved`, 'fixed', "success"))
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -66,6 +68,7 @@ export const deleteVodChapterMarkerAction = (vodId: string, data: ChapterMarker[
         await VodChaptersServices.saveVodChapterMarkerService(vodId, data)
             .then( () => {
                 dispatch( {type: ActionTypes.DELETE_VOD_CHAPTER_MARKER, payload:{id: vodId, data: data} } )
+                dispatch(showToastNotification(`Chapter has been deleted`, 'fixed', "success"))
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

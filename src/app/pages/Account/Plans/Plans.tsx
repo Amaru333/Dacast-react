@@ -370,7 +370,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                 <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
                     <Elements>
                         {
-                            stepperPlanOpened ?
+                            stepperPlanOpened &&
                                 <CustomStepper 
                                     opened={stepperPlanOpened}
                                     stepperHeader='Upgrade Plan'
@@ -385,7 +385,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     functionCancel={setStepperPlanOpened}
                                     finalFunction={() => purchasePlan()}
                                 />
-                                : null
+                                
                         }
 
                     </Elements>
@@ -409,7 +409,7 @@ const AllowancesList = styled.div`
     flex-direction: column;
 `
 const ScrollContainer = styled.div`
-    overflow-x: scroll;
+    overflow-x: auto;
     margin-right: -24px;
 `
 

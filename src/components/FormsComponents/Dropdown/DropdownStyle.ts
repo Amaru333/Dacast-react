@@ -10,6 +10,7 @@ export const ContainerStyle = styled.div<{}>`
 export const DropdownLabel = styled.div`
     display: flex;
     margin: 4px 0;
+    justify-content: space-between;
 `;
 
 export const TitleContainer = styled.div<{isWhiteBackground: boolean; isOpened: boolean; isNavigation: boolean | undefined; disabled: boolean}>`
@@ -42,7 +43,7 @@ export const Title = styled.div`
     overflow: hidden;
 `;
 
-export const IconStyle = styled.div<{disabled: boolean}>`
+export const ArrowIconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 19px;
     top: 17%;
@@ -76,7 +77,7 @@ export const DropdownList = styled.ul<{direction: 'up' | 'down'; displayDropdown
     padding-inline-end: 0px;
     padding-block-end: 8px;
     max-height: 218px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     box-shadow: 0px 1px 4px rgba(34, 47, 62, 0.1);

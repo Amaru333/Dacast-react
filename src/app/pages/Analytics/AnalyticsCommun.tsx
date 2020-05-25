@@ -106,7 +106,7 @@ export const AnalyticsContainerHalfSelector = styled.div<{}>`
     background-color: white;
     border: 1px solid ${props => props.theme.colors["gray-7"]};;
     height: 256px; 
-    overflow-x: scroll;
+    overflow-x: auto;
 `
 
 export const BreadcrumbContainer = styled.div`

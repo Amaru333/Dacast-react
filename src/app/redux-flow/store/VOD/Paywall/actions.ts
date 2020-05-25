@@ -60,6 +60,7 @@ export const saveVodPaywallInfosAction = (data: VodPaywallPageInfos): ThunkDispa
         await VodPaywallServices.saveVodPaywallInfos(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_VOD_PAYWALL_INFOS, payload: response.data});
+                dispatch(showToastNotification(`Changes have been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -71,6 +72,7 @@ export const createVodPricePresetAction = (data: Preset): ThunkDispatch<Promise<
         await VodPaywallServices.createVodPricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_VOD_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Price has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -82,6 +84,7 @@ export const saveVodPricePresetAction = (data: Preset): ThunkDispatch<Promise<vo
         await VodPaywallServices.saveVodPricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_VOD_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Price has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -93,6 +96,7 @@ export const deleteVodPricePresetAction = (data: Preset): ThunkDispatch<Promise<
         await VodPaywallServices.deleteVodPricePreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_VOD_PRICE_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Price has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -104,6 +108,7 @@ export const createVodPromoPresetAction = (data: Promo): ThunkDispatch<Promise<v
         await VodPaywallServices.createVodPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_VOD_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Promo has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -115,6 +120,7 @@ export const saveVodPromoPresetAction = (data: Promo): ThunkDispatch<Promise<voi
         await VodPaywallServices.saveVodPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_VOD_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Promo has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -126,6 +132,7 @@ export const deleteVodPromoPresetAction = (data: Promo): ThunkDispatch<Promise<v
         await VodPaywallServices.deleteVodPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_VOD_PROMO_PRESET, payload: response.data})
+                dispatch(showToastNotification(`Promo has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })

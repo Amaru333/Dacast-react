@@ -68,13 +68,13 @@ const editVodDetailsService = async (data: VodDetails) => {
 }
 
 const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
-    let requestData: {vodID: string; fileName?: string; languageLongName?: string; languageShortName?: string} = {
+    let requestData: {vodID: string; name?: string; languageLongName?: string; languageShortName?: string} = {
         vodID: vodId
     }
     if(subtitleInfo) {
         requestData = {
             vodID: vodId,
-            fileName: subtitleInfo.fileName,
+            name: subtitleInfo.fileName,
             languageLongName: subtitleInfo.languageLongName,
             languageShortName: subtitleInfo.languageShortName
         }
@@ -93,6 +93,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
+    debugger
     return axios.put(uploadUrl, data)
 }
 

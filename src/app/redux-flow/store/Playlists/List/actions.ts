@@ -26,11 +26,12 @@ export const getPlaylistListAction = (qs: string): ThunkDispatch<Promise<void>, 
     };
 }
 
-export const deletePlaylistAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylist> => {
+export const deletePlaylistAction = (playlistId: string, title: string): ThunkDispatch<Promise<void>, {}, DeletePlaylist> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylist>) => {
         await PlaylistListServices.deletePlaylistService(playlistId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_PLAYLIST, payload: {id: playlistId} })
+                dispatch(showToastNotification(`${title} deleted`, 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
