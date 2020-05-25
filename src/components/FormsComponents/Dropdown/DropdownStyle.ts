@@ -50,7 +50,7 @@ export const ArrowIconStyle = styled.div<{disabled: boolean}>`
     color: ${props => props.disabled ? props.theme.colors['gray-5'] : props.theme.colors['gray-1']};
 `;
 
-export const DropdownList = styled.ul<{direction: 'up' | 'down'; displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
+export const DropdownList = styled.ul<{direction?: 'up' | 'down'; displayDropdown: boolean; isNavigation: boolean; isSingle: boolean; isInModal: boolean; hasSearch?: boolean}>`
     display: none;
     position: absolute;
     z-index: 999;
@@ -64,8 +64,8 @@ export const DropdownList = styled.ul<{direction: 'up' | 'down'; displayDropdown
     /* right: .5rem;
     left: .5rem; */
     `}
-    ${props => props.direction === 'down' && css `
-        top: -240px;
+    ${props => props.direction === 'up' && css `
+        top: -258px;
     `}
 
     background-color: ${props => props.theme.colors.white};

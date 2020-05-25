@@ -9,7 +9,7 @@ import { FolderAsset, FoldersInfos, ContentType } from '../../redux-flow/store/F
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { GetAnalyticsViewershipOptions, getAnalyticsViewershipDetailsAction, AnalyticsViewershipState, getAnalyticsViewershipViewingTimeAction, getAnalyticsViewershipConsumptionBreakdownAction, getAnalyticsViewershipPlaysViewersTimeAction, getAnalyticsViewershipConsumptionDeviceAction, getAnalyticsViewershipConsumptionDomainAction, getAnalyticsViewershipConcurrentPlaybackAction } from '../../redux-flow/store/Analytics/Viewership';
+import { GetAnalyticsViewershipOptions, AnalyticsViewershipState, getAnalyticsViewershipPlaysViewersTimeAction, getAnalyticsViewershipConsumptionDeviceAction, getAnalyticsViewershipConsumptionDomainAction, getAnalyticsViewershipConcurrentPlaybackAction, getAnalyticsViewershipConsumptionBreakdownTimeAction, getAnalyticsViewershipConsumptionBreakdownContentAction, getAnalyticsViewershipConsumptionBreakdownMapAction, getAnalyticsViewershipJobIdsAction, getAnalyticsViewershipViewingTimeDeviceAction, getAnalyticsViewershipViewingTimeContentAction, getAnalyticsViewershipViewingTimeMapAction, getAnalyticsViewershipConcurrentPlaybackDeviceAction, getAnalyticsViewershipConcurrentPlaybackContentAction, getAnalyticsViewershipConcurrentPlaybackMapAction } from '../../redux-flow/store/Analytics/Viewership';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -82,23 +82,44 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
-        getAnalyticsViewershipViewingTime: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipViewingTimeAction(dates));
+        getAnalyticsViewershipJobIds: () => {
+            dispatch(getAnalyticsViewershipJobIdsAction())
         },
-        getAnalyticsViewershipConsumptionBreakdown: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipConsumptionBreakdownAction(dates));
+        getAnalyticsViewershipViewingTimeDevice: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipViewingTimeDeviceAction(jobId, dates));
         },
-        getAnalyticsViewershipPlaysViewersTime: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipPlaysViewersTimeAction(dates));
+        getAnalyticsViewershipViewingTimeContent: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipViewingTimeContentAction(jobId, dates));
         },
-        getAnalyticsViewershipConsumptionDevice: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipConsumptionDeviceAction(dates));
+        getAnalyticsViewershipViewingTimeMap: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipViewingTimeMapAction(jobId, dates));
         },
-        getAnalyticsViewershipConsumptionDomain: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipConsumptionDomainAction(dates));
+        getAnalyticsViewershipConsumptionBreakdownTime: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConsumptionBreakdownTimeAction(jobId, dates));
         },
-        getAnalyticsViewershipConcurrentPlayback: (dates: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipConcurrentPlaybackAction(dates));
+        getAnalyticsViewershipConsumptionBreakdownContent: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConsumptionBreakdownContentAction(jobId, dates));
+        },
+        getAnalyticsViewershipConsumptionBreakdownLocation: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConsumptionBreakdownMapAction(jobId, dates));
+        },
+        getAnalyticsViewershipPlaysViewersTime: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipPlaysViewersTimeAction(jobId, dates));
+        },
+        getAnalyticsViewershipConsumptionDevice: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConsumptionDeviceAction(jobId, dates));
+        },
+        getAnalyticsViewershipConsumptionDomain: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConsumptionDomainAction(jobId, dates));
+        },
+        getAnalyticsViewershipConcurrentPlaybackDevice: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConcurrentPlaybackDeviceAction(jobId, dates));
+        },
+        getAnalyticsViewershipConcurrentPlaybackContent: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConcurrentPlaybackContentAction(jobId, dates));
+        },
+        getAnalyticsViewershipConcurrentPlaybackMap: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+            dispatch(getAnalyticsViewershipConcurrentPlaybackMapAction(jobId, dates));
         }
 
     };

@@ -1,13 +1,57 @@
-import { ActionTypes, GetAnalyticsViewershipOptions, AnalyticsViewershipConcurrentPlayback, AnalyticsViewershipConsumptionDomain, AnalyticsViewershipConsumptionDevices, AnalyticsViewershipPlaysViewersTime, AnalyticsViewershipConsumptionBreakdown, AnalyticsViewershipViewingTimeBreakdown } from "./types";
+import { ActionTypes, GetAnalyticsViewershipOptions, AnalyticsViewershipConcurrentPlayback, AnalyticsViewershipConsumptionDomain, AnalyticsViewershipConsumptionDevices, AnalyticsViewershipPlaysViewersTime, AnalyticsViewershipConsumptionBreakdown, AnalyticsViewershipViewingTimeBreakdown, ViewershipJobIDs } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { AnalyticsViewershipServices } from './services';
 import { showToastNotification } from '../../Toasts';
 
-export interface GetAnalyticsViewershipConcurrentPlayback {
-    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK;
+export interface GetAnalyticsViewershipJobIds {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS;
+    payload:  {data: ViewershipJobIDs};
+}
+
+export interface GetAnalyticsViewershipConcurrentPlaybackDevice {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_DEVICE;
     payload: AnalyticsViewershipConcurrentPlayback;
 }
+
+export interface GetAnalyticsViewershipConcurrentPlaybackContent {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT;
+    payload: AnalyticsViewershipConcurrentPlayback;
+}
+
+export interface GetAnalyticsViewershipConcurrentPlaybackMap {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_MAP;
+    payload: AnalyticsViewershipConcurrentPlayback;
+}
+
+export interface GetAnalyticsViewershipConsumptionBreakdownTime {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_TIME;
+    payload: AnalyticsViewershipConsumptionBreakdown;
+}
+export interface GetAnalyticsViewershipConsumptionBreakdownContent {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_CONTENT;
+    payload: AnalyticsViewershipConsumptionBreakdown;
+}
+export interface GetAnalyticsViewershipConsumptionBreakdownMap {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_MAP;
+    payload: AnalyticsViewershipConsumptionBreakdown;
+}
+
+export interface GetAnalyticsViewershipViewingTimeDevice {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_DEVICE;
+    payload: AnalyticsViewershipViewingTimeBreakdown;
+}
+
+export interface GetAnalyticsViewershipViewingTimeContent {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_CONTENT;
+    payload: AnalyticsViewershipViewingTimeBreakdown;
+}
+
+export interface GetAnalyticsViewershipViewingTimeMap {
+    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_MAP;
+    payload: AnalyticsViewershipViewingTimeBreakdown;
+}
+
 export interface GetAnalyticsViewershipConsumptionDomain {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DOMAIN;
     payload: AnalyticsViewershipConsumptionDomain | false;
@@ -20,40 +64,121 @@ export interface GetAnalyticsViewershipPlaysViewersTime {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_PLAYS_VIEWERS_TIME;
     payload: AnalyticsViewershipPlaysViewersTime;
 }
-export interface GetAnalyticsViewershipConsumptionBreakdown {
-    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN;
-    payload: AnalyticsViewershipConsumptionBreakdown;
-}
-export interface GetAnalyticsViewershipViewingTime {
-    type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN;
-    payload: AnalyticsViewershipViewingTimeBreakdown;
-}
 
-export const getAnalyticsViewershipViewingTimeAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipViewingTime> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipViewingTime> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipViewingTimeBreakdownService(options)
+
+export const getAnalyticsViewershipJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipJobIds> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipJobIds> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipJobIds()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export const getAnalyticsViewershipConsumptionBreakdownAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionBreakdown> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionBreakdown> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionBreakdownService(options)
+export const getAnalyticsViewershipViewingTimeContentAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipViewingTimeContent> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipViewingTimeContent> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipViewingTimeBreakdownContentService(jobId, options)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_CONTENT, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export const getAnalyticsViewershipPlaysViewersTimeAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipPlaysViewersTime> => {
+export const getAnalyticsViewershipViewingTimeDeviceAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipViewingTimeDevice> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipViewingTimeDevice> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipViewingTimeBreakdownDeviceService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_DEVICE, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipViewingTimeMapAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipViewingTimeMap> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipViewingTimeMap> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipViewingTimeBreakdownMapService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_MAP, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipConcurrentPlaybackDeviceAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConcurrentPlaybackDevice> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConcurrentPlaybackDevice> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConcurrentPlaybackDeviceService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_DEVICE, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipConcurrentPlaybackContentAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConcurrentPlaybackContent> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConcurrentPlaybackContent> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConcurrentPlaybackContentService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipConcurrentPlaybackMapAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConcurrentPlaybackMap> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConcurrentPlaybackMap> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConcurrentPlaybackMapService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_MAP, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+
+export const getAnalyticsViewershipConsumptionBreakdownTimeAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionBreakdownTime> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionBreakdownTime> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionBreakdownTimeService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_TIME, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipConsumptionBreakdownContentAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionBreakdownContent> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionBreakdownContent> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionBreakdownContentService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_CONTENT, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export const getAnalyticsViewershipConsumptionBreakdownMapAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionBreakdownMap> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionBreakdownMap> ) => {
+        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionBreakdownMapService(jobId, options)
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_MAP, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+export const getAnalyticsViewershipPlaysViewersTimeAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipPlaysViewersTime> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipPlaysViewersTime> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipPlaysViewersTimeService(options)
+        await AnalyticsViewershipServices.getAnalyticsViewershipPlaysViewersTimeService(jobId, options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_PLAYS_VIEWERS_TIME, payload: response.data} );
             }).catch(() => {
@@ -62,9 +187,9 @@ export const getAnalyticsViewershipPlaysViewersTimeAction = (options?:  GetAnaly
     };
 }
 
-export const getAnalyticsViewershipConsumptionDeviceAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionDevice> => {
+export const getAnalyticsViewershipConsumptionDeviceAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionDevice> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionDevice> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionDevicesService(options)
+        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionDevicesService(jobId, options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DEVICE, payload: response.data} );
             }).catch(() => {
@@ -73,9 +198,9 @@ export const getAnalyticsViewershipConsumptionDeviceAction = (options?:  GetAnal
     };
 }
 
-export const getAnalyticsViewershipConsumptionDomainAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionDomain> => {
+export const getAnalyticsViewershipConsumptionDomainAction = (jobId: string, options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConsumptionDomain> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConsumptionDomain> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionDomainService(options)
+        await AnalyticsViewershipServices.getAnalyticsViewershipConsumptionDomainService(jobId, options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DOMAIN, payload: response.data} );
             }).catch(() => {
@@ -84,17 +209,6 @@ export const getAnalyticsViewershipConsumptionDomainAction = (options?:  GetAnal
     };
 }
 
-export const getAnalyticsViewershipConcurrentPlaybackAction = (options?:  GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipConcurrentPlayback> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipConcurrentPlayback> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipConcurrentPlaybackService(options)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-            })
-    };
-}
 
-
-export type Action = GetAnalyticsViewershipConcurrentPlayback | GetAnalyticsViewershipConsumptionDomain | GetAnalyticsViewershipConsumptionDevice | GetAnalyticsViewershipPlaysViewersTime
-| GetAnalyticsViewershipConsumptionBreakdown | GetAnalyticsViewershipViewingTime;
+export type Action = GetAnalyticsViewershipJobIds | GetAnalyticsViewershipConcurrentPlaybackDevice | GetAnalyticsViewershipConcurrentPlaybackContent | GetAnalyticsViewershipConcurrentPlaybackMap| GetAnalyticsViewershipConsumptionDomain | GetAnalyticsViewershipConsumptionDevice | GetAnalyticsViewershipPlaysViewersTime
+| GetAnalyticsViewershipConsumptionBreakdownTime | GetAnalyticsViewershipConsumptionBreakdownContent | GetAnalyticsViewershipConsumptionBreakdownMap | GetAnalyticsViewershipViewingTimeDevice | GetAnalyticsViewershipViewingTimeContent | GetAnalyticsViewershipViewingTimeMap;

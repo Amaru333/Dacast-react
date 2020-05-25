@@ -129,6 +129,7 @@ export function displayTimeForHumans(seconds: number) {
 }
 
 export function displayBytesForHumans(mbAmount: number, fromGB = false) {
+    console.log(mbAmount)
     //amount in MB
     let units = ['MB', 'GB', 'TB'];
     if (fromGB) {

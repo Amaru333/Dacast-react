@@ -22,7 +22,7 @@ export interface CompanyPageInfos {
     town: string;
     zipCode: string;
     country: string;
-    logoUrl?: string;
+    logoURL?: string;
     uploadLogoUrl?: string;
     isUploading?: boolean;
 }
@@ -41,7 +41,7 @@ export const companyInitialState: CompanyPageInfos = {
     town: "",
     zipCode: "",
     country: "",
-    logoUrl: "",
+    logoURL: "",
     uploadLogoUrl: "",
     isUploading: false
 };
