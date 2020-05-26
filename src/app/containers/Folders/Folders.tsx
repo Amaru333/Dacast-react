@@ -33,7 +33,7 @@ const Folders = (props: FoldersComponentProps) => {
         
     }, [])
     return (
-        props.folderData.requestedContent && props.themesList.themes ? 
+        props.folderData && props.themesList.themes ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

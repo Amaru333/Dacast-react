@@ -7,6 +7,8 @@ import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsActio
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 interface CompanyContainerProps {
     CompanyInfos: CompanyPageInfos;
@@ -16,6 +18,7 @@ interface CompanyContainerProps {
     uploadCompanyLogo: Function;
     getCompanyPageLogoUrl: Function;
     deleteCompanyLogo: Function;
+    showToast: Function;
 }
 const Company = (props: CompanyContainerProps) => {
 
@@ -61,6 +64,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteCompanyLogo: () => {
             dispatch(deleteCompanyLogo());
         },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        }
     };
 }
 

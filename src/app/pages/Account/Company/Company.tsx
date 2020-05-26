@@ -26,6 +26,7 @@ interface CompanyComponentProps {
     getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
     deleteCompanyLogo: Function;
+    showToast: Function;
 }
 
 export const CompanyPage = (props: CompanyComponentProps) => {
@@ -326,7 +327,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <ButtonsArea> 
                         <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
-                            onClick={() => reset(props.CompanyPageDetails, {errors: true})}>Discard</Button>
+                            onClick={() => {reset(props.CompanyPageDetails, {errors: true});props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonsArea> : null
             }     
             <Prompt when={dirty} message='' />     
