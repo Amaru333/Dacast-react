@@ -24,7 +24,7 @@ import { languages } from 'countries-list';
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
-    const emptySubtitle = { targetID: "", fileName: "", languageLongName: "", languageShortName: "" }
+    const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "" }
 
     const {userId} = addTokenToHeader()
 
@@ -60,12 +60,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const subtitlesTableBody = () => {
         return VodDetails.subtitles.map((value, key) => {
             return {data: [
-                <Text key={"generalPage_subtitles_" + value.fileName + key} size={14} weight="reg">{value.fileName}</Text>,
+                <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>,
                 <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
-                <IconContainer key={"generalPage_subtitles_actionIcons" + value.fileName + key} className="iconAction">
+                <IconContainer key={"generalPage_subtitles_actionIcons" + value.name + key} className="iconAction">
                     <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
                     <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
-                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.vodDetails.id, value.targetID, value.fileName)}>delete</IconStyle></ActionIcon>
+                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.vodDetails.id, value.targetID, value.name)}>delete</IconStyle></ActionIcon>
                     <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
                     <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
                     <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
@@ -118,7 +118,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
             const reader = new FileReader();
             reader.onload = () => {
                 setSubtitleFile(file[0])
-                setUploadedSubtitleFile({...uploadedSubtitleFile, fileName: file[0].name})
+                setUploadedSubtitleFile({...uploadedSubtitleFile, name: file[0].name})
             }
             reader.readAsDataURL(file[0])
         }
@@ -346,11 +346,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 </label>                                    
                             </Button>
                             <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
-                            {uploadedSubtitleFile.fileName === "" ? null :
+                            {uploadedSubtitleFile.name === "" ? null :
                                 <SubtitleFile className="col mt1">
-                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.fileName}</Text>
+                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
                                     <button style={{ border: "none", backgroundColor: "inherit" }}>
-                                        <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, fileName: "" })} className='flex items-center' customsize={14}>close</IconStyle>
+                                        <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
                                     </button>
                                 </SubtitleFile>
                             }

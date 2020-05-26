@@ -74,7 +74,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
     if(subtitleInfo) {
         requestData = {
             vodID: vodId,
-            name: subtitleInfo.fileName,
+            name: subtitleInfo.name,
             languageLongName: subtitleInfo.languageLongName,
             languageShortName: subtitleInfo.languageShortName
         }
