@@ -37,14 +37,14 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
     const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
 
     const refreshData = (dates: any) => {
-        props.getAnalyticsDashboardConsumptionDevice(dates);
-        props.getAnalyticsDashboardConsumptionLocation(dates);
-        props.getAnalyticsDashboardConsumptionTime(dates);
-        props.getAnalyticsDashboardPlaysViewersTime(dates);
-        props.getAnalyticsDashboardTopContents(dates);
+        props.getAnalyticsDashboardJobIds({end: dates.endDate, start: dates.startDate});
+        //     props.getAnalyticsDashboardConsumptionDevice({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerDevice.jobID);
+        //     props.getAnalyticsDashboardConsumptionLocation({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerLocation.jobID);
+        //     props.getAnalyticsDashboardConsumptionTime({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerTime.jobID);
+        //     props.getAnalyticsDashboardPlaysViewersTime({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.playsViewersPerTime.jobID);
+        //     props.getAnalyticsDashboardTopContents({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.topContents.jobID);
     }
 
-    console.log(props);
     return (
         <React.Fragment>
             <DateFilteringAnalytics refreshData={refreshData} />

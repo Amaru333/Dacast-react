@@ -20,7 +20,47 @@ export interface AnalyticsViewershipConsumptionDomain {
 }
 
 export interface ViewershipJobIDs {
+    consumptionPerContent: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    consumptionPerLocation: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
     consumptionPerTime: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    concurrentPlaybackPerDevice: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    concurrentPlaybackPerLocation: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    concurrentPlaybackPerContent: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    viewingTimePerDevice: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    viewingTimePerContent: {
+        jobID: string;
+        error?: string;
+        status?: string;
+    };
+    viewingTimePerLocation: {
         jobID: string;
         error?: string;
         status?: string;
@@ -35,12 +75,7 @@ export interface ViewershipJobIDs {
         error?: string;
         status?: string;
     };
-    consumptionPerLocation: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    topContents: {
+    consumptionPerDomain: {
         jobID: string;
         error?: string;
         status?: string;
@@ -127,7 +162,7 @@ export interface AnalyticsViewershipInfos {
     playsViewersPerTime: AnalyticsViewershipPlaysViewersTime | false;
     consumptionBreakdown: AnalyticsViewershipConsumptionBreakdown;
     viewingTimeBreakdown: AnalyticsViewershipViewingTimeBreakdown;
-    concurrentPlaybackDevice: AnalyticsViewershipConcurrentPlayback;
+    concurrentPlayback: AnalyticsViewershipConcurrentPlayback;
 }
 
 
@@ -146,21 +181,23 @@ export const AnalyticsViewershipInitialState: AnalyticsViewershipState = {
             device: false,
             map: false
         },
-        concurrentPlaybackDevice: {
+        concurrentPlayback: {
             content: false ,
             map: false ,
             device: false
         }
     },
+    jobIds: null
 };
 
 export interface AnalyticsViewershipState {
     readonly data: AnalyticsViewershipInfos;
+    jobIds: ViewershipJobIDs;
 }
 
 export interface GetAnalyticsViewershipOptions {
-    startDate: number;
-    endDate: number;
+    start: number;
+    end: number;
     selectedContents: string[];
 }
 

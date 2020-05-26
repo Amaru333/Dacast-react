@@ -23,7 +23,6 @@ const ProtectionModalTableData = [
 export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function; playbackProtection: PlaybackProtection}) => {
     const [selectedValue, setSelectedValue] = React.useState<string>('Select');
 
-    console.log(props.playbackProtection)
 
     React.useEffect(() => {
         props.playbackProtection === null || props.playbackProtection.amount === null ? 

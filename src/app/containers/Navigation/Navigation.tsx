@@ -141,7 +141,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         }
     }
 
-    console.log(AddItemsList);
     const renderMenu = () => {
 
         return props.routes.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((element, i) => {

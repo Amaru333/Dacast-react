@@ -3,7 +3,6 @@ import { Action } from "./actions";
 import { ActionTypes, AnalyticsRealTimeInitialState, AnalyticsRealTimeState } from "./types";
 
 const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeInitialState, action: Action) => {
-    console.log(action);
     switch (action.type) {
         case ActionTypes.GET_ANALYTICS_REALTIME_JOB_IDS: 
             return {
@@ -11,7 +10,6 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
                 jobIds: action.payload.data
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION:
-            console.log(action);
             return {
                 ...state,
                 data: { ...state.data, consumptionPerLocation: action.payload ? action.payload.map.filter(element => element.consumedMB !== undefined) : false }

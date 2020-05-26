@@ -6,11 +6,10 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
     switch (action.type) {
         case ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS: 
             return {
-                ...state,
+                data: {...AnalyticsDashboardInitialState.data},
                 jobIds: action.payload.data
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE :
-            console.log(action);
             return {
                 ...state,
                 data: { ...state.data, consumptionPerDevice:  action.payload}
@@ -21,7 +20,6 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
                 data: { ...state.data, consumptionPerTime:  action.payload}
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION :
-            console.log(action);
             return {
                 ...state,
                 data: { ...state.data, consumptionPerLocation:  action.payload ? action.payload.map.filter(element => element.consumedMB !== undefined) : false }

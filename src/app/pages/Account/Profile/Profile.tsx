@@ -46,7 +46,6 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     }
 
     const onPasswordSubmit = (data: any) => {
-        console.log(data);
         props.saveProfilePassword(data.currentPassword, data.newPassword);
         setPasswordModalToggle(false)    
     }
@@ -56,7 +55,6 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         mode: 'onBlur'
     })
 
-    console.log(getValues());
 
     return (
         <div>

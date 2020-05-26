@@ -24,7 +24,6 @@ const Presets = (props: PresetsComponentProps) => {
         if(!props.presetsInfos) {
             props.getPresetsInfos()
         }
-        console.log(props.presetsInfos)
     }, [props.presetsInfos])
 
     return (

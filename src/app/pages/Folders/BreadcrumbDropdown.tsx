@@ -20,11 +20,6 @@ export const BreadcrumbDropdown = (props: {options: string; callback: Function; 
         setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)
     });
 
-    React.useEffect(() => {
-        console.log(props.options)
-    }, [props.options])
-
-
     const renderBreadcrumbDropdownList = () => {
         return (
             props.dropdownOptions.map((name, i) => {

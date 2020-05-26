@@ -10,7 +10,7 @@ var qs = require('qs');
 const getAnalyticsViewershipJobIds = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewership??contentIDs=~' + userId, 
+    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewership?contentIDs=~' + userId, 
         {
             headers: {
                 Authorization: token
@@ -22,7 +22,9 @@ const getAnalyticsViewershipJobIds = async () => {
 const getAnalyticsViewershipConsumptionDomainService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/domain/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/domain/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -30,12 +32,14 @@ const getAnalyticsViewershipConsumptionDomainService = async (jobId: string, opt
 const getAnalyticsViewershipConsumptionDevicesService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/device/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 
-const getAnalyticsViewershipPlaysViewersTimeService = (jobId: string, options?: GetAnalyticsViewershipOptions) => {
+const getAnalyticsViewershipPlaysViewersTimeService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     return axios.get(urlBase + 'viewership-plays-viewers-time', {params: {...options}, paramsSerializer: params => {
         return qs.stringify(params);
     } } );
@@ -46,7 +50,9 @@ const getAnalyticsViewershipPlaysViewersTimeService = (jobId: string, options?: 
 const getAnalyticsViewershipConsumptionBreakdownMapService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/location/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/location/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -55,7 +61,9 @@ const getAnalyticsViewershipConsumptionBreakdownMapService = async (jobId: strin
 const getAnalyticsViewershipConsumptionBreakdownContentService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/content/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -63,49 +71,63 @@ const getAnalyticsViewershipConsumptionBreakdownContentService = async (jobId: s
 const getAnalyticsViewershipConsumptionBreakdownTimeService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/time/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/time/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipViewingTimeBreakdownDeviceService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/device/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipViewingTimeBreakdownContentService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/content/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipViewingTimeBreakdownMapService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/location/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/location/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipConcurrentPlaybackDeviceService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/device/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipConcurrentPlaybackContentService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/content/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
 const getAnalyticsViewershipConcurrentPlaybackMapService = async (jobId: string, options?: GetAnalyticsViewershipOptions) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/map/fetch?jobID=${jobId}`, token)
+    var stringOption = qs.stringify(options);
+
+    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/map/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 

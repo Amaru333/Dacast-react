@@ -1,12 +1,10 @@
 import React from 'react';
 import {LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, deleteContentAction, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
-import { SetupPage } from '../../pages/Playlist/Setup/Setup';
+import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { GetAnalyticsViewershipOptions, AnalyticsViewershipState, getAnalyticsViewershipPlaysViewersTimeAction, getAnalyticsViewershipConsumptionDeviceAction, getAnalyticsViewershipConsumptionDomainAction, getAnalyticsViewershipConcurrentPlaybackAction, getAnalyticsViewershipConsumptionBreakdownTimeAction, getAnalyticsViewershipConsumptionBreakdownContentAction, getAnalyticsViewershipConsumptionBreakdownMapAction, getAnalyticsViewershipJobIdsAction, getAnalyticsViewershipViewingTimeDeviceAction, getAnalyticsViewershipViewingTimeContentAction, getAnalyticsViewershipViewingTimeMapAction, getAnalyticsViewershipConcurrentPlaybackDeviceAction, getAnalyticsViewershipConcurrentPlaybackContentAction, getAnalyticsViewershipConcurrentPlaybackMapAction } from '../../redux-flow/store/Analytics/Viewership';
@@ -19,58 +17,97 @@ export interface ViewershipComponentProps {
     addFolder: Function;
     deleteFolder: Function;
     deleteContent: Function;
+    jobIds: any;
     restoreContent: Function;
     renameFolder: Function;
     viewershipAnalytics: AnalyticsViewershipState;
-    getAnalyticsViewershipViewingTime: Function;
-    getAnalyticsViewershipConsumptionBreakdown: Function;
+    getAnalyticsViewershipJobIds: Function;
     getAnalyticsViewershipPlaysViewersTime: Function;
     getAnalyticsViewershipConsumptionDevice: Function;
     getAnalyticsViewershipConsumptionDomain: Function;
-    getAnalyticsViewershipConcurrentPlayback: Function;
+    getAnalyticsViewershipViewingTimeDevice: Function;
+    getAnalyticsViewershipViewingTimeContent: Function;
+    getAnalyticsViewershipViewingTimeMap: Function;
+    getAnalyticsViewershipConsumptionBreakdownTime: Function;
+    getAnalyticsViewershipConsumptionBreakdownContent: Function;
+    getAnalyticsViewershipConsumptionBreakdownMap: Function;
+    getAnalyticsViewershipConcurrentPlaybackDevice: Function;
+    getAnalyticsViewershipConcurrentPlaybackContent: Function;
+    getAnalyticsViewershipConcurrentPlaybackMap: Function;
 }
 
 const Viewership = (props: ViewershipComponentProps) => {
+
     React.useEffect(() => {
+        if(!props.viewershipAnalytics.jobIds) {
+            props.getAnalyticsViewershipJobIds()
+        }
+        
         if(!props.folderData) {
             const wait = async () => {
-                await props.getFolderContent(null)
-                //await props.getFolders('/');
+                await props.getFolderContent(null);
             }
             wait()
         }
-        console.log(props);
-        if(!props.viewershipAnalytics.data.consumptionPerDomain) {
-            props.getAnalyticsViewershipConsumptionDomain();
+    })
+
+    React.useEffect(() => {
+        console.log("reset by jobIds")
+        if(props.jobIds && props.jobIds !== null) {
+            if(!props.viewershipAnalytics.data.consumptionBreakdown.content) {
+                props.getAnalyticsViewershipConsumptionBreakdownContent(null, props.viewershipAnalytics.jobIds.consumptionPerContent.jobID);
+            }
+            if(!props.viewershipAnalytics.data.consumptionBreakdown.map) {
+                props.getAnalyticsViewershipConsumptionBreakdownMap(null, props.viewershipAnalytics.jobIds.consumptionPerLocation.jobID);
+            }
+            if(!props.viewershipAnalytics.data.consumptionBreakdown.time) {
+                props.getAnalyticsViewershipConsumptionBreakdownTime(null, props.viewershipAnalytics.jobIds.consumptionPerTime.jobID);
+            }
+            if(!props.viewershipAnalytics.data.concurrentPlayback.content) {
+                props.getAnalyticsViewershipConcurrentPlaybackContent(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerContent.jobID);
+            }
+            if(!props.viewershipAnalytics.data.concurrentPlayback.device) {
+                props.getAnalyticsViewershipConcurrentPlaybackDevice(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerDevice.jobID);
+            }
+            if(!props.viewershipAnalytics.data.concurrentPlayback.map) {
+                props.getAnalyticsViewershipConcurrentPlaybackMap(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerLocation.jobID);
+            }
+            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.device) {
+                props.getAnalyticsViewershipViewingTimeDevice(null, props.viewershipAnalytics.jobIds.viewingTimePerDevice.jobID);
+            }
+            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.content) {
+                props.getAnalyticsViewershipViewingTimeContent(null, props.viewershipAnalytics.jobIds.viewingTimePerContent.jobID);
+            }
+            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.map) {
+                props.getAnalyticsViewershipViewingTimeMap(null, props.viewershipAnalytics.jobIds.viewingTimePerLocation.jobID);
+            }
+            if(!props.viewershipAnalytics.data.consumptionPerDomain) {
+                props.getAnalyticsViewershipConsumptionDomain(null, props.viewershipAnalytics.jobIds.consumptionPerDomain.jobID);
+            }
+            if(!props.viewershipAnalytics.data.consumptionPerDevices) {
+                props.getAnalyticsViewershipConsumptionDevice(null, props.viewershipAnalytics.jobIds.consumptionPerDevice.jobID);
+            }
+            if(!props.viewershipAnalytics.data.playsViewersPerTime) {
+                props.getAnalyticsViewershipPlaysViewersTime(null, props.viewershipAnalytics.jobIds.playsViewersPerTime.jobID);
+            }    
         }
-        if(!props.viewershipAnalytics.data.consumptionPerDevices) {
-            props.getAnalyticsViewershipConsumptionDevice();
-        }
-        if(!props.viewershipAnalytics.data.playsViewersPerTime) {
-            props.getAnalyticsViewershipPlaysViewersTime();
-        }
-        if(!props.viewershipAnalytics.data.consumptionBreakdown) {
-            props.getAnalyticsViewershipConsumptionBreakdown();
-        }
-        if(!props.viewershipAnalytics.data.concurrentPlaybackDevice) {
-            props.getAnalyticsViewershipConcurrentPlayback();
-        }
-        if(!props.viewershipAnalytics.data.viewingTimeBreakdown) {
-            props.getAnalyticsViewershipViewingTime();
-        }
-    }, [])
+        
+    }, [props.jobIds])
+
     return (
         props.folderData ? 
             <ViewershipAnalytics {...props} viewershipAnalytics={props.viewershipAnalytics} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
+
 }
 
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         folderData: state.folders.data,
-        viewershipAnalytics: state.analytics.viewership
+        viewershipAnalytics: state.analytics.viewership,
+        jobIds: state.analytics.viewership.jobIds
     };
 }
 
@@ -100,7 +137,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getAnalyticsViewershipConsumptionBreakdownContent: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
             dispatch(getAnalyticsViewershipConsumptionBreakdownContentAction(jobId, dates));
         },
-        getAnalyticsViewershipConsumptionBreakdownLocation: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
+        getAnalyticsViewershipConsumptionBreakdownMap: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
             dispatch(getAnalyticsViewershipConsumptionBreakdownMapAction(jobId, dates));
         },
         getAnalyticsViewershipPlaysViewersTime: (dates: GetAnalyticsViewershipOptions, jobId: string) => {

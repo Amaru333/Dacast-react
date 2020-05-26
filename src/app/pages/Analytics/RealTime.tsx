@@ -11,7 +11,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
     const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
 
-    console.log(props);
     return (
         <React.Fragment>
             <div className="flex items-end col col-12 mb25">

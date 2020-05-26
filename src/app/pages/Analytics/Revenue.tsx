@@ -17,7 +17,6 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
-    console.log(props);
 
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -139,7 +138,6 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
         props.getSalesPerCountry(options);
     }
 
-    console.log(props);
     return (
         <React.Fragment>
             <div className="col col-12 mb25">

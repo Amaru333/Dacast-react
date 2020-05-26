@@ -104,12 +104,23 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     }
 
     const updateData = (dates: any) => {
-        let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
-        props.getAnalyticsViewershipConcurrentPlayback(options);
-        props.getAnalyticsViewershipConsumptionBreakdown(options);
-        props.getAnalyticsViewershipConsumptionDevice(options);
-        props.getAnalyticsViewershipConsumptionDomain(options);
-        props.getAnalyticsViewershipPlaysViewersTime(options);
+
+        //let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
+        let options = { end: dates.endDate, start: dates.startDate };
+
+        props.getAnalyticsViewershipConsumptionBreakdownContent(options, props.viewershipAnalytics.jobIds.consumptionPerContent.jobID);
+        props.getAnalyticsViewershipConsumptionBreakdownMap(options, props.viewershipAnalytics.jobIds.consumptionPerLocation.jobID);
+        props.getAnalyticsViewershipConsumptionBreakdownTime(options, props.viewershipAnalytics.jobIds.consumptionPerTime.jobID);
+        props.getAnalyticsViewershipConcurrentPlaybackContent(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerContent.jobID);
+        props.getAnalyticsViewershipConcurrentPlaybackDevice(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerDevice.jobID);
+        props.getAnalyticsViewershipConcurrentPlaybackMap(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerLocation.jobID);
+        props.getAnalyticsViewershipViewingTimeDevice(options, props.viewershipAnalytics.jobIds.viewingTimePerDevice.jobID);
+        props.getAnalyticsViewershipViewingTimeContent(options, props.viewershipAnalytics.jobIds.viewingTimePerContent.jobID);
+        props.getAnalyticsViewershipViewingTimeMap(options, props.viewershipAnalytics.jobIds.viewingTimePerLocation.jobID);
+        props.getAnalyticsViewershipConsumptionDomain(options, props.viewershipAnalytics.jobIds.consumptionPerDomain.jobID);
+        props.getAnalyticsViewershipConsumptionDevice(options, props.viewershipAnalytics.jobIds.consumptionPerDevice.jobID);
+        props.getAnalyticsViewershipPlaysViewersTime(options, props.viewershipAnalytics.jobIds.playsViewersPerTime.jobID);
+
     }
 
     const renderContentsList = () => {
@@ -226,119 +237,144 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                     </div>
                     <div style={{ float: "right" }} className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="Reports on your data consumption" title="Consumption Breakdown">
+
+                            <TabSetupContainer className="clearfix">
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "time"} onClick={() => { setSelectedTabConsumption("time") }}>
+                                    <Text color={selectedTabConsumption === "time" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Time</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "content"} onClick={() => { setSelectedTabConsumption("content") }}>
+                                    <Text color={selectedTabConsumption === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "map"} onClick={() => { setSelectedTabConsumption("map") }}>
+                                    <Text color={selectedTabConsumption === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
+                                </TabSetupStyles>
+                            </TabSetupContainer>
                             {
-                                viewershipAnalytics.consumptionBreakdown ?
-                                    <>
-                                        <TabSetupContainer className="clearfix">
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "time"} onClick={() => { setSelectedTabConsumption("time") }}>
-                                                <Text color={selectedTabConsumption === "time" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Time</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "content"} onClick={() => { setSelectedTabConsumption("content") }}>
-                                                <Text color={selectedTabConsumption === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabConsumption === "map"} onClick={() => { setSelectedTabConsumption("map") }}>
-                                                <Text color={selectedTabConsumption === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
-                                            </TabSetupStyles>
-                                        </TabSetupContainer>
-                                        <BarChart
-                                            hidden={selectedTabConsumption !== "time"}
-                                            datasetName="GBytes"
-                                            displayBytesFromGB={true}
-                                            beginAtZero={true}
-                                            data={viewershipAnalytics.consumptionBreakdown.time.data}
-                                            yAxesName="GB"
-                                            labels={labelsFormate} />
-                                        <BarChart
-                                            hidden={selectedTabConsumption !== "content"}
-                                            datasetName="GBytes"
-                                            displayBytesFromGB={true}
-                                            beginAtZero={true}
-                                            data={viewershipAnalytics.consumptionBreakdown.content.data}
-                                            yAxesName="GB"
-                                            labels={labelsFormate} />
-                                        <div hidden={selectedTabConsumption !== "map"}>
-                                            {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
-                                        </div>
-                                    </>
+                                viewershipAnalytics.consumptionBreakdown.time ?
+                                    <BarChart
+                                        hidden={selectedTabConsumption !== "time"}
+                                        datasetName="GBytes"
+                                        displayBytesFromGB={true}
+                                        beginAtZero={true}
+                                        data={viewershipAnalytics.consumptionBreakdown.time.data}
+                                        yAxesName="GB"
+                                        labels={labelsFormate} />
                                     :
-                                    <LoadingSpinner center size='medium' color='violet' />
+                                    <LoadingSpinner hidden={selectedTabConsumption !== "time"} center size='medium' color='violet' />
+                            }
+                            {
+                                viewershipAnalytics.consumptionBreakdown.content ?
+                                    <BarChart
+                                        hidden={selectedTabConsumption !== "content"}
+                                        datasetName="GBytes"
+                                        displayBytesFromGB={true}
+                                        beginAtZero={true}
+                                        data={viewershipAnalytics.consumptionBreakdown.content.data}
+                                        yAxesName="GB"
+                                        labels={labelsFormate} />
+                                    :
+                                    <LoadingSpinner hidden={selectedTabConsumption !== "content"} center size='medium' color='violet' />
+                            }
+                            {
+                                viewershipAnalytics.consumptionBreakdown.map ?
+                                    <div hidden={selectedTabConsumption !== "map"}>
+                                        {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
+                                    </div>
+                                    :
+                                    <LoadingSpinner hidden={selectedTabConsumption !== "map"} center size='medium' color='violet' />
                             }
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="Reports on the duration of content consumption" title="Viewing Time Breakdown">
+                            <TabSetupContainer className="clearfix">
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "device"} onClick={() => { setSelectedTabViewing("device") }}>
+                                    <Text color={selectedTabViewing === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "content"} onClick={() => { setSelectedTabViewing("content") }}>
+                                    <Text color={selectedTabViewing === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "map"} onClick={() => { setSelectedTabViewing("map") }}>
+                                    <Text color={selectedTabViewing === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
+                                </TabSetupStyles>
+                            </TabSetupContainer>
                             {
-                                viewershipAnalytics.viewingTimeBreakdown ?
-                                    <>
-                                        <TabSetupContainer className="clearfix">
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "device"} onClick={() => { setSelectedTabViewing("device") }}>
-                                                <Text color={selectedTabViewing === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "content"} onClick={() => { setSelectedTabViewing("content") }}>
-                                                <Text color={selectedTabViewing === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabViewing === "map"} onClick={() => { setSelectedTabViewing("map") }}>
-                                                <Text color={selectedTabViewing === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
-                                            </TabSetupStyles>
-                                        </TabSetupContainer>
-                                        <CheeseChart
-                                            displayBytesFromGB={false}
-                                            data={viewershipAnalytics.viewingTimeBreakdown.device.data}
-                                            labels={viewershipAnalytics.viewingTimeBreakdown.device.labels}
-                                            hidden={selectedTabViewing !== "device"} />
-                                        <BarChart
-                                            datasetName="Minutes"
-                                            displayBytesFromGB={false}
-                                            beginAtZero={true}
-                                            data={viewershipAnalytics.viewingTimeBreakdown.content.data}
-                                            yAxesName="min"
-                                            labels={viewershipAnalytics.viewingTimeBreakdown.content.labels}
-                                            hidden={selectedTabViewing !== "content"} />
-                                        <div hidden={selectedTabViewing !== "map"}>
-                                            {renderMap(viewershipAnalytics.viewingTimeBreakdown.map, "idMapViewing")}
-                                        </div>
-                                    </>
+                                viewershipAnalytics.viewingTimeBreakdown.device ?
+                                    <CheeseChart
+                                        displayBytesFromGB={false}
+                                        data={viewershipAnalytics.viewingTimeBreakdown.device.data}
+                                        labels={viewershipAnalytics.viewingTimeBreakdown.device.labels}
+                                        hidden={selectedTabViewing !== "device"} />
                                     :
-                                    <LoadingSpinner center size='medium' color='violet' />
+                                    <LoadingSpinner hidden={selectedTabViewing !== "device"} center size='medium' color='violet' />
                             }
+                            {
+                                viewershipAnalytics.viewingTimeBreakdown.content ?
+                                    <BarChart
+                                        datasetName="Minutes"
+                                        displayBytesFromGB={false}
+                                        beginAtZero={true}
+                                        data={viewershipAnalytics.viewingTimeBreakdown.content.data}
+                                        yAxesName="min"
+                                        labels={viewershipAnalytics.viewingTimeBreakdown.content.labels}
+                                        hidden={selectedTabViewing !== "content"} />
+                                    :
+                                    <LoadingSpinner hidden={selectedTabViewing !== "content"} center size='medium' color='violet' />
+                            }
+                            {
+                                viewershipAnalytics.viewingTimeBreakdown.map ?
+                                    <div hidden={selectedTabViewing !== "map"}>
+                                        {renderMap(viewershipAnalytics.viewingTimeBreakdown.map, "idMapViewing")}
+                                    </div>
+                                    :
+                                    <LoadingSpinner hidden={selectedTabViewing !== "map"} center size='medium' color='violet' />
+                            }
+
                         </AnalyticsCard>
                     </div>
                     <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="The number of viewers consuming your content at the same time" title="Concurrent Playback Sessions">
+                            <TabSetupContainer className="clearfix">
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "device"} onClick={() => { setSelectedTabPlayback("device") }}>
+                                    <Text color={selectedTabPlayback === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "content"} onClick={() => { setSelectedTabPlayback("content") }}>
+                                    <Text color={selectedTabPlayback === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                                </TabSetupStyles>
+                                <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "map"} onClick={() => { setSelectedTabPlayback("map") }}>
+                                    <Text color={selectedTabPlayback === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
+                                </TabSetupStyles>
+                            </TabSetupContainer>
                             {
-                                viewershipAnalytics.concurrentPlaybackDevice ?
-                                    <>
-                                        <TabSetupContainer className="clearfix">
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "device"} onClick={() => { setSelectedTabPlayback("device") }}>
-                                                <Text color={selectedTabPlayback === "device" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Device</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "content"} onClick={() => { setSelectedTabPlayback("content") }}>
-                                                <Text color={selectedTabPlayback === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
-                                            </TabSetupStyles>
-                                            <TabSetupStyles className="pointer inline col col-3" selected={selectedTabPlayback === "map"} onClick={() => { setSelectedTabPlayback("map") }}>
-                                                <Text color={selectedTabPlayback === "map" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Map</Text>
-                                            </TabSetupStyles>
-                                        </TabSetupContainer>
-                                        <CheeseChart
-                                            displayBytesFromGB={false}
-                                            data={viewershipAnalytics.concurrentPlaybackDevice.device.data}
-                                            labels={viewershipAnalytics.concurrentPlaybackDevice.device.labels}
-                                            hidden={selectedTabPlayback !== "device"} />
-                                        <BarChart
-                                            datasetName="Avg Concurent playback"
-                                            beginAtZero={true}
-                                            data={viewershipAnalytics.concurrentPlaybackDevice.content.data}
-                                            yAxesName="Avg Concurent playback"
-                                            labels={labelsFormate}
-                                            hidden={selectedTabPlayback !== "content"} />
-                                        <div hidden={selectedTabPlayback !== "map"}>
-                                            {renderMap(viewershipAnalytics.concurrentPlaybackDevice.map, "idMapPlayback")}
-                                        </div>
-                                    </>
+                                viewershipAnalytics.concurrentPlayback.device ?
+                                    <CheeseChart
+                                        displayBytesFromGB={false}
+                                        data={viewershipAnalytics.concurrentPlayback.device.data}
+                                        labels={viewershipAnalytics.concurrentPlayback.device.labels}
+                                        hidden={selectedTabPlayback !== "device"} />
                                     :
-                                    <LoadingSpinner center size='medium' color='violet' />
+                                    <LoadingSpinner hidden={selectedTabPlayback !== "device"} center size='medium' color='violet' />
                             }
-
+                            {
+                                viewershipAnalytics.concurrentPlayback.content ?
+                                    <BarChart
+                                        datasetName="Avg Concurent playback"
+                                        beginAtZero={true}
+                                        data={viewershipAnalytics.concurrentPlayback.content.data}
+                                        yAxesName="Avg Concurent playback"
+                                        labels={labelsFormate}
+                                        hidden={selectedTabPlayback !== "content"} />
+                                    :
+                                    <LoadingSpinner hidden={selectedTabPlayback !== "content"} center size='medium' color='violet' />
+                            }
+                            {
+                                viewershipAnalytics.concurrentPlayback.map ?
+                                    <div hidden={selectedTabPlayback !== "map"}>
+                                        {renderMap(viewershipAnalytics.concurrentPlayback.map, "idMapPlayback")}
+                                    </div>
+                                    :
+                                    <LoadingSpinner hidden={selectedTabPlayback !== "map"} center size='medium' color='violet' />
+                            }
                         </AnalyticsCard>
                     </div>
                 </div>

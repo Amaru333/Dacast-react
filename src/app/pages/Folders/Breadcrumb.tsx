@@ -18,7 +18,6 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/').filter(f => f);
         const filteredListLength = options.length
-        console.log(options);
         return (
             options.map((name, i) => {
                 return i < filteredListLength - 2 ? (
@@ -39,11 +38,9 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderOptions = () => {
         if(props.options) {
             const optionsLength = props.options.split('/').filter(f => f).length; 
-            console.log(props.options.split('/').filter(f => f));
             if(optionsLength <= 2) {
                 return props.options.split('/').filter(f => f).map((option, i) => {
-                    console.log(option);
-                    console.log(props.options.split(option)[0] + option + '/');
+                    
                     return(
                         <>
                             {i === 0 &&

@@ -33,7 +33,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
         if(wsData){
             setTimeout(() => {
                 props.getVodRenditions(props.vodId)
-                console.log('get has worked?')
             }, 10000)
         }  
     }, [wsData])
@@ -107,7 +106,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
-            console.log(value)
             return {data: [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0 || (wsData && !wsData.data.completed)}
                     defaultChecked={selectedEncodedRendition.includes(value.name)}
@@ -139,7 +137,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const deleteRenditions = () => {
         event.preventDefault();
-        console.log(selectedEncodedRendition)
         let ids: string[] = []
         props.renditions.encodedRenditions.map(rendition => {
             if(selectedEncodedRendition.includes(rendition.name)) {

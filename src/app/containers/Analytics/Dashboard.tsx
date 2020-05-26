@@ -56,8 +56,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsDashboardJobIds: () => {
-            dispatch(getAnalyticsDashboardJobIdsAction());
+        getAnalyticsDashboardJobIds: (options?: GetAnalyticsDashboardOptions) => {
+            dispatch(getAnalyticsDashboardJobIdsAction(options));
         },
         getAnalyticsDashboardConsumptionLocation: (dates: GetAnalyticsDashboardOptions, jobId: string) => {
             dispatch(getAnalyticsDashboardConsumptionLocationAction(dates, jobId));
