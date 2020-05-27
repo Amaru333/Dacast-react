@@ -6,6 +6,10 @@ const SRC = path.resolve(__dirname, 'public/assets/');
 
 var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
+const envKeys = Object.keys(process.env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(process.env[next]);
+    return prev;
+  }, {});
 
 module.exports = {
     entry: {
@@ -83,6 +87,7 @@ module.exports = {
             template: path.resolve(__dirname, 'src/admin', 'admin.html'),
             excludeAssets: [/app.*/]
         }),
+        new webpack.DefinePlugin(envKeys),
         new HtmlWebpackExcludeAssetsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
