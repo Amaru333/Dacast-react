@@ -68,7 +68,7 @@ const editVodDetailsService = async (data: VodDetails) => {
 }
 
 const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
-    let requestData: {vodID: string; name?: string; languageLongName?: string; languageShortName?: string} = {
+    let requestData: any = {
         vodID: vodId
     }
     if(subtitleInfo) {
