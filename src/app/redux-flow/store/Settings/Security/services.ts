@@ -8,7 +8,7 @@ const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 const getSettingsSecurityOptionsService = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security',
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security',
         {
             headers: {
                 Authorization: token
@@ -20,7 +20,7 @@ const getSettingsSecurityOptionsService = async () => {
 const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security',
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security',
         {...data}, 
         {
             headers: {
@@ -33,7 +33,7 @@ const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
 const createGeoRestrictionGroupService = async (data: GeoRestriction) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions',
+    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions',
         {...data}, 
         {
             headers: {
@@ -46,7 +46,7 @@ const createGeoRestrictionGroupService = async (data: GeoRestriction) => {
 const saveGeoRestrictionGroupService = async (data: GeoRestriction) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {...data}, 
         {
             headers: {
@@ -59,7 +59,7 @@ const saveGeoRestrictionGroupService = async (data: GeoRestriction) => {
 const deleteGeoRestrictionGroupService = async (data: GeoRestriction) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {
             headers: {
                 Authorization: token
@@ -71,7 +71,7 @@ const deleteGeoRestrictionGroupService = async (data: GeoRestriction) => {
 const createDomainControlGroupService = async (data: DomainControl) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions',
+    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions',
         {...data}, 
         {
             headers: {
@@ -84,7 +84,7 @@ const createDomainControlGroupService = async (data: DomainControl) => {
 const saveDomainControlGroupService = async (data: DomainControl) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {...data}, 
         {
             headers: {
@@ -97,7 +97,7 @@ const saveDomainControlGroupService = async (data: DomainControl) => {
 const deleteDomainControlGroupService = async (data: DomainControl) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/security/restrictions/' + data.id,
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {
             headers: {
                 Authorization: token

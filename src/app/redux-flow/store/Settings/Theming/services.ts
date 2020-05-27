@@ -5,7 +5,7 @@ import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 const getThemingList = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/themes',
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes',
         {
             headers: {
                 Authorization: token
@@ -17,7 +17,7 @@ const getThemingList = async () => {
 const  createTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/themes/',
+    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes/',
         {...data, offlineMessagePosition: 1}, 
         {
             headers: {
@@ -30,7 +30,7 @@ const  createTheme = async (data: ThemeOptions) => {
 const saveTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/themes/' + data.id,
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes/' + data.id,
         {...data, offlineMessagePosition: 1}, 
         {
             headers: {
@@ -43,7 +43,7 @@ const saveTheme = async (data: ThemeOptions) => {
 const deleteTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/themes/' + data.id,
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes/' + data.id,
         {
             headers: {
                 Authorization: token

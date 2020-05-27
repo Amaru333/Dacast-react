@@ -63,7 +63,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         await isTokenExpired()
         let {token} = addTokenToHeader();
         
-        return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels',
+        return axios.post(process.env.API_BASE_URL + '/channels',
             {
                 title: streamSetupOptions.title,
                 streamOnline: true,

@@ -8,7 +8,7 @@ const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 const getProfilePageDetailsService = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/profile', {headers: {
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/profile', {headers: {
         'Authorization': token
     }});
 }
@@ -16,7 +16,7 @@ const getProfilePageDetailsService = async () => {
 const saveProfilePageDetailsService = async (userData: ProfilePageInfos) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/profile',
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/profile',
         {...userData}, 
         {headers: {
             'Authorization': token
@@ -26,7 +26,7 @@ const saveProfilePageDetailsService = async (userData: ProfilePageInfos) => {
 const saveProfilePasswordService = async (currentPassword: string, newPassword: string) => {
     await isTokenExpired()
     let {token, userId, accessToken} = addTokenToHeader();
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/change-password',
+    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/change-password',
         {'accessToken': accessToken,
             'currentPassword': currentPassword,
             'newPassword': newPassword

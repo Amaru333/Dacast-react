@@ -46,7 +46,7 @@ export class FolderTree {
         let fetchedNode: SubFolder
         await isTokenExpired()
         let {token} = addTokenToHeader()
-        return await axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders?parentID=' + parentNodeId, 
+        return await axios.get(process.env.API_BASE_URL + '/folders?parentID=' + parentNodeId, 
             {
                 headers: {
                     Authorization: token
@@ -135,7 +135,7 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullpath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders', 
+        return await axios.post(process.env.API_BASE_URL + '/folders', 
             {
                 fullPath: fullpath + folderName
             },
@@ -183,7 +183,7 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullPath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/rename', 
+        return await axios.put(process.env.API_BASE_URL + '/folders/rename', 
             {
                 newName: newName,
                 id: node.id
@@ -220,7 +220,7 @@ export class FolderTree {
         let node = await this.getNode(this.tree, fullPath)
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/delete', 
+        await axios.put(process.env.API_BASE_URL + '/folders/delete', 
             {
                 folderIds: foldersToDelete
 
@@ -254,7 +254,7 @@ export class FolderTree {
     public async moveToFolder(folderIds: string[], movedContent: ContentType[], oldFolderId?: string) {
         await isTokenExpired()
         let {token} = addTokenToHeader();
-        return await axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/folders/move', 
+        return await axios.put(process.env.API_BASE_URL + '/folders/move', 
             {
                 destinationFolderIds: folderIds.length == 0 ? null : folderIds,
                 movedContent: movedContent,

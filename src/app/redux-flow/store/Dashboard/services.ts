@@ -6,7 +6,7 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getDashboardDetailsService = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/dashboard',
+    return axios.get(process.env.API_BASE_URL + '/dashboard',
         {
             headers: {
                 Authorization: token
@@ -18,7 +18,7 @@ const getDashboardDetailsService = async () => {
 const getDashboardVodPlayRateService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/vod-play-rate/time/fetch?jobID=' + jobID,
+    return axios.get(process.env.API_BASE_URL + '/analytics/vod-play-rate/time/fetch?jobID=' + jobID,
         {
             headers: {
                 Authorization: token
@@ -30,7 +30,7 @@ const getDashboardVodPlayRateService = async (jobID: string) => {
 const getDashboardVodPlayService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/vod-play/time/fetch?jobID=' + jobID,
+    return axios.get(process.env.API_BASE_URL + '/analytics/vod-play/time/fetch?jobID=' + jobID,
         {
             headers: {
                 Authorization: token

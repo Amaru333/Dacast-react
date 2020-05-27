@@ -10,7 +10,7 @@ var qs = require('qs');
 const getAnalyticsViewershipJobIds = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewership?contentIDs=~' + userId, 
+    return axios.get(process.env.API_BASE_URL + '/analytics/viewership?contentIDs=~' + userId, 
         {
             headers: {
                 Authorization: token
@@ -24,7 +24,7 @@ const getAnalyticsViewershipConsumptionDomainService = async (jobId: string, opt
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/domain/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/domain/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -34,7 +34,7 @@ const getAnalyticsViewershipConsumptionDevicesService = async (jobId: string, op
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/device/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -52,7 +52,7 @@ const getAnalyticsViewershipConsumptionBreakdownMapService = async (jobId: strin
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/location/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/location/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -63,7 +63,7 @@ const getAnalyticsViewershipConsumptionBreakdownContentService = async (jobId: s
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/content/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -73,7 +73,7 @@ const getAnalyticsViewershipConsumptionBreakdownTimeService = async (jobId: stri
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/time/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/time/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -82,7 +82,7 @@ const getAnalyticsViewershipViewingTimeBreakdownDeviceService = async (jobId: st
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/device/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/viewing-time/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -91,7 +91,7 @@ const getAnalyticsViewershipViewingTimeBreakdownContentService = async (jobId: s
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/content/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/viewing-time/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -100,7 +100,7 @@ const getAnalyticsViewershipViewingTimeBreakdownMapService = async (jobId: strin
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/viewing-time/location/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/viewing-time/location/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -109,7 +109,7 @@ const getAnalyticsViewershipConcurrentPlaybackDeviceService = async (jobId: stri
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/device/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/concurrent-playback-sessions/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -118,7 +118,7 @@ const getAnalyticsViewershipConcurrentPlaybackContentService = async (jobId: str
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/concurrent-playback-sessions/content/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/concurrent-playback-sessions/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 
@@ -127,7 +127,7 @@ const getAnalyticsViewershipConcurrentPlaybackMapService = async (jobId: string,
     let {token} = addTokenToHeader()
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/analytics/consumption/map/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/map/fetch?jobID=${jobId}&`+stringOption, token)
     return data;
 }
 

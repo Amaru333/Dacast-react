@@ -5,7 +5,7 @@ import { ContentType } from '../Folders/types'
 export const bulkActionsService = async (data: ContentType[], action: string, targetValue?: string | boolean) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/bulk', 
+    return await axios.post(process.env.API_BASE_URL + '/bulk', 
         {
             action: action,
             items: data.map((item: ContentType) => {return {id: item.id, contentType: item.type}}),

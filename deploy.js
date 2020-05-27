@@ -17,6 +17,7 @@ const CodebuildProjectName = 'dacast-backoffice-deployment'
 const DomainPrefixClient = 'app'
 const DomainPrefixAdmin = 'admin'
 const ProdEnvName = 'prod'
+const StagingEnvName = 'staging'
 const DomainName = 'dacast.com'
 const DEFAULT_BRANCH = 'master'
 
@@ -29,10 +30,24 @@ async function main(){
     }
     let envNameAdmin = env + '-' + DomainPrefixAdmin
     let envNameClient = env + '-' + DomainPrefixClient
+    let envApiBaseUrl = 'https://singularity-api-app.dacast.com/'
     if(ProdEnvName === env) {
         envNameClient = DomainPrefixClient
         envNameAdmin = DomainPrefixAdmin
     }
+
+    switch(env) {
+        case ProdEnvName:
+            envApiBaseUrl =  'https://universe-api-app.dacast.com/'
+            break
+        case StagingEnvName: 
+            envApiBaseUrl = 'https://singularity-api-app.dacast.com/'
+            break
+        default:
+            console.log('unknown env name, using staging api base url ', envApiBaseUrl)
+            break
+    }
+
     let stateBucketName
 
     console.log('Deploying ' + envNameClient)
@@ -44,7 +59,7 @@ async function main(){
         stateBucketName = await retrieveStateBucketName(new AWS.CloudFormation())
     }
 
-    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envNameClient, envNameAdmin, DomainName, branch, GithubAccessKey)
+    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envNameClient, envNameAdmin, DomainName, branch, GithubAccessKey, envApiBaseUrl)
 }
 
 main()
@@ -135,7 +150,7 @@ async function deployTerraform(stateBucketName) {
     }
 }
 
-async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNameClient, envNameAdmin, domainName, branch, githubToken) {
+async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNameClient, envNameAdmin, domainName, branch, githubToken, apiBaseUrl) {
     console.log('[Build] starting build on codebuild project ' + codebuildProjectName)
     let codebuild = new AWS.CodeBuild()
     let buildInfo = await codebuild.startBuild({
@@ -169,6 +184,11 @@ async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNam
             {
                 name: 'GITHUB_TOKEN',
                 value: githubToken,
+                type: 'PLAINTEXT'
+            },
+            {
+                name: 'API_BASE_URL',
+                value: apiBaseUrl,
                 type: 'PLAINTEXT'
             },
         ]
