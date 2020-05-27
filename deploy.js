@@ -30,7 +30,7 @@ async function main(){
     }
     let envNameAdmin = env + '-' + DomainPrefixAdmin
     let envNameClient = env + '-' + DomainPrefixClient
-    let envApiBaseUrl = 'https://singularity-api-app.dacast.com/'
+    let envApiBaseUrl = 'https://singularity-api-app.dacast.com'
     if(ProdEnvName === env) {
         envNameClient = DomainPrefixClient
         envNameAdmin = DomainPrefixAdmin
@@ -38,10 +38,10 @@ async function main(){
 
     switch(env) {
         case ProdEnvName:
-            envApiBaseUrl =  'https://universe-api-app.dacast.com/'
+            envApiBaseUrl =  'https://universe-api-app.dacast.com'
             break
         case StagingEnvName: 
-            envApiBaseUrl = 'https://singularity-api-app.dacast.com/'
+            envApiBaseUrl = 'https://singularity-api-app.dacast.com'
             break
         default:
             console.log('unknown env name, using staging api base url ', envApiBaseUrl)
