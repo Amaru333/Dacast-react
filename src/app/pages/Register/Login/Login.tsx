@@ -7,6 +7,7 @@ import { LoginContainer, ImageStyle } from '../../../shared/Register/RegisterSty
 import { useKeyboardSubmit, useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
+import { Bubble } from '../../../../components/Bubble/Bubble';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -56,12 +57,14 @@ export const LoginPage = (props: LoginComponentProps) => {
 
                         <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                     </ModalContent>
+                    <Bubble hidden={!props.loginInfos.error} type='error' className='my2'>
+                        Unable to sign in. Please check your details and try again.
+                    </Bubble>
                     <ModalFooter>
                         <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
                     </ModalFooter>
                 </ModalCard>
             </form>
         </LoginContainer>
-
     )
 }

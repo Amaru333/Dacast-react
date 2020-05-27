@@ -10,6 +10,9 @@ interface BubbleSpecificProps {
 type BubbleProps = BubbleSpecificProps & React.HTMLAttributes<HTMLDivElement>
 
 export const Bubble = (props: BubbleProps) => {
+    if(props.hidden) {
+        return <></>
+    }
     const renderIcon = () => {
         switch(props.type) {
             case 'info': 
