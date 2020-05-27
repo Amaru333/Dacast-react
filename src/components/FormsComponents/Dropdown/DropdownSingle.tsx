@@ -144,4 +144,4 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     );
 }
 
-DropdownSingle.defaultProps = { isInModal: false, direction: 'up' }
+DropdownSingle.defaultProps = { isInModal: false, direction: 'down' }
