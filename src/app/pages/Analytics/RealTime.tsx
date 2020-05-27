@@ -11,7 +11,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
     const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
 
-    console.log(props);
     return (
         <React.Fragment>
             <div className="flex items-end col col-12 mb25">
@@ -88,7 +87,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="Where viewers are consuming your data" title="Consumption by Location">
                         {
                             props.realTimeAnalytics.data.consumptionPerLocation ?
-                                renderMap(props.realTimeAnalytics.data.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')
+                                renderMap(props.realTimeAnalytics.data.consumptionPerLocation, 'realTimeAnalyticsConsumptionPerLocation')
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

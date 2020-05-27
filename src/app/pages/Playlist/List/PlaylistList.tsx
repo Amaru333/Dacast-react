@@ -227,7 +227,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList direction='up' hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            <DropdownList hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                 {renderList()}
                             </DropdownList>
                         </div>

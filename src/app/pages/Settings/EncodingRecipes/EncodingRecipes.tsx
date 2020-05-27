@@ -37,7 +37,7 @@ const recipesBodyElement = (encodingRecipeData: EncodingRecipesData,  editRecipe
             return [...acc, rec]
         }
     }, [])
-    console.log('sorted recipes', sortedRecipes)
+
     return ( 
         sortedRecipes.map((value, key) => {
         
@@ -133,7 +133,6 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
             }
             FunctionRecipe(false)
         }
-        console.log('submitting')
     }
 
     useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))

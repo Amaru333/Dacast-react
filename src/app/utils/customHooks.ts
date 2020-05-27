@@ -10,7 +10,7 @@ export const useWebSocket = () => {
     React.useEffect(() => {
         const setWebSocketConnection = async () => {
             const {token} = addTokenToHeader()
-            axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/websocket-endpoint', 
+            axios.get(process.env.API_BASE_URL + '/websocket-endpoint', 
                 {
                     headers: {
                         Authorization: token

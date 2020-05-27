@@ -33,7 +33,6 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
         setSelectedPendingOrder(order)
         selectedPendingOrder ?
             setPurchaseStepperOpen(true) : null
-        console.log(selectedPendingOrder)
     }
 
     const pendingOrdersTableHeader = () => {

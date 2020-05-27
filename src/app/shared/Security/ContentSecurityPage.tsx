@@ -259,7 +259,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 </DisabledSection>
             </Card>
           
-            { selectedSettings === props.contentSecuritySettings.securitySettings ? null :
+            { JSON.stringify(selectedSettings) !== JSON.stringify(props.contentSecuritySettings.securitySettings) &&
                 <div>
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { setButtonLoading(true); props.saveContentSecuritySettings(selectedSettings, props.contentId, () => setButtonLoading(false))}}>Save</Button>

@@ -27,6 +27,11 @@ const plugins = {
     }
 }
 
+const envKeys = Object.keys(process.env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(process.env[next]);
+    return prev;
+  }, {});
+
 module.exports = {
     entry: entries[process.env.APP_ENV],
     output: {
@@ -88,6 +93,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({...plugins[process.env.APP_ENV]}),
+        new webpack.DefinePlugin(envKeys),
         new HtmlWebpackExcludeAssetsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([

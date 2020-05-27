@@ -8,8 +8,8 @@ export enum ActionTypes {
 }
 
 export interface GetAnalyticsDashboardOptions {
-    startDate: number;
-    endDate: number;
+    start: number;
+    end: number;
 }
 
 

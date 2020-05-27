@@ -12,22 +12,22 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
         case ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION:
             return {
                 ...state,
-                data: { ...state.data, consumptionPerLocation: action.payload.data }
+                data: { ...state.data, consumptionPerLocation: action.payload ? action.payload.map.filter(element => element.consumedMB !== undefined) : false }
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_GB_TIME:
             return {
                 ...state,
-                data: { ...state.data, gbPerTime: action.payload.data }
+                data: { ...state.data, gbPerTime: action.payload }
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_PLAYBACK_TIME:
             return {
                 ...state,
-                data: { ...state.data, newPlaybackSessionsPerTime: action.payload.data }
+                data: { ...state.data, newPlaybackSessionsPerTime: action.payload }
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_VIEWERS_TIME:
             return {
                 ...state,
-                data: { ...state.data, concurentViewersPerTime: action.payload.data }
+                data: { ...state.data, concurentViewersPerTime: action.payload }
             }
         default:
             return state;

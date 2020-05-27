@@ -7,7 +7,7 @@ const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 const getPlaylistSetupAction = async (playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + playlistId + '/setup', 
+    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId + '/setup', 
         {
             headers: {
                 Authorization: token
@@ -19,7 +19,7 @@ const getPlaylistSetupAction = async (playlistId: string) => {
 const postPlaylistSetupAction = async (playlistData: PlaylistSetupObject, playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + playlistId + '/setup', 
+    return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/setup', 
         {
             ...playlistData,
             title: null

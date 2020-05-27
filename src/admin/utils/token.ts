@@ -26,7 +26,7 @@ export function isLoggedIn() {
 export function isTokenExpired() {
     let token: TokenInfos = JSON.parse(localStorage.getItem('adminToken'))
     if(Math.abs(DateTime.fromSeconds(parseInt(token.expires)).diffNow('minutes').minutes) <= 5) {
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/sessions/refresh', {refresh: token.refresh})
+        axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh})
             .then(response => {
                 token.token = response.data.data.token
                 token.expires = response.data.data.expires

@@ -24,7 +24,6 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
 
     React.useEffect(() => {
         props.setStepValidated(true)
-        console.log(props.stepperData)
     }, [props.stepperData])
 
     const totalPriceTableFooter = () => {
@@ -129,7 +128,6 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
             props.updateStepperData({...props.stepperData, secondStep: {...props.stepperData.secondStep, total: subTotal}})
         }
         props.setStepValidated(true)
-        console.log(props.stepperData)
     }, [props.stepperData.secondStep.custom])
     
     return (

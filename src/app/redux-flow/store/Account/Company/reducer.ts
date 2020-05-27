@@ -10,7 +10,7 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
             }
         case ActionTypes.GET_COMPANY_LOGO_URL:
             return {...state, 
-                logoUrl: action.payload.data.url
+                logoURL: action.payload.data.url
             }
         case ActionTypes.SAVE_COMPANY_PAGE_DETAILS:
             return {...state,

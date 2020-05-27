@@ -37,7 +37,6 @@ export const BillingPage = (props: BillingComponentProps) => {
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     React.useEffect(() => {
-        console.log("playback protection", props.billingInfos.playbackProtection)
     }, [props.billingInfos.playbackProtection])
 
     const checkPaymentMethod = () => {

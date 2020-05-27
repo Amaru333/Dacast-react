@@ -9,5 +9,4 @@ import "react-table/react-table.css";
 
 const initialState = globalDefaultState;
 export const store = configureStore(initialState);
-console.log('index app')
 ReactDOM.render(<Main store={store}  />, document.getElementById("root"));

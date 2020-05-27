@@ -11,7 +11,7 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getFolderContent = async (qs: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return await axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/search/content' + (qs ? '?' + qs :'?status=online,offline,processing&page=1&per-page=10&content-types=channel,vod'), 
+    return await axios.get(process.env.API_BASE_URL + '/search/content' + (qs ? '?' + qs :'?status=online,offline,processing&page=1&per-page=10&content-types=channel,vod'), 
         {
             headers: {
                 Authorization: token

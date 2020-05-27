@@ -35,9 +35,9 @@ export interface GetAnalyticsDashboardConsumptionLocation {
 }
 
 
-export const getAnalyticsDashboardJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardJobIds> => {
+export const getAnalyticsDashboardJobIdsAction = (options?: GetAnalyticsDashboardOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsDashboardJobIds> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsDashboardJobIds> ) => {
-        await AnalyticsDashboardServices.getAnalyticsDashboardJobIds()
+        await AnalyticsDashboardServices.getAnalyticsDashboardJobIds(options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS, payload: response.data} );
             }).catch(() => {

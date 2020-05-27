@@ -7,7 +7,7 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getInteractionsInfos = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement',
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement',
         {
             headers: {
                 Authorization: token
@@ -19,7 +19,7 @@ const getInteractionsInfos = async () => {
 const saveInteractionsInfos = async (data: InteractionsInfos) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement',
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement',
         {...data}, 
         {
             headers: {
@@ -32,7 +32,7 @@ const saveInteractionsInfos = async (data: InteractionsInfos) => {
 const saveAd = async (data: Ad[]) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/accounts/' + userId + '/settings/engagement/ads/',
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement/ads/',
         {
             ads: data
         }, 

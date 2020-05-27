@@ -43,7 +43,6 @@ export const getAnalyticsRealTimeViewersTimesAction = (jobId: string, options?: 
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRealTimeViewersTime> ) => {
         await AnalyticsRealTimeServices.getAnalyticsRealTimeViewersTimeService(jobId, options)
             .then( response => {
-                console.log(response, "response");
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_VIEWERS_TIME, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -77,6 +76,7 @@ export const getAnalyticsRealTimeConsumptionLocationAction = (jobId: string, opt
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRealTimeConsumptionLocation> ) => {
         await AnalyticsRealTimeServices.getAnalyticsRealTimeConsumptionLocationService(jobId, options)
             .then( response => {
+                console.log(response);
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

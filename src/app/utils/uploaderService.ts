@@ -1,4 +1,4 @@
-const BASE_PATH = "https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev"
+const BASE_PATH = "process.env.API_BASE_URL"
 import axios, { AxiosResponse } from 'axios'
 import { isTokenExpired, addTokenToHeader } from './token'
 

@@ -7,7 +7,7 @@ const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
 const getPlaylistDetailsService = async (playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + playlistId, 
+    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId, 
         {
             headers: {
                 Authorization: token
@@ -19,7 +19,7 @@ const getPlaylistDetailsService = async (playlistId: string) => {
 const editPlaylistDetailsService = async (data: PlaylistDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + data.id,
+    return axios.put(process.env.API_BASE_URL + '/playlists/' + data.id,
         {...data}, 
         {
             headers: {
@@ -32,7 +32,7 @@ const editPlaylistDetailsService = async (data: PlaylistDetails) => {
 const getUploadUrl = async (data: string, playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/uploads/signatures/singlepart/' + data,
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
             playlistID: playlistId
         },
@@ -50,7 +50,7 @@ const uploadFile = (data: File, uploadUrl: string) => {
 const deleteFile = async (playlistId: string, targetId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.delete('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists/' + playlistId + '/targets/' + targetId,
+    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/targets/' + targetId,
         {
             headers: {
                 Authorization: token

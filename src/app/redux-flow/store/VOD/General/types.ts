@@ -59,7 +59,7 @@ export interface SearchResult {
 
 export interface SubtitleInfo {
     targetID: string;
-    fileName: string;
+    name: string;
     languageLongName: string;
     languageShortName: string;
     url?: string;

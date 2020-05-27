@@ -17,6 +17,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
+
     const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
@@ -100,7 +101,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     }
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent.map((row) => {
+        return props.folderData.requestedContent.results.map((row) => {
             if (row.contentType === "playlist" || selectedItems.includes(row)) {
                 return;
             }
@@ -137,7 +138,6 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
         props.getSalesPerCountry(options);
     }
 
-    console.log(props);
     return (
         <React.Fragment>
             <div className="col col-12 mb25">

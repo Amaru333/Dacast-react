@@ -119,7 +119,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
-            console.log('uploading at the url', props.CompanyPageDetails.uploadLogoUrl)
             props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl, () => setUploadButtonLoading(false) );
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
