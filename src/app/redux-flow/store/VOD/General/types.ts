@@ -58,8 +58,9 @@ export interface SearchResult {
 }
 
 export interface SubtitleInfo {
-    id: string;
-    fileName: string;
+    targetID: string;
+    name: string;
     languageLongName: string;
     languageShortName: string;
+    url?: string;
 }

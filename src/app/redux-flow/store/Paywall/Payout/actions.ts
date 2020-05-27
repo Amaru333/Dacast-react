@@ -61,7 +61,6 @@ export const deletePaymentMethodRequestAction = (data: string): ThunkDispatch<Pr
 
 export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, AddWithdrawalRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
-        console.log('super bitch')
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: response.data});

@@ -68,7 +68,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.playlistDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.playlistDetails.splashscreen.url},
         { id: "poster", label: "Poster", enabled: true, link: props.playlistDetails.poster.url},
-        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
+        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-playlist-${props.playlistDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` },
     ]
 
     let splashScreenEnable = Object.keys(props.playlistDetails.splashscreen).length !== 0;

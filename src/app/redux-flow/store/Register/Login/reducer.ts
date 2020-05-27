@@ -14,6 +14,8 @@ const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action)
         case ActionTypes.LOGOUT :
             resetUserInfo()
             return action.payload
+        case ActionTypes.LOGIN_ERROR : 
+            return {...state, error: true}
         default :
             return {...state}
     }

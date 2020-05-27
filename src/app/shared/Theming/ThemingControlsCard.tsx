@@ -16,6 +16,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { getPrivilege } from '../../../utils/utils';
 import { usePlayer } from '../../utils/player';
 import { Prompt, useHistory } from 'react-router';
+import { addTokenToHeader } from '../../utils/token';
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
@@ -49,7 +50,9 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
-    let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
+    const {userId} = addTokenToHeader()
+
+    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleThemeSave = () => {

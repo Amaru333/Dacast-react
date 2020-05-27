@@ -22,7 +22,7 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
         await isTokenExpired()
         let {token} = addTokenToHeader();
         
-        return await axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/playlists',
+        return await axios.post(process.env.API_BASE_URL + '/playlists',
             {
                 title:playlistTitle
             }, 

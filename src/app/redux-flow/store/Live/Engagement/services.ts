@@ -7,7 +7,7 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getLiveEngagementSettings = async (liveId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + liveId + '/settings/engagement',
+    return axios.get(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/engagement',
         {
             headers: {
                 Authorization: token
@@ -19,7 +19,7 @@ const getLiveEngagementSettings = async (liveId: string) => {
 const saveLiveEngagementSettings = async (data: ContentEngagementSettings) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.put('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/channels/' + data.contentId + '/settings/engagement',
+    return axios.put(process.env.API_BASE_URL + '/channels/' + data.contentId + '/settings/engagement',
         {...data.engagementSettings}, 
         {
             headers: {

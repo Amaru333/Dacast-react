@@ -362,7 +362,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name}</Button>
-                        <DropdownList direction='up' style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
+                        <DropdownList style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
                     </div>

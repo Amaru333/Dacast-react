@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction, deleteSubtitleAction, addSubtitleAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, VodDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -21,7 +21,9 @@ export interface GeneralComponentProps {
     getUploadUrl: Function;
     uploadFile: Function;
     deleteFile: Function;
-    showToast: Function
+    showToast: Function;
+    deleteSubtitle: Function;
+    addSubtitle: Function;
 }
 
 const General = (props: GeneralComponentProps) => {
@@ -71,11 +73,17 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))
         },
-        deleteFile: (vodId: string, targetId: string, fileType: string) => {
-            dispatch(deleteFileAction(vodId, targetId, fileType))
+        deleteFile: (vodId: string, targetId: string, fileName: string) => {
+            dispatch(deleteFileAction(vodId, targetId, fileName))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
+        },
+        addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => {
+            dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, vodId))
+        },
+        deleteSubtitle: (targetId: string, vodId: string, fileName: string) => {
+            dispatch(deleteSubtitleAction(targetId, vodId, fileName))
         }
     };
 }

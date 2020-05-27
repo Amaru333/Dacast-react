@@ -70,7 +70,6 @@ export const UploaderPage = (props: UploaderProps) => {
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4', 'video/mov'];
-        console.log(fileList, "test21");
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
             console.log(file);

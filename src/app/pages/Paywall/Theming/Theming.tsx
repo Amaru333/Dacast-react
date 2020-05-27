@@ -101,6 +101,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
         ]
 
+        console.log(selectedTheme);
+
         return (
             <div className='col col-12 sm-col-4 pr1'>
                 <Card>
@@ -217,7 +219,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     </div>
                 </Card>
                 <div className='flex mt2'>
-                    <Button className='mr2' onClick={() => {setCurrentPage('list');selectedTheme.id === '-1' ? props.createPaywallTheme(selectedTheme) : props.savePaywallTheme(selectedTheme)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button className='mr2' disabled={selectedTheme.name === ''} onClick={() => {setCurrentPage('list');selectedTheme.id === '-1' ? props.createPaywallTheme(selectedTheme) : props.savePaywallTheme(selectedTheme)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => setCurrentPage('list')} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
             </div>

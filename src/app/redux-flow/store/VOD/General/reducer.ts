@@ -34,13 +34,16 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     ...action.payload
                 }
             }
-        // case ActionTypes.ADD_VOD_SUBTITLE:
-        //     let newArray = state.subtitles.slice()
-        //     newArray.splice(newArray.length, 0, action.payload)
-        //     return {
-        //         ...state,
-        //         subtitles: newArray
-        //     }
+        case ActionTypes.ADD_VOD_SUBTITLE:
+            let newArray = state[action.payload.vodId].subtitles.slice()
+            newArray.splice(newArray.length, 0, action.payload.data)
+            return {
+                ...state,
+                [action.payload.vodId]: {
+                    ...state[action.payload.vodId],
+                    subtitles: newArray
+                }
+            }
         // case ActionTypes.EDIT_VOD_SUBTITLE:
         //     return {
         //         ...state, subtitles: state.subtitles.map((item) => {
@@ -53,8 +56,13 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
         //             }
         //         })
         //     }
-        // case ActionTypes.DELETE_VOD_SUBTITLE:
-        //     return { ...state, subtitles: state.subtitles.filter((item) => item.id != action.payload.id) }
+        case ActionTypes.DELETE_VOD_SUBTITLE:
+            return { 
+                ...state, 
+                [action.payload.vodId] : {
+                    ...state[action.payload.vodId],
+                    subtitles: state[action.payload.vodId].subtitles.filter((item) => item.targetID != action.payload.targetID) }
+                }
         case ActionTypes.GET_UPLOAD_URL:
             return {
                 ...state, 

@@ -30,7 +30,7 @@ const ChangePassword = (props: ChangePasswordProps) => {
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
     const handleChangePassword = (passwordText: string) => {
-        axios.post('https://wkjz21nwg5.execute-api.us-east-1.amazonaws.com/dev/reset-password', {newPassword: passwordText, email: query.get('email'), verificationToken: query.get('reset_code')})
+        axios.post(process.env.API_BASE_URL + '/reset-password', {newPassword: passwordText, email: query.get('email'), verificationToken: query.get('reset_code')})
         history.push('/login')
         props.showToast("Your password has been reset", 'flexible', "success")
     }

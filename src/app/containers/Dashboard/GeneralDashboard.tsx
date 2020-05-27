@@ -69,7 +69,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     }
 
     const onSubmitFunctions = () => {
-        console.log("you bought the thing")
         setPurchaseStepperOpened(false)
     }
 

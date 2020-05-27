@@ -18,7 +18,6 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderHiddenFoldersDropdownList = () => {
         const options = props.options.split('/').filter(f => f);
         const filteredListLength = options.length
-        console.log(options);
         return (
             options.map((name, i) => {
                 return i < filteredListLength - 2 ? (
@@ -39,11 +38,9 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
     const renderOptions = () => {
         if(props.options) {
             const optionsLength = props.options.split('/').filter(f => f).length; 
-            console.log(props.options.split('/').filter(f => f));
             if(optionsLength <= 2) {
                 return props.options.split('/').filter(f => f).map((option, i) => {
-                    console.log(option);
-                    console.log(props.options.split(option)[0] + option + '/');
+                    
                     return(
                         <>
                             {i === 0 &&
@@ -70,7 +67,7 @@ export const Breadcrumb = (props: {options: string; callback: Function; isNaviga
                         </div>
                         <div className='relative pointer'>
                             <IconStyle onClick={() => setHiddenFoldersDropdownIsOpened(!hiddenFoldersDropdownIsOpened)} coloricon='dark-violet'>more_horiz</IconStyle> 
-                            <DropdownList direction='up' hasSearch={false} style={{width: 'fit-content', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
+                            <DropdownList hasSearch={false} style={{width: 'fit-content', top: '25px'}} isSingle isInModal={false} isNavigation={false} displayDropdown={hiddenFoldersDropdownIsOpened} ref={hiddenFoldersDropdownListRef}>
                                 {renderHiddenFoldersDropdownList()}
                             </DropdownList>                      
                         </div>                         

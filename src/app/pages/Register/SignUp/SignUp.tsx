@@ -37,7 +37,6 @@ export const SignupPage = (props: SignupContainerProps) => {
 
     useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
 
-    console.log(errors);
     return (<LoginContainer>
         <ImageStyle className="mx-auto" src={logo} />
         <ModalCard className="mx-auto" size="small" title="Sign Up">

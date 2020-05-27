@@ -19,14 +19,19 @@ export interface Logout {
     payload: null;
 }
 
+export interface LoginError {
+    type: ActionTypes.LOGIN_ERROR;
+    payload: null;
+}
+
 
 export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, Login> ) => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, Login | LoginError> ) => {
         await loginService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
             }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                dispatch({type: ActionTypes.LOGIN_ERROR, payload: null});
             })
     };
 
@@ -40,4 +45,4 @@ export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
     }
 }
 
-export type Action = Login | Logout | LoginRequest;
+export type Action = Login | Logout | LoginRequest | LoginError;
