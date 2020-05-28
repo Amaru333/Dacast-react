@@ -116,7 +116,18 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             return {data: [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><IconStyle onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle><IconStyle onClick={() => editMailCatcher(row)}>edit</IconStyle> </IconContainer>
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableCopy' + i} onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle>
+                        <Tooltip target={'mailTableCopy' + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableEdit' + i} onClick={() => editMailCatcher(row)}>edit</IconStyle>
+                        <Tooltip target={'mailTableEdit' + i}>Edit</Tooltip>
+                    </ActionIcon>
+                    
+                    
+                </IconContainer>
             
             ]}
         })
