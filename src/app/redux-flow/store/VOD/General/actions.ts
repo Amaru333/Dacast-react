@@ -130,6 +130,7 @@ export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleIn
             })
             .catch((error) => {
                 console.log(error)
+                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }

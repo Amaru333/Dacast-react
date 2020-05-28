@@ -64,8 +64,9 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     subtitles: state[action.payload.vodId].subtitles.filter((item) => item.targetID != action.payload.targetID) }
                 }
         case ActionTypes.GET_UPLOAD_URL:
-            let newArray = state[action.payload.vodId].subtitles.slice()
+            let newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
             newArray.splice(newArray.length, 0, action.payload.data)
+            debugger
             return {
                 ...state, 
                 [action.payload.vodId] : {

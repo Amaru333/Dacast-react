@@ -84,9 +84,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => {
+        addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string, callback: Function) => {
             dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, vodId))
-           
+            .then(callback).catch(callback)
 
         },
         deleteSubtitle: (targetId: string, vodId: string, fileName: string) => {

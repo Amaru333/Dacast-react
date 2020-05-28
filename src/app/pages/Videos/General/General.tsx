@@ -34,9 +34,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
     const [VodDetails, setVodDetails] = React.useState<VodDetails>(props.vodDetails)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
-    const [subtitleFile, setSubtitleFile] = React.useState<File>(null);
+    const [subtitleFile, setSubtitleFile] = React.useState<File>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
-    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
+
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
     
@@ -58,7 +60,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     }
     
     const subtitlesTableBody = () => {
-        return VodDetails.subtitles.map((value, key) => {
+        return VodDetails.subtitles ? VodDetails.subtitles.map((value, key) => {
             return {data: [
                 <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>,
                 <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
@@ -72,6 +74,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                 </IconContainer>
             ]}
         })
+        : null
     };
     
     const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -90,13 +93,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         if(props.vodDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, props.vodDetails.uploadurl, uploadedSubtitleFile, props.vodDetails.id)
+            props.addSubtitle(subtitleFile, props.vodDetails.uploadurl, uploadedSubtitleFile, props.vodDetails.id, () => {setSubtitleButtonLoading(false)})
             setUploadedSubtitleFile(emptySubtitle)
             setSubtitleModalOpen(false);
         }
     }, [props.vodDetails.uploadurl])
     
     const handleSubtitleSubmit = () => {
+        setSubtitleButtonLoading(true)
         props.getUploadUrl('subtitle', props.vodDetails.id, uploadedSubtitleFile)
     }
 
@@ -356,7 +360,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             }
                         </ModalContent>
                         <ModalFooter>
-                            <Button onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                            <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
                             <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
                         </ModalFooter>
                     </Modal>
@@ -382,7 +386,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
                 </Card>
                 <ButtonContainer>
-                    <Button isLoading={saveLoading} className="mr2" onClick={() => {setSaveLoading(true); props.editVodDetails(VodDetails, () => setSaveLoading(false)) } }>Save</Button>
+                    <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => setButtonLoading(false)) } }>Save</Button>
                     <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                 </ButtonContainer>
                 <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
