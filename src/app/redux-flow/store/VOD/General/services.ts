@@ -71,7 +71,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
     let requestData: any = {
         vodID: vodId
     }
-    if(subtitleInfo) {
+    if(data === 'subtitle') {
         requestData = {
             vodID: vodId,
             name: subtitleInfo.name,
@@ -89,11 +89,27 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
             headers: {
                 Authorization: token
             }
-        })
+        }
+    )
+}
+
+const uploadImageFromVideo = async (vodId: string, time: number, imageType: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    console.log('data', vodId, time, imageType)
+    return axios.post(process.env.API_BASE_URL + `/vods/${vodId}/targets/${imageType.split('-')[1]}`, 
+        {
+            time: time
+        },
+        {
+          headers: {
+              Authorization: token
+            }  
+        }
+    )
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
-    debugger
     return axios.put(uploadUrl, data)
 }
 
@@ -115,6 +131,7 @@ export const VodGeneralServices = {
     editVodDetailsService,
     getUploadUrl,
     uploadFile,
+    uploadImageFromVideo,
     deleteFile,
     getVodList,
     deleteVodService,

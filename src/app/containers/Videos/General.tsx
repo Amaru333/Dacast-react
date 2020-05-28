@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction, deleteSubtitleAction, addSubtitleAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction, deleteSubtitleAction, addSubtitleAction, uploadImageFromVideoAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, VodDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -20,6 +20,7 @@ export interface GeneralComponentProps {
     getVodDetails: Function;
     getUploadUrl: Function;
     uploadFile: Function;
+    uploadImageFromVideo: Function;
     deleteFile: Function;
     showToast: Function;
     deleteSubtitle: Function;
@@ -72,6 +73,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))
+        },
+        uploadImageFromVideo: (vodId: string, time: number, imageType: string)  => {
+            dispatch(uploadImageFromVideoAction(vodId, time, imageType))
         },
         deleteFile: (vodId: string, targetId: string, fileName: string) => {
             dispatch(deleteFileAction(vodId, targetId, fileName))

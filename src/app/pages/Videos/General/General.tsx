@@ -367,6 +367,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 imageType={handleImageModalFunction()} 
                                 contentId={props.vodId} 
                                 contentType='vod'
+                                uploadFromVideoAction={props.uploadImageFromVideo}
                                 uploadUrl={props.vodDetails.uploadurl} 
                                 getUploadUrl={props.getUploadUrl} 
                                 title={imageModalTitle} 
