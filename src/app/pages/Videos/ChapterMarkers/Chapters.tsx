@@ -11,6 +11,7 @@ import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, Butt
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 import { ChapterComponentProps } from '../../../containers/Videos/Chapters';
+import { addTokenToHeader } from '../../../utils/token';
 
 
 export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => {
@@ -19,9 +20,12 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [marker, setMarker] = React.useState<number>(0);
 
+    const {userId} = addTokenToHeader()
+
+
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-    let player = usePlayer(playerRef, 'vod-' + props.vodId);
+    let player = usePlayer(playerRef, userId +  '-vod-' + props.vodId);
 
 
     const tableHeaderElement = () => {

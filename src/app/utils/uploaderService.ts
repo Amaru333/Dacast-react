@@ -1,4 +1,3 @@
-const BASE_PATH = "process.env.API_BASE_URL"
 import axios, { AxiosResponse } from 'axios'
 import { isTokenExpired, addTokenToHeader } from './token'
 
@@ -90,7 +89,7 @@ export class UploadObject {
         console.log('init upload for file ', this.file.name)
         await isTokenExpired()
         let { token } = addTokenToHeader();
-        let res = await axios.post(`${BASE_PATH}/uploads/init-multipart`,
+        let res = await axios.post(`${process.env.API_BASE_URL}/uploads/init-multipart`,
             {
                 fileName: this.file.name,
             },
@@ -122,7 +121,7 @@ export class UploadObject {
     private retrieveSinglePartURL = async () => {
         await isTokenExpired()
         let { token, vodStorageId, userId } = addTokenToHeader();
-        let response = await axios.post(`${BASE_PATH}/uploads/signatures/singlepart/`,
+        let response = await axios.post(`${process.env.API_BASE_URL}/uploads/signatures/singlepart/`,
             {
                 fileName: this.file.name,
                 vodStorageID: vodStorageId
@@ -162,7 +161,7 @@ export class UploadObject {
     private retrieveChunkPresignedURL = async (fromPart: number, toPart: number): Promise<string[]> => {
         await isTokenExpired()
         let { token } = addTokenToHeader();
-        let res = await axios.post(`${BASE_PATH}/uploads/signatures/multipart`,
+        let res = await axios.post(`${process.env.API_BASE_URL}/uploads/signatures/multipart`,
             {
                 s3Path: this.urlS3,
                 uploaderID: this.uploadId,
@@ -230,7 +229,7 @@ export class UploadObject {
     private async completeUpload() {
         await isTokenExpired()
         let { token } = addTokenToHeader();
-        await axios.post(`${BASE_PATH}/uploads/complete-multipart`,
+        await axios.post(`${process.env.API_BASE_URL}/uploads/complete-multipart`,
             {
                 orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
                 s3Path: this.urlS3,

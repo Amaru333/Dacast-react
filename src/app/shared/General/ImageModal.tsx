@@ -6,8 +6,9 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
+import { addTokenToHeader } from '../../utils/token';
 
-export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function}) => {
+export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function; uploadFromVideoAction: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -18,7 +19,9 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
 
-    let player = usePlayer(playerRef, props.contentType + '-' + props.contentId)
+    const {userId} = addTokenToHeader()
+
+    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
         if (selectedOption === "frame") {
@@ -46,21 +49,21 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if(!saveButtonLoading && !isSaveDisabled) {
             props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
-            props.getUploadUrl(props.imageType, props.contentId, () => {setSaveButtonLoading(false)})
+            if(selectedOption === 'upload') {
+                props.getUploadUrl(props.imageType, props.contentId, () => {setSaveButtonLoading(false)})
+            } else {
+                props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType, () => {setSaveButtonLoading(false)})
+            }    
         }
     }
 
     React.useEffect(() => {
-        if(props.uploadUrl && saveButtonLoading) {
-            if (selectedOption === "upload" && logoFile) {
-                props.submit(logoFile, props.uploadUrl)
-            } else {
-                props.submit(player.getPlayerInstance().currentTime.toString())
-            }
+        if(props.uploadUrl && saveButtonLoading && logoFile) {
+            props.submit(logoFile, props.uploadUrl)
             props.toggle()
         }
     }, [props.uploadUrl, saveButtonLoading])

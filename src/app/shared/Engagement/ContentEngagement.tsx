@@ -17,6 +17,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../utils/player';
 import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../utils/utils';
+import { addTokenToHeader } from '../../utils/token';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -59,10 +60,12 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         setNewAdModalOpened(true);
     }
 
+    const {userId} = addTokenToHeader()
+
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef, props.contentType + '-' + props.contentEngagementSettings.contentId);
+    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId);
 
 
     React.useEffect(() => {

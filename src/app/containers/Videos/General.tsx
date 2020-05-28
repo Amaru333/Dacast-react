@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction, deleteSubtitleAction, addSubtitleAction } from '../../redux-flow/store/VOD/General/actions';
+import { Action, getVodDetailsAction, getUploadUrlAction, editVodDetailsAction, deleteFileAction, uploadFileAction, deleteSubtitleAction, addSubtitleAction, uploadImageFromVideoAction } from '../../redux-flow/store/VOD/General/actions';
 import { connect } from 'react-redux';
 import { VodDetails, SubtitleInfo, VodDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -20,6 +20,7 @@ export interface GeneralComponentProps {
     getVodDetails: Function;
     getUploadUrl: Function;
     uploadFile: Function;
+    uploadImageFromVideo: Function;
     deleteFile: Function;
     showToast: Function;
     deleteSubtitle: Function;
@@ -65,7 +66,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getVodDetailsAction(vodId));
         },
         editVodDetails: (data: VodDetails, callback?: Function) => {
-            dispatch(editVodDetailsAction(data)).then(callback);
+            dispatch(editVodDetailsAction(data)).then(callback).catch(callback);
         },
         getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
             dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
@@ -73,14 +74,20 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))
         },
+        uploadImageFromVideo: (vodId: string, time: number, imageType: string, callback?: Function)  => {
+            dispatch(uploadImageFromVideoAction(vodId, time, imageType))
+            .then(callback).catch(callback)
+        },
         deleteFile: (vodId: string, targetId: string, fileName: string) => {
             dispatch(deleteFileAction(vodId, targetId, fileName))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => {
+        addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string, callback: Function) => {
             dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, vodId))
+            .then(callback).catch(callback)
+
         },
         deleteSubtitle: (targetId: string, vodId: string, fileName: string) => {
             dispatch(deleteSubtitleAction(targetId, vodId, fileName))
