@@ -90,14 +90,14 @@ export const renderMap = (dataRepo: any, id: string) => {
     )
 }
 
-export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { refreshData: Function}) => {
+export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: {end: number; start: number},  refreshData: Function}) => {
     
-    const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
+    const [dates, setDates] = React.useState<{start: any; end: any}>({start: props.defaultDates.start, end: props.defaultDates.end})
 
     return (
         <div className="col col-12 mb25 clearfix">
-            <DateRangePickerWrapper callBack={(dates: GetAnalyticsDashboardOptions) => setDates(dates)} className="inline" presets={presets} />
-            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker(dates))} className="ml2" color="blue">Apply</Button>
+            <DateRangePickerWrapper dates={ {startDate: dates.start, endDate: dates.end} } callBack={(dates: GetAnalyticsDashboardOptions) => setDates({start: dates.startDate, end: dates.endDate})} className="inline" presets={presets} />
+            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({startDate: dates.start, endDate: dates.end}))} className="ml2" color="blue">Apply</Button>
         </div>
     )
 }

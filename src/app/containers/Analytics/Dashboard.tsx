@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardConsumptionLocationAction, getAnalyticsDashboardTopContentsAction, getAnalyticsDashboardConsumptionDeviceAction, getAnalyticsDashboardPlaysViewersTimeAction, getAnalyticsDashboardConsumptionTimeAction, getAnalyticsDashboardJobIdsAction } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import moment from 'moment';
 
 
 export interface DashboardPageProps {

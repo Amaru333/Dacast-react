@@ -6,7 +6,7 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
     switch (action.type) {
         case ActionTypes.GET_ANALYTICS_REALTIME_JOB_IDS: 
             return {
-                ...state,
+                data: {...AnalyticsRealTimeInitialState.data},
                 jobIds: action.payload.data
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION:

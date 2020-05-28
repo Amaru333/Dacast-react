@@ -8,6 +8,7 @@ import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashbo
 import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs } from './AnalyticsCommun';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import moment from 'moment';
 
 export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
@@ -34,20 +35,23 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
         }
     ]
 
-    const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
+    const [dates, setDates] = React.useState<{end: number; start: number}>({end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days')})
+
+    const labelsFormate = (labels: number[]) => { 
+        if(dates.start + (24*3600)  < dates.end ) {
+            return labels.map(number => tsToLocaleDate(number, {hour:"2-digit", minute: "2-digit", day: '2-digit'})) 
+        }
+        return labels.map(number => tsToLocaleDate(number)) 
+    };
 
     const refreshData = (dates: any) => {
+        setDates(dates);
         props.getAnalyticsDashboardJobIds({end: dates.endDate, start: dates.startDate});
-        //     props.getAnalyticsDashboardConsumptionDevice({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerDevice.jobID);
-        //     props.getAnalyticsDashboardConsumptionLocation({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerLocation.jobID);
-        //     props.getAnalyticsDashboardConsumptionTime({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.consumptionPerTime.jobID);
-        //     props.getAnalyticsDashboardPlaysViewersTime({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.playsViewersPerTime.jobID);
-        //     props.getAnalyticsDashboardTopContents({end: dates.endDate, start: dates.startDate}, props.dashboardAnalytics.jobIds.topContents.jobID);
     }
 
     return (
         <React.Fragment>
-            <DateFilteringAnalytics refreshData={refreshData} />
+            <DateFilteringAnalytics defaultDates={dates} refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="How much data is consumed over time" title="Consumption by Time">
@@ -55,10 +59,10 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                             props.dashboardAnalytics.data.consumptionPerTime ?
                                 <BarChart
                                     datasetName="GBytes"
-                                    displayBytesFromGB={true}
                                     beginAtZero={true}
                                     data={props.dashboardAnalytics.data.consumptionPerTime.data}
                                     yAxesName="GB"
+                                    displayFromMb
                                     labels={labelsFormate(props.dashboardAnalytics.data.consumptionPerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
