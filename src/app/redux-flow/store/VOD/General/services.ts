@@ -81,7 +81,7 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
     }
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    return await axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
             ...requestData
         },

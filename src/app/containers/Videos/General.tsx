@@ -66,7 +66,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getVodDetailsAction(vodId));
         },
         editVodDetails: (data: VodDetails, callback?: Function) => {
-            dispatch(editVodDetailsAction(data)).then(callback);
+            dispatch(editVodDetailsAction(data)).then(callback).catch(callback);
         },
         getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
             dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
@@ -74,8 +74,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         uploadFile: (data: File, uploadUrl: string) => {
             dispatch(uploadFileAction(data, uploadUrl))
         },
-        uploadImageFromVideo: (vodId: string, time: number, imageType: string)  => {
+        uploadImageFromVideo: (vodId: string, time: number, imageType: string, callback?: Function)  => {
             dispatch(uploadImageFromVideoAction(vodId, time, imageType))
+            .then(callback).catch(callback)
         },
         deleteFile: (vodId: string, targetId: string, fileName: string) => {
             dispatch(deleteFileAction(vodId, targetId, fileName))
@@ -85,6 +86,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => {
             dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, vodId))
+           
+
         },
         deleteSubtitle: (targetId: string, vodId: string, fileName: string) => {
             dispatch(deleteSubtitleAction(targetId, vodId, fileName))
