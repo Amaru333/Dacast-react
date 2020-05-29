@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
-import { ChapterMarker } from '../../../redux-flow/store/VOD/Chapters/types'
+import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/VOD/Chapters/types'
 
-export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function}) => {
+export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function; chapterState: ChapterMarkerInfosState}) => {
 
     const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null)
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0)
+    const [createButtonLoading, setCreateButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setChapterMarker(props.item);
@@ -32,10 +33,18 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                 }
             })
         }
+        setCreateButtonLoading(true)
         event.preventDefault()
-        props.submit(props.vodId, submittedChapterMarkers)
-        props.toggle(false)
+        props.submit(props.vodId, submittedChapterMarkers)   
     }
+
+    React.useEffect(() => {
+        if(createButtonLoading){
+            setCreateButtonLoading(false)
+            props.toggle(false)
+        }
+    }, [props.chapterState])
+
     return (
         chapterMarker ?
 
@@ -63,7 +72,7 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                     label='Start Time'
                 />
                 <div className='col col-12 py1'>
-                    <Button sizeButton="large" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.text.length > 0 ? "Save" : "Create"}</Button>
+                    <Button isLoading={createButtonLoading} sizeButton="large" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.text.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>

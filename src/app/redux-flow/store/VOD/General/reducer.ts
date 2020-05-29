@@ -71,7 +71,6 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
         case ActionTypes.GET_UPLOAD_URL:
             newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
             newArray.splice(newArray.length, 0, action.payload.data)
-            debugger
             return {
                 ...state, 
                 [action.payload.vodId] : {
