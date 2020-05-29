@@ -105,7 +105,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         if(props.vodDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, props.vodDetails.uploadurl, uploadedSubtitleFile, props.vodDetails.id, () => {setSubtitleButtonLoading(false)})
+            props.addSubtitle(subtitleFile, props.vodDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.vodDetails.subtitles[props.vodDetails.subtitles.length - 1].targetID}, props.vodDetails.id, () => {setSubtitleButtonLoading(false)})
             setUploadedSubtitleFile(emptySubtitle)
             setSubtitleModalOpen(false);
         }
@@ -354,39 +354,41 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         </AdvancedLinksContainer>
                     </div>
 
+                   { subtitleModalOpen && 
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
-                        <ModalContent>
-                            <DropdownSingle
-                                hasSearch
-                                className="col col-12"
-                                id="subtitleLanguage"
-                                dropdownTitle="Subtitle Language"
-                                list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
-                                dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
-                                callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
-                            />
-                            <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                <label htmlFor='browseButtonSubtitle'>
-                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
-                                    Select Files
-                                </label>                                    
-                            </Button>
-                            <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
-                            {uploadedSubtitleFile.name === "" ? null :
-                                <SubtitleFile className="col mt1">
-                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
-                                    <button style={{ border: "none", backgroundColor: "inherit" }}>
-                                        <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
-                                    </button>
-                                </SubtitleFile>
-                            }
-                            <InputCheckbox className='col col-12 my2' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? true : false} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
-                        </ModalContent>
-                        <ModalFooter>
-                            <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
-                            <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
-                        </ModalFooter>
-                    </Modal>
+                            <ModalContent>
+                                <DropdownSingle
+                                    hasSearch
+                                    className="col col-12"
+                                    id="subtitleLanguage"
+                                    dropdownTitle="Subtitle Language"
+                                    list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
+                                    dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
+                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
+                                />
+                                <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                    <label htmlFor='browseButtonSubtitle'>
+                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
+                                        Select Files
+                                    </label>                                    
+                                </Button>
+                                <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
+                                {uploadedSubtitleFile.name === "" ? null :
+                                    <SubtitleFile className="col mt1">
+                                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        <button style={{ border: "none", backgroundColor: "inherit" }}>
+                                            <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
+                                        </button>
+                                    </SubtitleFile>
+                                }
+                                <InputCheckbox className='col col-12 my2' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? true : false} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                            </ModalContent>
+                            <ModalFooter>
+                                <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                                <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                    }
                     {
                         imageModalOpen ?
                             <ImageModal

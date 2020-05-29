@@ -1,6 +1,6 @@
 import { Reducer } from "redux"
 import { Action } from "./actions"
-import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState } from './types'
+import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState, SubtitleInfo } from './types'
 
 // const initialVodGeneralState: VodDetails = {
 //     id: null,
@@ -17,6 +17,7 @@ const initialVodList: SearchResult | false = false
 
 
 const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
+    let newArray: SubtitleInfo[] = []
     switch (action.type) {
         case ActionTypes.GET_VOD_DETAILS:
             return {
@@ -34,16 +35,20 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     ...action.payload
                 }
             }
-        // case ActionTypes.ADD_VOD_SUBTITLE:
-        //     let newArray = state[action.payload.vodId].subtitles.slice()
-        //     newArray.splice(newArray.length, 0, action.payload.data)
-        //     return {
-        //         ...state,
-        //         [action.payload.vodId]: {
-        //             ...state[action.payload.vodId],
-        //             subtitles: newArray
-        //         }
-        //     }
+        case ActionTypes.ADD_VOD_SUBTITLE:
+            newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
+            if(newArray.findIndex(item => item.targetID === action.payload.data.targetID) > -1) {
+                newArray[newArray.findIndex(item => item.targetID === action.payload.data.targetID)] = action.payload.data
+            } else {
+                newArray.splice(newArray.length, 0, action.payload.data)
+            }
+            return {
+                ...state,
+                [action.payload.vodId]: {
+                    ...state[action.payload.vodId],
+                    subtitles: newArray
+                }
+            }
         // case ActionTypes.EDIT_VOD_SUBTITLE:
         //     return {
         //         ...state, subtitles: state.subtitles.map((item) => {
@@ -64,7 +69,7 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     subtitles: state[action.payload.vodId].subtitles.filter((item) => item.targetID != action.payload.targetID) }
                 }
         case ActionTypes.GET_UPLOAD_URL:
-            let newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
+            newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
             newArray.splice(newArray.length, 0, action.payload.data)
             debugger
             return {

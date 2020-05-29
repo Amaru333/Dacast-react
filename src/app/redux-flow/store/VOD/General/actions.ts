@@ -181,6 +181,9 @@ export const addSubtitleAction = (data: File, uploadUrl: string, subtitleInfo: S
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddVodSubtitle>) => {
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
+                debugger
+                dispatch({ type: ActionTypes.ADD_VOD_SUBTITLE, payload: {vodId: vodId, data: {...subtitleInfo, url: subtitleInfo.targetID ? `https://universe-files.dacast.com/${subtitleInfo.targetID}` : null}}})
+
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
