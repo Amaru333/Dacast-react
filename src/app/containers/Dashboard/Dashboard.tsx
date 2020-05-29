@@ -23,9 +23,7 @@ const Dashboard = (props: DashboardProps) => {
 
     const [profile, setProfile] = React.useState<number>(4);
     React.useEffect(() => {
-        if(!props.infos) {
-            props.getDashboardDetails();
-        }
+        props.getDashboardDetails();
     }, [profile])
 
     // React.useEffect(() => {
