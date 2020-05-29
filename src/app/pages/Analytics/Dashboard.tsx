@@ -46,7 +46,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
     const refreshData = (dates: any) => {
         setDates(dates);
-        props.getAnalyticsDashboardJobIds({end: dates.endDate, start: dates.startDate});
+        props.getAnalyticsDashboardJobIds({end: dates.endDate/1000, start: dates.startDate/1000});
     }
 
     return (
@@ -85,7 +85,6 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                                     labels={labelsFormate(props.dashboardAnalytics.data.playsViewersPerTime.plays.time)} /> :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
-
                     </AnalyticsCard>
                 </div>
                 <div className={ThirdLgHalfXmFullXs}>
