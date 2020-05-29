@@ -76,7 +76,8 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
             vodID: vodId,
             name: subtitleInfo.name,
             languageLongName: subtitleInfo.languageLongName,
-            languageShortName: subtitleInfo.languageShortName
+            languageShortName: subtitleInfo.languageShortName,
+            convertToUTF8: subtitleInfo.convertToUTF8
         }
     }
     await isTokenExpired()

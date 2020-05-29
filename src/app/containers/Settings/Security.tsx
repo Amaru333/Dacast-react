@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SecurityPage } from '../../pages/Settings/Security/Security';
-import { SettingsSecurityDetails, DomainControl, GeoRestriction } from '../../redux-flow/store/Settings/Security/types';
+import { SecuritySettings, DomainControl, GeoRestriction } from '../../redux-flow/store/Settings/Security/types';
 import { getSettingsSecurityOptionsAction, saveSettingsSecurityOptionsAction, saveGeoRestrictionGroupAction, saveDomainControlGroupAction, deleteDomainControlGroupAction, deleteGeoRestrictionGroupAction, Action, createGeoRestrictionGroupAction, createDomainControlGroupAction } from '../../redux-flow/store/Settings/Security';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SecurityComponentProps {
-    securityDetails: SettingsSecurityDetails;
+    securityDetails: SecuritySettings;
     getSettingsSecurityOptions: Function;
     saveSettingsSecurityOptions: Function;
     createGeoRestrictionGroup: Function;
@@ -45,7 +45,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getSettingsSecurityOptions: () => {
             dispatch(getSettingsSecurityOptionsAction());
         },
-        saveSettingsSecurityOptions: (data: SettingsSecurityDetails, callback?: Function) => {
+        saveSettingsSecurityOptions: (data: SecuritySettings, callback?: Function) => {
             dispatch(saveSettingsSecurityOptionsAction(data)).then(callback);
         },
         createGeoRestrictionGroup: (data: GeoRestriction) => {

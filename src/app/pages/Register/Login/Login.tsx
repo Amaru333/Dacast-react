@@ -41,7 +41,6 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     return (
         <LoginContainer>
-            <form>
                 <ImageStyle className="mx-auto" src={logo} />
                 <ModalCard className="mx-auto" size="small" title="User Login" >
                     <ModalContent className="clearfix">
@@ -63,7 +62,6 @@ export const LoginPage = (props: LoginComponentProps) => {
                         <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
                     </ModalFooter>
                 </ModalCard>
-            </form>
         </LoginContainer>
     )
 }

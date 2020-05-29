@@ -64,4 +64,5 @@ export interface SubtitleInfo {
     languageLongName: string;
     languageShortName: string;
     url?: string;
+    convertToUTF8?: boolean;
 }

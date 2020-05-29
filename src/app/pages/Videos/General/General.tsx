@@ -20,11 +20,12 @@ import { GeneralComponentProps } from '../../../containers/Videos/General';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { languages } from 'countries-list';
+import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
-    const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "" }
+    const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
 
     const {userId} = addTokenToHeader()
 
@@ -62,15 +63,26 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const subtitlesTableBody = () => {
         return VodDetails.subtitles ? VodDetails.subtitles.map((value, key) => {
             return {data: [
-                <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>,
+                <div className='flex'>
+                    <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>
+                    {
+                        !value. url && 
+                            <div className='pl2 relative'>
+                                <IconStyle coloricon='orange' id={'failedUploadedFileSubtitle' + key}>warning_outlined</IconStyle>
+                                <Tooltip style={{width: 330}} target={"failedUploadedFileSubtitle" + key}>Your file wasn't uploaded properly! Please upload a new one.</Tooltip>
+                            </div>
+                    }
+                    
+                </div>
+                ,
                 <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
                 <IconContainer key={"generalPage_subtitles_actionIcons" + value.name + key} className="iconAction">
                     <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
                     <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
                     <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.vodDetails.id, value.targetID, value.name)}>delete</IconStyle></ActionIcon>
                     <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
-                    <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
-                    <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip>
+                    {/* <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
+                    <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip> */}
                 </IconContainer>
             ]}
         })
@@ -139,7 +151,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
-        { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
+        // { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
@@ -203,11 +215,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Embed Code</Text>
+                                <Text size={14} weight="med">Iframe Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -218,6 +230,16 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`}</LinkText>
                                 <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">JS Embed Code</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`}</LinkText>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'JS Embed Code Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -358,6 +380,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     </button>
                                 </SubtitleFile>
                             }
+                            <InputCheckbox className='col col-12 my2' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? true : false} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
                         </ModalContent>
                         <ModalFooter>
                             <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
