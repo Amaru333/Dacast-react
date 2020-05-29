@@ -6,6 +6,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction, getAnalyticsRealTimeJobIdsAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { getLiveListAction } from '../../redux-flow/store/Live/General/actions';
+import { SearchResult } from '../../redux-flow/store/Live/General/types';
 
 
 export interface RealTimePageProps {
@@ -15,11 +17,16 @@ export interface RealTimePageProps {
     getAnalyticsRealTimeGbTime: Function;
     getAnalyticsRealTimeConsumptionLocation: Function;
     getAnalyticsRealTimeJobIds: Function;
+    liveList: false | SearchResult;
+    getLiveList: Function;
 }
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
     React.useEffect(() => {
+        if(!props.liveList) {
+            props.getLiveList();
+        }
         props.getAnalyticsRealTimeJobIds()
     }, [])
 
@@ -42,7 +49,8 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        realTimeAnalytics: state.analytics.realTime
+        realTimeAnalytics: state.analytics.realTime,
+        liveList: state.live.list,
     };
 }
 
@@ -62,6 +70,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getAnalyticsRealTimeConsumptionLocation: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
             dispatch(getAnalyticsRealTimeConsumptionLocationAction(jobId, options));
+        },
+        getLiveList: (qs: string) => {
+            dispatch(getLiveListAction(qs));
         },
     };
 }

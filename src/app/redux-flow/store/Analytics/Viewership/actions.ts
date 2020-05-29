@@ -66,9 +66,9 @@ export interface GetAnalyticsViewershipPlaysViewersTime {
 }
 
 
-export const getAnalyticsViewershipJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipJobIds> => {
+export const getAnalyticsViewershipJobIdsAction = (options?: GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipJobIds> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipJobIds> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipJobIds()
+        await AnalyticsViewershipServices.getAnalyticsViewershipJobIds(options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS, payload: response.data} );
             }).catch(() => {
