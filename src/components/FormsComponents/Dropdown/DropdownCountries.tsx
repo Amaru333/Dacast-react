@@ -174,13 +174,13 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         if(selectAllState === 'unchecked' || selectAllState === 'undeterminate') {
             let continents = checkedContinents
             Object.keys(continents).forEach((continent) => {
-                continents[continent] = {countries: {...Object.keys(continents[continent].countries).reduce((reduced, key) => ({ ...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: true} }), {})}, checked: 'checked'}
+                continents[continent] = {...continents[continent], countries: {...Object.keys(continents[continent].countries).reduce((reduced, key) => ({ ...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: true} }), {})}, checked: 'checked'}
             })
             setCheckedContinents({...continents})
         } else {
             let continents = checkedContinents
             Object.keys(continents).forEach((continent) => {
-                continents[continent] = {countries: {...Object.keys(continents[continent].countries).reduce((reduced, key) => ({ ...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: false} }), {})}, checked: 'unchecked'}
+                continents[continent] = {...continents[continent], countries: {...Object.keys(continents[continent].countries).reduce((reduced, key) => ({ ...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: false} }), {})}, checked: 'unchecked'}
             })
             setCheckedContinents({...continents})
         }
