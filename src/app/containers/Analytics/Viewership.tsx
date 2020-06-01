@@ -40,7 +40,7 @@ const Viewership = (props: ViewershipComponentProps) => {
 
     React.useEffect(() => {
         if(!props.viewershipAnalytics.jobIds) {
-            props.getAnalyticsViewershipJobIds()
+            props.getAnalyticsViewershipJobIds({ end: 1591015295, start: 1591008095 })
         }
         
         if(!props.folderData) {

@@ -11,7 +11,7 @@ import { TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '.
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
@@ -29,7 +29,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     const [selectedTabViewing, setSelectedTabViewing] = React.useState<string>('device');
     const [selectedTabPlayback, setSelectedTabPlayback] = React.useState<string>('map')
 
-    const [dates, setDates] = React.useState<{end: number; start: number}>({end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days')})
+    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
@@ -144,11 +144,11 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
         })
     }
 
-    const formateDates = (labels: number[]) => { 
-        if(dates.start + (24*3600)  < dates.end ) {
-            return labels.map(number => tsToLocaleDate(number, {hour:"2-digit", minute: "2-digit", day: '2-digit'})) 
+    const formateDates = (labels: number[]) => {
+        if (dates.start + (24 * 3600) < dates.end) {
+            return labels.map(number => tsToLocaleDate(number, { hour: "2-digit", minute: "2-digit", day: '2-digit' }))
         }
-        return labels.map(number => tsToLocaleDate(number)) 
+        return labels.map(number => tsToLocaleDate(number))
     };
 
     if (props.viewershipAnalytics.data) {
@@ -187,13 +187,15 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         <AnalyticsCard infoText="On which domains viewers are consuming your data" title="Consumption by Domain">
                             {
                                 viewershipAnalytics.consumptionPerDomain ?
-                                    <BarChart
-                                        datasetName="GBytes"
-                                        displayBytesFromGB={true}
-                                        beginAtZero={true}
-                                        data={viewershipAnalytics.consumptionPerDomain.value}
-                                        yAxesName="GB"
-                                        labels={viewershipAnalytics.consumptionPerDomain.domain} />
+                                    viewershipAnalytics.consumptionPerDomain.failed ?
+                                        <FailedCardAnalytics /> :
+                                        <BarChart
+                                            datasetName="GBytes"
+                                            displayFromMb
+                                            beginAtZero={true}
+                                            data={viewershipAnalytics.consumptionPerDomain.value}
+                                            yAxesName="GB"
+                                            labels={viewershipAnalytics.consumptionPerDomain.domain} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
@@ -203,10 +205,12 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Consumption by Device">
                             {
                                 viewershipAnalytics.consumptionPerDevices ?
-                                    <CheeseChart
-                                        displayBytesFromGB={true}
-                                        data={viewershipAnalytics.consumptionPerDevices.data}
-                                        labels={viewershipAnalytics.consumptionPerDevices.labels} />
+                                    viewershipAnalytics.consumptionPerDevices.failed ?
+                                        <FailedCardAnalytics /> :
+                                        <CheeseChart
+                                            displayBytesFromGB={true}
+                                            data={viewershipAnalytics.consumptionPerDevices.data}
+                                            labels={viewershipAnalytics.consumptionPerDevices.labels} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
@@ -216,16 +220,18 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         <AnalyticsCard infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
                             {
                                 viewershipAnalytics.playsViewersPerTime ?
-                                    <DoubleLineChart
-                                        datasetName="Hits"
-                                        noDecimals={false}
-                                        beginAtZero={true}
-                                        yAxesName="Plays and viewers"
-                                        datasetName1="plays"
-                                        datasetName2="viewers"
-                                        data1={viewershipAnalytics.playsViewersPerTime.plays.data}
-                                        data2={viewershipAnalytics.playsViewersPerTime.viewers.data}
-                                        labels={formateDates(viewershipAnalytics.playsViewersPerTime.viewers.time)} />
+                                    viewershipAnalytics.playsViewersPerTime.failed ?
+                                        <FailedCardAnalytics /> :
+                                        <DoubleLineChart
+                                            datasetName="Hits"
+                                            noDecimals={false}
+                                            beginAtZero={true}
+                                            yAxesName="Plays and viewers"
+                                            datasetName1="plays"
+                                            datasetName2="viewers"
+                                            data1={viewershipAnalytics.playsViewersPerTime.plays.data}
+                                            data2={viewershipAnalytics.playsViewersPerTime.viewers.data}
+                                            labels={formateDates(viewershipAnalytics.playsViewersPerTime.viewers.time)} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
@@ -247,35 +253,41 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             </TabSetupContainer>
                             {
                                 viewershipAnalytics.consumptionBreakdown.time ?
-                                    <BarChart
-                                        hidden={selectedTabConsumption !== "time"}
-                                        datasetName="GBytes"
-                                        displayBytesFromGB={true}
-                                        beginAtZero={true}
-                                        data={viewershipAnalytics.consumptionBreakdown.time.data}
-                                        yAxesName="GB"
-                                        labels={formateDates(viewershipAnalytics.consumptionBreakdown.time.time)} />
+                                    viewershipAnalytics.consumptionBreakdown.time.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabConsumption !== "time"} /> :
+                                        <BarChart
+                                            hidden={selectedTabConsumption !== "time"}
+                                            datasetName="GBytes"
+                                            displayFromMb
+                                            beginAtZero={true}
+                                            data={viewershipAnalytics.consumptionBreakdown.time.data}
+                                            yAxesName="GB"
+                                            labels={formateDates(viewershipAnalytics.consumptionBreakdown.time.time)} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "time"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.consumptionBreakdown.content ?
-                                    <BarChart
-                                        hidden={selectedTabConsumption !== "content"}
-                                        datasetName="GBytes"
-                                        displayBytesFromGB={true}
-                                        beginAtZero={true}
-                                        data={viewershipAnalytics.consumptionBreakdown.content.data}
-                                        yAxesName="GB"
-                                        labels={viewershipAnalytics.consumptionBreakdown.content.content} />
+                                    viewershipAnalytics.consumptionBreakdown.content.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabConsumption !== "content"} /> :
+                                        <BarChart
+                                            hidden={selectedTabConsumption !== "content"}
+                                            datasetName="GBytes"
+                                            displayFromMb
+                                            beginAtZero={true}
+                                            data={viewershipAnalytics.consumptionBreakdown.content.data}
+                                            yAxesName="GB"
+                                            labels={viewershipAnalytics.consumptionBreakdown.content.content} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "content"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.consumptionBreakdown.map ?
-                                    <div hidden={selectedTabConsumption !== "map"}>
-                                        {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
-                                    </div>
+                                    viewershipAnalytics.consumptionBreakdown.map.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabConsumption !== "map"} /> :
+                                        <div hidden={selectedTabConsumption !== "map"}>
+                                            {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
+                                        </div>
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "map"} center size='medium' color='violet' />
                             }
@@ -296,32 +308,38 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             </TabSetupContainer>
                             {
                                 viewershipAnalytics.viewingTimeBreakdown.device ?
-                                    <CheeseChart
-                                        displayBytesFromGB={false}
-                                        data={viewershipAnalytics.viewingTimeBreakdown.device.data}
-                                        labels={viewershipAnalytics.viewingTimeBreakdown.device.labels}
-                                        hidden={selectedTabViewing !== "device"} />
+                                    viewershipAnalytics.viewingTimeBreakdown.device.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabViewing !== "device"} /> :
+                                        <CheeseChart
+                                            displayBytesFromGB={false}
+                                            data={viewershipAnalytics.viewingTimeBreakdown.device.data}
+                                            labels={viewershipAnalytics.viewingTimeBreakdown.device.labels}
+                                            hidden={selectedTabViewing !== "device"} />
                                     :
                                     <LoadingSpinner hidden={selectedTabViewing !== "device"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.viewingTimeBreakdown.content ?
-                                    <BarChart
-                                        datasetName="Minutes"
-                                        displayBytesFromGB={false}
-                                        beginAtZero={true}
-                                        data={viewershipAnalytics.viewingTimeBreakdown.content.data}
-                                        yAxesName="min"
-                                        labels={viewershipAnalytics.viewingTimeBreakdown.content.labels}
-                                        hidden={selectedTabViewing !== "content"} />
+                                    viewershipAnalytics.viewingTimeBreakdown.content.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabViewing !== "content"}  /> :
+                                        <BarChart
+                                            datasetName="Minutes"
+                                            displayBytesFromGB={false}
+                                            beginAtZero={true}
+                                            data={viewershipAnalytics.viewingTimeBreakdown.content.data}
+                                            yAxesName="min"
+                                            labels={viewershipAnalytics.viewingTimeBreakdown.content.labels}
+                                            hidden={selectedTabViewing !== "content"} />
                                     :
                                     <LoadingSpinner hidden={selectedTabViewing !== "content"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.viewingTimeBreakdown.map ?
-                                    <div hidden={selectedTabViewing !== "map"}>
-                                        {renderMap(viewershipAnalytics.viewingTimeBreakdown.map, "idMapViewing")}
-                                    </div>
+                                    viewershipAnalytics.viewingTimeBreakdown.map.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabViewing !== "map"} /> :
+                                        <div hidden={selectedTabViewing !== "map"}>
+                                            {renderMap(viewershipAnalytics.viewingTimeBreakdown.map, "idMapViewing")}
+                                        </div>
                                     :
                                     <LoadingSpinner hidden={selectedTabViewing !== "map"} center size='medium' color='violet' />
                             }
@@ -343,31 +361,37 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                             </TabSetupContainer>
                             {
                                 viewershipAnalytics.concurrentPlayback.device ?
-                                    <CheeseChart
-                                        displayBytesFromGB={false}
-                                        data={viewershipAnalytics.concurrentPlayback.device.data}
-                                        labels={viewershipAnalytics.concurrentPlayback.device.labels}
-                                        hidden={selectedTabPlayback !== "device"} />
+                                    viewershipAnalytics.concurrentPlayback.device.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabPlayback !== "device"} /> :
+                                        <CheeseChart
+                                            displayBytesFromGB={false}
+                                            data={viewershipAnalytics.concurrentPlayback.device.data}
+                                            labels={viewershipAnalytics.concurrentPlayback.device.labels}
+                                            hidden={selectedTabPlayback !== "device"} />
                                     :
                                     <LoadingSpinner hidden={selectedTabPlayback !== "device"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.concurrentPlayback.content ?
-                                    <BarChart
-                                        datasetName="Avg Concurent playback"
-                                        beginAtZero={true}
-                                        data={viewershipAnalytics.concurrentPlayback.content.data}
-                                        yAxesName="Avg Concurent playback"
-                                        labels={viewershipAnalytics.concurrentPlayback.content.content}
-                                        hidden={selectedTabPlayback !== "content"} />
+                                    viewershipAnalytics.concurrentPlayback.content.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabPlayback !== "content"} /> :
+                                        <BarChart
+                                            datasetName="Avg Concurent playback"
+                                            beginAtZero={true}
+                                            data={viewershipAnalytics.concurrentPlayback.content.data}
+                                            yAxesName="Avg Concurent playback"
+                                            labels={viewershipAnalytics.concurrentPlayback.content.content}
+                                            hidden={selectedTabPlayback !== "content"} />
                                     :
                                     <LoadingSpinner hidden={selectedTabPlayback !== "content"} center size='medium' color='violet' />
                             }
                             {
                                 viewershipAnalytics.concurrentPlayback.map ?
-                                    <div hidden={selectedTabPlayback !== "map"}>
-                                        {renderMap(viewershipAnalytics.concurrentPlayback.map, "idMapPlayback")}
-                                    </div>
+                                    viewershipAnalytics.concurrentPlayback.map.failed ?
+                                        <FailedCardAnalytics hidden={selectedTabPlayback !== "map"}/> :
+                                        <div hidden={selectedTabPlayback !== "map"}>
+                                            {renderMap(viewershipAnalytics.concurrentPlayback.map, "idMapPlayback")}
+                                        </div>
                                     :
                                     <LoadingSpinner hidden={selectedTabPlayback !== "map"} center size='medium' color='violet' />
                             }

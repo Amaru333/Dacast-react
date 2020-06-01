@@ -90,6 +90,22 @@ export const renderMap = (dataRepo: any, id: string) => {
     )
 }
 
+
+
+export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>) => {
+    if(props.hidden) {
+        return <></>
+    }
+
+    return (
+        <div className="col col-12 flex flex-column items-center">
+            <IconStyle className="mt2" coloricon="red" fontSize='large' >warning</IconStyle>
+            <Text size={16} weight="med" >Something went wrong</Text>
+            <Text size={16} weight="reg" >We are unable to display this report.</Text>
+        </div>
+    )
+}
+
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: {end: number; start: number},  refreshData: Function}) => {
     
     const [dates, setDates] = React.useState<{start: any; end: any}>({start: props.defaultDates.start, end: props.defaultDates.end})
