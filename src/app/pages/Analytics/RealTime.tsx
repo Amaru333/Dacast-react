@@ -6,31 +6,57 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { LiveItem } from '../../redux-flow/store/Live/General/types';
 
 export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
-    const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number)) };
-
+    const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number, {hour:"2-digit", minute: "2-digit", day: '2-digit'})) };
+    const [timePeriod, setTimePeriod] = React.useState<number>(5)
+    React.useEffect(() => {
+    }, [props.liveList])
+    const handleTimePeriodsUpdate = (name: string) => {
+        switch(name) {
+            case '5 Minutes' :
+                setTimePeriod(5);
+            case '15 Minutes' :
+                setTimePeriod(15);
+            case '30 Minutes' :
+                setTimePeriod(30);
+            case '45 Minutes' :
+                setTimePeriod(45);
+            case '1 Hour' :
+                setTimePeriod(60);
+            case '1.5 Hour' :
+                setTimePeriod(90);
+            case '2 Hours' :
+                setTimePeriod(120);
+        }
+            
+    }
     return (
         <React.Fragment>
             <div className="flex items-end col col-12 mb25">
                 <DropdownSingle
                     id='timeRefreshDropdown'
+                    callback={(name: string) => { handleTimePeriodsUpdate(name) }}
                     isInModal={false}
                     isWhiteBackground
-                    dropdownDefaultSelect='5 mins'
                     className='col sm-col-2 col-5 pr1'
                     dropdownTitle='Time Period'
-                    list={{ '5 Minutes': false, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false }}
+                    list={{ '5 Minutes': true, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false }}
                 />
-                <DropdownSingle
-                    id='liveChannelsDropdown'
-                    isInModal
-                    isWhiteBackground
-                    className='col sm-col-3 col-5 px1'
-                    dropdownTitle='Live Channel'
-                    list={{ 'Channel1': false, 'Channel2': false }}
-                />
+                {props.liveList ? 
+                    <DropdownSingle
+                        id='liveChannelsDropdown'
+                        isInModal
+                        isWhiteBackground
+                        className='col sm-col-3 col-5 px1'
+                        dropdownTitle='Live Channel'
+                        list={props.liveList.results.reduce((reduced: DropdownListType, item: LiveItem) => { return { ...reduced, [item.title]: false } }, {})}
+                    /> : null
+                }
+                
                 <Button style={{ marginBottom: 5 }} className='ml1' typeButton='primary' sizeButton='small' buttonColor='blue'>Apply</Button>
             </div>
             <div className="clearfix mxn1 mb2">
@@ -39,7 +65,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         {
                             props.realTimeAnalytics.data.concurentViewersPerTime ?
                                 <BarChart
-                                    displayBytesFromGB={true}
                                     beginAtZero={true}
                                     data={props.realTimeAnalytics.data.concurentViewersPerTime.data}
                                     yAxesName="Concurent Viewers"
@@ -55,7 +80,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         {
                             props.realTimeAnalytics.data.newPlaybackSessionsPerTime ?
                                 <BarChart
-                                    displayBytesFromGB={true}
                                     beginAtZero={true}
                                     data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data}
                                     datasetName="New Playback Sessions"
@@ -72,7 +96,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                             props.realTimeAnalytics.data.gbPerTime ?
                                 <BarChart
                                     datasetName="GBytes"
-                                    displayBytesFromGB={true}
+                                    displayFromMb
                                     beginAtZero={true}
                                     data={props.realTimeAnalytics.data.gbPerTime.data}
                                     yAxesName="GB"

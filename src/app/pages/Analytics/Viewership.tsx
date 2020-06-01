@@ -14,6 +14,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import moment from 'moment';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
 
@@ -27,6 +28,8 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     const [selectedTabConsumption, setSelectedTabConsumption] = React.useState<string>('time');
     const [selectedTabViewing, setSelectedTabViewing] = React.useState<string>('device');
     const [selectedTabPlayback, setSelectedTabPlayback] = React.useState<string>('map')
+
+    const [dates, setDates] = React.useState<{end: number; start: number}>({end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days')})
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
@@ -107,20 +110,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
 
         //let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
         let options = { end: dates.endDate, start: dates.startDate };
-
-        props.getAnalyticsViewershipConsumptionBreakdownContent(options, props.viewershipAnalytics.jobIds.consumptionPerContent.jobID);
-        props.getAnalyticsViewershipConsumptionBreakdownMap(options, props.viewershipAnalytics.jobIds.consumptionPerLocation.jobID);
-        props.getAnalyticsViewershipConsumptionBreakdownTime(options, props.viewershipAnalytics.jobIds.consumptionPerTime.jobID);
-        props.getAnalyticsViewershipConcurrentPlaybackContent(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerContent.jobID);
-        props.getAnalyticsViewershipConcurrentPlaybackDevice(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerDevice.jobID);
-        props.getAnalyticsViewershipConcurrentPlaybackMap(options, props.viewershipAnalytics.jobIds.concurrentPlaybackPerLocation.jobID);
-        props.getAnalyticsViewershipViewingTimeDevice(options, props.viewershipAnalytics.jobIds.viewingTimePerDevice.jobID);
-        props.getAnalyticsViewershipViewingTimeContent(options, props.viewershipAnalytics.jobIds.viewingTimePerContent.jobID);
-        props.getAnalyticsViewershipViewingTimeMap(options, props.viewershipAnalytics.jobIds.viewingTimePerLocation.jobID);
-        props.getAnalyticsViewershipConsumptionDomain(options, props.viewershipAnalytics.jobIds.consumptionPerDomain.jobID);
-        props.getAnalyticsViewershipConsumptionDevice(options, props.viewershipAnalytics.jobIds.consumptionPerDevice.jobID);
-        props.getAnalyticsViewershipPlaysViewersTime(options, props.viewershipAnalytics.jobIds.playsViewersPerTime.jobID);
-
+        props.getAnalyticsViewershipJobIds(options)
     }
 
     const renderContentsList = () => {
@@ -154,13 +144,19 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
         })
     }
 
+    const formateDates = (labels: number[]) => { 
+        if(dates.start + (24*3600)  < dates.end ) {
+            return labels.map(number => tsToLocaleDate(number, {hour:"2-digit", minute: "2-digit", day: '2-digit'})) 
+        }
+        return labels.map(number => tsToLocaleDate(number)) 
+    };
+
     if (props.viewershipAnalytics.data) {
-        var labelsFormate = props.viewershipAnalytics.data.playsViewersPerTime ? props.viewershipAnalytics.data.playsViewersPerTime.plays.time.map((number: number) => tsToLocaleDate(number)) : null;
         const viewershipAnalytics = props.viewershipAnalytics.data;
         return (
             <React.Fragment>
                 <div className="col col-12 mb25">
-                    <DateFilteringAnalytics refreshData={updateData} />
+                    <DateFilteringAnalytics defaultDates={dates} refreshData={updateData} />
                     <div className="flex items-center col col-12">
                         <div className="inline-flex items-center flex col-7 mb2">
                             <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -229,7 +225,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                         datasetName2="viewers"
                                         data1={viewershipAnalytics.playsViewersPerTime.plays.data}
                                         data2={viewershipAnalytics.playsViewersPerTime.viewers.data}
-                                        labels={labelsFormate} />
+                                        labels={formateDates(viewershipAnalytics.playsViewersPerTime.viewers.time)} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
@@ -258,7 +254,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                         beginAtZero={true}
                                         data={viewershipAnalytics.consumptionBreakdown.time.data}
                                         yAxesName="GB"
-                                        labels={labelsFormate} />
+                                        labels={formateDates(viewershipAnalytics.consumptionBreakdown.time.time)} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "time"} center size='medium' color='violet' />
                             }
@@ -271,7 +267,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                         beginAtZero={true}
                                         data={viewershipAnalytics.consumptionBreakdown.content.data}
                                         yAxesName="GB"
-                                        labels={labelsFormate} />
+                                        labels={viewershipAnalytics.consumptionBreakdown.content.content} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "content"} center size='medium' color='violet' />
                             }
@@ -362,7 +358,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                         beginAtZero={true}
                                         data={viewershipAnalytics.concurrentPlayback.content.data}
                                         yAxesName="Avg Concurent playback"
-                                        labels={labelsFormate}
+                                        labels={viewershipAnalytics.concurrentPlayback.content.content}
                                         hidden={selectedTabPlayback !== "content"} />
                                     :
                                     <LoadingSpinner hidden={selectedTabPlayback !== "content"} center size='medium' color='violet' />

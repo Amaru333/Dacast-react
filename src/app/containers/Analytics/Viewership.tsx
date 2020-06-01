@@ -119,8 +119,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
-        getAnalyticsViewershipJobIds: () => {
-            dispatch(getAnalyticsViewershipJobIdsAction())
+        getAnalyticsViewershipJobIds: (options?: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipJobIdsAction(options))
         },
         getAnalyticsViewershipViewingTimeDevice: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
             dispatch(getAnalyticsViewershipViewingTimeDeviceAction(jobId, dates));

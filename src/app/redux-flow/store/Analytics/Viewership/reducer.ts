@@ -6,7 +6,7 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
     switch (action.type) {
         case ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS: 
             return {
-                ...state,
+                data: {...AnalyticsViewershipInitialState.data},
                 jobIds: action.payload.data
             }
         case ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT :

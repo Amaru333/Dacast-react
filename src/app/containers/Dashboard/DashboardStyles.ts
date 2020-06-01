@@ -5,6 +5,7 @@ export const classContainer = "clearfix mxn2";
 export const classItemFullWidth = "col col-12 px2 mb3";
 export const classItemHalfWidthContainer = "col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3";
 export const classItemFullWidthContainer = "col lg-col-3 md-col-6 sm-col-12 col-12 px2 mb3";
+export const classItemThirdWidthContainer = "col lg-col-4 md-col-4 sm-col-12 col-12 px2 mb3";
 
 export const SupportCard = styled(Card)`
     background-color: ${props => props.theme.colors['violet20']};

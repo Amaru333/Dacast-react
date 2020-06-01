@@ -24,7 +24,7 @@ const getAnalyticsDashboardConsumptionTime = async (options: GetAnalyticsDashboa
     let {token} = addTokenToHeader();
 
     var stringOption = qs.stringify(options);
-    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/time/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/consumption/time/fetch?jobID=${jobId}&`+stringOption, token)
     return data
 }
 
@@ -33,7 +33,7 @@ const getAnalyticsDashboardPlaysViewersTime = async (options: GetAnalyticsDashbo
     let {token} = addTokenToHeader();
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/plays-and-viewers/time/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/plays-and-viewers/time/fetch?jobID=${jobId}&`+stringOption, token)
     return data
 }
 
@@ -42,7 +42,7 @@ const getAnalyticsDashboardConsumptionDevice = async (options: GetAnalyticsDashb
     let {token} = addTokenToHeader();
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/device/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/consumption/device/fetch?jobID=${jobId}&`+stringOption, token)
     return data
 }
 
@@ -51,7 +51,7 @@ const getAnalyticsDashboardTopContent = async (options: GetAnalyticsDashboardOpt
     let {token} = addTokenToHeader();
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/top-content/content/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/top-content/content/fetch?jobID=${jobId}&`+stringOption, token)
     return data
 }
 
@@ -60,7 +60,7 @@ const getAnalyticsDashboardConsumptionLocation = async (options: GetAnalyticsDas
     let {token} = addTokenToHeader();
     var stringOption = qs.stringify(options);
 
-    var data = await loopUntilCompleted(`process.env.API_BASE_URL/analytics/consumption/location/fetch?jobID=${jobId}&`+stringOption, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/consumption/location/fetch?jobID=${jobId}&`+stringOption, token)
     return data
 }
 

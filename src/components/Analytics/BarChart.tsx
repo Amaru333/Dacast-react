@@ -16,6 +16,7 @@ export const BarChart = (props: any) => {
         displayBytes,
         displayTime,
         displayBytesFromGB,
+        displayFromMb,
         yAxesName,
         truncateName,
         ...other
@@ -68,7 +69,17 @@ export const BarChart = (props: any) => {
                 },
             }
         }
-    } else if (displayTime) {
+    } else if (displayFromMb) {
+        options.tooltips = {
+            callbacks: {
+                label: (tooltipItem, data) => {
+                    var label = data.labels[tooltipItem.index];
+                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    return label + ': ' + displayBytesForHumans(value);
+                },
+            }
+        }
+    }else if (displayTime) {
         options.tooltips = {
             callbacks: {
                 label: (tooltipItem, data) => {
