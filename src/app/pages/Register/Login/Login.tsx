@@ -23,7 +23,6 @@ export const LoginPage = (props: LoginComponentProps) => {
     React.useEffect(() => {
         if(query.get('email')){
             props.confirmEmail(query.get('email'))
-            console.log('sup')
         }
     }, [])
 
@@ -42,7 +41,6 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     return (
         <LoginContainer>
-            <form>
                 <ImageStyle className="mx-auto" src={logo} />
                 <ModalCard className="mx-auto" size="small" title="User Login" >
                     <ModalContent className="clearfix">
@@ -57,14 +55,13 @@ export const LoginPage = (props: LoginComponentProps) => {
 
                         <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
                     </ModalContent>
-                    <Bubble hidden={!props.loginInfos.error} type='error' className='my2'>
+                    <Bubble hidden={!props.loginInfos || (props.loginInfos && !props.loginInfos.error)} type='error' className='my2'>
                         Unable to sign in. Please check your details and try again.
                     </Bubble>
                     <ModalFooter>
                         <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
                     </ModalFooter>
                 </ModalCard>
-            </form>
         </LoginContainer>
     )
 }

@@ -11,7 +11,7 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import {  useEasyOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils'
+import { tsToLocaleDate, useMedia } from '../../../utils/utils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -20,12 +20,12 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../component
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../Playlist/List/BulkModals'
 import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
-import { Badge } from '../../../components/Badge/Badge'
 import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/folderService'
 import { useHistory } from 'react-router'
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
+import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -491,8 +491,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} hasContainer />
-                    <Pagination totalResults={props.folderData.requestedContent.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >

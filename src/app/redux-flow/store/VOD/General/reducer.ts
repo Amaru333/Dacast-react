@@ -1,6 +1,6 @@
 import { Reducer } from "redux"
 import { Action } from "./actions"
-import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState } from './types'
+import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState, SubtitleInfo } from './types'
 
 // const initialVodGeneralState: VodDetails = {
 //     id: null,
@@ -17,6 +17,7 @@ const initialVodList: SearchResult | false = false
 
 
 const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
+    let newArray: SubtitleInfo[] = []
     switch (action.type) {
         case ActionTypes.GET_VOD_DETAILS:
             return {
@@ -35,8 +36,12 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.ADD_VOD_SUBTITLE:
-            let newArray = state[action.payload.vodId].subtitles.slice()
-            newArray.splice(newArray.length, 0, action.payload.data)
+            newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
+            if(newArray.findIndex(item => item.targetID === action.payload.data.targetID) > -1) {
+                newArray[newArray.findIndex(item => item.targetID === action.payload.data.targetID)] = action.payload.data
+            } else {
+                newArray.splice(newArray.length, 0, action.payload.data)
+            }
             return {
                 ...state,
                 [action.payload.vodId]: {
@@ -64,15 +69,21 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                     subtitles: state[action.payload.vodId].subtitles.filter((item) => item.targetID != action.payload.targetID) }
                 }
         case ActionTypes.GET_UPLOAD_URL:
+            newArray = state[action.payload.vodId].subtitles ? state[action.payload.vodId].subtitles.slice() : []
+            newArray.splice(newArray.length, 0, action.payload.data)
+            debugger
             return {
                 ...state, 
-                [action.payload.id] : {
-                    ...state[action.payload.id],
-                    uploadurl: action.payload.data.presignedURL
+                [action.payload.vodId] : {
+                    ...state[action.payload.vodId],
+                    uploadurl: action.payload.url,
+                    subtitles: action.payload.data ? newArray : state[action.payload.vodId].subtitles
                 }
             }
         case ActionTypes.UPLOAD_IMAGE:
             return state
+        case ActionTypes.UPLOAD_IMAGE_FROM_VIDEO:
+                return state
         case ActionTypes.DELETE_IMAGE:
             return state
         default:

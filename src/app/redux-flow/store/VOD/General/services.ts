@@ -68,20 +68,21 @@ const editVodDetailsService = async (data: VodDetails) => {
 }
 
 const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
-    let requestData: {vodID: string; name?: string; languageLongName?: string; languageShortName?: string} = {
+    let requestData: any = {
         vodID: vodId
     }
-    if(subtitleInfo) {
+    if(data === 'subtitle') {
         requestData = {
             vodID: vodId,
             name: subtitleInfo.name,
             languageLongName: subtitleInfo.languageLongName,
-            languageShortName: subtitleInfo.languageShortName
+            languageShortName: subtitleInfo.languageShortName,
+            convertToUTF8: subtitleInfo.convertToUTF8
         }
     }
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    return await axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
             ...requestData
         },
@@ -89,11 +90,27 @@ const getUploadUrl = async (data: string, vodId: string, subtitleInfo?: Subtitle
             headers: {
                 Authorization: token
             }
-        })
+        }
+    )
+}
+
+const uploadImageFromVideo = async (vodId: string, time: number, imageType: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    console.log('data', vodId, time, imageType)
+    return axios.post(process.env.API_BASE_URL + `/vods/${vodId}/targets/${imageType.split('-')[1]}`, 
+        {
+            time: time
+        },
+        {
+          headers: {
+              Authorization: token
+            }  
+        }
+    )
 }
 
 const uploadFile = (data: File, uploadUrl: string) => {
-    debugger
     return axios.put(uploadUrl, data)
 }
 
@@ -115,6 +132,7 @@ export const VodGeneralServices = {
     editVodDetailsService,
     getUploadUrl,
     uploadFile,
+    uploadImageFromVideo,
     deleteFile,
     getVodList,
     deleteVodService,

@@ -116,7 +116,18 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             return {data: [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><IconStyle onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle><IconStyle onClick={() => editMailCatcher(row)}>edit</IconStyle> </IconContainer>
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableCopy' + i} onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle>
+                        <Tooltip target={'mailTableCopy' + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableEdit' + i} onClick={() => editMailCatcher(row)}>edit</IconStyle>
+                        <Tooltip target={'mailTableEdit' + i}>Edit</Tooltip>
+                    </ActionIcon>
+                    
+                    
+                </IconContainer>
             
             ]}
         })
@@ -198,9 +209,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </div>
                     <div className="col col-6">
                         <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageSize: parseInt(event.currentTarget.value)})} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value)})}  />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageLink: event.currentTarget.value})}  />
+                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize && props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageSize: parseInt(event.currentTarget.value)})} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding && props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value)})}  />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink && props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageLink: event.currentTarget.value})}  />
                     </div>
                 </div>
                 

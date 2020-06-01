@@ -55,7 +55,12 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     width: 24px;
     height: 24px;
   `}
-
+  ${props => (props.size == "xxs") && css`
+    border-width: 3px;
+    width: 20px;
+    height: 20px;
+  `}
+  
   &:before, &:after {
     content: '';
     width: 7px;
@@ -71,7 +76,7 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
         width: 3px;
         height: 2px;
     `}
-    ${props => (props.size == "xs") && css`
+    ${props => (props.size == "xs" || props.size == "xxs" ) && css`
         display:none;
     `}
   }
@@ -97,7 +102,7 @@ export const LoadingSpinnerStyle = styled.button<LoadingSpinnerProps>`
     bottom: 1px;
     left: 21px;
   `}
-  ${props => (props.size == "xs") && css`
+  ${props => (props.size == "xs" || props.size == "xxs") && css`
     display:none;
   `}
   }

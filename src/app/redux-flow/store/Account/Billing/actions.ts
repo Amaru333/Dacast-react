@@ -76,7 +76,7 @@ export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProt
         await BillingServices.editBillingPagePaymenPlaybackProtectionService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION, payload: response.data} );
-                dispatch(showToastNotification("Data saved!", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

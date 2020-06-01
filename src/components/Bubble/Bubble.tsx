@@ -20,7 +20,7 @@ export const Bubble = (props: BubbleProps) => {
             case 'warning':
                 return 'warning_outlined'
             case 'error': 
-                return 'error_outined'
+                return 'warning_outined'
             case 'success': 
                 return 'check_outlined'
             default:

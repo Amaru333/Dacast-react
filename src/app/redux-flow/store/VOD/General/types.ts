@@ -11,10 +11,11 @@ export enum ActionTypes {
     DELETE_VOD_SUBTITLE = "@@vod_general/DELETE_VOD_SUBTITLE",
     GET_UPLOAD_URL = "@@vod_general/GET_UPLOAD_URL",
     UPLOAD_IMAGE = "@@vod_general/UPLOAD_IMAGE",
+    UPLOAD_IMAGE_FROM_VIDEO = "@@vod_general/UPLOAD_IMAGE_FROM_VIDEO",
     DELETE_IMAGE = "@@vod_general/DELETE_IMAGE",
 }
 
-interface AssetType {
+export interface AssetType {
     assetGroupID: string;
     targetType: string;
     targetID: string;
@@ -63,4 +64,5 @@ export interface SubtitleInfo {
     languageLongName: string;
     languageShortName: string;
     url?: string;
+    convertToUTF8?: boolean;
 }

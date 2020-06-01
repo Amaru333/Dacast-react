@@ -12,7 +12,7 @@ export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibilityProp:
     top: ${props => props.top }px;
     left: ${props => props.left }px;
     transition:none;
-    max-width: 250px;
+    max-width: 500px;
     box-shadow: 0px 2px 4px ${props => props.theme.colors.overlay20 };
     z-index: 10;
 `;

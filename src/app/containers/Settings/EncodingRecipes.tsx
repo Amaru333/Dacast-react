@@ -55,8 +55,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getWatermarkUrlForUploading: () => {
             dispatch(getUploadWatermarkUrl());
         },
-        uploadWatermark: (data: File, uploadWatermarkUrl: string) => {
-            dispatch(uploadWatermark(data, uploadWatermarkUrl));
+        uploadWatermark: (data: File, uploadWatermarkUrl: string, callback?: Function) => {
+            dispatch(uploadWatermark(data, uploadWatermarkUrl)).then(callback);
         },
         deleteWatermark: (data: EncodingRecipeItem) => {
             dispatch(deleteWatermark(data));

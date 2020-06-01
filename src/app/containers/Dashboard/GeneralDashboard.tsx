@@ -1,5 +1,5 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemFullWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemFullWidthContainer, classItemThirdWidthContainer } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -63,8 +63,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     }
 
     const handleBillingPeriod = () => {
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
         if( (props.plan as DashboardPayingPlan).nextBill ) {
-            return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( (props.plan as DashboardPayingPlan).lastBill )} - {tsToLocaleDate( (props.plan as DashboardPayingPlan).nextBill )}</Text>
+            return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( firstDay.getTime()/1000 )} - {tsToLocaleDate( lastDay.getTime()/1000 )}</Text>
         }
     }
 
@@ -82,38 +85,38 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             </div>
 
             <div className={classContainer}>
-                <WidgetElement className={classItemFullWidthContainer}>
+                <WidgetElement className={classItemThirdWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
-                        {handleButtonToPurchase(bandwidth.percentage, "Data")}
+                        {handleButtonToPurchase(100, "Data")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {bandwidth.left}</Text><Text size={16} weight="reg" color="gray-4" >/{bandwidth.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1">&#8734;</Text><Text size={16} weight="reg" color="gray-4" >/200 GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{100}%</Text>
                     </div>
-                    <ProgressBarDashboard overage={props.profile.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                    <ProgressBarDashboard overage={props.profile.overage} percentage={100} widget="bandwidth" />
                 </WidgetElement>
 
-                <WidgetElement className={classItemFullWidthContainer}>
+                <WidgetElement className={classItemThirdWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        {handleButtonToPurchase(storage.percentage, "Storage")}
+                        {handleButtonToPurchase(100, "Storage")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {storage.left}</Text><Text size={16} weight="reg" color="gray-4" >/{storage.limit} GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1">&#8734;</Text><Text size={16} weight="reg" color="gray-4" >/20 GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >100%</Text>
                     </div>
-                    <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
+                    <ProgressBarDashboard percentage={100} widget="storage" />
                 </WidgetElement>
 
 
                 {
-                    (props.plan as DashboardTrial).daysLeft  ?
-                        <WidgetElement className={classItemFullWidthContainer}>
+                    true  ?
+                        <WidgetElement className={classItemThirdWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" >Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">30  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :

@@ -13,7 +13,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { GeoRestrictionForm } from './GeoRestrictionForm';
 import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
-import { DomainControl, GeoRestriction, SettingsSecurityDetails } from '../../../redux-flow/store/Settings/Security/types';
+import { DomainControl, GeoRestriction, SecuritySettings } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { useMedia } from '../../../../utils/utils';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -38,7 +38,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
     const [startDateTime, setStartDateTime] = React.useState<string>(null);
     const [endDateTime, setEndDateTime] = React.useState<string>(null);
-    const [securityDetails, setSecurityDetails] = React.useState<SettingsSecurityDetails>(props.securityDetails)
+    const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     
@@ -253,7 +253,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 </div>
             }
 
-            <Modal className='x-visible' hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Geo-Restricion Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
+            <Modal className='x-visible' hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Geo-Restriction Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 {
                     geoRestrictionModalOpened ?
                         <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.saveGeoRestrictionGroup : props.createGeoRestrictionGroup} />
