@@ -47,6 +47,7 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
                         globalSecuritySettings={props.globalSecuritySettings}
                         saveContentSecuritySettings={props.savePlaylistSecuritySettings}
                         getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                        showToast={props.showToast}
                     />
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

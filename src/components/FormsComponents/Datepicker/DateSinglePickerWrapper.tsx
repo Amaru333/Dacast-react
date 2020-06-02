@@ -13,7 +13,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
 
     React.useEffect(() => {
         if (props.callback && date) {
-            props.callback(date.toString(), date.format("X"))
+            props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
         }
         
     }, [date])
@@ -36,7 +36,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                     onDateChange={(date: any) => setDate(date)}
                     focused={focusedInput}
                     onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
-                    id="your_unique_id"
+                    id={props.id + "singleDatePicker"}
                     numberOfMonths={1}
                     keepOpenOnDateSelect={false}
                     openDirection={props.openDirection ? props.openDirection : 'down'}
