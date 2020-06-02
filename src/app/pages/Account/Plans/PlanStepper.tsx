@@ -7,14 +7,14 @@ import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan } from '../../../redux-flow/store/Account/Plans/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
-import { RadioButtonContainer, RadioButtonOption } from '../../../shared/Billing/BillingStyle';
-import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
+import { ScalePlanSelector, ScalePlanSelectorContents } from './Plans';
 
 export enum PlansName {
     developer = "Developer Plan",
     event = "Event Plan",
-    scale = "Scale Plan"
+    scale = "Scale Plan",
+    scaleMonthly = "Scale Plan"
 }
 
 //PLAN
@@ -61,34 +61,42 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
         <div>
             
             <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
-            <RadioButtonContainer className="mt2 flex justify-between" isSelected={selectedPlan === 'ott'}>
-                <InputRadio name='scalePlanSelection' value='ott' defaultChecked={true} label='OTT' onChange={() => setSelectedPlan('ott')} />
-                <Text size={14} weight='reg' color='gray-1'>2,000 GB Data /mo</Text>
-                <Text size={14} weight='reg' color='gray-1'>200 GB Storage</Text>
-            </RadioButtonContainer>
-            <RadioButtonOption className="p2" isOpen={selectedPlan === 'ott'}>
-                <Text size={14} weight='reg' color='gray-1'>This option is is for serious OTT and comes with large amounts of Data and Storage for all your Live and VOD needs.</Text>
-            </RadioButtonOption>
-
-            <RadioButtonContainer isSelected={selectedPlan === 'live'} className="mt2">
-                <InputRadio name='scalePlanSelection' value='live' defaultChecked={false} label='Live' onChange={() => setSelectedPlan('live')} />
-                <Text size={14} weight='reg' color='gray-1'>3,000 GB Data /mo</Text>
-                <Text size={14} weight='reg' color='gray-1'>20 GB Storage</Text>
-            </RadioButtonContainer>
-            <RadioButtonOption className="p2" isOpen={selectedPlan === 'live'}>
-                <Text size={14} weight='reg' color='gray-1'>This option is perfect for streamers and broadcasters who need a lot of Data and just a small amount of Storage.</Text>
-            </RadioButtonOption>
-
-            <RadioButtonContainer className="mt2" isSelected={selectedPlan === 'vod'}>
-                <InputRadio name='scalePlanSelection' value='vod' defaultChecked={false} label='VOD' onChange={() => setSelectedPlan('vod')} />
-                <Text size={14} weight='reg' color='gray-1'>1,000 GB Data /mo</Text>
-                <Text size={14} weight='reg' color='gray-1'>1,000 GB Storage</Text>
-            </RadioButtonContainer>
-            <RadioButtonOption className="p2" isOpen={selectedPlan === 'vod'}>
-                <Text size={14} weight='reg' color='gray-1'>This option is ideal for large Video-On-Demand libraries and comes with an equal amount of Data and Storage.</Text>
-            </RadioButtonOption>
             
-            <Table id='firstStepFooterTotalPrice' className="tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
+            <div className="col col-12 mt2">
+                <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
+                <ScalePlanSelector onClick={() => setSelectedPlan("live")} selected={selectedPlan === "live"}>
+                    <ScalePlanSelectorContents>
+                        <Text style={{marginBottom: 4}} size={16} weight="med">More Data</Text>
+                        <Text size={14} weight="reg">3TB data/month</Text>
+                        <Text size={14} weight="reg">30Gb storage</Text>
+                    </ScalePlanSelectorContents>  
+                </ScalePlanSelector>
+                </div>
+                <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
+                <ScalePlanSelector onClick={() => setSelectedPlan("ott")} selected={selectedPlan === "ott"}>
+                <ScalePlanSelectorContents>
+                        <Text style={{marginBottom: 4}} size={16} weight="med">Balanced</Text>
+                        <Text size={14} weight="reg">2TB data/month</Text>
+                        <Text size={14} weight="reg">200Gb storage</Text>
+                    </ScalePlanSelectorContents>  
+                </ScalePlanSelector>
+                </div>
+                <div className="col-12 sm-col-4 col xs-mb2">
+                <ScalePlanSelector onClick={() => setSelectedPlan("vod")} selected={selectedPlan === "vod"}>
+                <ScalePlanSelectorContents>
+                        <Text style={{marginBottom: 4}} size={16} weight="med">More Storage</Text>
+                        <Text size={14} weight="reg">1TB data/month</Text>
+                        <Text size={14} weight="reg">1TbGb storage</Text>
+                    </ScalePlanSelectorContents>  
+                </ScalePlanSelector>
+                </div>
+                
+                
+            </div>
+            <div className="col col-12">
+            <Table id='firstStepFooterTotalPrice' className="mt2 tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
+            </div>
+            
             
 
             
@@ -168,19 +176,14 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 
     const cartTableBodyElement = () => {
 
-        
-
-        
-
-
         if (props.stepperData.name !== 'developer')
         {return  [
             {data: [
-                <Text  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
+                <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
                 <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">{props.stepperData.paymentFrequency === 'Annually' ? '$' + annualPlanPrice.toLocaleString() + ' /yr' : '$' + planPrice.toLocaleString() + ' /mo'}</Text>
             ]},
             {data: [
-                <Text  key="cartTableFeaturesHeading" size={14}  weight="reg" color="gray-1">Features</Text>,
+                <Text  key="cartTableFeaturesHeading" size={14}  weight="med" color="gray-1">Features</Text>,
                 <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">${featuresTotal.toLocaleString()}{props.stepperData.name === 'scale' ? ' /mo' : ' /yr'}</Text>
             ]}
         ]} else {
@@ -191,6 +194,19 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
                 ]}]
         }
            
+    }
+
+    const allowancesBodyElement = () => {
+        return [
+            {data: [
+                <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">Data</Text>,
+                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">2Tb/Mo</Text>
+            ]},
+            {data: [
+                <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">Storage</Text>,
+                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">200Gb</Text>
+            ]}
+        ]
     }
 
     const cartDropdownOption = () => {
@@ -254,7 +270,10 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 
     return (
         <div>
-            <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} /> 
+            <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} />
+            { props.stepperData.name === 'scale' &&
+                <Table id='thirdStepAllowances' headerBackgroundColor="gray-10" body={allowancesBodyElement()}  />
+            }            
             <Table id='thirdStepTotal' className='tableOverflow' customClassName=' tableOverflow' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} />
             
         </div>

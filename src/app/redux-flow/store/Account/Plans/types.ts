@@ -11,7 +11,6 @@ export interface CustomAllowance {
 
 export interface Plan {
     name: 'developer' | 'event' | 'scale';
-    isActive: boolean;
     firstStep: {
         included: {
             defaultBanwidth: number;
@@ -35,14 +34,42 @@ export interface Plan {
     termsAndConditions: boolean;
     action: 'custom' | 'purchase';
 }
+
+// export interface Plan {
+//     name: 'developer' | 'event' | 'scale' | 'scaleMonthly';
+//     code: string;
+//     isActive: boolean;
+//     discount: number;
+//     price: number;
+//     allowances: Allowances[]
+//     privileges: Privilege[]
+//     privilegesTotal: number; // front end only
+//     paymentFrequency: string
+//     termsAndConditions: boolean; // frontend only
+// }
+
+export interface Allowances {
+    code: string;
+    defaultBandwidth: number;
+    defaultStorage: number;
+}
+
+export interface Privilege {
+    code: string;
+    price: number;
+    checked: boolean;
+}
+
 export interface Plans {
     developerPlan: Plan;
     eventPlan: Plan;
     scalePlan: Plan;
+    scaleMonthlyPlan: Plan;
 }
 
 export const plansInitialState: Plans = {
     developerPlan: null,
     eventPlan: null,
-    scalePlan: null
+    scalePlan: null,
+    scaleMonthlyPlan: null
 }
