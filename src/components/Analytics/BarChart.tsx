@@ -75,7 +75,7 @@ export const BarChart = (props: any) => {
                 label: (tooltipItem, data) => {
                     var label = data.labels[tooltipItem.index];
                     var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return label + ': ' + displayBytesForHumans(value);
+                    return label + ': ' + displayBytesForHumans(value, 2, true);
                 },
             }
         }
@@ -99,6 +99,15 @@ export const BarChart = (props: any) => {
             },
         ],
     };
+
+    if(displayFromMb) {
+        console.log(line)
+        if(line.datasets[0] && line.datasets[0].data){
+            var  newDatasets = line.datasets[0].data.map(element => element / 1000)
+            line.datasets[0].data = newDatasets;
+        }
+        console.log(line)
+    }
 
     return (
         <Bar hidden={props.hidden} {...other} data = { line } options = { options } />

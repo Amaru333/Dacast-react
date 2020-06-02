@@ -12,7 +12,7 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
         case ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION:
             return {
                 ...state,
-                data: { ...state.data, consumptionPerLocation: action.payload ? action.payload.map.filter(element => element.consumedMB !== undefined) : false }
+                data: { ...state.data, consumptionPerLocation: { failed: action.payload && action.payload.failed ? true : false,  data: action.payload ? action.payload.map.filter(element => element.consumedMB !== undefined) : false } }
             }
         case ActionTypes.GET_ANALYTICS_REALTIME_GB_TIME:
             return {

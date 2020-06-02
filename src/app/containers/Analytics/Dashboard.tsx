@@ -23,7 +23,7 @@ export interface DashboardPageProps {
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        props.getAnalyticsDashboardJobIds();
+        props.getAnalyticsDashboardJobIds( { end: 1591015295, start: 1591008095 });
     }, [])
 
     React.useEffect(() => {

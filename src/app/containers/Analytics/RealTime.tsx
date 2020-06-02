@@ -27,7 +27,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
         if(!props.liveList) {
             props.getLiveList();
         }
-        props.getAnalyticsRealTimeJobIds()
+        props.getAnalyticsRealTimeJobIds({ period: 5 })
     }, [])
 
     React.useEffect(() => {
@@ -56,8 +56,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTimeJobIds: () => {
-            dispatch(getAnalyticsRealTimeJobIdsAction());
+        getAnalyticsRealTimeJobIds: (options?: any) => {
+            dispatch(getAnalyticsRealTimeJobIdsAction(options));
         },
         getAnalyticsRealTimeViewersTimes: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
             dispatch(getAnalyticsRealTimeViewersTimesAction(jobId, options));

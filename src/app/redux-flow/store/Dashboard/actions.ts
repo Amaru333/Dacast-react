@@ -24,7 +24,8 @@ export const getDashboardDetailsAction = (): ThunkDispatch<Promise<void>, {}, Ge
         await DashboardServices.getDashboardDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: response.data} );
-            }).catch(() => {
+            }).catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

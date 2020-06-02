@@ -6,10 +6,11 @@ import { loopUntilCompleted } from '../../../../../utils/LoopHttpServices';
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 var qs = require('qs');
 
-const getAnalyticsRealTimeJobIds = async () => {
+const getAnalyticsRealTimeJobIds = async (options?: any) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/analytics/real-time?contentIDs=~' + userId, 
+    var stringOption = qs.stringify(options);
+    return axios.get(process.env.API_BASE_URL + '/analytics/real-time?contentIDs=~' + userId+'&'+stringOption, 
         {
             headers: {
                 Authorization: token

@@ -40,7 +40,8 @@ export const getAnalyticsDashboardJobIdsAction = (options?: GetAnalyticsDashboar
         await AnalyticsDashboardServices.getAnalyticsDashboardJobIds(options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS, payload: response.data} );
-            }).catch(() => {
+            }).catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -51,8 +52,9 @@ export const getAnalyticsDashboardConsumptionLocationAction = (dates: GetAnalyti
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: false} );
         await AnalyticsDashboardServices.getAnalyticsDashboardConsumptionLocation(dates, jobId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: {data: response.data} } );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION, payload: { data:  { map: [], failed: true} } }  );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -65,6 +67,7 @@ export const getAnalyticsDashboardTopContentsAction = (dates: GetAnalyticsDashbo
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS, payload: { data: {labels: [], data: [], failed: true} } } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -77,6 +80,8 @@ export const getAnalyticsDashboardConsumptionDeviceAction = (dates: GetAnalytics
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE, payload: response.data} );
             }).catch(() => {
+                
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE, payload: { data: {labels: [], data: [], failed: true} } } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -87,8 +92,10 @@ export const getAnalyticsDashboardPlaysViewersTimeAction = (dates: GetAnalyticsD
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: false} );
         await AnalyticsDashboardServices.getAnalyticsDashboardPlaysViewersTime(dates, jobId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: response.data} );
-            }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: response} );
+            }).catch((error) => {
+                console.log(error)
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME, payload: { data: {plays: { time: [], data: [] }, viewers: { time: [], data: [] }, failed: true} } } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -101,6 +108,7 @@ export const getAnalyticsDashboardConsumptionTimeAction = (dates: GetAnalyticsDa
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME, payload: { data: {time: [], data: [], failed: true} } } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

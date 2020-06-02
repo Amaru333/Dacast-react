@@ -27,21 +27,25 @@ export interface AnalyticsRealTimeConsumptionLocation {
         };
         consumedMB: number;
     }[];
+    failed?: boolean;
 }
 
 export interface AnalyticsRealTimeViewersTime {
     time: number[];
     data: number[];
+    failed? : boolean;
 }
 
 export interface AnalyticsRealTimePlaybackTime {
     time: number[];
     data: number[];
+    failed?: boolean;
 }
 
 export interface AnalyticsRealTimeGbTime {
     time: number[];
     data: number[];
+    failed?: boolean;
 }
 
 export interface RealTimeJobIDs {

@@ -128,8 +128,12 @@ export function displayTimeForHumans(seconds: number) {
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
 }
 
-export function displayBytesForHumans(mbAmount: number, decimals = 2) {
-    var bytes = mbAmount * 1000000;
+export function displayBytesForHumans(mbAmount: number, decimals = 2, fromAnalytics = false) {
+    if(fromAnalytics) {
+        var bytes = mbAmount * 1000000000;
+    } else {
+        var bytes = mbAmount * 1000000;
+    }
     if (bytes === 0) return '0 Bytes';
 
     const k = 1000;
