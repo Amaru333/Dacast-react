@@ -321,7 +321,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 </div>}
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
-                    <Text size={14} weight="reg">This page is using the global settings. Override this if you wish to edit, but keep in mind that something, and this is a user based setting. </Text>
+                    <Text size={14} weight="reg">After unlocking these settings your global settings will no longer apply to this content.</Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button onClick={() => {setSettingsEditable(!settingsEditable);setEditSettingsModalOpen(false)}}>Edit</Button>
@@ -330,7 +330,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             </Modal>
             <Modal size="small" modalTitle="Revert Security Settings" icon={{name: "warning", color: "red"}} opened={revertSettingsModalOpen} toggle={() => setRevertSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
-                    <Text size={14} weight="reg">Use global settings instead of content settings.</Text>
+                    <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
                     <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>

@@ -4,6 +4,7 @@ import { GeoRestriction } from '../../../redux-flow/store/Settings/Security/type
 import { DropdownCountries } from '../../../../components/FormsComponents/Dropdown/DropdownCountries';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { Text } from '../../../../components/Typography/Text';
 
 export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Function; submit: Function}) => {
 
@@ -40,22 +41,24 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
                     label='Group Name'
                     placeholder='Group Name'
                 />
-                <div className='col col-12 py1'>
-                    <DropdownCountries 
-                        id="geoRestrictionCountriesDropdown"
-                        dropdownTitle="Countries"
-                        list={geoRestrictionItem.values}
-                        callback={(value: string[]) => setGeoRestrictionItem({...geoRestrictionItem, values: value})}
-                    />
-                </div>
-
                 <InputCheckbox 
-                    className='col col-12 py1'
+                    className='col col-12 pb1'
                     id='geoRestrictionDefautChecked'
                     label='Make as Default Group'
                     onChange={(event) => {event.preventDefault;setGeoRestrictionItem({...geoRestrictionItem, isDefault: event.currentTarget.checked})}}
                     defaultChecked={geoRestrictionItem.isDefault}
                 />
+                <div className='col col-12 py1'>
+                    <DropdownCountries
+                        className="mb1"
+                        id="geoRestrictionCountriesDropdown"
+                        dropdownTitle="Countries"
+                        list={geoRestrictionItem.values}
+                        callback={(value: string[]) => setGeoRestrictionItem({...geoRestrictionItem, values: value})}
+                    />
+                    <Text size={12}>Selected countries will have access to your content</Text>
+                </div>
+               
                 <div className='col col-12 py1'>
                     <Button sizeButton="large" type='submit' disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
