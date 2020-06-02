@@ -113,7 +113,25 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
         return props.stepperData.default_privileges ? props.stepperData.default_privileges.map((item: Privilege) => {
             return {data: [
                 <div className='flex'>
-                    <InputCheckbox className="mr1" id={'chekbox'+ item.code} key={'secondStepCheckbox'+ item.code} defaultChecked={item.checked}  onChange={() => {props.updateStepperData({...props.stepperData, default_privileges: {...props.stepperData.default_privileges, ...{...item, checked: !item.checked}}})}} />
+                    <InputCheckbox 
+                        className="mr1" 
+                        id={'chekbox'+ item.code} 
+                        key={'secondStepCheckbox'+ item.code} 
+                        defaultChecked={item.checked}  
+                        onChange={() => {
+                            props.updateStepperData({
+                                ...props.stepperData, 
+                                default_privileges: props.stepperData.default_privileges.map((privilege) => {
+                                    if(privilege.code === item.code) {
+                                        return {...privilege, checked: !privilege.checked}
+                                    } else {
+                                        return privilege
+                                    }
+                                })
+                                
+                            })
+                        }}
+                    />
                     <Text  key={'secondStepText' + item.code} size={14} weight='reg' color='gray-3'>{item.code}</Text>
                 </div>,
                 <div className="right mr2">
