@@ -27,8 +27,13 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
         if(!props.liveList) {
             props.getLiveList();
         }
-        props.getAnalyticsRealTimeJobIds({ period: 5 })
-    }, [])
+        if(props.liveList) {
+            if(props.liveList.results.length === 0) {
+                // HANDLE NO CHANNEL
+            }
+            props.getAnalyticsRealTimeJobIds({ period: 5, channel: props.liveList.results[0].objectID })
+        }
+    }, [props.liveList])
 
     React.useEffect(() => {
         if (!props.realTimeAnalytics.data.concurentViewersPerTime && props.realTimeAnalytics.jobIds) {
@@ -44,7 +49,13 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             props.getAnalyticsRealTimePlaybackTime(props.realTimeAnalytics.jobIds.newPlaybackSessionsPerTime.jobID);
         }
     }, [props.realTimeAnalytics.jobIds])
-    return <RealTimeAnalyticsPage {...props} />  
+
+
+    if(!props.liveList) {
+        return <LoadingSpinner center size='medium' color='violet' />
+    } else {
+        return <RealTimeAnalyticsPage {...props} />  
+    }
 }
 
 export function mapStateToProps(state: ApplicationState) {

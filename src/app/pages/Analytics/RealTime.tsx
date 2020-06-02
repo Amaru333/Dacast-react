@@ -11,13 +11,21 @@ import { LiveItem } from '../../redux-flow/store/Live/General/types';
 
 export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
-    const labelsFormate = (labels: number[]) => { return labels.map(number => tsToLocaleDate(number, { hour: "2-digit", minute: "2-digit", day: '2-digit' })) };
+    const labelsFormate = (labels: number[]) => { return labels.length ? labels.map(number => tsToLocaleDate(number, { hour: "2-digit", minute: "2-digit", day: '2-digit' })) : [] };
     const [timePeriod, setTimePeriod] = React.useState<number>(5)
     React.useEffect(() => {
     }, [props.liveList])
 
+    const [selectedContent, setSelectedContent] = React.useState<string>("")
     const handleReload = () => {
-        props.getAnalyticsRealTimeJobIds({period: timePeriod })
+        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
+        if(selectedChannelFilter) {
+            console.log(selectedChannelFilter)
+            let selectedChannelId = '~'+selectedChannelFilter[0].objectID;
+            props.getAnalyticsRealTimeJobIds({period: timePeriod, contentIDs:  selectedChannelId ? selectedChannelId : null })
+        } else {
+            props.getAnalyticsRealTimeJobIds({period: timePeriod})
+        }
     }
     const handleTimePeriodsUpdate = (name: string) => {
         switch (name) {
@@ -46,6 +54,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     callback={(name: string) => { handleTimePeriodsUpdate(name) }}
                     isInModal={false}
                     isWhiteBackground
+                    defaultSelected="5 Minutes"
                     className='col sm-col-2 col-5 pr1'
                     dropdownTitle='Time Period'
                     list={{ '5 Minutes': true, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false }}
@@ -57,7 +66,8 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         isWhiteBackground
                         className='col sm-col-3 col-5 px1'
                         dropdownTitle='Live Channel'
-                        callback={(name: string) => {}}
+                        defaultSelected={props.liveList.results[0].title}
+                        callback={(name: string) => {setSelectedContent(name)}}
                         list={props.liveList.results.reduce((reduced: DropdownListType, item: LiveItem) => { return { ...reduced, [item.title]: false } }, {})}
                     /> : null
                 }
@@ -84,16 +94,17 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                 </div>
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime} infoText="The number of new viewers who haven't consumed your content before" title="New Playback Sessions by Time (UTC)">
+                        {console.log(props.realTimeAnalytics.data.newPlaybackSessionsPerTime)}
                         {
                             props.realTimeAnalytics.data.newPlaybackSessionsPerTime ?
                                 props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data.data}
+                                        data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data}
                                         datasetName="New Playback Sessions"
                                         yAxesName="New Playback Sessions"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data.time)} />
+                                        labels={labelsFormate(props.realTimeAnalytics.data.newPlaybackSessionsPerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

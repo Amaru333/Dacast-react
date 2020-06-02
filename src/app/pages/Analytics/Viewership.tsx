@@ -11,7 +11,7 @@ import { TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '.
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, HalfSmFullXs } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
@@ -109,7 +109,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     const updateData = (dates: any) => {
 
         //let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
-        let options = { end: dates.endDate, start: dates.startDate };
+        let options = { end: Math.round(dates.endDate / 1000), start: Math.round(dates.startDate / 1000 ) };
         props.getAnalyticsViewershipJobIds(options)
     }
 
@@ -157,6 +157,8 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
             <React.Fragment>
                 <div className="col col-12 mb25">
                     <DateFilteringAnalytics defaultDates={dates} refreshData={updateData} />
+                    {/* PART OF ANALYTICS V2 TO REWORK
+
                     <div className="flex items-center col col-12">
                         <div className="inline-flex items-center flex col-7 mb2">
                             <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -180,9 +182,40 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </HeaderBorder>
                         {renderSelectedItems()}
                     </AnalyticsContainerHalfSelector>
-                    <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
+                    <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button> */}
                 </div>
                 <div className="clearfix mxn1 mb2">
+                    <div className={HalfSmFullXs}>
+                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Consumption by Device">
+                            {
+                                viewershipAnalytics.consumptionPerDevices ?
+                                    viewershipAnalytics.consumptionPerDevices.failed ?
+                                        <FailedCardAnalytics /> :
+                                        <CheeseChart
+                                            displayBytesFromGB={true}
+                                            data={viewershipAnalytics.consumptionPerDevices.data}
+                                            labels={viewershipAnalytics.consumptionPerDevices.labels} />
+                                    :
+                                    <LoadingSpinner center size='medium' color='violet' />
+                            }
+                        </AnalyticsCard>
+                    </div>
+                    <div className={HalfSmFullXs}>
+                        <AnalyticsCard infoText="Reports on your data consumption" title="Consumption by location">
+                            {
+                                viewershipAnalytics.consumptionBreakdown.map ?
+                                    viewershipAnalytics.consumptionBreakdown.map.failed ?
+                                        <FailedCardAnalytics  /> :
+                                        <div >
+                                            {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
+                                        </div>
+                                    :
+                                    <LoadingSpinner  center size='medium' color='violet' />
+                            }
+                        </AnalyticsCard>
+                    </div>
+                    {/*  PART OF ANALYTICS V2 TO REWORK
+
                     <div className={ThirdLgHalfXmFullXs}>
                         <AnalyticsCard infoText="On which domains viewers are consuming your data" title="Consumption by Domain">
                             {
@@ -196,21 +229,6 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                             data={viewershipAnalytics.consumptionPerDomain.value}
                                             yAxesName="GB"
                                             labels={viewershipAnalytics.consumptionPerDomain.domain} />
-                                    :
-                                    <LoadingSpinner center size='medium' color='violet' />
-                            }
-                        </AnalyticsCard>
-                    </div>
-                    <div className={ThirdLgHalfXmFullXs}>
-                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Consumption by Device">
-                            {
-                                viewershipAnalytics.consumptionPerDevices ?
-                                    viewershipAnalytics.consumptionPerDevices.failed ?
-                                        <FailedCardAnalytics /> :
-                                        <CheeseChart
-                                            displayBytesFromGB={true}
-                                            data={viewershipAnalytics.consumptionPerDevices.data}
-                                            labels={viewershipAnalytics.consumptionPerDevices.labels} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
@@ -396,7 +414,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                     <LoadingSpinner hidden={selectedTabPlayback !== "map"} center size='medium' color='violet' />
                             }
                         </AnalyticsCard>
-                    </div>
+                    </div> */}
                 </div>
 
             </React.Fragment>
