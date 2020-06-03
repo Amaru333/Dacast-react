@@ -21,6 +21,8 @@ import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
+import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { usePlayer } from '../../../utils/player';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
@@ -39,8 +41,13 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
+
+    let playerRef = React.useRef<HTMLDivElement>(null);
+
+    let player = usePlayer(playerRef, userId + '-vod-' + props.vodId)
 
     
     React.useEffect(() => {
@@ -210,7 +217,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     </div>
                     <Divider className="col col-12" />
                     <div className='col col-12'>
+                        <header className="flex justify-between">
                         <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                        <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+                        </header>
+                        
                         <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
@@ -414,9 +425,16 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => setButtonLoading(false)) } }>Save</Button>
                     <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                 </ButtonContainer>
+                <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
+                <PlayerContainer>
+                    <div className="mt2" ref={playerRef}></div>
+                </PlayerContainer>   
+                </Modal>
                 <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>
+            
             : null
+            
     )
 
 }

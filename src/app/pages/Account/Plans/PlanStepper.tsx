@@ -11,9 +11,9 @@ import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Plans';
 
 export enum PlansName {
-    Developer = "Developer Plan",
-    Event = "Event Plan",
-    Scale = "Scale Plan"
+    "Developer" = "Developer Plan",
+    "Event" = "Event Plan",
+    "Annual Scale" = "Scale Plan"
 }
 
 //PLAN
@@ -24,6 +24,14 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
         props.setStepValidated(true)
     }, [props.stepperData])
 
+    const setPlanLength = (length: string) => {
+        if(length === 'Monthly') {
+            props.updateStepperData({...props.stepperData, interval_length: 1})
+        } else if(length === 'Annually'){
+            props.updateStepperData({...props.stepperData, interval_length: 12})
+        }
+    }
+
     const totalPriceTableFooter = () => {
         if(props.stepperData) {
             return props.stepperData.interval_length === 1 ?
@@ -31,22 +39,22 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
                     [   
                         <div className='flex items-center'>
                             <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                            <DropdownButton style={{maxHeight: 30}} className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.interval_length === 1 ? "Monthly" : "Annually"}></DropdownButton>
+                            <DropdownButton style={{maxHeight: 30}} className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanLength(value)} dropdownDefaultSelect="Monthly"></DropdownButton>
                         </div>
                         ,
-                        <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.default_price.usd).toLocaleString()}</Text>
+                        <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${( props.stepperData.default_price.usd/100).toLocaleString()}</Text>
                     ]
                 ) :
                 ( 
                     [
                         <div className="flex items-center">
                             <Text key='totalPriceTableFooterText' size={14} weight='med' color='gray-3'>Billed</Text>
-                            <DropdownButton style={{maxHeight: 30}} className="ml1 border-none" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => props.updateStepperData({...props.stepperData, paymentFrequency: value})} dropdownDefaultSelect={props.stepperData.interval_length === 1 ? "Monthly" : "Annually"}></DropdownButton>
+                            <DropdownButton style={{maxHeight: 30}} className="ml1 border-none" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanLength(value)} dropdownDefaultSelect="Annually"></DropdownButton>
                         </div>
                         ,
                         <div className="flex items-center right mr2">
                             <Label className="mr2" color='green' backgroundColor='green20' label='25% Discount Applied' />
-                            <Text key='totalPriceTableFooterValue' className='right' size={14} weight='med' color='gray-3'>${calculateDiscount( props.stepperData.default_price.usd).toFixed(2)}</Text>
+                            <Text key='totalPriceTableFooterValue' className='right' size={14} weight='med' color='gray-3'>${calculateDiscount( props.stepperData.default_price.usd/100).toFixed(2)}</Text>
                         </div>
                     
                     ]
@@ -132,10 +140,10 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
                             })
                         }}
                     />
-                    <Text  key={'secondStepText' + item.code} size={14} weight='reg' color='gray-3'>{item.code}</Text>
+                    <Text  key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{item.code}</Text>
                 </div>,
                 <div className="right mr2">
-                    <Text  key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-3'}>{'$' + item.price.usd.toLocaleString()}</Text>
+                    <Text  key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{'$' + (item.price.usd/100).toLocaleString()}</Text>
                 </div>
                 
             ]}
@@ -147,10 +155,10 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
             let subTotal = 0;
             props.stepperData.default_privileges.map((item: Privilege) => {
                 if(item.checked) {
-                    subTotal+= item.price.usd
+                    subTotal+= (item.price.usd/100)
                 }
             })
-            props.updateStepperData({...props.stepperData, priviledgesTotal: subTotal})
+            props.updateStepperData({...props.stepperData, privilegesTotal: subTotal})
         }
         props.setStepValidated(true)
     }, [props.stepperData.default_privileges])
@@ -168,22 +176,21 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
 //CART
 
 export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
-    debugger;
     var moment = require('moment')
 
-    const planPrice: number = props.stepperData.default_price.usd
-    const discountedPlanPrice: number = calculateDiscount(props.stepperData.default_price.usd)
+    const planPrice: number = props.stepperData.default_price.usd/100
+    const discountedPlanPrice: number = calculateDiscount(planPrice)
     const featuresTotal: number = (props.stepperData.privilegesTotal)
 
     let annualPlanPrice: number = null
-    props.stepperData.name === "Annual Scale" || "Monthly Scale" ?
-        annualPlanPrice = calculateAnnualPrice(discountedPlanPrice) :
+    props.stepperData.name === ("Annual Scale" || "Monthly Scale") ?
+        annualPlanPrice = discountedPlanPrice :
         annualPlanPrice = calculateAnnualPrice(planPrice)
 
-    let annualFeaturesPrice: number = null
-    props.stepperData.name === "Annual Scale" || "Monthly Scale" ?
-        annualFeaturesPrice = (props.stepperData.privilegesTotal * 12) :
-        annualFeaturesPrice = featuresTotal
+    // let annualFeaturesPrice: number = null
+    // props.stepperData.name === ("Annual Scale" || "Monthly Scale") ?
+    //     annualFeaturesPrice = (props.stepperData.privilegesTotal * 12) :
+    //     annualFeaturesPrice = featuresTotal
     
 
 
@@ -193,6 +200,14 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 
     React.useEffect(() => {console.log('stepper data', props.stepperData)}, [props.stepperData])
 
+    const setPlanLength = (length: string) => {
+        if(length === 'Monthly') {
+            props.updateStepperData({...props.stepperData, interval_length: 1})
+        } else if(length === 'Annually'){
+            props.updateStepperData({...props.stepperData, interval_length: 12})
+        }
+    }
+
 
     const cartTableBodyElement = () => {
 
@@ -200,11 +215,11 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
         {return  [
             {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">{props.stepperData.interval_length === 12 ? '$' + annualPlanPrice.toLocaleString() + ' /yr' : '$' + planPrice.toLocaleString() + ' /mo'}</Text>
+                <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14}  weight="reg" color="gray-1">{(props.stepperData.interval_length === 12) ? '$' + annualPlanPrice + ' /yr' : '$' + (planPrice/12) + '/mo'}</Text>
             ]},
             {data: [
                 <Text  key="cartTableFeaturesHeading" size={14}  weight="med" color="gray-1">Features</Text>,
-                <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">${featuresTotal.toLocaleString()}{props.stepperData.name === 'Monthly Scale' ? ' /mo' : ' /yr'}</Text>
+                <Text className='right pr2' key="cartTableFeaturesTotal" size={14}  weight="reg" color="gray-1">{props.stepperData.name === "Event" ? '$' + featuresTotal + ' /yr' : '$' + (featuresTotal/12) + '/mo'}</Text>
             ]}
         ]} else {
             return  [
@@ -230,14 +245,14 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
     }
 
     const cartDropdownOption = () => {
-        if (props.stepperData.interval_length === 1)
+        if (props.stepperData.interval_length === 12)
         {return [
             {data: [
                 <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Billed</Text>,
-                props.stepperData.name === 'Annual Scale' || 'Monthly Scale' ? 
+                props.stepperData.name === ('Annual Scale' || 'Monthly Scale') ? 
                     <div >
                         
-                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.interval_length === 1 ? "Monthly" : "Annually"} />
+                        <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Annually"} />
                     </div>
                     :
                     <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="reg" color="gray-1">Annually</Text>,
@@ -249,14 +264,14 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
                     (props.stepperData.name === ('Annual Scale' || 'Monthly Scale')) ? 
                         <div >
                         
-                            <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => props.updateStepperData({...props.stepperData, paymentFrequency: value})} list={['Annually', 'Monthly']} dropdownDefaultSelect={props.stepperData.interval_length === 1 ? "Monthly" : "Annually"} />
+                            <DropdownButton style={{maxHeight: 30}} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Monthly"} />
                         </div>
                         :
                         <Text className='right pr2' key="cartTableBilledFrequency" size={14}  weight="med" color="gray-1">Annually</Text>,
                 ]},
                 {data: [
                     <Text  key="cartTableBilled" size={14}  weight="reg" color="gray-1">Monthly from {moment().format('DD MMMM YYYY')} </Text>,
-                    <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="reg" color="gray-1">{'$' + (planPrice + featuresTotal) }</Text>
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? '$' + ((planPrice/12) + (featuresTotal/12))  : '$' + (planPrice/12)}</Text>
                 ]}
         
             ]}
@@ -272,7 +287,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
                         <Label className="mr2" color='green' backgroundColor='green20' label='25% discount Applied' />
                         : null
                     }
-                    <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{props.stepperData.name !== 'Developer' ? '$' + (annualPlanPrice + annualFeaturesPrice) : '$' + (planPrice + featuresTotal) }</Text>
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{props.stepperData.name !== 'Developer' ? '$' + (annualPlanPrice + featuresTotal) : '$' + (planPrice) }</Text>
                 </div>
                 
             ] 
@@ -283,7 +298,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
                     <Text  key={"cartTableFooterTotal"} size={10}  weight="reg" color="gray-5">(First 3 months paid upfront)</Text>
                 </div>
                 ,
-                <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{'$' + (planPrice + featuresTotal)*3 }</Text>,
+                <Text className='right pr2' key={"cartTableFooterValue"} size={14}  weight="med" color="gray-1">{'$' + ((planPrice/12) + (featuresTotal/12))*3 }</Text>,
             ] 
         }
     }
@@ -303,18 +318,39 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 //PAYMENT
 export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
 
-    const planPrice: number = props.stepperData.default_price.usd
+    const planPrice: number = props.stepperData.default_price.usd/100
+    const discountedPlanPrice: number = calculateDiscount(planPrice)
     const featuresTotal: number = (props.stepperData.privilegesTotal)
+
+    let monthlyPlanPrice: number = null
+    props.stepperData.name === "Annual Scale" ? 
+        monthlyPlanPrice = (planPrice/12) * 3 :
+        monthlyPlanPrice = planPrice
+
+    let monthlyFeaturesPrice: number = null
+    props.stepperData.name === "Annual Scale" ? 
+        monthlyPlanPrice = (featuresTotal/12) * 3 :
+        monthlyPlanPrice = featuresTotal
+
+    let annualPlanPrice: number = null
+    props.stepperData.name === ("Annual Scale" || "Monthly Scale") ?
+        annualPlanPrice = discountedPlanPrice :
+        annualPlanPrice = calculateAnnualPrice(planPrice)
+
+    let annualFeaturesPrice: number = null
+    props.stepperData.name === ("Annual Scale" || "Monthly Scale") ?
+        annualFeaturesPrice = (props.stepperData.privilegesTotal * 12) :
+        annualFeaturesPrice = featuresTotal
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
     }, [props.stepperData.termsAndConditions])
 
     const step2header = () => {
-        const total: string = (planPrice + featuresTotal.toLocaleString())
+        
         return  {data: [
             {cell: <Text  key={"step2headerText"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
-            {cell: <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{'$' + total}</Text>}
+            {cell: <Text  key={"step2headerNumber"} className='right mr2' size={14}  weight="med" color="gray-1">{props.stepperData.name !== 'Developer' ? '$' + (annualPlanPrice + annualFeaturesPrice) : '$' + planPrice }</Text>}
         ]}
     }
 

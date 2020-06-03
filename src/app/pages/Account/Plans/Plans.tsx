@@ -171,7 +171,7 @@ export const PlansPage = (props: PlansContainerProps & {planDetails: Plans}) => 
                                                 <Text className='center' size={10} color='gray-5'>3 Month Minimum</Text>
                                             </div>}
                                             {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                            <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scale.scaleAnnual});handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                            <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 12}) :setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 1})};handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
 
                                     </PlanInfosContainer>
