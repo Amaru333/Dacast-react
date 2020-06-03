@@ -6,38 +6,47 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
     let presets = null;
     let promos = null;
     switch (action.type) {
-        case ActionTypes.GET_PRESETS_INFOS :
+        case ActionTypes.GET_PRESETS_LIST :
             return {
                 ...state,
-                ...action.payload
+                presets: action.payload.data,
+                promos: []
             }
         case ActionTypes.CREATE_PRICE_PRESET :
-            presets = state.presets.slice();
+            presets = state.presets.prices.slice();
             presets.splice(presets.length, 0, action.payload);
             return {
                 ...state,
-                presets: presets
+                presets: {
+                    prices: presets,
+                    totalItems: state.presets.totalItems + 1
+                }
             }
         case ActionTypes.SAVE_PRICE_PRESET :
-            state.presets.slice();
             return {
                 ...state,
-                presets: state.presets.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
-                        return {
-                            ...item,
-                            ...action.payload
+                presets: {
+                    ...state.presets,
+                    prices: state.presets.prices.map((item) => {
+                        if(item.id !== action.payload.id) {
+                            return item;
                         }
-                    }
-                })
+                        else {
+                            return {
+                                ...item,
+                                ...action.payload
+                            }
+                        }
+                    })
+                }
             }
         case ActionTypes.DELETE_PRICE_PRESET :
             return {
                 ...state,
-                presets: state.presets.filter((item) => {return item.id !== action.payload.id})
+                presets: {
+                    ...state.presets,
+                    prices: state.presets.prices.filter((item) => {return item.id !== action.payload.id})
+                }
             }
         case ActionTypes.CREATE_PROMO_PRESET :
             promos = state.promos.slice();
