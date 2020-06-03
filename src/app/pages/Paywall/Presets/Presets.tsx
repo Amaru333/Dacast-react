@@ -71,7 +71,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
 
     const promoPresetsTableBody = () => {
         if(props.presetsInfos.promos) {
-            return props.presetsInfos.promos.map((promo, key) => {
+            return props.presetsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
@@ -140,7 +140,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
-                { props.presetsInfos.promos.length === 0 ?
+                { props.presetsInfos.promos.totalItems === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />

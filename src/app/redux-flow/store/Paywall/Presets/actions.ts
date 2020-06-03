@@ -1,11 +1,11 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, PresetsPageInfos, Preset, Promo } from './types';
+import { ActionTypes, Preset, Promo } from './types';
 import { PresetsServices } from './services';
 
-export interface GetPresetsList {
-    type: ActionTypes.GET_PRESETS_LIST;
+export interface GetPricePresetsList {
+    type: ActionTypes.GET_PRICE_PRESETS_LIST;
     payload: {
         data: {
             prices: Preset[]; 
@@ -29,6 +29,16 @@ export interface DeletePricePreset {
     payload: Preset;
 }
 
+export interface GetPromoPresetsList {
+    type: ActionTypes.GET_PROMO_PRESETS_LIST;
+    payload: {
+        data: {
+            promos: Promo[]; 
+            totalItems: number;
+        }
+    };
+}
+
 export interface CreatePromoPreset {
     type: ActionTypes.CREATE_PROMO_PRESET;
     payload: Promo;
@@ -44,11 +54,11 @@ export interface DeletePromoPreset {
     payload: Promo;
 }
 
-export const getPresetsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPresetsList> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPresetsList>) => {
-        await PresetsServices.getPresetsList()
+export const getPricePresetsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPricePresetsList> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPricePresetsList>) => {
+        await PresetsServices.getPricePresetsList()
             .then( response => {
-                dispatch({type: ActionTypes.GET_PRESETS_LIST, payload: response.data});
+                dispatch({type: ActionTypes.GET_PRICE_PRESETS_LIST, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -90,11 +100,22 @@ export const deletePricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
     }
 }
 
+export const getPromoPresetsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPromoPresetsList> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPromoPresetsList>) => {
+        await PresetsServices.getPromoPresetsList()
+            .then( response => {
+                dispatch({type: ActionTypes.GET_PROMO_PRESETS_LIST, payload: response.data});
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+            })
+    }
+}
+
 export const createPromoPresetAction = (data: Promo): ThunkDispatch<Promise<void>, {}, CreatePromoPreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePromoPreset>) => {
         await PresetsServices.createPromoPreset(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PROMO_PRESET, payload: response.data})
+                dispatch({type: ActionTypes.CREATE_PROMO_PRESET, payload: {...data, id: response.data.data}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -105,7 +126,7 @@ export const savePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void>,
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePromoPreset>) => {
         await PresetsServices.savePromoPreset(data)
             .then( response => {
-                dispatch({type: ActionTypes.SAVE_PROMO_PRESET, payload: response.data})
+                dispatch({type: ActionTypes.SAVE_PROMO_PRESET, payload: data})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
@@ -117,7 +138,7 @@ export const deletePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePromoPreset>) => {
         await PresetsServices.deletePromoPreset(data)
             .then( response => {
-                dispatch({type: ActionTypes.DELETE_PROMO_PRESET, payload: response.data})
+                dispatch({type: ActionTypes.DELETE_PROMO_PRESET, payload: data})
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
@@ -126,10 +147,11 @@ export const deletePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
 }
 
 
-export type Action = GetPresetsList
+export type Action = GetPricePresetsList
 | CreatePricePreset
 | SavePricePreset
 | DeletePricePreset
+| GetPromoPresetsList
 | CreatePromoPreset
 | SavePromoPreset
 | DeletePromoPreset

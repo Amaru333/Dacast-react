@@ -1,12 +1,12 @@
 export enum ActionTypes {
-    GET_PRESETS_LIST = "@@paywall_presets/GET_PRESETS_LIST",
+    GET_PRICE_PRESETS_LIST = "@@paywall_presets/GET_PRICE_PRESETS_LIST",
+    GET_PROMO_PRESETS_LIST = "@@paywall_presets/GET_PROMO_PRESETS_LIST",
     CREATE_PRICE_PRESET = "@@paywall_presets/CREATE_PRICE_PRESET",
     SAVE_PRICE_PRESET = "@@paywall_presets/SAVE_PRICE_PRESET",
     DELETE_PRICE_PRESET = "@@paywall_presets/DELETE_PRICE_PRESET",
     CREATE_PROMO_PRESET = "@@paywall_presets/CREATE_PROMO_PRESET",
     SAVE_PROMO_PRESET = "@@paywall_presets/SAVE_PROMO_PRESET",
     DELETE_PROMO_PRESET = "@@paywall_presets/DELETE_PROMO_PRESET",
-
 }
 
 export interface Price {
@@ -50,10 +50,10 @@ export interface Promo {
 
 export interface PresetsPageInfos {
     presets:{prices: Preset[]; totalItems: number};
-    promos: Promo[];
+    promos: {promos: Promo[]; totalItems: number};
 }
 
 export const presetsInitialState: PresetsPageInfos = {
     presets: null,
-    promos: []
+    promos: null
 }
