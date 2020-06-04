@@ -70,29 +70,29 @@ export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperDat
             
             <div className="col col-12 mt2">
                 <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
-                <ScalePlanSelector onClick={() => setSelectedPlan("live")} selected={selectedPlan === "live"}>
+                <ScalePlanSelector onClick={() => {setSelectedPlan("live");props.updateStepperData({...props.stepperData, selectedScalePlan: props.stepperData.allowances[1]})}} selected={selectedPlan === "live"}>
                     <ScalePlanSelectorContents>
                         <Text style={{marginBottom: 4}} size={16} weight="med">More Data</Text>
-                        <Text size={14} weight="reg">3TB data/month</Text>
-                        <Text size={14} weight="reg">30Gb storage</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[1].defaultBandwidth/1000}TB data/month</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[1].defaultStorage}Gb storage</Text>
                     </ScalePlanSelectorContents>  
                 </ScalePlanSelector>
                 </div>
                 <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
-                <ScalePlanSelector onClick={() => setSelectedPlan("ott")} selected={selectedPlan === "ott"}>
+                <ScalePlanSelector onClick={() => {setSelectedPlan("ott");props.updateStepperData({...props.stepperData, selectedScalePlan: props.stepperData.allowances[0]})}} selected={selectedPlan === "ott"}>
                 <ScalePlanSelectorContents>
                         <Text style={{marginBottom: 4}} size={16} weight="med">Balanced</Text>
-                        <Text size={14} weight="reg">2TB data/month</Text>
-                        <Text size={14} weight="reg">200Gb storage</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[0].defaultBandwidth/1000}TB data/month</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[0].defaultStorage}Gb storage</Text>
                     </ScalePlanSelectorContents>  
                 </ScalePlanSelector>
                 </div>
                 <div className="col-12 sm-col-4 col xs-mb2">
-                <ScalePlanSelector onClick={() => setSelectedPlan("vod")} selected={selectedPlan === "vod"}>
+                <ScalePlanSelector onClick={() => {setSelectedPlan("vod");props.updateStepperData({...props.stepperData, selectedScalePlan: props.stepperData.allowances[2]})}} selected={selectedPlan === "vod"}>
                 <ScalePlanSelectorContents>
                         <Text style={{marginBottom: 4}} size={16} weight="med">More Storage</Text>
-                        <Text size={14} weight="reg">1TB data/month</Text>
-                        <Text size={14} weight="reg">1TbGb storage</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[2].defaultBandwidth/1000}TB data/month</Text>
+                        <Text size={14} weight="reg">{props.stepperData.allowances[2].defaultStorage}Gb storage</Text>
                     </ScalePlanSelectorContents>  
                 </ScalePlanSelector>
                 </div>
@@ -140,7 +140,7 @@ export const PlanStepperSecondStep = (props: {stepperData: Plan; updateStepperDa
                             })
                         }}
                     />
-                    <Text  key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{item.code}</Text>
+                    <Text  key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{item.code.charAt(0).toUpperCase() + item.code.slice(1)}</Text>
                 </div>,
                 <div className="right mr2">
                     <Text  key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{'$' + (item.price.usd/100).toLocaleString()}</Text>
@@ -234,11 +234,11 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
         return [
             {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">Data</Text>,
-                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">2Tb/Mo</Text>
+                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{props.stepperData.selectedScalePlan.defaultBandwidth/1000}Tb/Mo</Text>
             ]},
             {data: [
                 <Text  key="cartTablePlanHeading" size={14}  weight="med" color="gray-1">Storage</Text>,
-                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">200Gb</Text>
+                <Text className='right pr2'  key="cartTablePlanHeading" size={14}  weight="reg" color="gray-1">{props.stepperData.selectedScalePlan.defaultStorage}Gb</Text>
             ]}
         ]
     }

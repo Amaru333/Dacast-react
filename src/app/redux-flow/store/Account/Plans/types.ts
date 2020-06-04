@@ -51,6 +51,7 @@ export interface Plan {
     is_customizable: boolean;
     default_commitment: number;
     is_available_per_default: boolean;
+    selectedScalePlan?: Allowances;
 }
 
 export interface Allowances {
