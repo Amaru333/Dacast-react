@@ -24,6 +24,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
+import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -107,7 +108,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     />
                 },
                 // {cell: <></>},
-                {cell: <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="namePlaylistList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
                 {cell: <Text key="viewsPlaylistList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statusPlaylistList" size={14} weight="med" color="gray-1">Status</Text>},
                 {cell: <Text key="featuresPlaylistList" size={14} weight="med" color="gray-1">Features</Text>},
@@ -218,7 +219,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             <HeaderPlaylistList className="mb2 flex" >
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}    />
+                        <InputTags  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}    />
                     </div>
                     <div className="flex items-center" >
                         {selectedPlaylist.length > 0 ?
@@ -236,7 +237,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                     </div>
             </HeaderPlaylistList>
-            <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={liveListHeaderElement()} body={liveListBodyElement()} hasContainer/>
+            <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={props.playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer/>
             <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
             <OnlineBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => {return {id: playlist, type: 'playlist'}})}  open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />

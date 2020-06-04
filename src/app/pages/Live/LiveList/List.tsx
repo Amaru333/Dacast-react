@@ -106,7 +106,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                     }
                 />},
                 // {cell: <></>},
-                {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="nameLiveList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
                 {cell: <Text key="viewsLiveList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Status</Text>},
                 {cell: <Text key="statusLiveList" size={14} weight="med" color="gray-1">Features</Text>},
@@ -219,7 +219,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
+                        <InputTags  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
                     </div>
                     <div className="flex items-center" >
                         {selectedLive.length > 0 ?

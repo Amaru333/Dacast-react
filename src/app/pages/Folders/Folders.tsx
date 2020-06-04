@@ -32,7 +32,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     let smallScreen = useMedia('(max-width: 40em)')
     let history = useHistory()
 
-    
+    React.useEffect(() => {
+        console.log('folders list', props.folderData)
+    })
 
     const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false)
@@ -186,7 +188,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         }
                     />
                 },
-                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'title' },
+                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Title</Text>, sort: 'title' },
                 { cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text> },
                 { cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'created-at' },
                 { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text> },
@@ -442,7 +444,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
+                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
                 </div>
                 <div className='col-12 col mb2 clearfix'>
                     <div className='col-3 col pr1'>
