@@ -6,13 +6,13 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
     let prices = null;
     let promos = null;
     switch (action.type) {
-        case ActionTypes.GET_GROUPS_INFOS :
+        case ActionTypes.GET_GROUP_PRICES :
             return {
                 ...state,
-                ...action.payload
+                prices: action.payload.data
             }
         case ActionTypes.CREATE_GROUP_PRICE :
-            prices = state.prices.slice();
+            prices = state.prices.prices.slice();
             prices.splice(prices.length, 0, action.payload);
             return {
                 ...state,
@@ -38,6 +38,11 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
             return {
                 ...state,
                 prices: state.prices.filter((item) => {return item.id !== action.payload.id})
+            }
+        case ActionTypes.GET_GROUP_PROMOS :
+            return {
+                ...state,
+                promos: action.payload.data
             }
         case ActionTypes.CREATE_GROUP_PROMO :
             promos = state.promos.slice();

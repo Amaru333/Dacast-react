@@ -14,17 +14,17 @@ import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle
 import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 var moment = require('moment-timezone');
 
 export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
-    React.useEffect(() => { }, [props.stepperData])
-
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
-        let tempPrices = props.stepperData.firststep.price;
+        let tempPrices = props.stepperData.firststep.prices;
         if (inputChange === 'amount') {
-            tempPrices[key].amount = parseInt(value);
+            tempPrices[key].value = parseInt(value);
         }
         else {
             tempPrices[key].currency = value;
@@ -33,18 +33,18 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
     }
 
     const renderPrices = () => {
-        return props.stepperData.firststep.price.map((price, key) => {
+        return props.stepperData.firststep.prices.map((price, key) => {
             return (
-                <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.price.length - 1 ? '' : 'mb2')}>
+                <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.prices.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
-                        <Input className={"col sm-col-6 col-5 px1"} value={price.amount.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
+                        <Input className={"col sm-col-6 col-5 px1"} value={price.value.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
                         <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
                     </div>
                     {
-                        key === props.stepperData.firststep.price.length - 1 ?
-                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.price, { amount: "", currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                        key === props.stepperData.firststep.prices.length - 1 ?
+                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.prices, { value: "", currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
 
-                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() =>   {var newList = props.stepperData.firststep.price.filter((item, index) => { return index !== key }); console.log(newList); props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: newList} }) }}  >close</IconStyle></div>
+                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() =>   {var newList = props.stepperData.firststep.prices.filter((item, index) => { return index !== key }); console.log(newList); props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: newList} }) }}  >close</IconStyle></div>
                     }
                 </div>
             )
@@ -55,7 +55,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         <div>
             <div className='col col-12'>
                 <Input className={ ClassHalfXsFullMd+'pr1 mb2'} label='Price Group Name' defaultValue={props.stepperData.firststep.name} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, name: event.currentTarget.value } })} />
-                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd+'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.startMethod } })} list={{ 'Subscription': false, 'Pay Per View': false }} />
+                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd+'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.settings.startMethod } })} list={{ 'Subscription': false, 'Pay Per View': false }} />
             </div>
             <div className="mb2 clearfix">
                 {renderPrices()}
@@ -63,28 +63,28 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     props.stepperData.firststep.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} />
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.settings.recurrence.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} />
                         :
                         <>
-                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.duration.amount.toString()} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, amount: parseInt(event.currentTarget.value) } } })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.duration.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, duration: { ...props.stepperData.firststep.duration, type: value } } })} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
+                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.settings.duration.value.toString()} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, value: parseInt(event.currentTarget.value) } }} })} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.settings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
                         </>
                 }
 
             </div>
             <div className='col col-12 mb2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, startMethod: value } })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.type === 'Subscription'} />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.settings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.type === 'Subscription'} />
                 {
-                    props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
+                    props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                         <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1 mt-auto' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
                         : null
                 }
             </div>
             {
-                props.stepperData.firststep.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
+                props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
-                        <Input defaultValue={props.stepperData.firststep.startTime} className='col col-3 pl1' type='time' label='Start Time' />
+                        <Input defaultValue={props.stepperData.firststep.settings.startTime} className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
                     : null
             }
@@ -94,30 +94,32 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
 export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
-    const [selectedFolder, setSelectedFolder] = React.useState<string>('/');
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(null);
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
-    // const [checkedFolders, setCheckedFolders] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
+    const DEFAULT_QS = 'status=online&page=1&per-page=10&content-types=channel,vod,folder,playlist'
+
     React.useEffect(() => {
-        if (!selectedFolder) {
-            setSelectedFolder('/');
-            return;
-        } else {
-            props.stepperData.secondStep.getFolderContent(selectedFolder)
-        }
+        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (selectedFolder ? selectedFolder : ''))
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {
-        switch (item.contentType) {
+        switch (item.type) {
             case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
             case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
             case 'live':
+            case 'channel':
             case 'vod':
-                return <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
+                return item.thumbnail ?
+                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
+                    : 
+                        <div className='relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                        </div>
             default:
                 return;
         }
@@ -125,7 +127,6 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
-        // setCheckedFolders([]);
         setCheckedContents([]);
     }
 
@@ -153,7 +154,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.id === elChecked.id;
+                return el.objectID === elChecked.objectID;
             })
         });
         setSelectedItems(newSelectedItems);
@@ -161,66 +162,50 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     }
 
     const renderContentsList = () => {
-        return props.stepperData.secondStep.folderData.requestedContent.map((row) => {
-            if (row.contentType === "playlist" || selectedItems.includes(row)) {
-                return;
-            }
-            return (
-                <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    selected={checkedContents.includes(row)}
-                    onDoubleClick={() => { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null }}
-                >
-                    {row.contentType !== "folder" ?
-                        <InputCheckbox className='mr2' id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id}
-                            onChange={() => handleCheckboxContents(row)}
-                            defaultChecked={checkedContents.includes(row)}
+        if(props.stepperData.secondStep.folderData.requestedContent.results) {
+            return props.stepperData.secondStep.folderData.requestedContent.results.map((row) => {
+                if (row.type === "playlist" || selectedItems.includes(row)) {
+                    return;
+                }
+                return (
+                    <ItemSetupRow className='col col-12 flex items-center p2 pointer'
+                        selected={checkedContents.includes(row)}
+                        onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
+                    >
+                        {row.type !== "folder" &&
+                            <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
+                                onChange={() => handleCheckboxContents(row)}
+                                defaultChecked={checkedContents.includes(row)}
+    
+                            />
+                        }
+                        {handleRowIconType(row)}
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                        {
+                            row.type === "folder" &&
+                                <div className="flex-auto justify-end">
+                                    <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                </div>
+                        }
+                    </ItemSetupRow>
+                )
+            })
+        } else {
+            return null
+        }
 
-                        />
-                        : null}
-                    {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
-                    {
-                        row.contentType === "folder" ?
-                            <div className="flex-auto justify-end">
-                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
-                            </div>
-                            : null
-                    }
-                </ItemSetupRow>
-            )
-        })
     }
-
-    // const handleDecreaseOrder = (element: FolderAsset) => {
-    //     var currentIndex = selectedItems.findIndex(el => el === element);
-    //     var newArray = [...selectedItems];
-    //     newArray.splice(currentIndex, 1);
-    //     newArray.splice(currentIndex+1, 0, element);
-    //     setSelectedItems(newArray);
-    // }
-
-    // const handleIncreaseOrder = (element: FolderAsset) => {
-    //     var currentIndex = selectedItems.findIndex(el => el === element);
-    //     var newArray = [...selectedItems];
-    //     newArray.splice(currentIndex, 1);
-    //     newArray.splice(currentIndex-1, 0, element);
-    //     setSelectedItems(newArray);
-    // }
 
     const renderSelectedItems = () => {
         return selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id}
+                    <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.name}</Text>
-                    {/* <div className="iconAction flex-auto justify-end">
-                        <IconStyle className="right mr1" coloricon='gray-1' onClick={() => {handleDecreaseOrder(element)}}  >arrow_downward</IconStyle>
-                        <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
-                    </div> */}
+                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
                 </ItemSetupRow>
             )
         })

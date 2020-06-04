@@ -30,7 +30,7 @@ export interface GroupStepperData {
 export const GroupsPage = (props: GroupsComponentProps) => {
     const pricesList = [
         {
-            amount: '',
+            value: NaN,
             currency: 'USD'
         }
     ]
@@ -39,14 +39,16 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         id: '-1',
         name: '',
         type: 'Pay Per View',
-        price: pricesList,
-        duration: {amount: '', type: 'Hours'},
-        recurrence: 'Weekly',
-        startMethod: 'Upon Purchase',
-        timezone: null,
-        startDate: null,
-        startTime: '00:00'
-    
+        prices: pricesList,
+        settings: {
+            duration: {value: NaN, unit: 'Hours'},
+            recurrence: {recurrence: 'Weekly'},
+            startMethod: 'Upon Purchase',
+            timezone: null,
+            startDate: null,
+            startTime: '00:00'
+        },
+        contents: []  
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
@@ -74,14 +76,14 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
-            return props.groupsInfos.prices.map((price, key) => {
+            return props.groupsInfos.prices.prices.map((price, key) => {
                 return {data: [
                     <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
-                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price[0].amount}</Text>,
-                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.price[0].currency}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.recurrence ? price.recurrence : price.duration.amount + ' ' + price.duration.type}</Text>,
-                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.startMethod}</Text>,
+                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices[0].value}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices[0].currency}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.recurrence : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
                             <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
@@ -111,7 +113,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPromosTableBody = () => {
         if(props.groupsInfos.promos) {
-            return props.groupsInfos.promos.map((promo, key) => {
+            return props.groupsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
@@ -159,7 +161,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
-                <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices} />
+                <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.prices} />
             </Modal>
             <CustomStepper
                 opened={groupPricesStepperOpened}

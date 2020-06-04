@@ -1,6 +1,6 @@
 import React from 'react'
 import { GroupsPage } from '../../pages/Paywall/Groups/Groups'
-import { GroupPrice, GroupsPageInfos, Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, GroupPromo, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
+import { GroupPrice, GroupsPageInfos, Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, GroupPromo, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupPricesAction, getGroupPromosAction } from '../../redux-flow/store/Paywall/Groups';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
@@ -11,7 +11,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
-    getgroupsInfos: Function;
+    getGroupPrices: Function;
+    getGroupPromos: Function;
     createGroupPrice: Function;
     saveGroupPrice: Function;
     deleteGroupPrice: Function;
@@ -27,8 +28,11 @@ export interface GroupsComponentProps {
 const Groups = (props: GroupsComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.groupsInfos) {
-            props.getgroupsInfos()
+        if(!props.groupsInfos.prices) {
+            props.getGroupPrices()
+        }
+        if(!props.groupsInfos.promos) {
+            props.getGroupPromos()
         }
         if(!props.folderData) {
             const wait = async () => {
@@ -40,7 +44,7 @@ const Groups = (props: GroupsComponentProps) => {
     }, [])
 
     return (
-        props.groupsInfos && props.folderData ?
+        props.groupsInfos.prices && props.groupsInfos.promos ?
             <GroupsPage {...props} />
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -55,8 +59,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getgroupsInfos: () => {
-            dispatch(getGroupsInfosAction());
+        getGroupPrices: () => {
+            dispatch(getGroupPricesAction());
+        },
+        getGroupPromos: () => {
+            dispatch(getGroupPromosAction());
         },
         createGroupPrice: (data: GroupPrice) => {
             dispatch(createGroupPriceAction(data));

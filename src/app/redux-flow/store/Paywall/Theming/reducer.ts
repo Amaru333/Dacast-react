@@ -8,7 +8,7 @@ const reducer: Reducer<PaywallThemingData> = (state = paywallThemingInitialState
     switch (action.type) {
         case ActionTypes.GET_PAYWALL_THEMES :
             return {
-                themes: action.payload
+                themes: action.payload.data.themes
             }
         case ActionTypes.CREATE_PAYWALL_THEME :
             themes = state.themes.slice();
@@ -20,16 +20,15 @@ const reducer: Reducer<PaywallThemingData> = (state = paywallThemingInitialState
                 themes: themes
             }
         case ActionTypes.SAVE_PAYWALL_THEME :
-            state.themes.slice();
+            themes = state.themes.slice();
             if(action.payload.isDefault) {
                 themes = state.themes.map((item) => {return {...item, isDefault: false}})
             }
             return {
-                themes: state.themes.map((item) => {
+                themes: themes.map((item) => {
                     if(item.id !== action.payload.id) {
                         return item;
-                    }
-                    else {
+                    } else {
                         return {
                             ...item,
                             ...action.payload
