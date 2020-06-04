@@ -1,22 +1,60 @@
 import axios from 'axios';
 import { PaywallTheme } from './types';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getPaywallThemes = () => {
-    return axios.get(urlBase + 'paywall-themes');
+const getPaywallThemes = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + '/paywall/themes/' , 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const savePaywallTheme = (data: PaywallTheme) => {
-    return axios.put(urlBase + 'paywall-theme', {data: data});
+const savePaywallTheme = async (data: PaywallTheme) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put(process.env.API_BASE_URL + '/paywall/themes/' + data.id , 
+        {
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const createPaywallTheme = (data: PaywallTheme) => {
-    return axios.post(urlBase + 'paywall-theme', {data: data});
-}
+const createPaywallTheme = async (data: PaywallTheme) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/paywall/themes/', 
+        {
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )}
 
-const deletePaywallTheme = (data: PaywallTheme) => {
-    return axios.delete(urlBase + 'paywall-theme', {data: data});
+const deletePaywallTheme = async (data: PaywallTheme) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + '/paywall/themes/' + data.id , 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const PaywallThemeServices = {

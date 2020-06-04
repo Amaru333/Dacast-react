@@ -1,10 +1,19 @@
 import axios from 'axios';
 import { GroupPrice, GroupPromo } from './types';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getGroupsInfos = () => {
-    return axios.get(urlBase + 'paywall-groups');
+const getGroupPrices = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + '/paywall/groups/price', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const createGroupPrice = (data: GroupPrice) => {
@@ -17,6 +26,18 @@ const saveGroupPrice = (data: GroupPrice) => {
 
 const deleteGroupPrice = (data: GroupPrice) => {
     return axios.delete(urlBase + 'paywall-group-price', {data: data})
+}
+
+const getGroupPromos = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + '/paywall/groups/promo', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const createGroupPromo = (data: GroupPromo) => {
@@ -32,10 +53,11 @@ const deleteGroupPromo = (data: GroupPromo) => {
 }
 
 export const GroupsServices = {
-    getGroupsInfos,
+    getGroupPrices,
     createGroupPrice,
     saveGroupPrice,
     deleteGroupPrice,
+    getGroupPromos,
     createGroupPromo,
     saveGroupPromo,
     deleteGroupPromo

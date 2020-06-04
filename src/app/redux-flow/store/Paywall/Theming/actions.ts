@@ -6,7 +6,7 @@ import { PaywallThemeServices } from './services';
 
 export interface GetPaywallThemes {
     type: ActionTypes.GET_PAYWALL_THEMES;
-    payload: PaywallTheme[];
+    payload:{data: {themes:PaywallTheme[]}};
 }
 
 export interface SavePaywallTheme {
@@ -39,7 +39,7 @@ export const savePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promis
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePaywallTheme>) => {
         await PaywallThemeServices.savePaywallTheme(data)
             .then( response => {
-                dispatch({type: ActionTypes.SAVE_PAYWALL_THEME, payload: response.data});
+                dispatch({type: ActionTypes.SAVE_PAYWALL_THEME, payload: data});
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
@@ -51,8 +51,8 @@ export const createPaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Prom
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePaywallTheme>) => {
         await PaywallThemeServices.createPaywallTheme(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PAYWALL_THEME, payload: response.data});
-                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
+                dispatch({type: ActionTypes.CREATE_PAYWALL_THEME, payload: {...data, id: response.data.data}});
+                dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -63,7 +63,7 @@ export const deletePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Prom
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePaywallTheme>) => {
         await PaywallThemeServices.deletePaywallTheme(data)
             .then( response => {
-                dispatch({type: ActionTypes.DELETE_PAYWALL_THEME, payload: response.data});
+                dispatch({type: ActionTypes.DELETE_PAYWALL_THEME, payload: data});
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));

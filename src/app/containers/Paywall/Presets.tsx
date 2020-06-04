@@ -3,13 +3,14 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PresetsPage } from '../../pages/Paywall/Presets/Presets';
-import { getPresetsInfosAction, Action, PresetsPageInfos, createPricePresetAction, Preset, savePricePresetAction, deletePricePresetAction, Promo, createPromoPresetAction, savePromoPresetAction, deletePromoPresetAction } from '../../redux-flow/store/Paywall/Presets';
+import { getPricePresetsInfosAction, Action, PresetsPageInfos, createPricePresetAction, Preset, savePricePresetAction, deletePricePresetAction, Promo, createPromoPresetAction, savePromoPresetAction, deletePromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;
     getPresetsInfos: Function;
+    getPromoPresets: Function;
     createPricePreset: Function;
     savePricePreset: Function;
     deletePricePreset: Function;
@@ -21,13 +22,16 @@ export interface PresetsComponentProps {
 const Presets = (props: PresetsComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.presetsInfos) {
+        if(!props.presetsInfos.presets) {
             props.getPresetsInfos()
+        }
+        if(!props.presetsInfos.promos) {
+            props.getPromoPresets()
         }
     }, [props.presetsInfos])
 
     return (
-        props.presetsInfos ?
+        props.presetsInfos.presets && props.presetsInfos.promos ?
             <PresetsPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -42,7 +46,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getPresetsInfos: () => {
-            dispatch(getPresetsInfosAction());
+            dispatch(getPricePresetsInfosAction());
+        },
+        getPromoPresets: () => {
+            dispatch(getPromoPresetsInfosAction());
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    GET_GROUPS_INFOS = "@@paywall_groups/GET_GROUPS_INFOS",
+    GET_GROUP_PRICES = "@@paywall_groups/GET_GROUP_PRICES",
+    GET_GROUP_PROMOS = "@@paywall_groups/GET_GROUP_PROMOS",
     CREATE_GROUP_PRICE = "@@paywall_groups/CREATE_GROUP_PRICE",
     SAVE_GROUP_PRICE = "@@paywall_groups/SAVE_GROUP_PRICE",
     DELETE_GROUP_PRICE = "@@paywall_groups/DELETE_GROUP_PRICE",
@@ -10,22 +11,27 @@ export enum ActionTypes {
 }
 
 export interface Price {
-    amount: number;
+    value: number;
     currency: string;
+    description?: string;
+}
+
+export interface PriceSettings {
+    duration?: {value: number; unit: string};
+    recurrence?: {recurrence: string};
+    startMethod: string;
+    timezone?: string;
+    startDate?: Date;
+    startTime?: string;
 }
 
 export interface GroupPrice {
     id: string;
     name: string;
     type: string;
-    price: Price[];
-    duration?: {amount: number | string; type: string};
-    recurrence?: string;
-    startMethod: string;
-    timezone?: string;
-    startDate?: Date;
-    startTime?: string;
-
+    prices: Price[];
+    settings: PriceSettings;
+    contents: string[];
 }
 
 export interface GroupPromo {
@@ -41,14 +47,26 @@ export interface GroupPromo {
     endTime: string;
     timezone: string;
     discountApplied: string;
+    assignedContentIds: string[];
+    assignedGroupIds: string[];
+}
+
+export interface GroupPriceData {
+    prices: GroupPrice[];
+    total: number;
+}
+
+export interface GroupPromoData {
+    promos: GroupPromo[];
+    total: number;
 }
 
 export interface GroupsPageInfos {
-    prices: GroupPrice[];
-    promos: GroupPromo[];
+    prices: GroupPriceData;
+    promos: GroupPromoData;
 }
 
 export const groupsInitialState: GroupsPageInfos = {
-    prices: [],
-    promos: []
+    prices: null,
+    promos: null
 }

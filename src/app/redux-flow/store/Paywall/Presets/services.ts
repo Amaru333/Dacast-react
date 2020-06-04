@@ -4,7 +4,7 @@ import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getPresetsList = async () => {
+const getPricePresetsList = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.get(process.env.API_BASE_URL + '/paywall/presets/price' , 
@@ -72,23 +72,69 @@ const deletePricePreset = async (data: Preset) => {
     )
 }
 
-const createPromoPreset = (data: Promo) => {
-    return axios.post(urlBase + 'paywall-promo-preset', {data: data})
+const getPromoPresetsList = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + '/paywall/presets/promo' , 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const savePromoPreset = (data: Promo) => {
-    return axios.put(urlBase + 'paywall-promo-preset', {data: data})
+const createPromoPreset = async (data: Promo) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/paywall/presets/promo' , 
+        {
+            name: data.name,
+            type: 'voucher',
+            preset: {...data}  
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const deletePromoPreset = (data: Promo) => {
-    return axios.delete(urlBase + 'paywall-promo-preset', {data: data})
+const savePromoPreset = async (data: Promo) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put(process.env.API_BASE_URL + '/paywall/presets/promo/' + data.id , 
+        {
+            name: data.name,
+            preset: data  
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const deletePromoPreset = async (data: Promo) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + '/paywall/presets/promo/' + data.id , 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const PresetsServices = {
-    getPresetsList,
+    getPricePresetsList,
     createPricePreset,
     savePricePreset,
     deletePricePreset,
+    getPromoPresetsList,
     createPromoPreset,
     savePromoPreset,
     deletePromoPreset

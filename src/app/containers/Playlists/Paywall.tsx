@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
 var moment = require('moment-timezone');
@@ -147,8 +147,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPaywallThemes: () => {
             dispatch(getPaywallThemesAction())
         },
-        getPresetsInfo: () => {
-            dispatch(getPresetsInfosAction())
+        getPricePresetsInfosAction: () => {
+            dispatch(getPricePresetsInfosAction())
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));
