@@ -23,6 +23,12 @@ export interface FoldersFilteringState {
     };
     afterDate: number | boolean;
     beforedate: number | boolean;
+    "content-types": {
+        folder: boolean;
+        channel: boolean;
+        video: boolean;
+        playlist: boolean;
+    };
 }
 
 export const FoldersFiltering = (props: {setSelectedFilter: Function; className?: string}) => {
@@ -42,7 +48,13 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
             recording: false
         },
         afterDate: false,
-        beforedate: false
+        beforedate: false,
+        "content-types": {
+            folder: false,
+            channel: false,
+            video: false,
+            playlist: false
+        }
     }
 
     const [filteringState, setFilteringState] = React.useState<FoldersFilteringState>(filteringDefault);
@@ -116,6 +128,21 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
                         <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                    </div>
+                    <div className="mb3" id="folderFilterType">
+                    <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>
+                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].folder}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], folder: !prevState["content-types"].folder } } }) }}
+                            id='folderFilterFolder' label="Folder" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].channel}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], channel: !prevState["content-types"].channel } } }) }}
+                            id='folderFilterLiveStream' label="Live Stream" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].video}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], video: !prevState["content-types"].video } } }) }}
+                            id='folderFilterVideo' label="Video" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].playlist}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], playlist: !prevState["content-types"].playlist } } }) }}
+                            id='folderFilterPlaylist' label="Playlist" labelWeight="reg" />
                     </div>
                 </div>
                 

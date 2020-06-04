@@ -98,9 +98,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             returnedString += `&folders=${currentFolder.id}`
         }
 
-        if(selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') {
-            returnedString += `&content-types=channel,vod,playlist`
-        } else {
+        if((selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') && returnedString.indexOf('content-types') === -1) {
             returnedString += `&content-types=channel,vod,playlist,folder`
         }
         if(selectedFolder === 'Unsorted') {
