@@ -7,6 +7,7 @@ export interface Invoice {
     date: number;
     total: number;
     status: 'Pending' | 'Failed' | 'Paid';
+    downloadLink: string;
 }
 
 export const invoicesInitialState: Invoice[] = []; 

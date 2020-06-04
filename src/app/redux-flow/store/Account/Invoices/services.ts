@@ -1,9 +1,16 @@
 import axios from 'axios';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
-
-const getInvoices = () => {
-    return axios.get(urlBase + 'account-invoices');
+const getInvoices = async () => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/invoices', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const InvoicesServices = {

@@ -6,7 +6,7 @@ import { InvoicesServices } from './services';
 
 export interface GetInvoices {
     type: ActionTypes.GET_INVOICES;
-    payload: Invoice[];
+    payload: {data: {invoices: Invoice[]}};
 }
 
 export const getInvoicesAction = (): ThunkDispatch<Promise<void>, {}, GetInvoices> => {

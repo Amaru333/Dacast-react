@@ -7,7 +7,7 @@ import { ApplicationState } from "../..";
 
 export interface GetBillingPageInfos {
     type: ActionTypes.GET_BILLING_PAGE_INFOS;
-    payload: BillingPageInfos;
+    payload: {data: BillingPageInfos};
 }
 
 export interface SaveBillingPagePaymentMethod {

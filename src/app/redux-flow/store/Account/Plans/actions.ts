@@ -7,7 +7,7 @@ import { showToastNotification } from '../../Toasts/actions';
 
 export interface GetPlanDetails {
     type: ActionTypes.GET_PLAN_DETAILS;
-    payload: Plans;
+    payload: {data: Plans};
 }
 
 export interface ChangeActivePlan {
@@ -31,7 +31,7 @@ export const changeActivePlanAction = (data: Plans): ThunkDispatch<Promise<void>
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
         await PlansServices.changeActivePlanService(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: response.data} );
+                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
