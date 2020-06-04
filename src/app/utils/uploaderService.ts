@@ -39,6 +39,7 @@ export class UploadObject {
     totalUploadedBytes: number = 0
     nextStart: number = 0
     onGoingUploads: { [partNumber: number]: true } = {}
+    onGoingChunkRetrievePromise: Promise<any> | null
 
     public getFileName() {
         return this.file.name
@@ -110,11 +111,16 @@ export class UploadObject {
         if (partNumber >= Math.ceil(this.file.size / this.fileChunkSize)) {
             return null
         }
+        if(this.onGoingChunkRetrievePromise){
+            await this.onGoingChunkRetrievePromise
+        }
         if ((partNumber) in this.uploadUrls) {
             return this.uploadUrls[partNumber]
         }
-        let newUrlBatch = await this.retrieveChunkPresignedURL(this.uploadUrls.length, this.uploadUrls.length + this.uploadUrlBatchSize)
+        this.onGoingChunkRetrievePromise = this.retrieveChunkPresignedURL(this.uploadUrls.length, this.uploadUrls.length + this.uploadUrlBatchSize)
+        let newUrlBatch = await this.onGoingChunkRetrievePromise
         this.uploadUrls.push(...newUrlBatch)
+        this.onGoingChunkRetrievePromise = null
         return await this.getUploadUrl(partNumber)
 
     }
