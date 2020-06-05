@@ -26,10 +26,11 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
         e.preventDefault();
-        if(e.target.files && e.target.files.length > 0) {
+        if(e.target.files && e.target.files.length > 0 && acceptedImageTypes.includes(e.target.files[0].type)) {
             setWatermarkFile(e.target.files[0])
-            props.updateStepperData({...props.stepperData, watermarkFilename: e.target.files[0].name})
+            props.updateStepperData({...props.stepperData, watermarkFilename: e.target.files[0].name, watermarkPositioningLeft: 10, watermarkPositioningRight: 10})
             setUploadButtonLoading(true)
             handleUpload()
         }
@@ -68,7 +69,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
                 <Button isLoading={uploadButtonLoading} className=" mt2" sizeButton="xs" typeButton="secondary">
                     <label className='pointer' htmlFor='browseButton'>
-                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/png, image/jpeg" />
                         Upload File   
                     </label>    
                 </Button>
@@ -88,14 +89,14 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                         
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningLeft"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: parseInt(event.currentTarget.value) })

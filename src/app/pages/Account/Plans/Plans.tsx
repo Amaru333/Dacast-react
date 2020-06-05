@@ -11,7 +11,6 @@ import {isMobile} from 'react-device-detect';
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
 import { PlansContainerProps } from '../../../containers/Account/Plans';
-
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Plan, Plans } from '../../../redux-flow/store/Account/Plans/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
@@ -36,10 +35,6 @@ export const PlansPage = (props: PlansContainerProps & {planDetails: Plans}) => 
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
     React.useEffect(() => {}, [stepperData, stepList]);
-
-    React.useEffect(() => {
-        console.log(props.planDetails)
-    })
 
     const purchasePlan = () => {
         setStepperPlanOpened(false);
