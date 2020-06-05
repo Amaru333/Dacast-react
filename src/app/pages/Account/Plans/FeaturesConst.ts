@@ -128,6 +128,6 @@ export const MainFeatures: {name: string; tooltip: string}[] = [
     {name: "Paywall", tooltip: "Sell your content vie Pay Per View or Subscription"},
     {name: "Ads", tooltip: "Monetise your content with Pre-, Mid- and Post-Roll Ads"},
     {name: "AES for VOD", tooltip: "AES Encryption helps prevent piracy and unauthorized downloading"},
-    {name: "M3u8", tooltip: "A direct M3U8 link allows you to stream to TVs and other smart devices"},
+    {name: "M3U8", tooltip: "A direct M3U8 link allows you to stream to TVs and other smart devices"},
     {name: "China", tooltip: "Our Premium delivery method with increased performance in China"},
 ]
