@@ -40,7 +40,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                {/* <WidgetElement className={classItemFullWidth}>
+                <WidgetElement className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Live Channels </Text>
                     </WidgetHeader>
@@ -69,7 +69,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
 
                         </TableListStyle>
                     </div>
-                </WidgetElement> */}
+                </WidgetElement>
             </div>
         </section>
     )

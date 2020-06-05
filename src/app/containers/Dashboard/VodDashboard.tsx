@@ -51,7 +51,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
                     </div>
                 </WidgetElement>
-{/* 
+
                 <WidgetElement className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
@@ -99,7 +99,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                             </tbody>
                         </TableListStyle>
                     </div>
-                </WidgetElement> */}
+                </WidgetElement>
             </div>
         </section>
     )
