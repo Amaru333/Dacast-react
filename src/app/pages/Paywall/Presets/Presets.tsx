@@ -11,6 +11,7 @@ import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { Pagination } from '../../../../components/Pagination/Pagination';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -18,6 +19,20 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetsModalOpened, setPromoPresetsModalOpened] = React.useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
+    const [pricePresetPaginationInfo, setPricePresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+
+    React.useEffect(() => {
+        if(pricePresetPaginationInfo.nbResults && pricePresetPaginationInfo.page) {
+            props.getPresetsInfos(`per-page=${pricePresetPaginationInfo.nbResults}&page=${pricePresetPaginationInfo.page}`)
+        }
+    }, [pricePresetPaginationInfo])
+
+    React.useEffect(() => {
+        if(promoPresetPaginationInfo.nbResults && promoPresetPaginationInfo.page) {
+            props.getPromoPresets(`per-page=${promoPresetPaginationInfo.nbResults}&page=${promoPresetPaginationInfo.page}`)
+        }
+    }, [promoPresetPaginationInfo])
 
     const pricePresetsTableHeader = () => {
         return {data: [
@@ -125,11 +140,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
-                {props.presetsInfos.presets.prices.length === 0 ? 
+                {props.presetsInfos.presets.totalItems < 5 ? 
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
-                    <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
-                   
+                    <>
+                        <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                        <Pagination totalResults={props.presetsInfos.presets.prices ? props.presetsInfos.presets.totalItems : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPricePresetPaginationInfo({page:page,nbResults:nbResults})}} />
+
+                   </>
                 }
                 <BorderStyle className='my2' />
 
@@ -143,7 +161,10 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 { props.presetsInfos.promos.totalItems === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
-                    <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                    <>
+                        <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                        <Pagination totalResults={props.presetsInfos.promos.promos ? props.presetsInfos.promos.totalItems : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPromoPresetPaginationInfo({page:page,nbResults:nbResults})}} />
+                    </>
                 }
                 
             </Card>

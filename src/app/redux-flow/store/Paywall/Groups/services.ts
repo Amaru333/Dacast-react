@@ -7,7 +7,7 @@ const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 const getGroupPrices = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/groups/price', 
+    return axios.get(process.env.API_BASE_URL + '/paywall/prices/groups', 
         {
             headers: {
                 Authorization: token
@@ -31,7 +31,7 @@ const deleteGroupPrice = (data: GroupPrice) => {
 const getGroupPromos = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/groups/promo', 
+    return axios.get(process.env.API_BASE_URL + '/paywall/promos/groups', 
         {
             headers: {
                 Authorization: token
