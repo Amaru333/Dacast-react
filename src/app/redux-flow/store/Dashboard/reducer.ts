@@ -14,6 +14,49 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                         price: 390,
                         nextBill: 189,
                         lastBill: 198
+                    },
+                    isTrial: {
+                        daysLeft: 30,
+                    }
+                }
+            }
+        case ActionTypes.GET_DASHBOARD_LIVE_VIEWERS: 
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    live: {
+                        ...state.data.live,
+                        liveViewers: {
+                            ...state.data.live.liveViewers,
+                            data: action.payload.viewers
+                        }
+                    }
+                }
+               
+            }
+        case ActionTypes.GET_DASHBOARD_LIVE_TOP:
+            console.log(action)
+            if(action.payload.content) {
+                var result = []
+                for (var i = 0; i < action.payload.content.length; i++) {
+                    result.push({ name: action.payload.content[i], viewers: action.payload.viewers[i]})
+                }
+                console.log(result);
+            } else {
+                var result = [];
+            }
+            console.log(result)
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    live: {
+                        ...state.data.live,
+                        topChannels: {
+                            ...state.data.live.topChannels,
+                            data: result
+                        }
                     }
                 }
             }
@@ -26,7 +69,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                         ...state.data.vod,
                         'play-rate': {
                             ...state.data.vod['play-rate'],
-                            ...action.payload.data
+                            data:  action.payload.data
                         }
                     }
                 }
@@ -40,7 +83,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                         ...state.data.vod,
                         videoPlays: {
                             ...state.data.vod.videoPlays,
-                            ...action.payload.data
+                            data:  action.payload.data
                         }
                     }
                 }

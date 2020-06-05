@@ -11,7 +11,7 @@ img {
 } 
 
 .dashboardCard {
-    min-height:168px;
+    min-height:182px;
     width: 100%;
 }
 
@@ -70,11 +70,9 @@ a:hover {
 a:active {
     color: #284CEB;
 }
-
 a {
     text-decoration: none;
 }
-
 .noTransition {
     transition: none !important;
 }

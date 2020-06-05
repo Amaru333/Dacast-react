@@ -1,7 +1,9 @@
 export enum ActionTypes {
     GET_DASHBOARD_DETAILS = "@@dashboard/GET_DASHBOARD_DETAILS",
     GET_DASHBOARD_VOD_PLAY_RATE = "@@dashboard/GET_DASHBOARD_VOD_PLAY_RATE",
-    GET_DASHBOARD_VOD_PLAY = "@@dasboard/GET_DASHBOARD_VOD_PLAY"
+    GET_DASHBOARD_VOD_PLAY = "@@dasboard/GET_DASHBOARD_VOD_PLAY",
+    GET_DASHBOARD_LIVE_VIEWERS = "@@dasboard/GET_DASHBOARD_LIVE_VIEWERS",
+    GET_DASHBOARD_LIVE_TOP= "@@dasboard/GET_DASHBOARD_LIVE_TOP"
 }
 
 export interface DashboardInfos {
@@ -16,6 +18,7 @@ export interface DashboardInfos {
 export interface DashboardTrial {
     daysLeft: number; 
 }
+
 export interface DashboardPayingPlan {
     displayName: string;
     price: number;
