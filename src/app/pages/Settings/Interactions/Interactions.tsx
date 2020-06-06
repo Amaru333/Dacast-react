@@ -170,7 +170,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising") } />
                         
             </Card>}
-
+{/* 
             <Card className='my2'>
                 <TextStyle> <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Prompts viewers to provide their email address before viewing your content and store them wherever you create an integration.</Text>
@@ -178,12 +178,12 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Email Catcher? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                {/* <div className='my2'>   
+                <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
-                </div> */}
+                </div>
                 <Button className='xs-show col col-12' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
                 <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={props.interactionsInfos.mailCatcher.length > 0 ? mailCatcherTableBody() : emptyContentListBody("Add a Mail Catcher") } />
-            </Card>
+            </Card> */}
 
             <Card className="my2">
                 <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>

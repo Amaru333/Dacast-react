@@ -6,13 +6,14 @@ import { VodSecurityReducer } from './Security';
 import { SearchResult, VodDetailsState } from './General/types';
 import { GeneralReducer, reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
-import { RenditionsList, RenditionsListState } from './Renditions/types';
+import { RenditionsListState } from './Renditions/types';
 import { VodThemingReducer } from './Theming/reducer';
 import { VodEngagementReducer } from './Engagement/reducer';
-import { VodPaywallPageInfos, VodPaywallReducer } from './Paywall';
-import { ContentTheme, ContentThemeState } from '../Settings/Theming/types';
+import { VodPaywallReducer } from './Paywall/reducer';
+import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
+import { ContentPaywallPageInfos } from '../Paywall/Presets/types'
 
 
 export const vodInitialState: VodState = {
@@ -35,7 +36,7 @@ export interface  VodState {
     renditions: RenditionsListState;
     theming: ContentThemeState;
     engagement: ContentEngagementSettingsState;
-    paywall: false | VodPaywallPageInfos;
+    paywall: false | ContentPaywallPageInfos;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({

@@ -99,10 +99,18 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     }
 
+    const handleContentSchedulingChange = () => {
+        setHasToggleChanged(true)
+        if(toggleSchedulingVideo) {
+            setSelectedSettings({...selectedSettings, contentScheduling: {startTime: 0, endTime: 0}})
+        }
+        setToggleSchedulingVideo(!toggleSchedulingVideo)
+    }
+
     const handleSave = () => {
         setButtonLoading(true)
-        let startTimeTs = momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf()
-        let endTimeTs =  momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf()
+        let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs =  toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => setButtonLoading(false))
     }
 
@@ -167,7 +175,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                         <Toggle 
                             id="videoScheduling" 
                             label='Content Scheduling' 
-                            onChange={() => {setToggleSchedulingVideo(!toggleSchedulingVideo);setHasToggleChanged(true)}} defaultChecked={toggleSchedulingVideo}
+                            onChange={() => {handleContentSchedulingChange()}} defaultChecked={toggleSchedulingVideo}
                         />
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
@@ -284,7 +292,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
-                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : ''} 
+                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name} 
                             callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.contentSecuritySettings.securitySettings.geoRestriction.filter(f => f.name === selectedItem)[0].id})}} 
                         />
                     </div>
@@ -305,7 +313,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
-                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : ''} 
+                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name} 
                                 callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.contentSecuritySettings.securitySettings.domainControl.filter(f => f.name === selectedItem)[0].id})}} 
                             />
                         </div>
@@ -333,7 +341,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>
+                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>

@@ -1,17 +1,18 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, VodPaywallPageInfos, Preset, Promo } from './types';
+import { ActionTypes } from './types';
 import { VodPaywallServices } from './services';
-
+import { Preset, Promo, ContentPaywallPageInfos } from '../../Paywall/Presets/types'
+  
 export interface GetVodPaywallInfo {
     type: ActionTypes.GET_VOD_PAYWALL_INFOS;
-    payload: VodPaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface SaveVodPaywallInfos {
     type: ActionTypes.SAVE_VOD_PAYWALL_INFOS;
-    payload: VodPaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface CreateVodPricePreset {
@@ -55,7 +56,7 @@ export const getVodPaywallInfosAction = (): ThunkDispatch<Promise<void>, {}, Get
     }
 }
 
-export const saveVodPaywallInfosAction = (data: VodPaywallPageInfos): ThunkDispatch<Promise<void>, {}, SaveVodPaywallInfos> => {
+export const saveVodPaywallInfosAction = (data: ContentPaywallPageInfos): ThunkDispatch<Promise<void>, {}, SaveVodPaywallInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveVodPaywallInfos>) => {
         await VodPaywallServices.saveVodPaywallInfos(data)
             .then( response => {

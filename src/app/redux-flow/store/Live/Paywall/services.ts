@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Preset, Promo, LivePaywallPageInfos } from './types';
+import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
@@ -7,7 +7,7 @@ const getLivePaywallInfos = () => {
     return axios.get(urlBase + 'live-paywall');
 }
 
-const saveLivePaywallInfos = (data: LivePaywallPageInfos) => {
+const saveLivePaywallInfos = (data: ContentPaywallPageInfos) => {
     return axios.post(urlBase + 'live-paywall', {data: data})
 }
 

@@ -48,7 +48,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const pricePresetsTableBody = () => {
-        if(props.presetsInfos.presets) {
+        if(props.presetsInfos.presets && props.presetsInfos.presets.prices) {
             return props.presetsInfos.presets.prices.map((preset, key) => {
                 return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
@@ -85,7 +85,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const promoPresetsTableBody = () => {
-        if(props.presetsInfos.promos) {
+        if(props.presetsInfos.promos && props.presetsInfos.promos.promos) {
             return props.presetsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
@@ -140,7 +140,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
-                {props.presetsInfos.presets.totalItems < 5 ? 
+                {props.presetsInfos.presets.totalItems === 0 ? 
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
                     <>

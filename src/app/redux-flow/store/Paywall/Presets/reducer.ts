@@ -9,7 +9,16 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.GET_PRICE_PRESETS_LIST :
             return {
                 ...state,
-                presets: action.payload.data
+                presets: {
+                    totalItems: action.payload.data.totalItems,
+                    prices: action.payload.data.presets.map((preset: any) => {
+                        return {
+                            id: preset.id,
+                            name: preset.name,
+                            ...preset.preset
+                        }
+                    })
+                }
             }
         case ActionTypes.CREATE_PRICE_PRESET :
             presets = state.presets.prices.slice();

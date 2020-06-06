@@ -165,7 +165,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 </Card>
             }
 
-            <Card className='my2'>
+            {/* <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
                         <Text size={20} weight='med'>Email Catcher</Text>
@@ -197,7 +197,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
                     />
                 </DisabledSection>
-            </Card>
+            </Card> */}
 
             <Card className='my2'>
                 <Header className="mb2">

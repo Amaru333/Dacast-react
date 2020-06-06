@@ -1,17 +1,18 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, PlaylistPaywallPageInfos, Preset, Promo } from './types';
+import { ActionTypes} from './types';
 import { PlaylistPaywallServices } from './services';
+import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 
 export interface GetPlaylistPaywallInfo {
     type: ActionTypes.GET_PLAYLIST_PAYWALL_INFOS;
-    payload: PlaylistPaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface SavePlaylistPaywallInfos {
     type: ActionTypes.SAVE_PLAYLIST_PAYWALL_INFOS;
-    payload: PlaylistPaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface CreatePlaylistPricePreset {
@@ -55,7 +56,7 @@ export const getPlaylistPaywallInfosAction = (): ThunkDispatch<Promise<void>, {}
     }
 }
 
-export const savePlaylistPaywallInfosAction = (data: PlaylistPaywallPageInfos): ThunkDispatch<Promise<void>, {}, SavePlaylistPaywallInfos> => {
+export const savePlaylistPaywallInfosAction = (data: ContentPaywallPageInfos): ThunkDispatch<Promise<void>, {}, SavePlaylistPaywallInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePlaylistPaywallInfos>) => {
         await PlaylistPaywallServices.savePlaylistPaywallInfos(data)
             .then( response => {

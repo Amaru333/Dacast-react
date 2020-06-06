@@ -1,17 +1,18 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, LivePaywallPageInfos, Preset, Promo } from './types';
+import { ActionTypes } from './types';
 import { LivePaywallServices } from './services';
+import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets/types';
 
 export interface GetLivePaywallInfo {
     type: ActionTypes.GET_LIVE_PAYWALL_INFOS;
-    payload: LivePaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface SaveLivePaywallInfos {
     type: ActionTypes.SAVE_LIVE_PAYWALL_INFOS;
-    payload: LivePaywallPageInfos;
+    payload: ContentPaywallPageInfos;
 }
 
 export interface CreateLivePricePreset {
@@ -55,7 +56,7 @@ export const getLivePaywallInfosAction = (): ThunkDispatch<Promise<void>, {}, Ge
     }
 }
 
-export const saveLivePaywallInfosAction = (data: LivePaywallPageInfos): ThunkDispatch<Promise<void>, {}, SaveLivePaywallInfos> => {
+export const saveLivePaywallInfosAction = (data: ContentPaywallPageInfos): ThunkDispatch<Promise<void>, {}, SaveLivePaywallInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveLivePaywallInfos>) => {
         await LivePaywallServices.saveLivePaywallInfos(data)
             .then( response => {

@@ -70,8 +70,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const onSubmit = (data: any) => {
         setSubmitLoading(true);
-        let startTimeTs = momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf()
-        let endTimeTs =  momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf()
+        let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs = toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveSettingsSecurityOptions({ ...data, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
             setSubmitLoading(false);
         })

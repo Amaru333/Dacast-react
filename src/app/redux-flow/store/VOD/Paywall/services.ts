@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Preset, Promo, VodPaywallPageInfos } from './types';
+import { Preset, Promo, ContentPaywallPageInfos } from '../../Paywall/Presets/types'
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
@@ -7,7 +7,7 @@ const getVodPaywallInfos = () => {
     return axios.get(urlBase + 'vod-paywall');
 }
 
-const saveVodPaywallInfos = (data: VodPaywallPageInfos) => {
+const saveVodPaywallInfos = (data: ContentPaywallPageInfos) => {
     return axios.post(urlBase + 'vod-paywall', {data: data})
 }
 

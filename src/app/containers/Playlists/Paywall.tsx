@@ -2,19 +2,21 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { PlaylistPaywallPage } from '../../pages/Playlist/Paywall/Paywall'
-import { Preset, Action, createPlaylistPricePresetAction, savePlaylistPricePresetAction, deletePlaylistPricePresetAction, Promo, createPlaylistPromoPresetAction, savePlaylistPromoPresetAction, deletePlaylistPromoPresetAction, PlaylistPaywallPageInfos, getPlaylistPaywallInfosAction, savePlaylistPaywallInfosAction } from '../../redux-flow/store/Playlists/Paywall';
+import { Action, createPlaylistPricePresetAction, savePlaylistPricePresetAction, deletePlaylistPricePresetAction, createPlaylistPromoPresetAction, savePlaylistPromoPresetAction, deletePlaylistPromoPresetAction, getPlaylistPaywallInfosAction, savePlaylistPaywallInfosAction } from '../../redux-flow/store/Playlists/Paywall';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
+import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
+import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
+import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+
 var moment = require('moment-timezone');
 
 export interface PlaylistPaywallComponentProps {
-    playlistPaywallInfos: PlaylistPaywallPageInfos;
+    playlistPaywallInfos: ContentPaywallPageInfos;
     getPlaylistPaywallInfos: Function;
     savePlaylistPaywallInfos: Function;
     createPlaylistPricePreset: Function;
@@ -27,12 +29,13 @@ export interface PlaylistPaywallComponentProps {
     getGroupsInfos: Function;
     theming: PaywallThemingData;
     getPaywallThemes: Function;
-    globalPresets: PlaylistPaywallPageInfos;
+    globalPresets: PresetsPageInfos;
     getPresetsInfo: Function;
     customPricePresetList: Preset[];
     createPricePreset: Function;
     customPromoPresetList: Promo[];
     createPromoPreset: Function;
+    showToast: Function;
 }
 
 const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
@@ -50,7 +53,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             props.getPaywallThemes()
         }
         if(!props.globalPresets) {
-            props.getPresetsInfo()
+            props.getPresetsInfo('page=1&per-page=100')
         }
     }, [])
 
@@ -64,20 +67,23 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 id: 'custom',
                 name: 'Custom Preset',
                 type: 'Pay Per View',
-                price: [
+                prices: [
                     
                     {
-                        amount: NaN,
+                        value: NaN,
                         currency: 'USD'
                     }
                     
                 ],
-                duration: {amount: NaN, type: 'Hours'},
-                recurrence: 'Weekly',
-                startMethod: 'Upon Purchase',
-                timezone: null,
-                startDate: null,
-                startTime: '00:00'
+                settings: {
+                    duration: {value: NaN, unit: 'Hours'},
+                    recurrence: {recurrence: 'Weekly'},
+                    startMethod: 'Upon Purchase',
+                    timezone: null,
+                    startDate: null,
+                    startTime: '00:00'
+                }
+
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
@@ -93,16 +99,35 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once'
             }
-            setCustomPricePresetList([...props.globalPresets.presets, customPricePreset])
-            setCustomPromoPresetList([...props.globalPresets.promos, customPromoPreset])
+            let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
+            let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
+            setCustomPricePresetList([...globalPricePresets, customPricePreset])
+            setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])
         }
     }, [props.globalPresets.presets, props.playlistPaywallInfos])
 
     return props.playlistPaywallInfos && props.groupsInfos && customPricePresetList && props.theming ? 
         <div className='flex flex-column'>
             <PlaylistsTabs playlistId={playlistId} />
-            <PlaylistPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
-        </div>
+            <ContentPaywallPage
+                contentId={playlistId}
+                contentPaywallInfos={props.playlistPaywallInfos}
+                saveContentPaywallInfos={props.savePlaylistPaywallInfos}
+                createContentPricePreset={props.createPlaylistPricePreset}
+                saveContentPricePreset={props.savePlaylistPricePreset}
+                deleteContentPricePreset={props.deletePlaylistPricePreset}
+                createContentPromoPreset={props.createPlaylistPromoPreset}
+                saveContentPromoPreset={props.savePlaylistPromoPreset}
+                deleteContentPromoPreset={props.deletePlaylistPromoPreset}
+                groupsInfos={props.groupsInfos}
+                theming={props.theming}
+                globalPresets={props.globalPresets}
+                customPricePresetList={customPricePresetList} 
+                customPromoPresetList={customPromoPresetList}     
+                createPricePreset={props.createPricePreset}
+                createPromoPreset={props.createPromoPreset}
+                showToast={props.showToast}
+            />        </div>
         : <><PlaylistsTabs playlistId={playlistId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
 
@@ -120,7 +145,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistPaywallInfos: () => {
             dispatch(getPlaylistPaywallInfosAction());
         },
-        savePlaylistPaywallInfos: (data: PlaylistPaywallPageInfos) => {
+        savePlaylistPaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(savePlaylistPaywallInfosAction(data));
         },
         createPlaylistPricePreset: (data: Preset) => {
@@ -142,13 +167,13 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(deletePlaylistPromoPresetAction(data));
         },
         getGroupsInfos: () => {
-            dispatch(getGroupsInfosAction());
+            dispatch(getGroupPricesAction());
         },
         getPaywallThemes: () => {
             dispatch(getPaywallThemesAction())
         },
-        getPricePresetsInfosAction: () => {
-            dispatch(getPricePresetsInfosAction())
+        getPricePresetsInfosAction: (qs: string) => {
+            dispatch(getPricePresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

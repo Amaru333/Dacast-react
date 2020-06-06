@@ -8,7 +8,7 @@ export interface GetPricePresetsList {
     type: ActionTypes.GET_PRICE_PRESETS_LIST;
     payload: {
         data: {
-            prices: Preset[]; 
+            presets: Preset[]; 
             totalItems: number;
         }
     };
