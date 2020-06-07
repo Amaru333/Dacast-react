@@ -10,6 +10,11 @@ export interface GetPlaylistPaywallInfo {
     payload: ContentPaywallPageInfos;
 }
 
+export interface GetPlaylistPaywallPrices {
+    type: ActionTypes.GET_PLAYLIST_PAYWALL_PRICES;
+    payload: {data: {prices: Preset[];}};
+}
+
 export interface SavePlaylistPaywallInfos {
     type: ActionTypes.SAVE_PLAYLIST_PAYWALL_INFOS;
     payload: ContentPaywallPageInfos;
@@ -28,6 +33,11 @@ export interface SavePlaylistPricePreset {
 export interface DeletePlaylistPricePreset {
     type: ActionTypes.DELETE_PLAYLIST_PRICE_PRESET;
     payload: Preset;
+}
+
+export interface GetPlaylistPaywallPromos {
+    type: ActionTypes.GET_PLAYLIST_PAYWALL_PROMOS;
+    payload: {data: {promos: Promo[];}};
 }
 
 export interface CreatePlaylistPromoPreset {
@@ -50,6 +60,17 @@ export const getPlaylistPaywallInfosAction = (): ThunkDispatch<Promise<void>, {}
         await PlaylistPaywallServices.getPlaylistPaywallInfos()
             .then( response => {
                 dispatch({type: ActionTypes.GET_PLAYLIST_PAYWALL_INFOS, payload: response.data});
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+            })
+    }
+}
+
+export const getPlaylistPaywallPricesAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistPaywallPrices> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistPaywallPrices>) => {
+        await PlaylistPaywallServices.getPlaylistPaywallPrices(playlistId)
+            .then( response => {
+                dispatch({type: ActionTypes.GET_PLAYLIST_PAYWALL_PRICES, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -100,6 +121,17 @@ export const deletePlaylistPricePresetAction = (data: Preset): ThunkDispatch<Pro
     }
 }
 
+export const getPlaylistPaywallPromosAction = (): ThunkDispatch<Promise<void>, {}, GetPlaylistPaywallPromos> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPlaylistPaywallPromos>) => {
+        await PlaylistPaywallServices.getPlaylistPaywallPromos()
+            .then( response => {
+                dispatch({type: ActionTypes.GET_PLAYLIST_PAYWALL_PROMOS, payload: response.data});
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+            })
+    }
+}
+
 export const createPlaylistPromoPresetAction = (data: Promo): ThunkDispatch<Promise<void>, {}, CreatePlaylistPromoPreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePlaylistPromoPreset>) => {
         await PlaylistPaywallServices.createPlaylistPromoPreset(data)
@@ -135,10 +167,12 @@ export const deletePlaylistPromoPresetAction = (data: Promo): ThunkDispatch<Prom
 
 
 export type Action = GetPlaylistPaywallInfo
+| GetPlaylistPaywallPrices
 | CreatePlaylistPricePreset
 | SavePlaylistPaywallInfos
 | SavePlaylistPricePreset
 | DeletePlaylistPricePreset
+| GetPlaylistPaywallPromos
 | CreatePlaylistPromoPreset
 | SavePlaylistPromoPreset
 | DeletePlaylistPromoPreset

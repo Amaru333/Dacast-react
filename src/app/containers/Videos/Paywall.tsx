@@ -2,7 +2,7 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, getVodPaywallInfosAction, saveVodPaywallInfosAction } from '../../redux-flow/store/VOD/Paywall/actions';
+import { Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, getVodPaywallInfosAction, saveVodPaywallInfosAction, getVodPaywallPricesAction, getVodPaywallPromosAction } from '../../redux-flow/store/VOD/Paywall/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
@@ -19,10 +19,12 @@ var moment = require('moment-timezone');
 export interface VodPaywallComponentProps {
     vodPaywallInfos: ContentPaywallPageInfos;
     getVodPaywallInfos: Function;
+    getVodPaywallPrices: Function;
     saveVodPaywallInfos: Function;
     createVodPricePreset: Function;
     saveVodPricePreset: Function;
     deleteVodPricePreset: Function;
+    getVodPaywallPromos: Function;
     createVodPromoPreset: Function;
     saveVodPromoPreset: Function;
     deleteVodPromoPreset: Function;
@@ -114,10 +116,12 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             <ContentPaywallPage
                 contentId={vodId}
                 contentPaywallInfos={props.vodPaywallInfos}
+                getContentPrices={props.getVodPaywallPrices}
                 saveContentPaywallInfos={props.saveVodPaywallInfos}
                 createContentPricePreset={props.createVodPricePreset}
                 saveContentPricePreset={props.saveVodPricePreset}
                 deleteContentPricePreset={props.deleteVodPricePreset}
+                getContentPromos={props.getVodPaywallPromos}
                 createContentPromoPreset={props.createVodPromoPreset}
                 saveContentPromoPreset={props.saveVodPromoPreset}
                 deleteContentPromoPreset={props.deleteVodPromoPreset}
@@ -148,6 +152,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodPaywallInfos: () => {
             dispatch(getVodPaywallInfosAction());
         },
+        getVodPaywallPrices: (vodId: string) => {
+            dispatch(getVodPaywallPricesAction(vodId));
+        },
         saveVodPaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(saveVodPaywallInfosAction(data));
         },
@@ -159,6 +166,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteVodPricePreset: (data: Preset) => {
             dispatch(deleteVodPricePresetAction(data));
+        },
+        getVodPaywallPromos: () => {
+            dispatch(getVodPaywallPromosAction());
         },
         createVodPromoPreset: (data: Promo) => {
             dispatch(createVodPromoPresetAction(data));

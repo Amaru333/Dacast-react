@@ -2,7 +2,7 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, getLivePaywallInfosAction, saveLivePaywallInfosAction } from '../../redux-flow/store/Live/Paywall';
+import { Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, getLivePaywallInfosAction, saveLivePaywallInfosAction, getLivePaywallPromosAction, getLivePaywallPricesAction } from '../../redux-flow/store/Live/Paywall';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
@@ -21,9 +21,11 @@ export interface LivePaywallComponentProps {
     livePaywallInfos: ContentPaywallPageInfos;
     getLivePaywallInfos: Function;
     saveLivePaywallInfos: Function;
+    getLivePaywallPrices: Function;
     createLivePricePreset: Function;
     saveLivePricePreset: Function;
     deleteLivePricePreset: Function;
+    getLivePaywallPromos: Function;
     createLivePromoPreset: Function;
     saveLivePromoPreset: Function;
     deleteLivePromoPreset: Function;
@@ -115,9 +117,11 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 contentId={liveId}
                 contentPaywallInfos={props.livePaywallInfos}
                 saveContentPaywallInfos={props.saveLivePaywallInfos}
+                getContentPrices={props.getLivePaywallPrices}
                 createContentPricePreset={props.createLivePricePreset}
                 saveContentPricePreset={props.saveLivePricePreset}
                 deleteContentPricePreset={props.deleteLivePricePreset}
+                getContentPromos={props.getLivePaywallPromos}
                 createContentPromoPreset={props.createLivePromoPreset}
                 saveContentPromoPreset={props.saveLivePromoPreset}
                 deleteContentPromoPreset={props.deleteLivePromoPreset}
@@ -151,6 +155,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveLivePaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(saveLivePaywallInfosAction(data));
         },
+        getLivePaywallPrices: (liveId: string) => {
+            dispatch(getLivePaywallPricesAction(liveId));
+        },
         createLivePricePreset: (data: Preset) => {
             dispatch(createLivePricePresetAction(data));
         },
@@ -159,6 +166,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteLivePricePreset: (data: Preset) => {
             dispatch(deleteLivePricePresetAction(data));
+        },
+        getLivePaywallPromos: () => {
+            dispatch(getLivePaywallPromosAction());
         },
         createLivePromoPreset: (data: Promo) => {
             dispatch(createLivePromoPresetAction(data));

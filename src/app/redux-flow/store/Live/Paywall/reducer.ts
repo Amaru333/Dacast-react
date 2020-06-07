@@ -17,6 +17,11 @@ const reducer: Reducer<ContentPaywallPageInfos> = (state = contentPaywallInitial
                 ...state,
                 ...action.payload
             }
+        case ActionTypes.GET_LIVE_PAYWALL_PRICES :
+            return {
+                ...state,
+                prices: action.payload.data.prices
+            }
         case ActionTypes.CREATE_LIVE_PRICE_PRESET :
             prices = state.prices.slice();
             prices.splice(prices.length, 0, action.payload);
@@ -44,6 +49,11 @@ const reducer: Reducer<ContentPaywallPageInfos> = (state = contentPaywallInitial
             return {
                 ...state,
                 prices: state.prices.filter((item) => {return item.id !== action.payload.id})
+            }
+        case ActionTypes.GET_LIVE_PAYWALL_PROMOS :
+            return {
+                ...state,
+                promos: action.payload.data.promos
             }
         case ActionTypes.CREATE_LIVE_PROMO_PRESET :
             promos = state.promos.slice();

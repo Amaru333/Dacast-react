@@ -23,10 +23,12 @@ import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types
 export interface ContentPaywallComponentProps {
     contentId: string;
     contentPaywallInfos: ContentPaywallPageInfos;
+    getContentPrices: Function;
     saveContentPaywallInfos: Function;
     createContentPricePreset: Function;
     saveContentPricePreset: Function;
     deleteContentPricePreset: Function;
+    getContentPromos: Function;
     createContentPromoPreset: Function;
     saveContentPromoPreset: Function;
     deleteContentPromoPreset: Function;
@@ -53,6 +55,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     React.useEffect(() => {
         setContentPaywallSettings(props.contentPaywallInfos)
     }, [props.contentPaywallInfos])
+
+    React.useEffect(() => {
+        props.getContentPrices(props.contentId)
+        props.getContentPromos()
+    }, [])
 
     const pricePresetsTableHeader = () => {
         return {data: [
@@ -213,20 +220,21 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Prices</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
-                {props.contentPaywallInfos.prices.length === 0 ? 
-                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
-                    :
+                {props.contentPaywallInfos.prices ? 
                     <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
-                        
+                    :
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+
                 }
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
                 <Button onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
-                { props.contentPaywallInfos.promos.length === 0 ?
-                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
-                    :
+                { props.contentPaywallInfos.promos ?
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                    :                    
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+
                 }
 
                 <BorderStyle className='my2' />

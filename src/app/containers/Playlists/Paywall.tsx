@@ -2,7 +2,7 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, createPlaylistPricePresetAction, savePlaylistPricePresetAction, deletePlaylistPricePresetAction, createPlaylistPromoPresetAction, savePlaylistPromoPresetAction, deletePlaylistPromoPresetAction, getPlaylistPaywallInfosAction, savePlaylistPaywallInfosAction } from '../../redux-flow/store/Playlists/Paywall';
+import { Action, createPlaylistPricePresetAction, savePlaylistPricePresetAction, deletePlaylistPricePresetAction, createPlaylistPromoPresetAction, savePlaylistPromoPresetAction, deletePlaylistPromoPresetAction, getPlaylistPaywallInfosAction, savePlaylistPaywallInfosAction, getPlaylistPaywallPricesAction, getPlaylistPaywallPromosAction } from '../../redux-flow/store/Playlists/Paywall';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
@@ -19,9 +19,11 @@ export interface PlaylistPaywallComponentProps {
     playlistPaywallInfos: ContentPaywallPageInfos;
     getPlaylistPaywallInfos: Function;
     savePlaylistPaywallInfos: Function;
+    getPlaylistPaywallPrices: Function;
     createPlaylistPricePreset: Function;
     savePlaylistPricePreset: Function;
     deletePlaylistPricePreset: Function;
+    getPlaylistPaywallPromos: Function;
     createPlaylistPromoPreset: Function;
     savePlaylistPromoPreset: Function;
     deletePlaylistPromoPreset: Function;
@@ -112,10 +114,12 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             <ContentPaywallPage
                 contentId={playlistId}
                 contentPaywallInfos={props.playlistPaywallInfos}
+                getContentPrices={props.getPlaylistPaywallPrices}
                 saveContentPaywallInfos={props.savePlaylistPaywallInfos}
                 createContentPricePreset={props.createPlaylistPricePreset}
                 saveContentPricePreset={props.savePlaylistPricePreset}
                 deleteContentPricePreset={props.deletePlaylistPricePreset}
+                getContentPromos={props.getPlaylistPaywallPromos}
                 createContentPromoPreset={props.createPlaylistPromoPreset}
                 saveContentPromoPreset={props.savePlaylistPromoPreset}
                 deleteContentPromoPreset={props.deletePlaylistPromoPreset}
@@ -148,6 +152,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         savePlaylistPaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(savePlaylistPaywallInfosAction(data));
         },
+        getPlaylistPaywallPrices: (playlistId: string) => {
+            dispatch(getPlaylistPaywallPricesAction(playlistId));
+        },
         createPlaylistPricePreset: (data: Preset) => {
             dispatch(createPlaylistPricePresetAction(data));
         },
@@ -156,6 +163,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deletePlaylistPricePreset: (data: Preset) => {
             dispatch(deletePlaylistPricePresetAction(data));
+        },
+        getPlaylistPaywallPromos: () => {
+            dispatch(getPlaylistPaywallPromosAction());
         },
         createPlaylistPromoPreset: (data: Promo) => {
             dispatch(createPlaylistPromoPresetAction(data));
