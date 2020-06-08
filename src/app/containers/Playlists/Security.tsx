@@ -1,5 +1,4 @@
 import React from 'react';
-import { PlaylistSecurityPage } from '../../pages/Playlist/Security/Security';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getPlaylistSecuritySettingsAction, savePlaylistSecuritySettingsAction } from '../../redux-flow/store/Playlists/Security/actions';
@@ -47,6 +46,7 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
                         globalSecuritySettings={props.globalSecuritySettings}
                         saveContentSecuritySettings={props.savePlaylistSecuritySettings}
                         getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                        showToast={props.showToast}
                     />
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

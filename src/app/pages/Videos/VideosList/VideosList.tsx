@@ -140,7 +140,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         }
                     }} />},
                 // {cell: <></>},
-                {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Name</Text>, sort: 'title'},
+                {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
                 {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
                 {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
                 {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
@@ -245,7 +245,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Name..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 ?

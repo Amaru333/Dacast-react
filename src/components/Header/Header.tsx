@@ -89,9 +89,10 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-
-        setAvatarFirstName(getUserInfoItem('custom:first_name'))
-        setAvatarLastName(getUserInfoItem('custom:last_name'))
+        if(isLoggedIn()) {
+            setAvatarFirstName(getUserInfoItem('custom:first_name'))
+            setAvatarLastName(getUserInfoItem('custom:last_name'))
+        }
 
     }, [isLoggedIn()])
 

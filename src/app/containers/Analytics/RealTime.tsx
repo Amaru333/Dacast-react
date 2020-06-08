@@ -6,6 +6,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction, getAnalyticsRealTimeJobIdsAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { getLiveListAction } from '../../redux-flow/store/Live/General/actions';
+import { SearchResult } from '../../redux-flow/store/Live/General/types';
 
 
 export interface RealTimePageProps {
@@ -15,13 +17,23 @@ export interface RealTimePageProps {
     getAnalyticsRealTimeGbTime: Function;
     getAnalyticsRealTimeConsumptionLocation: Function;
     getAnalyticsRealTimeJobIds: Function;
+    liveList: false | SearchResult;
+    getLiveList: Function;
 }
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
     React.useEffect(() => {
-        props.getAnalyticsRealTimeJobIds()
-    }, [])
+        if(!props.liveList) {
+            props.getLiveList();
+        }
+        if(props.liveList) {
+            if(props.liveList.results.length === 0) {
+                // HANDLE NO CHANNEL
+            }
+            props.getAnalyticsRealTimeJobIds({ period: 5, channel: props.liveList.results[0].objectID })
+        }
+    }, [props.liveList])
 
     React.useEffect(() => {
         if (!props.realTimeAnalytics.data.concurentViewersPerTime && props.realTimeAnalytics.jobIds) {
@@ -37,19 +49,26 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             props.getAnalyticsRealTimePlaybackTime(props.realTimeAnalytics.jobIds.newPlaybackSessionsPerTime.jobID);
         }
     }, [props.realTimeAnalytics.jobIds])
-    return <RealTimeAnalyticsPage {...props} />  
+
+
+    if(!props.liveList) {
+        return <LoadingSpinner center size='medium' color='violet' />
+    } else {
+        return <RealTimeAnalyticsPage {...props} />  
+    }
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        realTimeAnalytics: state.analytics.realTime
+        realTimeAnalytics: state.analytics.realTime,
+        liveList: state.live.list,
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTimeJobIds: () => {
-            dispatch(getAnalyticsRealTimeJobIdsAction());
+        getAnalyticsRealTimeJobIds: (options?: any) => {
+            dispatch(getAnalyticsRealTimeJobIdsAction(options));
         },
         getAnalyticsRealTimeViewersTimes: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
             dispatch(getAnalyticsRealTimeViewersTimesAction(jobId, options));
@@ -62,6 +81,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getAnalyticsRealTimeConsumptionLocation: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
             dispatch(getAnalyticsRealTimeConsumptionLocationAction(jobId, options));
+        },
+        getLiveList: (qs: string) => {
+            dispatch(getLiveListAction(qs));
         },
     };
 }

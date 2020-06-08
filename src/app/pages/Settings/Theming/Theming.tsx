@@ -19,6 +19,10 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
 
+    React.useEffect(() => {
+        setCurrentPage('list')
+    }, [props.themingList.themes.length])
+
     const ThemingOptions = () => {
         return (
             <ThemingControlsCard

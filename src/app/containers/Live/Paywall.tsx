@@ -2,26 +2,30 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { LivePaywallPage } from '../../pages/Live/Paywall/Paywall'
-import { Preset, Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, Promo, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, LivePaywallPageInfos, getLivePaywallInfosAction, saveLivePaywallInfosAction } from '../../redux-flow/store/Live/Paywall';
+import { Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, getLivePaywallInfosAction, saveLivePaywallInfosAction, getLivePaywallPromosAction, getLivePaywallPricesAction } from '../../redux-flow/store/Live/Paywall';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
+import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
+import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
+import { ContentPaywallPageInfos, Preset, Promo, PresetsPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+
 var moment = require('moment-timezone');
 
 export interface LivePaywallComponentProps {
-    livePaywallInfos: LivePaywallPageInfos;
+    livePaywallInfos: ContentPaywallPageInfos;
     getLivePaywallInfos: Function;
     saveLivePaywallInfos: Function;
+    getLivePaywallPrices: Function;
     createLivePricePreset: Function;
     saveLivePricePreset: Function;
     deleteLivePricePreset: Function;
+    getLivePaywallPromos: Function;
     createLivePromoPreset: Function;
     saveLivePromoPreset: Function;
     deleteLivePromoPreset: Function;
@@ -29,7 +33,7 @@ export interface LivePaywallComponentProps {
     getGroupsInfos: Function;
     theming: PaywallThemingData;
     getPaywallThemes: Function;
-    globalPresets: LivePaywallPageInfos;
+    globalPresets: PresetsPageInfos;
     getPresetsInfo: Function;
     customPricePresetList: Preset[];
     createPricePreset: Function;
@@ -44,7 +48,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
 
     React.useEffect(() => {
         if(!props.livePaywallInfos) {
-            props.getLivePaywallInfos()
+            props.getLivePaywallInfos(liveId)
         }
         if(!props.groupsInfos) {
             props.getGroupsInfos()
@@ -53,7 +57,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             props.getPaywallThemes()
         }
         if(!props.globalPresets) {
-            props.getPresetsInfo()
+            props.getPresetsInfo('page=1&per-page=100')
         }
     }, [])
 
@@ -67,20 +71,23 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 id: 'custom',
                 name: 'Custom Preset',
                 type: 'Pay Per View',
-                price: [
+                prices: [
                     
                     {
-                        amount: NaN,
+                        value: NaN,
                         currency: 'USD'
                     }
                     
                 ],
-                duration: {amount: NaN, type: 'Hours'},
-                recurrence: 'Weekly',
-                startMethod: 'Upon Purchase',
-                timezone: null,
-                startDate: null,
-                startTime: '00:00'
+                settings: {
+                    duration: {value: NaN, unit: 'Hours'},
+                    recurrence: {recurrence: 'Weekly'},
+                    startMethod: 'Upon Purchase',
+                    timezone: null,
+                    startDate: null,
+                    startTime: '00:00'
+                }
+
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
@@ -96,15 +103,37 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once'
             }
-            setCustomPricePresetList([...props.globalPresets.presets, customPricePreset])
-            setCustomPromoPresetList([...props.globalPresets.promos, customPromoPreset])
+            let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
+            let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
+            setCustomPricePresetList([...globalPricePresets, customPricePreset])
+            setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])
         }
     }, [props.globalPresets.presets, props.livePaywallInfos])
 
     return props.livePaywallInfos && props.groupsInfos && props.theming && customPricePresetList? 
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
-            <LivePaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+            <ContentPaywallPage
+                contentId={liveId}
+                contentPaywallInfos={props.livePaywallInfos}
+                saveContentPaywallInfos={props.saveLivePaywallInfos}
+                getContentPrices={props.getLivePaywallPrices}
+                createContentPricePreset={props.createLivePricePreset}
+                saveContentPricePreset={props.saveLivePricePreset}
+                deleteContentPricePreset={props.deleteLivePricePreset}
+                getContentPromos={props.getLivePaywallPromos}
+                createContentPromoPreset={props.createLivePromoPreset}
+                saveContentPromoPreset={props.saveLivePromoPreset}
+                deleteContentPromoPreset={props.deleteLivePromoPreset}
+                groupsInfos={props.groupsInfos}
+                theming={props.theming}
+                globalPresets={props.globalPresets}
+                customPricePresetList={customPricePresetList} 
+                customPromoPresetList={customPromoPresetList}     
+                createPricePreset={props.createPricePreset}
+                createPromoPreset={props.createPromoPreset}
+                showToast={props.showToast}
+            />        
         </div>
         : <><LiveTabs liveId={liveId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
@@ -120,11 +149,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLivePaywallInfos: () => {
-            dispatch(getLivePaywallInfosAction());
+        getLivePaywallInfos: (liveId: string) => {
+            dispatch(getLivePaywallInfosAction(liveId));
         },
-        saveLivePaywallInfos: (data: LivePaywallPageInfos) => {
+        saveLivePaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(saveLivePaywallInfosAction(data));
+        },
+        getLivePaywallPrices: (liveId: string) => {
+            dispatch(getLivePaywallPricesAction(liveId));
         },
         createLivePricePreset: (data: Preset) => {
             dispatch(createLivePricePresetAction(data));
@@ -135,8 +167,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteLivePricePreset: (data: Preset) => {
             dispatch(deleteLivePricePresetAction(data));
         },
-        createLivePromoPreset: (data: Promo) => {
-            dispatch(createLivePromoPresetAction(data));
+        getLivePaywallPromos: () => {
+            dispatch(getLivePaywallPromosAction());
+        },
+        createLivePromoPreset: (data: Promo, liveId: string) => {
+            dispatch(createLivePromoPresetAction(data, liveId));
         },
         saveLivePromoPreset: (data: Promo) => {
             dispatch(saveLivePromoPresetAction(data));
@@ -145,13 +180,13 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(deleteLivePromoPresetAction(data));
         },
         getGroupsInfos: () => {
-            dispatch(getGroupsInfosAction());
+            dispatch(getGroupPricesAction());
         },
         getPaywallThemes: () => {
             dispatch(getPaywallThemesAction())
         },
-        getPresetsInfo: () => {
-            dispatch(getPresetsInfosAction())
+        getPresetsInfo: (qs: string) => {
+            dispatch(getPricePresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

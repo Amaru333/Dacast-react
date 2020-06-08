@@ -8,6 +8,7 @@ import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
 export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Function; dates: any} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>(props.dates ? props.dates : {startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')
@@ -16,6 +17,11 @@ export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Functio
         props.callBack ? props.callBack(dates) : null;
     }, [dates])
 
+    React.useEffect(() => {
+        if(props.dates.startDate || props.dates.endDate) {
+            setDates(props.dates)
+        }
+    }, [props.dates])
     const {presets,  ...other} = props;
 
     const renderDatePresets = () => {    
@@ -40,9 +46,12 @@ export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Functio
             : null;
     }
 
+    console.log(dates);
+
     return (
         <div className='noTransition' {...other}>
             <DateRangePicker 
+                disabled={props.disabled}
                 isOutsideRange={() => false} 
                 isDayHighlighted= {() => false}
                 navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}

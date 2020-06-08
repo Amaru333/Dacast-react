@@ -11,7 +11,7 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import {  useEasyOutsideAlerter, tsToLocaleDate, useMedia } from '../../../utils/utils'
+import { tsToLocaleDate, useMedia } from '../../../utils/utils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -20,19 +20,21 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../component
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../Playlist/List/BulkModals'
 import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
-import { Badge } from '../../../components/Badge/Badge'
 import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/folderService'
 import { useHistory } from 'react-router'
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
+import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
     let smallScreen = useMedia('(max-width: 40em)')
     let history = useHistory()
 
-    
+    React.useEffect(() => {
+        console.log('folders list', props.folderData)
+    })
 
     const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false)
@@ -96,9 +98,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             returnedString += `&folders=${currentFolder.id}`
         }
 
-        if(selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') {
-            returnedString += `&content-types=channel,vod,playlist`
-        } else {
+        if((selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') && returnedString.indexOf('content-types') === -1) {
             returnedString += `&content-types=channel,vod,playlist,folder`
         }
         if(selectedFolder === 'Unsorted') {
@@ -186,7 +186,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         }
                     />
                 },
-                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Name</Text>, sort: 'title' },
+                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Title</Text>, sort: 'title' },
                 { cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text> },
                 { cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'created-at' },
                 { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text> },
@@ -442,7 +442,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
+                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
                 </div>
                 <div className='col-12 col mb2 clearfix'>
                     <div className='col-3 col pr1'>
@@ -491,8 +491,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={foldersContentTableHeader()} body={foldersContentTableBody()} hasContainer />
-                    <Pagination totalResults={props.folderData.requestedContent.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >

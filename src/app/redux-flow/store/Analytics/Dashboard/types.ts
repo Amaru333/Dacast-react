@@ -16,6 +16,7 @@ export interface GetAnalyticsDashboardOptions {
 export interface AnalyticsDashboardConsumptionPerTime {
     time: number[];
     data: number[];
+    failed?: boolean;
 };
 
 export interface AnalyticsDashboardPlaysViewersPerTime {
@@ -27,15 +28,18 @@ export interface AnalyticsDashboardPlaysViewersPerTime {
         time: number[];
         data: number[];
     };
+    failed?: boolean;
 };
 
 export interface AnalyticsDashboardConsumptionPerDevice {
     labels: string[];
     data: number[];
+    failed?: boolean;
 };
 
 export interface AnalyticsDashboardTopContents {
     data: TopContentData[];
+    failed?: boolean;
 };
 
 export interface AnalyticsDashboardConsumptionPerLocation {
@@ -47,6 +51,7 @@ export interface AnalyticsDashboardConsumptionPerLocation {
         };
         consumedMB: number;
     }[];
+    failed?: boolean;
 };
 
 

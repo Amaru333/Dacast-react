@@ -11,6 +11,7 @@ import { Preset, Promo } from '../../../redux-flow/store/Paywall/Presets';
 import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { Pagination } from '../../../../components/Pagination/Pagination';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -18,6 +19,20 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetsModalOpened, setPromoPresetsModalOpened] = React.useState<boolean>(false);
     const [selectedPreset, setSelectedPreset] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
+    const [pricePresetPaginationInfo, setPricePresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+
+    React.useEffect(() => {
+        if(pricePresetPaginationInfo.nbResults && pricePresetPaginationInfo.page) {
+            props.getPresetsInfos(`per-page=${pricePresetPaginationInfo.nbResults}&page=${pricePresetPaginationInfo.page}`)
+        }
+    }, [pricePresetPaginationInfo])
+
+    React.useEffect(() => {
+        if(promoPresetPaginationInfo.nbResults && promoPresetPaginationInfo.page) {
+            props.getPromoPresets(`per-page=${promoPresetPaginationInfo.nbResults}&page=${promoPresetPaginationInfo.page}`)
+        }
+    }, [promoPresetPaginationInfo])
 
     const pricePresetsTableHeader = () => {
         return {data: [
@@ -33,15 +48,15 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const pricePresetsTableBody = () => {
-        if(props.presetsInfos.presets) {
-            return props.presetsInfos.presets.map((preset, key) => {
+        if(props.presetsInfos.presets && props.presetsInfos.presets.prices) {
+            return props.presetsInfos.presets.prices.map((preset, key) => {
                 return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.type}</Text>,
-                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.price[0].amount}</Text>,
-                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.price[0].currency}</Text>,
-                    <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.recurrence ? preset.recurrence : preset.duration.amount + ' ' + preset.duration.type}</Text>,
-                    <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.startMethod}</Text>,
+                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : 0}</Text>,
+                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : 'USD'}</Text>,
+                    <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence.recurrence ? preset.settings.recurrence.recurrence : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
+                    <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltip" + preset.id}>
                             <IconStyle onClick={() =>  {props.deletePricePreset(preset)}}>delete</IconStyle>
@@ -70,8 +85,8 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const promoPresetsTableBody = () => {
-        if(props.presetsInfos.promos) {
-            return props.presetsInfos.promos.map((promo, key) => {
+        if(props.presetsInfos.promos && props.presetsInfos.promos.promos) {
+            return props.presetsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
@@ -125,11 +140,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
-                {props.presetsInfos.presets.length === 0 ? 
+                {props.presetsInfos.presets.totalItems === 0 ? 
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
-                    <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
-                   
+                    <>
+                        <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
+                        <Pagination totalResults={props.presetsInfos.presets.prices ? props.presetsInfos.presets.totalItems : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPricePresetPaginationInfo({page:page,nbResults:nbResults})}} />
+
+                   </>
                 }
                 <BorderStyle className='my2' />
 
@@ -140,10 +158,13 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
-                { props.presetsInfos.promos.length === 0 ?
+                { props.presetsInfos.promos.totalItems === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
-                    <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                    <>
+                        <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
+                        <Pagination totalResults={props.presetsInfos.promos.promos ? props.presetsInfos.promos.totalItems : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPromoPresetPaginationInfo({page:page,nbResults:nbResults})}} />
+                    </>
                 }
                 
             </Card>

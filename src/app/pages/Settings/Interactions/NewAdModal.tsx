@@ -41,7 +41,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
             <div className='my1 col col-12 flex'>
                 <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, "ad-type": value.toLocaleLowerCase()})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] ? adData["ad-type"] : 'Pre-roll'} /> 
                 {
-                    adData["ad-type"] === 'Mid-roll' ?
+                    adData["ad-type"] === 'mid-roll' ?
                         <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})}  />
                         : null
                 }             

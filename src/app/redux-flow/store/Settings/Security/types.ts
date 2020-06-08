@@ -12,6 +12,22 @@ export enum ActionTypes {
 
 }
 
+export const defaultGeoRestriction: GeoRestriction = {
+    id: '-1',
+    name: 'All Countries',
+    isDefault: true,
+    values: [],
+    restrictionType: 'geo-restriction'
+}
+
+export const defaultDomainControl: DomainControl = {
+    id: '-1',
+    name: 'All Referrers',
+    isDefault: true,
+    values: [],
+    restrictionType: 'domain-restriction'
+}
+
 
 export interface GeoRestriction {
     id: string;

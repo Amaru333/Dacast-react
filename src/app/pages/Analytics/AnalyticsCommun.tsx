@@ -11,16 +11,22 @@ import { GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/D
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
+import ReactTable from 'react-table';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 
 
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean}) => {
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: {data: any; columns: any}; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
+
+
+    console.log(props.data);
 
     const exportCsvAnalytics = (data: any) => {
-        CsvService.exportToCsv(props.dataName+".csv", Object.values(data));
+        CsvService.exportToCsv(props.dataName + ".csv", Object.values(data));
     };
+
+    const [showTable, setShowTable] = React.useState<boolean>(false);
 
     return (
         <AnalyticsCardStyle className={props.className}>
@@ -33,20 +39,35 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { in
                         </ActionIcon>
                         <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip>
                     </div>
-                    { !props.realTime ? 
+                    {!props.realTime ?
                         <ActionIcon id={"download" + props.title}>
-                            <IconStyle onClick={() => {exportCsvAnalytics(props.data)} } >get_app</IconStyle>
+                            <IconStyle onClick={() => { exportCsvAnalytics(props.data) }} >get_app</IconStyle>
                         </ActionIcon>
-                        : null}   
+                        : null}
+                    {props.table && 
+                        <ActionIcon id={"table" + props.title}>
+                            <IconStyle onClick={() => { setShowTable(!showTable) }} >toc</IconStyle>
+                        </ActionIcon>
+                    }
+                    
+                    {showTable &&
+                        <ReactTable
+                            data={props.table.data}
+                            columns={props.table.columns}
+                            pageSizeOptions={[5, 10, 20, 25]}
+                            defaultPageSize={10} /> 
+                    }
+
                 </div>
-                <Tooltip target={"download" + props.title}>lorem ipsum</Tooltip>
+                <Tooltip target={"download" + props.title}>Download csv</Tooltip>
+                <Tooltip target={"table" + props.title}>Show table</Tooltip>
             </AnalyticsCardHeader>
             {props.children}
         </AnalyticsCardStyle>
     )
 }
 
-export const AnalyticsCardStyle = styled(Card)<{}>`
+export const AnalyticsCardStyle = styled(Card) <{}>`
     padding: 16px !important;
     min-height: 273px;
 `
@@ -90,14 +111,57 @@ export const renderMap = (dataRepo: any, id: string) => {
     )
 }
 
-export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { refreshData: Function}) => {
-    
-    const [dates, setDates] = React.useState<{startDate: any; endDate: any}>({startDate: null, endDate: null})
+
+
+export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>) => {
+    if (props.hidden) {
+        return <></>
+    }
+
+    return (
+        <div className="col col-12 flex flex-column items-center">
+            <IconStyle className="mt2" coloricon="red" fontSize='large' >warning</IconStyle>
+            <Text size={16} weight="med" >Something went wrong</Text>
+            <Text size={16} weight="reg" >We are unable to display this report.</Text>
+        </div>
+    )
+}
+
+export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: { end: number; start: number }, refreshData: Function }) => {
+
+    const [dates, setDates] = React.useState<{ start: any; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
+
+    const renderDatePresets = () => {
+        return presets ? (
+            <div>
+                {presets.map(({ text, start, end }) => {
+                    return (
+                        <Button
+                            key={text}
+                            className='ml1 mb2'
+                            typeButton='secondary'
+                            buttonColor='blue'
+                            sizeButton='small'
+                            onClick={() => setDates({ start, end })}
+                        >
+                            {text}
+                        </Button>
+                    );
+                })}
+            </div>
+        )
+            : null;
+    }
+
+    React.useEffect(() => {
+        console.log(dates);
+    }, [dates])
 
     return (
         <div className="col col-12 mb25 clearfix">
-            <DateRangePickerWrapper callBack={(dates: GetAnalyticsDashboardOptions) => setDates(dates)} className="inline" presets={presets} />
-            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker(dates))} className="ml2" color="blue">Apply</Button>
+            {renderDatePresets()}
+            <DateRangePickerWrapper disabled dates={{ startDate: dates.start, endDate: dates.end }} className="inline" presets={presets} />
+            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )
 }

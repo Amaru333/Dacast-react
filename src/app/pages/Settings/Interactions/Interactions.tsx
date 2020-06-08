@@ -23,6 +23,7 @@ import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/Compan
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -72,6 +73,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }, [props.interactionsInfos])
 
     const advertisingTableHeader = () => {
+        if(props.interactionsInfos.ads.length > 0){
         return {data: [
             {cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text>},
             {cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text>},
@@ -80,7 +82,13 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => {setPlayerModalOpened(true)}}>Preview</Button>
                 <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
             </div>}
-        ]}
+        ]}} else {
+            return {data: [
+                {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+                    <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
+                </div>}
+            ]}
+        }
     }
 
     const advertisingTableBody = () => {
@@ -104,19 +112,35 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
 
     const mailCatcherTableHeader = () => {
+        if(props.interactionsInfos.mailCatcher.length > 0){
         return {data: [
             {cell: <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text>},
             {cell: <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text>},
             {cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>}
         ]}
-    }
+    } else {
+        return {data: [
+            {cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>}
+        ]}
+    }}
 
     const mailCatcherTableBody = () => {
         return props.interactionsInfos.mailCatcher.map((row, i) => {
             return {data: [
                 <Text key={row.type + i.toString()} size={14}  weight="reg" color="gray-1">{row.type}</Text>,
                 row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
-                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}><IconStyle onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle><IconStyle onClick={() => editMailCatcher(row)}>edit</IconStyle> </IconContainer>
+                <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableCopy' + i} onClick={() => {props.deleteMailCatcher(row)}} >delete</IconStyle>
+                        <Tooltip target={'mailTableCopy' + i}>Delete</Tooltip>
+                    </ActionIcon>
+                    <ActionIcon>
+                        <IconStyle id={'mailTableEdit' + i} onClick={() => editMailCatcher(row)}>edit</IconStyle>
+                        <Tooltip target={'mailTableEdit' + i}>Edit</Tooltip>
+                    </ActionIcon>
+                    
+                    
+                </IconContainer>
             
             ]}
         })
@@ -143,27 +167,27 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                     <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
                 </div>
-                <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising") } />
                         
             </Card>}
-
+{/* 
             <Card className='my2'>
                 <TextStyle> <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
-                <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                <Text className="py2" size={14} weight='reg' color='gray-3'>Prompts viewers to provide their email address before viewing your content and store them wherever you create an integration.</Text>
                 <div className='flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help creating Email Catcher? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                {/* <div className='my2'>   
+                <div className='my2'>   
                     <Button typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault();setMailCatcherModalOpened(true)}}>Add Mail Catcher</Button>
-                </div> */}
+                </div>
                 <Button className='xs-show col col-12' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newMailCatcher()}}>Add Email Catcher</Button>
-                <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={mailCatcherTableBody()} />
-            </Card>
+                <Table id='mailCatcherTable' headerBackgroundColor="gray-10" header={mailCatcherTableHeader()} body={props.interactionsInfos.mailCatcher.length > 0 ? mailCatcherTableBody() : emptyContentListBody("Add a Mail Catcher") } />
+            </Card> */}
 
             <Card className="my2">
                 <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>
-                <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the player.</Text>
+                <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
             
             
                 <div className="lg-col lg-col-12 mb1 flex">
@@ -198,9 +222,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </div>
                     <div className="col col-6">
                         <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false}} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageSize: parseInt(event.currentTarget.value)})} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value)})}  />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageLink: event.currentTarget.value})}  />
+                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize && props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageSize: parseInt(event.currentTarget.value)})} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding && props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value)})}  />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink && props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({...interactionInfos, brandImageLink: event.currentTarget.value})}  />
                     </div>
                 </div>
                 
@@ -208,7 +232,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
             <Card className='my2'>
                 <TextStyle className="pb2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
-                <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                 <div className='clearfix mb2'>
                     <Input 
                         disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
@@ -227,7 +251,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
             <Card className='my2'>
                 <Text className="pb2" size={20} weight='med'>End Screen Text</Text>
-                <Text className="inline-block mb2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                <Text className="inline-block mb2" size={14} weight='reg' color='gray-3'>This will be displayed when the content ends.</Text>
                 <div className='clearfix mb2'>
                     <Input 
                         className='xs-no-gutter pr1 col col-12 md-col-8' 

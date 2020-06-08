@@ -5,7 +5,7 @@ const resolveAfter2Seconds = () => {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve('resolved');
-        }, 3000);
+        }, 6000);
     });
 }
 
@@ -23,7 +23,7 @@ export const loopUntilCompleted = async (url: string, token: string) => {
             keepLooping = false
         })
 
-        if (response.data.data.status === "completed" || response.status >= 400) {
+        if (response.data.data.status === "completed" || response.status >= 400 || response.data.data.data) {
             keepLooping = false
         } else {
             await resolveAfter2Seconds();

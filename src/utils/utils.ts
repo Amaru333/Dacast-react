@@ -128,22 +128,21 @@ export function displayTimeForHumans(seconds: number) {
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
 }
 
-export function displayBytesForHumans(mbAmount: number, fromGB = false) {
-    //amount in MB
-    let units = ['MB', 'GB', 'TB'];
-    if (fromGB) {
-        units.shift()
+export function displayBytesForHumans(mbAmount: number, decimals = 2, fromAnalytics = false) {
+    if(fromAnalytics) {
+        var bytes = mbAmount * 1000000000;
+    } else {
+        var bytes = mbAmount * 1000000;
     }
-    let i = 0;
+    if (bytes === 0) return '0 Bytes';
 
-    while (units[i] !== undefined) {
-        if (mbAmount < 1000) {
-            return roundTo2decimals(mbAmount) + ' ' + units[i];
-        }
-        mbAmount /= 1000;
-        i++;
-    }
-    return roundTo2decimals(mbAmount * 1000) + ' ' + units[units.length - 1]
+    const k = 1000;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
 /**

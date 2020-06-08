@@ -196,7 +196,6 @@ export const AppRoutes: Routes[] = [
         name: 'Paywall',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodPaywall,
         associatePrivilege: 'privilege-paywall'
@@ -447,11 +446,11 @@ export const AppRoutes: Routes[] = [
                 name: 'Billing',
                 component: Billing
             },
-            {
-                path: '/account/pending-orders',
-                name: 'Pending Orders',
-                component: PendingOrders
-            },
+            // {
+            //     path: '/account/pending-orders',
+            //     name: 'Pending Orders',
+            //     component: PendingOrders
+            // },
             {
                 path: '/account/invoices',
                 name: 'Invoices',

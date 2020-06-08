@@ -28,12 +28,13 @@ export interface GetAnalyticsRealtimeJobIds {
     payload:  {data: any};
 }
 
-export const getAnalyticsRealTimeJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsRealtimeJobIds> => {
+export const getAnalyticsRealTimeJobIdsAction = (options?: any): ThunkDispatch<Promise<void>, {}, GetAnalyticsRealtimeJobIds> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRealtimeJobIds> ) => {
-        await AnalyticsRealTimeServices.getAnalyticsRealTimeJobIds()
+        await AnalyticsRealTimeServices.getAnalyticsRealTimeJobIds(options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_JOB_IDS, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_JOB_IDS, payload: {data: {failed: true}}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -45,6 +46,7 @@ export const getAnalyticsRealTimeViewersTimesAction = (jobId: string, options?: 
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_VIEWERS_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_VIEWERS_TIME, payload: {data: {time: [], data: [], failed: true}}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -56,6 +58,7 @@ export const getAnalyticsRealTimePlaybackTimeAction = (jobId: string, options?: 
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_PLAYBACK_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_PLAYBACK_TIME, payload: { data : {time: [], data: [], failed: true} } } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -67,6 +70,7 @@ export const getAnalyticsRealTimeGbTimeAction = (jobId: string, options?:  GetAn
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_GB_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_GB_TIME, payload: { data : {time: [], data: [], failed: true} }  } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -79,6 +83,7 @@ export const getAnalyticsRealTimeConsumptionLocationAction = (jobId: string, opt
                 console.log(response);
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME_CONSUMPTION_LOCATION, payload: {map: [], failed: true}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

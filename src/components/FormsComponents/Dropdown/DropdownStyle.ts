@@ -132,13 +132,6 @@ export const DropdownItemText = styled(Text)`
     padding-top: 4px;
 `
 
-export const ContinentContainer = styled.div<{isDisplayed: boolean}>`
-    display: flex;
-    ${props => props.isDisplayed && css`
-        display: none;
-    `}
-`
-
 export const ButtonIconStyle = styled.div<{}>`
     color: ${props => props.theme.colors['gray-3']};
     width: 8px;

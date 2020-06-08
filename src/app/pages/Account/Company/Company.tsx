@@ -26,6 +26,7 @@ interface CompanyComponentProps {
     getLogoUrlForUploading: Function;
     uploadCompanyLogo: Function;
     deleteCompanyLogo: Function;
+    showToast: Function;
 }
 
 export const CompanyPage = (props: CompanyComponentProps) => {
@@ -127,7 +128,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         <CompanyPageContainer>
             <Card className='clearfix p2'>
                 <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
-                <div className="m1"><Text size={14} weight='reg'>This will be displayed in the navigation on your account.</Text></div>
+                <div className="m1"><Text size={14} weight='reg'>This logo will display on your invoices.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
@@ -192,9 +193,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="accountName" 
-                            label="Account Name" 
+                            label="Contact Name" 
                             placeholder="Account Name"
                             {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
+                            help="The name of the primary contact for the account"
                         />
                         <Input 
                             disabled={false}
@@ -206,6 +208,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             placeholder="Business Name"
                             indicationLabel='Optional'
                             name="businessName" ref={register()}
+                            help="The legal business name for use on invoices, etc."
                         />
                     </div>
                     <div className="md-col md-col-12" >
@@ -325,7 +328,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <ButtonsArea> 
                         <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
-                            onClick={() => reset(props.CompanyPageDetails, {errors: true})}>Discard</Button>
+                            onClick={() => {reset(props.CompanyPageDetails, {errors: true});props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonsArea> : null
             }     
             <Prompt when={dirty} message='' />     

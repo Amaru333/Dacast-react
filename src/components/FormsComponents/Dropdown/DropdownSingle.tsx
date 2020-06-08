@@ -13,7 +13,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>('Select');
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.defaultSelected ? props.defaultSelected : 'Select');
     const [itemsList, setItemsList] = React.useState<DropdownListType>(props.list);
     const [filteringList, setFilteringList] = React.useState<string>('');
 

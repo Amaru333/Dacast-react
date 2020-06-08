@@ -8,6 +8,7 @@ import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types'
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { GetAnalyticsViewershipOptions, AnalyticsViewershipState, getAnalyticsViewershipPlaysViewersTimeAction, getAnalyticsViewershipConsumptionDeviceAction, getAnalyticsViewershipConsumptionDomainAction, getAnalyticsViewershipConcurrentPlaybackAction, getAnalyticsViewershipConsumptionBreakdownTimeAction, getAnalyticsViewershipConsumptionBreakdownContentAction, getAnalyticsViewershipConsumptionBreakdownMapAction, getAnalyticsViewershipJobIdsAction, getAnalyticsViewershipViewingTimeDeviceAction, getAnalyticsViewershipViewingTimeContentAction, getAnalyticsViewershipViewingTimeMapAction, getAnalyticsViewershipConcurrentPlaybackDeviceAction, getAnalyticsViewershipConcurrentPlaybackContentAction, getAnalyticsViewershipConcurrentPlaybackMapAction } from '../../redux-flow/store/Analytics/Viewership';
+import moment from 'moment';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -40,7 +41,7 @@ const Viewership = (props: ViewershipComponentProps) => {
 
     React.useEffect(() => {
         if(!props.viewershipAnalytics.jobIds) {
-            props.getAnalyticsViewershipJobIds()
+            props.getAnalyticsViewershipJobIds({ end: Math.round(moment() / 1000), start: Math.round(moment().startOf('day') / 1000) })
         }
         
         if(!props.folderData) {
@@ -54,42 +55,48 @@ const Viewership = (props: ViewershipComponentProps) => {
     React.useEffect(() => {
         console.log("reset by jobIds")
         if(props.jobIds && props.jobIds !== null) {
-            if(!props.viewershipAnalytics.data.consumptionBreakdown.content) {
-                props.getAnalyticsViewershipConsumptionBreakdownContent(null, props.viewershipAnalytics.jobIds.consumptionPerContent.jobID);
-            }
             if(!props.viewershipAnalytics.data.consumptionBreakdown.map) {
                 props.getAnalyticsViewershipConsumptionBreakdownMap(null, props.viewershipAnalytics.jobIds.consumptionPerLocation.jobID);
             }
-            if(!props.viewershipAnalytics.data.consumptionBreakdown.time) {
-                props.getAnalyticsViewershipConsumptionBreakdownTime(null, props.viewershipAnalytics.jobIds.consumptionPerTime.jobID);
-            }
-            if(!props.viewershipAnalytics.data.concurrentPlayback.content) {
-                props.getAnalyticsViewershipConcurrentPlaybackContent(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerContent.jobID);
-            }
-            if(!props.viewershipAnalytics.data.concurrentPlayback.device) {
-                props.getAnalyticsViewershipConcurrentPlaybackDevice(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerDevice.jobID);
-            }
-            if(!props.viewershipAnalytics.data.concurrentPlayback.map) {
-                props.getAnalyticsViewershipConcurrentPlaybackMap(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerLocation.jobID);
-            }
-            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.device) {
-                props.getAnalyticsViewershipViewingTimeDevice(null, props.viewershipAnalytics.jobIds.viewingTimePerDevice.jobID);
-            }
-            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.content) {
-                props.getAnalyticsViewershipViewingTimeContent(null, props.viewershipAnalytics.jobIds.viewingTimePerContent.jobID);
-            }
-            if(!props.viewershipAnalytics.data.viewingTimeBreakdown.map) {
-                props.getAnalyticsViewershipViewingTimeMap(null, props.viewershipAnalytics.jobIds.viewingTimePerLocation.jobID);
-            }
-            if(!props.viewershipAnalytics.data.consumptionPerDomain) {
-                props.getAnalyticsViewershipConsumptionDomain(null, props.viewershipAnalytics.jobIds.consumptionPerDomain.jobID);
-            }
+                
             if(!props.viewershipAnalytics.data.consumptionPerDevices) {
                 props.getAnalyticsViewershipConsumptionDevice(null, props.viewershipAnalytics.jobIds.consumptionPerDevice.jobID);
             }
-            if(!props.viewershipAnalytics.data.playsViewersPerTime) {
-                props.getAnalyticsViewershipPlaysViewersTime(null, props.viewershipAnalytics.jobIds.playsViewersPerTime.jobID);
-            }    
+
+            // PART OF ANALYTICS PART 2 TO REWORK
+            //
+            // if(!props.viewershipAnalytics.data.consumptionBreakdown.content) {
+            //     props.getAnalyticsViewershipConsumptionBreakdownContent(null, props.viewershipAnalytics.jobIds.consumptionPerContent.jobID);
+            // }
+            
+            // if(!props.viewershipAnalytics.data.consumptionBreakdown.time) {
+            //     props.getAnalyticsViewershipConsumptionBreakdownTime(null, props.viewershipAnalytics.jobIds.consumptionPerTime.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.concurrentPlayback.content) {
+            //     props.getAnalyticsViewershipConcurrentPlaybackContent(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerContent.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.concurrentPlayback.device) {
+            //     props.getAnalyticsViewershipConcurrentPlaybackDevice(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerDevice.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.concurrentPlayback.map) {
+            //     props.getAnalyticsViewershipConcurrentPlaybackMap(null, props.viewershipAnalytics.jobIds.concurrentPlaybackPerLocation.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.viewingTimeBreakdown.device) {
+            //     props.getAnalyticsViewershipViewingTimeDevice(null, props.viewershipAnalytics.jobIds.viewingTimePerDevice.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.viewingTimeBreakdown.content) {
+            //     props.getAnalyticsViewershipViewingTimeContent(null, props.viewershipAnalytics.jobIds.viewingTimePerContent.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.viewingTimeBreakdown.map) {
+            //     props.getAnalyticsViewershipViewingTimeMap(null, props.viewershipAnalytics.jobIds.viewingTimePerLocation.jobID);
+            // }
+            // if(!props.viewershipAnalytics.data.consumptionPerDomain) {
+            //     props.getAnalyticsViewershipConsumptionDomain(null, props.viewershipAnalytics.jobIds.consumptionPerDomain.jobID);
+            // }
+            
+            // if(!props.viewershipAnalytics.data.playsViewersPerTime) {
+            //     props.getAnalyticsViewershipPlaysViewersTime(null, props.viewershipAnalytics.jobIds.playsViewersPerTime.jobID);
+            // }    
         }
         
     }, [props.jobIds])
@@ -119,8 +126,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
         },
-        getAnalyticsViewershipJobIds: () => {
-            dispatch(getAnalyticsViewershipJobIdsAction())
+        getAnalyticsViewershipJobIds: (options?: GetAnalyticsViewershipOptions) => {
+            dispatch(getAnalyticsViewershipJobIdsAction(options))
         },
         getAnalyticsViewershipViewingTimeDevice: (dates: GetAnalyticsViewershipOptions, jobId: string) => {
             dispatch(getAnalyticsViewershipViewingTimeDeviceAction(jobId, dates));

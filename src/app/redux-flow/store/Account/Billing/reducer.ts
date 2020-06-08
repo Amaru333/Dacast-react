@@ -7,7 +7,7 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
     switch (action.type) {
         case ActionTypes.GET_BILLING_PAGE_INFOS:
             return {...state, 
-                ...action.payload
+                ...action.payload.data
             }
         case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
             return {...state,

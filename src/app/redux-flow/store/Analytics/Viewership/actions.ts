@@ -7,68 +7,81 @@ import { showToastNotification } from '../../Toasts';
 export interface GetAnalyticsViewershipJobIds {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS;
     payload:  {data: ViewershipJobIDs};
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipConcurrentPlaybackDevice {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_DEVICE;
     payload: AnalyticsViewershipConcurrentPlayback;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipConcurrentPlaybackContent {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT;
     payload: AnalyticsViewershipConcurrentPlayback;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipConcurrentPlaybackMap {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_MAP;
     payload: AnalyticsViewershipConcurrentPlayback;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipConsumptionBreakdownTime {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_TIME;
     payload: AnalyticsViewershipConsumptionBreakdown;
+    failed?: boolean;
 }
 export interface GetAnalyticsViewershipConsumptionBreakdownContent {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_CONTENT;
     payload: AnalyticsViewershipConsumptionBreakdown;
+    failed?: boolean;
 }
 export interface GetAnalyticsViewershipConsumptionBreakdownMap {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_MAP;
     payload: AnalyticsViewershipConsumptionBreakdown;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipViewingTimeDevice {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_DEVICE;
     payload: AnalyticsViewershipViewingTimeBreakdown;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipViewingTimeContent {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_CONTENT;
     payload: AnalyticsViewershipViewingTimeBreakdown;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipViewingTimeMap {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_MAP;
     payload: AnalyticsViewershipViewingTimeBreakdown;
+    failed?: boolean;
 }
 
 export interface GetAnalyticsViewershipConsumptionDomain {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DOMAIN;
     payload: AnalyticsViewershipConsumptionDomain | false;
+    failed?: boolean;
 }
 export interface GetAnalyticsViewershipConsumptionDevice {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DEVICE;
     payload: AnalyticsViewershipConsumptionDevices;
+    failed?: boolean;
 }
 export interface GetAnalyticsViewershipPlaysViewersTime {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_PLAYS_VIEWERS_TIME;
     payload: AnalyticsViewershipPlaysViewersTime;
+    failed?: boolean;
 }
 
 
-export const getAnalyticsViewershipJobIdsAction = (): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipJobIds> => {
+export const getAnalyticsViewershipJobIdsAction = (options?: GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewershipJobIds> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsViewershipJobIds> ) => {
-        await AnalyticsViewershipServices.getAnalyticsViewershipJobIds()
+        await AnalyticsViewershipServices.getAnalyticsViewershipJobIds(options)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_JOB_IDS, payload: response.data} );
             }).catch(() => {
@@ -83,6 +96,7 @@ export const getAnalyticsViewershipViewingTimeContentAction = (jobId: string, op
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_CONTENT, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_CONTENT, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -94,6 +108,7 @@ export const getAnalyticsViewershipViewingTimeDeviceAction = (jobId: string, opt
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_DEVICE, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_DEVICE, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -105,6 +120,7 @@ export const getAnalyticsViewershipViewingTimeMapAction = (jobId: string, option
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_MAP, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_VIEWING_TIME_BREAKDOWN_MAP, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -116,6 +132,7 @@ export const getAnalyticsViewershipConcurrentPlaybackDeviceAction = (jobId: stri
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_DEVICE, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_DEVICE, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -127,6 +144,7 @@ export const getAnalyticsViewershipConcurrentPlaybackContentAction = (jobId: str
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_CONTENT, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -138,6 +156,7 @@ export const getAnalyticsViewershipConcurrentPlaybackMapAction = (jobId: string,
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_MAP, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONCURRENT_PLAYBACK_MAP, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -150,6 +169,7 @@ export const getAnalyticsViewershipConsumptionBreakdownTimeAction = (jobId: stri
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_TIME, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -161,6 +181,7 @@ export const getAnalyticsViewershipConsumptionBreakdownContentAction = (jobId: s
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_CONTENT, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_CONTENT, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -172,6 +193,7 @@ export const getAnalyticsViewershipConsumptionBreakdownMapAction = (jobId: strin
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_MAP, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_BREAKDOWN_MAP, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -182,6 +204,7 @@ export const getAnalyticsViewershipPlaysViewersTimeAction = (jobId: string, opti
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_PLAYS_VIEWERS_TIME, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_PLAYS_VIEWERS_TIME, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -193,6 +216,7 @@ export const getAnalyticsViewershipConsumptionDeviceAction = (jobId: string, opt
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DEVICE, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DEVICE, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -204,6 +228,7 @@ export const getAnalyticsViewershipConsumptionDomainAction = (jobId: string, opt
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DOMAIN, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP_CONSUMPTION_DOMAIN, failed: true } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

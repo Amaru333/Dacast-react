@@ -1,31 +1,36 @@
 export enum ActionTypes {
-    GET_PRESETS_INFOS = "@@paywall_presets/GET_PRESETS_INFOS",
+    GET_PRICE_PRESETS_LIST = "@@paywall_presets/GET_PRICE_PRESETS_LIST",
+    GET_PROMO_PRESETS_LIST = "@@paywall_presets/GET_PROMO_PRESETS_LIST",
     CREATE_PRICE_PRESET = "@@paywall_presets/CREATE_PRICE_PRESET",
     SAVE_PRICE_PRESET = "@@paywall_presets/SAVE_PRICE_PRESET",
     DELETE_PRICE_PRESET = "@@paywall_presets/DELETE_PRICE_PRESET",
     CREATE_PROMO_PRESET = "@@paywall_presets/CREATE_PROMO_PRESET",
     SAVE_PROMO_PRESET = "@@paywall_presets/SAVE_PROMO_PRESET",
     DELETE_PROMO_PRESET = "@@paywall_presets/DELETE_PROMO_PRESET",
-
 }
 
 export interface Price {
-    amount: number;
+    value: number;
     currency: string;
+    description?: string;
 }
+
+export interface PriceSettings {
+    duration?: {value: number; unit: string};
+    recurrence?: {recurrence: string};
+    startMethod: string;
+    timezone?: string;
+    startDate?: Date;
+    startTime?: string;
+}
+
 
 export interface Preset {
     id: string;
     name: string;
     type: string;
-    price: Price[];
-    duration?: {amount: number; type: string};
-    recurrence?: string;
-    startMethod: string;
-    timezone?: string;
-    startDate?: Date;
-    startTime?: string;
-
+    prices: Price[];
+    settings: PriceSettings;
 }
 
 export interface Promo {
@@ -44,11 +49,27 @@ export interface Promo {
 }
 
 export interface PresetsPageInfos {
-    presets: Preset[];
-    promos: Promo[];
+    presets:{prices: Preset[]; totalItems: number};
+    promos: {promos: Promo[]; totalItems: number};
 }
 
 export const presetsInitialState: PresetsPageInfos = {
-    presets: [],
-    promos: []
+    presets: null,
+    promos: null
+}
+
+export interface ContentPaywallPageInfos {
+    prices: Preset[];
+    promos: Promo[];
+    enabled: boolean;
+    introVodId: string;
+    selectedTheme: string;
+}
+
+export const contentPaywallInitialState: ContentPaywallPageInfos = {
+    prices: [],
+    promos: [],
+    enabled: false,
+    introVodId: '',
+    selectedTheme: null
 }

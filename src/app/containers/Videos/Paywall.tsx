@@ -1,27 +1,30 @@
 import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { connect, ReactReduxContext } from 'react-redux';
-import { VodPaywallPage } from '../../pages/Videos/Paywall/Paywall'
-import { Preset, Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, Promo, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, VodPaywallPageInfos, getVodPaywallInfosAction, saveVodPaywallInfosAction } from '../../redux-flow/store/VOD/Paywall';
+import { connect } from 'react-redux';
+import { Action, createVodPricePresetAction, saveVodPricePresetAction, deleteVodPricePresetAction, createVodPromoPresetAction, saveVodPromoPresetAction, deleteVodPromoPresetAction, getVodPaywallInfosAction, saveVodPaywallInfosAction, getVodPaywallPricesAction, getVodPaywallPromosAction } from '../../redux-flow/store/VOD/Paywall/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { GroupsPageInfos, getGroupsInfosAction } from '../../redux-flow/store/Paywall/Groups';
+import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { PresetsPageInfos, getPresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
 var moment = require('moment-timezone');
 
 export interface VodPaywallComponentProps {
-    vodPaywallInfos: VodPaywallPageInfos;
+    vodPaywallInfos: ContentPaywallPageInfos;
     getVodPaywallInfos: Function;
+    getVodPaywallPrices: Function;
     saveVodPaywallInfos: Function;
     createVodPricePreset: Function;
     saveVodPricePreset: Function;
     deleteVodPricePreset: Function;
+    getVodPaywallPromos: Function;
     createVodPromoPreset: Function;
     saveVodPromoPreset: Function;
     deleteVodPromoPreset: Function;
@@ -44,7 +47,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
 
     React.useEffect(() => {
         if(!props.vodPaywallInfos) {
-            props.getVodPaywallInfos()
+            props.getVodPaywallInfos(vodId)
         }
         if(!props.groupsInfos) {
             props.getGroupsInfos()
@@ -53,7 +56,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             props.getPaywallThemes()
         }
         if(!props.globalPresets) {
-            props.getPresetsInfo()
+            props.getPresetsInfo('page=1&per-page=100')
         }
     }, [])
 
@@ -67,20 +70,23 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 id: 'custom',
                 name: 'Custom Preset',
                 type: 'Pay Per View',
-                price: [
+                prices: [
                     
                     {
-                        amount: NaN,
+                        value: NaN,
                         currency: 'USD'
                     }
                     
                 ],
-                duration: {amount: NaN, type: 'Hours'},
-                recurrence: 'Weekly',
-                startMethod: 'Upon Purchase',
-                timezone: null,
-                startDate: null,
-                startTime: '00:00'
+                settings: {
+                    duration: {value: NaN, unit: 'Hours'},
+                    recurrence: {recurrence: 'Weekly'},
+                    startMethod: 'Upon Purchase',
+                    timezone: null,
+                    startDate: null,
+                    startTime: '00:00'
+                }
+
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
@@ -96,8 +102,10 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once'
             }
-            setCustomPricePresetList([...props.globalPresets.presets, customPricePreset])
-            setCustomPromoPresetList([...props.globalPresets.promos, customPromoPreset])
+            let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
+            let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
+            setCustomPricePresetList([...globalPricePresets, customPricePreset])
+            setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])
 
         }
     }, [props.globalPresets.presets, props.vodPaywallInfos])
@@ -105,7 +113,27 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
     return props.vodPaywallInfos && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
         <div className='flex flex-column'>
             <VideoTabs videoId={vodId} />
-            <VodPaywallPage {...props} customPricePresetList={customPricePresetList} customPromoPresetList={customPromoPresetList} />
+            <ContentPaywallPage
+                contentId={vodId}
+                contentPaywallInfos={props.vodPaywallInfos}
+                getContentPrices={props.getVodPaywallPrices}
+                saveContentPaywallInfos={props.saveVodPaywallInfos}
+                createContentPricePreset={props.createVodPricePreset}
+                saveContentPricePreset={props.saveVodPricePreset}
+                deleteContentPricePreset={props.deleteVodPricePreset}
+                getContentPromos={props.getVodPaywallPromos}
+                createContentPromoPreset={props.createVodPromoPreset}
+                saveContentPromoPreset={props.saveVodPromoPreset}
+                deleteContentPromoPreset={props.deleteVodPromoPreset}
+                groupsInfos={props.groupsInfos}
+                theming={props.theming}
+                globalPresets={props.globalPresets}
+                customPricePresetList={customPricePresetList} 
+                customPromoPresetList={customPromoPresetList}     
+                createPricePreset={props.createPricePreset}
+                createPromoPreset={props.createPromoPreset}
+                showToast={props.showToast}
+            />
         </div>
         : <><VideoTabs videoId={vodId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
@@ -121,10 +149,13 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodPaywallInfos: () => {
-            dispatch(getVodPaywallInfosAction());
+        getVodPaywallInfos: (vodId: string) => {
+            dispatch(getVodPaywallInfosAction(vodId));
         },
-        saveVodPaywallInfos: (data: VodPaywallPageInfos) => {
+        getVodPaywallPrices: (vodId: string) => {
+            dispatch(getVodPaywallPricesAction(vodId));
+        },
+        saveVodPaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(saveVodPaywallInfosAction(data));
         },
         createVodPricePreset: (data: Preset) => {
@@ -136,8 +167,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteVodPricePreset: (data: Preset) => {
             dispatch(deleteVodPricePresetAction(data));
         },
-        createVodPromoPreset: (data: Promo) => {
-            dispatch(createVodPromoPresetAction(data));
+        getVodPaywallPromos: () => {
+            dispatch(getVodPaywallPromosAction());
+        },
+        createVodPromoPreset: (data: Promo, vodId: string) => {
+            dispatch(createVodPromoPresetAction(data, vodId));
         },
         saveVodPromoPreset: (data: Promo) => {
             dispatch(saveVodPromoPresetAction(data));
@@ -146,13 +180,13 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(deleteVodPromoPresetAction(data));
         },
         getGroupsInfos: () => {
-            dispatch(getGroupsInfosAction());
+            dispatch(getGroupPricesAction());
         },
         getPaywallThemes: () => {
             dispatch(getPaywallThemesAction())
         },
-        getPresetsInfo: () => {
-            dispatch(getPresetsInfosAction())
+        getPresetsInfo: (qs: string) => {
+            dispatch(getPricePresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

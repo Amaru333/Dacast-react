@@ -17,6 +17,7 @@ export enum ActionTypes {
 export interface AnalyticsViewershipConsumptionDomain {
     domain: string[]; 
     value: number[];
+    failed?: boolean;
 }
 
 export interface ViewershipJobIDs {
@@ -86,16 +87,19 @@ export interface ViewershipJobIDs {
 export interface AnalyticsViewershipConsumptionDevices {
     labels: string[];
     data: number[];
+    failed?: boolean;
 }
 
 export interface AnalyticsViewershipConsumptionBreakdown {
     time: false | {
         time: number[];
         data: number[];
+        failed?: boolean;
     };
     content: false | {
         labels: string[];
         data: number[];
+        failed?: boolean;
     };
     map: false | {
         city: string;
@@ -116,12 +120,14 @@ export interface AnalyticsViewershipPlaysViewersTime {
         time: number[];
         data: number[];
     };
+    failed?: boolean;
 }
 
 export interface AnalyticsViewershipViewingTimeBreakdown {
     content: false |  {
         labels: string[];
         data: number[];
+        failed?: boolean;
     };
     map: false | {
         city: string;
@@ -132,6 +138,7 @@ export interface AnalyticsViewershipViewingTimeBreakdown {
         consumedMB: number;
     }[];
     device: false | {
+        failed?: boolean;
         labels: string[];
         data: number[];
     };

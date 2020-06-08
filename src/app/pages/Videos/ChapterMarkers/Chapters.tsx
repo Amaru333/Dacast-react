@@ -12,6 +12,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
 import { ChapterComponentProps } from '../../../containers/Videos/Chapters';
 import { addTokenToHeader } from '../../../utils/token';
+import { emptyContentListBody, emptyContentListHeader } from '../../../shared/List/emptyContentListState';
 
 
 export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => {
@@ -93,14 +94,27 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
                     </ButtonsArea>
                 </PlayerSection>
                 <TableContainer className='col col-12 md-col-6'>
-                    <Table id='chapterTable' headerBackgroundColor="white" header={tableHeaderElement()} body={chapterBodyElement()} />
+                    <Table id='chapterTable' headerBackgroundColor="white" header={props.chapterPageDetails.chapterMarkers.length > 0 ? tableHeaderElement() : emptyContentListHeader()} body={props.chapterPageDetails.chapterMarkers.length > 0 ? chapterBodyElement() : emptyContentListBody("Select positions in video to add as chapter markers")} />
                 </TableContainer>
  
             </ChaptersContainer>
-            <Modal hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} size='small' opened={chapterMarkerModalOpened}>
+            <Modal 
+                hasClose={false} 
+                modalTitle={(selectedItem ? 'Edit' : 'Add')  + ' Chapter'} 
+                toggle={() => setChapterMarkerModalOpened(!chapterMarkerModalOpened)} 
+                size='small' 
+                opened={chapterMarkerModalOpened}
+            >
                 {
                     chapterMarkerModalOpened ?
-                        <ChapterMarkerForm vodId={props.vodId} chapters={props.chapterPageDetails.chapterMarkers} item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: marker}} toggle={setChapterMarkerModalOpened} submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker} />
+                        <ChapterMarkerForm 
+                            vodId={props.vodId} 
+                            chapters={props.chapterPageDetails.chapterMarkers} 
+                            item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: marker}} 
+                            toggle={setChapterMarkerModalOpened} 
+                            submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker}
+                            chapterState={props.chapterPageDetailsState}
+                        />
                         : null
                 }
             </Modal>

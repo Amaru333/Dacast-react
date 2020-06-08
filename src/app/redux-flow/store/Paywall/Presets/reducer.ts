@@ -6,65 +6,96 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
     let presets = null;
     let promos = null;
     switch (action.type) {
-        case ActionTypes.GET_PRESETS_INFOS :
+        case ActionTypes.GET_PRICE_PRESETS_LIST :
             return {
                 ...state,
-                ...action.payload
+                presets: {
+                    totalItems: action.payload.data.totalItems,
+                    prices: action.payload.data.presets.map((preset: any) => {
+                        return {
+                            id: preset.id,
+                            name: preset.name,
+                            ...preset.preset
+                        }
+                    })
+                }
             }
         case ActionTypes.CREATE_PRICE_PRESET :
-            presets = state.presets.slice();
+            presets = state.presets.prices.slice();
             presets.splice(presets.length, 0, action.payload);
             return {
                 ...state,
-                presets: presets
+                presets: {
+                    prices: presets,
+                    totalItems: state.presets.totalItems + 1
+                }
             }
         case ActionTypes.SAVE_PRICE_PRESET :
-            state.presets.slice();
             return {
                 ...state,
-                presets: state.presets.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
-                        return {
-                            ...item,
-                            ...action.payload
+                presets: {
+                    ...state.presets,
+                    prices: state.presets.prices.map((item) => {
+                        if(item.id !== action.payload.id) {
+                            return item;
                         }
-                    }
-                })
+                        else {
+                            return {
+                                ...item,
+                                ...action.payload
+                            }
+                        }
+                    })
+                }
             }
         case ActionTypes.DELETE_PRICE_PRESET :
             return {
                 ...state,
-                presets: state.presets.filter((item) => {return item.id !== action.payload.id})
+                presets: {
+                    ...state.presets,
+                    prices: state.presets.prices.filter((item) => {return item.id !== action.payload.id})
+                }
+            }
+        case ActionTypes.GET_PROMO_PRESETS_LIST :
+            return {
+                ...state,
+                promos: action.payload.data
             }
         case ActionTypes.CREATE_PROMO_PRESET :
-            promos = state.promos.slice();
+            promos = state.promos.promos.slice();
             promos.splice(promos.length, 0, action.payload);
             return {
                 ...state,
-                promos: promos
+                promos: {
+                    promos: promos,
+                    totalItems: state.promos.totalItems + 1
+                }
             }
         case ActionTypes.SAVE_PROMO_PRESET :
             return {
                 ...state,
-                promos: state.promos.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
-                        return {
-                            ...item,
-                            ...action.payload
+                promos: {
+                    ...state.promos,
+                    promos: state.promos.promos.map((item) => {
+                        if(item.id !== action.payload.id) {
+                            return item;
                         }
-                    }
-                })
+                        else {
+                            return {
+                                ...item,
+                                ...action.payload
+                            }
+                        }
+                    })
+                }
             }
         case ActionTypes.DELETE_PROMO_PRESET :
             return {
                 ...state,
-                promos: state.promos.filter((item) => {return item.id !== action.payload.id})
+                promos: {
+                    ...state.promos,
+                    promos: state.promos.promos.filter((item) => {return item.id !== action.payload.id})
+                }
             }
         default:
             return state;

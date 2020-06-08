@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardConsumptionLocationAction, getAnalyticsDashboardTopContentsAction, getAnalyticsDashboardConsumptionDeviceAction, getAnalyticsDashboardPlaysViewersTimeAction, getAnalyticsDashboardConsumptionTimeAction, getAnalyticsDashboardJobIdsAction } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import moment from 'moment';
 
 
 export interface DashboardPageProps {
@@ -22,25 +23,30 @@ export interface DashboardPageProps {
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        props.getAnalyticsDashboardJobIds();
+        props.getAnalyticsDashboardJobIds({ end: Math.round(moment() / 1000), start: Math.round(moment().startOf('day') / 1000) });
     }, [])
 
     React.useEffect(() => {
-        if(!props.dashboardAnalytics.data.consumptionPerLocation && props.dashboardAnalytics.jobIds) {
-            props.getAnalyticsDashboardConsumptionLocation(null, props.dashboardAnalytics.jobIds.consumptionPerLocation.jobID);
-        }
-        if(!props.dashboardAnalytics.data.topContents && props.dashboardAnalytics.jobIds) {
-            props.getAnalyticsDashboardTopContents(null, props.dashboardAnalytics.jobIds.topContents.jobID);
-        }
-        if(!props.dashboardAnalytics.data.consumptionPerDevice && props.dashboardAnalytics.jobIds) {
-            props.getAnalyticsDashboardConsumptionDevice(null, props.dashboardAnalytics.jobIds.consumptionPerDevice.jobID);
-        }
         if(!props.dashboardAnalytics.data.playsViewersPerTime && props.dashboardAnalytics.jobIds) {
             props.getAnalyticsDashboardPlaysViewersTime(null, props.dashboardAnalytics.jobIds.playsViewersPerTime.jobID);
         }
         if(!props.dashboardAnalytics.data.consumptionPerTime && props.dashboardAnalytics.jobIds) {
             props.getAnalyticsDashboardConsumptionTime(null, props.dashboardAnalytics.jobIds.consumptionPerTime.jobID);
         }
+
+        // PART OF ANALYTICS V2 TO REWORK
+        //
+        // if(!props.dashboardAnalytics.data.consumptionPerLocation && props.dashboardAnalytics.jobIds) {
+        //     props.getAnalyticsDashboardConsumptionLocation(null, props.dashboardAnalytics.jobIds.consumptionPerLocation.jobID);
+        // }
+        // if(!props.dashboardAnalytics.data.topContents && props.dashboardAnalytics.jobIds) {
+        //     props.getAnalyticsDashboardTopContents(null, props.dashboardAnalytics.jobIds.topContents.jobID);
+        // }
+        // if(!props.dashboardAnalytics.data.consumptionPerDevice && props.dashboardAnalytics.jobIds) {
+        //     props.getAnalyticsDashboardConsumptionDevice(null, props.dashboardAnalytics.jobIds.consumptionPerDevice.jobID);
+        // }
+      
+        
     }, [props.dashboardAnalytics.jobIds])
     
 

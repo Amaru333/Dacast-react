@@ -15,20 +15,23 @@ import { SpinnerContainer } from '../../../../components/FormsComponents/Progres
 export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}; staticStepperData: {[key: string]: any}}) => {
 
     React.useEffect(() => {
-        if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0) }
+        if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0 && !uploadButtonLoading) }
     })
 
     const [watermarkFileFile, setWatermarkFile] = React.useState<File>(null);
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
 
     const handleUpload = () => {
-        props.usefulFunctions['getUploadUrl']();       
+        props.usefulFunctions['getUploadUrl']();        
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
         e.preventDefault();
-        if(e.target.files && e.target.files.length > 0) {
+        if(e.target.files && e.target.files.length > 0 && acceptedImageTypes.includes(e.target.files[0].type)) {
             setWatermarkFile(e.target.files[0])
-            props.updateStepperData({...props.stepperData, watermarkFilename: e.target.files[0].name})
+            props.updateStepperData({...props.stepperData, watermarkFilename: e.target.files[0].name, watermarkPositioningLeft: 10, watermarkPositioningRight: 10})
+            setUploadButtonLoading(true)
             handleUpload()
         }
     }
@@ -41,7 +44,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
     React.useEffect(() => {
         if(props.staticStepperData['uploadWatermarkUrl'] && watermarkFileFile) {
-            props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl'])
+            props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl'], () => {setUploadButtonLoading(false)})
         }
     }, [props.staticStepperData['uploadWatermarkUrl']])
 
@@ -64,10 +67,10 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
             <WatermarkContainer isMobile={isMobile} className="col mt2 col-12">
                 <Text className="col col-12" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button className="lg-col-2 sm-col-3 col-3 mt2" sizeButton="xs" typeButton="secondary">
+                <Button isLoading={uploadButtonLoading} className=" mt2" sizeButton="xs" typeButton="secondary">
                     <label className='pointer' htmlFor='browseButton'>
-                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
-                        Browse Files   
+                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/png, image/jpeg" />
+                        Upload File   
                     </label>    
                 </Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
@@ -86,14 +89,14 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                         
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <PositioningRow className="col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningLeft"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} value={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: parseInt(event.currentTarget.value) })
@@ -115,7 +118,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
         return {data: [
             {cell: <Text key={'encodingRecipesPage_Present'} size={14} weight="med">Rendition</Text>},
             {cell: <Text key={'encodingRecipesPage_SizePx'} size={14} weight="med">Size (Px)</Text>},
-            {cell: <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate (Mbps)</Text>},
+            {cell: <Text key={'encodingRecipesPage_BitrateMbps'} size={14} weight="med">Bitrate Cap (Mbps)</Text>},
         ]}
     }
 
