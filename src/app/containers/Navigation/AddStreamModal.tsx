@@ -33,7 +33,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     }
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: handleLocaleCountry()})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: '', streamType: null, region: handleLocaleCountry()})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -94,7 +94,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
                     <div className='col col-12 flex mb2 relative'> 
-                        <Input id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
+                        <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
                         <div className='col col-6 pl1 flex' >
                             <DropdownSingle 

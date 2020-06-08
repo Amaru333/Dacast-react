@@ -13,6 +13,7 @@ export const initUserInfo = () => {
             var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
             let userInfos = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
             userInfo = userInfos;
+            return userInfos;
         }
     }
 }
@@ -32,8 +33,10 @@ export function addToken(data: TokenInfos) {
 export const getUserInfoItem = (item: string | Privilege) => {
     if(userInfo) {
         return userInfo[item];
+    } else {
+        initUserInfo()[item];
     }
-    throw new Error('User not defined')
+    //throw new Error('User not defined')
 }
 
 export function addTokenToHeader() {

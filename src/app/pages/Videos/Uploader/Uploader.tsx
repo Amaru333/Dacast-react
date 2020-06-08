@@ -30,7 +30,9 @@ export const UploaderPage = (props: UploaderProps) => {
 
 
     React.useEffect(() => {
-        uploadNextFile()
+        if(currentUpload && currentUpload.isCompleted) {
+            uploadNextFile()
+        }
     }, [currentUpload && currentUpload.isCompleted])
 
     React.useEffect(() => {
@@ -70,9 +72,9 @@ export const UploaderPage = (props: UploaderProps) => {
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4', 'video/mov'];
+        var newUploadingQueue = [];
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            console.log(file);
             if (fileList.length > 0) {
                 var startTime = (new Date()).getTime();
                 let newUpload = new UploadObject(
@@ -97,10 +99,9 @@ export const UploaderPage = (props: UploaderProps) => {
                         }
                     }
                 )
-                if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress')) {
+                if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress') && i === 0) {
                     newUpload.startUpload()
                     setCurrentUpload(newUpload)
-
                     setUploadingList((currentList: UploaderItemProps[]) => {
                         return [
                             ...currentList,
@@ -115,7 +116,10 @@ export const UploaderPage = (props: UploaderProps) => {
                             }]
                     })
                 } else {
-                    setUploadFileQueue(uploadFileQueue.concat(newUpload))
+                    newUploadingQueue.push(newUpload)
+                    if(i === fileList.length - 1) {
+                        setUploadFileQueue([...uploadFileQueue, ...newUploadingQueue])
+                    }
                     setUploadingList((currentList: UploaderItemProps[]) => {
                         return [
                             ...currentList,
@@ -232,7 +236,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-&-integrations")}> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
 
