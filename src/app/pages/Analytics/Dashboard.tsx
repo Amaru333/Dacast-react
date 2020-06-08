@@ -5,7 +5,7 @@ import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommun';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
@@ -52,12 +52,14 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
         props.getAnalyticsDashboardJobIds({ end: Math.round(dates.endDate / 1000), start: Math.round(dates.startDate / 1000) });
     }
 
+    
+
     return (
         <React.Fragment>
             <DateFilteringAnalytics defaultDates={dates} refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerTime" data={props.dashboardAnalytics.data.consumptionPerTime} infoText="How much data is consumed over time" title="Consumption by Time">
+                    <AnalyticsCard dataName="consumptionPerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.consumptionPerTime? props.dashboardAnalytics.data.consumptionPerTime.data: [], props.dashboardAnalytics.data.consumptionPerTime && props.dashboardAnalytics.data.consumptionPerTime.time  ? labelsFormate(props.dashboardAnalytics.data.consumptionPerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.consumptionPerTime} infoText="How much data is consumed over time" title="Consumption by Time">
                         {
                             props.dashboardAnalytics.data.consumptionPerTime ?
                                 props.dashboardAnalytics.data.consumptionPerTime.data.failed ?
