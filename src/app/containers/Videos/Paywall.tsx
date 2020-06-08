@@ -47,7 +47,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
 
     React.useEffect(() => {
         if(!props.vodPaywallInfos) {
-            props.getVodPaywallInfos()
+            props.getVodPaywallInfos(vodId)
         }
         if(!props.groupsInfos) {
             props.getGroupsInfos()
@@ -149,8 +149,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodPaywallInfos: () => {
-            dispatch(getVodPaywallInfosAction());
+        getVodPaywallInfos: (vodId: string) => {
+            dispatch(getVodPaywallInfosAction(vodId));
         },
         getVodPaywallPrices: (vodId: string) => {
             dispatch(getVodPaywallPricesAction(vodId));
@@ -170,8 +170,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodPaywallPromos: () => {
             dispatch(getVodPaywallPromosAction());
         },
-        createVodPromoPreset: (data: Promo) => {
-            dispatch(createVodPromoPresetAction(data));
+        createVodPromoPreset: (data: Promo, vodId: string) => {
+            dispatch(createVodPromoPresetAction(data, vodId));
         },
         saveVodPromoPreset: (data: Promo) => {
             dispatch(saveVodPromoPresetAction(data));

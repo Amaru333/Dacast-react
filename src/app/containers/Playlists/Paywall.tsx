@@ -46,7 +46,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
 
     React.useEffect(() => {
         if(!props.playlistPaywallInfos) {
-            props.getPlaylistPaywallInfos()
+            props.getPlaylistPaywallInfos(playlistId)
         }
         if(!props.groupsInfos) {
             props.getGroupsInfos()
@@ -146,8 +146,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistPaywallInfos: () => {
-            dispatch(getPlaylistPaywallInfosAction());
+        getPlaylistPaywallInfos: (playlistId: string) => {
+            dispatch(getPlaylistPaywallInfosAction(playlistId));
         },
         savePlaylistPaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(savePlaylistPaywallInfosAction(data));
@@ -167,8 +167,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistPaywallPromos: () => {
             dispatch(getPlaylistPaywallPromosAction());
         },
-        createPlaylistPromoPreset: (data: Promo) => {
-            dispatch(createPlaylistPromoPresetAction(data));
+        createPlaylistPromoPreset: (data: Promo, playlistId: string) => {
+            dispatch(createPlaylistPromoPresetAction(data, playlistId));
         },
         savePlaylistPromoPreset: (data: Promo) => {
             dispatch(savePlaylistPromoPresetAction(data));

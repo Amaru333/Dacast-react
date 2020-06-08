@@ -4,8 +4,20 @@ import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getVodPaywallInfos = () => {
-    return axios.get(urlBase + 'vod-paywall');
+const getVodPaywallInfos = async (vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + '/vods/' + vodId + '/paywall', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const saveVodPaywallInfos = (data: ContentPaywallPageInfos) => {
+    return axios.post(urlBase + 'vod-paywall', {data: data})
 }
 
 const getVodPaywallPrices = async (vodId: string) => {
@@ -20,20 +32,48 @@ const getVodPaywallPrices = async (vodId: string) => {
     )
 }
 
-const saveVodPaywallInfos = (data: ContentPaywallPageInfos) => {
-    return axios.post(urlBase + 'vod-paywall', {data: data})
+const createVodPricePreset = async (data: Preset) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
+        {
+            name: data.name,
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const createVodPricePreset = (data: Preset) => {
-    return axios.post(urlBase + 'vod-paywall-preset-price', {data: data})
+const saveVodPricePreset = async (data: Preset) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+        {
+            name: data.name,
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveVodPricePreset = (data: Preset) => {
-    return axios.put(urlBase + 'vod-paywall-preset-price', {data: data})
-}
-
-const deleteVodPricePreset = (data: Preset) => {
-    return axios.delete(urlBase + 'vod-paywall-preset-price', {data: data})
+const deleteVodPricePreset = async (data: Preset) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const getVodPaywallPromos = async () => {
@@ -48,16 +88,50 @@ const getVodPaywallPromos = async () => {
     )
 }
 
-const createVodPromoPreset = (data: Promo) => {
-    return axios.post(urlBase + 'vod-paywall-preset-promo', {data: data})
+const createVodPromoPreset = async (data: Promo, vodId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
+        {
+            promo: {
+                ...data,
+                assignedContentIds: [vodId],
+                discountApplied: 'once'
+            }  
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const saveVodPromoPreset = (data: Promo) => {
-    return axios.put(urlBase + 'vod-paywall-preset-promo', {data: data})
+const saveVodPromoPreset = async (data: Promo) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
+        {
+            promo: data  
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
-const deleteVodPromoPreset = (data: Promo) => {
-    return axios.delete(urlBase + 'vod-paywall-preset-promo', {data: data})
+const deleteVodPromoPreset = async (data: Promo) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const VodPaywallServices = {

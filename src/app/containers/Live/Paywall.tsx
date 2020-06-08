@@ -48,7 +48,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
 
     React.useEffect(() => {
         if(!props.livePaywallInfos) {
-            props.getLivePaywallInfos()
+            props.getLivePaywallInfos(liveId)
         }
         if(!props.groupsInfos) {
             props.getGroupsInfos()
@@ -149,8 +149,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLivePaywallInfos: () => {
-            dispatch(getLivePaywallInfosAction());
+        getLivePaywallInfos: (liveId: string) => {
+            dispatch(getLivePaywallInfosAction(liveId));
         },
         saveLivePaywallInfos: (data: ContentPaywallPageInfos) => {
             dispatch(saveLivePaywallInfosAction(data));
@@ -170,8 +170,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLivePaywallPromos: () => {
             dispatch(getLivePaywallPromosAction());
         },
-        createLivePromoPreset: (data: Promo) => {
-            dispatch(createLivePromoPresetAction(data));
+        createLivePromoPreset: (data: Promo, liveId: string) => {
+            dispatch(createLivePromoPresetAction(data, liveId));
         },
         saveLivePromoPreset: (data: Promo) => {
             dispatch(saveLivePromoPresetAction(data));

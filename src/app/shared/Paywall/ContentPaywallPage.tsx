@@ -259,7 +259,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <PricePresetsModal action={props.saveContentPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
             </Modal>
             <Modal hasClose={false} modalTitle='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
-                <ContentPromoPresetsModal action={ props.createContentPromoPreset} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
+                <ContentPromoPresetsModal action={ props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
             </Modal>
             <Modal hasClose={false} modalTitle='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={props.saveContentPromoPreset} promo={selectedPromo} toggle={setEditPromoPresetsModalOpened} />

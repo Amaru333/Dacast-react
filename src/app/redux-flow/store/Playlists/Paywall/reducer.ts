@@ -10,7 +10,7 @@ const reducer: Reducer<ContentPaywallPageInfos> = (state = contentPaywallInitial
         case ActionTypes.GET_PLAYLIST_PAYWALL_INFOS :
             return {
                 ...state,
-                ...action.payload
+                ...action.payload.data
             }
         case ActionTypes.SAVE_PLAYLIST_PAYWALL_INFOS :
             return {
