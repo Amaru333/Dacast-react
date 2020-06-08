@@ -52,7 +52,7 @@ margin: 0 8px 8px;
 height: 40px;
 background-color: ${props => props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
-align-items: center;
+/* align-items: center; */
 justify-content: space-between;
 &:hover > button{
         display: block;

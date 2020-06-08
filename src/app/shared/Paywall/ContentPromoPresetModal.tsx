@@ -26,7 +26,7 @@ const defaultPromo: Promo = {
     discountApplied: 'Once'
 }
 
-export const ContentPromoPresetsModal = (props: { action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
+export const ContentPromoPresetsModal = (props: { contentId: string; action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
 
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
@@ -79,7 +79,7 @@ export const ContentPromoPresetsModal = (props: { action: Function; toggle: Func
             <div className='col col-12 mb2'>
                 <Button
                     disabled={!newPromoPreset.name || Number.isNaN(newPromoPreset.discount) || newPromoPreset.alphanumericCode.length < 5 || Number.isNaN(newPromoPreset.limit)}
-                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPromoPreset) }; props.action(newPromoPreset); props.toggle(false) }}
+                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPromoPreset) }; props.action(newPromoPreset, props.contentId); props.toggle(false) }}
                     className='mr2'
                     typeButton='primary'
                     sizeButton='large' buttonColor='blue'>Create</Button>

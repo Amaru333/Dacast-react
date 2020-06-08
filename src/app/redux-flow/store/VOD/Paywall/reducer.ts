@@ -1,33 +1,39 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, vodPaywallInitialState, VodPaywallPageInfos  } from "./types";
+import { ActionTypes  } from "./types";
+import { contentPaywallInitialState, ContentPaywallPageInfos } from '../../Paywall/Presets/types'
 
-const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, action: Action) => {
-    let presets = null;
+const reducer: Reducer<ContentPaywallPageInfos> = (state = contentPaywallInitialState, action: Action) => {
+    let prices = null;
     let promos = null;
     switch (action.type) {
         case ActionTypes.GET_VOD_PAYWALL_INFOS :
             return {
                 ...state,
-                ...action.payload
+                ...action.payload.data
             }
         case ActionTypes.SAVE_VOD_PAYWALL_INFOS :
             return {
                 ...state,
                 ...action.payload
             }
-        case ActionTypes.CREATE_VOD_PRICE_PRESET :
-            presets = state.presets.slice();
-            presets.splice(presets.length, 0, action.payload);
+        case ActionTypes.GET_VOD_PAYWALL_PRICES :
             return {
                 ...state,
-                presets: presets
+                prices: action.payload.data.prices
+            }
+        case ActionTypes.CREATE_VOD_PRICE_PRESET :
+            prices = state.prices.slice();
+            prices.splice(prices.length, 0, action.payload);
+            return {
+                ...state,
+                prices: prices
             }
         case ActionTypes.SAVE_VOD_PRICE_PRESET :
-            state.presets.slice();
+            state.prices.slice();
             return {
                 ...state,
-                presets: state.presets.map((item) => {
+                prices: state.prices.map((item) => {
                     if(item.id !== action.payload.id) {
                         return item;
                     }
@@ -42,7 +48,12 @@ const reducer: Reducer<VodPaywallPageInfos> = (state = vodPaywallInitialState, a
         case ActionTypes.DELETE_VOD_PRICE_PRESET :
             return {
                 ...state,
-                presets: state.presets.filter((item) => {return item.id !== action.payload.id})
+                prices: state.prices.filter((item) => {return item.id !== action.payload.id})
+            }
+        case ActionTypes.GET_VOD_PAYWALL_PROMOS :
+            return {
+                ...state,
+                promos: action.payload.data.promos
             }
         case ActionTypes.CREATE_VOD_PROMO_PRESET :
             promos = state.promos.slice();

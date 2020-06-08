@@ -57,3 +57,19 @@ export const presetsInitialState: PresetsPageInfos = {
     presets: null,
     promos: null
 }
+
+export interface ContentPaywallPageInfos {
+    prices: Preset[];
+    promos: Promo[];
+    enabled: boolean;
+    introVodId: string;
+    selectedTheme: string;
+}
+
+export const contentPaywallInitialState: ContentPaywallPageInfos = {
+    prices: [],
+    promos: [],
+    enabled: false,
+    introVodId: '',
+    selectedTheme: null
+}

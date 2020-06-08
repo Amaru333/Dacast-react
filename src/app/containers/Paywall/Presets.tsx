@@ -23,10 +23,10 @@ const Presets = (props: PresetsComponentProps) => {
 
     React.useEffect(() => {
         if(!props.presetsInfos.presets) {
-            props.getPresetsInfos()
+            props.getPresetsInfos('per-page=10&page=1')
         }
         if(!props.presetsInfos.promos) {
-            props.getPromoPresets()
+            props.getPromoPresets('per-page=10&page=1')
         }
     }, [props.presetsInfos])
 
@@ -45,11 +45,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPresetsInfos: () => {
-            dispatch(getPricePresetsInfosAction());
+        getPresetsInfos: (qs: string) => {
+            dispatch(getPricePresetsInfosAction(qs));
         },
-        getPromoPresets: () => {
-            dispatch(getPromoPresetsInfosAction());
+        getPromoPresets: (qs: string) => {
+            dispatch(getPromoPresetsInfosAction(qs));
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

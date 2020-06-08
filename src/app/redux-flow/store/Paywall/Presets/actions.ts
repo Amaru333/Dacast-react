@@ -8,7 +8,7 @@ export interface GetPricePresetsList {
     type: ActionTypes.GET_PRICE_PRESETS_LIST;
     payload: {
         data: {
-            prices: Preset[]; 
+            presets: Preset[]; 
             totalItems: number;
         }
     };
@@ -54,9 +54,9 @@ export interface DeletePromoPreset {
     payload: Promo;
 }
 
-export const getPricePresetsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPricePresetsList> => {
+export const getPricePresetsInfosAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetPricePresetsList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPricePresetsList>) => {
-        await PresetsServices.getPricePresetsList()
+        await PresetsServices.getPricePresetsList(qs)
             .then( response => {
                 dispatch({type: ActionTypes.GET_PRICE_PRESETS_LIST, payload: response.data});
             }).catch(() => {
@@ -100,9 +100,9 @@ export const deletePricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
     }
 }
 
-export const getPromoPresetsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPromoPresetsList> => {
+export const getPromoPresetsInfosAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetPromoPresetsList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPromoPresetsList>) => {
-        await PresetsServices.getPromoPresetsList()
+        await PresetsServices.getPromoPresetsList(qs)
             .then( response => {
                 dispatch({type: ActionTypes.GET_PROMO_PRESETS_LIST, payload: response.data});
             }).catch(() => {

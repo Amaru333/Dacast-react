@@ -13,6 +13,9 @@ import { Prompt } from 'react-router';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
+import { usePlayer } from '../../../utils/player';
+import { Modal } from '../../../../components/Modal/Modal';
+import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -33,7 +36,11 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
+    let playerRef = React.useRef<HTMLDivElement>(null);
+
+    let player = usePlayer(playerRef, userId + '-playlist-' + props.playlistDetails.id)
 
     React.useEffect(() => {
         setNewPlaylistDetails(props.playlistDetails)
@@ -121,7 +128,10 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 </div>
                 <Divider className="col col-12" />
                 <div className='col col-12'>
-                    <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                    <header className="flex justify-between">
+                        <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                        <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+                    </header>
                     <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
                     <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"} >
@@ -269,6 +279,11 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
                 <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
             </ButtonContainer>
+            <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
+                <PlayerContainer>
+                    <div className="mt2" ref={playerRef}></div>
+                </PlayerContainer>   
+                </Modal>
             <Prompt when={newPlaylistDetails !== props.playlistDetails} message='' />
         </React.Fragment>
     )

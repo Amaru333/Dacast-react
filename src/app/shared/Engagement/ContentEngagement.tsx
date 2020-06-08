@@ -18,6 +18,7 @@ import { usePlayer } from '../../utils/player';
 import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
+import { emptyContentListBody } from '../List/emptyContentListState';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -73,6 +74,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
+        if(props.contentEngagementSettings.engagementSettings.ads.length > 0){
         return {
             data: [
                 { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -86,7 +88,13 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 }
             ]
         }
-    }
+    } else {
+        return {data: [
+            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
+                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
+            </div>}
+        ]}
+    }}
 
     const advertisingTableBody = () => {
         return props.contentEngagementSettings.engagementSettings.ads.map((item, i) => {
@@ -151,13 +159,13 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
                             <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
                         </div>
-                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={advertisingTableBody()} />
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.contentEngagementSettings.engagementSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                     </DisabledSection>
                 </Card>
             }
 
-            <Card className='my2'>
+            {/* <Card className='my2'>
                 <Header className="mb2">
                     <TextStyle>
                         <Text size={20} weight='med'>Email Catcher</Text>
@@ -169,7 +177,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 </Header>
                 <DisabledSection settingsEditable={mailSectionEditable}>
                     <div className="pb2">
-                        <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                        <Text size={14} weight='reg' color='gray-3'>Prompts viewers to provide their email address before viewing your content and store them wherever you create an integration.</Text>
                     </div>
 
                     <div className='flex'>
@@ -189,7 +197,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
                     />
                 </DisabledSection>
-            </Card>
+            </Card> */}
 
             <Card className='my2'>
                 <Header className="mb2">
@@ -202,7 +210,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={brandSectionEditable}>
-                    <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className='flex'>
                         <Input
                             disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8'
@@ -231,7 +239,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
                 <DisabledSection settingsEditable={endScreenSectionEditable}>
-                    <Text size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <Text size={14} weight='reg' color='gray-3'>This will be displayed when the content ends.</Text>
                     <div className='flex'>
                         <Input
                             className='my2 pr1 col col-8'

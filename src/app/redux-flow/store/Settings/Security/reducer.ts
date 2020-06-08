@@ -24,6 +24,9 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
             return {
                 ...state,
                 ...action.payload.data,
+                passwordProtection: {
+                    password: action.payload.data.passwordProtection.password ? action.payload.data.passwordProtection.password : ""
+                },
                 geoRestriction: geoRestrictionsList,
                 domainControl: domainControlsList
             }
