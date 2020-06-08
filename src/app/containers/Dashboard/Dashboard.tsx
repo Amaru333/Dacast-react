@@ -4,7 +4,7 @@ import { PaywallDashboard } from './PaywallDashboard';
 import { LiveDashboard } from './LiveDashboard';
 import { GeneralDashboard } from './GeneralDashboard';
 import { TrialAdditionalDashboard } from './TrialAdditionalDashboard';
-import { DashboardInfos, Action, getDashboardDetailsAction, getDashboardVodPlayRateAction, getDashboardVodPlayAction, getDashboardLiveViewers, getDashboardLiveTopChannels } from '../../redux-flow/store/Dashboard';
+import { DashboardInfos, Action, getDashboardDetailsAction, getDashboardVodPlayRateAction, getDashboardVodPlayAction, getDashboardLiveViewers, getDashboardLiveTopChannels, getDashboardVodTopVideosAction, getDashboardVodImpressionsAction } from '../../redux-flow/store/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -19,6 +19,8 @@ export interface DashboardProps {
     getDashboardVodPlay: Function;
     getDashboardLiveViewers: Function;
     getDashboardLiveTopChannels: Function;
+    getDashboardVodTopVideos: Function;
+    getDashboardVodImpressions: Function;
 }
 
 const Dashboard = (props: DashboardProps) => {
@@ -32,17 +34,25 @@ const Dashboard = (props: DashboardProps) => {
     React.useEffect(() => {
         if (props.infos) {
             console.log(props.infos)
-            if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data) {
+            if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
                 props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
             }
-            if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data) {
+            if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data && !props.infos.live.topChannels.loading  && !props.infos.live.topChannels.failed) {
                 props.getDashboardLiveTopChannels(props.infos.live.topChannels.jobID);
             }
-            if(props.infos.vod.videoPlays.jobID && !props.infos.vod.videoPlays.data) {
+            if(props.infos.vod.videoPlays.jobID && !props.infos.vod.videoPlays.data && !props.infos.vod.videoPlays.loading  && !props.infos.vod.videoPlays.failed) {
+                console.log(props.infos.vod.videoPlays)
                 props.getDashboardVodPlay(props.infos.vod.videoPlays.jobID);
             }
-            if(props.infos.vod.playRate.jobID && !props.infos.vod.playRate.data) {
+            if(props.infos.vod.playRate.jobID && !props.infos.vod.playRate.data && !props.infos.vod.playRate.loading  && !props.infos.vod.playRate.failed) {
                 props.getDashboardVodPlayRate(props.infos.vod.playRate.jobID);
+            }
+            if(props.infos.vod.impressions.jobID && !props.infos.vod.impressions.data && !props.infos.vod.impressions.loading  && !props.infos.vod.impressions.failed) {
+                // Useless and doesnt work, we got the answer in playrate vs impressions
+                //props.getDashboardVodImpressions(props.infos.vod.impressions.jobID);
+            }
+            if(props.infos.vod.topVideos.jobID && !props.infos.vod.topVideos.data && !props.infos.vod.topVideos.loading  && !props.infos.vod.topVideos.failed) {
+                props.getDashboardVodTopVideos(props.infos.vod.topVideos.jobID);
             }
         }
     }, [props.infos])
@@ -101,6 +111,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getDashboardVodPlay: (jobID: string) => {
             dispatch(getDashboardVodPlayAction(jobID));
+        },
+        getDashboardVodTopVideos: (jobID: string) => {
+            dispatch(getDashboardVodTopVideosAction(jobID));
+        },
+        getDashboardVodImpressions: (jobID: string) => {
+            dispatch(getDashboardVodImpressionsAction(jobID));
         },
         getDashboardLiveViewers: (jobID: string) => {
             dispatch(getDashboardLiveViewers(jobID))

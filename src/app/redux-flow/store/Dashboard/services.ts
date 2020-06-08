@@ -26,7 +26,7 @@ const getDashboardVodPlayRateService = async (jobID: string) => {
 const getDashboardVodPlayService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/vod-play/time/fetch?jobID=${jobID}`, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/vod-plays/time/fetch?jobID=${jobID}`, token)
     return data
 }
 
@@ -47,7 +47,7 @@ const getDashboardLiveViewersService = async (jobID: string) => {
 const getDashboardTopVodService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/top-vod/content/fetch?jobID=${jobID}`, token)
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/top-vods/content/fetch?jobID=${jobID}`, token)
     return data
 }
 

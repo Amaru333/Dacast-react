@@ -15,9 +15,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
 
     var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
     var videoPlays = numberFormatter(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, 'comma');
-    var impressions = numberFormatter(props.profile.impressions.data ? props.profile.impressions.data : 0, 'comma');
-    var rateVsImpressions = getPercentage(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, props.profile.impressions.data ? props.profile.impressions.data : 0);
-
+    
     var { rightSide, fullWidth, ...other } = props;
 
     return (
@@ -41,18 +39,18 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement className={itemClass}>
+                <WidgetElement loading={props.profile.playRate.loading} failed={props.profile.playRate.failed}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{impressions}</Text>
+                        <Text size={48} weight="reg" color="gray-1">{props.profile.playRate.data && props.profile.playRate.data.impressions ? props.profile.playRate.data.impressions : 0}</Text>
                     </div>
                 </WidgetElement>
 
-                <WidgetElement className={itemClass}>
+                <WidgetElement  loading={props.profile.videoPlays.loading} failed={props.profile.videoPlays.failed} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
                     </WidgetHeader>
@@ -61,17 +59,17 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement className={itemClass}>
+                <WidgetElement loading={props.profile.playRate.loading} failed={props.profile.playRate.failed}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <DoughnutChart value={rateVsImpressions}/>
+                        <DoughnutChart value={props.profile.playRate.data ? getPercentage(props.profile.playRate.data.impressions, props.profile.playRate.data.playRate) : 0}/>
                     </div>
                 </WidgetElement>
-                <WidgetElement className={classItemFullWidth}>
+                <WidgetElement loading={props.profile.topVideos.loading} failed={props.profile.topVideos.failed} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
                     </WidgetHeader>
