@@ -24,13 +24,14 @@ export interface ApiIntegrationProps {
     getSettingsIntegrationAction: Function;
 }
 
-const privilegeApi = getPrivilege('privilege-api');
-const privilegeLive = getPrivilege('privilege-live');
-const privilegeVod = getPrivilege('privilege-vod');
 
 export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 
 
+    const privilegeApi = getPrivilege('privilege-api');
+    const privilegeLive = getPrivilege('privilege-live');
+    const privilegeVod = getPrivilege('privilege-vod');
+    
     //** Api Keys states */
     const [postApiKeyModalOpened, setPostApiKeyModalOpened] = React.useState<boolean>(false);
     const [putApiKeyModalOpened, setPutApiKeyModalOpened] = React.useState<boolean>(false);
