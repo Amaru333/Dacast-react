@@ -21,7 +21,6 @@ export const LiveTabs = (props: {liveId: string}) => {
     return (
         <div>
             <TabsContainer>
-                <Button onClick={() => {history.push('/livestreams')}} className='mx2 xs-hide' sizeButton='xs' typeButton='secondary'><IconStyle>keyboard_arrow_left</IconStyle></Button>
                 <Tab orientation='horizontal' list={handleLiveSubRoutes()} />
             </TabsContainer>
         </div>
