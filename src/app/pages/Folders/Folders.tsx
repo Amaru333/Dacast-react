@@ -128,6 +128,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         setCheckedItems([])
         if(selectedFolder === 'Trash' || selectedFolder === 'Unsorted' || selectedFolder === 'Library') {
             props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+            // setCurrentFolder(null)
         }
     }, [selectedFolder])
 
