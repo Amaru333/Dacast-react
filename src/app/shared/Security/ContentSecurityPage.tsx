@@ -75,6 +75,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
         setTogglePasswordProtectedVideo(props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
+        setHasToggleChanged(false)
     }
 
     React.useEffect(() => {
@@ -111,7 +112,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         setButtonLoading(true)
         let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs =  toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => setButtonLoading(false))
+        props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
     return (
@@ -341,7 +342,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false)}}>Revert</Button>
+                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>

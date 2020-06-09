@@ -46,8 +46,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime || props.securityDetails.contentScheduling.startTime ? true : false)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
-    const [startDateTime, setStartDateTime] = React.useState<string>(null);
-    const [endDateTime, setEndDateTime] = React.useState<string>(null);
+    const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Until');
+    const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever');
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
@@ -74,6 +74,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         let endTimeTs = toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveSettingsSecurityOptions({ ...data, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
             setSubmitLoading(false);
+            setDisplayformActionButtons(false);
         })
     }
 
@@ -204,7 +205,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo ?
                             <>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setStartDateTime(value) }} />
+                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
                                     {startDateTime === "Set Date and Time" &&
                                         <>
                                             <input type="hidden" ref={register()} name="videoScheduling.startDate" />
@@ -236,7 +237,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     }
                                 </div>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setEndDateTime(value) }} />
+                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setEndDateTime(value) }} />
 
                                     {
                                         endDateTime === "Set Date and Time" &&
