@@ -32,10 +32,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     let smallScreen = useMedia('(max-width: 40em)')
     let history = useHistory()
 
-    React.useEffect(() => {
-        console.log('folders list', props.folderData)
-    })
-
     const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false)
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
@@ -98,7 +94,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             returnedString += `&folders=${currentFolder.id}`
         }
 
-        if((selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash') && returnedString.indexOf('content-types') === -1) {
+        if((selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash')) {
+            returnedString += `&content-types=channel,vod,playlist`
+        } else {
             returnedString += `&content-types=channel,vod,playlist,folder`
         }
         if(selectedFolder === 'Unsorted') {
@@ -121,6 +119,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }, [])
 
     React.useEffect(() => {
+        console.log(currentFolder)
         setSelectedFolder(currentFolder.id)
         props.getFolderContent(parseFiltersToQueryString(selectedFilters))
     }, [currentFolder])

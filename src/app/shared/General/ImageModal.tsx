@@ -8,7 +8,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 import { addTokenToHeader } from '../../utils/token';
 
-export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function; uploadFromVideoAction: Function}) => {
+export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function; uploadFromVideoAction?: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");

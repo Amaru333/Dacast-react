@@ -14,11 +14,11 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { usePlayer } from '../../utils/player';
 import { Prompt } from 'react-router';
 import { getPrivilege } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
+import { PreviewModal } from '../Common/PreviewModal';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -64,10 +64,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const {userId} = addTokenToHeader()
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
-    let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId);
-
 
     React.useEffect(() => {
         setEngagementSettings(props.contentEngagementSettings.engagementSettings)
@@ -272,9 +268,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
-            <Modal modalTitle='Preview Ads' toggle={() => setPlayerModalOpened(!playerModalOpened)} opened={playerModalOpened}>
-                <div className="mt2" ref={playerRef}></div>
-            </Modal>
+            {
+                playerModalOpened && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId} toggle={setPlayerModalOpened} isOpened={playerModalOpened} />
+            }
             <Prompt when={engagementSettings !== props.contentEngagementSettings.engagementSettings} message='' />
         </div>
     )
