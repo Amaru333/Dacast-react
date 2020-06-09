@@ -16,6 +16,7 @@ const getVodRenditionsService = async (vodId: string) => {
 }
 
 const addVodRenditionsService = async (data: string[], vodId: string) => {
+    console.log(data)
     return await bulkActionsService(data.map(item => {return {name: item, type: 'rendition'}}), 'create', vodId)
 }
 const deleteVodRenditionsService = async (data: string[], vodId: string) => {
