@@ -21,6 +21,7 @@ import { getVodDetailsAction } from '../../app/redux-flow/store/VOD/General/acti
 import { getLiveDetailsAction } from '../../app/redux-flow/store/Live/General/actions';
 import { PlaylistDetailsState } from '../../app/redux-flow/store/Playlists/General/types';
 import { getPlaylistDetailsAction } from '../../app/redux-flow/store/Playlists/General/actions';
+import { store } from '../../app';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -103,7 +104,8 @@ const Header = (props: HeaderProps) => {
     });
 
     const handleLogOut = () => {
-        props.logout()
+        props.logout();
+        store.dispatch({type: 'USER_LOGOUT'});
         history.push('/login')
     }
 

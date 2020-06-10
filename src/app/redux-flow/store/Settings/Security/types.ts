@@ -55,7 +55,7 @@ export interface VideoScheduling {
 }
 
 export interface SecuritySettings {
-    passwordProtection: PasswordProtectedVideo;
+    passwordProtection?: PasswordProtectedVideo;
     contentScheduling: VideoScheduling;
     geoRestriction?: GeoRestriction[];
     selectedGeoRestriction?: string;

@@ -35,7 +35,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime || props.securityDetails.contentScheduling.startTime ? true : false)
-    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
+    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection && props.securityDetails.passwordProtection.password ? true : false)
     const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Until');
     const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever');
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
@@ -58,7 +58,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setSubmitLoading(true);
         let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs = (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveSettingsSecurityOptions({...securityDetails, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
+        props.saveSettingsSecurityOptions({...securityDetails, passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : false, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
             setSubmitLoading(false);
             setDisplayformActionButtons(false);
         })
@@ -106,19 +106,18 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                         value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
                         <IconContainer className="iconAction" key={key.toString() + value.name}>
-
-                                { value.id !== '-1' &&
-                                    <>
-                                        <ActionIcon>
-                                            <IconStyle id={"geoRestrictionDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle>
-                                            <Tooltip target={"geoRestrictionDelete" + key}>Delete</Tooltip>
-                                        </ActionIcon>
-                                        <ActionIcon>
-                                        <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
+                            { value.id !== '-1' &&
+                                <>
+                                    <ActionIcon>
+                                        <IconStyle id={"geoRestrictionDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle>
+                                        <Tooltip target={"geoRestrictionDelete" + key}>Delete</Tooltip>
+                                    </ActionIcon>
+                                    <ActionIcon>
+                                        <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.id); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
                                         <Tooltip target={"geoRestrictionEdit" + key}>Edit</Tooltip>
-                                        </ActionIcon>  
-                                    </>
-                                }
+                                    </ActionIcon>  
+                                </>
+                            }
 
                         </IconContainer>
                     ]
@@ -144,7 +143,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                             <Tooltip target={"domainControlDelete" + key}>Delete</Tooltip>
                                         </ActionIcon>
                                         <ActionIcon>
-                                            <IconStyle id={"domainControlEdit" + key} onClick={() => { setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</IconStyle>
+                                            <IconStyle id={"domainControlEdit" + key} onClick={() => { setSelectedItem(value.id); setDomainControlModalOpened(true) }}>edit</IconStyle>
                                             <Tooltip target={"domainControlEdit" + key}>Edit</Tooltip>
                                         </ActionIcon>
                                     </>
@@ -169,7 +168,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setDisplayformActionButtons(true) ;setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setDisplayformActionButtons(true) ;setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection && props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo &&
@@ -295,13 +294,13 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
             <Modal className='x-visible' hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Geo-Restriction Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 {
-                    geoRestrictionModalOpened && <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.saveGeoRestrictionGroup : props.createGeoRestrictionGroup} />
+                    geoRestrictionModalOpened && <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.id === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.saveGeoRestrictionGroup : props.createGeoRestrictionGroup} />
                 }
             </Modal>
 
             <Modal hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Domain Group'} toggle={() => setDomainControlModalOpened(!domainControlModalOpened)} size='small' opened={domainControlModalOpened}>
                 {
-                    domainControlModalOpened && <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.saveDomainControlGroup : props.createDomainControlGroup} />
+                    domainControlModalOpened && <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.id === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.id === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.saveDomainControlGroup : props.createDomainControlGroup} />
                 }
             </Modal>
             <Prompt when={displayFormActionButtons} message='' />

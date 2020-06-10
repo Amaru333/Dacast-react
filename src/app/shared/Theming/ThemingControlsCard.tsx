@@ -51,8 +51,11 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
     const {userId} = addTokenToHeader()
-
-    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
+    if(props.contentId === null) {
+        let player = usePlayer(playerRef, 'd4a700ea-569e-0852-45fc-ccb3715107a9-vod-98f3243d-cf6d-3c5e-d209-ea9da9495a51')
+    } else {
+        let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
+    }
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleThemeSave = () => {

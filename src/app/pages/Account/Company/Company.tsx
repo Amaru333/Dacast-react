@@ -204,8 +204,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="businessName" 
-                            label="Business Name" 
-                            placeholder="Business Name"
+                            label="Company Name" 
+                            placeholder="Company Name"
                             indicationLabel='Optional'
                             name="businessName" ref={register()}
                             help="The legal business name for use on invoices, etc."

@@ -94,7 +94,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const handlePasswordProtectedVideoChange = () => {
         setHasToggleChanged(true)
         if(togglePasswordProtectedVideo) {
-            setSelectedSettings({...selectedSettings, passwordProtection: {password: null}})
+            setSelectedSettings({...selectedSettings, passwordProtection: {password: ''}})
         }
         setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
 
@@ -112,7 +112,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         setButtonLoading(true)
         let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs =  (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
+        props.saveContentSecuritySettings({...selectedSettings, passwordProtection: selectedSettings.passwordProtection ,contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
     return (

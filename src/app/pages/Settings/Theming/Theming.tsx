@@ -31,6 +31,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 createTheme={props.createTheme}
                 cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}
                 contentType='settings'
+                contentId={null}
                 actionType={selectedTheme.id === '-1'? 'Create' : 'Save'}
             />
         )
