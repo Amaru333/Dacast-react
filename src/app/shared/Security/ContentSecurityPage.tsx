@@ -84,9 +84,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handlePasswordValue = () => {
         if(!settingsEditable) {
-            return props.globalSecuritySettings.passwordProtection.password ? props.globalSecuritySettings.passwordProtection.password : ''
+            return props.globalSecuritySettings.passwordProtection.password ? props.globalSecuritySettings.passwordProtection.password : null
         } else {
-            return props.contentSecuritySettings.securitySettings.passwordProtection.password ? props.contentSecuritySettings.securitySettings.passwordProtection.password : ''
+            return props.contentSecuritySettings.securitySettings.passwordProtection.password ? props.contentSecuritySettings.securitySettings.passwordProtection.password : null
 
         }
     }
@@ -94,7 +94,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const handlePasswordProtectedVideoChange = () => {
         setHasToggleChanged(true)
         if(togglePasswordProtectedVideo) {
-            setSelectedSettings({...selectedSettings, passwordProtection: {password: ''}})
+            setSelectedSettings({...selectedSettings, passwordProtection: {password: null}})
         }
         setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
 
