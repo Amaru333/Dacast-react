@@ -19,6 +19,9 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
 
+    let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
+
     const {userId} = addTokenToHeader()
 
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
@@ -121,12 +124,10 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                         <div className="col col-12">
+                        <input type='file' ref={inputBrowseButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
                             <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
-                            <Button className="mt2" sizeButton="xs" typeButton="secondary">
-                                <label className="pointer"  htmlFor='browseButton'>
-                                    <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                            <Button onClick={() => {inputBrowseButtonRef.current.click()} } className="mt2" sizeButton="xs" typeButton="secondary">
                                 Upload File
-                                </label>
                             </Button>
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                             { !logoFile ? null : 
@@ -161,12 +162,10 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                 :
                 <ModalContent>
                     <div className="col col-12 mt2">
+                        <input type='file' ref={inputBrowseImageModalButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' />
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
-                        <Button className="mt2" sizeButton="xs" typeButton="secondary">
-                            <label className="pointer"  htmlFor='browseButtonImageModal'>
-                                <input type='file' className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' />
-                                Upload File
-                            </label>
+                        <Button onClick={() => {inputBrowseImageModalButtonRef.current.click()} }  className="mt2" sizeButton="xs" typeButton="secondary">
+                            Upload File
                         </Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { !logoFile ? null : 

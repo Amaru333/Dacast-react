@@ -67,6 +67,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
 
+    let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+
 
     React.useEffect(() => {
         setInteractionsInfos(props.interactionsInfos)
@@ -206,13 +209,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
-                            <Button style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
-                                <label htmlFor='browseButton'>
-                                    <LinkStyle>
-                                        <input type='file' style={{display:'none'}} id='browseButton' />
-                                        Browse Files
-                                    </LinkStyle>
-                                </label>
+                            <input type='file' ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
+                            <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                Browse Files
                             </Button>
                         </ButtonStyle>
                         </>

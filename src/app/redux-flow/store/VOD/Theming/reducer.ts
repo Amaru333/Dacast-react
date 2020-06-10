@@ -19,7 +19,13 @@ const reducer: Reducer<ContentThemeState> = (state = defaultStateContentTheme, a
                 ...state,
                 [action.payload.id] : {
                     ...state[action.payload.id],
-                    ...action.payload.data
+                    themes: state[action.payload.id].themes.map((theme) => {
+                        if(theme.id === action.payload.data.id || (theme.isCustom && action.payload.data.isCustom)) {
+                            return action.payload.data
+                        } 
+                        return theme
+                    }),
+                    contentThemeId: action.payload.data.id
                 }
             }
         default:

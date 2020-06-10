@@ -27,6 +27,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
+    let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
 
     React.useEffect(() => {
@@ -244,13 +245,9 @@ export const UploaderPage = (props: UploaderProps) => {
                 <BigIcon>cloud_upload</BigIcon>
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
-                    <Button style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
-                        <label htmlFor='browseButton'>
-                            <LinkStyleUploader>
-                                <input type='file' multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
-                                Browse Files
-                            </LinkStyleUploader>
-                        </label>
+                    <input type='file' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                    <Button onClick={() => {videoUploadBrowseButtonRef.current.click()}} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
+                        Browse Files
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
