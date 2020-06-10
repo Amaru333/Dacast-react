@@ -180,6 +180,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     id='password'
                                     label='Password'
                                     placeholder='Password'
+                                    value={securityDetails.passwordProtection.password}
                                     onChange={(event) =>{ handlePasswordChange(event)}}
                                 
                                 />

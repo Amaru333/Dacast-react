@@ -31,6 +31,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     let smallScreen = useMedia('(max-width: 40em)')
     let history = useHistory()
+    const FIXED_FOLDERS = ['Library', 'Unsorted', 'Trash']
 
     const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false)
@@ -90,11 +91,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             returnedString += 'status=deleted'
         }
 
-        if(currentFolder.id && selectedFolder !== 'Trash' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Library') {
+        if(currentFolder.id && FIXED_FOLDERS.indexOf(selectedFolder) === -1) {
             returnedString += `&folders=${currentFolder.id}`
         }
 
-        if((selectedFolder === 'Library' || selectedFolder === 'Unsorted' || selectedFolder === 'Trash')) {
+        if(FIXED_FOLDERS.indexOf(selectedFolder) > -1) {
             returnedString += `&content-types=channel,vod,playlist`
         } else {
             returnedString += `&content-types=channel,vod,playlist,folder`
@@ -126,7 +127,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     React.useEffect(() => {
         setCheckedItems([])
-        if(selectedFolder === 'Trash' || selectedFolder === 'Unsorted' || selectedFolder === 'Library') {
+        if(FIXED_FOLDERS.indexOf(selectedFolder) > -1) {
             props.getFolderContent(parseFiltersToQueryString(selectedFilters))
             // setCurrentFolder(null)
         }
@@ -403,7 +404,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
                         <div className='col col-12 pl2 flex flex-auto items-center '>
                             <BreadcrumbDropdown
-                                options={selectedFolder !== 'Library' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Trash' ?currentFolder.fullPath : selectedFolder}
+                                options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ?currentFolder.fullPath : selectedFolder}
                                 callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
                                 dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                                 dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
@@ -469,7 +470,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
                 <div className='col-12 col clearfix'>
                     <BreadcrumbDropdown
-                        options={selectedFolder !== 'Library' && selectedFolder !== 'Unsorted' && selectedFolder !== 'Trash' ? currentFolder.fullPath :''}
+                        options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath :''}
                         callback={(value: string) => setSelectedFolder(value)}
                         dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                         dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
@@ -503,7 +504,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, currentFolder.id)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
