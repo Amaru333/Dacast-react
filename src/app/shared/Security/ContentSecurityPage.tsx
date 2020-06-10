@@ -110,8 +110,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs =  toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs =  (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
