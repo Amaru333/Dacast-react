@@ -30,6 +30,7 @@ const saveVodEngagementSettings = async (data: ContentEngagementSettings) => {
 }
 
 const saveVodAd = async (data: Ad[], adsId: string, vodId: string) => {
+    debugger
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement/ads',
