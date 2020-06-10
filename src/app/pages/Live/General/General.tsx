@@ -49,7 +49,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
-    }, [props.liveDetails]);
+    }, [props.liveDetails.title, props.liveDetails.folders, props.liveDetails.description, props.liveDetails.recording, props.liveDetails.countdown, props.liveDetails.rewind]);
 
     React.useEffect(() => {
         setLiveStreamCountdownToggle(newLiveDetails.countdown.enabled);

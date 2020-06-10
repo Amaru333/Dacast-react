@@ -48,7 +48,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
-    }, [props.vodDetails]);
+    }, [props.vodDetails.title, props.vodDetails.folders, props.vodDetails.description, props.vodDetails.online]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
         return {data: [
