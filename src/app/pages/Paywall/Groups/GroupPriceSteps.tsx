@@ -37,7 +37,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             return (
                 <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.prices.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
-                        <Input className={"col sm-col-6 col-5 px1"} value={price.value.toString()} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
+                        <Input className={"col sm-col-6 col-5 px1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
                         <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
                     </div>
                     {
@@ -66,7 +66,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                         <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.settings.recurrence.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} />
                         :
                         <>
-                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.settings.duration.value.toString()} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, value: parseInt(event.currentTarget.value) } }} })} />
+                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.settings.duration.value > 0 ? props.stepperData.firststep.settings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, value: parseInt(event.currentTarget.value) } }} })} />
                             <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.settings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
                         </>
                 }

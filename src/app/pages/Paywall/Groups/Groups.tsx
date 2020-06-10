@@ -14,6 +14,7 @@ import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './Group
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
+import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -74,6 +75,12 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         ]}
     }
 
+    const emptyGroupPriceTableHeader = () => {
+        return {data: [
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+        ]}
+    }
+
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
             return props.groupsInfos.prices.prices.map((price, key) => {
@@ -108,6 +115,12 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
             {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
 
+        ]}
+    }
+
+    const emptyGroupPromoTableHeader = () => {
+        return {data: [
+            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
         ]}
     }
 
@@ -148,7 +161,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
-                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.prices.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.prices.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
@@ -158,7 +171,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
-                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={groupPromosTableHeader()} body={groupPromosTableBody()} />
+                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={props.groupsInfos.promos.promos.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={props.groupsInfos.promos.promos.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
             </Card>
             <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.prices} />
