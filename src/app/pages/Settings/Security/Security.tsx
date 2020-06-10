@@ -196,11 +196,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                             toggleSchedulingVideo &&
                             <>
                                 <div className='col col-12 flex items-center'>
-<<<<<<< HEAD
-                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
-=======
                                     <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
->>>>>>> 1b3ae82014598950dac9d724a5920f90f84bbee7
                                     {startDateTime === "Set Date and Time" &&
                                         <>
                                             <DateSinglePickerWrapper
@@ -231,11 +227,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     }
                                 </div>
                                 <div className='col col-12 flex items-center'>
-<<<<<<< HEAD
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setEndDateTime(value) }} />
-=======
                                     <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setEndDateTime(value) }} />
->>>>>>> 1b3ae82014598950dac9d724a5920f90f84bbee7
 
                                     {
                                         endDateTime === "Set Date and Time" &&

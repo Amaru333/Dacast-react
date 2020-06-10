@@ -418,7 +418,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             />
                             <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                         </div>
                     </div>
 
