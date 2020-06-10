@@ -29,22 +29,24 @@ const saveLiveEngagementSettings = async (data: ContentEngagementSettings) => {
     )
 }
 
-const saveLiveAd = (data: Ad) => {
-    return axios.put(urlBase + 'live-engagement-ad', {data: data})
-}
-
-const createLiveAd = (data: Ad) => {
-    return axios.post(urlBase + 'live-engagement-ad', {data: data})
-}
-
-const deleteLiveAd = (data: Ad) => {
-    return axios.delete(urlBase + 'live-engagement-ad', {data: data})
+const saveLiveAd = async (data: Ad[], adsId: string, liveId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/engagement/ads',
+        {
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
+            adsId: adsId
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const liveEngagementServices = {
     getLiveEngagementSettings,
     saveLiveEngagementSettings,
-    saveLiveAd,
-    createLiveAd,
-    deleteLiveAd
+    saveLiveAd
 }

@@ -69,14 +69,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         savePlaylistEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
             dispatch(savePlaylistEngagementSettingsAction(data)).then(callback)
         },
-        savePlaylistAd: (data: Ad, callback?: Function) => {
-            dispatch(savePlaylistAdAction(data)).then(callback)
+        savePlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
+            dispatch(savePlaylistAdAction(data, adsId, playlistId)).then(callback)
         },
-        createPlaylistAd: (data: Ad, callback?: Function) => {
-            dispatch(createPlaylistAdAction(data)).then(callback)
+        createPlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
+            dispatch(createPlaylistAdAction(data, adsId, playlistId)).then(callback)
         },
-        deletePlaylistAd: (data: Ad) => {
-            dispatch(deletePlaylistAdAction(data))
+        deletePlaylistAd: (data: Ad[], adsId: string, playlistId: string) => {
+            dispatch(deletePlaylistAdAction(data, adsId, playlistId))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

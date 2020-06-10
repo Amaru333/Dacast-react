@@ -16,6 +16,7 @@ import { addTokenToHeader } from '../../../utils/token';
 import { usePlayer } from '../../../utils/player';
 import { Modal } from '../../../../components/Modal/Modal';
 import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -37,10 +38,6 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
-
-    let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, userId + '-playlist-' + props.playlistDetails.id)
 
     React.useEffect(() => {
         setNewPlaylistDetails(props.playlistDetails)
@@ -279,11 +276,9 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
                 <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
             </ButtonContainer>
-            <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
-                <PlayerContainer>
-                    <div className="mt2" ref={playerRef}></div>
-                </PlayerContainer>   
-                </Modal>
+            {
+                previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
             <Prompt when={newPlaylistDetails !== props.playlistDetails} message='' />
         </React.Fragment>
     )

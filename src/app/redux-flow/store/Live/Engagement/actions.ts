@@ -17,17 +17,17 @@ export interface SaveLiveEngagementSettings {
 
 export interface SaveLiveAd {
     type: ActionTypes.SAVE_LIVE_AD;
-    payload: Ad;
+    payload: {ads: Ad[]; contentId: string;};
 }
 
 export interface CreateLiveAd {
     type: ActionTypes.CREATE_LIVE_AD;
-    payload: Ad;
+    payload: {ads: Ad[], adsId: string; contentId: string};
 }
 
 export interface DeleteLiveAd {
     type: ActionTypes.DELETE_LIVE_AD;
-    payload: Ad; 
+    payload:{ads: Ad[]; contentId: string;}; 
 }
 
 export const getLiveEngagementSettingsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveEngagementSettings> => {
@@ -45,7 +45,7 @@ export const saveLiveEngagementSettingsAction = (data: ContentEngagementSettings
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveEngagementSettings> ) => {
         await liveEngagementServices.saveLiveEngagementSettings(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_LIVE_ENGAGEMENT_SETTINGS, payload: data} );
                 dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -53,11 +53,11 @@ export const saveLiveEngagementSettingsAction = (data: ContentEngagementSettings
     };
 }
 
-export const saveLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SaveLiveAd> => {
+export const saveLiveAdAction = (data: Ad[], adsId: string, liveId: string): ThunkDispatch<Promise<void>, {}, SaveLiveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveAd> ) => {
-        await liveEngagementServices.saveLiveAd(data)
+        await liveEngagementServices.saveLiveAd(data, adsId, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_LIVE_AD, payload: {ads: data, contentId: liveId}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -65,11 +65,11 @@ export const saveLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Sav
     };
 }
 
-export const createLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, CreateLiveAd> => {
+export const createLiveAdAction = (data: Ad[], adsId: string, liveId: string): ThunkDispatch<Promise<void>, {}, CreateLiveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateLiveAd> ) => {
-        await liveEngagementServices.createLiveAd(data)
+        await liveEngagementServices.saveLiveAd(data, adsId, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_LIVE_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.CREATE_LIVE_AD, payload: {ads: data, adsId: response.data.data.adsId, contentId: liveId}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -77,11 +77,11 @@ export const createLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, C
     };
 }
 
-export const deleteLiveAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeleteLiveAd> => {
+export const deleteLiveAdAction = (data: Ad[], adsId: string, liveId: string): ThunkDispatch<Promise<void>, {}, DeleteLiveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteLiveAd> ) => {
-        await liveEngagementServices.deleteLiveAd(data)
+        await liveEngagementServices.saveLiveAd(data, adsId, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_LIVE_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_LIVE_AD, payload: {ads: data, contentId: liveId}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

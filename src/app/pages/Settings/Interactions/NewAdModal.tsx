@@ -21,17 +21,15 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
         setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
     }, [props.selectedAd])
 
-    React.useEffect(() => console.log("modal props", props.interactionsInfos), [props.interactionsInfos])
-
     const defineAdAction = () => {
         let tempArray: Ad[] = []
         if(props.selectedAd === -1) {
             tempArray.push(adData)
-            props.createAd(tempArray)
+            props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
             tempArray = props.interactionsInfos.ads
             tempArray[props.selectedAd] = adData
-            props.saveAd(tempArray)
+            props.saveAd(tempArray, props.interactionsInfos.adsId)
         }
     }
 

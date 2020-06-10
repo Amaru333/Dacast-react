@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Rendition } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { bulkActionsService } from '../../Common/bulkService';
 
 const getVodRenditionsService = async (vodId: string) => {
     await isTokenExpired()
@@ -15,34 +16,11 @@ const getVodRenditionsService = async (vodId: string) => {
 }
 
 const addVodRenditionsService = async (data: string[], vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/vods/' + vodId + '/renditions/bulk/create', 
-        {
-            resourceType: 'renditions',
-            items: data.map(item => {return {name: item}})
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    console.log(data)
+    return await bulkActionsService(data.map(item => {return {name: item, type: 'rendition'}}), 'create', vodId)
 }
 const deleteVodRenditionsService = async (data: string[], vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/vods/' + vodId + '/renditions/bulk/delete', 
-        {
-            resourceType: 'renditions',
-            items: data.map(item => {return {id: item}})
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await bulkActionsService(data.map(item => {return {id: item, type: 'rendition'}}), 'delete', vodId)
 }
 
 export const VodRenditionsServices = {

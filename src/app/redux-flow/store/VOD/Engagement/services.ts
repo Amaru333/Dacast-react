@@ -29,22 +29,25 @@ const saveVodEngagementSettings = async (data: ContentEngagementSettings) => {
     )
 }
 
-const saveVodAd = (data: Ad) => {
-    return axios.put(urlBase + 'vod-engagement-ad', {data: data})
-}
-
-const createVodAd = (data: Ad) => {
-    return axios.post(urlBase + 'vod-engagement-ad', {data: data})
-}
-
-const deleteVodAd = (data: Ad) => {
-    return axios.delete(urlBase + 'vod-engagement-ad', {data: data})
+const saveVodAd = async (data: Ad[], adsId: string, vodId: string) => {
+    debugger
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement/ads',
+        {
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
+            adsId: adsId
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const vodEngagementServices = {
     getVodEngagementSettings,
     saveVodEngagementSettings,
-    saveVodAd,
-    createVodAd,
-    deleteVodAd
+    saveVodAd
 }

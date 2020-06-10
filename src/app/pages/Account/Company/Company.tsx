@@ -51,6 +51,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
 
+    let companyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+    let changeCompanyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+
     React.useEffect(() => {
         if(!CompanyPageDetails.country) {
             setValue('country', "United States");
@@ -138,14 +143,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                     <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                                 </SpinnerContainer>: null}
                                 <div style={{width:'100%'}} className=''>
+                                    <input type='file' ref={changeCompanyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
-                                    <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
-                                        <label htmlFor='changeButton'>
-                                            <LinkStyle>
-                                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
+                                    <Button onClick={() => {changeCompanyLogoBrowseButtonRef.current.click()} } className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
                                         Change
-                                            </LinkStyle>
-                                        </label>
                                     </Button>
                                 </div>
                                 <ImageStyle src={uploadedFileUrl}></ImageStyle>
@@ -157,13 +158,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
-                            <Button style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
-                                <label htmlFor='browseButton'>
-                                    <LinkStyle>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
-                                        Browse Files
-                                    </LinkStyle>
-                                </label>
+                            <input type='file' ref={companyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                            <Button onClick={() => {companyLogoBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                Browse File
                             </Button>
                         </ButtonStyle>
                         </>

@@ -21,8 +21,7 @@ import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
-import { usePlayer } from '../../../utils/player';
+import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
@@ -45,14 +44,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
-    let playerRef = React.useRef<HTMLDivElement>(null);
+    let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
-    let player = usePlayer(playerRef, userId + '-vod-' + props.vodId)
-
-    
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
-    }, [props.vodDetails]);
+    }, [props.vodDetails.title, props.vodDetails.folders, props.vodDetails.description, props.vodDetails.online]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
         return {data: [
@@ -376,12 +372,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
                                     dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
                                     callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
-                                />
-                                <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                    <label htmlFor='browseButtonSubtitle'>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
-                                        Select Files
-                                    </label>                                    
+                                />                                       
+                                <input type='file' ref={subtitleBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
+                                <Button onClick={() => {subtitleBrowseButtonRef.current.click()} } className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                    Select Files
                                 </Button>
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.name === "" ? null :
@@ -425,11 +419,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => setButtonLoading(false)) } }>Save</Button>
                     <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                 </ButtonContainer>
-                <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
-                <PlayerContainer>
-                    <div className="mt2" ref={playerRef}></div>
-                </PlayerContainer>   
-                </Modal>
+                {
+                    previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.vodDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                }
                 <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>
             
