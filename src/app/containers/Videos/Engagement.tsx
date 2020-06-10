@@ -66,14 +66,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveVodEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
             dispatch(saveVodEngagementSettingsAction(data)).then(callback)
         },
-        saveVodAd: (data: Ad, callback?: Function) => {
-            dispatch(saveVodAdAction(data)).then(callback)
+        saveVodAd: (data: Ad[], adsId: string, vodId: string, callback?: Function) => {
+            dispatch(saveVodAdAction(data, adsId, vodId)).then(callback)
         },
-        createVodAd: (data: Ad, callback?: Function) => {
-            dispatch(createVodAdAction(data)).then(callback)
+        createVodAd: (data: Ad[], adsId: string, vodId: string, callback?: Function) => {
+            dispatch(createVodAdAction(data, adsId, vodId)).then(callback)
         },
-        deleteVodAd: (data: Ad) => {
-            dispatch(deleteVodAdAction(data))
+        deleteVodAd: (data: Ad[], adsId: string, vodId: string) => {
+            dispatch(deleteVodAdAction(data, adsId, vodId))
         }
     };
 }

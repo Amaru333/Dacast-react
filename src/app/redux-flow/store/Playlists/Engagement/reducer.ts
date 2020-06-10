@@ -4,7 +4,6 @@ import { Action } from './actions';
 import { Ad, contentEngagementDefaultState, ContentEngagementSettingsState } from '../../Settings/Interactions/types';
 
 const reducer: Reducer<ContentEngagementSettingsState> = (state = contentEngagementDefaultState, action: Action) => {
-    let ads: Ad[] = []
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS:
             return {
@@ -23,48 +22,26 @@ const reducer: Reducer<ContentEngagementSettingsState> = (state = contentEngagem
                 ...state,
                 [action.payload.contentId]: { ...action.payload }
             }
-        case ActionTypes.SAVE_PLAYLIST_AD :
-            console.log(action);
-            ads = state[action.payload.id].engagementSettings.ads.slice();
-            return { 
-                ...state,
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
-                    engagementSettings: {
-                        ...state[action.payload.id].engagementSettings,
-                        ads: ads.map((item) => {
-                            if (item.id !== action.payload.id) {
-                                return item
-                            }
-                            return {
-                                ...item,
-                                ...action.payload
-                            }
-                        })
+            case ActionTypes.CREATE_PLAYLIST_AD:
+                return {
+                    ...state,
+                    [action.payload.contentId]: { 
+                        ...state[action.payload.contentId],
+                        engagementSettings: { ...state[action.payload.contentId].engagementSettings, ads: action.payload.ads, adsId: action.payload.adsId }
                     }
                 }
-            }
-        case ActionTypes.CREATE_PLAYLIST_AD:
-            ads = state[action.payload.id].engagementSettings.ads.slice();
-            ads.splice(ads.length, 0, action.payload )
-            return {
-                ...state,
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
-                    engagementSettings: { ...state[action.payload.id].engagementSettings, ads: ads }
+            case ActionTypes.SAVE_PLAYLIST_AD:
+            case ActionTypes.DELETE_PLAYLIST_AD:
+                return {
+                    ...state, 
+                    [action.payload.contentId]: { 
+                        ...state[action.payload.contentId],
+                        engagementSettings: { 
+                            ...state[action.payload.contentId].engagementSettings, 
+                            ads: action.payload.ads
+                        } 
+                    }
                 }
-            }
-        case ActionTypes.DELETE_PLAYLIST_AD:
-            return {
-                ...state, 
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
-                    engagementSettings: { 
-                        ...state[action.payload.id].engagementSettings, 
-                        ads: state[action.payload.id].engagementSettings.ads.filter((item) => item.id !== action.payload.id) 
-                    } 
-                }
-            }
         default:
             return state;
     }

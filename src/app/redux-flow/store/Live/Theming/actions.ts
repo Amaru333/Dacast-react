@@ -31,7 +31,7 @@ export const saveLiveThemeAction = (data: ThemeOptions, liveId: string): ThunkDi
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveLiveTheme> ) => {
         await LiveThemingServices.saveLiveThemeService(data, liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_LIVE_THEME,  payload: {id: liveId, data} } );
+                dispatch( {type: ActionTypes.SAVE_LIVE_THEME,  payload: {id: liveId, data: data} } );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {

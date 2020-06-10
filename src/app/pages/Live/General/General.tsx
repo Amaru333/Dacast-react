@@ -24,6 +24,7 @@ import { addTokenToHeader } from '../../../utils/token';
 import { LiveGeneralProps } from '../../../containers/Live/General';
 import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { usePlayer } from '../../../utils/player';
+import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 var moment = require('moment-timezone');
 
@@ -45,10 +46,6 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
-
-    let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, userId + '-live-' + props.liveDetails.id)
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
@@ -467,11 +464,9 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails(newLiveDetails, () => setLoadingButton(false)) }  }>Save</Button>
                 <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
             </ButtonContainer>
-            <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
-                <PlayerContainer>
-                    <div className="mt2" ref={playerRef}></div>
-                </PlayerContainer>   
-                </Modal>
+            {
+                previewModalOpen && <PreviewModal contentId={userId + '-live-' + props.liveDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
             <Prompt when={JSON.stringify(newLiveDetails) !== JSON.stringify(props.liveDetails)} message='' />
         </React.Fragment>
     )

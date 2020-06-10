@@ -99,7 +99,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                 <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                     <ActionIcon>
-                        <IconStyle id={'adTableCopy' + i} onClick={() => {console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item));props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item))}} >delete</IconStyle>
+                        <IconStyle id={'adTableCopy' + i} onClick={() => {console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item));props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId)}} >delete</IconStyle>
                         <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                     </ActionIcon>
                     <ActionIcon>

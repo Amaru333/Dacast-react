@@ -32,7 +32,7 @@ export interface PlaylistPaywallComponentProps {
     theming: PaywallThemingData;
     getPaywallThemes: Function;
     globalPresets: PresetsPageInfos;
-    getPresetsInfo: Function;
+    getPricePresetsInfo: Function;
     customPricePresetList: Preset[];
     createPricePreset: Function;
     customPromoPresetList: Promo[];
@@ -55,7 +55,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             props.getPaywallThemes()
         }
         if(!props.globalPresets) {
-            props.getPresetsInfo('page=1&per-page=100')
+            props.getPricePresetsInfo('page=1&per-page=100')
         }
     }, [])
 
@@ -182,7 +182,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPaywallThemes: () => {
             dispatch(getPaywallThemesAction())
         },
-        getPricePresetsInfosAction: (qs: string) => {
+        getPricePresetsInfo: (qs: string) => {
             dispatch(getPricePresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {

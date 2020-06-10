@@ -16,20 +16,33 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
     }, [props.selectedAd])
 
     const defineAdAction = () => {
-        setButtonLoading(true);
-        props.selectedAd.id === "-1" ?
-            props.createContentAd(adData, () => setButtonLoading(false)) : props.saveContentAd(adData, () => setButtonLoading(false))
+        let tempArray: Ad[] = []
+        setButtonLoading(true)
+        if(props.selectedAd.id === '-1') {
+            tempArray.push(adData)
+            props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
+        } else {
+            tempArray = props.contentEngagementSettings.engagementSettings.ads.map((ad) => {
+                if(ad.id === adData.id) {
+                    return adData
+                } else {
+                    return ad
+                }
+            })
+            props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
+        }
+        
     }
 
     return (
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
+                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
                 {
-                    adData["ad-type"] === 'Mid-roll' ?
-                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp} onChange={(event) => setAdData({...adData, timestamp: event.currentTarget.value})} />
-                        : null
+                    adData["ad-type"] === 'Mid-roll' &&
+                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp.toString()} onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})} />
+
                 }
             </div>
             <div className='mt2 col col-12'>

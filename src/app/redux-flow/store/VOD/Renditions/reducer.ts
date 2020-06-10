@@ -15,7 +15,7 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
             };
         case ActionTypes.ADD_VOD_RENDITIONS:
             renditions = state[action.payload.contentId].encodedRenditions.slice()
-            let newRenditions = action.payload.data.map(element => { return state[action.payload.contentId].presets.find(preset => preset.name === element) })
+            let newRenditions = action.payload.data.map(element => { return state[action.payload.contentId].presets.find(preset => preset.name === element.name) })
             renditions.splice(renditions.length, 0, ...newRenditions)
             return {
                 ...state, 
@@ -25,8 +25,12 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
                 }
             };
         case ActionTypes.DELETE_VOD_RENDITIONS:
-            return { 
-                ...state, encodedRenditions: state.encodedRenditions.filter((rendition: Rendition) => !action.payload.data.includes(rendition.renditionID))
+            return {
+                ...state, 
+                [action.payload.contentId] : {
+                    ...state[action.payload.contentId],
+                    encodedRenditions: state[action.payload.contentId].encodedRenditions.filter((rendition: Rendition) => !action.payload.data.includes(rendition.renditionID))
+                }
             }
         default:
             return state;

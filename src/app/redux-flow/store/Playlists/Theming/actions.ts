@@ -31,7 +31,7 @@ export const savePlaylistThemeAction = (data: ThemeOptions, playlistId: string):
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistTheme> ) => {
         await PlaylistThemingServices.savePlaylistThemeService(data, playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PLAYLIST_THEME, payload: { id: playlistId, data }} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_THEME, payload: { id: playlistId, data: data }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
