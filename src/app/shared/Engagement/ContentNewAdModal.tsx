@@ -18,7 +18,8 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
     const defineAdAction = () => {
         setButtonLoading(true);
         props.selectedAd.id === "-1" ?
-            props.createContentAd(adData, () => setButtonLoading(false)) : props.saveContentAd(adData, () => setButtonLoading(false))
+            props.createContentAd(adData, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
+             : props.saveContentAd(adData, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
     }
 
     return (
@@ -27,9 +28,9 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
             <div className='my1 col col-12 flex'>
                 <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
                 {
-                    adData["ad-type"] === 'Mid-roll' ?
-                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp} onChange={(event) => setAdData({...adData, timestamp: event.currentTarget.value})} />
-                        : null
+                    adData["ad-type"] === 'Mid-roll' &&
+                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp.toString()} onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})} />
+
                 }
             </div>
             <div className='mt2 col col-12'>

@@ -102,7 +102,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(item) }}
+                                onClick={() => { props.deleteContentAd(item, props.contentEngagementSettings.engagementSettings.adsId) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>

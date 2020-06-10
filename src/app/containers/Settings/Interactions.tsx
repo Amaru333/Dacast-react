@@ -49,14 +49,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveInteractionsInfos: (data: InteractionsInfos) => {
             dispatch(saveSettingsInteractionsInfosAction(data))
         },
-        saveAd: (data: Ad[]) => {
-            dispatch(saveAdAction(data))
+        saveAd: (data: Ad[], adsId: string) => {
+            dispatch(saveAdAction(data, adsId))
         },
-        createAd: (data: Ad[]) => {
-            dispatch(createAdAction(data))
+        createAd: (data: Ad[], adsId: string) => {
+            dispatch(createAdAction(data, adsId))
         },
-        deleteAd: (data: Ad[]) => {
-            dispatch(deleteAdAction(data))
+        deleteAd: (data: Ad[], adsId: string) => {
+            dispatch(deleteAdAction(data, adsId))
         },
         saveMailCatcher: (data: MailCatcher) => {
             dispatch(saveMailCatcherAction(data))
