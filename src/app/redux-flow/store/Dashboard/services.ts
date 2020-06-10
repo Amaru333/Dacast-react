@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import { loopUntilCompleted } from '../../../../utils/LoopHttpServices';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
@@ -18,73 +19,43 @@ const getDashboardDetailsService = async () => {
 const getDashboardVodPlayRateService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/analytics/vod-play-rate/time/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/vod-play-rate/time/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 const getDashboardVodPlayService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/analytics/vod-play/time/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/vod-plays/time/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 const getDashboardImpressionsService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('/analytics/impressions/time/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/impressions/time/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 const getDashboardLiveViewersService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('/analytics/live-viewers/time/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/live-viewers/time/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 const getDashboardTopVodService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('/analytics/top-vod/content/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/top-vods/content/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 const getDashboardTopLiveService = async (jobID: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get('/analytics/top-live/content/fetch?jobID=' + jobID,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/top-channels/content/fetch?jobID=${jobID}`, token)
+    return data
 }
 
 

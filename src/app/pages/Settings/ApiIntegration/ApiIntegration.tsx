@@ -6,7 +6,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
-import { tsToLocaleDate, useMedia } from '../../../../utils/utils';
+import { tsToLocaleDate, useMedia, getPrivilege } from '../../../../utils/utils';
 import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
@@ -24,7 +24,13 @@ export interface ApiIntegrationProps {
     getSettingsIntegrationAction: Function;
 }
 
+
+
 export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
+
+    const privilegeApi = getPrivilege('privilege-api');
+    const privilegeLive = getPrivilege('privilege-live');
+    const privilegeVod = getPrivilege('privilege-vod');
 
 
     //** Api Keys states */
@@ -222,7 +228,8 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     return (
         <>
             <Card className='clearfix col-12'>
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
+                {/* V2 TODO API INTEGRATION
+                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
                 <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
                 <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
                     <IconStyle className="mr1" >info_outlined</IconStyle>
@@ -230,72 +237,86 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 </div>
                 <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                 <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
-                <HrStyle />
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Webhook Settings? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
-                <Table className="col-12" id="webHooksTable" headerBackgroundColor="gray-10" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
-                <HrStyle />
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be pasted into the settings of some video encoders to automatically authenticate your list of Dacast live channels.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Encoder Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
-                <Table className="col-12" id="encoderKeysTable" headerBackgroundColor="gray-10" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
-                <HrStyle />
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be used to upload files to an Amazon S3 (Simple Storage Service) bucket that will then be automatically uploaded to your Dacast account.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your S3 Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
-                <Table className="col-12" id="s3KeysTable" headerBackgroundColor="gray-10" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
-                <HrStyle />
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >FTP</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These details can be used to upload files to an FTP (File Transfer Protocol) folder that will then be automatically uploaded to your Dacast account.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up FTP? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <div className="clearfix mxn1">
-                    <div className={"col col-12 sm-col-4 px1"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Host</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <Text size={14} weight="reg">storage.ftp-auto.dacast.com</Text>
-                            <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
-                            <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
-                        </LinkBox>
-                    </div>
-                    <div className={"col col-12 sm-col-4 px1"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Login</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <Text size={14} weight="reg">96941</Text>
-                            <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
-                            <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
-                        </LinkBox>
-                    </div>
-                    <div className={"col col-12 sm-col-4 px1"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">Password</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <Text size={14} weight="reg">Use your account password</Text>
-                        </LinkBox>
-                    </div>
-                </div>
-                
-                <HrStyle />
+                <HrStyle /> */}
+                {
+                    privilegeApi && 
+                    <>
+                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
+                        <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
+                        <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                            <IconStyle className="mr1" >info_outlined</IconStyle>
+                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Webhook Settings? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                        </div>
+                        <Button onClick={() => setPostWebHooksModalOpened(true)} className={"left " + (smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Webhook</Button>
+                        <Table className="col-12" id="webHooksTable" headerBackgroundColor="gray-10" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
+                        <HrStyle />
+                    </>
+                }
+                {
+                    privilegeLive && 
+                    <>
+                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
+                        <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be pasted into the settings of some video encoders to automatically authenticate your list of Dacast live channels.</Text>
+                        <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                            <IconStyle className="mr1" >info_outlined</IconStyle>
+                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your Encoder Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                        </div>
+                        <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostEncoderKeyModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New Encoding Key</Button>
+                        <Table className="col-12" id="encoderKeysTable" headerBackgroundColor="gray-10" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
+                        <HrStyle />
+                    </>
+                }
+                {
+                    privilegeVod && 
+                    <>
+                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
+                            <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be used to upload files to an Amazon S3 (Simple Storage Service) bucket that will then be automatically uploaded to your Dacast account.</Text>
+                            <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                                <IconStyle className="mr1" >info_outlined</IconStyle>
+                                <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your S3 Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                            </div>
+                            <Button className={"left " + (smScreen ? '' : 'hide')} onClick={() => setPostS3KeysModalOpened(true)} sizeButton="xs" typeButton="secondary" buttonColor="blue">New S3 Key</Button>
+                            <Table className="col-12" id="s3KeysTable" headerBackgroundColor="gray-10" header={s3KeyHeaderElement()} body={s3KeyBodyElement()} />
+                            <HrStyle />
+                            <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >FTP</Text>
+                            <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These details can be used to upload files to an FTP (File Transfer Protocol) folder that will then be automatically uploaded to your Dacast account.</Text>
+                            <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                                <IconStyle className="mr1" >info_outlined</IconStyle>
+                                <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up FTP? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                            </div>
+                            <div className="clearfix mxn1">
+                                <div className={"col col-12 sm-col-4 px1"}>
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">Host</Text>
+                                    </LinkBoxLabel>
+                                    <LinkBox>
+                                        <Text size={14} weight="reg">storage.ftp-auto.dacast.com</Text>
+                                        <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
+                                        <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
+                                    </LinkBox>
+                                </div>
+                                <div className={"col col-12 sm-col-4 px1"}>
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">Login</Text>
+                                    </LinkBoxLabel>
+                                    <LinkBox>
+                                        <Text size={14} weight="reg">96941</Text>
+                                        <IconStyle className='pointer' id='host-input-info' onClick={() => updateClipboard('', `Copied`)}>file_copy_outlined</IconStyle>
+                                        <Tooltip target={'host-input-info'}>Copy to clipboard</Tooltip>
+                                    </LinkBox>
+                                </div>
+                                <div className={"col col-12 sm-col-4 px1"}>
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">Password</Text>
+                                    </LinkBoxLabel>
+                                    <LinkBox>
+                                        <Text size={14} weight="reg">Use your account password</Text>
+                                    </LinkBox>
+                                </div>
+                            </div>
+                            <HrStyle />
+                    </>
+                }
                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Google Analytics</Text>
                 <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Some text about where to find the Google Analytics number or whatever.</Text>
                 <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>

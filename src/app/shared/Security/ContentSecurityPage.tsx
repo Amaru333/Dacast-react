@@ -70,8 +70,6 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
     const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
 
-
-    
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
         setTogglePasswordProtectedVideo(props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
@@ -80,6 +78,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     React.useEffect(() => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
+        setHasToggleChanged(false)
     }, [props.contentSecuritySettings.securitySettings])
 
     const handlePasswordValue = () => {

@@ -22,7 +22,6 @@ export const VideoTabs = (props: {videoId: string}) => {
     return (
         <div>
             <TabsContainer>
-                <Button onClick={() => {history.push('/videos')}} className='mx2 xs-hide' sizeButton='xs' typeButton='secondary' ><IconStyle>keyboard_arrow_left</IconStyle></Button>
                 <Tab orientation='horizontal' list={handleVideoSubRoutes()} />
             </TabsContainer>
         </div>

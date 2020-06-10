@@ -402,8 +402,8 @@ export const AppRoutes: Routes[] = [
                 component: Security
             },
             {
-                path: '/settings/api-&-integrations',
-                name: 'API & Integrations',
+                path: '/settings/integrations',
+                name: 'Integrations',
                 component: ApiIntegration,
                 associatePrivilege: 'privilege-api'
             },

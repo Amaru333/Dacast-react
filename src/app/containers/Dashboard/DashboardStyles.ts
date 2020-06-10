@@ -51,6 +51,7 @@ export const ListItem = styled.div<{ checked: boolean }>`
         display: flex;
         flex-direction: row;
         align-items: center;
+        height: 48px;
         color: ${props => props.checked ? props.theme.colors["gray-6"] : props.theme.colors["gray-1"]} !important;
         &:hover {
             background-color:  ${props => props.theme.colors["gray-10"]};

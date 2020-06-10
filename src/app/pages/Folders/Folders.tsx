@@ -11,7 +11,7 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import { tsToLocaleDate, useMedia } from '../../../utils/utils'
+import { tsToLocaleDate, useMedia, useOutsideAlerter } from '../../../utils/utils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -57,6 +57,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     let foldersTree = new FolderTree(setFoldersTree, setCurrentFolder)
+
+
+    useOutsideAlerter(bulkActionsDropdownListRef, () => {
+        setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
+    });
 
     const parseFiltersToQueryString = (filters: FoldersFilteringState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
@@ -426,7 +431,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
                                 }
                                 <div>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(true) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
 
                                     <DropdownList  hasSearch={false} ref={bulkActionsDropdownListRef} style={{}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}
@@ -457,7 +462,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         <Button className="col-12" onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="blue" sizeButton="small" typeButton="secondary" >
                             Actions
                         </Button>
-                        <DropdownList hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                        <DropdownList hasSearch={false}  isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                             {renderList()}
                         </DropdownList>
                     </div>

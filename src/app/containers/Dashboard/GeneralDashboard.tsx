@@ -4,7 +4,7 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate, useMedia } from '../../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes } from '../../../utils/utils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
@@ -50,6 +50,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         setPurchaseStepperOpened(true);
     }
 
+    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var lastDay = new Date(y, m + 1, 0);
+
     const handleButtonToPurchase = (percentage: number, purchaseItem: string) => {
         if(percentage <= 25 ) {
             return (
@@ -88,43 +91,44 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItemThirdWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
-                        {handleButtonToPurchase(100, "Data")}
+                        {handleButtonToPurchase(bandwidth.percentage, "Data")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1">&#8734;</Text><Text size={16} weight="reg" color="gray-4" >/200 GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{100}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> {readableBytes(bandwidth.left)}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                     </div>
-                    <ProgressBarDashboard overage={props.profile.overage} percentage={100} widget="bandwidth" />
+                    <ProgressBarDashboard overage={props.profile.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                 </WidgetElement>
 
                 <WidgetElement className={classItemThirdWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        {handleButtonToPurchase(100, "Storage")}
+                        {handleButtonToPurchase(storage.percentage, "Storage")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1">&#8734;</Text><Text size={16} weight="reg" color="gray-4" >/20 GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >100%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> {readableBytes(storage.left)}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
                     </div>
-                    <ProgressBarDashboard percentage={100} widget="storage" />
+                    <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>
 
 
                 {
-                    true  ?
+                    (props.plan as DashboardTrial).daysLeft  ?
                         <WidgetElement className={classItemThirdWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
-                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" >Upgrade </Button>
+                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">30  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :
-                        <WidgetElement className={classItemFullWidthContainer}>
+                        <WidgetElement className={classItemThirdWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
                                 <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade</Button>
                             </WidgetHeader>
+                            {/* <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(lastDay.getTime() / 1000)}</Text><br /> */}
                             <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
                             <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
                         </WidgetElement>
@@ -167,7 +171,7 @@ const ProgressBarDashboard = (props: { percentage: number; widget: 'bandwidth' |
                 if(props.overage && props.overage.enabled) {
                     return <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg"> Playback Protection enabled</Text><IconStyle>settings</IconStyle></div>
                 } else {
-                    return <><Text size={12} weight="reg" color="red"> Upgrade before you run out of data</Text><IconStyle>settings</IconStyle></>
+                    return <><Text size={12} weight="reg" color="red"> Upgrade before you run out of data</Text></>
                 }
             }
         } if(props.percentage <= 0) {

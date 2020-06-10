@@ -17,7 +17,7 @@ export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 
 
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: {data: any; columns: any}; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
 
     console.log(props.data);
@@ -44,29 +44,37 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
                             <IconStyle onClick={() => { exportCsvAnalytics(props.data) }} >get_app</IconStyle>
                         </ActionIcon>
                         : null}
-                    {props.table && 
+                    {props.table &&
                         <ActionIcon id={"table" + props.title}>
                             <IconStyle onClick={() => { setShowTable(!showTable) }} >toc</IconStyle>
                         </ActionIcon>
                     }
-                    
-                    {showTable &&
-                        <ReactTable
-                            data={props.table.data}
-                            columns={props.table.columns}
-                            pageSizeOptions={[5, 10, 20, 25]}
-                            defaultPageSize={10} /> 
-                    }
-
                 </div>
                 <Tooltip target={"download" + props.title}>Download csv</Tooltip>
                 <Tooltip target={"table" + props.title}>Show table</Tooltip>
             </AnalyticsCardHeader>
-            {props.children}
+            {showTable ?
+                <ReactTable
+                    data={props.table.data}
+                    columns={props.table.columns}
+                    pageSizeOptions={[5, 10, 20, 25]}
+                    defaultPageSize={10} /> : props.children
+            }
         </AnalyticsCardStyle>
     )
 }
 
+export const mergeForTable = (data: any, dates: any) => {
+    if(data.length) {
+        var result = []
+        for (var i = 0; i < data.length; i++) {
+            result.push({ mb: data[i], date: dates[i]})
+        }
+    } else {
+        var result = [];
+    }
+    return result
+}
 export const AnalyticsCardStyle = styled(Card) <{}>`
     padding: 16px !important;
     min-height: 273px;

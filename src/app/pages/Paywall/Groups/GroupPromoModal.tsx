@@ -8,6 +8,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { PromoPresetsModal } from '../Presets/PromoPresetsModal';
 var moment = require('moment-timezone');
 
 const defaultPromo: GroupPromo = {
@@ -46,15 +47,15 @@ export const GroupPromoModal = (props: {action: Function; toggle: Function; grou
                 <DropdownSingle id='groupPromoRateTypeDropdown' className={ ClassHalfXsFullMd + ''} dropdownDefaultSelect={groupPromo.rateType}  dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             <div className='col col-12 mb2 clearfix'>
-                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount.toString()} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit.toString()} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
+                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount ? groupPromo.discount.toString() : ''} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateSinglePickerWrapper openDirection="up" className='col col-6 pr2' datepickerTitle='Promo Code Start Date' />
+                <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr2' datepickerTitle='Promo Code Start Date' />
                 <Input type='time' label='Start Time' value={groupPromo.startTime} className='col sm-col-3 col-6' onChange={(event) => setGroupPromo({...groupPromo, startTime: event.currentTarget.value})} />
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateSinglePickerWrapper openDirection="up" className='col col-6 pr2' datepickerTitle='Promo Code End Date' />
+                <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr2' datepickerTitle='Promo Code End Date' />
                 <Input type='time' label='End Time' value={groupPromo.endTime} className='col sm-col-3 col-6' onChange={(event) => setGroupPromo({...groupPromo, endTime: event.currentTarget.value})} />
             </GroupPromoDateContainer>
             <div className=' col col-12 mb2'>
