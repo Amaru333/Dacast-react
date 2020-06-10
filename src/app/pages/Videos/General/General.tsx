@@ -44,6 +44,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
+    let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
     }, [props.vodDetails]);
@@ -370,12 +372,10 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
                                     dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
                                     callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
-                                />
-                                <Button className="mt25" typeButton="secondary" sizeButton="xs">                                    
-                                    <label htmlFor='browseButtonSubtitle'>
-                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
-                                        Select Files
-                                    </label>                                    
+                                />                                       
+                                <input type='file' ref={subtitleBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
+                                <Button onClick={() => {subtitleBrowseButtonRef.current.click()} } className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                    Select Files
                                 </Button>
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.name === "" ? null :
