@@ -34,7 +34,7 @@ const saveLiveAd = async (data: Ad[], adsId: string, liveId: string) => {
     let {token} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/engagement/ads',
         {
-            ads: data,
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
             adsId: adsId
         }, 
         {

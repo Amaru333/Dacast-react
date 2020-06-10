@@ -35,7 +35,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false)
-    const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
+    const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(null)
     const [selectedFolder, setSelectedFolder] = React.useState<string>('Library')
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false)
     const [checkedItems, setCheckedItems] = React.useState<ContentType[]>([])
@@ -91,7 +91,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             returnedString += 'status=deleted'
         }
 
-        if(currentFolder.id && FIXED_FOLDERS.indexOf(selectedFolder) === -1) {
+        if(FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder) {
             returnedString += `&folders=${currentFolder.id}`
         }
 
@@ -120,19 +120,15 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }, [])
 
     React.useEffect(() => {
-        if(currentFolder.id) {
+        if(currentFolder) {
             setSelectedFolder(currentFolder.id)
-            props.getFolderContent(parseFiltersToQueryString(selectedFilters))
         }
-
+        console.log(currentFolder)
     }, [currentFolder])
 
     React.useEffect(() => {
         setCheckedItems([])
-        if(FIXED_FOLDERS.indexOf(selectedFolder) > -1) {
-            props.getFolderContent(parseFiltersToQueryString(selectedFilters))
-            // setCurrentFolder(null)
-        }
+        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
     }, [selectedFolder])
 
     // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
@@ -384,7 +380,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div key={node.id}>
                 {
                     node.id && 
-                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {foldersTree.navigateToFolder(node)}}>
+                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => { foldersTree.navigateToFolder(node)}}>
                         { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                     </FolderRow>
@@ -410,12 +406,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
                         <div className='col col-12 pl2 flex flex-auto items-center '>
                             <BreadcrumbDropdown
-                                options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ?currentFolder.fullPath : selectedFolder}
+                                options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ?currentFolder.fullPath : selectedFolder}
                                 callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
                                 dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                                 dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
                             />
-                            <SeparatorHeader className={(currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
+                            <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
                             <InputTags oneTag noBorder={true} placeholder="Search by Name..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                         </div>
@@ -476,7 +472,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
                 <div className='col-12 col clearfix'>
                     <BreadcrumbDropdown
-                        options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath :''}
+                        options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ? currentFolder.fullPath :''}
                         callback={(value: string) => setSelectedFolder(value)}
                         dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
                         dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
@@ -486,13 +482,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <ContentSection>
                 <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
                     <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
-                    <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => setSelectedFolder("Library")}>
+                    <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
                         <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => setSelectedFolder("Unsorted")}>
+                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => setSelectedFolder("Trash")}>
+                    <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
                     </FolderRow>
                     {renderNode(folderTree)}
