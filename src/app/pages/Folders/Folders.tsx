@@ -120,9 +120,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }, [])
 
     React.useEffect(() => {
-        console.log(currentFolder)
-        setSelectedFolder(currentFolder.id)
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        if(currentFolder.id) {
+            setSelectedFolder(currentFolder.id)
+            props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        }
+
     }, [currentFolder])
 
     React.useEffect(() => {
@@ -380,10 +382,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         let depth = node.fullPath.split('/').length - 1
         return (
             <div key={node.id}>
-                <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {foldersTree.navigateToFolder(node)}}>
-                    { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
-                    <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
-                </FolderRow>
+                {
+                    node.id && 
+                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => {foldersTree.navigateToFolder(node)}}>
+                        { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
+                        <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
+                    </FolderRow>
+                }
+
                 <div>
                     { node.isExpanded && node.children !== null && Object.values(node.children).map((childNode) => renderNode(childNode))}
                 </div>
