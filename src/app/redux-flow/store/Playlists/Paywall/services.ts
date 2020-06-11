@@ -64,7 +64,7 @@ const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
                 prices: data.prices,
                 settings: {
                     duration: {
-                        unit: data.settings.duration.unit..substr(0, data.settings.duration.unit.length - 1),
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
                         value: data.settings.duration.value
                     }
                 }
