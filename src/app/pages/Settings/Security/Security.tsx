@@ -86,6 +86,13 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setDisplayformActionButtons(true)
     }
 
+    const handlePasswordProtectedVideoChange = () => {
+        setDisplayformActionButtons(true)
+        if(togglePasswordProtectedVideo) {
+            setSecurityDetails({...securityDetails, passwordProtection: {password: null}})
+        }
+        setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
+    }
 
 
     const tableHeaderElement = (tableType: string) => {
@@ -169,7 +176,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setDisplayformActionButtons(true) ;setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo &&
