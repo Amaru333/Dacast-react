@@ -64,6 +64,10 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
         }
     }
 
+    React.useEffect(() => {
+        setButtonLoading(false)
+    }, [props.theme])
+
     const handleCancel = () => {
         switch(props.contentType) {
             case 'vod':
