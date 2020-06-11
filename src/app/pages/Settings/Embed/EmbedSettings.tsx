@@ -83,7 +83,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                                 Videos will default to a fixed width with their height determined automatically based on aspect ratio.
                             </Text>
                         </RadioText>
-                        <WidthInput isDisplayed={inputOptions['embed-scaling'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({ ...inputOptions, ["embed-size"]: parseInt(event.currentTarget.value) })} defaultValue="640" id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
+                        <WidthInput isDisplayed={inputOptions['embed-scaling'] === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({ ...inputOptions, ["embed-size"]: parseInt(event.currentTarget.value) })} defaultValue={inputOptions["embed-size"].toString()} id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
                     </div>
                     <br />
                 </Card>
