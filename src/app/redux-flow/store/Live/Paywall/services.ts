@@ -52,8 +52,8 @@ const createLivePricePreset = async (data: Preset, liveId: string) => {
             prices: data.prices,
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence,
-                    value: 1
+                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -64,7 +64,7 @@ const createLivePricePreset = async (data: Preset, liveId: string) => {
                 prices: data.prices,
                 settings: {
                     duration: {
-                        unit: data.settings.duration.unit.toLowerCase(),
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
                         value: data.settings.duration.value
                     }
                 }
