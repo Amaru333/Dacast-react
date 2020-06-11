@@ -58,7 +58,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     React.useEffect(() => {
         props.getContentPrices(props.contentId)
-        props.getContentPromos()
+        props.getContentPromos(props.contentId)
     }, [])
 
     const pricePresetsTableHeader = () => {
@@ -86,7 +86,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + preset.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(preset)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(preset, props.contentId)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
@@ -122,7 +122,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -164,14 +164,14 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
         ]}
     }
 
@@ -201,7 +201,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         <div>
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.enabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, enabled: !contentPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
                 
                 <DropdownSingle 
@@ -249,11 +249,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                    
             </Card>
             <div className={'mt2' + (props.contentPaywallInfos === contentPaywallSettings ? ' hide' : '')}>
-                <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings, props.contentId)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
             <Modal hasClose={false} modalTitle='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
-                <ContentPricePresetsModal action={ props.createContentPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
+                <ContentPricePresetsModal contentId={props.contentId} action={ props.createContentPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
             </Modal>
             <Modal hasClose={false} modalTitle='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={props.saveContentPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />

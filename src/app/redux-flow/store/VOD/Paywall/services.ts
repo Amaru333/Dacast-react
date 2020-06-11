@@ -16,14 +16,13 @@ const getVodPaywallInfos = async (vodId: string) => {
     )
 }
 
-const saveVodPaywallInfos = (data: ContentPaywallPageInfos) => {
-    return axios.post(urlBase + 'vod-paywall', {data: data})
-}
-
-const getVodPaywallPrices = async (vodId: string) => {
+const saveVodPaywallInfos = async (data: ContentPaywallPageInfos, vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/prices?content-id=' + vodId, 
+    return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/paywall', 
+        {
+            ...data
+        },
         {
             headers: {
                 Authorization: token
@@ -32,13 +31,26 @@ const getVodPaywallPrices = async (vodId: string) => {
     )
 }
 
-const createVodPricePreset = async (data: Preset) => {
+const getVodPaywallPrices = async (vodId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id=${userId}-vod-${vodId}`, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const createVodPricePreset = async (data: Preset, vodId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            name: data.name,
-            ...data
+            prices: data.prices,
+            settings: data.settings,
+            contentId: `${userId}-vod-${vodId}`
         },
         {
             headers: {
@@ -90,12 +102,12 @@ const getVodPaywallPromos = async () => {
 
 const createVodPromoPreset = async (data: Promo, vodId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
                 ...data,
-                assignedContentIds: [vodId],
+                assignedContentIds: [`${userId}-vod-${vodId}`],
                 discountApplied: 'once'
             }  
         },

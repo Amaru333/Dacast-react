@@ -2,8 +2,6 @@ import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
-
 const getPlaylistPaywallInfos = async (playlistId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
@@ -16,14 +14,25 @@ const getPlaylistPaywallInfos = async (playlistId: string) => {
     )
 }
 
-const savePlaylistPaywallInfos = (data: ContentPaywallPageInfos) => {
-    return axios.post(urlBase + 'playlist-paywall', {data: data})
+const savePlaylistPaywallInfos = async (data: ContentPaywallPageInfos, playlistId: string) => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/paywall', 
+        {
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const getPlaylistPaywallPrices = async (playlistId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/prices?content-id=' + playlistId, 
+    let {token, userId} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id='${userId}-playlist-${playlistId}`, 
         {
             headers: {
                 Authorization: token
@@ -33,13 +42,14 @@ const getPlaylistPaywallPrices = async (playlistId: string) => {
 }
 
 
-const createPlaylistPricePreset = async (data: Preset) => {
+const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            name: data.name,
-            ...data
+            prices: data.prices,
+            settings: data.settings,
+            contentId: `${userId}-playlist-${playlistId}`
         },
         {
             headers: {
@@ -91,12 +101,12 @@ const getPlaylistPaywallPromos = async () => {
 
 const createPlaylistPromoPreset = async (data: Promo, playlistId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
                 ...data,
-                assignedContentIds: [playlistId],
+                assignedContentIds: [`${userId}-playlist-${playlistId}`],
                 discountApplied: 'once'
             }  
         },

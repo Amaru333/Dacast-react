@@ -1,86 +1,115 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes } from "./types";
-import { ContentPaywallPageInfos, contentPaywallInitialState } from '../../Paywall/Presets';
+import { ContentPaywallState } from '../../Paywall/Presets';
 
-const reducer: Reducer<ContentPaywallPageInfos> = (state = contentPaywallInitialState, action: Action) => {
+const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
     let promos = null;
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_PAYWALL_INFOS :
             return {
                 ...state,
-                ...action.payload.data
+                [action.payload.contentId]: {
+                    ...action.payload.data
+                }
             }
         case ActionTypes.SAVE_PLAYLIST_PAYWALL_INFOS :
             return {
                 ...state,
-                ...action.payload
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    ...action.payload.data
+                }
             }
         case ActionTypes.GET_PLAYLIST_PAYWALL_PRICES :
             return {
                 ...state,
-                prices: action.payload.data.prices
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    prices: action.payload.data.prices
+                }
             }
         case ActionTypes.CREATE_PLAYLIST_PRICE_PRESET :
-            prices = state.prices.slice();
-            prices.splice(prices.length, 0, action.payload);
+            prices = state[action.payload.contentId].prices.slice();
+            prices.splice(prices.length, 0, action.payload.data);
             return {
                 ...state,
-                prices: prices
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    prices: prices
+                }
             }
         case ActionTypes.SAVE_PLAYLIST_PRICE_PRESET :
-            state.prices.slice();
             return {
                 ...state,
-                prices: state.prices.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
-                        return {
-                            ...item,
-                            ...action.payload
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    prices: state[action.payload.contentId].prices.map((item) => {
+                        if(item.id !== action.payload.data.id) {
+                            return item;
                         }
-                    }
-                })
+                        else {
+                            return {
+                                ...item,
+                                ...action.payload.data
+                            }
+                        }
+                    })
+                }
+                
             }
         case ActionTypes.DELETE_PLAYLIST_PRICE_PRESET :
             return {
                 ...state,
-                prices: state.prices.filter((item) => {return item.id !== action.payload.id})
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    prices: state[action.payload.contentId].prices.filter((item) => {return item.id !== action.payload.data.id})
+                }
             }
         case ActionTypes.GET_PLAYLIST_PAYWALL_PROMOS :
             return {
                 ...state,
-                promos: action.payload.data.promos
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    promos: action.payload.data.promos
+                }
             }
         case ActionTypes.CREATE_PLAYLIST_PROMO_PRESET :
-            promos = state.promos.slice();
-            promos.splice(promos.length, 0, action.payload);
+            promos = state[action.payload.contentId].promos.slice();
+            promos.splice(promos.length, 0, action.payload.data);
             return {
                 ...state,
-                promos: promos
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    promos: promos
+                }
             }
         case ActionTypes.SAVE_PLAYLIST_PROMO_PRESET :
             return {
                 ...state,
-                promos: state.promos.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
-                        return {
-                            ...item,
-                            ...action.payload
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    promos: state[action.payload.contentId].promos.map((item) => {
+                        if(item.id !== action.payload.data.id) {
+                            return item;
                         }
-                    }
-                })
+                        else {
+                            return {
+                                ...item,
+                                ...action.payload
+                            }
+                        }
+                    })
+                }    
             }
         case ActionTypes.DELETE_PLAYLIST_PROMO_PRESET :
             return {
                 ...state,
-                promos: state.promos.filter((item) => {return item.id !== action.payload.id})
+                [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
+                    promos: state[action.payload.contentId].promos.filter((item) => {return item.id !== action.payload.data.id})
+                }
             }
         default:
             return state;

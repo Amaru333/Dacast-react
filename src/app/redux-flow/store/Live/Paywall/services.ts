@@ -2,8 +2,6 @@ import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
-
 const getLivePaywallInfos = async (liveId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
@@ -16,14 +14,13 @@ const getLivePaywallInfos = async (liveId: string) => {
     )
 }
 
-const saveLivePaywallInfos = (data: ContentPaywallPageInfos) => {
-    return axios.post(urlBase + 'live-paywall', {data: data})
-}
-
-const getLivePaywallPrices = async (liveId: string) => {
+const saveLivePaywallInfos = async (data: ContentPaywallPageInfos, liveId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/prices?content-id=' + liveId, 
+    return axios.put(process.env.API_BASE_URL + '/channels/' + liveId + '/paywall', 
+        {
+            ...data
+        },
         {
             headers: {
                 Authorization: token
@@ -32,13 +29,26 @@ const getLivePaywallPrices = async (liveId: string) => {
     )
 }
 
-const createLivePricePreset = async (data: Preset) => {
+const getLivePaywallPrices = async (liveId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id=${userId}-live-${liveId}`, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const createLivePricePreset = async (data: Preset, liveId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            name: data.name,
-            ...data
+            prices: data.prices,
+            settings: data.settings,
+            contentId: `${userId}-live-${liveId}`
         },
         {
             headers: {
@@ -90,12 +100,12 @@ const getLivePaywallPromos = async () => {
 
 const createLivePromoPreset = async (data: Promo, liveId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
                 ...data,
-                assignedContentIds: [liveId],
+                assignedContentIds: [`${userId}-live-${liveId}`],
                 discountApplied: 'once'
             }  
         },

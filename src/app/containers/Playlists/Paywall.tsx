@@ -11,12 +11,12 @@ import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetA
 import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
-import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
 
 var moment = require('moment-timezone');
 
 export interface PlaylistPaywallComponentProps {
-    playlistPaywallInfos: ContentPaywallPageInfos;
+    playlistPaywallInfos: ContentPaywallState;
     getPlaylistPaywallInfos: Function;
     savePlaylistPaywallInfos: Function;
     getPlaylistPaywallPrices: Function;
@@ -45,7 +45,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        if(!props.playlistPaywallInfos) {
+        if(!props.playlistPaywallInfos[playlistId]) {
             props.getPlaylistPaywallInfos(playlistId)
         }
         if(!props.groupsInfos) {
@@ -64,7 +64,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
     const [customPromoPresetList, setCustomPromoPresetList] = React.useState<Promo[]>(null)
 
     React.useEffect(() => {
-        if (props.playlistPaywallInfos && props.globalPresets) {
+        if (props.playlistPaywallInfos[playlistId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
                 name: 'Custom Preset',
@@ -99,7 +99,9 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 endDate: null,
                 endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
-                discountApplied: 'Once'
+                discountApplied: 'Once',
+                assignedGroupIds: [],
+                assignedContentIds: []
             }
             let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
             let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
@@ -108,12 +110,12 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.playlistPaywallInfos])
 
-    return props.playlistPaywallInfos && props.groupsInfos && customPricePresetList && props.theming ? 
+    return props.playlistPaywallInfos[playlistId] && props.groupsInfos && customPricePresetList && props.theming ? 
         <div className='flex flex-column'>
             <PlaylistsTabs playlistId={playlistId} />
             <ContentPaywallPage
                 contentId={playlistId}
-                contentPaywallInfos={props.playlistPaywallInfos}
+                contentPaywallInfos={props.playlistPaywallInfos[playlistId]}
                 getContentPrices={props.getPlaylistPaywallPrices}
                 saveContentPaywallInfos={props.savePlaylistPaywallInfos}
                 createContentPricePreset={props.createPlaylistPricePreset}
@@ -131,7 +133,8 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 createPricePreset={props.createPricePreset}
                 createPromoPreset={props.createPromoPreset}
                 showToast={props.showToast}
-            />        </div>
+            />        
+        </div>
         : <><PlaylistsTabs playlistId={playlistId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
 
@@ -149,32 +152,32 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistPaywallInfos: (playlistId: string) => {
             dispatch(getPlaylistPaywallInfosAction(playlistId));
         },
-        savePlaylistPaywallInfos: (data: ContentPaywallPageInfos) => {
-            dispatch(savePlaylistPaywallInfosAction(data));
+        savePlaylistPaywallInfos: (data: ContentPaywallPageInfos, playlistId: string) => {
+            dispatch(savePlaylistPaywallInfosAction(data, playlistId));
         },
         getPlaylistPaywallPrices: (playlistId: string) => {
             dispatch(getPlaylistPaywallPricesAction(playlistId));
         },
-        createPlaylistPricePreset: (data: Preset) => {
-            dispatch(createPlaylistPricePresetAction(data));
+        createPlaylistPricePreset: (data: Preset, playlistId: string) => {
+            dispatch(createPlaylistPricePresetAction(data, playlistId));
         },
-        savePlaylistPricePreset: (data: Preset) => {
-            dispatch(savePlaylistPricePresetAction(data));
+        savePlaylistPricePreset: (data: Preset, playlistId: string) => {
+            dispatch(savePlaylistPricePresetAction(data, playlistId));
         },
-        deletePlaylistPricePreset: (data: Preset) => {
-            dispatch(deletePlaylistPricePresetAction(data));
+        deletePlaylistPricePreset: (data: Preset, playlistId: string) => {
+            dispatch(deletePlaylistPricePresetAction(data, playlistId));
         },
-        getPlaylistPaywallPromos: () => {
-            dispatch(getPlaylistPaywallPromosAction());
+        getPlaylistPaywallPromos: (playlistId: string) => {
+            dispatch(getPlaylistPaywallPromosAction(playlistId));
         },
         createPlaylistPromoPreset: (data: Promo, playlistId: string) => {
             dispatch(createPlaylistPromoPresetAction(data, playlistId));
         },
-        savePlaylistPromoPreset: (data: Promo) => {
-            dispatch(savePlaylistPromoPresetAction(data));
+        savePlaylistPromoPreset: (data: Promo, playlistId: string) => {
+            dispatch(savePlaylistPromoPresetAction(data, playlistId));
         },
-        deletePlaylistPromoPreset: (data: Promo) => {
-            dispatch(deletePlaylistPromoPresetAction(data));
+        deletePlaylistPromoPreset: (data: Promo, playlistId: string) => {
+            dispatch(deletePlaylistPromoPresetAction(data, playlistId));
         },
         getGroupsInfos: () => {
             dispatch(getGroupPricesAction());

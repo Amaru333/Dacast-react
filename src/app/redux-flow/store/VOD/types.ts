@@ -13,7 +13,7 @@ import { VodPaywallReducer } from './Paywall/reducer';
 import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
-import { ContentPaywallPageInfos } from '../Paywall/Presets/types'
+import { ContentPaywallState } from '../Paywall/Presets/types'
 
 
 export const vodInitialState: VodState = {
@@ -24,7 +24,7 @@ export const vodInitialState: VodState = {
     renditions: {},
     theming: {},
     engagement: {},
-    paywall: false
+    paywall: {}
 };
 
 
@@ -36,7 +36,7 @@ export interface  VodState {
     renditions: RenditionsListState;
     theming: ContentThemeState;
     engagement: ContentEngagementSettingsState;
-    paywall: false | ContentPaywallPageInfos;
+    paywall: ContentPaywallState;
 }
 
 export const VodReducer: Reducer<VodState> = combineReducers({

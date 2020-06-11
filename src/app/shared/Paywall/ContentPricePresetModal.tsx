@@ -35,7 +35,7 @@ const defaultPreset: Preset = {
     }
 }
 
-export const ContentPricePresetsModal = (props: { action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function }) => {
+export const ContentPricePresetsModal = (props: {contentId: string; action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function }) => {
 
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
@@ -156,7 +156,7 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
             <div className='col col-12 mt3'>
                 <Button
                     disabled={!newPricePreset.name || (newPricePreset.type === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || newPricePreset.prices.some(price => Number.isNaN(price.value))}
-                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPricePreset) }; props.action(newPricePreset); props.toggle(false) }} className='mr2'
+                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPricePreset) }; props.action(newPricePreset, props.contentId); props.toggle(false) }} className='mr2'
                     typeButton='primary'
                     sizeButton='large'
                     buttonColor='blue'>

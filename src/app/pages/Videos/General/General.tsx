@@ -165,7 +165,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
     
     return (
-        VodDetails ?
+        VodDetails &&
             <React.Fragment>
                 <Card className="col-12 clearfix">
                     <div className="details col col-12">
@@ -395,7 +395,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         </Modal>
                     }
                     {
-                        imageModalOpen ?
+                        imageModalOpen &&
                             <ImageModal
                                 imageFileName={selectedImageName} 
                                 imageType={handleImageModalFunction()} 
@@ -411,7 +411,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 uploadedImageFiles={uploadedImageFiles}
                                 setUploadedImageFiles={setUploadedImageFiles}
                             />
-                            : null
                     }
 
                 </Card>
@@ -424,8 +423,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                 }
                 <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
             </React.Fragment>
-            
-            : null
             
     )
 
