@@ -17,7 +17,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
-    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setCurrentPage('list')
