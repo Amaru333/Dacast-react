@@ -46,7 +46,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.vodPaywallInfos) {
+        if(!props.vodPaywallInfos[vodId]) {
             props.getVodPaywallInfos(vodId)
         }
         if(!props.groupsInfos) {
