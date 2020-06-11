@@ -34,6 +34,8 @@ import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
 import { AddStreamModal } from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
+import { boolean } from '@storybook/addon-knobs';
+import { string } from 'prop-types';
 
 // Any additional component props go here.
 interface MainProps {
@@ -60,6 +62,38 @@ export const updateStateTitle = (pathname: string) => {
 history.listen((location) => {
     updateStateTitle(location.pathname)
 });
+
+class ErrorBoundary extends React.Component {
+    constructor(props: any) {
+      super(props);
+      this.state = {
+            hasError: false,
+            info: '',
+            errorDetails: null 
+        };
+    }
+  
+    componentDidCatch(error, info) {
+      // Display fallback UI
+      this.setState({ hasError: true, info: info.componentStack, errorDetails: error.message });
+      // You can also log the error to an error reporting service
+    //   logErrorToMyService(error, info);
+    }
+  
+    render() {
+      if (this.state.hasError) {
+        // You can render any custom fallback UI
+        return (
+            <div className='mx-auto'>
+                <h1>Something went wrong.</h1>
+                <p>Information: {this.state.info}</p>
+                <p>Error Details: {this.state.errorDetails}</p>
+            </div>
+        )
+      }
+      return this.props.children;
+    }
+  }
 
 // Create an intersection type of the component props and our Redux props.
 const AppContent = () => {
@@ -119,8 +153,11 @@ const AppContent = () => {
 
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+     
                         <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
-                            <props.component {...props} />
+                            <ErrorBoundary>
+                                <props.component {...props} />
+                            </ErrorBoundary>
                         </Content>
                         <div id="navigationConfirmationModal"></div>
                     </FullContent>
