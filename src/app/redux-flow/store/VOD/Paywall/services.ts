@@ -46,11 +46,44 @@ const getVodPaywallPrices = async (vodId: string) => {
 const createVodPricePreset = async (data: Preset, vodId: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            contentId: `${userId}-vod-${vodId}`,
+            prices: data.prices,
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence,
+                    value: 1
+                }
+            }
+        }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                contentId: `${userId}-vod-${vodId}`,
+                prices: data.prices,
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase(),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                contentId: `${userId}-vod-${vodId}`,
+                prices: data.prices,
+                settings: {
+                    startDate: Date.now()
+                }
+            }
+        }
+    } 
+
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            prices: data.prices,
-            settings: data.settings,
-            contentId: `${userId}-vod-${vodId}`
+           ...parsedPrice
         },
         {
             headers: {

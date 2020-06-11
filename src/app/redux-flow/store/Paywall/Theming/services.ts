@@ -34,9 +34,15 @@ const savePaywallTheme = async (data: PaywallTheme) => {
 const createPaywallTheme = async (data: PaywallTheme) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
+    let parsedData = {
+        name: data.name,
+        isDefault: data.isDefault,
+        splashScreen: data.splashScreen,
+        loginScreen: data.loginScreen
+    }
     return axios.post(process.env.API_BASE_URL + '/paywall/themes/', 
         {
-            ...data
+            ...parsedData
         },
         {
             headers: {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { parse } from 'path';
 
 const getLivePaywallInfos = async (liveId: string) => {
     await isTokenExpired()
@@ -44,11 +45,44 @@ const getLivePaywallPrices = async (liveId: string) => {
 const createLivePricePreset = async (data: Preset, liveId: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            contentId: `${userId}-live-${liveId}`,
+            prices: data.prices,
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence,
+                    value: 1
+                }
+            }
+        }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                contentId: `${userId}-live-${liveId}`,
+                prices: data.prices,
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase(),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                contentId: `${userId}-live-${liveId}`,
+                prices: data.prices,
+                settings: {
+                    startDate: Date.now()
+                }
+            }
+        }
+    } 
+
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            prices: data.prices,
-            settings: data.settings,
-            contentId: `${userId}-live-${liveId}`
+            ...parsedPrice
         },
         {
             headers: {
