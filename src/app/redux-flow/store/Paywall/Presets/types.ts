@@ -32,6 +32,9 @@ export interface Preset {
     prices: Price[];
     settings: PriceSettings;
     contentId?: string;
+    price?: number;
+    currency?: string;
+    description?: string;
 }
 
 export interface Promo {

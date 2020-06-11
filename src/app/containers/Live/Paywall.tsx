@@ -69,7 +69,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
         if (props.livePaywallInfos[liveId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Price',
                 type: 'Pay Per View',
                 prices: [
                     
@@ -91,7 +91,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Promo',
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,

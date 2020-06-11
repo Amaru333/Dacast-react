@@ -80,8 +80,8 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.type}</Text>,
-                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices[0].value}</Text>,
-                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices[0].currency}</Text>,
+                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : preset.price}</Text>,
+                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : preset.currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence ? preset.settings.recurrence.recurrence : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
@@ -223,7 +223,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 {props.contentPaywallInfos.prices ? 
                     <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                     :
-                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Prices')} />
 
                 }
                 <BorderStyle className='my2' />
@@ -233,7 +233,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 { props.contentPaywallInfos.promos ?
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                     :                    
-                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promos')} />
 
                 }
 
@@ -252,16 +252,16 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings, props.contentId)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal hasClose={false} modalTitle='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Create Price' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
                 <ContentPricePresetsModal contentId={props.contentId} action={ props.createContentPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Price' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={props.saveContentPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Create Promo' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
                 <ContentPromoPresetsModal action={ props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Promo' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={props.saveContentPromoPreset} promo={selectedPromo} toggle={setEditPromoPresetsModalOpened} />
             </Modal>
             <Prompt when={contentPaywallSettings !== props.contentPaywallInfos} message='' />

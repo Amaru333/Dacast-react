@@ -68,7 +68,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if (props.vodPaywallInfos[vodId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Price',
                 type: 'Pay Per View',
                 prices: [
                     
@@ -90,7 +90,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Promo',
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,

@@ -67,7 +67,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
         if (props.playlistPaywallInfos[playlistId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Price',
                 type: 'Pay Per View',
                 prices: [
                     
@@ -89,7 +89,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Promo',
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
