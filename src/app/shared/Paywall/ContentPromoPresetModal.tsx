@@ -23,7 +23,9 @@ const defaultPromo: Promo = {
     endDate: null,
     endTime: null,
     timezone: moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')',
-    discountApplied: 'Once'
+    discountApplied: 'Once',
+    assignedContentIds: [],
+    assignedGroupIds: []
 }
 
 export const ContentPromoPresetsModal = (props: { contentId: string; action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
@@ -38,6 +40,7 @@ export const ContentPromoPresetsModal = (props: { contentId: string; action: Fun
                     id='pricePresetSelectDropdown'
                     className='col col-6'
                     dropdownTitle='Preset'
+                    dropdownDefaultSelect='Custom Promo'
                     list={props.presetList ? props.presetList.reduce((reduced: DropdownListType, preset: Promo) => { return { ...reduced, [preset.name]: false } }, {}) : {}}
                     callback={(selectedPreset: string) => { return setNewPromoPreset(props.presetList.find(preset => preset.name === selectedPreset)); }}
                 />

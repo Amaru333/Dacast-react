@@ -17,22 +17,42 @@ const getPricePresetsList = async (qs: string) => {
 const createPricePreset = async (data: Preset) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    let testObject = {
-        name: data.name,
-        type: "price",
-        prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
-        settings: {
-            duration: {
-                value: data.settings.duration.value,
-                unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1)
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
             }
         }
-    }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+                settings: {
+                    startDate: Date.now()
+                }
+            }
+        }
+    } 
     return axios.post(process.env.API_BASE_URL + '/paywall/prices/presets' , 
         {
-            name: testObject.name,
-            type: testObject.type,
-            preset: testObject  
+            name: data.name,
+            type: 'price',
+            preset: parsedPrice  
         },
         {
             headers: {

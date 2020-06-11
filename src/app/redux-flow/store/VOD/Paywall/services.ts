@@ -50,7 +50,7 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
     if(data.type === 'Subscription') {
         parsedPrice = {
             contentId: `${userId}-vod-${vodId}`,
-            prices: data.prices,
+            prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
             settings: {
                 recurrence: {
                     recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
@@ -62,7 +62,7 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
         if(data.settings.startMethod === 'Upon Purchase') {
             parsedPrice = {
                 contentId: `${userId}-vod-${vodId}`,
-                prices: data.prices,
+                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
@@ -73,7 +73,7 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
         } else {
             parsedPrice = {
                 contentId: `${userId}-vod-${vodId}`,
-                prices: data.prices,
+                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
                 settings: {
                     startDate: Date.now()
                 }

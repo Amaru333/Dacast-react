@@ -76,6 +76,7 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
                     id='pricePresetSelectDropdown'
                     className='col col-6'
                     dropdownTitle='Preset'
+                    dropdownDefaultSelect='Custom Price'
                     list={props.presetList ? props.presetList.reduce((reduced: DropdownListType, preset: Preset) => { return { ...reduced, [preset.name]: false } }, {}) : {}}
                     callback={(selectedPreset: string) => { return setNewPricePreset(props.presetList.find(preset => preset.name === selectedPreset)); }}
                 />
