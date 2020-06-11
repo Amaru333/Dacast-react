@@ -30,10 +30,15 @@ export const SignupPage = (props: SignupContainerProps) => {
     const onSubmit = (data: UserInfo) => { 
         setSubmitLoading(true);
         props.signup(data, () => {
-            history.push('/confirm-email');
             setSubmitLoading(false);
         });
     }
+
+    React.useEffect(() => {
+        if (props.UserInfo.email) {
+        history.push('/confirm-email')
+        }
+    }, [props.UserInfo.email])
 
     useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
 
