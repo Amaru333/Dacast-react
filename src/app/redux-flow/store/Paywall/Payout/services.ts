@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PaymentMethodRequest, WithdrawalRequest } from './types';
+import { PaymentMethod, WithdrawalRequest } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
@@ -28,7 +28,7 @@ const getWithdrawalRequests = async () => {
     )
 }
 
-const addPaymentMethodRequest = (data: PaymentMethodRequest) => {
+const addPaymentMethodRequest = (data: PaymentMethod) => {
     return axios.post(urlBase + 'paywall-payout-payment-method-request', {data: data});
 }
 

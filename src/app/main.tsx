@@ -36,6 +36,7 @@ import { AddStreamModal } from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { boolean } from '@storybook/addon-knobs';
 import { string } from 'prop-types';
+import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 
 // Any additional component props go here.
 interface MainProps {
@@ -83,13 +84,7 @@ class ErrorBoundary extends React.Component {
     render() {
       if (this.state.hasError) {
         // You can render any custom fallback UI
-        return (
-            <div className='mx-auto'>
-                <h1>Something went wrong.</h1>
-                <p>Information: {this.state.info}</p>
-                <p>Error Details: {this.state.errorDetails}</p>
-            </div>
-        )
+        return <ErrorPlaceholder />
       }
       return this.props.children;
     }

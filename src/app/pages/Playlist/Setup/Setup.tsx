@@ -46,7 +46,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [playlistSettingsOpen, setPlaylistSettingsOpen] = React.useState<boolean>(false);
 
-    const [sortSettings, setSortSettings] = React.useState<{name: string; value: string}>({name: 'Sort', value: ''});
+    const [sortSettings, setSortSettings] = React.useState<{name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc"}>({name: 'Sort', value: 'custom'});
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
     const [maxNumberItems, setMaxNumberItems] = React.useState<number>(NaN);
 
@@ -63,9 +63,6 @@ export const SetupPage = (props: SetupComponentProps) => {
         let returnedString= `page=1&per-page=200&content-types=channel,vod&`
         if(searchString) {
             returnedString += `keyword=${searchString}&`
-        }
-        if(sortSettings) {
-            returnedString += `sort-by=${sortSettings.value}&`
         }
         if(returnedString.indexOf('status') === -1) {
             returnedString += 'status=online,offline,processing'
@@ -88,8 +85,8 @@ export const SetupPage = (props: SetupComponentProps) => {
         }
     }, [selectedFolder])
 
-    const handleRowIconType = (item: 'playlist' | 'vod' | 'channel' | 'folder') => {
-        switch (item) {
+    const handleRowIconType = (item: FolderAsset) => {
+        switch (item.type) {
             case 'playlist':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
             case 'folder':
@@ -315,17 +312,18 @@ export const SetupPage = (props: SetupComponentProps) => {
         newData.contentList = newContent;
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
-        newData.playlistType = selectedTab
+        newData.playlistType = selectedTab;
+        newData.sortType = sortSettings.value
         props.savePlaylistSetup(newData, props.playlistData.id, () => {
             setSaveLoading(false)
         })
     }
 
     const bulkActions = [
-        { name: 'Name (A-Z)', value: 'title-asc' },
-        { name: 'Name (Z-A)', value: 'title-desc' },
-        { name: 'Date Created (Newest First)', value: 'created-at-asc'},
-        { name: 'Date Created (Oldest First)', value: 'created-at-desc'},
+        { name: 'Name (A-Z)', value: 'A-to-Z' },
+        { name: 'Name (Z-A)', value: 'Z-to-A' },
+        { name: 'Date Created (Newest First)', value: 'date-asc'},
+        { name: 'Date Created (Oldest First)', value: 'date-desc'},
     ]
 
     const renderList = () => {
