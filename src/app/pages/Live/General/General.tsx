@@ -22,8 +22,6 @@ import { BubbleContent } from '../../../shared/Security/SecurityStyle';
 import { getPrivilege } from '../../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { LiveGeneralProps } from '../../../containers/Live/General';
-import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
-import { usePlayer } from '../../../utils/player';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 var moment = require('moment-timezone');

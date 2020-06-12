@@ -58,9 +58,9 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleThemeSave = () => {
         setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme, () => setButtonLoading(true))
+            props.createTheme(selectedTheme, () => setButtonLoading(false))
         } else {
-            props.saveTheme(selectedTheme, props.contentId)
+            props.saveTheme(selectedTheme, props.contentId, () => setButtonLoading(false))
         }
     }
 

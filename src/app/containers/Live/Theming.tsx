@@ -61,8 +61,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveTheme: (liveId: string) => {
             dispatch(getLiveThemeAction(liveId));
         },
-        saveLiveTheme: (theme: ThemeOptions, liveId: string) => {
-            dispatch(saveLiveThemeAction(theme, liveId));
+        saveLiveTheme: (theme: ThemeOptions, liveId: string, callback: () => void) => {
+            dispatch(saveLiveThemeAction(theme, liveId)).then(callback);
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
