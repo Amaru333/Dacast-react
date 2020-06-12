@@ -4,9 +4,14 @@ import { showToastNotification } from '../../Toasts';
 import { ActionTypes, PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from './types';
 import { PayoutServices } from './services';
 
-export interface GetPayoutInfos {
-    type: ActionTypes.GET_PAYOUT_INFOS;
-    payload: PayoutInfos;
+export interface GetPaymentMethods {
+    type: ActionTypes.GET_PAYMENT_METHODS;
+    payload: {data: any};
+}
+
+export interface GetWithdrawalRequests {
+    type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
+    payload: {data: any};
 }
 
 export interface AddPaymentMethodRequest {
@@ -24,11 +29,22 @@ export interface AddWithdrawalRequest {
     payload: WithdrawalRequest;
 }
 
-export const getPayoutInfosAction = (): ThunkDispatch<Promise<void>, {}, GetPayoutInfos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPayoutInfos>) => {
-        await PayoutServices.getPayoutInfos()
+export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetPaymentMethods> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPaymentMethods>) => {
+        await PayoutServices.getPaymentMethods()
             .then( response => {
-                dispatch({type: ActionTypes.GET_PAYOUT_INFOS, payload: response.data});
+                dispatch({type: ActionTypes.GET_PAYMENT_METHODS, payload: response.data});
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+            })
+    }
+}
+
+export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, GetWithdrawalRequests> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetWithdrawalRequests>) => {
+        await PayoutServices.getWithdrawalRequests()
+            .then( response => {
+                dispatch({type: ActionTypes.GET_WITHDRAWAL_REQUESTS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -72,4 +88,4 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
 }
 
 
-export type Action = GetPayoutInfos | AddPaymentMethodRequest | DeletePaymentMethodRequest | AddWithdrawalRequest
+export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethodRequest | DeletePaymentMethodRequest | AddWithdrawalRequest

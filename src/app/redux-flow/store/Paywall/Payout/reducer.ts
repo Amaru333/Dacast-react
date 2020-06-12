@@ -4,20 +4,20 @@ import { ActionTypes, PayoutInfos, payoutInitialState,  } from "./types";
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
     switch (action.type) {
-        case ActionTypes.GET_PAYOUT_INFOS :
+        case ActionTypes.GET_PAYMENT_METHODS :
             return {
                 ...state,
-                ...action.payload
+                paymentMethods: action.payload
             }
         case ActionTypes.ADD_PAYMENT_METHOD_REQUEST :
             return {
                 ...state,
-                paymentMethodRequests: {...state.paymentMethodRequests, ...action.payload}
+                paymentMethodRequests: {...state.paymentMethods, ...action.payload}
             }
         case ActionTypes.DELETE_PAYMENT_METHOD_REQUEST :
             return {
                 ...state,
-                paymentMethodRequests: Object.keys(state.paymentMethodRequests).reduce((reduced, paymentRequest) => {return action.payload !== paymentRequest ? {...reduced, [paymentRequest]: state.paymentMethodRequests[paymentRequest]} : {...reduced}}, {})
+                paymentMethodRequests: Object.keys(state.paymentMethods).reduce((reduced, paymentRequest) => {return action.payload !== paymentRequest ? {...reduced, [paymentRequest]: state.paymentMethods[paymentRequest]} : {...reduced}}, {})
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
             let withdrawalRequests = [];

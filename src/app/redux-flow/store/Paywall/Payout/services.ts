@@ -1,10 +1,31 @@
 import axios from 'axios';
 import { PaymentMethodRequest, WithdrawalRequest } from './types';
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
-const getPayoutInfos = () => {
-    return axios.get(urlBase + 'paywall-payout');
+const getPaymentMethods = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return await axios.get(process.env.API_BASE_URL + '/paywall/payment-methods', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const getWithdrawalRequests = async () => {
+    await isTokenExpired()
+    let {token} = addTokenToHeader()
+    return await axios.get(process.env.API_BASE_URL + '/paywall/payment-requests', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const addPaymentMethodRequest = (data: PaymentMethodRequest) => {
@@ -20,7 +41,8 @@ const addWithdrawalRequest = (data: WithdrawalRequest) => {
 }
 
 export const PayoutServices = {
-    getPayoutInfos,
+    getPaymentMethods,
+    getWithdrawalRequests,
     addPaymentMethodRequest,
     deletePaymentMethodRequest,
     addWithdrawalRequest

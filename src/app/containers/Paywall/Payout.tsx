@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PayoutPage } from '../../pages/Paywall/Payout/Payout';
-import { Action, getPayoutInfosAction, addPaymentMethodRequestAction, deletePaymentMethodRequestAction, addWithdrawalRequestAction } from '../../redux-flow/store/Paywall/Payout/actions'
+import { Action, addPaymentMethodRequestAction, deletePaymentMethodRequestAction, addWithdrawalRequestAction, getPaymentMethodsAction, getWithdrawalRequestsAction } from '../../redux-flow/store/Paywall/Payout/actions'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from '../../redux-flow/store/Paywall/Payout';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -13,7 +13,8 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PayoutComponentProps {
     payoutInfos: PayoutInfos;
-    getPayoutInfos: Function;
+    getPaymentMethods: Function;
+    getWithdrawalRequests: Function;
     addPaymentMethodRequest: Function;
     deletePaymentMethodRequest: Function;
     addWithdrawalRequest: Function;
@@ -25,7 +26,8 @@ const Payout = (props: PayoutComponentProps) => {
 
     React.useEffect(() => {
         if(!props.payoutInfos) {
-            props.getPayoutInfos();
+            props.getPaymentMethods()
+            props.getWithdrawalRequests()
         }
     }, []) 
 
@@ -44,8 +46,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPayoutInfos: () => {
-            dispatch(getPayoutInfosAction());
+        getPaymentMethods: () => {
+            dispatch(getPaymentMethodsAction());
+        },
+        getWithdrawalRequests: () => {
+            dispatch(getWithdrawalRequestsAction())
         },
         addPaymentMethodRequest: (data: PaymentMethodRequest) => {
             dispatch(addPaymentMethodRequestAction(data));
