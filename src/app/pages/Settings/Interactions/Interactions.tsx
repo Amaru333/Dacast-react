@@ -63,7 +63,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
     let playerRef = React.useRef<HTMLDivElement>(null);
 
-    let player = usePlayer(playerRef, '1552_f_297509');
+    let player = usePlayer(playerRef, '1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22');
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
 
