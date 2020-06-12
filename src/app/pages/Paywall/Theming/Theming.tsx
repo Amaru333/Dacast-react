@@ -35,6 +35,16 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     }
     const [selectedTheme, setSelectedTheme] = React.useState<PaywallTheme>(newTheme);
     const [selectedTab, setSelectedTab] = React.useState<string>('Splash Screen');
+    const [saveButtonLoadng, setSaveButtonLoading] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        setCurrentPage('list')
+        setSaveButtonLoading(false)
+    }, [props.paywallThemes.themes])
+
+    const handleSave = () => {
+        selectedTheme.id === '-1' ? props.createPaywallTheme(selectedTheme) : props.savePaywallTheme(selectedTheme)
+    }
 
     const PaywallThemingList = () => {
 
@@ -53,7 +63,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
                         <ActionIcon>
-                            <IconStyle id={"copyTooltip" + key}>file_copy</IconStyle>
+                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, name: `${theme.name} Copy`})}>file_copy</IconStyle>
                             <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -219,7 +229,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     </div>
                 </Card>
                 <div className='flex mt2'>
-                    <Button className='mr2' disabled={selectedTheme.name === ''} onClick={() => {setCurrentPage('list');selectedTheme.id === '-1' ? props.createPaywallTheme(selectedTheme) : props.savePaywallTheme(selectedTheme)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button isLoading={saveButtonLoadng} className='mr2' disabled={selectedTheme.name === ''} onClick={() => {handleSave();setSaveButtonLoading(true)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => setCurrentPage('list')} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
             </div>
