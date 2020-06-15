@@ -1,8 +1,9 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, PayoutInfos, payoutInitialState,  } from "./types";
+import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod,  } from "./types";
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
+    let paymentMethods: PaymentMethod[] = []
     switch (action.type) {
         case ActionTypes.GET_PAYMENT_METHODS :
             return {
@@ -14,15 +15,32 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 ...state,
                 withdrawalRequests: action.payload.data.widthdrawals
             }
-        case ActionTypes.ADD_PAYMENT_METHOD_REQUEST :
+        case ActionTypes.ADD_PAYMENT_METHOD :
+            paymentMethods = state.paymentMethods.slice();
+            paymentMethods.splice(paymentMethods.length, 0, action.payload);
             return {
                 ...state,
-                paymentMethods: action.payload
+                paymentMethods: paymentMethods
             }
-        case ActionTypes.DELETE_PAYMENT_METHOD_REQUEST :
+        case ActionTypes.UPDATE_PAYMENT_METHOD :
             return {
                 ...state,
-                paymentMethods: Object.keys(state.paymentMethods).reduce((reduced, paymentRequest) => {return action.payload !== paymentRequest ? {...reduced, [paymentRequest]: state.paymentMethods[paymentRequest]} : {...reduced}}, {})
+                paymentMethods: state.paymentMethods.map((item) => {
+                    if(item.id !== action.payload.id) {
+                        return item;
+                    }
+                    else {
+                        return {
+                            ...item,
+                            ...action.payload
+                        }
+                    }
+                })
+            }
+        case ActionTypes.DELETE_PAYMENT_METHOD :
+            return {
+                ...state,
+                paymentMethods: state.paymentMethods.filter(p => p.id !== action.payload.id)
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
             let withdrawalRequests = [];

@@ -14,14 +14,19 @@ export interface GetWithdrawalRequests {
     payload: {data: {widthdrawals: WithdrawalRequest[]}};
 }
 
-export interface AddPaymentMethodRequest {
-    type: ActionTypes.ADD_PAYMENT_METHOD_REQUEST;
+export interface AddPaymentMethod {
+    type: ActionTypes.ADD_PAYMENT_METHOD;
     payload: PaymentMethod;
 }
 
-export interface DeletePaymentMethodRequest {
-    type: ActionTypes.DELETE_PAYMENT_METHOD_REQUEST;
-    payload: string;
+export interface UpdatePaymentMethod {
+    type: ActionTypes.UPDATE_PAYMENT_METHOD;
+    payload: PaymentMethod;
+}
+
+export interface DeletePaymentMethod {
+    type: ActionTypes.DELETE_PAYMENT_METHOD;
+    payload: PaymentMethod;
 }
 
 export interface AddWithdrawalRequest {
@@ -51,11 +56,11 @@ export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, 
     }
 }
 
-export const addPaymentMethodRequestAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, AddPaymentMethodRequest> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, AddPaymentMethodRequest>) => {
-        await PayoutServices.addPaymentMethodRequest(data)
+export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, AddPaymentMethod> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, AddPaymentMethod>) => {
+        await PayoutServices.addPaymentMethod(data)
             .then( response => {
-                dispatch({type: ActionTypes.ADD_PAYMENT_METHOD_REQUEST, payload: response.data});
+                dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.data.data.id}});
                 dispatch(showToastNotification(`Withdrawl Method has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
@@ -63,11 +68,23 @@ export const addPaymentMethodRequestAction = (data: PaymentMethod): ThunkDispatc
     }
 }
 
-export const deletePaymentMethodRequestAction = (data: string): ThunkDispatch<Promise<void>, {}, DeletePaymentMethodRequest> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePaymentMethodRequest>) => {
-        await PayoutServices.deletePaymentMethodRequest(data)
+export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, UpdatePaymentMethod> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UpdatePaymentMethod>) => {
+        await PayoutServices.deletePaymentMethod(data)
             .then( response => {
-                dispatch({type: ActionTypes.DELETE_PAYMENT_METHOD_REQUEST, payload: response.data});
+                dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
+                dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+            })
+    }
+}
+
+export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, DeletePaymentMethod> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePaymentMethod>) => {
+        await PayoutServices.deletePaymentMethod(data)
+            .then( response => {
+                dispatch({type: ActionTypes.DELETE_PAYMENT_METHOD, payload: data});
                 dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
@@ -88,4 +105,4 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
 }
 
 
-export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethodRequest | DeletePaymentMethodRequest | AddWithdrawalRequest
+export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethod | UpdatePaymentMethod | DeletePaymentMethod | AddWithdrawalRequest

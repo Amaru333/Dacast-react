@@ -29,7 +29,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className='mt25'>
                     <Toggle id='paypalPurchasesToggle' label='PayPal Purchases' defaultChecked={props.paywallSettingsInfos.paypalPurchases} onChange={() => setSettingsInfos({...settingsInfos, paypalPurchases: !settingsInfos.paypalPurchases})} />
                     {
-                        settingsInfos.paypalPurchases ? 
+                        settingsInfos.paypalPurchases &&
                             <>
                                 <div className="mt1">
                                     <Text size={14} weight='reg'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password.</Text>
@@ -40,7 +40,6 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                                     <Text size={14} weight='reg' >Agree to <a target="_blank" rel="noopener noreferrer" href="https://www.paypal.com/us/webapps/mpp/ua/useragreement-full" > PayPal User Agreement</a></Text>
                                 </div>
                             </>
-                            : null
                     }
 
                 </div>
@@ -50,7 +49,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
             </Card>
-            { settingsInfos === props.paywallSettingsInfos ? null :
+            { settingsInfos !== props.paywallSettingsInfos &&
                 <div>
                     <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>

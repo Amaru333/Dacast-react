@@ -10,8 +10,7 @@ import { WithdrawalModal } from './WithdrawalModal';
 import { PayoutComponentProps } from '../../../containers/Paywall/Payout';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
-import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
-import styled from 'styled-components';
+import { IconStyle, ActionIcon, IconContainer } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
 
@@ -26,7 +25,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             data: [
                 { cell: <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Method</Text> },
                 { cell: <Text key='paymentMethodTableHeaderlastUpdated' size={14} weight='med'>Last Updated</Text> },
-                { cell: <Button key='paymentMethodTableHeaderActionButton' className='right mr2 sm-show' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
+                { cell: <Button key='paymentMethodTableHeaderActionButton' className='right mr2 sm-show' onClick={() => {setSelectedPaymentMethod(null); setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
             ]
         }
     }
@@ -40,7 +39,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>lol</Text>,
                         <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                             <ActionIcon>
-                                <IconStyle id={"deleteTooltip" + i} onClick={() => { props.deletePaymentMethodRequest(item) }}>delete</IconStyle>
+                                <IconStyle id={"deleteTooltip" + i} onClick={() => { props.deletePaymentMethod(item) }}>delete</IconStyle>
                                 <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
                             </ActionIcon>
                             <ActionIcon>
@@ -57,7 +56,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const emptyPaymentMethodTableHeader = () => {
         return {
             data: [
-                { cell: <Button key='paymentMethodTableHeaderActionButton' className='right sm-show mr2' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
+                { cell: <Button key='paymentMethodTableHeaderActionButton' className='right sm-show mr2' onClick={() => { setSelectedPaymentMethod(null);setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
             ]
         }
     }
@@ -75,7 +74,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
 
     const handleNewWithdrawlRequest = () => {
-        if (props.payoutInfos.paymentMethods && Object.keys(props.payoutInfos.paymentMethods).length !== 0) {
+        if (props.payoutInfos.paymentMethods && props.payoutInfos.paymentMethods.length !== 0) {
             setWithdrawalModalOpened(true)
         } else {
             props.showToast("You must add a Payment Request Method before you can Request a Withdrawal", 'fixed', "error")
@@ -148,7 +147,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             }]}
 
     return displayPaymentMethodRequest ?
-        <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} selectedPaymentMethod={selectedPaymentMethod} />
+        <PaywallPaymentMethod addPaymentMethodRequest={selectedPaymentMethod ? props.updatePaymentMethod : props.addPaymentMethod} displayPage={setDisplayPaymentMethodRequest} selectedPaymentMethod={selectedPaymentMethod} />
         :
         <div>
             <Card>
@@ -177,11 +176,3 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             </Modal>
         </div>
 }
-
-const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
-        color:  ${props => props.theme.colors["gray-1"]};
-    }
-`
