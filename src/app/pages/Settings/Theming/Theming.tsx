@@ -20,7 +20,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     React.useEffect(() => {
         setCurrentPage('list')
-    }, [props.themingList.themes.length])
+    }, [props.themingList.themes])
 
     const ThemingOptions = () => {
         return (

@@ -59,7 +59,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
             if(selectedOption === 'upload') {
                 props.getUploadUrl(props.imageType, props.contentId, () => {setSaveButtonLoading(false)})
             } else {
-                props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType, () => {setSaveButtonLoading(false)})
+                props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType, () => {setSaveButtonLoading(false);props.toggle()})
             }    
         }
     }
