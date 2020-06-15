@@ -43,14 +43,16 @@ export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispa
     };
 }
 
-export const saveProfilePasswordAction = (currentPassword: string, newPassword: string): ThunkDispatch<Promise<void>, {}, SaveProfilePassword> => {
+export const saveProfilePasswordAction = (currentPassword: string, newPassword: string, handleSuccess: Function, handleError: Function): ThunkDispatch<Promise<void>, {}, SaveProfilePassword> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePassword> ) => {
         await ProfileServices.saveProfilePasswordService(currentPassword, newPassword)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PROFILE_PASSWORD, payload: response.data.data} );
                 dispatch(showToastNotification("Password saved!", 'flexible', "success"));
+                handleSuccess();
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                handleError()
             })
     };
 }

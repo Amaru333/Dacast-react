@@ -48,8 +48,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveProfilePageDetails: (data: ProfilePageInfos, callback?: Function) => {
             dispatch(saveProfilePageDetailsAction(data)).then(callback);
         },
-        saveProfilePassword: (currentPassword: string, newPassword: string) => {
-            dispatch(saveProfilePasswordAction(currentPassword, newPassword));
+        saveProfilePassword: (currentPassword: string, newPassword: string, handleSuccess?: Function, handleError?: Function) => {
+            dispatch(saveProfilePasswordAction(currentPassword, newPassword, handleSuccess, handleError))
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

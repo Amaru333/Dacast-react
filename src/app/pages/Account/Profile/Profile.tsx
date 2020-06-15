@@ -13,6 +13,9 @@ import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo, ToggleCon
 import { ProfilePageInfos } from '../../../redux-flow/store/Account/Profile/types';
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
+import { Bubble } from '../../../../components/Bubble/Bubble';
+import { initUserInfo } from '../../../utils/token';
+import { IconStyle } from '../../../../shared/Common/Icon';
 
 var moment = require('moment-timezone');
 
@@ -29,6 +32,11 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
     const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
+    const [passwordModalErrorHidden, setPasswordModalErrorHidden] = React.useState<boolean>(true)
+    const [currentPasswordVisible, setCurrentPasswordVisible] = React.useState<boolean>(false)
+    const [newPasswordVisible, setNewPasswordVisible] = React.useState<boolean>(false)
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState<boolean>(false)
+    const [changePasswordButtonLoading, SetChangePasswordButtonLoading] = React.useState<boolean>(false)
 
     /** Validation */
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
@@ -36,6 +44,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         mode: 'onBlur',
         defaultValues: props.ProfilePageDetails,
     })
+
     const { dirty } = formState;
 
     const onSubmit = (data: any) => {
@@ -45,11 +54,21 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         });
     }
 
-    const onPasswordSubmit = (data: any) => {
-        props.saveProfilePassword(data.currentPassword, data.newPassword);
-        setPasswordModalToggle(false)    
+    const handlePasswordSuccess = () => {
+        setPasswordModalErrorHidden(true)
+        setPasswordModalToggle(false)
+        SetChangePasswordButtonLoading(false)
     }
 
+    const handlePasswordError = () => {
+        setPasswordModalErrorHidden(false)
+        SetChangePasswordButtonLoading(false)
+    }
+
+    const onPasswordSubmit = () => {
+        props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword, handlePasswordSuccess, handlePasswordError)  
+    };
+        
     const { register: registerPassword, handleSubmit: handleSubmitPassword, errors: errorsPassword, getValues: getPasswordValues } = useForm({
         reValidateMode: 'onChange',
         mode: 'onBlur'
@@ -161,25 +180,32 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     <>
                         <ModalContent>
                             <form onSubmit={handleSubmitPassword(onPasswordSubmit)}>
+                                <div className="relative flex col col-12 mt1">
                                 <Input
-                                    type="password"
-                                    className="col col-12"
+                                    type={currentPasswordVisible ? "text" : "password"}
                                     id="currentPassword"
                                     label="Current Password"
+                                    className="col col-12"
                                     placeholder="Current Password"
                                     {...handleValidationForm('currentPassword', errorsPassword)} ref={registerPassword({ required: "Required" })}
                                 />
+                                <IconStyle onClick={() => setCurrentPasswordVisible(!currentPasswordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{!currentPasswordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
+                                </div>
+                                <div className="col col-12 mt2 relative flex">
                                 <Input
-                                    
-                                    type="password"
+                                    type={newPasswordVisible ? "text" : "password"}
                                     className="col col-12"
                                     id="newPassword"
                                     label="New Password"
                                     placeholder="New Password"
                                     {...handleValidationForm('newPassword', errorsPassword, 'password', registerPassword)}
+                                    help="Password must contain at least 6 characters"
                                 />
+                                <IconStyle onClick={() => setNewPasswordVisible(!newPasswordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{!newPasswordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
+                                </div>
+                                <div className="col col-12 mt2 flex relative">
                                 <Input
-                                    type="password"
+                                    type={newPasswordVisible ? "text" : "password"}
                                     className="col col-12"
                                     id="confirmPassword"
                                     label="Confirm Password"
@@ -191,10 +217,17 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                         }
                                     })}
                                 />
+                                <IconStyle onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{!confirmPasswordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
+                                </div>
+                                <div className="col col-12 mt2 flex relative">
+                                </div>
                             </form>
+                            <Bubble hidden={passwordModalErrorHidden} type='error' className='my2'>
+                            Unable to change your password. Please check your details and try again.
+                    </Bubble>
                         </ModalContent>
                         <ModalFooter>
-                            <Button sizeButton="large" onClick={() => { props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword); setPasswordModalToggle(false) }} typeButton="primary">Change Password</Button>
+                            <Button sizeButton="large" onClick={() => {onPasswordSubmit();SetChangePasswordButtonLoading(true)}} typeButton="primary" isLoading={changePasswordButtonLoading}>Change Password</Button>
                             <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
                         </ModalFooter>
                     </>
