@@ -59,7 +59,14 @@ export function intToTime(num: number) {
 }
 
 export function getPercentage(num: number, max: number): number {
-    return Math.round((num * 100) / max);
+    var percentage = Math.round((num * 100) / max);
+    if(percentage > 100) {
+        percentage = 100;
+    }
+    if(percentage < 0) {
+        percentage = 0;
+    }
+    return percentage
 }
 
 

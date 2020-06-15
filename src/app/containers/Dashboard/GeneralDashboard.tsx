@@ -105,7 +105,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         {handleButtonToPurchase(storage.percentage, "Storage")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {readableBytes(storage.left)}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
                     </div>
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>

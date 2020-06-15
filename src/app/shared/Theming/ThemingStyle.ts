@@ -47,6 +47,7 @@ opacity: 0.5;
 `
 export const ControlsCard = styled(Card)`
     height: 765px;
+    display: block;
     overflow-y: scroll;
 `
 

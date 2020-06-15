@@ -40,6 +40,29 @@ interface MainProps {
     store: Store<ApplicationState>;
 }
 
+export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
+    let mobileWidth = useMedia('(max-width:780px');
+
+    if (isLoggedIn()) {
+        if (props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
+            return <NotFound />
+        }
+        return (
+            <Route
+                path={props.path}
+                exact={props.exact ? true : false}
+            >
+                <Content isMobile={isMobile || mobileWidth} >
+                    <props.component {...props} />
+                </Content>
+                <div id="navigationConfirmationModal"></div>
+            </Route>
+        )
+    } else {
+        return <Redirect to='/' />;
+    }
+}
+
 export const updateStateTitle = (pathname: string) => {
     var result = AppRoutes.filter(item => pathname.includes(item.path));
     if (/\d/.test(pathname)) { return; }
@@ -62,7 +85,7 @@ history.listen((location) => {
 });
 
 // Create an intersection type of the component props and our Redux props.
-const AppContent = () => {
+const AppContent = (props: { routes: any }) => {
     let location = useLocation()
     let history = useHistory()
 
@@ -97,110 +120,43 @@ const AppContent = () => {
     };
 
     React.useEffect(() => {
-        if(isMobile && (addStreamModalOpen || addPlaylistModalOpen)) {
+        if (isMobile && (addStreamModalOpen || addPlaylistModalOpen)) {
             setOpen(false);
         }
     }, [addStreamModalOpen, addPlaylistModalOpen]);
 
-    const PrivateRoute = (props: {key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege}) => {
-
-        if(isLoggedIn()) {
-            if(props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
-                return <NotFound />
-            }
-            return (
-                <Route
-                    path={props.path}
-                    exact={props.exact ? true : false}
-                >
-                    <MainMenu openAddStream={ () => { setAddStreamModalOpen(true);} } openPlaylist={() => {setAddPlaylistModalOpen(true)}} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+    return (
+        <>
+            <Toasts />
+            {isLoggedIn() ?
+                <>
+                    <PrivateRoute key='/' component={Dashboard} exact path='/' />
+                    <MainMenu openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
 
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
-                        <Content isMobile={isMobile || mobileWidth} isOpen={isOpen}>
-                            <props.component {...props} />
-                        </Content>
-                        <div id="navigationConfirmationModal"></div>
+                        <Switch>
+                            {props.routes}
+                        </Switch>
                     </FullContent>
-                </Route>
-            )
-        } else {
-            return <Redirect to='/' />;
-        }
-    }
-
-
-    const returnRouter = (props: Routes[]) => {
-        return (
-            props.map((route: Routes, i: number) => {
-                if (route.isPublic) {
-                    return <Route key={route.path} path={route.path}><route.component /></Route>;
-                }
-                if (!route.slug) {
-                    return <PrivateRoute key={i.toString()}
-                        path={route.path}
-                        associatePrivilege={route.associatePrivilege}
-                        // pass the sub-routes down to keep nesting
-                        component={route.component}
-                        exact={route.isExact ? true : false}
-                    />
-                } else {
-                    return route.slug.map((subroute, index) => {
-                        return <PrivateRoute key={'subroute' + index}
-                            path={subroute.path}
-                            associatePrivilege={subroute.associatePrivilege}
-                            component={subroute.component}
-                            exact={subroute.isExact ? true : false}                     
-                        />
-                    })
-                }
-            })
-        )
-    }
-
-    if(isLoggedIn()) {
-        let tagManagerArgs = {
-            gtmId: 'GTM-PHZ3Z7F',
-            dataLayer: {
-                'accountId': getUserInfoItem('custom:dacast_user_id'),
-                'companyName': getUserInfoItem('custom:website'),
-                'plan': 'Unknown yet',
-                'signedUp': 'Unknown yet',
-                'userId': getUserInfoItem('custom:dacast_user_id'),
-                'userFirstName': getUserInfoItem('custom:first_name'),
-                'userLastName': getUserInfoItem('custom:last_name'),
-                'userEmail' : getUserInfoItem('email'),
-            }
-        }
-        TagManager.initialize(tagManagerArgs);
-    } else {
-        let tagManagerArgs = {gtmId: 'GTM-PHZ3Z7F'};
-        TagManager.initialize(tagManagerArgs);
-    }
-
-
-    return (
-        <>
-            <Toasts />
-            <Switch>
-                {isLoggedIn() ?
-                    <PrivateRoute key='/' component={Dashboard} exact path='/' />
-
-                    :
+                </>
+                :
+                <>
                     <Route exact path='/'>
                         <Login />
                     </Route>
-                }
-                {returnRouter(AppRoutes)}
-            </Switch>
+                    <Switch>
+                        {props.routes}
+                    </Switch>
+                </>
+            }
         </>
     )
 }
 const Main: React.FC<MainProps> = ({ store }: MainProps) => {
 
-    /** TO DO: Figure out a way to implement the styled components */
     const NavigationConfirmationModal = (props: { callback: Function; message: string }) => {
 
         return (
@@ -226,6 +182,26 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         )
     }
 
+    if (isLoggedIn()) {
+        let tagManagerArgs = {
+            gtmId: 'GTM-PHZ3Z7F',
+            dataLayer: {
+                'accountId': getUserInfoItem('custom:dacast_user_id'),
+                'companyName': getUserInfoItem('custom:website'),
+                'plan': 'Unknown yet',
+                'signedUp': 'Unknown yet',
+                'userId': getUserInfoItem('custom:dacast_user_id'),
+                'userFirstName': getUserInfoItem('custom:first_name'),
+                'userLastName': getUserInfoItem('custom:last_name'),
+                'userEmail': getUserInfoItem('email'),
+            }
+        }
+        TagManager.initialize(tagManagerArgs);
+    } else {
+        let tagManagerArgs = { gtmId: 'GTM-PHZ3Z7F' };
+        TagManager.initialize(tagManagerArgs);
+    }
+
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
         const confirmAndUnmount = (answer: boolean) => {
@@ -237,19 +213,48 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         ), document.getElementById('navigationConfirmationModal'))
     }
 
+    const returnRouter = (props: Routes[]) => {
+        return (
+            props.map((route: Routes, i: number) => {
+                if (route.isPublic) {
+                    return <Route key={route.path} path={route.path}><route.component /></Route>;
+                }
+                if (!route.slug) {
+                    return <PrivateRoute key={i.toString()}
+                        path={route.path}
+                        associatePrivilege={route.associatePrivilege}
+                        // pass the sub-routes down to keep nesting
+                        component={route.component}
+                        exact={route.isExact ? true : false}
+                    />
+                } else {
+                    return route.slug.map((subroute, index) => {
+                        return <PrivateRoute key={'subroute' + index}
+                            path={subroute.path}
+                            associatePrivilege={subroute.associatePrivilege}
+                            component={subroute.component}
+                            exact={subroute.isExact ? true : false}
+                        />
+                    })
+                }
+            })
+        )
+    }
+
+    const routes = returnRouter(AppRoutes);
+
     return (
         <Provider store={store}>
             <ThemeProvider theme={Theme}>
                 <BrowserRouter getUserConfirmation={getUserConfirmation}>
-                    <AppContent />
+                    <AppContent routes={routes} />
                 </BrowserRouter>
             </ThemeProvider>
-
         </Provider>
     );
 };
 
-const Content = styled.div<{ isOpen: boolean; isMobile: boolean }>`
+const Content = styled.div<{ isMobile: boolean }>`
     position: relative;
     height: auto;
     min-height: 100vh;

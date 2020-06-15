@@ -11,6 +11,7 @@ import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../../shared/Common/Icon';
+import { useNetwork } from '../../../utils/customHooks';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -21,6 +22,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const MAX_REQUEST_PER_BATCH = 100
     const NB_CONCURRENT_REQUESTS = 5
 
+    let isOnline = useNetwork()
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
     const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
@@ -28,6 +30,19 @@ export const UploaderPage = (props: UploaderProps) => {
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
 
+    React.useEffect(() => {
+        if(!isOnline) {
+            if(currentUpload && currentUpload.hasStarted) {
+                currentUpload.pauseUpload();
+                console.log("PAUSE");
+            }
+        } else {
+            if(currentUpload) {
+                currentUpload.resumeUpload();
+                console.log("RESUME");
+            }
+        }
+    }, [isOnline])
 
     React.useEffect(() => {
         if(currentUpload && currentUpload.isCompleted) {
@@ -45,6 +60,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
+            
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
@@ -179,7 +195,9 @@ export const UploaderPage = (props: UploaderProps) => {
                 break;
             case 'queue':
                 const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
+                const queueItem = uploadFileQueue.filter(obj => obj.getFileName() !== item.name);
                 setUploadingList(itemsQueue);
+                setUploadFileQueue(queueItem);
                 // var event = new CustomEvent('paused' + item.name);
                 // document.dispatchEvent(event);
                 break;
@@ -260,24 +278,20 @@ export const UploaderPage = (props: UploaderProps) => {
             </DragAndDrop>
             {
                 !uploadingList.length &&
-                <>
-                    <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
-                        Choose an Encoding Recipe then upload your videos
-                    </Text>
-                    <Text weight="reg" color="gray-3" size={16} className="block center">
-                        Note: this will consume Encoding Credits
-                    </Text>
-                </>
+                <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
+                    Choose an Encoding Recipe then upload your videos
+                </Text>
             }
             <div hidden={uploadingList.length === 0} className=" mt2 right">
-                <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
-                {
+                <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed" && element.currentState !== "failed")) }} >Clear Completed</Button>
+                {/* To be renoved eventually
+                    {
                     itemsPaused ?
                         <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume</Button>
                         :
                         <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => { currentUpload.pauseUpload(); setItemsPaused(!itemsPaused) }} >Pause</Button>
 
-                }
+                } */}
             </div>
             <ItemList className="col-12">
                 {renderList()}
