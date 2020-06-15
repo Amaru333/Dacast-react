@@ -87,7 +87,8 @@ const createGroupPromo = async (data: GroupPromo) => {
             promo: {
                 ...data,
                 assignedContentIds: [],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
             }  
         },
         {

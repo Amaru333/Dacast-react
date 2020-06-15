@@ -141,7 +141,9 @@ const createVodPromoPreset = async (data: Promo, vodId: string) => {
             promo: {
                 ...data,
                 assignedContentIds: [`${userId}-vod-${vodId}`],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
+
             }  
         },
         {

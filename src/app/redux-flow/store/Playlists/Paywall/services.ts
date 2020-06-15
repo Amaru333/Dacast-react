@@ -139,7 +139,9 @@ const createPlaylistPromoPreset = async (data: Promo, playlistId: string) => {
             promo: {
                 ...data,
                 assignedContentIds: [`${userId}-playlist-${playlistId}`],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
+
             }  
         },
         {

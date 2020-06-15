@@ -63,7 +63,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const pricePresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='pricePresetsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
@@ -78,7 +77,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.prices) {
             return props.contentPaywallInfos.prices.map((preset, key) => {
                 return {data: [
-                    <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.type}</Text>,
                     <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : preset.price}</Text>,
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : preset.currency}</Text>,
@@ -101,7 +99,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promoPresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
@@ -115,7 +112,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.promos) {
             return props.contentPaywallInfos.promos.map((promo, key) => {
                 return {data: [
-                    <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
@@ -220,7 +216,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Prices</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
-                {props.contentPaywallInfos.prices ? 
+                {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.length > 0 ? 
                     <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                     :
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Prices')} />
@@ -230,7 +226,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
                 <Button onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
-                { props.contentPaywallInfos.promos ?
+                { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.length > 0 ?
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                     :                    
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promos')} />
@@ -241,7 +237,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { props.groupsInfos.prices.total === 0 ?
+                { !props.groupsInfos.prices || props.groupsInfos.prices.total === 0 ?
                     <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
                     :
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />

@@ -8,11 +8,13 @@ export interface PaywallSettingsInfos {
     paypalPurchases: boolean;
     paypalTC: boolean;
     customUrl: string;
+    bankStatement: string;
 }
 
 export const paywallSettingsInitialState: PaywallSettingsInfos = {
     creditCardPurchases: false,
     paypalPurchases: false,
     paypalTC: false,
-    customUrl: null
+    customUrl: null,
+    bankStatement: null
 }

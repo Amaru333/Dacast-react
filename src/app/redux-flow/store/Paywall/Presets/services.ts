@@ -113,7 +113,8 @@ const createPromoPreset = async (data: Promo) => {
                 ...data,
                 assignedContentIds: [],
                 assignedGroupIds: [],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
             }  
         },
         {

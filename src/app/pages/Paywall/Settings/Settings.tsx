@@ -8,6 +8,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PaywallSettingsComponentProps } from '../../../containers/Paywall/Settings';
 import { PaywallSettingsInfos } from '../../../redux-flow/store/Paywall/Settings/types';
 import { Prompt } from 'react-router';
+import { BorderStyle } from '../../Account/Company/CompanyStyle';
 
 export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
     const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos);
@@ -43,11 +44,21 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                     }
 
                 </div>
+                <BorderStyle className='mt2' />
+
                 <div className="mt3 mb1">
                     <Text size={16} weight='med'>Custom Terms of Services</Text>
                 </div>
                 <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
+                
+                <BorderStyle className='mt2' />
+                
+                <div className="mt3 mb1">
+                    <Text size={16} weight='med'>Credit Card Statement</Text>
+                </div>
+                <Text size={14} weight='reg'>This is displayed on your viewer's bank statements</Text>
+                <Input  className='col col-2 py1' id='banckStatement' placeholder='' label='Seller Name / Description' defaultValue={props.paywallSettingsInfos.bankStatement} onChange={(event) => setSettingsInfos({...settingsInfos, bankStatement: event.currentTarget.value})} />
             </Card>
             { settingsInfos !== props.paywallSettingsInfos &&
                 <div>

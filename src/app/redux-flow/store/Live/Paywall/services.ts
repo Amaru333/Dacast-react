@@ -140,7 +140,8 @@ const createLivePromoPreset = async (data: Promo, liveId: string) => {
             promo: {
                 ...data,
                 assignedContentIds: [`${userId}-live-${liveId}`],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
             }  
         },
         {
