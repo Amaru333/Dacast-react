@@ -61,6 +61,7 @@ export class UploadObject {
     }
 
     public pauseUpload() {
+        console.log(this.execCancel);
         this.execCancel()
         this.createCancelToken()
     }
@@ -82,6 +83,7 @@ export class UploadObject {
 
     private createCancelToken() {
         this.token = new axios.CancelToken(function executor(c: any) {
+            console.log(c);
             this.execCancel = c;
         }.bind(this))
     }
@@ -203,21 +205,19 @@ export class UploadObject {
             },
         }).then((response: AxiosResponse<any>) => {
             let etagStr: string = response.headers['etag']
-            console.log('partNumber', partNumber)
-            console.log('etag array', this.ETags)
             etagStr = etagStr.substring(1, etagStr.length - 1)
             this.ETags.push({
                 partNumber: partNumber,
                 etag: etagStr
             })
             delete this.onGoingUploads[partNumber]
-            console.log(this.onGoingUploads)
         }).catch((error: any) => {
+            console.log(error);
             if (!axios.isCancel(error)) {
                 this.onError(error)
             }
             this.onError('Cancel')
-            throw new Error(error)
+            throw new Error("error")
         })
             : null
     }
@@ -227,7 +227,11 @@ export class UploadObject {
         let i = 0
         while (i < partNumbers.length) {
             let batch = batchArray.slice(i, i + this.maxMultiThreadingRequests)
-            await axios.all(batch.map(this.uploadPart))
+            let promises = batch.map(this.uploadPart);
+            await axios.all(promises).catch(err => {
+                i = partNumbers.length;
+                promises.forEach(p => p.cancel());
+            })
             i += this.maxMultiThreadingRequests
         }
     }
@@ -257,6 +261,8 @@ export class UploadObject {
     private async runUpload() {
         const nbChunks = Math.ceil(this.file.size / this.fileChunkSize)
         console.log('chunks', nbChunks)
+        console.log('next start', this.nextStart)
+
         while (this.nextStart < nbChunks) {
             let nextParts: number[] = []
             if (Object.keys(this.onGoingUploads).length > 0) {

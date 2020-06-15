@@ -30,6 +30,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 createTheme={props.createTheme}
                 cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}
                 contentType='settings'
+                contentId={null}
                 actionType={selectedTheme.id === '-1'? 'Create' : 'Save'}
             />
         )
@@ -47,11 +48,12 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
         const themingTableBody = () => {
             return props.themingList.themes.map((theme, key) => {
-                return ( key === 0 ?
+                console.log(theme.createdDate);
+                return ( theme.themeName === "Standard" ?
                     {data: [
                         <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                         theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
-                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'></Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
                                 <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
@@ -88,10 +90,10 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         return (
             <Card>
                 <Text className='py2' size={20} weight='med'>Themes</Text>
-                <TextStyle className='py2'><Text size={14} weight='reg'>Some information about Theming</Text></TextStyle>
+                <TextStyle className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></TextStyle>
                 <div className='my2 flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle> 
-                    <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a>Knowledge Base</a></Text>
+                    <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
                 <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />

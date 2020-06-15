@@ -93,7 +93,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const handlePasswordProtectedVideoChange = () => {
         setHasToggleChanged(true)
         if(togglePasswordProtectedVideo) {
-            setSelectedSettings({...selectedSettings, passwordProtection: {password: null}})
+            setSelectedSettings({...selectedSettings, passwordProtection: {password: ''}})
         }
         setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
 
@@ -111,7 +111,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         setButtonLoading(true)
         let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs =  (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
+        props.saveContentSecuritySettings({...selectedSettings, passwordProtection: selectedSettings.passwordProtection ,contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
     return (
@@ -341,7 +341,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
+                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings({passwordProtection:{password: null}, contentScheduling:{startTime: 0, endTime: 0}, selectedDomainControl: null, selectedGeoRestriction: null}, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
