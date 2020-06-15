@@ -1,22 +1,22 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from './types';
+import { ActionTypes, PaymentMethod, WithdrawalRequest } from './types';
 import { PayoutServices } from './services';
 
 export interface GetPaymentMethods {
     type: ActionTypes.GET_PAYMENT_METHODS;
-    payload: {data: any};
+    payload: {data: {paymentMethods: PaymentMethod[]}};
 }
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: {data: any};
+    payload: {data: {widthdrawals: WithdrawalRequest[]}};
 }
 
 export interface AddPaymentMethodRequest {
     type: ActionTypes.ADD_PAYMENT_METHOD_REQUEST;
-    payload: PaymentMethodRequest;
+    payload: PaymentMethod;
 }
 
 export interface DeletePaymentMethodRequest {
@@ -51,7 +51,7 @@ export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, 
     }
 }
 
-export const addPaymentMethodRequestAction = (data: PaymentMethodRequest): ThunkDispatch<Promise<void>, {}, AddPaymentMethodRequest> => {
+export const addPaymentMethodRequestAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, AddPaymentMethodRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddPaymentMethodRequest>) => {
         await PayoutServices.addPaymentMethodRequest(data)
             .then( response => {

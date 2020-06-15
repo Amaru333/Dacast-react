@@ -13,11 +13,12 @@ import { ColorsApp } from '../../../../styled/types';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
     const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false);
-
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentMethod>(null)
     
 
     const paymentMethodTableHeader = () => {
@@ -32,10 +33,10 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
     const paymentMethodTableBody = () => {
         if (props.payoutInfos.paymentMethods) {
-            return Object.keys(props.payoutInfos.paymentMethods).map((item, i) => {
+            return props.payoutInfos.paymentMethods.map((item, i) => {
                 return {
                     data: [
-                        <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item}</Text>,
+                        <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodType}</Text>,
                         <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>lol</Text>,
                         <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                             <ActionIcon>
@@ -43,7 +44,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                                 <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
                             </ActionIcon>
                             <ActionIcon>
-                                <IconStyle id={"editTooltip" + i} onClick={() => { }}>edit</IconStyle>
+                                <IconStyle id={"editTooltip" + i} onClick={() => {setSelectedPaymentMethod(item);setDisplayPaymentMethodRequest(true) }}>edit</IconStyle>
                                 <Tooltip target={"editTooltip" + i}>Edit</Tooltip>
                             </ActionIcon>
                         </IconContainer>
@@ -147,7 +148,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             }]}
 
     return displayPaymentMethodRequest ?
-        <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} />
+        <PaywallPaymentMethod addPaymentMethodRequest={props.addPaymentMethodRequest} displayPage={setDisplayPaymentMethodRequest} selectedPaymentMethod={selectedPaymentMethod} />
         :
         <div>
             <Card>
@@ -162,9 +163,8 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 <BorderStyle className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
                 <Text className='pt2 py1' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
-                {props.payoutInfos.paymentMethods ?
+                {props.payoutInfos.paymentMethods &&
                     <Button key='withdrawalTableHeaderActionButton' className='xs-show' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>
-                    : null
                 }
                 {
                     props.payoutInfos.withdrawalRequests ?
