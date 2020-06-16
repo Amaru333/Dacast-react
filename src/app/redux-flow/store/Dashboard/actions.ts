@@ -42,13 +42,7 @@ export interface GetDashboardLiveTopChannels{
 
 export const getDashboardDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetDashboardDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardDetails> ) => {
-        await DashboardServices.getDashboardDetailsService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: response.data} );
-            }).catch((error) => {
-                console.log(error)
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-            })
+        dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: {}} );
     };
 }
 

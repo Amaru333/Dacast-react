@@ -60,10 +60,10 @@ const Dashboard = (props: DashboardProps) => {
 
     const renderDashboard = () => {
 
-        if (props.infos.isPayingPlan) {
+        if (true) {
             return (
                 <>
-                    <GeneralDashboard plan={props.infos.isPayingPlan} profile={props.infos.generalInfos} />
+                    <GeneralDashboard plan={props.infos.isTrial} profile={props.infos.generalInfos} />
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
                     {/* <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} /> */}
@@ -79,7 +79,7 @@ const Dashboard = (props: DashboardProps) => {
             )
         }
     }
-
+    console.log(props.infos);
     return (
         <>
             {
