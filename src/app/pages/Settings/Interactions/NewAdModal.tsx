@@ -22,13 +22,14 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     }, [props.selectedAd])
 
     const defineAdAction = () => {
-        let tempArray: Ad[] = []
+        let tempArray: Ad[] = props.interactionsInfos.ads
         if(props.selectedAd === -1) {
             tempArray.push(adData)
             props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
-            tempArray = props.interactionsInfos.ads
-            tempArray[props.selectedAd] = adData
+            tempArray = tempArray.map(ad => {
+                return ad.id === adData.id ? adData : ad
+            })
             props.saveAd(tempArray, props.interactionsInfos.adsId)
         }
     }
@@ -39,9 +40,8 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
             <div className='my1 col col-12 flex'>
                 <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, "ad-type": value.toLocaleLowerCase()})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] ? adData["ad-type"] : 'Pre-roll'} /> 
                 {
-                    adData["ad-type"] === 'mid-roll' ?
+                    adData["ad-type"] === 'mid-roll' &&
                         <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})}  />
-                        : null
                 }             
             </div>
             <div className='mt2 col col-12'>

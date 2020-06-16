@@ -125,6 +125,10 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
         }
     }
 
+    React.useEffect(() => {
+        props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems} })
+    }, [checkedContents])
+
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
         setCheckedContents([]);

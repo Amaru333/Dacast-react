@@ -16,18 +16,14 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
     }, [props.selectedAd])
 
     const defineAdAction = () => {
-        let tempArray: Ad[] = []
+        let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads
         setButtonLoading(true)
         if(props.selectedAd.id === '-1') {
             tempArray.push(adData)
             props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         } else {
             tempArray = props.contentEngagementSettings.engagementSettings.ads.map((ad) => {
-                if(ad.id === adData.id) {
-                    return adData
-                } else {
-                    return ad
-                }
+                return ad.id === adData.id ? adData : ad
             })
             props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         }
