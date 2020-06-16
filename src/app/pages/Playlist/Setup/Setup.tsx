@@ -14,9 +14,13 @@ import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { Badge } from '../../../../components/Badge/Badge';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { addTokenToHeader } from '../../../utils/token';
+import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 
 export const SetupPage = (props: SetupComponentProps) => {
+
+    const {userId} = addTokenToHeader()
 
     const formateData: FolderAsset[] = props.playlistData.contentList ? props.playlistData.contentList.map(item =>{
         return {
@@ -50,7 +54,8 @@ export const SetupPage = (props: SetupComponentProps) => {
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
     const [maxNumberItems, setMaxNumberItems] = React.useState<number>(NaN);
 
-    
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+
     const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
     const [searchString, setSearchString] = React.useState<string>(null)
@@ -365,7 +370,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                         </DropdownList>
                     </div>
                     <Button onClick={() => setPlaylistSettingsOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
-                    <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
+                    <Button onClick={() => setPreviewModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
                 </div>
             </div>
             <div className="clearfix">
@@ -405,6 +410,9 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
                 <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
+            {
+                previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistData.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
         </>
     )
 
