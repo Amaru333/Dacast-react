@@ -30,6 +30,15 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
                 ...state, 
                 ads: action.payload
             }
+        case ActionTypes.GET_UPLOAD_URL:
+            return {
+                ...state,
+               uploadurl: action.payload.data.presignedURL
+            }
+        case ActionTypes.UPLOAD_IMAGE:
+            return state
+        case ActionTypes.DELETE_IMAGE:
+            return state
         case ActionTypes.SAVE_MAIL_CATCHER :
             mailCatcherList = state.mailCatcher.slice();
             return  {...state, mailCatcher: mailCatcherList.map((item) => {

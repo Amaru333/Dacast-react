@@ -40,6 +40,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
+    const [logoFile, setLogoFile] = React.useState<File>(null);
 
     const newAd = () => {
         setSelectedAd(-1);
@@ -65,10 +66,59 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
     let player = usePlayer(playerRef, '1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22');
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(null);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.interactionsInfos.brandImageURL);
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = React.useState<string>('')
 
     let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setUploadedFileUrl(reader.result.toString())
+                    setLogoFile(file[0])
+                    setErrorMessage('')
+                    setUploadButtonLoading(true)
+                    props.getUploadUrl('player-watermark');
+                }
+                else {
+                    setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+        else{
+            setErrorMessage('File provided was not an image, please retry')
+        }
+    }
+    
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setUploadedFileUrl(null);
+        props.deleteFile();
+    }
+
+
+    React.useEffect(() => {
+        if(props.interactionsInfos.uploadurl) {
+            props.uploadFile(logoFile, props.interactionsInfos.uploadurl, () => setUploadButtonLoading(false) );
+        }
+    }, [props.interactionsInfos.uploadurl])
 
 
     React.useEffect(() => {
@@ -227,7 +277,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
-                            <input type='file' ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
+                            <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
                             <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
                                 Browse Files
                             </Button>

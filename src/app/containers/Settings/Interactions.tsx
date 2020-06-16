@@ -4,7 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions';
-import { getSettingsInteractionsInfosAction, Action, InteractionsInfos, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction } from '../../redux-flow/store/Settings/Interactions';
+import { getSettingsInteractionsInfosAction, Action, InteractionsInfos, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SettingsInteractionComponentProps {
@@ -17,6 +17,9 @@ export interface SettingsInteractionComponentProps {
     saveMailCatcher: Function;
     createMailCatcher: Function;
     deleteMailCatcher: Function;
+    getUploadUrl: Function;
+    uploadFile: Function;
+    deleteFile: Function;
 }
 
 
@@ -57,6 +60,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteAd: (data: Ad[], adsId: string) => {
             dispatch(deleteAdAction(data, adsId))
+        },
+        getUploadUrl: (uploadType: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType)).then(callback)
+        },
+        uploadFile: (data: File, uploadUrl: string) => {
+            dispatch(uploadFileAction(data, uploadUrl))
+        },
+        deleteFile: (targetId: string) => {
+            dispatch(deleteFileAction(targetId))
         },
         saveMailCatcher: (data: MailCatcher) => {
             dispatch(saveMailCatcherAction(data))
