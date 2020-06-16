@@ -57,7 +57,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         return {date: moment().toString(), time: '00:00'}
     }
 
-    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(initvalues().contentSchedulingToggle)
+    
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(initvalues().passwordProtectionToggle)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
     const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(initvalues().startDateTime)
@@ -99,18 +99,12 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     }
 
-    const handleContentSchedulingChange = () => {
-        setHasToggleChanged(true)
-        if(toggleSchedulingVideo) {
-            setSelectedSettings({...selectedSettings, contentScheduling: {startTime: 0, endTime: 0}})
-        }
-        setToggleSchedulingVideo(!toggleSchedulingVideo)
-    }
+    
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs =  (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs =  (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveContentSecuritySettings({passwordProtection: selectedSettings.passwordProtection ,contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}, selectedGeoRestriction: selectedSettings.selectedGeoRestriction, selectedDomainControl: selectedSettings.selectedDomainControl}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
@@ -146,7 +140,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         
                 <DisabledSection settingsEditable={settingsEditable}>
                 
-                    <div className='col col-12 mb1'>
+                    <div className='col col-12 mb2'>
                         <Toggle 
                             id="passwordProtectedVideosToggle" 
                             label='Password Protection' 
@@ -172,15 +166,10 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     </div> 
 
                     <div className='col col-12 clearfix'>
-                        <Toggle 
-                            id="videoScheduling" 
-                            label='Content Scheduling' 
-                            onChange={() => {handleContentSchedulingChange()}} defaultChecked={toggleSchedulingVideo}
-                        />
+                        <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                          
-                        { toggleSchedulingVideo ? 
-                        <>
+                        
                         <div className='col col-12 mb2 clearfix sm-flex'>
                             <DropdownSingle 
                                 className='col col-12 md-col-3 clearfix sm-mr1'
@@ -270,8 +259,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 </>
                         }
                     </div>
-                    </> : null
-                        }      
+                     
                     
                               
                     </div>
