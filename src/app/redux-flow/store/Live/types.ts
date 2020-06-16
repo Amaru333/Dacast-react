@@ -1,13 +1,14 @@
 import { combineReducers, Reducer } from 'redux';
 import { LiveGeneralReducer, reducerList } from "../Live/General/reducer"
-import { LiveItem, LiveDetailsState, SearchResult } from './General/types';
+import { LiveDetailsState, SearchResult } from './General/types';
 import { LiveSecurityReducer } from './Security'
 import { LiveThemingReducer } from './Theming/reducer';
 import { LiveEngagementReducer } from './Engagement/reducer';
-import { LivePaywallPageInfos, LivePaywallReducer } from './Paywall';
-import { ContentTheme, ContentThemeState } from '../Settings/Theming/types';
+import { LivePaywallReducer } from './Paywall';
+import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
+import { ContentPaywallState } from '../Paywall/Presets';
 
 export const liveInitialState: LiveState = {
     general: {},
@@ -15,7 +16,7 @@ export const liveInitialState: LiveState = {
     security: {},
     theming: {},
     engagement: {},
-    paywall: false
+    paywall: {}
 };
 
 export interface LiveState {
@@ -24,7 +25,7 @@ export interface LiveState {
     security: ContentSecuritySettingsState;
     theming: ContentThemeState;
     engagement: ContentEngagementSettingsState;
-    paywall: false | LivePaywallPageInfos;
+    paywall: ContentPaywallState;
 };
 
 export const LiveReducer: Reducer<LiveState> = combineReducers({

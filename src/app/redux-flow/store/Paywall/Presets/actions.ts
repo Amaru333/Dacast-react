@@ -69,7 +69,7 @@ export const createPricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePricePreset>) => {
         await PresetsServices.createPricePreset(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PRICE_PRESET, payload:{...data, id:response.data.data}})
+                dispatch({type: ActionTypes.CREATE_PRICE_PRESET, payload:{...data, id:response.data.data.id}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -115,7 +115,7 @@ export const createPromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePromoPreset>) => {
         await PresetsServices.createPromoPreset(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PROMO_PRESET, payload: {...data, id: response.data.data}})
+                dispatch({type: ActionTypes.CREATE_PROMO_PRESET, payload: {...data, id: response.data.data.id}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })

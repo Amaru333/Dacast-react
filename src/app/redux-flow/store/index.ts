@@ -44,7 +44,7 @@ export const globalDefaultState: ApplicationState = {
     analytics: analyticsInitialState
 };
 
-export const createRootReducer = () =>
+export const appReducer = 
     combineReducers({
         settings: SettingsReducer,
         dashboard: DashboardReducer,
@@ -58,5 +58,14 @@ export const createRootReducer = () =>
         paywall: PaywallReducer,
         folders: FoldersReducer,
         analytics: AnalyticsReducer
-    },
-    );
+    })
+
+
+export const createRootReducer = (state: any, action: any) => {
+    console.log(action);
+    if (action.type === 'USER_LOGOUT') {
+        state = undefined
+    }
+    return appReducer(state, action)
+}
+    

@@ -17,17 +17,17 @@ export interface SaveVodEngagementSettings {
 
 export interface SaveVodAd {
     type: ActionTypes.SAVE_VOD_AD;
-    payload: Ad;
+    payload: {ads: Ad[]; contentId: string;};
 }
 
 export interface CreateVodAd {
     type: ActionTypes.CREATE_VOD_AD;
-    payload: Ad;
+    payload: {ads: Ad[], adsId: string; contentId: string};
 }
 
 export interface DeleteVodAd {
     type: ActionTypes.DELETE_VOD_AD;
-    payload: Ad; 
+    payload: {ads: Ad[]; contentId: string;}; 
 }
 
 export const getVodEngagementSettingsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
@@ -45,7 +45,7 @@ export const saveVodEngagementSettingsAction = (data: ContentEngagementSettings)
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodEngagementSettings> ) => {
         await vodEngagementServices.saveVodEngagementSettings(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_VOD_ENGAGEMENT_SETTINGS, payload: data} );
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -53,11 +53,11 @@ export const saveVodEngagementSettingsAction = (data: ContentEngagementSettings)
     };
 }
 
-export const saveVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SaveVodAd> => {
+export const saveVodAdAction = (data: Ad[], adsId: string, vodId: string): ThunkDispatch<Promise<void>, {}, SaveVodAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodAd> ) => {
-        await vodEngagementServices.saveVodAd(data)
+        await vodEngagementServices.saveVodAd(data, adsId, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_VOD_AD, payload: {ads: data, contentId: vodId}} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -65,11 +65,11 @@ export const saveVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Save
     };
 }
 
-export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, CreateVodAd> => {
+export const createVodAdAction = (data: Ad[], adsId: string, vodId: string): ThunkDispatch<Promise<void>, {}, CreateVodAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateVodAd> ) => {
-        await vodEngagementServices.createVodAd(data)
+        await vodEngagementServices.saveVodAd(data, adsId, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.CREATE_VOD_AD, payload: {ads: data, adsId: response.data.data.adsId, contentId: vodId}} );
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -77,11 +77,11 @@ export const createVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, Cr
     };
 }
 
-export const deleteVodAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
+export const deleteVodAdAction = (data: Ad[], adsId: string, vodId: string): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodAd> ) => {
-        await vodEngagementServices.deleteVodAd(data)
+        await vodEngagementServices.saveVodAd(data, adsId, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: {ads: data, contentId: vodId}} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

@@ -19,8 +19,7 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlanDetails> ) => {
         await PlansServices.getPlanDetailsService()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PLAN_DETAILS, payload: response.data} );
-                console.log(Object.values({...response.data}))
+                dispatch( {type: ActionTypes.GET_PLAN_DETAILS, payload: {data: response.data.data}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

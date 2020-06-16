@@ -30,10 +30,15 @@ export const SignupPage = (props: SignupContainerProps) => {
     const onSubmit = (data: UserInfo) => { 
         setSubmitLoading(true);
         props.signup(data, () => {
-            history.push('/confirm-email');
             setSubmitLoading(false);
         });
     }
+
+    React.useEffect(() => {
+        if (props.UserInfo.email) {
+        history.push('/confirm-email')
+        }
+    }, [props.UserInfo.email])
 
     useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
 
@@ -44,9 +49,10 @@ export const SignupPage = (props: SignupContainerProps) => {
                 <form id="formSignUp" onSubmit={handleSubmit(onSubmit)}>
                     <Input {...handleValidationForm('firstName', errors)} ref={register({ required: "Required"})} type="text" className="col col-6 pr1 pt1" label="First Name" placeholder="First Name" />
                     <Input {...handleValidationForm('lastName', errors)} ref={register({ required: "Required" })} name="lastName" type="text" className="col col-6 pl1 pt1" label="Last Name" placeholder="Last Name" />
-                    <Input {...handleValidationForm('website', errors, 'url', register)} className="col col-12 pt2" label="Company Website" placeholder="Company Website"  />
                     <Input {...handleValidationForm('email', errors, 'email', register)} className="col col-12 pt2" label="Email Address" placeholder="Email Address" />
                     <Input {...handleValidationForm('phone', errors, 'tel', register)} className="col col-12 pt2" label="Phone Number" placeholder="Phone Number" />
+                    <Input {...handleValidationForm('companyName', errors)} ref={register({ required: "Required"})} type="text" className="col col-12 pt2" label="Company Name" placeholder="Company Name" />
+                    <Input {...handleValidationForm('website', errors, 'url', register)} className="col col-12 pt2" label="Company Website" placeholder="Company Website"  />
                     <div className='flex relative col col-12 pt2 pb25'>
                         <Input {...handleValidationForm('password', errors, 'password', register)} className="col col-12" type={passwordVisible ? "text" : "password"} label="Create Password" placeholder="Password" />
                         <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-1 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>

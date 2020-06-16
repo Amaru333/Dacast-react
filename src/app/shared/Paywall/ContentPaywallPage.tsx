@@ -58,12 +58,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     React.useEffect(() => {
         props.getContentPrices(props.contentId)
-        props.getContentPromos()
+        props.getContentPromos(props.contentId)
     }, [])
 
     const pricePresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='pricePresetsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
@@ -78,15 +77,14 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.prices) {
             return props.contentPaywallInfos.prices.map((preset, key) => {
                 return {data: [
-                    <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.type}</Text>,
-                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices[0].value}</Text>,
-                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices[0].currency}</Text>,
+                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : preset.price}</Text>,
+                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : preset.currency}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence ? preset.settings.recurrence.recurrence : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + preset.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(preset)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(preset, props.contentId)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
@@ -101,7 +99,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promoPresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
@@ -115,14 +112,13 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.promos) {
             return props.contentPaywallInfos.promos.map((promo, key) => {
                 return {data: [
-                    <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -164,14 +160,14 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
             {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
         ]}
     }
 
@@ -201,7 +197,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         <div>
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.enabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, enabled: !contentPaywallSettings.enabled})} className='mt2' label='Paywall Enabled' />
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled})} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable paywall for this content</Text>
                 
                 <DropdownSingle 
@@ -214,26 +210,26 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' className='col col-12 sm-col-3 my2' placeholder='Video ID' />
+                <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value})}} />
                         
                 <BorderStyle className='my2' />
 
                 <Text size={20} weight='med'>Prices</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
-                {props.contentPaywallInfos.prices ? 
+                {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.length > 0 ? 
                     <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                     :
-                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Prices')} />
 
                 }
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
                 <Button onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
-                { props.contentPaywallInfos.promos ?
+                { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.length > 0 ?
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                     :                    
-                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promos')} />
 
                 }
 
@@ -241,7 +237,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { props.groupsInfos.prices.total === 0 ?
+                { !props.groupsInfos.prices || props.groupsInfos.prices.total === 0 ?
                     <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
                     :
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
@@ -249,19 +245,19 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                    
             </Card>
             <div className={'mt2' + (props.contentPaywallInfos === contentPaywallSettings ? ' hide' : '')}>
-                <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings, props.contentId)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
-            <Modal hasClose={false} modalTitle='Create Price Preset' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
-                <ContentPricePresetsModal action={ props.createContentPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
+            <Modal hasClose={false} modalTitle='Create Price' opened={newPricePresetsModalOpened} toggle={() => setNewPricePresetsModalOpened(false)}>
+                <ContentPricePresetsModal contentId={props.contentId} action={ props.createContentPricePreset} preset={selectedPreset} toggle={setNewPricePresetsModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Edit Price Preset' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Price' opened={editPricePresetsModalOpened} toggle={() => setEditPricePresetsModalOpened(false)}>
                 <PricePresetsModal action={props.saveContentPricePreset} preset={selectedPreset} toggle={setEditPricePresetsModalOpened} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Create Promo Preset' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Create Promo' opened={newPromoPresetsModalOpened} toggle={() => setNewPromoPresetsModalOpened(false)}>
                 <ContentPromoPresetsModal action={ props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setNewPromoPresetsModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
             </Modal>
-            <Modal hasClose={false} modalTitle='Edit Promo Code Preset' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
+            <Modal hasClose={false} modalTitle='Edit Promo' opened={editPromoPresetsModalOpened} toggle={() => setEditPromoPresetsModalOpened(false)}>
                 <PromoPresetsModal action={props.saveContentPromoPreset} promo={selectedPromo} toggle={setEditPromoPresetsModalOpened} />
             </Modal>
             <Prompt when={contentPaywallSettings !== props.contentPaywallInfos} message='' />

@@ -31,7 +31,7 @@ export const saveVodThemeAction = (data: ThemeOptions, vodId: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveVodTheme> ) => {
         await VodThemingServices.saveVodThemeService(data, vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: { id: vodId, data } } );
+                dispatch( {type: ActionTypes.SAVE_VOD_THEME, payload: { id: vodId, data: data } } );
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {

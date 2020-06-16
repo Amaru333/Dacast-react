@@ -59,7 +59,7 @@ export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPrice>) => {
         await GroupsServices.createGroupPrice(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: {...data, id: response.data.data}})
+                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: {...data, id: response.data.data.id}})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
@@ -106,7 +106,7 @@ export const createGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPromo>) => {
         await GroupsServices.createGroupPromo(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PROMO, payload: {...data, id: response.data.data}})
+                dispatch({type: ActionTypes.CREATE_GROUP_PROMO, payload: {...data, id: response.data.data.id}})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));

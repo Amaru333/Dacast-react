@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { GroupPrice, GroupPromo } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { FolderAsset } from '../../Folders/types';
 
 const getGroupPrices = async () => {
     await isTokenExpired()
@@ -19,14 +20,14 @@ const createGroupPrice = async (data: GroupPrice) => {
     let {token} = addTokenToHeader()
     let testObject = {
         name: data.name,
-        type: "price",
         prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
         settings: {
             duration: {
                 value: data.settings.duration.value,
                 unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1)
             }
-        }
+        },
+        contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
     }
     return axios.post(process.env.API_BASE_URL + '/paywall/prices/groups' , 
         {
@@ -87,7 +88,8 @@ const createGroupPromo = async (data: GroupPromo) => {
             promo: {
                 ...data,
                 assignedContentIds: [],
-                discountApplied: 'once'
+                discountApplied: 'once',
+                id: null
             }  
         },
         {

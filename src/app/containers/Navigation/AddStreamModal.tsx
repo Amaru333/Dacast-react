@@ -14,7 +14,6 @@ import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
 
 const moment = require('moment-timezone')
 
@@ -34,7 +33,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     }
 
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: 'My Live Channel', streamType: null, region: handleLocaleCountry()})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: '', streamType: null, region: handleLocaleCountry()})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -80,7 +79,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         ).then((response) => {
             setButtonLoading(false)
             showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
-            getDashboardDetailsAction();
             history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
         }).catch((error) => {
@@ -91,12 +89,12 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
 
     return (
-        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className='x-visible' opened={props.opened} hasClose={false}>
             <ModalContent>
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
                     <div className='col col-12 flex mb2 relative'> 
-                        <Input id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
+                        <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
                         <div className='col col-6 pl1 flex' >
                             <DropdownSingle 

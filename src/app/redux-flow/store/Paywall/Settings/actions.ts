@@ -6,7 +6,7 @@ import { PaywallSettingsServices } from './services';
 
 export interface GetPaywallSettingsInfos {
     type: ActionTypes.GET_PAYWALL_SETTINGS_INFOS;
-    payload: PaywallSettingsInfos;
+    payload: {data: PaywallSettingsInfos};
 }
 
 export interface SavePaywallSettingsInfos {
@@ -29,7 +29,7 @@ export const savePaywallSettingsInfosAction = (data: PaywallSettingsInfos): Thun
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePaywallSettingsInfos>) => {
         await PaywallSettingsServices.savePaywallSettingsInfos(data)
             .then( response => {
-                dispatch({type: ActionTypes.SAVE_PAYWALL_SETTINGS_INFOS, payload: response.data});
+                dispatch({type: ActionTypes.SAVE_PAYWALL_SETTINGS_INFOS, payload: data});
                 dispatch(showToastNotification("Changes have been saved", 'fixed', 'success'));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));

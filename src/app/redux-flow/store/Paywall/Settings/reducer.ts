@@ -6,8 +6,8 @@ const reducer: Reducer<PaywallSettingsInfos> = (state = paywallSettingsInitialSt
     switch (action.type) {
         case ActionTypes.GET_PAYWALL_SETTINGS_INFOS :
             return {
-                ...state,
-                ...action.payload
+                ...action.payload.data,
+                paypalTC: action.payload.data.paypalPurchases
             }
         case ActionTypes.SAVE_PAYWALL_SETTINGS_INFOS : 
             return {

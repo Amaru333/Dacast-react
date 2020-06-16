@@ -3,7 +3,6 @@ import { ToggleTextInfo, TextStyle, BorderStyle } from './SecurityStyle';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -15,10 +14,8 @@ import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
 import { DomainControl, GeoRestriction, SecuritySettings } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../../components/Bubble/Bubble';
-import { useMedia } from '../../../../utils/utils';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Prompt } from 'react-router';
-import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
@@ -26,13 +23,6 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 var momentTZ = require('moment-timezone')
 
 export const SecurityPage = (props: SecurityComponentProps) => {
-
-    const { register, handleSubmit, errors, getValues, setValue, formState, reset } = useForm({
-        reValidateMode: 'onChange',
-        mode: 'onBlur',
-        defaultValues: props.securityDetails
-    })
-    const { dirty } = formState;
 
     const initTimestampValues = (ts: number): {date: string; time: string} => {
         if(ts > 0 ) {
@@ -45,18 +35,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime || props.securityDetails.contentScheduling.startTime ? true : false)
-    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection.password ? true : false)
-    const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Until');
-    const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever');
+    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection && props.securityDetails.passwordProtection.password ? true : false)
+    const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Until');
+    const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever');
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
     const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
-
-
-    
-    let smScreen = useMedia('(max-width: 780px)');
 
     React.useEffect(() => {
         if (props.securityDetails !== securityDetails) {
@@ -66,13 +52,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     React.useEffect(() => {
         setSecurityDetails(props.securityDetails)
+        setDisplayformActionButtons(false)
     }, [props.securityDetails])
 
-    const onSubmit = (data: any) => {
+    const onSubmit = () => {
         setSubmitLoading(true);
-        let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs = toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveSettingsSecurityOptions({ ...data, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
+        let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs = (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        props.saveSettingsSecurityOptions({...securityDetails, passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
             setSubmitLoading(false);
             setDisplayformActionButtons(false);
         })
@@ -94,9 +81,20 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         restrictionType: 'geo-restriction'
     };
 
+    const handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+        let password: string = event.currentTarget.value
+        setSecurityDetails({...securityDetails, passwordProtection: { password: password.length > 0 ? password : null}})
+        setDisplayformActionButtons(true)
+    }
 
+    const handlePasswordProtectedVideoChange = () => {
+        setDisplayformActionButtons(true)
+        if(togglePasswordProtectedVideo) {
+            setSecurityDetails({...securityDetails, passwordProtection: {password: null}})
+        }
+        setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
+    }
 
-    React.useEffect(() => { }, [selectedItem])
 
     const tableHeaderElement = (tableType: string) => {
         return {
@@ -116,19 +114,18 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
                         value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
                         <IconContainer className="iconAction" key={key.toString() + value.name}>
-
-                                { value.id !== '-1' &&
-                                    <>
-                                        <ActionIcon>
-                                            <IconStyle id={"geoRestrictionDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle>
-                                            <Tooltip target={"geoRestrictionDelete" + key}>Delete</Tooltip>
-                                        </ActionIcon>
-                                        <ActionIcon>
-                                        <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
+                            { value.id !== '-1' &&
+                                <>
+                                    <ActionIcon>
+                                        <IconStyle id={"geoRestrictionDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteGeoRestrictionGroup(value) }} >delete</IconStyle>
+                                        <Tooltip target={"geoRestrictionDelete" + key}>Delete</Tooltip>
+                                    </ActionIcon>
+                                    <ActionIcon>
+                                        <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.id); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
                                         <Tooltip target={"geoRestrictionEdit" + key}>Edit</Tooltip>
-                                        </ActionIcon>  
-                                    </>
-                                }
+                                    </ActionIcon>  
+                                </>
+                            }
 
                         </IconContainer>
                     ]
@@ -150,11 +147,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     value.id !== '-1' &&
                                     <>
                                         <ActionIcon>
-                                            <IconStyle id={"domainControlDelete" + key} onClick={(event) => { event.preventDefault(); props.deleteDomainControlGroup(value) }}>delete</IconStyle>
+                                            <IconStyle id={"domainControlDelete" + key} onClick={() => { props.deleteDomainControlGroup(value) }}>delete</IconStyle>
                                             <Tooltip target={"domainControlDelete" + key}>Delete</Tooltip>
                                         </ActionIcon>
                                         <ActionIcon>
-                                            <IconStyle id={"domainControlEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.name); setDomainControlModalOpened(true) }}>edit</IconStyle>
+                                            <IconStyle id={"domainControlEdit" + key} onClick={() => { setSelectedItem(value.id); setDomainControlModalOpened(true) }}>edit</IconStyle>
                                             <Tooltip target={"domainControlEdit" + key}>Edit</Tooltip>
                                         </ActionIcon>
                                     </>
@@ -173,13 +170,13 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)
             </Bubble>
             <Card>
-                <form id='settingsPageForm' onSubmit={handleSubmit(onSubmit)}>
+                <div id='settingsPageForm'>
                     <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb1'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { setDisplayformActionButtons(true) ;setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo) }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
+                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo &&
@@ -190,8 +187,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     id='password'
                                     label='Password'
                                     placeholder='Password'
-                                    {...handleValidationForm('passwordProtection.password', errors)}
-                                    ref={register({ required: "Required" })}
+                                    value={securityDetails.passwordProtection.password}
+                                    onChange={(event) =>{ handlePasswordChange(event)}}
+                                
                                 />
                             </div>
                         }
@@ -202,13 +200,12 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setDisplayformActionButtons(true); setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling.startTime || props.securityDetails.contentScheduling.endTime ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         {
-                            toggleSchedulingVideo ?
+                            toggleSchedulingVideo &&
                             <>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(false);setStartDateTime(value) }} />
+                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
                                     {startDateTime === "Set Date and Time" &&
                                         <>
-                                            <input type="hidden" ref={register()} name="videoScheduling.startDate" />
                                             <DateSinglePickerWrapper
                                                 date={moment(startDateTimeValue.date)}
                                                 callback={(date: string) => { setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, date: date}) }}
@@ -237,12 +234,11 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     }
                                 </div>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(false);setEndDateTime(value) }} />
+                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setEndDateTime(value) }} />
 
                                     {
                                         endDateTime === "Set Date and Time" &&
                                         <>
-                                            <input type="hidden" ref={register()} name="contentScheduling.endTime" />
                                             <DateSinglePickerWrapper
                                                 date={moment(endDateTimeValue.date)}
                                                 callback={(date: string) => { setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, date: date}) }}
@@ -270,9 +266,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     }
                                 </div>
                             </>
-                                : null}
+                        }
                     </div>
-                </form>
+                </div>
 
                 <BorderStyle className="p1" />
 
@@ -297,30 +293,25 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
             </Card>
             {
-                (dirty || displayFormActionButtons) &&
+                displayFormActionButtons &&
                 <div>
-                    <Button isLoading={submitLoading} form='settingsPageForm' type='submit' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button onClick={() => { reset(props.securityDetails, {errors: true});}} type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    <Button onClick={() => {onSubmit()}} isLoading={submitLoading} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => { setDisplayformActionButtons(false);props.saveSettingsSecurityOptions(props.securityDetails) }} type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }
 
             <Modal className='x-visible' hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Geo-Restriction Group'} toggle={() => setGeoRestrictionModalOpened(!geoRestrictionModalOpened)} size='small' opened={geoRestrictionModalOpened}>
                 {
-                    geoRestrictionModalOpened ?
-                        <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.name === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.securityDetails.geoRestriction.filter(item => item.name === selectedItem).length > 0 ? props.saveGeoRestrictionGroup : props.createGeoRestrictionGroup} />
-                        : null
+                    geoRestrictionModalOpened && <GeoRestrictionForm item={selectedItem && props.securityDetails.geoRestriction.filter(item => item.id === selectedItem).length > 0 ? props.securityDetails.geoRestriction.filter(item => item.id === selectedItem)[0] : geoRestrictionEmptyValues} toggle={setGeoRestrictionModalOpened} submit={props.securityDetails.geoRestriction.filter(item => item.id === selectedItem).length > 0 ? props.saveGeoRestrictionGroup : props.createGeoRestrictionGroup} />
                 }
             </Modal>
 
             <Modal hasClose={false} modalTitle={(selectedItem ? 'Edit' : 'Create') + ' Domain Group'} toggle={() => setDomainControlModalOpened(!domainControlModalOpened)} size='small' opened={domainControlModalOpened}>
                 {
-                    domainControlModalOpened ?
-                        <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.name === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.securityDetails.domainControl.filter(item => item.name === selectedItem).length > 0 ? props.saveDomainControlGroup : props.createDomainControlGroup} />
-                        : null
+                    domainControlModalOpened && <DomainControlForm item={selectedItem && props.securityDetails.domainControl.filter(item => item.id === selectedItem).length > 0 ? props.securityDetails.domainControl.filter(item => item.id === selectedItem)[0] : domainControlEmptyValues} toggle={setDomainControlModalOpened} submit={props.securityDetails.domainControl.filter(item => item.id === selectedItem).length > 0 ? props.saveDomainControlGroup : props.createDomainControlGroup} />
                 }
             </Modal>
-            {/* Needs save prompt adding when connected to endpoint */}
-            <Prompt when={dirty} message='' />
+            <Prompt when={displayFormActionButtons} message='' />
         </div>
     )
 }

@@ -3,9 +3,9 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PayoutPage } from '../../pages/Paywall/Payout/Payout';
-import { Action, getPayoutInfosAction, addPaymentMethodRequestAction, deletePaymentMethodRequestAction, addWithdrawalRequestAction } from '../../redux-flow/store/Paywall/Payout/actions'
+import { Action, addWithdrawalRequestAction, getPaymentMethodsAction, getWithdrawalRequestsAction, addPaymentMethodAction, updatePaymentMethodAction, deletePaymentMethodAction } from '../../redux-flow/store/Paywall/Payout/actions'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { PayoutInfos, PaymentMethodRequest, WithdrawalRequest } from '../../redux-flow/store/Paywall/Payout';
+import { PayoutInfos, WithdrawalRequest, PaymentMethod } from '../../redux-flow/store/Paywall/Payout';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
@@ -13,9 +13,11 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PayoutComponentProps {
     payoutInfos: PayoutInfos;
-    getPayoutInfos: Function;
-    addPaymentMethodRequest: Function;
-    deletePaymentMethodRequest: Function;
+    getPaymentMethods: Function;
+    getWithdrawalRequests: Function;
+    addPaymentMethod: Function;
+    updatePaymentMethod: Function;
+    deletePaymentMethod: Function;
     addWithdrawalRequest: Function;
     showToast: Function;
 }
@@ -25,7 +27,8 @@ const Payout = (props: PayoutComponentProps) => {
 
     React.useEffect(() => {
         if(!props.payoutInfos) {
-            props.getPayoutInfos();
+            props.getPaymentMethods()
+            props.getWithdrawalRequests()
         }
     }, []) 
 
@@ -44,14 +47,20 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPayoutInfos: () => {
-            dispatch(getPayoutInfosAction());
+        getPaymentMethods: () => {
+            dispatch(getPaymentMethodsAction());
         },
-        addPaymentMethodRequest: (data: PaymentMethodRequest) => {
-            dispatch(addPaymentMethodRequestAction(data));
+        getWithdrawalRequests: () => {
+            dispatch(getWithdrawalRequestsAction())
         },
-        deletePaymentMethodRequest: (data: string) => {
-            dispatch(deletePaymentMethodRequestAction(data));
+        addPaymentMethod: (data: PaymentMethod) => {
+            dispatch(addPaymentMethodAction(data));
+        },
+        updatePaymentMethod: (data: PaymentMethod) => {
+            dispatch(updatePaymentMethodAction(data));
+        },
+        deletePaymentMethod: (data: PaymentMethod) => {
+            dispatch(deletePaymentMethodAction(data));
         },
         addWithdrawalRequest: (data: WithdrawalRequest) => {
             dispatch(addWithdrawalRequestAction(data));

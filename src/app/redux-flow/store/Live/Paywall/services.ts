@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
+import { parse } from 'path';
 
 const getLivePaywallInfos = async (liveId: string) => {
     await isTokenExpired()
@@ -16,14 +15,13 @@ const getLivePaywallInfos = async (liveId: string) => {
     )
 }
 
-const saveLivePaywallInfos = (data: ContentPaywallPageInfos) => {
-    return axios.post(urlBase + 'live-paywall', {data: data})
-}
-
-const getLivePaywallPrices = async (liveId: string) => {
+const saveLivePaywallInfos = async (data: ContentPaywallPageInfos, liveId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/prices?content-id=' + liveId, 
+    return axios.put(process.env.API_BASE_URL + '/channels/' + liveId + '/paywall', 
+        {
+            ...data
+        },
         {
             headers: {
                 Authorization: token
@@ -32,13 +30,59 @@ const getLivePaywallPrices = async (liveId: string) => {
     )
 }
 
-const createLivePricePreset = async (data: Preset) => {
+const getLivePaywallPrices = async (liveId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
+    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id=${userId}-live-${liveId}`, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const createLivePricePreset = async (data: Preset, liveId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            contentId: `${userId}-live-${liveId}`,
+            prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
+            }
+        }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                contentId: `${userId}-live-${liveId}`,
+                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                contentId: `${userId}-live-${liveId}`,
+                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+                settings: {
+                    startDate: Date.now()
+                }
+            }
+        }
+    } 
+
     return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
         {
-            name: data.name,
-            ...data
+            ...parsedPrice
         },
         {
             headers: {
@@ -90,13 +134,14 @@ const getLivePaywallPromos = async () => {
 
 const createLivePromoPreset = async (data: Promo, liveId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
                 ...data,
-                assignedContentIds: [liveId],
-                discountApplied: 'once'
+                assignedContentIds: [`${userId}-live-${liveId}`],
+                discountApplied: 'once',
+                id: null
             }  
         },
         {

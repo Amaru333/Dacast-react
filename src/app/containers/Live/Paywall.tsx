@@ -13,12 +13,12 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
-import { ContentPaywallPageInfos, Preset, Promo, PresetsPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+import { ContentPaywallPageInfos, Preset, Promo, PresetsPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
 
 var moment = require('moment-timezone');
 
 export interface LivePaywallComponentProps {
-    livePaywallInfos: ContentPaywallPageInfos;
+    livePaywallInfos: ContentPaywallState;
     getLivePaywallInfos: Function;
     saveLivePaywallInfos: Function;
     getLivePaywallPrices: Function;
@@ -47,7 +47,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.livePaywallInfos) {
+        if(!props.livePaywallInfos[liveId]) {
             props.getLivePaywallInfos(liveId)
         }
         if(!props.groupsInfos) {
@@ -66,10 +66,10 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
     const [customPromoPresetList, setCustomPromoPresetList] = React.useState<Promo[]>(null)
 
     React.useEffect(() => {
-        if (props.livePaywallInfos && props.globalPresets) {
+        if (props.livePaywallInfos[liveId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Price',
                 type: 'Pay Per View',
                 prices: [
                     
@@ -91,7 +91,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Promo',
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
@@ -101,7 +101,9 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 endDate: null,
                 endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
-                discountApplied: 'Once'
+                discountApplied: 'Once',
+                assignedContentIds: [],
+                assignedGroupIds: []
             }
             let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
             let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
@@ -110,12 +112,12 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.livePaywallInfos])
 
-    return props.livePaywallInfos && props.groupsInfos && props.theming && customPricePresetList? 
+    return props.livePaywallInfos[liveId] && props.groupsInfos && props.theming && customPricePresetList? 
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
             <ContentPaywallPage
                 contentId={liveId}
-                contentPaywallInfos={props.livePaywallInfos}
+                contentPaywallInfos={props.livePaywallInfos[liveId]}
                 saveContentPaywallInfos={props.saveLivePaywallInfos}
                 getContentPrices={props.getLivePaywallPrices}
                 createContentPricePreset={props.createLivePricePreset}
@@ -152,32 +154,32 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLivePaywallInfos: (liveId: string) => {
             dispatch(getLivePaywallInfosAction(liveId));
         },
-        saveLivePaywallInfos: (data: ContentPaywallPageInfos) => {
-            dispatch(saveLivePaywallInfosAction(data));
+        saveLivePaywallInfos: (data: ContentPaywallPageInfos, liveId: string) => {
+            dispatch(saveLivePaywallInfosAction(data, liveId));
         },
         getLivePaywallPrices: (liveId: string) => {
             dispatch(getLivePaywallPricesAction(liveId));
         },
-        createLivePricePreset: (data: Preset) => {
-            dispatch(createLivePricePresetAction(data));
+        createLivePricePreset: (data: Preset, liveId: string) => {
+            dispatch(createLivePricePresetAction(data, liveId));
         },
-        saveLivePricePreset: (data: Preset) => {
-            dispatch(saveLivePricePresetAction(data));
+        saveLivePricePreset: (data: Preset, liveId: string) => {
+            dispatch(saveLivePricePresetAction(data, liveId));
         },
-        deleteLivePricePreset: (data: Preset) => {
-            dispatch(deleteLivePricePresetAction(data));
+        deleteLivePricePreset: (data: Preset, liveId: string) => {
+            dispatch(deleteLivePricePresetAction(data, liveId));
         },
-        getLivePaywallPromos: () => {
-            dispatch(getLivePaywallPromosAction());
+        getLivePaywallPromos: (liveId: string) => {
+            dispatch(getLivePaywallPromosAction(liveId));
         },
         createLivePromoPreset: (data: Promo, liveId: string) => {
             dispatch(createLivePromoPresetAction(data, liveId));
         },
-        saveLivePromoPreset: (data: Promo) => {
-            dispatch(saveLivePromoPresetAction(data));
+        saveLivePromoPreset: (data: Promo, liveId: string) => {
+            dispatch(saveLivePromoPresetAction(data, liveId));
         },
-        deleteLivePromoPreset: (data: Promo) => {
-            dispatch(deleteLivePromoPresetAction(data));
+        deleteLivePromoPreset: (data: Promo, liveId: string) => {
+            dispatch(deleteLivePromoPresetAction(data, liveId));
         },
         getGroupsInfos: () => {
             dispatch(getGroupPricesAction());

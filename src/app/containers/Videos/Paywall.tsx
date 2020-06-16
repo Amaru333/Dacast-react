@@ -8,7 +8,7 @@ import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Pa
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
-import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos } from '../../redux-flow/store/Paywall/Presets/types';
+import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
@@ -17,7 +17,7 @@ import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
 var moment = require('moment-timezone');
 
 export interface VodPaywallComponentProps {
-    vodPaywallInfos: ContentPaywallPageInfos;
+    vodPaywallInfos: ContentPaywallState;
     getVodPaywallInfos: Function;
     getVodPaywallPrices: Function;
     saveVodPaywallInfos: Function;
@@ -46,7 +46,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if(!props.vodPaywallInfos) {
+        if(!props.vodPaywallInfos[vodId]) {
             props.getVodPaywallInfos(vodId)
         }
         if(!props.groupsInfos) {
@@ -65,10 +65,10 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
     const [customPromoPresetList, setCustomPromoPresetList] = React.useState<Promo[]>(null)
 
     React.useEffect(() => {
-        if (props.vodPaywallInfos && props.globalPresets) {
+        if (props.vodPaywallInfos[vodId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Price',
                 type: 'Pay Per View',
                 prices: [
                     
@@ -90,7 +90,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             };
             let customPromoPreset: Promo = {
                 id: 'custom',
-                name: 'Custom Preset',
+                name: 'Custom Promo',
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
@@ -100,7 +100,9 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 endDate: null,
                 endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
-                discountApplied: 'Once'
+                discountApplied: 'Once',
+                assignedContentIds: [],
+                assignedGroupIds: []
             }
             let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
             let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
@@ -110,12 +112,12 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.vodPaywallInfos])
 
-    return props.vodPaywallInfos && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
+    return props.vodPaywallInfos[vodId] && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
         <div className='flex flex-column'>
             <VideoTabs videoId={vodId} />
             <ContentPaywallPage
                 contentId={vodId}
-                contentPaywallInfos={props.vodPaywallInfos}
+                contentPaywallInfos={props.vodPaywallInfos[vodId]}
                 getContentPrices={props.getVodPaywallPrices}
                 saveContentPaywallInfos={props.saveVodPaywallInfos}
                 createContentPricePreset={props.createVodPricePreset}
@@ -155,29 +157,29 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodPaywallPrices: (vodId: string) => {
             dispatch(getVodPaywallPricesAction(vodId));
         },
-        saveVodPaywallInfos: (data: ContentPaywallPageInfos) => {
-            dispatch(saveVodPaywallInfosAction(data));
+        saveVodPaywallInfos: (data: ContentPaywallPageInfos, vodId: string) => {
+            dispatch(saveVodPaywallInfosAction(data, vodId));
         },
-        createVodPricePreset: (data: Preset) => {
-            dispatch(createVodPricePresetAction(data));
+        createVodPricePreset: (data: Preset, vodId: string) => {
+            dispatch(createVodPricePresetAction(data, vodId));
         },
-        saveVodPricePreset: (data: Preset) => {
-            dispatch(saveVodPricePresetAction(data));
+        saveVodPricePreset: (data: Preset, vodId: string) => {
+            dispatch(saveVodPricePresetAction(data, vodId));
         },
-        deleteVodPricePreset: (data: Preset) => {
-            dispatch(deleteVodPricePresetAction(data));
+        deleteVodPricePreset: (data: Preset, vodId: string) => {
+            dispatch(deleteVodPricePresetAction(data, vodId));
         },
-        getVodPaywallPromos: () => {
-            dispatch(getVodPaywallPromosAction());
+        getVodPaywallPromos: (vodId: string) => {
+            dispatch(getVodPaywallPromosAction(vodId));
         },
         createVodPromoPreset: (data: Promo, vodId: string) => {
             dispatch(createVodPromoPresetAction(data, vodId));
         },
-        saveVodPromoPreset: (data: Promo) => {
-            dispatch(saveVodPromoPresetAction(data));
+        saveVodPromoPreset: (data: Promo, vodId: string) => {
+            dispatch(saveVodPromoPresetAction(data, vodId));
         },
-        deleteVodPromoPreset: (data: Promo) => {
-            dispatch(deleteVodPromoPresetAction(data));
+        deleteVodPromoPreset: (data: Promo, vodId: string) => {
+            dispatch(deleteVodPromoPresetAction(data, vodId));
         },
         getGroupsInfos: () => {
             dispatch(getGroupPricesAction());

@@ -3,7 +3,7 @@ import { combineReducers, Reducer } from 'redux';
 import { CompanyPageInfos, CompanyReducer } from './Company';
 import { BillingPageInfos, BillingReducer } from './Billing';
 import { Invoice, InvoicesReducer } from './Invoices';
-import { PendingOrder } from './PendingOrders/types';
+import { PendingOrdersList } from './PendingOrders/types';
 import { PendingOrdersReducer } from './PendingOrders/reducer';
 import { Plans } from './Plans/types';
 import { PlansReducer } from "./Plans/reducer"
@@ -13,7 +13,7 @@ export interface  AccountState {
     company: false | CompanyPageInfos;
     billing: false | BillingPageInfos;
     invoices: false | Invoice[];
-    pendingOrders: false | PendingOrder[];
+    pendingOrders: false | PendingOrdersList;
     plans: false | Plans;
 }
 

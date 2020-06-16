@@ -29,12 +29,13 @@ const saveInteractionsInfos = async (data: InteractionsInfos) => {
     )
 }
 
-const saveAd = async (data: Ad[]) => {
+const saveAd = async (data: Ad[], adsId: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement/ads/',
         {
-            ads: data
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
+            adsId: adsId
         }, 
         {
             headers: {

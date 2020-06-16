@@ -20,6 +20,8 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
     const [watermarkFileFile, setWatermarkFile] = React.useState<File>(null);
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
+    let watermarkBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
 
     const handleUpload = () => {
         props.usefulFunctions['getUploadUrl']();        
@@ -65,13 +67,11 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                     } />
             </RecipeNameRow>
             <WatermarkContainer isMobile={isMobile} className="col mt2 col-12">
+                <input type='file' ref={watermarkBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/png, image/jpeg" />
                 <Text className="col col-12" size={16} weight="med" >Watermark</Text>
                 <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
-                <Button isLoading={uploadButtonLoading} className=" mt2" sizeButton="xs" typeButton="secondary">
-                    <label className='pointer' htmlFor='browseButton'>
-                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/png, image/jpeg" />
-                        Upload File   
-                    </label>    
+                <Button onClick={() => {watermarkBrowseButtonRef.current.click()} } isLoading={uploadButtonLoading} className=" mt2" sizeButton="xs" typeButton="secondary">
+                    Upload File  
                 </Button>
                 <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                 {props.stepperData.watermarkFilename ?

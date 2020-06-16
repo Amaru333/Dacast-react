@@ -56,8 +56,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistTheme: (playlistId: string) => {
             dispatch(getPlaylistThemeAction(playlistId));
         },
-        savePlaylistTheme: (theme: ThemeOptions, playlistId: string) => {
-            dispatch(savePlaylistThemeAction(theme, playlistId));
+        savePlaylistTheme: (theme: ThemeOptions, playlistId: string, callback: () => void) => {
+            dispatch(savePlaylistThemeAction(theme, playlistId)).then(callback);
         },
     }
 }

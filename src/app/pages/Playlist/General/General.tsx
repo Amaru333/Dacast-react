@@ -13,9 +13,7 @@ import { Prompt } from 'react-router';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
-import { usePlayer } from '../../../utils/player';
-import { Modal } from '../../../../components/Modal/Modal';
-import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
+import { PreviewModal } from '../../../shared/Common/PreviewModal';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -38,26 +36,9 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
-    let playerRef = React.useRef<HTMLDivElement>(null);
-
-    let player = usePlayer(playerRef, userId + '-playlist-' + props.playlistDetails.id)
-
     React.useEffect(() => {
         setNewPlaylistDetails(props.playlistDetails)
-    }, [props.playlistDetails]);
-
-    React.useEffect(() => {
-    }, [newPlaylistDetails])
-
-    const copyKey = (value: string) => {
-        var textArea = document.createElement("textarea");
-        textArea.value = value;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("Copy");
-        textArea.remove();
-    }
-
+    }, [props.playlistDetails.title, props.playlistDetails.folders, props.playlistDetails.description]);
 
     const handleImageModalFunction = () => {
         if (imageModalTitle === "Change Splashscreen") {
@@ -121,7 +102,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.playlistDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {copyKey(props.playlistDetails.id);props.showToast(`Content ID Copied`, 'flexible', "success")}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {updateClipboard(props.playlistDetails.id, 'Content ID Copied')}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -279,12 +260,10 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                 <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
                 <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
             </ButtonContainer>
-            <Modal modalTitle='Preview' hasClose toggle={() => setPreviewModalOpen(!previewModalOpen)} opened={previewModalOpen}>
-                <PlayerContainer>
-                    <div className="mt2" ref={playerRef}></div>
-                </PlayerContainer>   
-                </Modal>
-            <Prompt when={newPlaylistDetails !== props.playlistDetails} message='' />
+            {
+                previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
+            <Prompt when={JSON.stringify(newPlaylistDetails) !== JSON.stringify(props.playlistDetails)} message='' />
         </React.Fragment>
     )
 }

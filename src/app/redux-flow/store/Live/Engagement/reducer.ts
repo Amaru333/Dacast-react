@@ -4,7 +4,6 @@ import { Action } from './actions';
 import { Ad, ContentEngagementSettings, contentEngagementDefaultState, ContentEngagementSettingsState } from '../../Settings/Interactions/types';
 
 const reducer: Reducer<ContentEngagementSettingsState> = (state: ContentEngagementSettingsState = contentEngagementDefaultState, action: Action) => {
-    let ads: Ad[] = []
     switch (action.type) {
         case ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS:
             return {
@@ -23,44 +22,23 @@ const reducer: Reducer<ContentEngagementSettingsState> = (state: ContentEngageme
                 ...state,
                 [action.payload.contentId]: { ...action.payload }
             }
-        case ActionTypes.SAVE_LIVE_AD:
-            ads = state[action.payload.id].engagementSettings.ads.slice();
-            return { 
-                ...state,
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
-                    engagementSettings: {
-                        ...state[action.payload.id].engagementSettings,
-                        ads: ads.map((item) => {
-                            if (item.id !== action.payload.id) {
-                                return item
-                            }
-                            return {
-                                ...item,
-                                ...action.payload
-                            }
-                        })
-                    }
-                }
-            }
         case ActionTypes.CREATE_LIVE_AD:
-            ads = state[action.payload.id].engagementSettings.ads.slice();
-            ads.splice(ads.length, 0, action.payload)
             return {
                 ...state,
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
-                    engagementSettings: { ...state[action.payload.id].engagementSettings, ads: ads }
+                [action.payload.contentId]: { 
+                    ...state[action.payload.contentId],
+                    engagementSettings: { ...state[action.payload.contentId].engagementSettings, ads: action.payload.ads, adsId: action.payload.adsId }
                 }
             }
+        case ActionTypes.SAVE_LIVE_AD:
         case ActionTypes.DELETE_LIVE_AD:
             return {
                 ...state, 
-                [action.payload.id]: { 
-                    ...state[action.payload.id],
+                [action.payload.contentId]: { 
+                    ...state[action.payload.contentId],
                     engagementSettings: { 
-                        ...state[action.payload.id].engagementSettings, 
-                        ads: state[action.payload.id].engagementSettings.ads.filter((item) => item.id !== action.payload.id) 
+                        ...state[action.payload.contentId].engagementSettings, 
+                        ads: action.payload.ads
                     } 
                 }
             }

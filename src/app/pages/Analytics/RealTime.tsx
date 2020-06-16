@@ -83,7 +83,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.concurentViewersPerTime.data.data}
+                                        data={props.realTimeAnalytics.data.concurentViewersPerTime.data}
                                         yAxesName="Concurent Viewers"
                                         datasetName="Concurent Viewers"
                                         labels={labelsFormate(props.realTimeAnalytics.data.concurentViewersPerTime.time)} />
@@ -113,7 +113,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard realTime dataName="gbPerTime" data={props.realTimeAnalytics.data.gbPerTime} infoText="Data consumption over time" title="GBytes by Time (UTC)">
                         {
-                            props.realTimeAnalytics.data.gbPerTime ?
+                            props.realTimeAnalytics.data.gbPerTime && props.realTimeAnalytics.data.gbPerTime.data ?
                                 props.realTimeAnalytics.data.gbPerTime.data.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
@@ -122,7 +122,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                                         beginAtZero={true}
                                         data={props.realTimeAnalytics.data.gbPerTime.data}
                                         yAxesName="GB"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.gbPerTime.data.time)} />
+                                        labels={labelsFormate(props.realTimeAnalytics.data.gbPerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

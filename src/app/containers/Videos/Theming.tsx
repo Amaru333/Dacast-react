@@ -58,8 +58,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodTheme: (vodId: string) => {
             dispatch(getVodThemeAction(vodId));
         },
-        saveVodTheme: (theme: ThemeOptions, vodId: string) => {
-            dispatch(saveVodThemeAction(theme, vodId));
+        saveVodTheme: (theme: ThemeOptions, vodId: string, callback: () => void) => {
+            dispatch(saveVodThemeAction(theme, vodId)).then(callback);
         },
     }
 }

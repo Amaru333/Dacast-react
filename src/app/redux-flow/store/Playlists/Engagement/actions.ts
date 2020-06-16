@@ -17,17 +17,17 @@ export interface SavePlaylistEngagementSettings {
 
 export interface SavePlaylistAd {
     type: ActionTypes.SAVE_PLAYLIST_AD;
-    payload: Ad;
+    payload: {ads: Ad[]; contentId: string;}
 }
 
 export interface CreatePlaylistAd {
     type: ActionTypes.CREATE_PLAYLIST_AD;
-    payload: Ad;
+    payload: {ads: Ad[], adsId: string; contentId: string};
 }
 
 export interface DeletePlaylistAd {
     type: ActionTypes.DELETE_PLAYLIST_AD;
-    payload: Ad; 
+    payload: {ads: Ad[]; contentId: string;}
 }
 
 export const getPlaylistEngagementSettingsAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistEngagementSettings> => {
@@ -45,7 +45,7 @@ export const savePlaylistEngagementSettingsAction = (data: ContentEngagementSett
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistEngagementSettings> ) => {
         await playlistEngagementServices.savePlaylistEngagementSettings(data)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PLAYLIST_ENGAGEMENT_SETTINGS, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_ENGAGEMENT_SETTINGS, payload: data} );
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -53,11 +53,11 @@ export const savePlaylistEngagementSettingsAction = (data: ContentEngagementSett
     };
 }
 
-export const savePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, SavePlaylistAd> => {
+export const savePlaylistAdAction = (data: Ad[], adsId: string, playlistId: string): ThunkDispatch<Promise<void>, {}, SavePlaylistAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SavePlaylistAd> ) => {
-        await playlistEngagementServices.savePlaylistAd(data)
+        await playlistEngagementServices.savePlaylistAd(data, adsId, playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PLAYLIST_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.SAVE_PLAYLIST_AD, payload: {ads: data, contentId: playlistId}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -65,11 +65,11 @@ export const savePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {},
     };
 }
 
-export const createPlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, CreatePlaylistAd> => {
+export const createPlaylistAdAction = (data: Ad[], adsId: string, playlistId: string): ThunkDispatch<Promise<void>, {}, CreatePlaylistAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreatePlaylistAd> ) => {
-        await playlistEngagementServices.createPlaylistAd(data)
+        await playlistEngagementServices.savePlaylistAd(data, adsId, playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_PLAYLIST_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.CREATE_PLAYLIST_AD, payload: {ads: data, adsId: response.data.data.adsId, contentId: playlistId}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -77,11 +77,11 @@ export const createPlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {
     };
 }
 
-export const deletePlaylistAdAction = (data: Ad): ThunkDispatch<Promise<void>, {}, DeletePlaylistAd> => {
+export const deletePlaylistAdAction = (data: Ad[], adsId: string, playlistId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylistAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeletePlaylistAd> ) => {
-        await playlistEngagementServices.deletePlaylistAd(data)
+        await playlistEngagementServices.savePlaylistAd(data, adsId, playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.DELETE_PLAYLIST_AD, payload: response.data} );
+                dispatch( {type: ActionTypes.DELETE_PLAYLIST_AD, payload: {ads: data, contentId: playlistId}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

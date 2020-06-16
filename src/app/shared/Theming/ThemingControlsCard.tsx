@@ -52,17 +52,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     const {userId} = addTokenToHeader()
 
-    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
+    let player = usePlayer(playerRef, props.contentType !== 'settings' ? userId + '-' + props.contentType + '-' + props.contentId : '1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleThemeSave = () => {
         setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme, () => setButtonLoading(true))
+            props.createTheme(selectedTheme, () => setButtonLoading(false))
         } else {
-            props.saveTheme(selectedTheme, props.contentId)
+            props.saveTheme(selectedTheme, props.contentId, () => setButtonLoading(false))
         }
     }
+
+    React.useEffect(() => {
+        setButtonLoading(false)
+    }, [props.theme])
 
     const handleCancel = () => {
         switch(props.contentType) {

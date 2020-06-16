@@ -36,7 +36,7 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
         <div>
             <div className='col col-12 mb2 clearfix'>
                 <Input className={ ClassHalfXsFullMd + 'pr1 xs-mb2'} value={promoPreset.name} label='Preset name' onChange={(event) => setPromoPreset({...promoPreset, name: event.currentTarget.value})} />
-                <Input className={ ClassHalfXsFullMd + 'pl1'} value={promoPreset.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setPromoPreset({...promoPreset, alphanumericCode: event.currentTarget.value})} tooltip="Minimum 5 Characters" />
+                {/* <Input className={ ClassHalfXsFullMd + 'pl1'} value={promoPreset.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setPromoPreset({...promoPreset, alphanumericCode: event.currentTarget.value})} tooltip="Minimum 5 Characters" /> */}
             </div>
             <div className='col col-12 mb2'>
                 <Input className='col sm-col-3 col-6 pr1 xs-mb2' value={promoPreset.discount ? promoPreset.discount.toString() : ''} label='Discount' onChange={(event) => setPromoPreset({...promoPreset, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
@@ -60,7 +60,7 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                 }
             </div>
             <div className='col col-12 mt1'>
-                <Button disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || promoPreset.alphanumericCode.length < 5 || Number.isNaN(promoPreset.limit) || promoPreset.startTime === null || promoPreset.endTime === null} onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || Number.isNaN(promoPreset.limit) || promoPreset.startTime === null || promoPreset.endTime === null} onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

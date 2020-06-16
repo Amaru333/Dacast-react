@@ -67,8 +67,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const notEncodedRenditionsTableBody = () => {
         return notEncodedRenditions.map((value) => {
+            const disabledRendition = value.size > props.renditions.videoInfo.width
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0 || (value.size != null && value.size > props.renditions.videoInfo.width)}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0 || (value.size != null && disabledRendition)}
                     defaultChecked={selectedNotEncodedRendition.includes(value.name)}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
@@ -79,9 +80,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                         }
                     }
                     } />,
-                <Text key={value.name} size={14} weight="reg">{value.name}</Text>,
-                <Text key={"size" + value.size} size={14} weight="reg">{value.size}</Text>,
-                <Text key={"bitrate" + value.bitrate} size={14} weight="reg">{value.bitrate ? value.bitrate / 1000 : null}</Text>,
+                <Text key={value.name} size={14} weight="reg" color={disabledRendition ? 'gray-6' : 'gray-1'}>{value.name}</Text>,
+                <Text key={"size" + value.size} size={14} weight="reg" color={disabledRendition ? 'gray-6' : 'gray-1'}>{value.size}</Text>,
+                <Text key={"bitrate" + value.bitrate} size={14} weight="reg" color={disabledRendition ? 'gray-6' : 'gray-1'}>{value.bitrate ? value.bitrate / 1000 : null}</Text>,
             ]}
         })
     }

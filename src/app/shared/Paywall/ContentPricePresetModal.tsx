@@ -21,7 +21,7 @@ const pricesList = [
 ]
 
 const defaultPreset: Preset = {
-    id: '-1',
+    id: 'custom',
     name: '',
     type: 'Pay Per View',
     prices: pricesList,
@@ -35,7 +35,7 @@ const defaultPreset: Preset = {
     }
 }
 
-export const ContentPricePresetsModal = (props: { action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function }) => {
+export const ContentPricePresetsModal = (props: {contentId: string; action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function }) => {
 
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
@@ -76,19 +76,19 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                     id='pricePresetSelectDropdown'
                     className='col col-6'
                     dropdownTitle='Preset'
+                    dropdownDefaultSelect='Custom Price'
                     list={props.presetList ? props.presetList.reduce((reduced: DropdownListType, preset: Preset) => { return { ...reduced, [preset.name]: false } }, {}) : {}}
                     callback={(selectedPreset: string) => { return setNewPricePreset(props.presetList.find(preset => preset.name === selectedPreset)); }}
                 />
                 {
-                    newPricePreset.id === "custom" ?
+                    newPricePreset.id === "custom" &&
                         <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label='Save as Price Preset' defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
-                        : null
                 }
 
             </PresetSelectRow>
             <div className='col col-12 clearfix'>
-                {savePreset && newPricePreset.id === 'custom' ?
-                    <Input className='col mb2 col-12 sm-col-6 sm-pr1' label='Preset Name' onChange={(event) => setNewPricePreset({ ...newPricePreset, name: event.currentTarget.value })} /> : null
+                {(savePreset && newPricePreset.id === 'custom') &&
+                    <Input className='col mb2 col-12 sm-col-6 sm-pr1' label='Preset Name' onChange={(event) => setNewPricePreset({ ...newPricePreset, name: event.currentTarget.value })} />
                 }
 
                 <DropdownSingle
@@ -133,7 +133,7 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                     disabled={newPricePreset.type === 'Subscription'}
                 />
                 {
-                    newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View' ?
+                    (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
                         <DropdownSingle
                             hasSearch
                             id='pricePresetTimezoneDropdown'
@@ -142,21 +142,19 @@ export const ContentPricePresetsModal = (props: { action: Function; toggle: Func
                             dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                         />
-                        : null
                 }
             </div>
             {
-                newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View' ?
+                (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-8 pr1' datepickerTitle='Start Date' />
                         <Input className='col col-4 pl1' type='time' defaultValue={newPricePreset.settings.startTime} label='Start Time' />
                     </div>
-                    : null
             }
             <div className='col col-12 mt3'>
                 <Button
-                    disabled={!newPricePreset.name || (newPricePreset.type === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || newPricePreset.prices.some(price => Number.isNaN(price.value))}
-                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPricePreset) }; props.action(newPricePreset); props.toggle(false) }} className='mr2'
+                    disabled={(!newPricePreset.name && newPricePreset.id !== 'custom') || (newPricePreset.type === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || newPricePreset.prices.some(price => Number.isNaN(price.value))}
+                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPricePreset) }; props.action(newPricePreset, props.contentId); props.toggle(false) }} className='mr2'
                     typeButton='primary'
                     sizeButton='large'
                     buttonColor='blue'>

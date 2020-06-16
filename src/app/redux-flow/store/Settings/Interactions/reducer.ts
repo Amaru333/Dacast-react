@@ -9,6 +9,7 @@ const reducer: Reducer<InteractionsInfos> = (state = interactionsDefaultState, a
             return {
                 ...action.payload.data, 
                 ads: action.payload.data.ads ?action.payload.data.ads.map((ad) => {return {...ad, id: ad.url + ad.timestamp + ad["ad-type"]}}) : [],
+                adsEnabled: action.payload.data.adsEnabled ? action.payload.data.adsEnabled : false,
                 mailCatcher: []
             };
         case ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS:

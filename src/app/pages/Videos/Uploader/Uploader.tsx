@@ -11,6 +11,7 @@ import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../../shared/Common/Icon';
+import { useNetwork } from '../../../utils/customHooks';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -21,16 +22,33 @@ export const UploaderPage = (props: UploaderProps) => {
     const MAX_REQUEST_PER_BATCH = 100
     const NB_CONCURRENT_REQUESTS = 5
 
+    let isOnline = useNetwork()
 
     const [uploadingList, setUploadingList] = React.useState<UploaderItemProps[]>([]);
     const [itemsPaused, setItemsPaused] = React.useState<boolean>(false)
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
-
+    let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
-        uploadNextFile()
+        if(!isOnline) {
+            if(currentUpload && currentUpload.hasStarted) {
+                currentUpload.pauseUpload();
+                console.log("PAUSE");
+            }
+        } else {
+            if(currentUpload) {
+                currentUpload.resumeUpload();
+                console.log("RESUME");
+            }
+        }
+    }, [isOnline])
+
+    React.useEffect(() => {
+        if(currentUpload && currentUpload.isCompleted) {
+            uploadNextFile()
+        }
     }, [currentUpload && currentUpload.isCompleted])
 
     React.useEffect(() => {
@@ -43,6 +61,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
+            
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
@@ -70,9 +89,9 @@ export const UploaderPage = (props: UploaderProps) => {
 
     const handleDrop = (fileList: FileList) => {
         const acceptedVideoTypes = ['video/mp4', 'video/mov'];
+        var newUploadingQueue = [];
         for (var i = 0; i < fileList.length; i++) {
             const file = fileList[i];
-            console.log(file);
             if (fileList.length > 0) {
                 var startTime = (new Date()).getTime();
                 let newUpload = new UploadObject(
@@ -97,10 +116,9 @@ export const UploaderPage = (props: UploaderProps) => {
                         }
                     }
                 )
-                if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress')) {
+                if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress') && i === 0) {
                     newUpload.startUpload()
                     setCurrentUpload(newUpload)
-
                     setUploadingList((currentList: UploaderItemProps[]) => {
                         return [
                             ...currentList,
@@ -115,7 +133,10 @@ export const UploaderPage = (props: UploaderProps) => {
                             }]
                     })
                 } else {
-                    setUploadFileQueue(uploadFileQueue.concat(newUpload))
+                    newUploadingQueue.push(newUpload)
+                    if(i === fileList.length - 1) {
+                        setUploadFileQueue([...uploadFileQueue, ...newUploadingQueue])
+                    }
                     setUploadingList((currentList: UploaderItemProps[]) => {
                         return [
                             ...currentList,
@@ -175,7 +196,9 @@ export const UploaderPage = (props: UploaderProps) => {
                 break;
             case 'queue':
                 const itemsQueue = uploadingList.filter(obj => obj.name !== item.name);
+                const queueItem = uploadFileQueue.filter(obj => obj.getFileName() !== item.name);
                 setUploadingList(itemsQueue);
+                setUploadFileQueue(queueItem);
                 // var event = new CustomEvent('paused' + item.name);
                 // document.dispatchEvent(event);
                 break;
@@ -232,7 +255,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
                 <div className="col col-4 flex items-center justify-end">
-                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/api-&-integrations")}> FTP/S3 Uploader </Button>
+                    <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/integrations")}> FTP/S3 Uploader </Button>
                 </div>
             </div>
 
@@ -244,36 +267,28 @@ export const UploaderPage = (props: UploaderProps) => {
                 <BigIcon>cloud_upload</BigIcon>
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
-                    <Button style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
-                        <label htmlFor='browseButton'>
-                            <LinkStyleUploader>
-                                <input type='file' multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
-                                Browse Files
-                            </LinkStyleUploader>
-                        </label>
+                    <input type='file' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                    <Button onClick={() => {videoUploadBrowseButtonRef.current.click()}} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
+                        Browse Files
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>
             {
                 !uploadingList.length &&
-                <>
-                    <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
-                        Choose an Encoding Recipe then upload your videos
-                    </Text>
-                    <Text weight="reg" color="gray-3" size={16} className="block center">
-                        Note: this will consume Encoding Credits
-                    </Text>
-                </>
+                <Text style={{ marginTop: "50%" }} weight="reg" color="gray-3" size={16} className="block mb2 center">
+                    Choose an Encoding Recipe then upload your videos
+                </Text>
             }
             <div hidden={uploadingList.length === 0} className=" mt2 right">
-                <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed")) }} >Clear Completed</Button>
-                {
+                <Button sizeButton='xs' className="mr2" typeButton='secondary' buttonColor='blue' onClick={() => { setUploadingList(uploadingList.filter(element => element.currentState !== "completed" && element.currentState !== "failed")) }} >Clear Completed</Button>
+                {/* To be renoved eventually
+                    {
                     itemsPaused ?
                         <Button sizeButton='xs' typeButton='primary' buttonColor='blue' onClick={() => handleResumeAll()} >Resume</Button>
                         :
                         <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => { currentUpload.pauseUpload(); setItemsPaused(!itemsPaused) }} >Pause</Button>
 
-                }
+                } */}
             </div>
             <ItemList className="col-12">
                 {renderList()}

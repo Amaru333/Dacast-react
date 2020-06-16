@@ -11,7 +11,7 @@ export interface GetVodRenditions {
 
 export interface AddVodRenditions {
     type: ActionTypes.ADD_VOD_RENDITIONS;
-    payload: Rendition[];
+    payload:{ contentId: string; data: Rendition[]};
 }
 
 export interface DeleteVodRenditions {
@@ -48,7 +48,7 @@ export const addVodRenditionsAction = (data: string[], vodId: string): ThunkDisp
                     } 
                     array.push(rendition)
                 })
-                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload: array });
+                dispatch({ type: ActionTypes.ADD_VOD_RENDITIONS, payload:{ contentId: vodId, data: array} });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

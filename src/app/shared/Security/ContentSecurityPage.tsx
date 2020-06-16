@@ -70,8 +70,6 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
     const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
 
-
-    
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
         setTogglePasswordProtectedVideo(props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
@@ -80,13 +78,14 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     React.useEffect(() => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
+        setHasToggleChanged(false)
     }, [props.contentSecuritySettings.securitySettings])
 
     const handlePasswordValue = () => {
         if(!settingsEditable) {
-            return props.globalSecuritySettings.passwordProtection.password ? props.globalSecuritySettings.passwordProtection.password : ''
+            return props.globalSecuritySettings.passwordProtection.password ? props.globalSecuritySettings.passwordProtection.password : null
         } else {
-            return props.contentSecuritySettings.securitySettings.passwordProtection.password ? props.contentSecuritySettings.securitySettings.passwordProtection.password : ''
+            return props.contentSecuritySettings.securitySettings.passwordProtection.password ? props.contentSecuritySettings.securitySettings.passwordProtection.password : null
 
         }
     }
@@ -94,7 +93,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const handlePasswordProtectedVideoChange = () => {
         setHasToggleChanged(true)
         if(togglePasswordProtectedVideo) {
-            setSelectedSettings({...selectedSettings, passwordProtection: {password: ''}})
+            setSelectedSettings({...selectedSettings, passwordProtection: {password: null}})
         }
         setTogglePasswordProtectedVideo(!togglePasswordProtectedVideo)
 
@@ -110,9 +109,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startTimeTs = toggleSchedulingVideo ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs =  toggleSchedulingVideo ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentSecuritySettings({...selectedSettings, contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
+        let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs =  (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        props.saveContentSecuritySettings({passwordProtection: selectedSettings.passwordProtection ,contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}, selectedGeoRestriction: selectedSettings.selectedGeoRestriction, selectedDomainControl: selectedSettings.selectedDomainControl}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
     }
 
     return (
@@ -342,7 +341,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings(props.globalSecuritySettings, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
+                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings({passwordProtection:{password: null}, contentScheduling:{startTime: 0, endTime: 0}, selectedDomainControl: null, selectedGeoRestriction: null}, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>

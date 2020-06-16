@@ -15,12 +15,16 @@ img {
     width: 100%;
 }
 
+.DateInput__disabled, .DateInput_input__disabled {
+    background: none;
+}
+
 input[type=time]::-webkit-datetime-edit-ampm-field {
     //@at-root: none;
 }
 
 .minContentDash {
-    min-height: 94px;
+    min-height: 80px;
 }
 
 .x-visible {
@@ -70,11 +74,9 @@ a:hover {
 a:active {
     color: #284CEB;
 }
-
 a {
     text-decoration: none;
 }
-
 .noTransition {
     transition: none !important;
 }
