@@ -46,16 +46,18 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                 geoRestriction: geoRestrictionsList,
             }
         case ActionTypes.SAVE_GEO_RESTRICTION_GROUP:
+            let defaultLength = state.geoRestriction.filter(g => {return (g.isDefault && g.id !== action.payload.id)}).length
             geoRestrictionsList = state.geoRestriction.map((geoRestriction) => {
                 if(geoRestriction.id === action.payload.id) {
                     return action.payload
                 } else {
                     return {
                         ...geoRestriction,
-                        isDefault: action.payload.isDefault ? false : state.geoRestriction.filter(g => g.isDefault).length === 0 && geoRestriction.id === '-1' ? true : false
+                        isDefault: (!action.payload.isDefault && defaultLength === 0 && geoRestriction.id === '-1') ? true : false
                     }
                 }
             })
+            console.log(state.geoRestriction.filter(g => {return (g.isDefault && g.id !== action.payload.id)}).length)
             return {
                 ...state,
                 geoRestriction: geoRestrictionsList,
@@ -86,7 +88,7 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                 } else {
                     return {
                         ...domainControl,
-                        isDefault: action.payload.isDefault ? false : state.domainControl.filter(g => g.isDefault).length === 0 && domainControl.id === '-1' ? true : false
+                        isDefault: (!action.payload.isDefault && state.domainControl.filter(g => {return g.isDefault && g.id !== action.payload.id}).length === 0 && domainControl.id === '-1') ? true : false
                     }
                 }
             })
