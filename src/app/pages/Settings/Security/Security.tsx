@@ -52,6 +52,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     React.useEffect(() => {
         setSecurityDetails(props.securityDetails)
+        setDisplayformActionButtons(false)
     }, [props.securityDetails])
 
     const onSubmit = () => {

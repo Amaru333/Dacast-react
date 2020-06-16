@@ -159,16 +159,16 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
     const handleSave = () => {
         switch(selectedPaymentMethod) {
             case PaymentMethodType.BankAccountUS: 
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'us-transfer'})
+                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'us-transfer', recipientType: paymentMethodRecipientType.toLowerCase()})
                 break;
             case PaymentMethodType.BankAccountInternational:
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'international-transfer'})
+                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'international-transfer', recipientType: paymentMethodRecipientType.toLowerCase()})
                 break;
             case PaymentMethodType.Check: 
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'check'})
+                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'check', recipientType: paymentMethodRecipientType.toLowerCase()})
                 break;
             case PaymentMethodType.PayPal:
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'paypal'})
+                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'paypal', recipientType: paymentMethodRecipientType.toLowerCase()})
                 break;
         }
 

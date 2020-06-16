@@ -19,7 +19,7 @@ import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/
 import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
 
-export const PlansPage = (props: PlansContainerProps & {planDetails: Plans}) => {
+export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
