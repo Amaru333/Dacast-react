@@ -32,7 +32,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                             ...state.data.live.liveViewers,
                             data: action.payload.viewers,
                             loading: action.payload.loading,
-                            failed: action.payload.failed
+                            failed:  !action.payload.viewers ? true : action.payload.failed
                         }
                     }
                 }
@@ -129,7 +129,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                             ...state.data.vod.videoPlays,
                             data:  action.payload.plays,
                             loading: action.payload.loading,
-                            failed: action.payload.failed
+                            failed: !action.payload.plays ? true : action.payload.failed
                         }
                     }
                 }

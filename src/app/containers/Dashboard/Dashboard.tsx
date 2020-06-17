@@ -33,8 +33,9 @@ const Dashboard = (props: DashboardProps) => {
 
     React.useEffect(() => {
         if (props.infos) {
-            console.log(props.infos)
-            
+            if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
+                props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
+            }
             if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data && !props.infos.live.topChannels.loading  && !props.infos.live.topChannels.failed) {
                 props.getDashboardLiveTopChannels(props.infos.live.topChannels.jobID);
             }
