@@ -34,7 +34,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     const [purchaseStepperOpened, setPurchaseStepperOpened] = React.useState<boolean>(false)
     const [selectedPurchaseItem, setSelectedPurchaseItem] = React.useState<string>(null)
 
-    console.log(props.profile)
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
         left: props.profile.storage.limit-props.profile.storage.consumed,
