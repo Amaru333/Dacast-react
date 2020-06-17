@@ -38,33 +38,32 @@ export interface CustomAllowance {
 export interface Plan {
     name: 'Developer' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     code: string;
+    allownaceCode: string;
     isActive: boolean;
-    discount_percent: number;
-    default_price: Price;
+    discount: number;
+    price: Price;
     allowances: Allowances[]
-    default_privileges: Privilege[]
+    privileges: Privilege[]
     privilegesTotal: number; // front end only
     termsAndConditions: boolean; // frontend only
-    default_allowance_code: string;
-    interval_unit: string;
-    interval_length: number;
+    paymentFrequency: string;
+    paymentTerm: number;
     is_customizable: boolean;
-    default_commitment: number;
+    commitment: number;
     is_available_per_default: boolean;
     selectedScalePlan?: Allowances;
 }
 
 export interface Allowances {
     code: string;
-    defaultBandwidth: number;
-    defaultStorage: number;
+    bandwidth: number;
+    storage: number;
 }
 
 export interface Privilege {
     code: string;
     price: Price;
-    checked: boolean;
-    editable_quantity: boolean
+    checked: boolean; //frontend only
 }
 
 export interface Price {
@@ -75,21 +74,17 @@ export interface Price {
 }
 
 export interface Plans {
-    developer: {
-        developerAnnual: Plan
-    };
-    event: {
-        eventAnnual: Plan
-    };
-    scale: {
-        scaleAnnual: Plan;
-        scaleMonthly: Plan;
-    };
+    developerPlan: Plan
+    eventPlan: Plan
+    scalePlanAnnual: Plan;
+    scalePlanMonthly: Plan;
+    
     
 }
 
 export const plansInitialState: Plans = {
-    developer: null,
-    event: null,
-    scale: null
+    developerPlan: null,
+    eventPlan: null,
+    scalePlanAnnual: null,
+    scalePlanMonthly: null
 }

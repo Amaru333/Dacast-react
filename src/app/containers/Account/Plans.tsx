@@ -22,9 +22,6 @@ const PlansContainer = (props: PlansContainerProps) => {
         }
     }, [])
 
-    React.useEffect(() => {
-      console.log(props.planDetails)
-    }, [props.planDetails])
 
     // const planDetails = {
     //     "developer": {
