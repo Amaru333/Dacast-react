@@ -249,7 +249,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             props.map((route: Routes, i: number) => {
                 if (route.isPublic) {
                     if (isLoggedIn()) {
-                        console.log('here', route.path)
                         if(route.path !== '*') {
                             return (<Route key={route.path} path={route.path}>
                                 <Redirect

@@ -43,6 +43,7 @@ export function addTokenToHeader() {
     if(localStorage.getItem('userToken')) {
         if(userInfo) {
             var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
+            console.log(userInfo);
             return {
                 token: userInfo.token, 
                 userId: userInfo['custom:dacast_user_id'], 
