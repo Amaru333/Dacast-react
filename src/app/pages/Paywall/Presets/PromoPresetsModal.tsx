@@ -54,9 +54,8 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
             <div className=' col col-12 mb25'>
                 <DropdownSingle hasSearch id='promoPresetTimezoneDropdown' dropdownDefaultSelect={promoPreset.timezone ? promoPreset.timezone : moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')'} className={ClassHalfXsFullMd + ' pr1'}  dropdownTitle='Timezone' callback={(value: string) => setPromoPreset({...promoPreset, timezone: value})} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
                 {
-                    promoPreset.rateType === 'Subscription' ? 
+                    promoPreset.rateType === 'Subscription' &&
                         <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={promoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setPromoPreset({...promoPreset, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
-                        : null
                 }
             </div>
             <div className='col col-12 mt1'>

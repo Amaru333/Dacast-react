@@ -15,7 +15,20 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                         return {
                             id: preset.id,
                             name: preset.name,
-                            ...preset.preset
+                            prices: preset.preset.prices,
+                            settings: {
+                                ...preset.preset.settings,
+                                startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                recurrence: preset.preset.settings.recurrence ? {
+                                    recurrence: preset.preset.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
+                                    : preset.preset.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : 'Monthly'
+                                } 
+                                : null
+                            },
+                            type: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
+
                         }
                     })
                 }
@@ -59,7 +72,15 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.GET_PROMO_PRESETS_LIST :
             return {
                 ...state,
-                promos: action.payload.data
+                promos: {
+                    totalItems: action.payload.data.totalItems,
+                    promos: action.payload.data.promos.map((promo) => {
+                        return {
+                            ...promo,
+                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
+                }
             }
         case ActionTypes.CREATE_PROMO_PRESET :
             promos = state.promos.promos.slice();
