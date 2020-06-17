@@ -11,7 +11,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
-export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: Function; newFolderModalToggle: Function}) => {
+export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
@@ -32,6 +32,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             loadingStatus: 'loading',
             children: {}
         });
+        props.setMoveModalSelectedFolder(selectedModalFolder)
         props.goToNode(selectedModalFolder)
             .then((node) => {
                 setCurrentNode(node);
