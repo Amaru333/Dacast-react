@@ -4,9 +4,7 @@ import { PlansAction } from "./actions"
 export const reducer = (state = plansInitialState, action: PlansAction) => {
     switch (action.type) {
         case ActionTypes.GET_PLAN_DETAILS:
-            debugger
-            return {...action.payload.data
-            }
+            return {...action.payload.data}
         case ActionTypes.CHANGE_ACTIVE_PLAN:
             let plans = {...Object.values(state).reduce((reduced, plan) => 
                 ({...reduced, plan: {...reduced.plan, isActive: false}}))}

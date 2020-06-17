@@ -19,6 +19,7 @@ import { ContentPromoPresetsModal } from './ContentPromoPresetModal';
 import { Preset, Promo, ContentPaywallPageInfos, PresetsPageInfos } from '../../redux-flow/store/Paywall/Presets/types'
 import { GroupsPageInfos } from '../../redux-flow/store/Paywall/Groups/types'
 import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types'
+import { emptyContentListBody } from '../List/emptyContentListState';
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -159,14 +160,12 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const emptyPricePresetTableHeader = () => {
         return {data: [
-            {cell: <span key={"emptyPricePresetTableHeader"}></span>},
             {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2' onClick={() => {setSelectedPreset(null);setNewPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
-            {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
             {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setNewPromoPresetsModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
         ]}
     }
@@ -177,20 +176,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             {cell: <span key={"emptygroupPriceTableHeader"}></span>}
             
         ]}
-    }
-
-    const emptyGroupTableBody = (text: string) => {
-        return [{data: [
-            <div key='emptyGroupPriceTableBody' className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-        ]}]
-    }
-
-
-    const emptyPresetTableBody = (text: string) => {
-        return [{data: [
-            <span key={'emptyPresetTableBody'}></span>,
-            <div className='center'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-        ]}]
     }
 
     return (
@@ -219,7 +204,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.length > 0 ? 
                     <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
                     :
-                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Prices')} />
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyContentListBody('You have no Prices')} />
 
                 }
                 <BorderStyle className='my2' />
@@ -229,7 +214,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.length > 0 ?
                     <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
                     :                    
-                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promos')} />
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyContentListBody('You have no Promos')} />
 
                 }
 
@@ -237,8 +222,8 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { !props.groupsInfos.prices || props.groupsInfos.prices.total === 0 ?
-                    <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyGroupTableBody('No associated group prices')} />
+                { !props.groupsInfos.prices || props.groupsInfos.prices.prices.length === 0 ?
+                    <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
                     :
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                 }

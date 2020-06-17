@@ -34,7 +34,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
-    const [toggleSchedulingVideo, setToggleSchedulingVideo] = React.useState<boolean>(props.securityDetails.contentScheduling.endTime || props.securityDetails.contentScheduling.startTime ? true : false)
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection && props.securityDetails.passwordProtection.password ? true : false)
     const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Until');
     const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever');
@@ -57,8 +56,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const onSubmit = () => {
         setSubmitLoading(true);
-        let startTimeTs = (toggleSchedulingVideo && startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs = (toggleSchedulingVideo && endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+        let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
         props.saveSettingsSecurityOptions({...securityDetails, passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
             setSubmitLoading(false);
             setDisplayformActionButtons(false);
@@ -175,7 +174,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
-                    <div className='col col-12 mb1'>
+                    <div className='col col-12 mb2'>
                         <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
                         {
@@ -197,11 +196,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <div className='col col-12'>
 
-                        <Toggle id="videoScheduling" label='Content Scheduling' onChange={() => { setDisplayformActionButtons(true); setToggleSchedulingVideo(!toggleSchedulingVideo) }} defaultChecked={props.securityDetails.contentScheduling.startTime || props.securityDetails.contentScheduling.endTime ? true : false} />
+                        <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                        {
-                            toggleSchedulingVideo &&
-                            <>
+                        
+                            
                                 <div className='col col-12 flex items-center'>
                                     <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
                                     {startDateTime === "Set Date and Time" &&
@@ -265,8 +263,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         </>
                                     }
                                 </div>
-                            </>
-                        }
+                            
+                        
                     </div>
                 </div>
 
@@ -274,7 +272,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></TextStyle>
 
-                <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
+                <TextStyle className="pb1" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
                 <div className="clearfix">
                     <Button className={"left col col-12 xs-show"} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setGeoRestrictionModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>
@@ -285,7 +283,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 
-                <TextStyle className="pb2"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></TextStyle>
+                <TextStyle className="pb1"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></TextStyle>
                 <div className="clearfix">
                     <Button className={"col col-12 xs-show "} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>
