@@ -48,7 +48,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
     const [bulkActionsDropdownIsOpened, setBulkActionsDropdownIsOpened] = React.useState<boolean>(false)
     const [folderAssetSelected, setFolderAssetSelected] = React.useState<number>(0)
-
+    const [moveModalSelectedFolder, setMoveModalSelectedFolder] = React.useState<string>(null)
     const [selectedFilters, setSelectedFilter] = React.useState<FoldersFilteringState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
@@ -380,12 +380,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const renderNode = (node: FolderTreeNode) => {
-        let depth = node.fullPath.split('/').length - 1
+        let depth = node.fullPath.split('/').length - 3
         return (
             <div key={node.id}>
                 {
                     node.id && 
-                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 10 }} className='p1 flex items-center' onClick={() => { foldersTree.navigateToFolder(node)}}>
+                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 16 }} className='py1 pr1 flex items-center' onClick={() => { foldersTree.navigateToFolder(node)}}>
                         { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                     </FolderRow>
@@ -505,13 +505,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} />
+                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal setMoveModalSelectedFolder={setMoveModalSelectedFolder} submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >

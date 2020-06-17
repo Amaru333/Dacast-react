@@ -12,6 +12,8 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { useNetwork } from '../../../utils/customHooks';
+import { Toast } from '../../../../components/Toast/Toast';
+import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -32,13 +34,13 @@ export const UploaderPage = (props: UploaderProps) => {
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
-        if(!isOnline) {
-            if(currentUpload && currentUpload.hasStarted) {
+        if (!isOnline) {
+            if (currentUpload && currentUpload.hasStarted) {
                 currentUpload.pauseUpload();
                 console.log("PAUSE");
             }
         } else {
-            if(currentUpload) {
+            if (currentUpload) {
                 currentUpload.resumeUpload();
                 console.log("RESUME");
             }
@@ -46,7 +48,7 @@ export const UploaderPage = (props: UploaderProps) => {
     }, [isOnline])
 
     React.useEffect(() => {
-        if(currentUpload && currentUpload.isCompleted) {
+        if (currentUpload && currentUpload.isCompleted) {
             uploadNextFile()
         }
     }, [currentUpload && currentUpload.isCompleted])
@@ -61,7 +63,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const updateItem = (percent: number, name: string, startTime: number) => {
         setUploadingList((currentList: UploaderItemProps[]) => {
             const index = currentList.findIndex(element => element.name === name);
-            
+
             //Calcul ETA
             var now = (new Date()).getTime();
             var elapsedtime = now - startTime;
@@ -134,7 +136,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     })
                 } else {
                     newUploadingQueue.push(newUpload)
-                    if(i === fileList.length - 1) {
+                    if (i === fileList.length - 1) {
                         setUploadFileQueue([...uploadFileQueue, ...newUploadingQueue])
                     }
                     setUploadingList((currentList: UploaderItemProps[]) => {
@@ -163,7 +165,7 @@ export const UploaderPage = (props: UploaderProps) => {
         if (uploadFileQueue.length >= 1) {
             uploadFileQueue[0].startUpload()
             setCurrentUpload(uploadFileQueue[0])
-            setUploadFileQueue(uploadFileQueue.filter( (e, key) => key !== 0))
+            setUploadFileQueue(uploadFileQueue.filter((e, key) => key !== 0))
         }
     }
 
@@ -234,6 +236,8 @@ export const UploaderPage = (props: UploaderProps) => {
     React.useEffect(() => {
     }, [uploadingList]);
 
+    console.log(props.encodingRecipe);
+
     var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item) => { return { ...reduced, [props.encodingRecipe.recipes[item].name]: false } }, {})
     var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
 
@@ -245,7 +249,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         style={{ background: "#fff" }}
                         className='col col-5 mr1 pb2 '
                         dropdownTitle='Encoding Recipe'
-                        dropdownDefaultSelect={defaultRecipe.name}
+                        dropdownDefaultSelect={defaultRecipe ? defaultRecipe.name : ""}
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
@@ -268,7 +272,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
                     <input type='file' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
-                    <Button onClick={() => {videoUploadBrowseButtonRef.current.click()}} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
+                    <Button onClick={() => { videoUploadBrowseButtonRef.current.click() }} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         Browse Files
                     </Button>
                 </ButtonStyle>
@@ -295,6 +299,23 @@ export const UploaderPage = (props: UploaderProps) => {
             </ItemList>
             <Prompt when={uploadingList.filter(item => item.currentState === 'progress' || item.currentState === 'paused' || item.currentState === 'veryfing').length > 1}
                 message='Unfinished uploads will be deleted.' />
+            {
+                !isOnline &&
+                <ToastContainer>
+                    <Toast
+                        toast={
+                            {
+                                text: "No Internet Connection",
+                                timestamp: 1592399420,
+                                size: 'flexible',
+                                notificationType: 'error'
+                            }
+                        }
+                    />
+                </ToastContainer>
+            }
+
+
         </UploaderContainer>
     );
 

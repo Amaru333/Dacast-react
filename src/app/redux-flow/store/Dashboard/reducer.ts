@@ -18,9 +18,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                         nextBill: lastDay.getTime() / 1000,
                         lastBill: firstDay.getTime() / 1000
                     },
-                    isTrial: {
-                        daysLeft: 30,
-                    },
+                    
                 }
             }
         case ActionTypes.GET_DASHBOARD_LIVE_VIEWERS: 
@@ -34,7 +32,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                             ...state.data.live.liveViewers,
                             data: action.payload.viewers,
                             loading: action.payload.loading,
-                            failed: action.payload.failed
+                            failed:  !action.payload.viewers ? true : action.payload.failed
                         }
                     }
                 }
@@ -131,7 +129,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                             ...state.data.vod.videoPlays,
                             data:  action.payload.plays,
                             loading: action.payload.loading,
-                            failed: action.payload.failed
+                            failed: !action.payload.plays ? true : action.payload.failed
                         }
                     }
                 }

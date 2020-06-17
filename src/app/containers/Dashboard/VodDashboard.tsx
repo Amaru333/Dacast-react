@@ -66,7 +66,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <DoughnutChart value={props.profile.playRate.data ? getPercentage(props.profile.playRate.data.impressions, props.profile.playRate.data.playRate) : 0}/>
+                        <DoughnutChart value={props.profile.playRate.data ? getPercentage(props.profile.playRate.data.playRate, props.profile.playRate.data.impressions) : 0}/>
                     </div>
                 </WidgetElement>
                 <WidgetElement loading={props.profile.topVideos.loading} failed={props.profile.topVideos.failed} className={classItemFullWidth}>

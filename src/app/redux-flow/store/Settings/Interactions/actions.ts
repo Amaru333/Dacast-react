@@ -44,6 +44,22 @@ export interface DeleteMailCatcher {
     payload: MailCatcher;
 }
 
+export interface GetUploadUrl {
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string }};
+}
+
+export interface UploadImage {
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
+}
+
+export interface DeleteImage {
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
+}
+
+
 export const getSettingsInteractionsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetSettingsInteractionsInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetSettingsInteractionsInfos> ) => {
         await interactionsServices.getInteractionsInfos()
@@ -139,6 +155,47 @@ export const deleteMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
     };
 }
 
+export const getUploadUrlAction = (uploadType: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
+        await interactionsServices.getUploadUrl(uploadType)
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data} })
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
+        await interactionsServices.uploadFile(data, uploadUrl)
+            .then(response => {
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
+        await interactionsServices.deleteFile(targetId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+
 export type Action = GetSettingsInteractionsInfos 
 | SaveSettingsInteractionsInfos
 | SaveAd 
@@ -147,5 +204,8 @@ export type Action = GetSettingsInteractionsInfos
 | SaveMailCatcher
 | CreateMailCatcher
 | DeleteMailCatcher
+| GetUploadUrl
+| UploadImage
+| DeleteImage
 
 

@@ -45,6 +45,37 @@ const saveAd = async (data: Ad[], adsId: string) => {
     )
 }
 
+const getUploadUrl = async (data: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+        {
+            userID: userId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+}
+
+const uploadFile = (data: File, uploadUrl: string) => {
+    return axios.put(uploadUrl, data)
+}
+
+const deleteFile = async (targetId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/targets/' + targetId,
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+
 const saveMailCatcher = (data: MailCatcher) => {
     return axios.put(urlBase + 'settings-interactions-mail-catcher', {data: data})
 }
@@ -63,5 +94,8 @@ export const interactionsServices = {
     saveAd,
     saveMailCatcher,
     createMailCatcher,
-    deleteMailCatcher
+    deleteMailCatcher,
+    getUploadUrl,
+    uploadFile,
+    deleteFile
 }

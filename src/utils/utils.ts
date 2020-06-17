@@ -39,8 +39,8 @@ export const getPrivilege = (privilege: Privilege) => {
 
 
 export function readableBytes(size: number): string {
-    var i = Math.floor(Math.log(size) / Math.log(1024));
-    return parseInt((size / Math.pow(1024, i)).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    var i = Math.floor(Math.log(size) / Math.log(1000));
+    return parseInt((size / Math.pow(1000, i)).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
 
 export function tsToLocaleDate(ts: number, options?: LocaleOptions & Intl.DateTimeFormatOptions): string {
@@ -69,6 +69,10 @@ export function getPercentage(num: number, max: number): number {
     return percentage
 }
 
+
+export const checkStorageAvailable = (size: number) => {
+    
+}
 
 export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {

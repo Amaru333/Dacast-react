@@ -33,7 +33,6 @@ const Dashboard = (props: DashboardProps) => {
 
     React.useEffect(() => {
         if (props.infos) {
-            console.log(props.infos)
             if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
                 props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
             }
@@ -56,7 +55,6 @@ const Dashboard = (props: DashboardProps) => {
             }
         }
     }, [props.infos])
-    console.log(props);
 
     const renderDashboard = () => {
 
