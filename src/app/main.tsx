@@ -91,29 +91,29 @@ history.listen((location) => {
 
 class ErrorBoundary extends React.Component {
     constructor(props: any) {
-      super(props);
-      this.state = {
+        super(props);
+        this.state = {
             hasError: false,
             info: '',
-            errorDetails: null 
+            errorDetails: null
         };
     }
-  
+
     componentDidCatch(error, info) {
-      // Display fallback UI
-      this.setState({ hasError: true, info: info.componentStack, errorDetails: error.message });
-      // You can also log the error to an error reporting service
-    //   logErrorToMyService(error, info);
+        // Display fallback UI
+        this.setState({ hasError: true, info: info.componentStack, errorDetails: error.message });
+        // You can also log the error to an error reporting service
+        //   logErrorToMyService(error, info);
     }
-  
+
     render() {
-      if (this.state.hasError) {
-        // You can render any custom fallback UI
-        return <ErrorPlaceholder />
-      }
-      return this.props.children;
+        if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <ErrorPlaceholder />
+        }
+        return this.props.children;
     }
-  }
+}
 
 // Create an intersection type of the component props and our Redux props.
 const AppContent = (props: { routes: any }) => {
@@ -161,7 +161,6 @@ const AppContent = (props: { routes: any }) => {
             <Toasts />
             {isLoggedIn() ?
                 <>
-                    <PrivateRoute key='/' component={Dashboard} exact path='/' />
                     <MainMenu openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
@@ -169,6 +168,7 @@ const AppContent = (props: { routes: any }) => {
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Switch>
+                            <PrivateRoute key='/' component={Dashboard} exact path='/' />
                             {props.routes}
                         </Switch>
                     </FullContent>
@@ -248,7 +248,24 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         return (
             props.map((route: Routes, i: number) => {
                 if (route.isPublic) {
-                    return <Route key={route.path} path={route.path}><route.component /></Route>;
+                    if (isLoggedIn()) {
+                        console.log('here', route.path)
+                        if(route.path !== '*') {
+                            return (<Route key={route.path} path={route.path}>
+                                <Redirect
+                                    to={{
+                                        pathname: "/",
+                                        state: { from: route.path }
+                                    }}
+                                />
+                            </Route>)
+                        } else {
+                            <Route key={route.path} path={route.path}><route.component /></Route>
+                        }
+                        
+                    } else {
+                        return <Route key={route.path} path={route.path}><route.component /></Route>;
+                    }
                 }
                 if (!route.slug) {
                     return <PrivateRoute key={i.toString()}
