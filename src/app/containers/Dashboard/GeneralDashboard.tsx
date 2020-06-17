@@ -94,7 +94,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         {handleButtonToPurchase(bandwidth.percentage, "Data")}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {readableBytes(bandwidth.left)}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                     </div>
                     <ProgressBarDashboard overage={props.profile.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                 </WidgetElement>

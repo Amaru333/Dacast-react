@@ -70,6 +70,10 @@ export function getPercentage(num: number, max: number): number {
 }
 
 
+export const checkStorageAvailable = (size: number) => {
+    
+}
+
 export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {
         if (ref.current && !ref.current.contains(event.target)) {

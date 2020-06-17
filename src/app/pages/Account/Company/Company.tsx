@@ -197,14 +197,14 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                         <Input 
                             disabled={false}
-                            defaultValue={CompanyPageDetails.businessName} 
+                            defaultValue={CompanyPageDetails.companyName} 
                             type="text" 
                             className="md-col md-col-6 p1" 
-                            id="businessName" 
+                            id="companyName" 
                             label="Company Name" 
                             placeholder="Company Name"
                             indicationLabel='Optional'
-                            name="businessName" ref={register()}
+                            name="companyName" ref={register()}
                             help="The legal business name for use on invoices, etc."
                         />
                     </div>
