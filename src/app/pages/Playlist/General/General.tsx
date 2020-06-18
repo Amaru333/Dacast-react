@@ -120,8 +120,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -130,8 +130,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() =>  updateClipboard(`https://iframe.dacast.com/playlist/${userId}/${props.playlistDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareTooltip" onClick={() =>  updateClipboard(`https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
