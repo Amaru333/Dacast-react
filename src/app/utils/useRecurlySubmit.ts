@@ -14,24 +14,25 @@ export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: strin
                     console.log(err)
                 } 
                 else {
-                    
                     console.log('sucees token', token.id)
-                    // var risk = recurly.Risk();
-                    // var threeDSecure = risk.ThreeDSecure({
-                    //     actionTokenId: token.id
-                    // });
-                    // threeDSecure.on('token', function (threeDSecureToken: string) {
-                    //     actionButton(token.id, threeDSecureToken);
-                    //     formRef.submit();
-                    // });
+                    actionButton(token.id, null).then((response: any) => {
+                        // if we reach here it means recurly sent the three_d_secure_action_required to the API, they just sent us the token
+                        if(response.data.data.tokenID) {
+                            var risk = recurly.Risk();
+                            var threeDSecure = risk.ThreeDSecure({
+                                actionTokenId: response.data.data.tokenID
+                            });
+                            
+                            threeDSecure.on('token', function (threeDSecureToken: string) {
+                                actionButton(token.id, threeDSecureToken);
+                            });
                           
-                    // threeDSecure.on('error', function () {
-                    //     console.log('3d error')
-                    // });
-                    // threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                    // formRef.submit()
-                    actionButton(token.id, null);
-                    
+                            threeDSecure.on('error', function () {
+                                console.log('3d error')
+                            });
+                            threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
+                        }
+                    })                    
                 }
             });
         }

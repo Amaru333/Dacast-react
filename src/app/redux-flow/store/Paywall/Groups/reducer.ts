@@ -21,6 +21,11 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                     price: price.price,
                                     settings: {
                                         ...price.settings,
+                                        duration: price.settings.duration ? {
+                                            value: price.settings.duration.value,
+                                            unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                        } 
+                                        : null,
                                         type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
                                         startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                         recurrence: price.settings.recurrence ? {
@@ -35,6 +40,11 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                             }),
                             groupSettings: {
                                 ...item.prices[0].settings,
+                                duration: item.prices[0].settings.duration ? {
+                                    value: item.prices[0].settings.duration.value,
+                                    unit: item.prices[0].settings.duration.unit.charAt(0).toUpperCase() + item.prices[0].settings.duration.unit.slice(1) + 's'
+                                } 
+                                : null,
                                 type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',
                                 startMethod: item.prices[0].settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: item.prices[0].settings.recurrence ? {

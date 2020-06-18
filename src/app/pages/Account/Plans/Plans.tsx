@@ -35,8 +35,6 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
     const purchasePlan = (recurlyToken: string, threeDSecureToken: string) => {
-        setStepperPlanOpened(false);
-        debugger
         props.changeActivePlan({
             planCode: stepperData.code,
             token: recurlyToken,
@@ -386,7 +384,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={(recurlyToken: string, threeDSecureToken: string) => purchasePlan(recurlyToken, threeDSecureToken)}
+                                    finalFunction={() => console.log('yes')}
                                 />
                                 
                         }

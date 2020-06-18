@@ -17,7 +17,7 @@ const getPlanDetailsService = async () => {
 const changeActivePlanService = async (data: ChangePlan) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+    return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
         {
             ...data
         },

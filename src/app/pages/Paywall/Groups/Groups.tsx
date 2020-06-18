@@ -43,9 +43,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {recurrence: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: '',
-            startDate: null,
-            startTime: '00:00',
+            timezone: 'Etc/UTC (+00:00 UTC)',
+            startDate: 0,
             type: 'Pay Per View',
         },
     }
@@ -59,9 +58,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {recurrence: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: '',
-            startDate: null,
-            startTime: '00:00',
+            timezone: 'Etc/UTC (+00:00 UTC)',
+            startDate: 0,
             type: 'Pay Per View',
         } 
     }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GroupPrice, GroupPromo, GroupPriceCreation } from './types';
+import { GroupPrice, GroupPromo } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const getGroupPrices = async () => {
@@ -116,7 +116,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
     } 
     return axios.put(process.env.API_BASE_URL + '/paywall/prices/groups/' + data.id , 
         {
-            ...parsedPrice 
+            package: parsedPrice 
         },
         {
             headers: {
@@ -153,14 +153,25 @@ const getGroupPromos = async () => {
 const createGroupPromo = async (data: GroupPromo) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
+    let parsedData = null
+    if(data.rateType !== 'Pay Per View') {
+        parsedData = {
+            ...data,
+            assignedContentIds: [],
+            discountApplied: data.discountApplied.toLowerCase(),
+            id: null
+        }
+    } else {
+        parsedData = {
+            ...data,
+            assignedContentIds: [],
+            discountApplied: null,
+            id: null
+        }
+    }
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
-            promo: {
-                ...data,
-                assignedContentIds: [],
-                discountApplied: 'once',
-                id: null
-            }  
+            promo: parsedData
         },
         {
             headers: {
@@ -173,9 +184,24 @@ const createGroupPromo = async (data: GroupPromo) => {
 const saveGroupPromo = async (data: GroupPromo) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
+    let parsedData = null
+    debugger
+    if(data.rateType !== 'Pay Per View') {
+        parsedData = {
+            ...data,
+            assignedContentIds: [],
+            discountApplied: data.discountApplied.toLowerCase(),
+        }
+    } else {
+        parsedData = {
+            ...data,
+            assignedContentIds: [],
+            discountApplied: null,
+        }
+    }
     return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
         {
-            promo: data  
+            promo: parsedData  
         },
         {
             headers: {

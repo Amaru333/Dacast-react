@@ -18,6 +18,11 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                             prices: preset.preset.prices,
                             settings: {
                                 ...preset.preset.settings,
+                                duration: preset.preset.settings.duration ? {
+                                    value: preset.preset.settings.duration.value,
+                                    unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + + 's'
+                                } 
+                                : null,
                                 startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: preset.preset.settings.recurrence ? {
                                     recurrence: preset.preset.settings.recurrence.recurrence === 'week' ? 'Weekly'

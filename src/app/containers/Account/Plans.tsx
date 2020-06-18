@@ -41,8 +41,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
         },
-        changeActivePlan: (data: ChangePlan) => {
-            dispatch(changeActivePlanAction(data))
+        changeActivePlan: async (data: ChangePlan) => {
+            await dispatch(changeActivePlanAction(data))
         }
     }
 }

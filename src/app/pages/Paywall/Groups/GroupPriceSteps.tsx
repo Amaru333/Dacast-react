@@ -50,6 +50,27 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         })
     }
 
+    const initTimestampValues = (ts: number): {date: any; time: string} => {
+        if(ts > 0 ) {
+            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+        } 
+        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    }
+
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).date, time: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).time})
+
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
+        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
+        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+    }, [props.stepperData.firststep.groupSettings.timezone])
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
+        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+    }, [startDateTimeValue])
+
     return (
         <div>
             <div className='col col-12'>
@@ -75,14 +96,34 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                 <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
                 {
                     props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
-                        <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1 mt-auto' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
+                        <DropdownSingle 
+                            hasSearch 
+                            id='groupPriceTimezoneDropdown' 
+                            className='col col-6 pl1 mt-auto' 
+                            dropdownTitle='Timezone' 
+                            dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
+                            callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})} 
+                        />
                 }
             </div>
             {
                 props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
-                        <Input defaultValue={props.stepperData.firststep.groupSettings.startTime} className='col col-3 pl1' type='time' label='Start Time' />
+                        <DateSinglePickerWrapper 
+                            date={moment(startDateTimeValue.date)} 
+                            callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                            openDirection="up" 
+                            className='col col-6 pr1' 
+                            datepickerTitle='Start Date' 
+                        />
+                        <Input 
+                            value={startDateTimeValue.time} 
+                            className='col col-3 pl1' 
+                            type='time' 
+                            label='Start Time' 
+                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                        />
                     </div>
             }
         </div>

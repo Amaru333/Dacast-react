@@ -9,6 +9,8 @@ import { Plan, Privilege } from '../../../redux-flow/store/Account/Plans/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Plans';
+import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import axios from 'axios'
 
 export enum PlansName {
     "Developer" = "Developer Plan",
@@ -349,11 +351,33 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperDa
 
         ]}]
     }
+
+    // I didn't use the one from the redux flow because I couldn't access the response from the Promise for some reason will change it back later
+    const test = async (recurlyToken: string, threeDSecureToken: string) => {
+        await isTokenExpired()
+        let {token, userId} = addTokenToHeader();
+        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+            {
+                planCode: props.stepperData.code,
+                token: recurlyToken,
+                threeDSecureToken: threeDSecureToken,
+                currency: 'USD',
+                couponCode: '',
+                allowances: props.stepperData.allownaceCode,
+                paidPrivileges: props.stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+                },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        )
+    }
     return (
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
             
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} />
+            <NewPaymentMethodForm callback={() => console.log()} actionButton={test} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

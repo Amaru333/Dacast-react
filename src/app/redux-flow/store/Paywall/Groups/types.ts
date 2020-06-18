@@ -21,8 +21,7 @@ export interface PriceSettings {
     recurrence?: {recurrence: string; value?: number};
     startMethod: string;
     timezone?: string;
-    startDate?: Date;
-    startTime?: string;
+    startDate?: number;
     type: string;
 }
 
@@ -54,10 +53,8 @@ export interface GroupPromo {
     discount: number;
     limit: number;
     rateType: string;
-    startDate: Date;
-    startTime: string;
-    endDate: Date;
-    endTime: string;
+    startDate: number;
+    endDate: number;
     timezone: string;
     discountApplied: string;
     assignedContentIds: string[];
