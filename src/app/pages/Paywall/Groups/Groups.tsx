@@ -28,7 +28,7 @@ export interface GroupStepperDataCreate {
     secondStep: GroupStepperSecondStepProps;
 }
 
-export interface GroupStepper {
+export interface GroupStepperData {
     firststep: GroupPrice;
     secondStep: GroupStepperSecondStepProps;
 }
@@ -54,7 +54,16 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         id: '-1',
         name: '',
         prices: [pricesList],    
-        contents: []  
+        contents: [],
+        groupSettings: {
+            duration: {value: NaN, unit: 'Hours'},
+            recurrence: {recurrence: 'Weekly'},
+            startMethod: 'Upon Purchase',
+            timezone: '',
+            startDate: null,
+            startTime: '00:00',
+            type: 'Pay Per View',
+        } 
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
@@ -75,51 +84,44 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
 
         ]}
     }
 
     const emptyGroupPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
         ]}
     }
 
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
-            let tempArray: {
-                data: JSX.Element[];
-            }[] = []
-            props.groupsInfos.prices.packages.map((item, key) => {
-                item.prices.map((price) => {
-                    tempArray.push({data: [
-                        <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{item.name}</Text>,
-                        <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.settings.type}</Text>,
-                        <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price.value}</Text>,
-                        <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.price.currency}</Text>,
-                        <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.recurrence : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
-                        <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
-                            <ActionIcon id={"deleteTooltipPrice" + item.id}>
-                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"deleteTooltipPrice" + item.id}>Delete</Tooltip>
-                            <ActionIcon id={"editTooltipPrice" + item.id}>
-                                <IconStyle onClick={() =>  {setSelectedGroupPrice(item);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"editTooltipPrice" + item.id}>Edit</Tooltip>
-                        </IconContainer>
-                    ]})
-                })
+            return props.groupsInfos.prices.packages.map((price, key) => {
+                return {data: [
+                    <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
+                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
+                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Currencies'}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.recurrence : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
+                    <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
+                        <ActionIcon id={"deleteTooltipPrice" + price.id}>
+                            <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltipPrice" + price.id}>
+                            <IconStyle onClick={() =>  {setStepperData({...stepperData, firststep: price});setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
+                    </IconContainer>
+                ]}
             })
-            return tempArray
         }
     }
 
     const groupPromosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoGroupsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='promoGroupsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
@@ -139,7 +141,6 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         if(props.groupsInfos.promos) {
             return props.groupsInfos.promos.promos.map((promo, key) => {
                 return {data: [
-                    <Text key={'promoGroupsTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
@@ -190,25 +191,22 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
                 }
             </Modal>
-            
-            {  
-                groupPricesStepperOpened &&           
-                <CustomStepper
-                    opened={groupPricesStepperOpened}
-                    stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
-                    stepList={groupPriceSteps}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                    stepTitles={['Group Details', 'Content Selection']}
-                    lastStepButton="Create"
-                    stepperData={stepperData}
-                    widthSecondStep={60}
-                    updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                    functionCancel={() => {setGroupPricesStepperOpened(false)}}
-                    finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
-                />
-            }
+                  
+            <CustomStepper
+                opened={groupPricesStepperOpened}
+                stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
+                stepList={groupPriceSteps}
+                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                stepTitles={['Group Details', 'Content Selection']}
+                lastStepButton="Create"
+                stepperData={stepperData}
+                widthSecondStep={60}
+                updateStepperData={(value: GroupStepperData) => setStepperData(value)}
+                functionCancel={() => {setGroupPricesStepperOpened(false)}}
+                finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+            />
         </div>
 
     )

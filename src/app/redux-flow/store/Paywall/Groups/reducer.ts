@@ -32,7 +32,19 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                         : null
                                     }
                                 }
-                            })
+                            }),
+                            groupSettings: {
+                                ...item.prices[0].settings,
+                                type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',
+                                startMethod: item.prices[0].settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                recurrence: item.prices[0].settings.recurrence ? {
+                                    recurrence: item.prices[0].settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    : item.prices[0].settings.recurrence.value > 4 ? 'Biannual'
+                                    : item.prices[0].settings.recurrence.value < 1 ? 'Quaterly'
+                                    : 'Monthly'
+                                } 
+                                : null
+                            }
                         }
                     })
                 }
@@ -67,7 +79,15 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
         case ActionTypes.GET_GROUP_PROMOS :
             return {
                 ...state,
-                promos: action.payload.data
+                promos: {
+                    total: action.payload.data.total,
+                    promos: action.payload.data.promos.map((promo) => {
+                        return {
+                            ...promo,
+                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
+                }
             }
         case ActionTypes.CREATE_GROUP_PROMO :
             promos = state.promos.promos.slice();

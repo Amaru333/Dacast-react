@@ -14,23 +14,52 @@ const getGroupPrices = async () => {
     )
 }
 
-const createGroupPrice = async (data: GroupPriceCreation) => {
+const createGroupPrice = async (data: GroupPrice) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    let testObject = {
-        name: data.name,
-        prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
-        settings: {
-            duration: {
-                value: data.settings.duration.value,
-                unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1)
+
+    let parsedPrice = null
+    if(data.groupSettings.type === 'Subscription') {
+        parsedPrice = {
+            name: data.name,
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            settings: {
+                recurrence: {
+                    recurrence: data.groupSettings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.groupSettings.recurrence.recurrence === 'Quarterly' ? 4 : data.groupSettings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
+            },
+            contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+
+        }
+    } else {
+        if(data.groupSettings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                name: data.name,
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                settings: {
+                    duration: {
+                        unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
+                        value: data.groupSettings.duration.value
+                    }
+                },
+                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+
             }
-        },
-        contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
-    }
+        } else {
+            parsedPrice = {
+                name: data.name,
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                settings: {
+                    startDate: Date.now()
+                },
+                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+            }
+        }
+    } 
     return axios.post(process.env.API_BASE_URL + '/paywall/prices/groups' , 
         {
-            ...testObject 
+            ...parsedPrice 
         },
         {
             headers: {
@@ -43,9 +72,51 @@ const createGroupPrice = async (data: GroupPriceCreation) => {
 const saveGroupPrice = async (data: GroupPrice) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.groupSettings.type === 'Subscription') {
+        parsedPrice = {
+            id: data.id,
+            name: data.name,
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            settings: {
+                recurrence: {
+                    recurrence: data.groupSettings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.groupSettings.recurrence.recurrence === 'Quarterly' ? 4 : data.groupSettings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
+            },
+            contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+
+        }
+    } else {
+        if(data.groupSettings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                id: data.id,
+                name: data.name,
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                settings: {
+                    duration: {
+                        unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
+                        value: data.groupSettings.duration.value
+                    }
+                },
+                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+
+            }
+        } else {
+            parsedPrice = {
+                id: data.id,
+                name: data.name,
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                settings: {
+                    startDate: Date.now()
+                },
+                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+            }
+        }
+    } 
     return axios.put(process.env.API_BASE_URL + '/paywall/prices/groups/' + data.id , 
         {
-            ...data 
+            ...parsedPrice 
         },
         {
             headers: {
