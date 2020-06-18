@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Plans } from './types';
+import { ChangePlan } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
 const getPlanDetailsService = async () => {
@@ -14,7 +14,7 @@ const getPlanDetailsService = async () => {
     )
 }
 
-const changeActivePlanService = async (data: Plans) => {
+const changeActivePlanService = async (data: ChangePlan) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 

@@ -141,17 +141,23 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
-            return props.groupsInfos.prices.prices.map((price, key) => {
-                return {data: [
-                    <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
-                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
-                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices[0].value}</Text>,
-                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices[0].currency}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.recurrence : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
-                ]}
+            let tempArray: {
+                data: JSX.Element[];
+            }[] = []
+            props.groupsInfos.prices.packages.map((item, key) => {
+                item.prices.map((price) => {
+                    tempArray.push({data: [
+                        <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{item.name}</Text>,
+                        <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.settings.type}</Text>,
+                        <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price.value}</Text>,
+                        <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.price.currency}</Text>,
+                        <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.recurrence : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
+                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
+                    ]})
+                })
             })
-        }
+            return tempArray
+        } 
     }
 
     const emptyPriceTableHeader = () => {
@@ -218,7 +224,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { !props.groupsInfos.prices || props.groupsInfos.prices.prices.length === 0 ?
+                { !props.groupsInfos.prices || props.groupsInfos.prices.packages.length === 0 ?
                     <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
                     :
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />

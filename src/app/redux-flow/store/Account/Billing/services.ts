@@ -39,7 +39,7 @@ const addBillingPagePaymenPlaybackProtectionService = (data: PlaybackProtection)
 const editBillingPagePaymenPlaybackProtectionService = async (data: PlaybackProtection) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
         {
             ...data
         },

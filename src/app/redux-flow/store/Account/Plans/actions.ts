@@ -1,5 +1,5 @@
 import { ThunkDispatch } from 'redux-thunk';
-import { Plans, ActionTypes } from './types'
+import { Plans, ActionTypes, ChangePlan } from './types'
 import { PlansServices } from './services'
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
@@ -12,7 +12,7 @@ export interface GetPlanDetails {
 
 export interface ChangeActivePlan {
     type: ActionTypes.CHANGE_ACTIVE_PLAN;
-    payload: Plans;
+    payload: ChangePlan;
 }
 
 export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlanDetails> => {
@@ -26,7 +26,7 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
     };
 }
 
-export const changeActivePlanAction = (data: Plans): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
+export const changeActivePlanAction = (data: ChangePlan): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
         await PlansServices.changeActivePlanService(data)
             .then( response => {

@@ -11,15 +11,13 @@ import { Text } from '../../../../components/Typography/Text';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
-import { GroupStepperData } from './Groups';
+import { GroupStepperData, GroupStepperDataCreate } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 var moment = require('moment-timezone');
 
-export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
+export const GroupPriceStepperFirstStepCreate = (props: { stepperData: GroupStepperDataCreate; updateStepperData: Function }) => {
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = props.stepperData.firststep.prices;
@@ -75,18 +73,16 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 mb2'>
                 <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.settings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.type === 'Subscription'} />
                 {
-                    props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
+                    props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' &&
                         <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1 mt-auto' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
-                        : null
                 }
             </div>
             {
-                props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
+                props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
                         <Input defaultValue={props.stepperData.firststep.settings.startTime} className='col col-3 pl1' type='time' label='Start Time' />
                     </div>
-                    : null
             }
         </div>
     )

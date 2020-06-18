@@ -9,32 +9,6 @@ export interface CustomAllowance {
     currentAmount: boolean;
 }
 
-// export interface Plan {
-//     name: 'developer' | 'event' | 'scale';
-//     firstStep: {
-//         included: {
-//             defaultBanwidth: number;
-//             defaultStorage: number;
-//             defaultTranscoding: number;
-//             price: number;
-//         };
-//         custom?: {
-//             [key: string]: CustomAllowance[];
-//         };
-//         total: number;
-//     };
-//     secondStep: {
-//         included: string[];
-//         custom: {
-//             [key: string]: {checked: boolean; price: number};
-//         };
-//         total: number;
-//     };
-//     paymentFrequency: 'Annually' | 'Monthly';
-//     termsAndConditions: boolean;
-//     action: 'custom' | 'purchase';
-// }
-
 export interface Plan {
     name: 'Developer' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     code: string;
@@ -77,9 +51,22 @@ export interface Plans {
     developerPlan: Plan
     eventPlan: Plan
     scalePlanAnnual: Plan;
-    scalePlanMonthly: Plan;
-    
-    
+    scalePlanMonthly: Plan;  
+}
+
+export interface PaidPrivilege {
+    code: string;
+    quantity: number;
+}
+
+export interface ChangePlan {
+    planCode: string;
+    token: string;
+    threeDSecureToken: string;
+    currency: string;
+    couponCode: string;
+    allowances: string;
+    paidPrivileges: PaidPrivilege[];
 }
 
 export const plansInitialState: Plans = {

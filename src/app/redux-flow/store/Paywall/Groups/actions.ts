@@ -1,7 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { ActionTypes, GroupPrice, GroupPromo, GroupPriceData, GroupPromoData } from './types';
+import { ActionTypes, GroupPrice, GroupPromo, GroupPriceData, GroupPromoData, GroupPriceCreation } from './types';
 import { GroupsServices } from './services';
 
 export interface GetGroupPrices {
@@ -11,7 +11,7 @@ export interface GetGroupPrices {
 
 export interface CreateGroupPrice {
     type: ActionTypes.CREATE_GROUP_PRICE;
-    payload: GroupPrice;
+    payload: boolean;
 }
 
 export interface SaveGroupPrice {
@@ -55,11 +55,11 @@ export const getGroupPricesAction = (): ThunkDispatch<Promise<void>, {}, GetGrou
     }
 }
 
-export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, CreateGroupPrice> => {
+export const createGroupPriceAction = (data: GroupPriceCreation): ThunkDispatch<Promise<void>, {}, CreateGroupPrice> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPrice>) => {
         await GroupsServices.createGroupPrice(data)
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: {...data, id: response.data.data.id}})
+                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: true})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));

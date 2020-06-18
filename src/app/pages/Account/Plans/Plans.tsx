@@ -34,10 +34,19 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
-    React.useEffect(() => {}, [stepperData, stepList]);
-
-    const purchasePlan = () => {
+    const purchasePlan = (recurlyToken: string, threeDSecureToken: string) => {
         setStepperPlanOpened(false);
+        debugger
+        props.changeActivePlan({
+            planCode: stepperData.code,
+            token: recurlyToken,
+            threeDSecureToken: threeDSecureToken,
+            currency: 'USD',
+            couponCode: '',
+            allowances: stepperData.allownaceCode,
+            paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+
+        })
         setCurrentPlan(stepperData.name)
     }
 
@@ -57,13 +66,6 @@ export const PlansPage = (props: PlansContainerProps) => {
         }
         setStepperPlanOpened(true)
     }
-
-    // React.useEffect(() => {
-    //     props.changeActivePlan({...stepperData, isActive: true})
-    // }, [currentPlan])
-
-    // useStepperFinalStepAction('stepperNextButton', () => purchasePlan())
-    
 
     return (
         <ScrollContainer>
@@ -384,7 +386,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={() => purchasePlan()}
+                                    finalFunction={(recurlyToken: string, threeDSecureToken: string) => purchasePlan(recurlyToken, threeDSecureToken)}
                                 />
                                 
                         }

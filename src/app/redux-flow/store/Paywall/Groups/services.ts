@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { GroupPrice, GroupPromo } from './types';
+import { GroupPrice, GroupPromo, GroupPriceCreation } from './types';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-import { FolderAsset } from '../../Folders/types';
 
 const getGroupPrices = async () => {
     await isTokenExpired()
@@ -15,7 +14,7 @@ const getGroupPrices = async () => {
     )
 }
 
-const createGroupPrice = async (data: GroupPrice) => {
+const createGroupPrice = async (data: GroupPriceCreation) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     let testObject = {

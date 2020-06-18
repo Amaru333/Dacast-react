@@ -9,24 +9,42 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
         case ActionTypes.GET_GROUP_PRICES :
             return {
                 ...state,
-                prices: action.payload.data
-            }
-        case ActionTypes.CREATE_GROUP_PRICE :
-            prices = state.prices.prices.slice();
-            prices.splice(prices.length, 0, action.payload);
-            return {
-                ...state,
                 prices: {
-                    prices: prices,
-                    total: state.prices.total + 1
+                    total: action.payload.data.total,
+                    packages: action.payload.data.packages.map((item) => {
+                        return {
+                            id: item.id,
+                            name: item.name,
+                            contents: item.contents,
+                            prices: item.prices.map((price) => {
+                                return {
+                                    price: price.price,
+                                    settings: {
+                                        ...price.settings,
+                                        type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
+                                        startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                        recurrence: price.settings.recurrence ? {
+                                            recurrence: price.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                            : price.settings.recurrence.value > 4 ? 'Biannual'
+                                            : price.settings.recurrence.value < 1 ? 'Quaterly'
+                                            : 'Monthly'
+                                        } 
+                                        : null
+                                    }
+                                }
+                            })
+                        }
+                    })
                 }
             }
+        case ActionTypes.CREATE_GROUP_PRICE :
+            return state
         case ActionTypes.SAVE_GROUP_PRICE :
             return {
                 ...state,
                 prices:{ 
                     ...state.prices,
-                    prices: state.prices.prices.map((item) => {
+                    packages: state.prices.packages.map((item) => {
                         if(item.id !== action.payload.id) {
                             return item;
                         }
@@ -44,7 +62,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                 ...state,
                 prices: {
                     total: state.prices.total - 1,
-                    prices: state.prices.prices.filter((item) => {return item.id !== action.payload.id})}
+                    packages: state.prices.packages.filter((item) => {return item.id !== action.payload.id})}
             }
         case ActionTypes.GET_GROUP_PROMOS :
             return {

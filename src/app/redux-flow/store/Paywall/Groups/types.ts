@@ -23,12 +23,25 @@ export interface PriceSettings {
     timezone?: string;
     startDate?: Date;
     startTime?: string;
+    type: string;
+}
+
+export interface GroupPriceInfo {
+    price: Price;
+    settings: PriceSettings;
 }
 
 export interface GroupPrice {
     id: string;
     name: string;
+    prices: GroupPriceInfo[]
+    contents: string[];
+}
+
+export interface GroupPriceCreation {
+    id: string;
     type: string;
+    name: string;
     prices: Price[];
     settings: PriceSettings;
     contents: string[];
@@ -52,7 +65,7 @@ export interface GroupPromo {
 }
 
 export interface GroupPriceData {
-    prices: GroupPrice[];
+    packages: GroupPrice[];
     total: number;
 }
 

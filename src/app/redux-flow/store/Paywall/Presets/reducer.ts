@@ -74,10 +74,16 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                 ...state,
                 promos: {
                     totalItems: action.payload.data.totalItems,
-                    promos: action.payload.data.promos.map((promo) => {
+                    promos: action.payload.data.promos.map((promo: any) => {
                         return {
                             ...promo,
-                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                            alphanumericCode: promo.preset.alphanumericCode,
+                            assignedContentIds: promo.preset.assignedContentIds,
+                            assignedGroupIds: promo.preset.assignedGroupIds,
+                            discount: promo.preset.discount,
+                            discountApplied: promo.preset.discountApplied,
+                            limit: promo.preset.limit,
+                            rateType: promo.preset.discountApplied ? 'Subscription' : 'Pay Per View'
                         }
                     })
                 }
