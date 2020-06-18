@@ -225,8 +225,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text size={14} weight="med">Iframe Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -235,8 +235,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://iframe.dacast.com/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`}</LinkText>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>

@@ -138,8 +138,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`<iframe src="https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, "Embed Code Copied")}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, "Embed Code Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -148,8 +148,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://iframe.dacast.com/live/${userId}/${props.liveDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>

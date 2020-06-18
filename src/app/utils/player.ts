@@ -1,4 +1,5 @@
 import React from 'react';
+import { isProduction } from './stage';
 
 
 export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, contentId: string) => {
@@ -6,10 +7,8 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
 
     const initPlayer = () => {
         let player = dacast(contentId, playerRef.current, {
-            autoplay: false
-        })
-        player.on('EVENT_READYSTATE_CHANGE', (state: number) => {
-            
+            autoplay: false,
+            provider: isProduction() ? 'universe' : 'singularity'
         })
         setPlayer(player)
     }
