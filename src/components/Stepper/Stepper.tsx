@@ -49,8 +49,6 @@ export const CustomStepper = (props: StepperProps) => {
             setStepValidated(true)
         }
     }
-
-    console.log(stepIndex);
     return (
         <React.Fragment>
             <StepperContainerStyle containerWidth={props.widthSecondStep && stepIndex === 1 ? props.widthSecondStep : null} opened={props.opened} isMobile={isMobile}>

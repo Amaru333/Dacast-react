@@ -8,7 +8,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
-import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
+import { GroupPromo, GroupPrice, GroupPriceCreation } from '../../../redux-flow/store/Paywall/Groups';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
@@ -23,33 +23,45 @@ interface GroupStepperSecondStepProps {
     restoreContent: Function;
 }
 
+export interface GroupStepperDataCreate {
+    firststep: GroupPriceCreation;
+    secondStep: GroupStepperSecondStepProps;
+}
+
 export interface GroupStepperData {
     firststep: GroupPrice;
     secondStep: GroupStepperSecondStepProps;
 }
 
 export const GroupsPage = (props: GroupsComponentProps) => {
-    const pricesList = [
-        {
+    const pricesList = {
+        price: {
             value: NaN,
             currency: 'USD'
-        }
-    ]
-    
-    const defaultPrice: GroupPrice = {
-        id: '-1',
-        name: '',
-        type: 'Pay Per View',
-        prices: pricesList,
+        },
         settings: {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {recurrence: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: null,
-            startDate: null,
-            startTime: '00:00'
+            timezone: 'Etc/UTC',
+            startDate: 0,
+            type: 'Pay Per View',
         },
-        contents: []  
+    }
+    
+    const defaultPrice: GroupPrice = {
+        id: '-1',
+        name: '',
+        prices: [pricesList],    
+        contents: [],
+        groupSettings: {
+            duration: {value: NaN, unit: 'Hours'},
+            recurrence: {recurrence: 'Weekly'},
+            startMethod: 'Upon Purchase',
+            timezone: 'Etc/UTC',
+            startDate: 0,
+            type: 'Pay Per View',
+        } 
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
@@ -70,34 +82,34 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
             {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
 
         ]}
     }
 
     const emptyGroupPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
         ]}
     }
 
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
-            return props.groupsInfos.prices.prices.map((price, key) => {
+            return props.groupsInfos.prices.packages.map((price, key) => {
                 return {data: [
                     <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
-                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
-                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices[0].value}</Text>,
-                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices[0].currency}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.recurrence : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
+                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
+                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Currencies'}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.recurrence : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
                             <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPrice" + price.id}>
-                            <IconStyle onClick={() =>  {setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
+                            <IconStyle onClick={() =>  {setStepperData({...stepperData, firststep: price});setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
                     </IconContainer>
@@ -108,8 +120,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPromosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoGroupsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='promoGroupsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='promoGroupsTableHeaderAssociatedGroupPrice' size={14} weight='med'>Associated Group Price</Text>},
             {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
@@ -128,8 +140,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         if(props.groupsInfos.promos) {
             return props.groupsInfos.promos.promos.map((promo, key) => {
                 return {data: [
-                    <Text key={'promoGroupsTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
+                    <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
@@ -161,7 +173,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
-                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.prices.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.prices.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
+                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
@@ -174,8 +186,12 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={props.groupsInfos.promos.promos.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={props.groupsInfos.promos.promos.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
             </Card>
             <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
-                <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.prices} />
+                {
+                    groupPromosModalOpened && <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.packages} />
+
+                }
             </Modal>
+                  
             <CustomStepper
                 opened={groupPricesStepperOpened}
                 stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}

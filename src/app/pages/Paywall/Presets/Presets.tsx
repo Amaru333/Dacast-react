@@ -76,7 +76,6 @@ export const PresetsPage = (props: PresetsComponentProps) => {
         return {data: [
             {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
             {cell: <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>},
-            {cell: <Text key='promoPresetsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
             {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
@@ -90,7 +89,6 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
-                    <Text key={'promoPresetsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
@@ -170,16 +168,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             </Card>
             <Modal hasClose={false} modalTitle={selectedPreset ? 'Edit Price Preset' : 'Create Price Preset'} opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 {
-                    pricePresetsModalOpened ?
+                    pricePresetsModalOpened &&
                         <PricePresetsModal action={selectedPreset ? props.savePricePreset : props.createPricePreset} preset={selectedPreset} toggle={setPricePresetsModalOpened} />
-                        : null
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={selectedPromo ? 'Edit Promo Preset' : 'Create Promo Preset'} opened={promoPresetsModalOpened} toggle={() => setPromoPresetsModalOpened(false)}>
                 {
-                    promoPresetsModalOpened ?
+                    promoPresetsModalOpened &&
                         <PromoPresetsModal action={selectedPromo ? props.savePromoPreset : props.createPromoPreset} promo={selectedPromo} toggle={setPromoPresetsModalOpened} />
-                        : null
                 }
             </Modal>
         </div>

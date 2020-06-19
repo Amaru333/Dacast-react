@@ -18,11 +18,9 @@ const defaultPromo: Promo = {
     discount: NaN,
     limit: NaN,
     rateType: 'Pay Per View',
-    startDate: null,
-    startTime: null,
-    endDate: null,
-    endTime: null,
-    timezone: moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')',
+    startDate: 0,
+    endDate: 0,
+    timezone: 'Etc/UTC',
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -30,8 +28,36 @@ const defaultPromo: Promo = {
 
 export const ContentPromoPresetsModal = (props: { contentId: string; action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
 
-    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(defaultPromo);
+    const initTimestampValues = (ts: number): {date: any; time: string} => {
+        if(ts > 0 ) {
+            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+        } 
+        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    }
+
+    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
+
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).date, time: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).time})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).date, time: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).time})
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).utc().valueOf()
+        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).utc().valueOf()
+        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
+        setEndDateTimeValue({date: initTimestampValues(endDate).date, time: initTimestampValues(endDate).time})
+        setNewPromoPreset({...newPromoPreset, startDate: startDate, endDate: endDate})
+    }, [newPromoPreset.timezone])
+
+    const handleSubmit = () => {
+        if (savePreset) { 
+            props.savePresetGlobally(newPromoPreset) 
+        } 
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf()
+        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf()
+        props.action({...newPromoPreset, startDate: startDate, endDate: endDate}, props.contentId)
+        props.toggle(false)
+    }
 
     return (
         <div>
@@ -63,15 +89,48 @@ export const ContentPromoPresetsModal = (props: { contentId: string; action: Fun
                 <DropdownSingle id='newPromoPresetRateTypeDropdown' dropdownDefaultSelect={newPromoPreset.rateType} className='col sm-col-6 col-12 sm-pl1' dropdownTitle='Rate Type' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, rateType: value })} list={{ 'Pay Per View': false, 'Subscription': false }} />
             </div>
             <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper openDirection='up' className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code Start Date' />
-                <Input type='time' label='Start Time' value={newPromoPreset.startTime} className='col sm-col-3 col-4 pl1' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, startTime: event.currentTarget.value })} />
+                <DateSinglePickerWrapper 
+                    openDirection='up' 
+                    className='col sm-col-6 col-8 pr1' 
+                    datepickerTitle='Promo Code Start Date' 
+                    id='promoCodeStartDate'
+                    callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                    date={moment(startDateTimeValue.date)} 
+                />
+                <Input 
+                    type='time' 
+                    label='Start Time' 
+                    value={startDateTimeValue.time} 
+                    className='col sm-col-3 col-4 pl1' 
+                    onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                />
             </div>
             <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper openDirection='up' className='col sm-col-6 col-8 pr1' datepickerTitle='Promo Code End Date' />
-                <Input type='time' label='End Time' value={newPromoPreset.endTime} className='col sm-col-3 col-4 pl1' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, endTime: event.currentTarget.value })} />
+                <DateSinglePickerWrapper 
+                    openDirection='up' 
+                    className='col sm-col-6 col-8 pr1' 
+                    datepickerTitle='Promo Code End Date'
+                    date={moment(endDateTimeValue.date)}    
+                    callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
+                    id='promoCodeEndDate'
+
+                />
+                <Input 
+                    type='time' 
+                    label='End Time' 
+                    value={endDateTimeValue.time} 
+                    className='col sm-col-3 col-4 pl1' 
+                    onChange={(event) =>{setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})} }
+                />
             </div>
             <div className=' col col-12 mb25'>
-                <DropdownSingle hasSearch id='newPromoPresetTimezoneDropdown' dropdownDefaultSelect={newPromoPreset.timezone ? newPromoPreset.timezone : moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} className={ClassHalfXsFullMd + ' pr1'} dropdownTitle='Timezone' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
+                <DropdownSingle 
+                    hasSearch 
+                    id='newPromoPresetTimezoneDropdown' 
+                    dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                    className={ClassHalfXsFullMd + ' pr1'} 
+                    dropdownTitle='Timezone' 
+                    callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
                 {
                     newPromoPreset.rateType === 'Subscription' &&
                         <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, discountApplied: value })} list={{ 'Once': false, 'Forever': false }} />
@@ -79,8 +138,8 @@ export const ContentPromoPresetsModal = (props: { contentId: string; action: Fun
             </div>
             <div className='col col-12 mb2'>
                 <Button
-                    disabled={(!newPromoPreset.name && newPromoPreset.id !== 'custom') || Number.isNaN(newPromoPreset.discount) || newPromoPreset.alphanumericCode.length < 5 || Number.isNaN(newPromoPreset.limit)}
-                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPromoPreset) }; props.action(newPromoPreset, props.contentId); props.toggle(false) }}
+                    disabled={(!newPromoPreset.name && newPromoPreset.id !== 'custom' && !props.promo) || Number.isNaN(newPromoPreset.discount) || newPromoPreset.alphanumericCode.length < 5 || Number.isNaN(newPromoPreset.limit)}
+                    onClick={() =>  handleSubmit()}
                     className='mr2'
                     typeButton='primary'
                     sizeButton='large' buttonColor='blue'>Create</Button>

@@ -58,6 +58,8 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if(!props.globalPresets) {
             props.getPresetsInfo('page=1&per-page=100')
         }
+        props.getVodPaywallPrices(vodId)
+        props.getVodPaywallPromos(vodId)
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -84,7 +86,6 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                     startMethod: 'Upon Purchase',
                     timezone: null,
                     startDate: null,
-                    startTime: '00:00'
                 }
 
             };
@@ -96,9 +97,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 limit: NaN,
                 rateType: 'Pay Per View',
                 startDate: null,
-                startTime: null,
                 endDate: null,
-                endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once',
                 assignedContentIds: [],

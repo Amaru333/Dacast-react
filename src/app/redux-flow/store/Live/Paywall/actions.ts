@@ -104,7 +104,7 @@ export const createLivePricePresetAction = (data: Preset, liveId: string): Thunk
 
 export const saveLivePricePresetAction = (data: Preset, liveId: string): ThunkDispatch<Promise<void>, {}, SaveLivePricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveLivePricePreset>) => {
-        await LivePaywallServices.saveLivePricePreset(data)
+        await LivePaywallServices.saveLivePricePreset(data, liveId)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_LIVE_PRICE_PRESET, payload: {data: data, contentId: liveId}})
                 dispatch(showToastNotification("Price have been saved", 'flexible', "success"));

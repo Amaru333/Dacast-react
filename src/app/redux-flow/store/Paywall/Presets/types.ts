@@ -17,11 +17,10 @@ export interface Price {
 
 export interface PriceSettings {
     duration?: {value: number; unit: string};
-    recurrence?: {recurrence: string};
+    recurrence?: {recurrence: string, value?: number};
     startMethod: string;
     timezone?: string;
-    startDate?: Date;
-    startTime?: string;
+    startDate?: number;
 }
 
 
@@ -44,11 +43,9 @@ export interface Promo {
     discount: number;
     limit: number;
     rateType: string;
-    startDate: Date;
-    startTime: string;
-    endDate: Date;
-    endTime: string;
-    timezone: string;
+    startDate?: number;
+    endDate?: number;
+    timezone?: string;
     discountApplied: string;
     assignedContentIds: string[];
     assignedGroupIds: string[];

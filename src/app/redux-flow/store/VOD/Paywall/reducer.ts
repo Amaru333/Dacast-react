@@ -11,6 +11,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
             return {
                 ...state,
                 [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
                     ...action.payload.data
                 }
             }
@@ -27,7 +28,29 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    prices: action.payload.data.prices
+                    prices: action.payload.data.prices.map((price) => {
+                        return {
+                            ...price,
+                            prices: price.prices,
+                            settings: {
+                                ...price.settings,
+                                duration: price.settings.duration ? {
+                                    value: price.settings.duration.value,
+                                    unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                } 
+                                : null,
+                                startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                recurrence: price.settings.recurrence ? {
+                                    recurrence: price.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    : price.settings.recurrence.value > 4 ? 'Biannual'
+                                    : price.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : 'Monthly'
+                                } 
+                                : null
+                            },
+                            type: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
                 }
             }
         case ActionTypes.CREATE_VOD_PRICE_PRESET :
@@ -72,7 +95,12 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    promos: action.payload.data.promos
+                    promos: action.payload.data.promos.map((promo) => {
+                        return {
+                            ...promo,
+                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
                 }
             }
         case ActionTypes.CREATE_VOD_PROMO_PRESET :

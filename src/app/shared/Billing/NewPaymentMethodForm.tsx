@@ -27,7 +27,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
     }
 
     return (
-        <form id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault(); handleFormSubmit(event) }} >
+        <form id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault()}} >
             <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
             <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
                 <InputRadio name='paymentMethodForm' value='creditCard' defaultChecked={true} onChange={() => setSelectedOption('creditCard')} label='Credit Card' />

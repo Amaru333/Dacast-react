@@ -15,7 +15,25 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                         return {
                             id: preset.id,
                             name: preset.name,
-                            ...preset.preset
+                            prices: preset.preset.prices,
+                            settings: {
+                                ...preset.preset.settings,
+                                duration: preset.preset.settings.duration ? {
+                                    value: preset.preset.settings.duration.value,
+                                    unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
+                                } 
+                                : null,
+                                startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                recurrence: preset.preset.settings.recurrence ? {
+                                    recurrence: preset.preset.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
+                                    : preset.preset.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : 'Monthly'
+                                } 
+                                : null
+                            },
+                            type: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
+
                         }
                     })
                 }
@@ -59,7 +77,23 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.GET_PROMO_PRESETS_LIST :
             return {
                 ...state,
-                promos: action.payload.data
+                promos: {
+                    totalItems: action.payload.data.totalItems,
+                    promos: action.payload.data.promos.map((promo: any) => {
+                        return {
+                            ...promo.preset,
+                            name: promo.name,
+                            id: promo.id,
+                            alphanumericCode: promo.preset.alphanumericCode,
+                            assignedContentIds: promo.preset.assignedContentIds,
+                            assignedGroupIds: promo.preset.assignedGroupIds,
+                            discount: promo.preset.discount,
+                            discountApplied: promo.preset.discountApplied,
+                            limit: promo.preset.limit,
+                            rateType: promo.preset.discountApplied ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
+                }
             }
         case ActionTypes.CREATE_PROMO_PRESET :
             promos = state.promos.promos.slice();

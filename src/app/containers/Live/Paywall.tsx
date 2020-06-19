@@ -59,6 +59,8 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
         if(!props.globalPresets) {
             props.getPresetsInfo('page=1&per-page=100')
         }
+        props.getLivePaywallPrices(liveId)
+        props.getLivePaywallPromos(liveId)
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -85,7 +87,6 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                     startMethod: 'Upon Purchase',
                     timezone: null,
                     startDate: null,
-                    startTime: '00:00'
                 }
 
             };
@@ -97,9 +98,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 limit: NaN,
                 rateType: 'Pay Per View',
                 startDate: null,
-                startTime: null,
                 endDate: null,
-                endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once',
                 assignedContentIds: [],

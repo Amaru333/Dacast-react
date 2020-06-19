@@ -26,11 +26,10 @@ const defaultPreset: Preset = {
     prices: pricesList,
     settings: {
         duration: {value: NaN, unit: 'Hours'},
-        recurrence: {recurrence: 'Weekly'},
+        recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: null,
-        startDate: null,
-        startTime: '00:00'
+        timezone: 'Etc/UTC',
+        startDate: 0,
     }
 }
 
@@ -72,11 +71,39 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
         })
     }
 
+    const initTimestampValues = (ts: number): {date: any; time: string} => {
+        if(ts > 0 ) {
+            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+        } 
+        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    }
+
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(presetsList.settings.startDate).date, time: initTimestampValues(presetsList.settings.startDate).time})
+
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${presetsList.settings.timezone}`).utc().valueOf()
+        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
+        setPresetsList({...presetsList, settings:{ ...presetsList.settings, startDate: startDate }})    
+    }, [presetsList.settings.timezone])
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${presetsList.settings.timezone}`).utc().valueOf()
+        setPresetsList({...presetsList, settings:{ ...presetsList.settings, startDate: startDate }})    
+    }, [startDateTimeValue])
+
     return (
         <div>
             <div className='col col-12 clearfix'>
                 <Input className={ ClassHalfXsFullMd+'pr1 mb2'} label='Preset Name' defaultValue={presetsList.name} onChange={(event) => setPresetsList({...presetsList, name: event.currentTarget.value})} />
-                <DropdownSingle id='pricePresetTypeDropdown' className={ClassHalfXsFullMd+'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={presetsList.type} callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod}})} list={{'Pay Per View': false, 'Subscription': false}} />
+                <DropdownSingle 
+                    id='pricePresetTypeDropdown' 
+                    className={ClassHalfXsFullMd+'pl1 mb2'} 
+                    dropdownTitle='Preset Type' 
+                    dropdownDefaultSelect={presetsList.type}
+                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {recurrence: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    list={{'Pay Per View': false, 'Subscription': false}} 
+                />
             </div>
             <div className="mb2 clearfix">
                 {renderPrices()}
@@ -84,7 +111,12 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     presetsList.type === 'Subscription' ?
-                        <DropdownSingle id='pricePresetRecurrenceDropdown' dropdownDefaultSelect={presetsList.settings.recurrence.recurrence} dropdownTitle='Recurrence' list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} />
+                        <DropdownSingle id='pricePresetRecurrenceDropdown' 
+                            dropdownDefaultSelect={presetsList.settings.recurrence.recurrence} 
+                            dropdownTitle='Recurrence' 
+                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {recurrence: value}}})}
+                            list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} 
+                        />
                         :
                         <>
                             <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
@@ -94,28 +126,44 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
 
             </div>
             <div className='col col-12 mb2'>
-                <DropdownSingle id='pricePresetStartMethodDropdown' dropdownDefaultSelect={presetsList.settings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: value}})} list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}/>
+                <DropdownSingle 
+                    id='pricePresetStartMethodDropdown' 
+                    dropdownDefaultSelect={presetsList.settings.startMethod} 
+                    className={ClassHalfXsFullMd + ' pr1'} 
+                    callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: value, startDate: 0 }})} 
+                    list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}
+                />
                 {
-                    presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?
+                    (presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View') &&
                         <DropdownSingle 
                             hasSearch 
                             id='pricePresetTimezoneDropdown' 
                             className={ClassHalfXsFullMd + ' px1'}
                             dropdownTitle='Timezone' 
+                            callback={(value: string) => setPresetsList({...presetsList, settings: {...presetsList.settings, timezone: value.split(' ')[0]}})} 
                             dropdownDefaultSelect={moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')'}
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
                             
                         />
-                        : null
                 }
             </div>
             {  
-                presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View' ?  
+                (presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
-                        <Input className='col col-3 pl1' type='time' defaultValue={presetsList.settings.startTime} label='Start Time' />
+                        <DateSinglePickerWrapper 
+                            date={moment(startDateTimeValue.date)} 
+                            callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}                            openDirection="up" 
+                            className='col col-6 pr1' 
+                            datepickerTitle='Start Date'
+                        />
+                        <Input 
+                            className='col col-3 pl1' 
+                            type='time' 
+                            value={startDateTimeValue.time} 
+                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                            label='Start Time' 
+                        />
                     </div>
-                    : null
             }
             <div className='col col-12 mt3'>
                 <Button disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {props.action(presetsList);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>

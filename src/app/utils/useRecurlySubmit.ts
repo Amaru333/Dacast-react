@@ -1,8 +1,8 @@
+import React from 'react'
 
 export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: string, callback: Function, recurly: any, actionButton: Function ) => {
     
     console.log('entering recurly hook', formRef)
-
     if(formRef) {
         if(selectedOption === 'paypal') {
 
@@ -14,28 +14,27 @@ export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: strin
                     console.log(err)
                 } 
                 else {
-                    actionButton();
                     console.log('sucees token', token.id)
-                    var risk = recurly.Risk();
-                    var threeDSecure = risk.ThreeDSecure({
-                        actionTokenId: token.id
-                    });
-                    threeDSecure.on('token', function () {
-                        callback(token.id)
-                        formRef.submit();
-                    });
+                    actionButton(token.id, null).then((response: any) => {
+                        // if we reach here it means recurly sent the three_d_secure_action_required to the API, they just sent us the token
+                        if(response.data.data.tokenID) {
+                            var risk = recurly.Risk();
+                            var threeDSecure = risk.ThreeDSecure({
+                                actionTokenId: response.data.data.tokenID
+                            });
+                            
+                            threeDSecure.on('token', function (threeDSecureToken: string) {
+                                actionButton(token.id, threeDSecureToken);
+                            });
                           
-                    threeDSecure.on('error', function () {
-                        console.log('3d error')
-                    });
-                    threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                    callback(token.id)
-                    formRef.submit();
-                    
+                            threeDSecure.on('error', function () {
+                                console.log('3d error')
+                            });
+                            threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
+                        }
+                    })                    
                 }
             });
-            
-            console.log('end recurly')
         }
     }
 }

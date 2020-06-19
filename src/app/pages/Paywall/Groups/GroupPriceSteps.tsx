@@ -14,20 +14,19 @@ import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle
 import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 var moment = require('moment-timezone');
+
 
 export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = props.stepperData.firststep.prices;
         if (inputChange === 'amount') {
-            tempPrices[key].value = parseInt(value);
+            tempPrices[key].price.value = parseInt(value);
         }
         else {
-            tempPrices[key].currency = value;
+            tempPrices[key].price.currency = value;
         }
         props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: tempPrices } });
     }
@@ -37,12 +36,12 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             return (
                 <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.prices.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
-                        <Input className={"col sm-col-6 col-5 px1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
-                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
+                        <Input className={"col sm-col-6 col-5 px1"} value={price.price.value > 0 ? price.price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
+                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
                     </div>
                     {
                         key === props.stepperData.firststep.prices.length - 1 ?
-                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, price: [...props.stepperData.firststep.prices, { value: "", currency: 'USD' }] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                            <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: [...props.stepperData.firststep.prices, {price: { value: "", currency: 'USD' }}] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
 
                             : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() =>   {var newList = props.stepperData.firststep.prices.filter((item, index) => { return index !== key }); console.log(newList); props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: newList} }) }}  >close</IconStyle></div>
                     }
@@ -51,42 +50,81 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         })
     }
 
+    const initTimestampValues = (ts: number): {date: any; time: string} => {
+        if(ts > 0 ) {
+            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+        } 
+        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    }
+
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).date, time: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).time})
+
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
+        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
+        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+    }, [props.stepperData.firststep.groupSettings.timezone])
+
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
+        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+    }, [startDateTimeValue])
+
     return (
         <div>
             <div className='col col-12'>
                 <Input className={ ClassHalfXsFullMd+'pr1 mb2'} label='Price Group Name' defaultValue={props.stepperData.firststep.name} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, name: event.currentTarget.value } })} />
-                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd+'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.settings.startMethod } })} list={{ 'Subscription': false, 'Pay Per View': false }} />
+                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd+'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.type} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, type: value, startMethod: value === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.groupSettings.startMethod }}})} list={{ 'Subscription': false, 'Pay Per View': false }} />
             </div>
             <div className="mb2 clearfix">
                 {renderPrices()}
             </div>
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
-                    props.stepperData.firststep.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.settings.recurrence.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} />
+                    props.stepperData.firststep.groupSettings.type === 'Subscription' ?
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {recurrence: value}}}})} />
                         :
                         <>
-                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.settings.duration.value > 0 ? props.stepperData.firststep.settings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, value: parseInt(event.currentTarget.value) } }} })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.settings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, duration: { ...props.stepperData.firststep.settings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
+                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
                         </>
                 }
 
             </div>
             <div className='col col-12 mb2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.settings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, settings: {...props.stepperData.firststep.settings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.type === 'Subscription'} />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
                 {
-                    props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
-                        <DropdownSingle hasSearch id='groupPriceTimezoneDropdown' className='col col-6 pl1 mt-auto' dropdownTitle='Timezone' list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
-                        : null
+                    props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
+                        <DropdownSingle 
+                            hasSearch 
+                            id='groupPriceTimezoneDropdown' 
+                            className='col col-6 pl1 mt-auto' 
+                            dropdownTitle='Timezone' 
+                            dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
+                            callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})} 
+                        />
                 }
             </div>
             {
-                props.stepperData.firststep.settings.startMethod === 'Schedule' && props.stepperData.firststep.type === 'Pay Per View' ?
+                props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper date={moment()} openDirection="up" className='col col-6 pr1' datepickerTitle='Start Date' />
-                        <Input defaultValue={props.stepperData.firststep.settings.startTime} className='col col-3 pl1' type='time' label='Start Time' />
+                        <DateSinglePickerWrapper 
+                            date={moment(startDateTimeValue.date)} 
+                            callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                            openDirection="up" 
+                            className='col col-6 pr1' 
+                            datepickerTitle='Start Date' 
+                        />
+                        <Input 
+                            value={startDateTimeValue.time} 
+                            className='col col-3 pl1' 
+                            type='time' 
+                            label='Start Time' 
+                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                        />
                     </div>
-                    : null
             }
         </div>
     )
@@ -99,10 +137,10 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
 
-    const DEFAULT_QS = 'status=online&page=1&per-page=10&content-types=channel,vod,folder,playlist'
+    const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (selectedFolder ? selectedFolder : ''))
+        props.stepperData.secondStep.getFolderContent(DEFAULT_QS)
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {

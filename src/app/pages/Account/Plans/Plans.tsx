@@ -34,10 +34,17 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
 
-    React.useEffect(() => {}, [stepperData, stepList]);
+    const purchasePlan = (recurlyToken: string, threeDSecureToken: string) => {
+        props.changeActivePlan({
+            planCode: stepperData.code,
+            token: recurlyToken,
+            threeDSecureToken: threeDSecureToken,
+            currency: 'USD',
+            couponCode: '',
+            allowances: stepperData.allownaceCode,
+            paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
 
-    const purchasePlan = () => {
-        setStepperPlanOpened(false);
+        })
         setCurrentPlan(stepperData.name)
     }
 
@@ -57,13 +64,6 @@ export const PlansPage = (props: PlansContainerProps) => {
         }
         setStepperPlanOpened(true)
     }
-
-    // React.useEffect(() => {
-    //     props.changeActivePlan({...stepperData, isActive: true})
-    // }, [currentPlan])
-
-    // useStepperFinalStepAction('stepperNextButton', () => purchasePlan())
-    
 
     return (
         <ScrollContainer>
@@ -94,15 +94,15 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <PlanCard className='mt1' isSelected={currentPlan === 'developer'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developer.developerAnnual.default_price.usd/100)/12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developerPlan.price.usd/100)/12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>                                    
                                         <Text className={textClassName+' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developer.developerAnnual.allowances[0].defaultBandwidth/10} GB&nbsp;</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth/10} GB&nbsp;</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'> every month</Text>
                                         </div>                
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>{props.planDetails.developer.developerAnnual.allowances[0].defaultStorage} GB</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -115,7 +115,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
                                             {currentPlan === 'event' || currentPlan === 'scale' ? 
                                                 <ButtonStyle className="mt25 col col-12"  disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle>  :
-                                                <ButtonStyle className="mt25 col col-12"  disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developer.developerAnnual});handleSteps('developer')}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25 col col-12"  disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developerPlan});handleSteps('developer')}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
                                         
@@ -132,7 +132,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <PlanCard className='mt1' isSelected={currentPlan === "scale"}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' +(calculateDiscount(props.planDetails.scale.scaleAnnual.default_price.usd/100)/12).toFixed(0) : '$' + (props.planDetails.scale.scaleMonthly.default_price.usd/100)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' +(calculateDiscount(props.planDetails.scalePlanAnnual.price.usd/100)/12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd/100)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <div className='flex flex-baseline mb1'>
@@ -141,12 +141,12 @@ export const PlansPage = (props: PlansContainerProps) => {
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scale.scaleAnnual.allowances[1].defaultBandwidth} GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[1].bandwidth} GB</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;every month</Text>
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scale.scaleAnnual.allowances[2].defaultStorage} GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[2].storage} GB</Text>
                                         </div>                
                                         
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -167,7 +167,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                                 <Text className='center' size={10} color='gray-5'>3 Month Minimum</Text>
                                             </div>}
                                             {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                            <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 12}) :setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 1})};handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                            <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scalePlanAnnual, selectedScalePlan: props.planDetails.scalePlanAnnual.allowances[0], paymentTerm: 12}) :setStepperData({...props.planDetails.scalePlanAnnual, selectedScalePlan: props.planDetails.scalePlanAnnual.allowances[0], paymentTerm: 1})};handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
 
                                     </PlanInfosContainer>
@@ -183,16 +183,16 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <PlanCard className="mt1" backgroundColor='violet10' isSelected={currentPlan === 'event'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${props.planDetails.event.eventAnnual.default_price.usd/100}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${props.planDetails.eventPlan.price.usd/100}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /yr</Text>
                                         </div>                                    
                                         <Text className={textClassName+' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.event.eventAnnual.allowances[0].defaultBandwidth} GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].bandwidth} GB</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;total data</Text>
                                         </div>                
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.event.eventAnnual.allowances[0].defaultStorage} GB</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -205,7 +205,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                                 <ButtonStyle className="col col-12" disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column">
                                                     {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                                    <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.event.eventAnnual});handleSteps('event')}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                    <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan});handleSteps('event')}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                                 </div>
                                             }
                                         </div>
@@ -249,22 +249,22 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <Card>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developer.developerAnnual.default_price.usd/100)/12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developerPlan.price.usd/100)/12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>  
                                         <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developer.developerAnnual.allowances[0].defaultBandwidth/10} GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth/10} GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developer.developerAnnual.allowances[0].defaultStorage} Storage</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} Storage</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall*</Text>
                                         <div className='absolute bottom-0 flex flex-column'>
                                             <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
                                             {currentPlan === 'event' || currentPlan === 'scale' ? 
                                                 <ButtonStyle className="mt25"  disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle>  :
-                                                <ButtonStyle className="mt25"  disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developer.developerAnnual});handleSteps('developer')}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25"  disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.developerPlan});handleSteps('developer')}}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
                                     </PlanInfosContainer>
@@ -275,7 +275,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <Card>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' +(calculateDiscount(props.planDetails.scale.scaleAnnual.default_price.usd/100)/12).toFixed(0) : '$' + (props.planDetails.scale.scaleMonthly.default_price.usd/100)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' +(calculateDiscount(props.planDetails.scalePlanAnnual.price.usd/100)/12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd/100)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <div className='flex flex-baseline'>
@@ -284,12 +284,12 @@ export const PlansPage = (props: PlansContainerProps) => {
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scale.scaleAnnual.allowances[1].defaultBandwidth} GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[1].bandwidth} GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scale.scaleAnnual.allowances[2].defaultStorage} GB Storage</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[2].storage} GB Storage</Text>
                                         </div> 
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>24/7 Phone Support</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
@@ -303,7 +303,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                                 </div>
                                                 : null }
                                             {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                            <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 12}) :setStepperData({...props.planDetails.scale.scaleAnnual, interval_length: 1})};handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                            <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scalePlanAnnual, paymentTerm: 12}) :setStepperData({...props.planDetails.scalePlanAnnual, paymentTerm: 1})};handleSteps('scale')}}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
                                     </PlanInfosContainer>
                                 </Card>
@@ -318,14 +318,14 @@ export const PlansPage = (props: PlansContainerProps) => {
                                 <Card>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${props.planDetails.event.eventAnnual.default_price.usd/100}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${props.planDetails.eventPlan.price.usd/100}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /yr</Text>
                                         </div>
                                         <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.event.eventAnnual.allowances[0].defaultBandwidth} GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].bandwidth} GB Data</Text>
                                         </div>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.event.eventAnnual.allowances[0].defaultStorage} GB Storage</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB Storage</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>Paywall</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
@@ -334,7 +334,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                                 <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column ">
                                                     {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                                    <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.event.eventAnnual});handleSteps('event')}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                    <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan});handleSteps('event')}}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                                 </div>
                                             }
                                         </div>
@@ -384,7 +384,7 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={() => purchasePlan()}
+                                    finalFunction={() => console.log('yes')}
                                 />
                                 
                         }

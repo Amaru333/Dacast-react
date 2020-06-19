@@ -103,7 +103,7 @@ export const createVodPricePresetAction = (data: Preset, vodId: string): ThunkDi
 
 export const saveVodPricePresetAction = (data: Preset, vodId: string): ThunkDispatch<Promise<void>, {}, SaveVodPricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveVodPricePreset>) => {
-        await VodPaywallServices.saveVodPricePreset(data)
+        await VodPaywallServices.saveVodPricePreset(data, vodId)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_VOD_PRICE_PRESET, payload: {data: data, contentId: vodId}})
                 dispatch(showToastNotification(`Price has been saved`, 'fixed', "success"));

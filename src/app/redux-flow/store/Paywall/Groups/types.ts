@@ -18,17 +18,30 @@ export interface Price {
 
 export interface PriceSettings {
     duration?: {value: number; unit: string};
-    recurrence?: {recurrence: string};
+    recurrence?: {recurrence: string; value?: number};
     startMethod: string;
     timezone?: string;
-    startDate?: Date;
-    startTime?: string;
+    startDate?: number;
+    type: string;
+}
+
+export interface GroupPriceInfo {
+    price: Price;
+    settings: PriceSettings;
 }
 
 export interface GroupPrice {
     id: string;
     name: string;
+    prices: GroupPriceInfo[]
+    contents: string[];
+    groupSettings?: PriceSettings;
+}
+
+export interface GroupPriceCreation {
+    id: string;
     type: string;
+    name: string;
     prices: Price[];
     settings: PriceSettings;
     contents: string[];
@@ -36,15 +49,12 @@ export interface GroupPrice {
 
 export interface GroupPromo {
     id: string;
-    name: string;
     alphanumericCode: string;
     discount: number;
     limit: number;
     rateType: string;
-    startDate: Date;
-    startTime: string;
-    endDate: Date;
-    endTime: string;
+    startDate: number;
+    endDate: number;
     timezone: string;
     discountApplied: string;
     assignedContentIds: string[];
@@ -52,7 +62,7 @@ export interface GroupPromo {
 }
 
 export interface GroupPriceData {
-    prices: GroupPrice[];
+    packages: GroupPrice[];
     total: number;
 }
 
