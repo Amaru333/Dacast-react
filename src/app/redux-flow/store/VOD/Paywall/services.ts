@@ -75,7 +75,11 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
                 contentId: `${userId}-vod-${vodId}`,
                 prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
                 settings: {
-                    startDate: Date.now()
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    },
+                    startDate: data.settings.startDate
                 }
             }
         }
@@ -93,13 +97,50 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
     )
 }
 
-const saveVodPricePreset = async (data: Preset) => {
+const saveVodPricePreset = async (data: Preset, vodId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            price: {value: data.price, currency: data.currency, description: data.description},
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
+            }
+        }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                price: {value: data.price, currency: data.currency, description: data.description},
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                price: {value: data.price, currency: data.currency, description: data.description},
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    },
+                    startDate: data.settings.startDate
+                }
+            }
+        }
+    } 
     return axios.put(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
         {
+            id: data.id,
+            contentId: `${userId}-vod-${vodId}`,
             name: data.name,
-            ...data
+            ...parsedPrice
         },
         {
             headers: {

@@ -57,6 +57,8 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
         if(!props.globalPresets) {
             props.getPricePresetsInfo('page=1&per-page=100')
         }
+        props.getPlaylistPaywallPrices(playlistId)
+        props.getPlaylistPaywallPromos(playlistId)
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -83,7 +85,6 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                     startMethod: 'Upon Purchase',
                     timezone: null,
                     startDate: null,
-                    startTime: '00:00'
                 }
 
             };
@@ -95,9 +96,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
                 limit: NaN,
                 rateType: 'Pay Per View',
                 startDate: null,
-                startTime: null,
                 endDate: null,
-                endTime: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
                 discountApplied: 'Once',
                 assignedGroupIds: [],

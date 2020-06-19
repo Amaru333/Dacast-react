@@ -43,7 +43,11 @@ const createPricePreset = async (data: Preset) => {
             parsedPrice = {
                 prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
                 settings: {
-                    startDate: Date.now()
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    },
+                    startDate: data.settings.startDate
                 }
             }
         }
@@ -65,10 +69,46 @@ const createPricePreset = async (data: Preset) => {
 const savePricePreset = async (data: Preset) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
+    let parsedPrice = null
+    if(data.type === 'Subscription') {
+        parsedPrice = {
+            prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+            settings: {
+                recurrence: {
+                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                }
+            }
+        }
+    } else {
+        if(data.settings.startMethod === 'Upon Purchase') {
+            parsedPrice = {
+                prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    }
+                }
+            }
+        } else {
+            parsedPrice = {
+                prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
+                settings: {
+                    duration: {
+                        unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
+                        value: data.settings.duration.value
+                    },
+                    startDate: data.settings.startDate
+                }
+            }
+        }
+    } 
     return axios.put(process.env.API_BASE_URL + '/paywall/prices/presets/' + data.id , 
         {
+            id: data.id,
             name: data.name,
-            preset: data  
+            preset: parsedPrice  
         },
         {
             headers: {
@@ -113,7 +153,7 @@ const createPromoPreset = async (data: Promo) => {
                 ...data,
                 assignedContentIds: [],
                 assignedGroupIds: [],
-                discountApplied: 'once',
+                discountApplied: data.rateType === 'Pay Per View' ? null : 'once',
                 id: null
             }  
         },
@@ -131,7 +171,13 @@ const savePromoPreset = async (data: Promo) => {
     return axios.put(process.env.API_BASE_URL + '/paywall/promos/presets/' + data.id , 
         {
             name: data.name,
-            preset: data  
+            id: data.id,
+            preset: {
+                ...data,
+                assignedContentIds: [],
+                assignedGroupIds: [],
+                discountApplied: data.rateType === 'Pay Per View' ? null : 'once',
+            }
         },
         {
             headers: {

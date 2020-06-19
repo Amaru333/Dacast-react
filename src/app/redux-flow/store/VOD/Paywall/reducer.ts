@@ -11,6 +11,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
             return {
                 ...state,
                 [action.payload.contentId]: {
+                    ...state[action.payload.contentId],
                     ...action.payload.data
                 }
             }
@@ -33,6 +34,11 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                             prices: price.prices,
                             settings: {
                                 ...price.settings,
+                                duration: price.settings.duration ? {
+                                    value: price.settings.duration.value,
+                                    unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                } 
+                                : null,
                                 startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: price.settings.recurrence ? {
                                     recurrence: price.settings.recurrence.recurrence === 'week' ? 'Weekly'
@@ -89,7 +95,12 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    promos: action.payload.data.promos
+                    promos: action.payload.data.promos.map((promo) => {
+                        return {
+                            ...promo,
+                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                        }
+                    })
                 }
             }
         case ActionTypes.CREATE_VOD_PROMO_PRESET :

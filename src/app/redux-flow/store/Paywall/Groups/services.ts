@@ -51,7 +51,11 @@ const createGroupPrice = async (data: GroupPrice) => {
                 name: data.name,
                 prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
                 settings: {
-                    startDate: Date.now()
+                    duration: {
+                        unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
+                        value: data.groupSettings.duration.value
+                    },
+                    startDate: data.groupSettings.startDate
                 },
                 contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
             }
@@ -108,7 +112,11 @@ const saveGroupPrice = async (data: GroupPrice) => {
                 name: data.name,
                 prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
                 settings: {
-                    startDate: Date.now()
+                    duration: {
+                        unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
+                        value: data.groupSettings.duration.value
+                    },
+                    startDate: data.groupSettings.startDate
                 },
                 contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
             }

@@ -43,7 +43,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {recurrence: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: 'Etc/UTC (+00:00 UTC)',
+            timezone: 'Etc/UTC',
             startDate: 0,
             type: 'Pay Per View',
         },
@@ -58,7 +58,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {recurrence: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: 'Etc/UTC (+00:00 UTC)',
+            timezone: 'Etc/UTC',
             startDate: 0,
             type: 'Pay Per View',
         } 
@@ -121,6 +121,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const groupPromosTableHeader = () => {
         return {data: [
             {cell: <Text key='promoGroupsTableHeaderType' size={14} weight='med'>Type</Text>},
+            {cell: <Text key='promoGroupsTableHeaderAssociatedGroupPrice' size={14} weight='med'>Associated Group Price</Text>},
             {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
@@ -140,6 +141,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             return props.groupsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
+                    <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,

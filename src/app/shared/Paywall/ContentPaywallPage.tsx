@@ -53,11 +53,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         setContentPaywallSettings(props.contentPaywallInfos)
     }, [props.contentPaywallInfos])
 
-    React.useEffect(() => {
-        props.getContentPrices(props.contentId)
-        props.getContentPromos(props.contentId)
-    }, [])
-
     const pricesTableHeader = () => {
         return {data: [
             {cell: <Text key='pricesTableHeaderType' size={14} weight='med'>Type</Text>},

@@ -20,7 +20,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                                 ...preset.preset.settings,
                                 duration: preset.preset.settings.duration ? {
                                     value: preset.preset.settings.duration.value,
-                                    unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + + 's'
+                                    unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
                                 } 
                                 : null,
                                 startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
@@ -81,7 +81,9 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                     totalItems: action.payload.data.totalItems,
                     promos: action.payload.data.promos.map((promo: any) => {
                         return {
-                            ...promo,
+                            ...promo.preset,
+                            name: promo.name,
+                            id: promo.id,
                             alphanumericCode: promo.preset.alphanumericCode,
                             assignedContentIds: promo.preset.assignedContentIds,
                             assignedGroupIds: promo.preset.assignedGroupIds,

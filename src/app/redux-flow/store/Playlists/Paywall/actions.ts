@@ -101,7 +101,7 @@ export const createPlaylistPricePresetAction = (data: Preset, playlistId: string
 
 export const savePlaylistPricePresetAction = (data: Preset, playlistId: string): ThunkDispatch<Promise<void>, {}, SavePlaylistPricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePlaylistPricePreset>) => {
-        await PlaylistPaywallServices.savePlaylistPricePreset(data)
+        await PlaylistPaywallServices.savePlaylistPricePreset(data, playlistId)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_PLAYLIST_PRICE_PRESET, payload: {data: data, contentId: playlistId}})
             }).catch(() => {
