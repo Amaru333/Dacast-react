@@ -6,10 +6,14 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
     let themes = null;
     switch (action.type) {
         case ActionTypes.GET_SETTING_THEMING_LIST :
-            let standardTheme = action.payload.data.themes.filter(t => t.themeName === 'Standard')[0]
+            // let standardTheme = action.payload.data.themes.filter(t => t.themeName === 'Standard')[0]
+            // return {
+            //     ...state,
+            //     themes: [standardTheme, ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
+            // }
             return {
                 ...state,
-                themes: [standardTheme, ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
+                themes: [...action.payload.data.themes],
             }
         case ActionTypes.CREATE_SETTING_THEME :
             themes = state.themes.slice()

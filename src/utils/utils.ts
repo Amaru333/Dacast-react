@@ -39,6 +39,9 @@ export const getPrivilege = (privilege: Privilege) => {
 
 
 export function readableBytes(size: number): string {
+    if(size == 0) {
+        return "0";
+    }
     var i = Math.floor(Math.log(size) / Math.log(1000));
     return parseInt((size / Math.pow(1000, i)).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
@@ -69,10 +72,6 @@ export function getPercentage(num: number, max: number): number {
     return percentage
 }
 
-
-export const checkStorageAvailable = (size: number) => {
-    
-}
 
 export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {
