@@ -7,19 +7,20 @@ import { useRecurlySubmit } from '../../utils/useRecurlySubmit';
 import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
-import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly } from '@recurly/react-recurly';
+import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
 import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 
 export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
+    const [threeDSecureToken, setThreeDSecureToken] = React.useState<string>(null)
 
     let formRef = React.useRef<HTMLFormElement>(null);
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureToken))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -147,7 +148,16 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                 </div>
 
             </RadioButtonOption>
-            <div id='#threeDSecureComponent'></div>
+            { threeDSecureToken &&
+            <div style={{height:400}}>
+                <ThreeDSecureAction
+                    actionTokenId={threeDSecureToken}
+                    onToken={(token) => console.log(token)}
+                    onError={(error) => console.log(error)}
+                >
+                </ThreeDSecureAction>
+            </div>
+            }
         </form>
     )
 }

@@ -30,7 +30,9 @@ export const changeActivePlanAction = (data: ChangePlan): ThunkDispatch<Promise<
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
         await PlansServices.changeActivePlanService(data)
             .then( response => {
+                console.log('action response', response)
                 return response
+                
                 // dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

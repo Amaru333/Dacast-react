@@ -18,6 +18,9 @@ import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
+import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import axios from 'axios'
+import { Modal } from '../../../../components/Modal/Modal';
 
 export const PlansPage = (props: PlansContainerProps) => {
     const textClassName = 'py1';
@@ -33,19 +36,44 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [currentPlan, setCurrentPlan] = React.useState<string>(null)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
+    const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
+    const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
 
-    const purchasePlan = (recurlyToken: string, threeDSecureToken: string) => {
-        props.changeActivePlan({
-            planCode: stepperData.code,
-            token: recurlyToken,
-            threeDSecureToken: threeDSecureToken,
-            currency: 'USD',
-            couponCode: '',
-            allowances: stepperData.allownaceCode,
-            paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
-
+    const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+        await isTokenExpired()
+        
+        let {token, userId} = addTokenToHeader();
+        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+            {
+                planCode: stepperData.code,
+                token: recurlyToken,
+                threeDSecureToken: threeDSecureToken,
+                currency: 'USD',
+                couponCode: '',
+                allowances: stepperData.allownaceCode,
+                paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+                },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+            
+        ).then(response => {
+            debugger
+            if(response.data.data.tokenID) {
+                callback(response.data.data.tokenID)
+            } else {
+                setStepperPlanOpened(false)
+                console.log(`${stepperData.name} plan purchased successfully`)
+                setPaymentSuccessfulModalOpened(true)
+            }
+            
+        }).catch((error) => {
+            setStepperPlanOpened(false)
+            setPaymentDeclinedModalOpened(true)
         })
-        setCurrentPlan(stepperData.name)
+        
     }
 
     const handleSteps = (plan: string) => {
@@ -384,14 +412,15 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={() => console.log('yes')}
+                                    finalFunction={purchasePlan}
                                 />
                                 
                         }
 
                     </Elements>
                 </RecurlyProvider>
-                
+                <Modal size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}></Modal>
+                <Modal size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}></Modal>
             </PlansPageContainer>
             <Text onClick={() => setAllFeaturesOpen(!allFeaturesOpen)} className="justify-center items-center flex col-12 pt2 pointer" color="dark-violet" size={14} weight='reg'>View all features<IconStyle coloricon="dark-violet" customsize={customInfoIconSize} className="ml1">{allFeaturesOpen ? "expand_less" : "expand_more"}</IconStyle></Text>
         </ScrollContainer>

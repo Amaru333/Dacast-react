@@ -1,6 +1,7 @@
 import React from 'react'
+import { PromoPresetsModal } from '../pages/Paywall/Presets/PromoPresetsModal';
 
-export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: string, callback: Function, recurly: any, actionButton: Function ) => {
+export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: string, callback: Function, recurly: any, actionButton: Function, setThreeDSecureToken?: Function ) => {
     
     console.log('entering recurly hook', formRef)
     if(formRef) {
@@ -15,24 +16,7 @@ export const useRecurlySubmit = (formRef: HTMLFormElement, selectedOption: strin
                 } 
                 else {
                     console.log('sucees token', token.id)
-                    actionButton(token.id, null).then((response: any) => {
-                        // if we reach here it means recurly sent the three_d_secure_action_required to the API, they just sent us the token
-                        if(response.data.data.tokenID) {
-                            var risk = recurly.Risk();
-                            var threeDSecure = risk.ThreeDSecure({
-                                actionTokenId: response.data.data.tokenID
-                            });
-                            
-                            threeDSecure.on('token', function (threeDSecureToken: string) {
-                                actionButton(token.id, threeDSecureToken);
-                            });
-                          
-                            threeDSecure.on('error', function () {
-                                console.log('3d error')
-                            });
-                            threeDSecure.attach(document.querySelector('#threeDSecureComponent'))
-                        }
-                    })                    
+                    actionButton(token.id, null, setThreeDSecureToken)                 
                 }
             });
         }

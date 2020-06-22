@@ -61,8 +61,6 @@ export interface PaidPrivilege {
 
 export interface ChangePlan {
     planCode: string;
-    token: string;
-    threeDSecureToken: string;
     currency: string;
     couponCode: string;
     allowances: string;
