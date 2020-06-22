@@ -38,6 +38,7 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
+    const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
 
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         await isTokenExpired()
@@ -63,6 +64,7 @@ export const PlansPage = (props: PlansContainerProps) => {
             debugger
             if(response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
+                setThreeDSecureActive(true)
             } else {
                 setStepperPlanOpened(false)
                 console.log(`${stepperData.name} plan purchased successfully`)
@@ -74,6 +76,45 @@ export const PlansPage = (props: PlansContainerProps) => {
             setPaymentDeclinedModalOpened(true)
         })
         
+    }
+
+    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+        await isTokenExpired()
+        
+        let {token, userId} = addTokenToHeader();
+        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+            {
+                planCode: stepperData.code,
+                token: recurlyToken,
+                threeDSecureToken: threeDSecureToken,
+                currency: 'USD',
+                couponCode: '',
+                allowances: stepperData.allownaceCode,
+                paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+                },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+            
+        ).then(response => {
+            debugger
+                setStepperPlanOpened(false)
+                console.log(`3DS authentication successful. ${stepperData.name} plan purchased successfully`)
+                setPaymentSuccessfulModalOpened(true)
+                setThreeDSecureActive(false)
+            }
+            
+        ).catch((error) => {
+            
+        })
+        
+    }
+
+    const handleThreeDSecureFail = () => {
+        setStepperPlanOpened(false)
+        setPaymentDeclinedModalOpened(true)
     }
 
     const handleSteps = (plan: string) => {
@@ -412,7 +453,8 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={purchasePlan}
+                                    finalFunction={ threeDSecureActive ? purchasePlan3Ds : purchasePlan}
+                                    usefulFunctions={{'handleThreeDSecureFail': handleThreeDSecureFail}}
                                 />
                                 
                         }
