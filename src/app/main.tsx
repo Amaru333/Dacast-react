@@ -175,10 +175,10 @@ const AppContent = (props: { routes: any }) => {
                 </>
                 :
                 <>
-                    <Route exact path='/'>
-                        <Login />
-                    </Route>
                     <Switch>
+                        <Route exact key='/' path='/'>
+                            <Login />
+                        </Route>
                         {props.routes}
                     </Switch>
                 </>
