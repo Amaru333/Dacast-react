@@ -30,7 +30,10 @@ export interface ContentEngagementComponentProps {
     createContentAd: Function;
     deleteContentAd: Function;
     contentType?: string;
-    contentId: string
+    contentId: string;
+    getUploadUrl: Function;
+    uploadContentImage: Function;
+    deleteContentImage: Function;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -95,13 +98,13 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile();
+        props.deleteContentImage();
     }
 
 
     React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
-            props.uploadFile(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );
+            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
 
