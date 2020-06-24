@@ -14,6 +14,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { useNetwork } from '../../../utils/customHooks';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -76,6 +77,9 @@ export const UploaderPage = (props: UploaderProps) => {
             } else {
                 eta = Math.round(eta);
                 var etaUnit = ' seconds';
+            }
+            if(percent >= 100) {
+                logAmplitudeEvent('upload video')
             }
             return Object.assign([...currentList], {
                 [index]:

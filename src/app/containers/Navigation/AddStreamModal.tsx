@@ -14,6 +14,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { logAmplitudeEvent } from '../../utils/amplitudeService';
 
 const moment = require('moment-timezone')
 
@@ -79,6 +80,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         ).then((response) => {
             setButtonLoading(false)
             showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
+            logAmplitudeEvent('create live stream');
             history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
         }).catch((error) => {
