@@ -228,7 +228,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         </ModalContent>
                         <ModalFooter>
                             <Button sizeButton="large" onClick={() => {onPasswordSubmit();SetChangePasswordButtonLoading(true)}} typeButton="primary" isLoading={changePasswordButtonLoading}>Change Password</Button>
-                            <Button sizeButton="large" onClick={() => setPasswordModalToggle(false)} typeButton="tertiary">Cancel</Button>
+                            <Button sizeButton="large" onClick={() => {setPasswordModalToggle(false);setPasswordModalErrorHidden(true)}} typeButton="tertiary">Cancel</Button>
                         </ModalFooter>
                     </>
                     : null
