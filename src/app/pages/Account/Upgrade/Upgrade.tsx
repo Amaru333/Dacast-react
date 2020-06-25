@@ -10,9 +10,9 @@ import {isMobile} from 'react-device-detect';
 //import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
-import { PlansContainerProps } from '../../../containers/Account/Plans';
+import { UpgradeContainerProps } from '../../../containers/Account/Upgrade';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Plan, Plans } from '../../../redux-flow/store/Account/Plans/types';
+import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
@@ -22,7 +22,7 @@ import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
 import { Modal } from '../../../../components/Modal/Modal';
 
-export const PlansPage = (props: PlansContainerProps) => {
+export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
@@ -136,7 +136,7 @@ export const PlansPage = (props: PlansContainerProps) => {
 
     return (
         <ScrollContainer>
-            <PlansPageContainer className='col col-12' isMobile={isMobile}>
+            <UpgradePageContainer className='col col-12' isMobile={isMobile}>
                 {
                     !isMobile ?
                         <AllowancesList className={marginBlocks}>
@@ -463,13 +463,13 @@ export const PlansPage = (props: PlansContainerProps) => {
                 </RecurlyProvider>
                 <Modal size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}></Modal>
                 <Modal size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}></Modal>
-            </PlansPageContainer>
+            </UpgradePageContainer>
             <Text onClick={() => setAllFeaturesOpen(!allFeaturesOpen)} className="justify-center items-center flex col-12 pt2 pointer" color="dark-violet" size={14} weight='reg'>View all features<IconStyle coloricon="dark-violet" customsize={customInfoIconSize} className="ml1">{allFeaturesOpen ? "expand_less" : "expand_more"}</IconStyle></Text>
         </ScrollContainer>
     )
 }
 
-const PlansPageContainer = styled.div<{isMobile: boolean}>`
+const UpgradePageContainer = styled.div<{isMobile: boolean}>`
     ${props => !props.isMobile && css`
     display: flex;
     `}

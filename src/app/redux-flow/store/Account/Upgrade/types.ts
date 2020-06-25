@@ -1,6 +1,6 @@
 export enum ActionTypes {
-    GET_PLAN_DETAILS = "@@account_plans/GET_PLAN_DETAILS",
-    CHANGE_ACTIVE_PLAN = "@@account_plans/CHANGE_ACTIVE_PLAN"
+    GET_PLAN_DETAILS = "@@account_upgrade/GET_PLAN_DETAILS",
+    CHANGE_ACTIVE_PLAN = "@@account_upgrade/CHANGE_ACTIVE_PLAN"
 }
 
 export interface CustomAllowance {
@@ -67,7 +67,7 @@ export interface ChangePlan {
     paidPrivileges: PaidPrivilege[];
 }
 
-export const plansInitialState: Plans = {
+export const upgradeInitialState: Plans = {
     developerPlan: null,
     eventPlan: null,
     scalePlanAnnual: null,

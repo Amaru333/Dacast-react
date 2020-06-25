@@ -5,10 +5,10 @@ import { InputCheckbox } from '../../../../components/FormsComponents/Input/Inpu
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { Plan, Privilege } from '../../../redux-flow/store/Account/Plans/types';
+import { Plan, Privilege } from '../../../redux-flow/store/Account/Upgrade/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
-import { ScalePlanSelector, ScalePlanSelectorContents } from './Plans';
+import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
 

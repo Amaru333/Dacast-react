@@ -12,7 +12,7 @@ import Folders from '../containers/Folders/Folders';
 import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
 import Theming from '../containers/Settings/Theming';
-import PlansContainer from '../containers/Account/Plans'
+import UpgradeContainer from '../containers/Account/Upgrade'
 import LiveList from '../containers/Live/List';
 import Payout from '../containers/Paywall/Payout';
 import Transactions from '../containers/Paywall/Transactions';
@@ -427,9 +427,9 @@ export const AppRoutes: Routes[] = [
         component: null,
         slug: [
             {
-                path: '/account/plans',
-                name: 'Plans',
-                component: PlansContainer
+                path: '/account/upgrade',
+                name: 'Upgrade',
+                component: UpgradeContainer
             },
             {
                 path: '/account/profile',

@@ -1,21 +1,21 @@
 import React from 'react';
 import { LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
-import { PlansPage } from '../../pages/Account/Plans/Plans';
-import { Plans, ChangePlan } from '../../redux-flow/store/Account/Plans/types';
+import { UpgradePage } from '../../pages/Account/Upgrade/Upgrade';
+import { Plans, ChangePlan } from '../../redux-flow/store/Account/Upgrade/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { PlansAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Plans/actions';
+import { UpgradeAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 
-export interface PlansContainerProps {
+export interface UpgradeContainerProps {
     planDetails: Plans;
     getPlanDetails: () => void;
     changeActivePlan: (data: ChangePlan) => void;
 }
 
-const PlansContainer = (props: PlansContainerProps) => {
+const UpgradeContainer = (props: UpgradeContainerProps) => {
     React.useEffect(() => {
         if(!props.planDetails) {
             props.getPlanDetails();
@@ -24,7 +24,7 @@ const PlansContainer = (props: PlansContainerProps) => {
 
     return (
         props.planDetails ? 
-            <PlansPage planDetails={props.planDetails} {...props}/>
+            <UpgradePage planDetails={props.planDetails} {...props}/>
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -32,11 +32,11 @@ const PlansContainer = (props: PlansContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        planDetails: state.account.plans
+        planDetails: state.account.upgrade
     }
 }
 
-export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, PlansAction>) {
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
     return {
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
@@ -47,4 +47,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (PlansContainer);
+export default connect(mapStateToProps, mapDispatchToProps) (UpgradeContainer);

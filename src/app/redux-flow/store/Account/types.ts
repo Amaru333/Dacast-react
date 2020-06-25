@@ -5,8 +5,8 @@ import { BillingPageInfos, BillingReducer } from './Billing';
 import { Invoice, InvoicesReducer } from './Invoices';
 import { PendingOrdersList } from './PendingOrders/types';
 import { PendingOrdersReducer } from './PendingOrders/reducer';
-import { Plans } from './Plans/types';
-import { PlansReducer } from "./Plans/reducer"
+import { Plans } from './Upgrade/types';
+import { UpgradeReducer } from "./Upgrade/reducer"
 
 export interface  AccountState {
     profile: false | ProfilePageInfos;
@@ -14,7 +14,7 @@ export interface  AccountState {
     billing: false | BillingPageInfos;
     invoices: false | Invoice[];
     pendingOrders: false | PendingOrdersList;
-    plans: false | Plans;
+    upgrade: false | Plans;
 }
 
 export const accountInitialState: AccountState = {
@@ -23,7 +23,7 @@ export const accountInitialState: AccountState = {
     billing: false,
     invoices: false,
     pendingOrders: false,
-    plans: false
+    upgrade: false
 }
 
 export const AccountReducer: Reducer<AccountState> = combineReducers({
@@ -32,5 +32,5 @@ export const AccountReducer: Reducer<AccountState> = combineReducers({
     billing: BillingReducer,
     invoices: InvoicesReducer,
     pendingOrders: PendingOrdersReducer,
-    plans: PlansReducer
+    upgrade: UpgradeReducer
 })

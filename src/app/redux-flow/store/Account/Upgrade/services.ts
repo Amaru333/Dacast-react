@@ -29,7 +29,7 @@ const changeActivePlanService = async (data: ChangePlan) => {
     )
 }
 
-export const PlansServices = {
+export const UpgradeServices = {
     getPlanDetailsService,
     changeActivePlanService
 }
