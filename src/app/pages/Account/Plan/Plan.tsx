@@ -6,7 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia } from '../../../../utils/utils';
+import { useMedia, readableBytes, getPercentage, tsToLocaleDate } from '../../../../utils/utils';
 import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
@@ -15,9 +15,15 @@ import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
+import { WidgetElement } from '../../../containers/Dashboard/WidgetElement';
+import { WidgetHeader, classContainer, classItemThirdWidthContainer } from '../../../containers/Dashboard/DashboardStyles';
+import { ProgressBarDashboard } from '../../../containers/Dashboard/GeneralDashboard';
+import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
+import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
+    widgetData: DashboardInfos;
     saveBillingPagePaymentMethod: Function;
     addBillingPagePaymenPlaybackProtection: Function;
     editBillingPagePaymenPlaybackProtection: Function;
@@ -25,7 +31,7 @@ interface PlanComponentProps {
     addBillingPageExtras: Function;
 }
 
-export const PlanPage = (props: PlanComponentProps) => {
+export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
 
     const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
@@ -61,6 +67,17 @@ export const PlanPage = (props: PlanComponentProps) => {
     React.useEffect(()=> {checkPaymentMethod()}, [props.billingInfos.paypal, props.billingInfos.creditCard])
 
     let smScreen = useMedia('(max-width: 780px)');
+
+    const storage = {
+        percentage: getPercentage(props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed, props.widgetData.generalInfos.storage.limit),
+        left: props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed,
+        limit: props.widgetData.generalInfos.storage.limit,
+    } 
+    const bandwidth = {
+        percentage: getPercentage(props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed, props.widgetData.generalInfos.bandwidth.limit),
+        left: props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed,
+        limit: props.widgetData.generalInfos.bandwidth.limit,
+    } 
 
     const paypalTableHeaderElement = () => {
         return {data: [
@@ -196,7 +213,54 @@ export const PlanPage = (props: PlanComponentProps) => {
     }
 
     return (
-        <div> 
+        <div>
+            <div className={classContainer}>
+                <WidgetElement className={classItemThirdWidthContainer}>
+                    <WidgetHeader className="flex">
+                        <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
+                        {handleButtonToPurchase(bandwidth.percentage, "Data", () => {})}
+                    </WidgetHeader>
+                    <div className="flex flex-wrap items-baseline mb1">
+                        <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
+                    </div>
+                    <ProgressBarDashboard overage={props.widgetData.generalInfos.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                </WidgetElement>
+
+                <WidgetElement className={classItemThirdWidthContainer}>
+                    <WidgetHeader className="flex">
+                        <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
+                        {handleButtonToPurchase(storage.percentage, "Storage", () => {})}
+                    </WidgetHeader>
+                    <div className="flex flex-wrap items-baseline mb1">
+                        <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
+                    </div>
+                    <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
+                </WidgetElement>
+
+
+                {
+                    (props.plan as DashboardTrial).daysLeft  ?
+                        <WidgetElement className={classItemThirdWidthContainer}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
+                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade </Button>
+                            </WidgetHeader>
+                            <div className="flex flex-wrap items-baseline mb1">
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                            </div>
+                            <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
+                        </WidgetElement> :
+                        <WidgetElement className={classItemThirdWidthContainer}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
+                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade</Button>
+                            </WidgetHeader>
+                            {/* <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(lastDay.getTime() / 1000)}</Text><br /> */}
+                            <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
+                            <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
+                        </WidgetElement>
+                }
+            </div> 
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
