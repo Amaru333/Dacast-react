@@ -1,14 +1,14 @@
 import React from 'react';
-import { BillingPage } from '../../pages/Account/Billing/Billing';
+import { PlanPage } from '../../pages/Account/Plan/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { BillingAction, saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction } from '../../redux-flow/store/Account/Billing/actions';
+import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
-import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras } from '../../redux-flow/store/Account/Billing/types';
+import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
-interface BillingContainerProps {
+interface PlanContainerProps {
     billingInfos: BillingPageInfos;
     getBillingPageInfos: Function;
     saveBillingPagePaymentMethod: Function;
@@ -17,7 +17,7 @@ interface BillingContainerProps {
     deleteBillingPagePaymenPlaybackProtection: Function;
     addBillingPageExtras: Function;
 }
-const Billing = (props: BillingContainerProps) => {
+const Plan = (props: PlanContainerProps) => {
 
     React.useEffect(() => {
         if(!props.billingInfos) {
@@ -26,14 +26,14 @@ const Billing = (props: BillingContainerProps) => {
     }, [])
     return (
         props.billingInfos ?
-            <BillingPage {...props} />
+            <PlanPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        billingInfos: state.account.billing
+        billingInfos: state.account.plan
     };
 }
 
@@ -61,4 +61,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Billing); 
+export default connect(mapStateToProps, mapDispatchToProps)(Plan); 

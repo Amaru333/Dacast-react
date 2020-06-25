@@ -11,12 +11,12 @@ import { PaymentMethodModal } from './PaymentMethodModal';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
-import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Billing/types';
+import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 
-interface BillingComponentProps {
+interface PlanComponentProps {
     billingInfos: BillingPageInfos;
     saveBillingPagePaymentMethod: Function;
     addBillingPagePaymenPlaybackProtection: Function;
@@ -25,7 +25,7 @@ interface BillingComponentProps {
     addBillingPageExtras: Function;
 }
 
-export const BillingPage = (props: BillingComponentProps) => {
+export const PlanPage = (props: PlanComponentProps) => {
 
     const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paypalModalOpened, setPaypaylModalOpened] = React.useState<boolean>(false);
