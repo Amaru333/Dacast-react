@@ -16,11 +16,12 @@ import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
-import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures } from './FeaturesConst';
+import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
-import { Modal } from '../../../../components/Modal/Modal';
+import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
+import { useHistory } from 'react-router'
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -39,6 +40,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
+
+    let history = useHistory()
 
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         await isTokenExpired()
@@ -461,8 +464,20 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                     </Elements>
                 </RecurlyProvider>
-                <Modal size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}></Modal>
-                <Modal size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}></Modal>
+                <Modal icon={{name: "check_circle_outline", color:"green"}} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} hasClose={false}>
+                    <div className="mt2 mb3">
+                        <Text  size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
+                    </div>  
+                    <ModalFooter>
+                        <Button onClick={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)}>Confirm</Button>
+                        <Button typeButton="tertiary">See Invoices</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal icon={{name: "warning_outlined", color:"red"}} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={false}>
+                    <div className="mt2 mb3">
+                        <Text  size={14}>Something went wrong during your upgrade. Your payment may have been declined. Please try again or <a href="/help">Contact Us</a> if you believe this is a mistake.</Text>
+                    </div>
+                </Modal>
             </UpgradePageContainer>
             <Text onClick={() => setAllFeaturesOpen(!allFeaturesOpen)} className="justify-center items-center flex col-12 pt2 pointer" color="dark-violet" size={14} weight='reg'>View all features<IconStyle coloricon="dark-violet" customsize={customInfoIconSize} className="ml1">{allFeaturesOpen ? "expand_less" : "expand_more"}</IconStyle></Text>
         </ScrollContainer>

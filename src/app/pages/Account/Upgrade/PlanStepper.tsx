@@ -11,12 +11,8 @@ import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
+import { PlansName } from './FeaturesConst';
 
-export enum PlansName {
-    "Developer" = "Developer Plan",
-    "Event" = "Event Plan",
-    "Annual Scale" = "Scale Plan"
-}
 
 //PLAN
 export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
