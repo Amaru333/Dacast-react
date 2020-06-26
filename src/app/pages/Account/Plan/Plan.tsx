@@ -329,8 +329,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         opened={paypalModalOpened}>
                         <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaypaylModalOpened} />
                     </Modal>
-                </Elements>
-            </RecurlyProvider>
             <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                 <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection : null}/>
             </Modal>
@@ -359,6 +357,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 lastStepButton="Purchase"
                 finalFunction={() => {}}
             />
+            </Elements>
+            </RecurlyProvider>
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
                     <div className="mt1">
