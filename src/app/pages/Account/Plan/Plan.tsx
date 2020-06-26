@@ -20,6 +20,8 @@ import { WidgetHeader, classContainer, classItemThirdWidthContainer } from '../.
 import { ProgressBarDashboard } from '../../../containers/Dashboard/GeneralDashboard';
 import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
 import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
+import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
+import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -40,6 +42,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
+    const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     React.useEffect(() => {
@@ -296,7 +299,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <BorderStyle className="py1" />
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
                 <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
-                <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs">Purchase Data</Button>
+                <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
                 <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
                 <div className="col col-2 mb2">
                     <DataPricingTable >
@@ -344,6 +347,17 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 stepperData={stepperExtraItem}
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
+            />
+            <CustomStepper 
+                opened={purchaseDataOpen}
+                stepperHeader="Purchase Data"
+                stepTitles={["Cart", "Payment"]}
+                stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
+                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                lastStepButton="Purchase"
+                finalFunction={() => {}}
             />
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
