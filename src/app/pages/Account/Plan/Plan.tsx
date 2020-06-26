@@ -293,8 +293,29 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
                 }
                 
-
-            
+                <BorderStyle className="py1" />
+                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
+                <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
+                <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs">Purchase Data</Button>
+                <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
+                <div className="col col-2 mb2">
+                    <DataPricingTable >
+                        <DataPricingTableRow>
+                            <DataCell><Text size={14}  weight="med" color="gray-1">1+TB</Text></DataCell>
+                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.25/GB</Text></PriceCell>
+                        </DataPricingTableRow>
+                        <DataPricingTableRow>
+                            <DataCell><Text size={14}  weight="med" color="gray-1">5+TB</Text></DataCell>
+                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.12/GB</Text></PriceCell>
+                        </DataPricingTableRow>
+                        <DataPricingTableRow>
+                            <DataCell><Text size={14}  weight="med" color="gray-1">10TB+</Text></DataCell>
+                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.09/GB</Text></PriceCell>
+                        </DataPricingTableRow>
+                    </DataPricingTable>
+                </div>
+                <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
+                
             </Card>
             <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
                 <Elements>
@@ -355,4 +376,30 @@ export const TextStyle = styled.span<{}>`
 export const BorderStyle = styled.div<{}>`
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
     display: flex;
+`
+
+export const DataPricingTable = styled.table`
+    height: auto;
+    width: 100%;
+    border: 1px solid ${props => props.theme.colors["gray-8"]};
+    border-spacing: unset;
+    border-collapse: collapse;
+`
+
+export const DataPricingTableRow = styled.tr`
+    width: auto;
+    height: 48px;
+    border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+`
+
+
+export const PriceCell = styled.td`
+    background-color: ${props => props.theme.colors["white"]};
+    min-width: 94px;
+    text-align: center;
+`
+
+export const DataCell = styled(PriceCell)`
+    background-color: ${props => props.theme.colors["gray-10"]};
+    border-right: 1px solid ${props => props.theme.colors["gray-8"]};
 `
