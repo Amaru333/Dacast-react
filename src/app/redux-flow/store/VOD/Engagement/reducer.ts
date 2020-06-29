@@ -46,7 +46,11 @@ const reducer: Reducer<ContentEngagementSettingsState> = (state = contentEngagem
             case ActionTypes.GET_UPLOAD_URL:
                 return {
                     ...state,
-                    uploadurl: action.payload.data.presignedURL
+                    [action.payload.vodId]: {
+                        ...state[action.payload.vodId],
+                        engagementSettings: {...state[action.payload.vodId].engagementSettings,
+                        uploadurl: action.payload.data.presignedURL}
+                    }                  
                 }
             case ActionTypes.UPLOAD_IMAGE:
                 return state

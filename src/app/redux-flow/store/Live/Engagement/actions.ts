@@ -30,6 +30,21 @@ export interface DeleteLiveAd {
     payload:{ads: Ad[]; contentId: string;}; 
 }
 
+export interface GetUploadUrl {
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string, liveID: string }};
+}
+
+export interface UploadLiveImage {
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
+}
+
+export interface DeleteLiveImage {
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
+}
+
 export const getLiveEngagementSettingsAction = (liveId: string): ThunkDispatch<Promise<void>, {}, GetLiveEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveEngagementSettings> ) => {
         await liveEngagementServices.getLiveEngagementSettings(liveId)
@@ -89,4 +104,45 @@ export const deleteLiveAdAction = (data: Ad[], adsId: string, liveId: string): T
     };
 }
 
-export type Action = GetLiveEngagementSettings | SaveLiveEngagementSettings | SaveLiveAd | CreateLiveAd | DeleteLiveAd
+export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
+        await liveEngagementServices.getUploadUrl(uploadType, liveId)
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, liveId: liveId} })
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const uploadLiveImageAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadLiveImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadLiveImage>) => {
+        await liveEngagementServices.uploadFile(data, uploadUrl)
+            .then(response => {
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const deleteLiveImageAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeleteLiveImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLiveImage>) => {
+        await liveEngagementServices.deleteFile(targetId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export type Action = GetLiveEngagementSettings | SaveLiveEngagementSettings | SaveLiveAd | CreateLiveAd | DeleteLiveAd | GetUploadUrl | UploadLiveImage | DeleteLiveImage
