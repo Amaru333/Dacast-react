@@ -20,7 +20,7 @@ export const signupAction = (data: UserInfo): ThunkDispatch<Promise<void>, {}, S
                 logAmplitudeEvent('create account');
             }).catch((error: AxiosError) => {
                 console.log(error.response)
-                dispatch(showToastNotification((error.response.data.error.indexOf('already in use') === -1 ? "That email is already in use" : "Oops! Something went wrong.."), 'fixed', "error"));
+                dispatch(showToastNotification((error.response.data.error.indexOf('An account with the given email already exists') > -1 ? "That email is already in use" : "Oops! Something went wrong.."), 'fixed', "error"));
             })
     };
 
