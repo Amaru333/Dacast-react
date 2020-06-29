@@ -122,7 +122,7 @@ export const uploadVodImageAction = (data: File, uploadUrl: string): ThunkDispat
         await vodEngagementServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
-                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
+                dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -136,6 +136,7 @@ export const deleteVodImageAction = (targetId: string): ThunkDispatch<Promise<vo
         await vodEngagementServices.deleteFile(targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

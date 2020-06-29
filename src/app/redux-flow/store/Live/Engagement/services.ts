@@ -45,8 +45,41 @@ const saveLiveAd = async (data: Ad[], adsId: string, liveId: string) => {
     )
 }
 
+const getUploadUrl = async (data: string, liveId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+        {
+            liveID: liveId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+}
+
+const uploadFile = (data: File, uploadUrl: string) => {
+    return axios.put(uploadUrl, data)
+}
+
+const deleteFile = async (liveId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/engagement/brand-image',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 export const liveEngagementServices = {
     getLiveEngagementSettings,
     saveLiveEngagementSettings,
-    saveLiveAd
+    saveLiveAd,
+    getUploadUrl,
+    uploadFile,
+    deleteFile
 }

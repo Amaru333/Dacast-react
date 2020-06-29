@@ -30,6 +30,21 @@ export interface DeletePlaylistAd {
     payload: {ads: Ad[]; contentId: string;}
 }
 
+export interface GetUploadUrl {
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string, playlistId: string }};
+}
+
+export interface UploadPlaylistImage {
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
+}
+
+export interface DeletePlaylistImage {
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
+}
+
 export const getPlaylistEngagementSettingsAction = (playlistId: string): ThunkDispatch<Promise<void>, {}, GetPlaylistEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistEngagementSettings> ) => {
         await playlistEngagementServices.getPlaylistEngagementSettings(playlistId)
@@ -89,4 +104,45 @@ export const deletePlaylistAdAction = (data: Ad[], adsId: string, playlistId: st
     };
 }
 
-export type Action = GetPlaylistEngagementSettings | SavePlaylistEngagementSettings | SavePlaylistAd | CreatePlaylistAd | DeletePlaylistAd
+export const getUploadUrlAction = (uploadType: string, playlistId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
+        await playlistEngagementServices.getUploadUrl(uploadType, playlistId)
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, playlistID: playlistId} })
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const uploadPlaylistImageAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadPlaylistImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadPlaylistImage>) => {
+        await playlistEngagementServices.uploadFile(data, uploadUrl)
+            .then(response => {
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const deletePlaylistImageAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylistImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylistImage>) => {
+        await playlistEngagementServices.deleteFile(targetId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export type Action = GetPlaylistEngagementSettings | SavePlaylistEngagementSettings | SavePlaylistAd | CreatePlaylistAd | DeletePlaylistAd | GetUploadUrl | UploadPlaylistImage | DeletePlaylistImage

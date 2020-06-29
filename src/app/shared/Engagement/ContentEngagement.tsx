@@ -75,7 +75,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark');
+                    props.getUploadUrl('player-watermark', props.contentId);
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -98,13 +98,13 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteContentImage();
+        props.deleteContentImage(props.contentId);
     }
 
 
     React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
-            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );
+            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
 
@@ -288,10 +288,12 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) })} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) })} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value })} />
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
+                        callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
+                        ></DropdownSingle>
+                        <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
+                    <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
                     </div>
                 </div>
 

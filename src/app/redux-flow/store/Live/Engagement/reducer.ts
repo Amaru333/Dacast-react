@@ -43,6 +43,19 @@ const reducer: Reducer<ContentEngagementSettingsState> = (state: ContentEngageme
                     } 
                 }
             }
+            case ActionTypes.GET_UPLOAD_URL:
+                    return {
+                        ...state,
+                        [action.payload.liveId]: {
+                            ...state[action.payload.liveId],
+                            engagementSettings: {...state[action.payload.liveId].engagementSettings,
+                            uploadurl: action.payload.data.presignedURL}
+                        }                  
+                    }
+                case ActionTypes.UPLOAD_IMAGE:
+                    return state
+                case ActionTypes.DELETE_IMAGE:
+                    return state
         default:
             return state;
     }
