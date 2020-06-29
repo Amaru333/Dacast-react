@@ -109,7 +109,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(props.interactionsInfos.brandImageID);
+        props.deleteFile(interactionInfos.brandImageID);
     }
 
 
@@ -267,7 +267,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                                 <>
                                     {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                                    <Button sizeButton='xs' typeButton='secondary' onClick={handleDelete} style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue'>Delete</Button>
+                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
                                     <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
                                 </>
                                 :

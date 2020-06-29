@@ -1,9 +1,9 @@
 
-import { ActionTypes, billingInitialState, BillingPageInfos, BillingAction } from './';
-import { CreditCardPayment, PaypalPayment } from './types';
+import { ActionTypes, BillingPageInfos, PlanAction } from '.';
+import { CreditCardPayment, PaypalPayment, planInitialState } from './types';
 
 
-export const reducer = (state = billingInitialState, action: BillingAction): BillingPageInfos => {
+export const reducer = (state = planInitialState, action: PlanAction): BillingPageInfos => {
     switch (action.type) {
         case ActionTypes.GET_BILLING_PAGE_INFOS:
             return {...state, 
@@ -39,4 +39,4 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
 
 
 
-export {reducer as BillingReducer}; 
+export {reducer as PlanReducer}; 

@@ -109,7 +109,7 @@ export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<
 
 
 
-export type BillingAction = 
+export type PlanAction = 
 GetBillingPageInfos 
 | SaveBillingPagePaymentMethod 
 | AddBillingPagePlaybackProtection

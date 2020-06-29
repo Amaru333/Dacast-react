@@ -45,8 +45,42 @@ const saveVodAd = async (data: Ad[], adsId: string, vodId: string) => {
     )
 }
 
+const getUploadUrl = async (data: string, vodId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+        {
+            userID: userId,
+            vodId: vodId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+}
+
+const uploadFile = (data: File, uploadUrl: string) => {
+    return axios.put(uploadUrl, data)
+}
+
+const deleteFile = async (targetId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/targets/' + targetId,
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 export const vodEngagementServices = {
     getVodEngagementSettings,
     saveVodEngagementSettings,
-    saveVodAd
+    saveVodAd,
+    getUploadUrl,
+    uploadFile,
+    deleteFile
 }

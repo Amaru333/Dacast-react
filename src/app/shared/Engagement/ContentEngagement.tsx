@@ -19,6 +19,8 @@ import { getPrivilege } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
+import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
+import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyle';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -28,7 +30,10 @@ export interface ContentEngagementComponentProps {
     createContentAd: Function;
     deleteContentAd: Function;
     contentType?: string;
-    contentId: string
+    contentId: string;
+    getUploadUrl: Function;
+    uploadContentImage: Function;
+    deleteContentImage: Function;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -49,6 +54,60 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
     const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.contentEngagementSettings.engagementSettings.brandImageURL);
+    let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = React.useState<string>('')
+    const [logoFile, setLogoFile] = React.useState<File>(null);
+
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setUploadedFileUrl(reader.result.toString())
+                    setLogoFile(file[0])
+                    setErrorMessage('')
+                    setUploadButtonLoading(true)
+                    props.getUploadUrl('player-watermark');
+                }
+                else {
+                    setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+        else{
+            setErrorMessage('File provided was not an image, please retry')
+        }
+    }
+    
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setUploadedFileUrl(null);
+        props.deleteContentImage();
+    }
+
+
+    React.useEffect(() => {
+        if(props.contentEngagementSettings.engagementSettings.uploadurl) {
+            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );
+        }
+    }, [props.contentEngagementSettings.engagementSettings.uploadurl])
+
 
 
     const newAd = () => {
@@ -199,6 +258,49 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     />
                 </DisabledSection>
             </Card> */}
+
+            <Card className="my2">
+                <TextStyle> 
+                    <Text size={20} weight='med'>Brand Image</Text>
+                </TextStyle>
+                <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
+
+
+                <div className="lg-col lg-col-12 mb1 flex">
+                    <div className="lg-col lg-col-6 mr2">
+                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                            {uploadedFileUrl ?
+                                <>
+                                    {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                    <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
+                                    <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                </>
+                                :
+                        <>
+                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                        <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                        <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                        <ButtonStyle className='my1'>
+                            <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
+                            <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                Browse Files
+                            </Button>
+                        </ButtonStyle>
+                        </>
+                            } 
+                        </DragAndDrop>
+                        <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                    </div>
+                    <div className="col col-6">
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}></DropdownSingle>
+                        <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) })} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) })} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value })} />
+                    </div>
+                </div>
+
+            </Card>
 
             <Card className='my2'>
                 <Header className="mb2">

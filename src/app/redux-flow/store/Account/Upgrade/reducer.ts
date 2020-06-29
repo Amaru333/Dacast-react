@@ -1,7 +1,7 @@
-import { plansInitialState, Plans, ActionTypes } from "./types";
-import { PlansAction } from "./actions"
+import { upgradeInitialState, Plans, ActionTypes } from "./types";
+import { UpgradeAction } from "./actions"
 
-export const reducer = (state = plansInitialState, action: PlansAction) => {
+export const reducer = (state = upgradeInitialState, action: UpgradeAction) => {
     switch (action.type) {
         case ActionTypes.GET_PLAN_DETAILS:
             return {...action.payload.data}
@@ -18,4 +18,4 @@ export const reducer = (state = plansInitialState, action: PlansAction) => {
 
 
 
-export {reducer as PlansReducer}; 
+export {reducer as UpgradeReducer}; 
