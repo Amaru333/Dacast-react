@@ -303,7 +303,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                     <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                                 </div>
-                                <ImageArea className="mt2">
+                                <ImageArea className="mt2 h-fit">
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 
@@ -317,7 +317,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
+                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>

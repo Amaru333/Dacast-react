@@ -90,11 +90,11 @@ export const PlaylistFiltering = (props: {setSelectedFilter: Function}) => {
                     </div>
                     <div className="mb3" id="playlistFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
                     </div>
                     <div className="mb3" id="playlistFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
                     </div>
                 </div>
                 <div className="flex" id="playlistFilterbuttons">

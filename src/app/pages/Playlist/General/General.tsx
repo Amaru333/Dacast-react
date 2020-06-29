@@ -192,7 +192,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <Text className="mr1" size={16} weight="med">Poster</Text>  <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                 <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
-                            <ImageArea className="mt2">
+                            <ImageArea className="mt2 h-fit">
                                 <ButtonSection>
                                     {
                                         posterEnable || uploadedImageFiles.poster && 
@@ -205,7 +205,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>

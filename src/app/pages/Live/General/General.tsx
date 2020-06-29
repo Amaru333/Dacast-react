@@ -296,7 +296,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                 <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
-                            <ImageArea className="mt2">
+                            <ImageArea className="mt2 h-fit">
                                 <ButtonSection>
                                     { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
@@ -306,7 +306,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
