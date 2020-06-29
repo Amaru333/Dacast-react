@@ -193,7 +193,6 @@ const saveGroupPromo = async (data: GroupPromo) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     let parsedData = null
-    debugger
     if(data.rateType !== 'Pay Per View') {
         parsedData = {
             ...data,

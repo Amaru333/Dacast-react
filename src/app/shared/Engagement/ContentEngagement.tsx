@@ -37,7 +37,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         id: "-1",
         "ad-type": "",
         timestamp: 0,
-        url: "test"
+        url: ""
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);

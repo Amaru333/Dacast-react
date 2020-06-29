@@ -101,7 +101,7 @@ export const PlaylistFiltering = (props: {setSelectedFilter: Function}) => {
                     <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { props.setSelectedFilter(null) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault); props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>
