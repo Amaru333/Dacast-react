@@ -61,7 +61,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
 
 
     const chapterBodyElement = () => {
-        return props.chapterPageDetails.chapterMarkers.map((value, key) => {
+        return props.chapterPageDetails.chapterMarkers.sort((a, b) => a.start - b.start ).map((value, key) => {
             return {data: [
                 <Text key={key.toString() +value.text} size={14}  weight="reg" color="gray-1">{value.text}</Text>,
                 <Text key={key.toString() +value.start} size={14}  weight="reg" color="gray-1">{value.start}</Text>,

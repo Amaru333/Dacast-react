@@ -265,7 +265,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
             {

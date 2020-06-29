@@ -64,6 +64,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
 
+
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.interactionsInfos.brandImageURL);
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
@@ -108,7 +109,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile();
+        props.deleteFile(props.interactionsInfos.brandImageID);
     }
 
 
@@ -266,7 +267,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                                 <>
                                     {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue'>Delete</Button>
+                                    <Button sizeButton='xs' typeButton='secondary' onClick={handleDelete} style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue'>Delete</Button>
                                     <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
                                 </>
                                 :
@@ -347,7 +348,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened ?
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
