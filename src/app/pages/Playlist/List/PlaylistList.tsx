@@ -134,9 +134,9 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         } />
                         {
                             value.thumbnail ? 
-                                <img className="pl2" key={"thumbnail" + value.objectID} width={74} height={42} src={value.thumbnail} />
+                                <img className="pl2" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                 :
-                                <div className='ml2 relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                                <div className='ml2 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
                                     <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                 </div>
                         }                    

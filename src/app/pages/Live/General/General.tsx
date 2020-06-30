@@ -23,6 +23,7 @@ import { getPrivilege } from '../../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { LiveGeneralProps } from '../../../containers/Live/General';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 var moment = require('moment-timezone');
 
@@ -139,7 +140,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, "Embed Code Copied")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('share live stream'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, "Embed Code Copied") } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -149,7 +150,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}`, "Share Link Copied")}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share live stream'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}`, "Share Link Copied") } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -295,7 +296,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                 <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
-                            <ImageArea className="mt2">
+                            <ImageArea className="mt2 h-fit">
                                 <ButtonSection>
                                     { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
@@ -305,7 +306,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -328,7 +329,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             </LinkBoxLabel>
                                             <LinkBox>
                                                 <LinkText size={14} weight="reg">{item.link}</LinkText>
-                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                <IconStyle className='pointer' id={item.id} onClick={() => { item.id === "embed" && logAmplitudeEvent('embed live stream'); updateClipboard(item.link, `${item.label} Link Copied`) } }>file_copy_outlined</IconStyle>
                                                 <Tooltip target={item.id}>Copy to clipboard</Tooltip>
                                             </LinkBox>
                                         </LinkBoxContainer>
@@ -390,7 +391,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg">{props.liveDetails.primaryPublishURL}</LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard") } }>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>

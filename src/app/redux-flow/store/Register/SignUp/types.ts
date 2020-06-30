@@ -11,6 +11,7 @@ export interface UserInfo {
     email: string;
     phone: string;
     password: string;
+    timezone: string;
 }
 
 export const defaultStateSignup: UserInfo = {
@@ -22,4 +23,5 @@ export const defaultStateSignup: UserInfo = {
     email: "",
     phone: null,
     password: "",
+    timezone: null
 }

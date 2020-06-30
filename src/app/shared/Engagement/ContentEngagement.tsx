@@ -42,7 +42,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         id: "-1",
         "ad-type": "",
         timestamp: 0,
-        url: "test"
+        url: ""
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -109,7 +109,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
 
 
-    
+
     const newAd = () => {
         setSelectedAd(emptyAd);
         setNewAdModalOpened(true)
@@ -120,7 +120,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         setNewAdModalOpened(true);
     }
 
-    const {userId} = addTokenToHeader()
+    const { userId } = addTokenToHeader()
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
 
@@ -129,27 +129,32 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        if(props.contentEngagementSettings.engagementSettings.ads.length > 0){
-        return {
-            data: [
-                { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
-                { cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text> },
-                { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
-                {
-                    cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
-                        <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
-                        <Button className='sm-show' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
-                    </div>
-                }
-            ]
+        if (props.contentEngagementSettings.engagementSettings.ads.length > 0) {
+            return {
+                data: [
+                    { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
+                    { cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text> },
+                    { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
+                    {
+                        cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
+                            <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
+                            <Button className='sm-show' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
+                        </div>
+                    }
+                ]
+            }
+        } else {
+            return {
+                data: [
+                    {
+                        cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
+                            <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
+                        </div>
+                    }
+                ]
+            }
         }
-    } else {
-        return {data: [
-            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
-            </div>}
-        ]}
-    }}
+    }
 
     const advertisingTableBody = () => {
         return props.contentEngagementSettings.engagementSettings.ads.map((item, i) => {
@@ -211,8 +216,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
                         </div>
                         <div className="clearfix mb2">
-                            <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                            <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                            <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
+                            <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                         </div>
                         <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.contentEngagementSettings.engagementSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
@@ -361,7 +366,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true);  props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: engagementSettings}, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
+                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
                         >
                             Save
                         </Button>
@@ -369,7 +374,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
             {

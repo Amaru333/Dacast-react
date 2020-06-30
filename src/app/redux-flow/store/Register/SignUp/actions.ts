@@ -3,6 +3,8 @@ import { showToastNotification } from '../../Toasts/actions';
 import { UserInfo, ActionTypes } from './types';
 import {signupService} from './services'
 import { ApplicationState } from '../..';
+import { logAmplitudeEvent } from '../../../../utils/amplitudeService';
+import { AxiosError } from 'axios';
 
 
 export interface Signup {
@@ -15,8 +17,10 @@ export const signupAction = (data: UserInfo): ThunkDispatch<Promise<void>, {}, S
         await signupService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SIGNUP, payload: {...data}});
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                logAmplitudeEvent('create account');
+            }).catch((error: AxiosError) => {
+                console.log(error.response)
+                dispatch(showToastNotification((error.response.data.error.indexOf('An account with the given email already exists') > -1 ? "That email is already in use" : "Oops! Something went wrong.."), 'fixed', "error"));
             })
     };
 

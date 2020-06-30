@@ -64,6 +64,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
 
+
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.interactionsInfos.brandImageURL);
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
@@ -261,7 +262,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
                 <div className="lg-col lg-col-12 mb1 flex">
                     <div className="lg-col lg-col-6 mr2">
-                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={handleDrop}>
                             {uploadedFileUrl ?
                                 <>
                                     {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
@@ -303,7 +304,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
                         label='Brand Text'
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }) }}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
                         value={interactionInfos.brandText ? interactionInfos.brandText : ""}
                     />
                     <Input
@@ -348,7 +349,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         : null
                 }
             </Modal>
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened ?
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />

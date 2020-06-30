@@ -125,7 +125,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     <BorderStyle className='mt3 mb2' />
                     <Tab className='col col-12 my1' orientation='horizontal' history={null} list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
-                        <div>
+                        <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
+                        <div className="mt2">
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Button Colour</Text>
                             </ColorPickerLabel>
@@ -160,7 +161,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         
                     </div>
                     <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>   
-                        <div>        
+                        <Text className="mt2" size={14} weight='reg'>The Login Screen is shown before the user is allowed to purchase the content.</Text>
+                        <div className="mt2">        
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Button Colour</Text>
                             </ColorPickerLabel>

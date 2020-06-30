@@ -58,6 +58,8 @@ height: 176px;
 border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
 flex-direction: column;  
+padding-bottom: 41px;
+box-sizing: 'border-box';
 `
 
 export const ImageSection = styled.div`
@@ -72,8 +74,8 @@ width: 100%;
 `
 
 export const SelectedImage = styled.img`
-max-height: 107px;
-max-width: 172px;
+height: 90px;
+width: 160px;
 `
 
 export const ButtonContainer = styled.div`
