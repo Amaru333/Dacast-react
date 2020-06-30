@@ -6,14 +6,38 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 
-export const PurchaseDataCartStep = () => {
+export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function}) => {
+
+    const [dataPrice, setDataPrice] = React.useState<number>(null)
+    const [dataAmount, setDataAmount] = React.useState<number>(null)
+
+    React.useEffect(() => {
+        props.setStepValidated(dataAmount && dataAmount < 100000)
+    }, [props.stepperData])
+
+    React.useEffect(() => {
+        props.updateStepperData({...props.stepperData, totalPrice: (dataPrice * dataAmount)})
+    }, [dataAmount])
+
+    const handleDataPrice = (data: number) => {
+        setDataAmount(data)
+        if(data <= 4999 ){
+            setDataPrice(0.25)
+        } else if(data >= 5000 && data <= 9999){
+            setDataPrice(0.12)
+        } else if(data >= 10000) {
+            setDataPrice(0.09)
+        } else {
+            setDataPrice(null)
+        }
+    }
 
     const cartTableBodyElement = () => {
         return [
             {
                 data: [
                     <Text size={14}>Price per GB</Text>,
-                    <Text className="right pr2" size={14}>$0.12</Text>
+                    <Text className="right pr2" size={14}>{(dataAmount && dataAmount < 100000) ? `$ ${dataPrice}` : null }</Text>
                 ]
             }
         ]
@@ -22,13 +46,13 @@ export const PurchaseDataCartStep = () => {
     const cartTableFooterElement = () => {
         return [
             <Text size={14} weight="med">Total Pay Now</Text>,
-            <Text className="right pr2" weight="med" size={14}>$720</Text>
+            <Text className="right pr2" weight="med" size={14}>{(dataAmount && dataAmount < 100000) ? `$ ${(dataPrice * dataAmount).toFixed(2)}` : null }</Text>
         ]
     }
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input className="col col-6 mb1" label="Amount in Gigabytes (GB)" />
+            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value));props.updateStepperData({...props.stepperData, dataAmount: event.currentTarget.value})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>
@@ -41,12 +65,12 @@ export const PurchaseDataCartStep = () => {
     )
 }
 
-export const PurchaseDataPaymentStep = () => {
+export const PurchaseDataPaymentStep = (props: {stepperData: any}) => {
 
     const paymentTableHeaderElement = () => {
         return {data: [
             {cell: <Text  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
-            {cell: <Text className="right mr2"  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">$750</Text>}
+            {cell: <Text className="right mr2"  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">${(props.stepperData.totalPrice).toFixed(2)}</Text>}
         ]}
     }
 

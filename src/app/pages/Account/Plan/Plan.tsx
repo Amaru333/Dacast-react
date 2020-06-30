@@ -43,6 +43,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
+    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     React.useEffect(() => {
@@ -356,6 +357,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 lastStepButton="Purchase"
                 finalFunction={() => {}}
+                stepperData={purchaseDataStepperData}
+                updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
+                functionCancel={setPurchaseDataOpen}
             />
             </Elements>
             </RecurlyProvider>
