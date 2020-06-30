@@ -31,7 +31,13 @@ const reducer: Reducer<PlaylistDetailsState> = (state = initialPlaylistGeneralSt
                 }
             }
         case ActionTypes.UPLOAD_IMAGE:
-            return state
+            return {
+                ...state, 
+                [action.payload.playlistId] : {
+                    ...state[action.payload.playlistId],
+                    uploadurl: null
+                }
+            }        
         case ActionTypes.DELETE_IMAGE:
             return state
         default:

@@ -80,7 +80,13 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.UPLOAD_IMAGE:
-            return state
+            return {
+                ...state, 
+                [action.payload.vodId] : {
+                    ...state[action.payload.vodId],
+                    uploadurl: null,
+                }
+            }
         case ActionTypes.UPLOAD_IMAGE_FROM_VIDEO:
                 return state
         case ActionTypes.DELETE_IMAGE:

@@ -41,7 +41,7 @@ export interface GetUploadUrl {
 
 export interface UploadImage {
     type: ActionTypes.UPLOAD_IMAGE;
-    payload: {file: File};
+    payload: {vodId: string};
 }
 
 export interface UploadImageFromVideo {
@@ -135,11 +135,11 @@ export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleIn
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string, vodId: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {vodId: vodId} })
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {

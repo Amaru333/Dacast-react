@@ -66,7 +66,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl)
+            props.submit(logoFile, props.uploadUrl, props.contentId)
             props.toggle()
         }
     }, [props.uploadUrl, saveButtonLoading])
