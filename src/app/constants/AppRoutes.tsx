@@ -7,7 +7,7 @@ import EncodingRecipes from '../containers/Settings/EncodingRecipes';
 import Security from '../containers/Settings/Security';
 import EmbedSettings from '../containers/Settings/EmbedSettings';
 import VodList from '../containers/Videos/VideosList';
-import Billing from '../containers/Account/Plan';
+import Billing from '../containers/Account/Billing';
 import Folders from '../containers/Folders/Folders';
 import Invoices from '../containers/Account/Invoices';
 import Interactions from '../containers/Settings/Interactions';
@@ -446,6 +446,11 @@ export const AppRoutes: Routes[] = [
                 path: '/account/company',
                 name: 'Company',
                 component: Company
+            },
+            {
+                path: '/account/billing',
+                name: 'Billing',
+                component: Billing
             },
             // {
             //     path: '/account/pending-orders',
