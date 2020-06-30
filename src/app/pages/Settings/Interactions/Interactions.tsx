@@ -262,7 +262,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
                 <div className="lg-col lg-col-12 mb1 flex">
                     <div className="lg-col lg-col-6 mr2">
-                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={handleDrop}>
                             {uploadedFileUrl ?
                                 <>
                                     {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
@@ -304,7 +304,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
                         label='Brand Text'
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }) }}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
                         value={interactionInfos.brandText ? interactionInfos.brandText : ""}
                     />
                     <Input

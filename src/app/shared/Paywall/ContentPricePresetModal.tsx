@@ -10,6 +10,7 @@ import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
+import { CURRENCY } from '../../constants/Currencies';
 
 var moment = require('moment-timezone');
 
