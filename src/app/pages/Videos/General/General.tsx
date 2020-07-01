@@ -303,7 +303,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                     <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                                 </div>
-                                <ImageArea className="mt2 h-fit">
+                                <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 

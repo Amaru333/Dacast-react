@@ -300,7 +300,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 <IconStyle id="posterTooltip">info_outlined</IconStyle>
                                 <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
                             </div>
-                            <ImageArea className="mt2 h-fit">
+                            <ImageArea className="mt2">
                                 <ButtonSection>
                                     { posterEnable || uploadedImageFiles.poster && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID) }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>

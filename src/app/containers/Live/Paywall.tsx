@@ -116,6 +116,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             <LiveTabs liveId={liveId} />
             <ContentPaywallPage
                 contentId={liveId}
+                contentType='live'
                 contentPaywallInfos={props.livePaywallInfos[liveId]}
                 saveContentPaywallInfos={props.saveLivePaywallInfos}
                 getContentPrices={props.getLivePaywallPrices}
