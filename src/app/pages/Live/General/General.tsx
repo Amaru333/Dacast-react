@@ -15,7 +15,7 @@ import { ModalFooter, Modal, ModalContent } from '../../../../components/Modal/M
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Prompt, useHistory } from 'react-router';
+import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../../shared/Security/SecurityStyle';
@@ -24,19 +24,24 @@ import { addTokenToHeader } from '../../../utils/token';
 import { LiveGeneralProps } from '../../../containers/Live/General';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import moment from 'moment';
 
-var moment = require('moment-timezone');
+var momentTZ = require('moment-timezone')
 
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
-    let history = useHistory()
-
+    const initTimestampValues = (ts: number): {date: string; time: string} => {
+        if(ts > 0 ) {
+            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+        } 
+        return {date: moment().toString(), time: '00:00'}
+    }
     const {userId} = addTokenToHeader()
 
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(false)
+    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.liveDetails.countdown.startTime !== 0)
     const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
@@ -45,15 +50,12 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(0), timezone: ''})
+
 
     React.useEffect(() => {
         setNewLiveDetails(props.liveDetails)
     }, [props.liveDetails.title, props.liveDetails.folders, props.liveDetails.description, props.liveDetails.recording, props.liveDetails.countdown, props.liveDetails.rewind]);
-
-    React.useEffect(() => {
-        setLiveStreamCountdownToggle(newLiveDetails.countdown.enabled);
-    }, [newLiveDetails])
-
 
 
     const handleImageModalFunction = () => {
@@ -172,15 +174,15 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         <div className="mb2 clearfix">
                             <Toggle
                                 label="Live Stream Start Countdown"
-                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle); setNewLiveDetails({ ...newLiveDetails, countdown: { ...newLiveDetails.countdown, enabled: !newLiveDetails.countdown.enabled } }) }}
-                                defaultChecked={newLiveDetails.countdown.enabled}
+                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle) }}
+                                defaultChecked={newLiveDetails.countdown.startTime !== 0}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
 
                             {
-                                liveStreamCountdownToggle ?
+                                liveStreamCountdownToggle &&
                                     <div className="col col-12">
                                         <div
                                             className='col col-12 sm-col-4 pr1 mt1'
@@ -188,12 +190,15 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             <DateSinglePickerWrapper
                                                 className='mt25'
                                                 id="startDate"
+                                                date={moment(startDateTimeValue.date)}
+                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
                                             />
                                         </div>
                                         <Input
                                             type='time'
                                             className='col col-12 sm-col-4 pl1 pr1'
-                                            defaultValue={props.liveDetails.countdown.startTime.toString()}
+                                            defaultValue={startDateTimeValue.time}
+                                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
                                             disabled={false}
                                             id='promptTime'
                                             label='Prompt Time'
@@ -207,9 +212,9 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             dropdownTitle='Timezone'
                                             defaultValue={props.liveDetails.countdown.timezone}
                                             id='dropdownTimezone'
-                                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
+                                            list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}
                                         />
-                                    </div> : null
+                                    </div>
                             }
                         </div>
                         {
@@ -220,7 +225,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                     <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
                                 </ToggleTextInfo>
                                 {
-                                    newLiveDetails.rewind ?
+                                    newLiveDetails.rewind &&
                                         <div className="col col-12 mb2">
                                             <Bubble type='warning' className='my2'>
                                                 <BubbleContent>
@@ -230,8 +235,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                                 </BubbleContent>
                                             </Bubble>
                                             <Button sizeButton="xs" typeButton="secondary" onClick={() => { console.log("free the niples") }}>Purge Live Stream</Button>
-                                        </div> :
-                                        null
+                                        </div>
                                 }
                             </div>
                         }
@@ -460,8 +464,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
             </Card>
             <ButtonContainer>
-                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails(newLiveDetails, () => setLoadingButton(false)) }  }>Save</Button>
-                <Button typeButton="secondary" onClick={() => setNewLiveDetails(props.liveDetails)}>Discard</Button>
+                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0}}, () => setLoadingButton(false)) }  }>Save</Button>
+                <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
             </ButtonContainer>
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-live-' + props.liveDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
