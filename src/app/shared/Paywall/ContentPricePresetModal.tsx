@@ -164,7 +164,7 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
                                 dropdownDefaultSelect={newPricePreset.settings.duration.unit} 
                                 callback={(value: string) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: value }}})} 
                                 dropdownTitle=''
-                                list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }}
+                                list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }}
                             />
                         </>
                 }

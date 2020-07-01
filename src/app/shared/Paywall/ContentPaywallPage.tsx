@@ -180,18 +180,18 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
                 <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled})} className='mt2' label='Paywall Enabled' />
-                <Text size={14}>Quickly enable or disable paywall for this content</Text>
+                <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown' 
                     className='col col-12 sm-col-3 my2' 
                     dropdownTitle='Paywall Theme' 
-                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme}
+                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
-                    callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: value})}
+                    callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id})}
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
-                <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
+                <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
                 <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value})}} />
                         
                 <BorderStyle className='my2' />
