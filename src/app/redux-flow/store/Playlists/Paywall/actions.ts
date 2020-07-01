@@ -112,7 +112,7 @@ export const savePlaylistPricePresetAction = (data: Preset, playlistId: string):
 
 export const deletePlaylistPricePresetAction = (data: Preset, playlistId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylistPricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePlaylistPricePreset>) => {
-        await PlaylistPaywallServices.deletePlaylistPricePreset(data)
+        await PlaylistPaywallServices.deletePlaylistPricePreset(data, playlistId)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_PLAYLIST_PRICE_PRESET, payload: {data: data, contentId: playlistId}})
             }).catch(() => {

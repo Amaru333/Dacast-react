@@ -116,7 +116,7 @@ export const saveLivePricePresetAction = (data: Preset, liveId: string): ThunkDi
 
 export const deleteLivePricePresetAction = (data: Preset, liveId: string): ThunkDispatch<Promise<void>, {}, DeleteLivePricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteLivePricePreset>) => {
-        await LivePaywallServices.deleteLivePricePreset(data)
+        await LivePaywallServices.deleteLivePricePreset(data, liveId)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_LIVE_PRICE_PRESET, payload: {data: data, contentId: liveId}})
                 dispatch(showToastNotification("Price have been deleted", 'flexible', "success"));

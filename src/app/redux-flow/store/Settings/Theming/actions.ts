@@ -49,7 +49,7 @@ export const saveThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void
 
 export const createThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void>, {}, CreateTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateTheme> ) => {
-        await themingServices.createTheme(theme)
+        await themingServices.createTheme({...theme, createdDate: Math.floor(Date.now() / 1000)})
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_SETTING_THEME, payload: {...theme, id: response.data.data.id, createdDate: Math.floor(Date.now() / 1000)}} );
                 dispatch(showToastNotification(`${theme.themeName} has been created`, 'fixed', "success"))

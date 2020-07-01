@@ -150,10 +150,10 @@ const saveVodPricePreset = async (data: Preset, vodId: string) => {
     )
 }
 
-const deleteVodPricePreset = async (data: Preset) => {
+const deleteVodPricePreset = async (data: Preset, vodId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    let {token, userId} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-vod-${vodId}`, 
         {
             headers: {
                 Authorization: token

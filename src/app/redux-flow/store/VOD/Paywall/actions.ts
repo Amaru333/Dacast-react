@@ -115,7 +115,7 @@ export const saveVodPricePresetAction = (data: Preset, vodId: string): ThunkDisp
 
 export const deleteVodPricePresetAction = (data: Preset, vodId: string): ThunkDispatch<Promise<void>, {}, DeleteVodPricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodPricePreset>) => {
-        await VodPaywallServices.deleteVodPricePreset(data)
+        await VodPaywallServices.deleteVodPricePreset(data, vodId)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_VOD_PRICE_PRESET, payload: {data: data, contentId: vodId}})
                 dispatch(showToastNotification(`Price has been deleted`, 'fixed', "success"));
