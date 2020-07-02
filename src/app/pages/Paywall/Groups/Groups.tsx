@@ -138,7 +138,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPromosTableBody = () => {
         if(props.groupsInfos.promos) {
-            return props.groupsInfos.promos.promos.map((promo, key) => {
+            return props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0).map((promo, key) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,

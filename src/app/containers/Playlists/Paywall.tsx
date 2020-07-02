@@ -114,6 +114,7 @@ const PlaylistPaywall = (props: PlaylistPaywallComponentProps) => {
             <PlaylistsTabs playlistId={playlistId} />
             <ContentPaywallPage
                 contentId={playlistId}
+                contentType='playlist'
                 contentPaywallInfos={props.playlistPaywallInfos[playlistId]}
                 getContentPrices={props.getPlaylistPaywallPrices}
                 saveContentPaywallInfos={props.savePlaylistPaywallInfos}

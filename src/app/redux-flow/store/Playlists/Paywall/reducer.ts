@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes } from "./types";
 import { ContentPaywallState } from '../../Paywall/Presets';
+import { addTokenToHeader } from '../../../../utils/token';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
@@ -91,11 +92,12 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.GET_PLAYLIST_PAYWALL_PROMOS :
+            let {userId} = addTokenToHeader()
             return {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    promos: action.payload.data.promos.map((promo) => {
+                    promos: action.payload.data.promosfilter(f => f.assignedContentIds.indexOf(`${userId}-playlist-${action.payload.contentId}`) !== -1).map((promo) => {
                         return {
                             ...promo,
                             rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
