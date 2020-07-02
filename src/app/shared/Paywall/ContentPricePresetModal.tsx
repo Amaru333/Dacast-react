@@ -133,7 +133,7 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
                     dropdownTitle='Preset Type'
                     dropdownDefaultSelect={newPricePreset.type}
                     list={{ 'Pay Per View': false, 'Subscription': false }}
-                    callback={(value: string) => setNewPricePreset({ ...newPricePreset, type: value, settings:{...newPricePreset.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {recurrence: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    callback={(value: string) => setNewPricePreset({ ...newPricePreset, type: value, settings:{...newPricePreset.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -144,10 +144,10 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
                     newPricePreset.type === 'Subscription' ?
                         <DropdownSingle
                             id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={newPricePreset.settings.recurrence.recurrence} 
+                            dropdownDefaultSelect={newPricePreset.settings.recurrence.unit} 
                             dropdownTitle='Recurrence'
                             list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }}
-                            callback={(value: string) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {recurrence: value}}})}
+                            callback={(value: string) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: value}}})}
 
                         />
                         :

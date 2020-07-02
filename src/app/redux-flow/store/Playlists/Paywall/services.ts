@@ -52,8 +52,8 @@ const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
             prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    recurrence: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -104,8 +104,8 @@ const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
             price: {value: data.price, currency: data.currency, description: data.description},
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    recurrence: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }

@@ -18,7 +18,7 @@ export interface Price {
 
 export interface PriceSettings {
     duration?: {value: number; unit: string};
-    recurrence?: {recurrence: string; value?: number};
+    recurrence?: {unit: string; value?: number};
     startMethod: string;
     timezone?: string;
     startDate?: number;

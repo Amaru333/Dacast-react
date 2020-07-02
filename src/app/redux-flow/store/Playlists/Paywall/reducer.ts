@@ -42,7 +42,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 : null,
                                 startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: price.settings.recurrence ? {
-                                    recurrence: price.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : price.settings.recurrence.value > 4 ? 'Biannual'
                                     : price.settings.recurrence.value < 1 ? 'Quaterly'
                                     : 'Monthly'
@@ -97,7 +97,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    promos: action.payload.data.promosfilter(f => f.assignedContentIds.indexOf(`${userId}-playlist-${action.payload.contentId}`) !== -1).map((promo) => {
+                    promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-playlist-${action.payload.contentId}`) !== -1).map((promo) => {
                         return {
                             ...promo,
                             rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'

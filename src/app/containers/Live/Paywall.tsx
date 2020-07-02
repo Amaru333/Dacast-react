@@ -83,7 +83,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 ],
                 settings: {
                     duration: {value: NaN, unit: 'Hours'},
-                    recurrence: {recurrence: 'Weekly'},
+                    recurrence: {unit: 'Weekly'},
                     startMethod: 'Upon Purchase',
                     timezone: null,
                     startDate: null,

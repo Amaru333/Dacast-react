@@ -102,7 +102,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
                     dropdownDefaultSelect={presetsList.type}
-                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {recurrence: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
                     list={{'Pay Per View': false, 'Subscription': false}} 
                 />
             </div>
@@ -113,9 +113,9 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                 {
                     presetsList.type === 'Subscription' ?
                         <DropdownSingle id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={presetsList.settings.recurrence.recurrence} 
+                            dropdownDefaultSelect={presetsList.settings.recurrence.unit} 
                             dropdownTitle='Recurrence' 
-                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {recurrence: value}}})}
+                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: value}}})}
                             list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} 
                         />
                         :

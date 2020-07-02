@@ -41,7 +41,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         },
         settings: {
             duration: {value: NaN, unit: 'Hours'},
-            recurrence: {recurrence: 'Weekly'},
+            recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
             timezone: 'Etc/UTC',
             startDate: 0,
@@ -56,7 +56,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         contents: [],
         groupSettings: {
             duration: {value: NaN, unit: 'Hours'},
-            recurrence: {recurrence: 'Weekly'},
+            recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
             timezone: 'Etc/UTC',
             startDate: 0,
@@ -101,7 +101,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
                     <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
                     <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Currencies'}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.recurrence : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
                     <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>

@@ -25,7 +25,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                                 : null,
                                 startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: preset.preset.settings.recurrence ? {
-                                    recurrence: preset.preset.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    recurrence: preset.preset.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
                                     : preset.preset.settings.recurrence.value < 1 ? 'Quaterly'
                                     : 'Monthly'
