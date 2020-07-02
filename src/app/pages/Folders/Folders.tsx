@@ -340,8 +340,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             return props.folderData.requestedContent.results.map((row) => {
                 return {
                     data: [
-                        <div key={'foldersTableInputCheckbox' + row.objectID} className='flex items-center'>
-                            <InputCheckbox id={row.objectID + row.type + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.objectID) ? true : false} onChange={(event) => handleCheckboxChange({id: row.objectID, type: row.type}, event.currentTarget.checked)} />
+                        <div key={'foldersTableInputCheckbox' + row.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'>
+                            <InputCheckbox className="pr1" id={row.objectID + row.type + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.objectID) ? true : false} onChange={(event) => handleCheckboxChange({id: row.objectID, type: row.type}, event.currentTarget.checked)} />
                             <RowIconContainer>
                                 {handleRowIconType(row)}
                             </RowIconContainer>

@@ -51,7 +51,7 @@ export interface UploadImageFromVideo {
 
 export interface DeleteImage {
     type: ActionTypes.DELETE_IMAGE;
-    payload: {id: string};
+    payload: {id: string, vodId: string};
 }
 
 export interface PostVod {
@@ -167,7 +167,7 @@ export const deleteFileAction = (vodId: string, targetId: string, fileName: stri
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await VodGeneralServices.deleteFile(vodId, targetId)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {id: targetId} })
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {vodId: vodId, id: targetId} })
                 dispatch(showToastNotification(`${fileName} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {

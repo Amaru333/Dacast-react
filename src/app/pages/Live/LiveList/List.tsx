@@ -121,8 +121,8 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         if (props.liveList) {
             return props.liveList.results.map((value) => {
                 return {data: [
-                    <div key={"checkbox" + value.objectID} className='flex items-center'> 
-                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                    <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
+                        <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                             if (event.currentTarget.checked && selectedLive.length < props.liveList.results.length) {
                                 setSelectedLive([...selectedLive, value.objectID])
                             } else {
@@ -133,9 +133,9 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                         } />
                         {
                             value.thumbnail ? 
-                                <img className="pl2" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                 :
-                                <div className='ml2 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
+                                <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
                                     <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                 </div>
                         }

@@ -59,7 +59,7 @@ border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
 flex-direction: column;  
 padding-bottom: 41px;
-box-sizing: 'border-box';
+box-sizing: border-box;
 `
 
 export const ImageSection = styled.div`

@@ -64,7 +64,7 @@ export const appReducer =
 export const createRootReducer = (state: any, action: any) => {
     console.log(action);
     if (action.type === 'USER_LOGOUT') {
-        state = undefined
+        state = globalDefaultState;
     }
     return appReducer(state, action)
 }

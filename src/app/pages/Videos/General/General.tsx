@@ -151,10 +151,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         }
     }
 
+    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
+
     const vodAdvancedLinksOptions = [
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
-        { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
+        { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.vodDetails.poster.url : '' },
         // { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
@@ -163,7 +165,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
-    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
     
     return (
         VodDetails &&
@@ -218,7 +219,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                             <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
                         </header>
-                        
                         <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>

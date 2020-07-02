@@ -69,6 +69,7 @@ export const TableBodyRow = styled.tr<{}>`
 export const TableBodyCell = styled.td<{}>`
     padding-left: 16px;
     min-width: 100px;
+    box-sizing: border-box;
 `;
 
 export const TableFooterContainer = styled.tfoot<{}>`
