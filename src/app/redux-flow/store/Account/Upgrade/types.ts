@@ -51,7 +51,8 @@ export interface Plans {
     developerPlan: Plan
     eventPlan: Plan
     scalePlanAnnual: Plan;
-    scalePlanMonthly: Plan;  
+    scalePlanMonthly: Plan;
+    activePlan: string  
 }
 
 export interface PaidPrivilege {
@@ -71,5 +72,6 @@ export const upgradeInitialState: Plans = {
     developerPlan: null,
     eventPlan: null,
     scalePlanAnnual: null,
-    scalePlanMonthly: null
+    scalePlanMonthly: null,
+    activePlan: null
 }

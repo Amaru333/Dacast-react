@@ -4,15 +4,27 @@ import { BillingPageInfos, getBillingPageInfosAction, saveBillingPagePaymentMeth
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface BillingContainerProps {
     billingInfos: BillingPageInfos;
+    getBillingPageInfos: Function;
     saveBillingPagePaymentMethod: Function;
 }
 
 export const Billing = (props: BillingContainerProps) => {
+
+    React.useEffect(() => {
+        if(!props.billingInfos) {
+            props.getBillingPageInfos();
+        }
+    })
+
     return (
+        props.billingInfos ? 
         <BillingPage {...props} />
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

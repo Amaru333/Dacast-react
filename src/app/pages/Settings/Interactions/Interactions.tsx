@@ -124,6 +124,16 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         setInteractionsInfos(props.interactionsInfos)
     }, [props.interactionsInfos])
 
+    const handleAdPosition = (ad: Ad) => {
+        if(ad["ad-type"] === "pre-roll"){
+            return "Start"
+        } else if(ad["ad-type"] === "post-roll"){
+            return "End"
+        } else {
+            return ad.timestamp
+        }
+    }
+
     const advertisingTableHeader = () => {
         if (props.interactionsInfos.ads.length > 0) {
             return {
@@ -157,7 +167,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
-                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{item.timestamp}</Text>,
+                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>

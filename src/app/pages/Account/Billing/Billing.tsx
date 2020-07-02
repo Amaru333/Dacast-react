@@ -11,11 +11,13 @@ import { PaymentMethodModal } from '../Plan/PaymentMethodModal';
 import { BillingContainerProps } from '../../../containers/Account/Billing';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
+import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
 
 export const BillingPage = (props: BillingContainerProps) => {
 
     const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paymentMethodModalOpened, setPaymentMethodModalOpened] = React.useState<boolean>(false);
+    const [billingInfo, setBillingInfo] = React.useState<BillingPageInfos>(props.billingInfos)
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -34,7 +36,7 @@ export const BillingPage = (props: BillingContainerProps) => {
     }
 
     const onSubmitFunctions = () => {
-        props.saveBillingPagePaymentMethod();
+        props.saveBillingPagePaymentMethod(billingInfo.creditCard);
         setPaymentMethodModalOpened(false)
     }
 
@@ -118,7 +120,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         modalTitle={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={setBillingInfo} actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>

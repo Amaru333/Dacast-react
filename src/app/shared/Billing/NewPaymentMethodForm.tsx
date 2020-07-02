@@ -11,8 +11,9 @@ import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, u
 import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 
-export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function }) => {
+export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -44,6 +45,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Account's Holder First Name"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, firstName: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="last_name"
@@ -51,11 +53,12 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Account's Holder Last Name"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, lastName: event.currentTarget.value}})}
                     />
                     <div className={ClassHalfXsFullMd+ 'pr1 mb2'}>
                         <Text size={14} weight="med">Number</Text>
                         <RecurlyElementStyle>
-                            <CardNumberElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
+                            <CardNumberElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} onChange={(state) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, cardNumber: state.lastFour}})} />
                         </RecurlyElementStyle>
 
                     </div>
@@ -89,6 +92,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="VAT Number"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, vatNumber: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="country"
@@ -96,6 +100,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Country"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, country: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="address1"
@@ -103,6 +108,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Street Address 1"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, address1: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="address2"
@@ -111,6 +117,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         indicationLabel='Optional'
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, address2: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="city"
@@ -118,6 +125,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Town/City"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, city: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="state"
@@ -126,6 +134,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         type='text'
                         indicationLabel='Optional'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, state: event.currentTarget.value}})}
                     />
                     <Input
                         data-recurly="postal_code"
@@ -133,6 +142,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         label="Zip/Postal Code"
                         type='text'
                         required={false}
+                        onChange={(event) => props.callback({...props.billingInfo, creditCard: {...props.billingInfo.creditCard, postCode: event.currentTarget.value}})}
                     />
                 </div>
                 <input type="hidden" name="recurly-token" data-recurly="token"></input>
