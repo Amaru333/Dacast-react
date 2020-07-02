@@ -25,7 +25,7 @@ const createGroupPrice = async (data: GroupPrice) => {
             prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
@@ -84,7 +84,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
             prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },

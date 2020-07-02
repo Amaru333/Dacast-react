@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-import { parse } from 'path';
 
 const getLivePaywallInfos = async (liveId: string) => {
     await isTokenExpired()
@@ -52,7 +51,7 @@ const createLivePricePreset = async (data: Preset, liveId: string) => {
             prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
@@ -105,7 +104,7 @@ const saveLivePricePreset = async (data: Preset, liveId: string) => {
             price: {value: data.price, currency: data.currency, description: data.description},
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
