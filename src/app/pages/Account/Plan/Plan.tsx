@@ -22,6 +22,7 @@ import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
 import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
+import { useHistory } from 'react-router-dom'
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -44,6 +45,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
+
+    let history = useHistory()
 
     React.useEffect(() => {
     }, [props.billingInfos.playbackProtection])
@@ -156,7 +159,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <WidgetElement className={classItemThirdWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
-                        {handleButtonToPurchase(bandwidth.percentage, "Data", () => {})}
+                        {handleButtonToPurchase(bandwidth.percentage, "Data", setPurchaseDataOpen)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
@@ -181,7 +184,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         <WidgetElement className={classItemThirdWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
-                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade </Button>
+                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
                                 <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
@@ -191,7 +194,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         <WidgetElement className={classItemThirdWidthContainer}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
-                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade</Button>
+                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
                             </WidgetHeader>
                             {/* <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(lastDay.getTime() / 1000)}</Text><br /> */}
                             <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />

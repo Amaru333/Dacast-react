@@ -45,6 +45,7 @@ interface DropdownButtonSpecificProps {
     callback: Function;
     dropdownDefaultSelect?: string;
     backgroundColor?: string;
+    disabled?: boolean
 }
 
 

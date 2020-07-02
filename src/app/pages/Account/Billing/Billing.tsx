@@ -36,7 +36,7 @@ export const BillingPage = (props: BillingContainerProps) => {
     }
 
     const onSubmitFunctions = () => {
-        props.saveBillingPagePaymentMethod(billingInfo);
+        props.saveBillingPagePaymentMethod(billingInfo.creditCard);
         setPaymentMethodModalOpened(false)
     }
 
