@@ -51,7 +51,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             {
                 planCode: stepperData.code,
                 token: recurlyToken,
-                threeDSecureToken: threeDSecureToken,
                 currency: 'USD',
                 couponCode: '',
                 allowances: stepperData.allownaceCode,
@@ -456,7 +455,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={ threeDSecureActive ? purchasePlan3Ds : purchasePlan}
+                                    finalFunction={ threeDSecureActive ? purchasePlan3Ds : props.changeActivePlan}
                                     usefulFunctions={{'handleThreeDSecureFail': handleThreeDSecureFail}}
                                 />
                                 

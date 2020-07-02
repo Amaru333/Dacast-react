@@ -1,5 +1,5 @@
 import { ThunkDispatch } from 'redux-thunk';
-import { Plans, ActionTypes, ChangePlan } from './types'
+import { Plans, ActionTypes, ChangePlan, Plan } from './types'
 import { UpgradeServices } from './services'
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
@@ -26,16 +26,18 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
     };
 }
 
-export const changeActivePlanAction = (data: ChangePlan): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
+export const changeActivePlanAction = (data: Plan, recurlyToken: any): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
-        await UpgradeServices.changeActivePlanService(data)
+        console.log('data(stepper data', data)
+        await UpgradeServices.changeActivePlanService(data, recurlyToken)
             .then( response => {
                 console.log('action response', response)
-                return response
+                
                 
                 // dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
-            }).catch(() => {
+            }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                console.log('error', error)
             })
     };
 }

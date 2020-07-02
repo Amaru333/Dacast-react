@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { UpgradePage } from '../../pages/Account/Upgrade/Upgrade';
-import { Plans, ChangePlan } from '../../redux-flow/store/Account/Upgrade/types';
+import { Plans, ChangePlan, Plan } from '../../redux-flow/store/Account/Upgrade/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { UpgradeAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { ThunkDispatch } from 'redux-thunk';
@@ -41,8 +41,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
         },
-        changeActivePlan: async (data: ChangePlan) => {
-            await dispatch(changeActivePlanAction(data))
+        changeActivePlan: async (data: Plan, recurlyData: any) => {
+            await dispatch(changeActivePlanAction(data, recurlyData))
         }
     }
 }

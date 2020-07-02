@@ -373,7 +373,7 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperDa
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
             
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} />
+            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} stepperData={props.stepperData} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
