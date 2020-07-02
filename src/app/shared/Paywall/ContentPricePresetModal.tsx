@@ -10,6 +10,7 @@ import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
+import { CURRENCY } from '../../constants/Currencies';
 
 var moment = require('moment-timezone');
 
@@ -163,7 +164,7 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
                                 dropdownDefaultSelect={newPricePreset.settings.duration.unit} 
                                 callback={(value: string) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: value }}})} 
                                 dropdownTitle=''
-                                list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }}
+                                list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }}
                             />
                         </>
                 }

@@ -121,7 +121,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                         :
                         <>
                             <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Months': false}} />
                         </>
                 }
 

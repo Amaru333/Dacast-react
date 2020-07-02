@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { LiveDetails, LiveDetailsState,  initialLiveGeneralState, ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
+import { LiveDetailsState,  initialLiveGeneralState, ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
 import { Action } from './actions';
 
 
@@ -19,7 +19,13 @@ const reducer: Reducer<LiveDetailsState> = (state = initialLiveGeneralState, act
                 [action.payload.id]: { ...state[action.payload.id], uploadurl: action.payload.data.presignedURL}
             }
         case ActionTypes.UPLOAD_IMAGE:
-            return state
+            return {
+                ...state,
+                [action.payload.liveId]: { 
+                    ...state[action.payload.liveId], 
+                    uploadurl: null
+                }
+            }        
         case ActionTypes.DELETE_IMAGE:
             return state
         default:

@@ -116,6 +116,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             <VideoTabs videoId={vodId} />
             <ContentPaywallPage
                 contentId={vodId}
+                contentType='vod'
                 contentPaywallInfos={props.vodPaywallInfos[vodId]}
                 getContentPrices={props.getVodPaywallPrices}
                 saveContentPaywallInfos={props.saveVodPaywallInfos}

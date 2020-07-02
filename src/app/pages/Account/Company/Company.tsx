@@ -203,7 +203,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="companyName" 
                             label="Company Name" 
                             placeholder="Company Name"
-                            indicationLabel='Optional'
                             name="companyName" ref={register()}
                             help="The legal business name for use on invoices, etc."
                         />

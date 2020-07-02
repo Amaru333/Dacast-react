@@ -131,3 +131,9 @@ export const MainFeatures: {name: string; tooltip: string}[] = [
     {name: "M3U8", tooltip: "A direct M3U8 link allows you to stream to TVs and other smart devices"},
     {name: "China", tooltip: "Our Premium delivery method with increased performance in China"},
 ]
+
+export enum PlansName {
+    "Developer" = "Developer Plan",
+    "Event" = "Event Plan",
+    "Annual Scale" = "Scale Plan"
+}

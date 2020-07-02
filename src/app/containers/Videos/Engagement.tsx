@@ -3,7 +3,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction } from '../../redux-flow/store/VOD/Engagement/actions';
+import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction, getUploadUrlAction, uploadVodImageAction, deleteVodImageAction } from '../../redux-flow/store/VOD/Engagement/actions';
 import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
@@ -18,6 +18,9 @@ export interface VodEngagementComponentProps {
     saveVodAd: Function;
     createVodAd: Function;
     deleteVodAd: Function;
+    getUploadUrl: Function;
+    uploadVodImage: Function;
+    deleteVodImage: Function;
 }
 
 export const VodEngagement = (props: VodEngagementComponentProps) => {
@@ -42,6 +45,9 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
                             saveContentAd={props.saveVodAd}
                             createContentAd={props.createVodAd}
                             deleteContentAd={props.deleteVodAd}
+                            getUploadUrl={props.getUploadUrl}
+                            uploadContentImage={props.uploadVodImage}
+                            deleteContentImage={props.deleteVodImage}
                             contentType='vod'
                             contentId={vodId}
                         />
@@ -74,6 +80,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteVodAd: (data: Ad[], adsId: string, vodId: string) => {
             dispatch(deleteVodAdAction(data, adsId, vodId))
+        },
+        getUploadUrl: (uploadType: string, vodId: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, vodId)).then(callback)
+        },
+        uploadVodImage: (data: File, uploadUrl: string) => {
+            dispatch(uploadVodImageAction(data, uploadUrl))
+        },
+        deleteVodImage: (targetId: string) => {
+            dispatch(deleteVodImageAction(targetId))
         }
     };
 }

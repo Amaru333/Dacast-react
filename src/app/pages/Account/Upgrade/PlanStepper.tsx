@@ -5,18 +5,14 @@ import { InputCheckbox } from '../../../../components/FormsComponents/Input/Inpu
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { Plan, Privilege } from '../../../redux-flow/store/Account/Plans/types';
+import { Plan, Privilege } from '../../../redux-flow/store/Account/Upgrade/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { calculateDiscount, calculateAnnualPrice } from '../../../../utils/utils';
-import { ScalePlanSelector, ScalePlanSelectorContents } from './Plans';
+import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
+import { PlansName } from './FeaturesConst';
 
-export enum PlansName {
-    "Developer" = "Developer Plan",
-    "Event" = "Event Plan",
-    "Annual Scale" = "Scale Plan"
-}
 
 //PLAN
 export const PlanStepperFirstStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function}) => {
@@ -311,7 +307,7 @@ export const PlanStepperThirdStep = (props: {stepperData: Plan; updateStepperDat
 }
 
 //PAYMENT
-export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function}) => {
+export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; usefulFunctions: {[key: string]: any}}) => {
 
     const planPrice: number = props.stepperData.price.usd/100
     const featuresTotal: number = (props.stepperData.privilegesTotal)
@@ -377,7 +373,7 @@ export const PlanStepperFourthStep = (props: {stepperData: Plan; updateStepperDa
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()}/>
             
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={test} />
+            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

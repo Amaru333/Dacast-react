@@ -148,10 +148,10 @@ const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
     )
 }
 
-const deletePlaylistPricePreset = async (data: Preset) => {
+const deletePlaylistPricePreset = async (data: Preset, playlistId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    let {token, userId} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-playlist-${playlistId}`, 
         {
             headers: {
                 Authorization: token

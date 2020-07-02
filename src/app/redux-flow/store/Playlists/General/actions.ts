@@ -21,7 +21,7 @@ export interface GetUploadUrl {
 
 export interface UploadImage {
     type: ActionTypes.UPLOAD_IMAGE;
-    payload: {file: File};
+    payload: {playlistId: string};
 }
 
 export interface DeleteImage {
@@ -68,11 +68,11 @@ export const getUploadUrlAction = (uploadType: string, playlistId: string): Thun
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string, playlistId: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
         await PlaylistGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {playlistId: playlistId}})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {

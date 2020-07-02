@@ -3,7 +3,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { PlaybackProtection } from '../../../redux-flow/store/Account/Billing';
+import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 
 const ProtectionModalTableData = [
     {

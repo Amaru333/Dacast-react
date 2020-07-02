@@ -18,9 +18,11 @@ import { Preset, Promo, ContentPaywallPageInfos, PresetsPageInfos } from '../../
 import { GroupsPageInfos } from '../../redux-flow/store/Paywall/Groups/types'
 import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types'
 import { emptyContentListBody } from '../List/emptyContentListState';
+import { addTokenToHeader } from '../../utils/token'
 
 export interface ContentPaywallComponentProps {
     contentId: string;
+    contentType: 'vod' | 'live' | 'playlist';
     contentPaywallInfos: ContentPaywallPageInfos;
     getContentPrices: Function;
     saveContentPaywallInfos: Function;
@@ -42,6 +44,8 @@ export interface ContentPaywallComponentProps {
 }
 
 export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
+
+    let {userId} = addTokenToHeader()
 
     const [priceModalOpened, setPriceModalOpened] = React.useState<boolean>(false);
     const [promoModalOpened, setPromoModalOpened] = React.useState<boolean>(false);
@@ -139,7 +143,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             let tempArray: {
                 data: JSX.Element[];
             }[] = []
-            props.groupsInfos.prices.packages.map((item, key) => {
+            props.groupsInfos.prices.packages.filter(p => p.contents.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).map((item, key) => {
                 item.prices.map((price) => {
                     tempArray.push({data: [
                         <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{item.name}</Text>,
@@ -180,18 +184,18 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
                 <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled})} className='mt2' label='Paywall Enabled' />
-                <Text size={14}>Quickly enable or disable paywall for this content</Text>
+                <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown' 
                     className='col col-12 sm-col-3 my2' 
                     dropdownTitle='Paywall Theme' 
-                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme}
+                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
-                    callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: value})}
+                    callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id})}
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
-                <Text size={14}>If provided, this video can be watched before the content is purchased.</Text>
+                <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
                 <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value})}} />
                         
                 <BorderStyle className='my2' />
@@ -219,7 +223,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { !props.groupsInfos.prices || props.groupsInfos.prices.packages.length === 0 ?
+                { !props.groupsInfos.prices || props.groupsInfos.prices.packages.filter(p => p.contents.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).length === 0 ?
                     <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
                     :
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />

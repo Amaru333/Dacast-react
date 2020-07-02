@@ -7,19 +7,22 @@ import { useRecurlySubmit } from '../../utils/useRecurlySubmit';
 import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
-import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly } from '@recurly/react-recurly';
+import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
 import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
+import styled from 'styled-components';
 
-export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function }) => {
+export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
+    const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
+    const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
 
     let formRef = React.useRef<HTMLFormElement>(null);
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -147,7 +150,21 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                 </div>
 
             </RadioButtonOption>
-            <div id='#threeDSecureComponent'></div>
+            { threeDSecureActionToken &&
+            <div >
+                <ThreeDSecure
+                    style={{height:400}}
+                    actionTokenId={threeDSecureActionToken}
+                    onToken={(actionToken) => {props.actionButton(recurlyToken, actionToken.id)}}
+                    onError={(error) => props.handleThreeDSecureFail()}
+                >
+                </ThreeDSecure>
+            </div>
+            }
         </form>
     )
 }
+
+const ThreeDSecure = styled(ThreeDSecureAction)`
+height: 400px;
+`

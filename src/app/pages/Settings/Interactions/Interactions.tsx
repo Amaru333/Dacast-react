@@ -109,7 +109,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(props.interactionsInfos.brandImageID);
+        props.deleteFile(interactionInfos.brandImageID);
     }
 
 
@@ -262,12 +262,12 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
                 <div className="lg-col lg-col-12 mb1 flex">
                     <div className="lg-col lg-col-6 mr2">
-                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={handleDrop}>
                             {uploadedFileUrl ?
                                 <>
                                     {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                                    <Button sizeButton='xs' typeButton='secondary' onClick={handleDelete} style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue'>Delete</Button>
+                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
                                     <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
                                 </>
                                 :
@@ -287,10 +287,11 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize && props.interactionsInfos.brandImageSize.toString()} onChange={(event) => setInteractionsInfos({ ...interactionInfos, brandImageSize: parseInt(event.currentTarget.value) })} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding && props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => setInteractionsInfos({ ...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value) })} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink && props.interactionsInfos.brandImageLink} onChange={(event) => setInteractionsInfos({ ...interactionInfos, brandImageLink: event.currentTarget.value })} />
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}
+                        callback={(value: string) => {setInteractionsInfos({...interactionInfos, brandImagePosition: value});setSettingsEdited(true)}}></DropdownSingle>
+                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize && props.interactionsInfos.brandImageSize.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding && props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink && props.interactionsInfos.brandImageLink} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
                     </div>
                 </div>
 
@@ -303,7 +304,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
                         label='Brand Text'
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }) }}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
                         value={interactionInfos.brandText ? interactionInfos.brandText : ""}
                     />
                     <Input

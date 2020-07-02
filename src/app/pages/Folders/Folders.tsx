@@ -144,7 +144,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         { name: 'Online/Offline', function: setBulkOnlineOpen },
         { name: 'Paywall Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
-        { name: 'Move To', function: setMoveItemsModalOpened },
+        { name: 'Move', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
@@ -430,10 +430,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 {checkedItems.length > 0 &&
                                     <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
                                 }
-                                <div>
+                                <div className='relative'>
                                     <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
 
-                                    <DropdownList  hasSearch={false} ref={bulkActionsDropdownListRef} style={{}} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                    <DropdownList  hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}
                                     </DropdownList>
                                 </div>
@@ -505,7 +505,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} />
+                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

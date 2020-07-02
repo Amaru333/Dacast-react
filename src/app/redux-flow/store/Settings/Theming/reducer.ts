@@ -26,12 +26,12 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
             }
         case ActionTypes.SAVE_SETTING_THEME :
             themes = state.themes.slice()
-            if(action.payload.isDefault) {
-                themes = state.themes.map((item) => {return {...item, isDefault: false}})
-            }
             return  {...state, themes: themes.map((item) => {
                 if (item.id !== action.payload.id) {
-                    return item
+                    return {
+                        ...item,
+                        isDefault: (!action.payload.isDefault && item.themeName === 'Standard' && state.themes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : false
+                    }
                 }
                 return {
                     ...item,

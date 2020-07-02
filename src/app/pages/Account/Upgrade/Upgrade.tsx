@@ -10,16 +10,20 @@ import {isMobile} from 'react-device-detect';
 //import styles from "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
-import { PlansContainerProps } from '../../../containers/Account/Plans';
+import { UpgradeContainerProps } from '../../../containers/Account/Upgrade';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Plan, Plans } from '../../../redux-flow/store/Account/Plans/types';
+import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
-import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures } from './FeaturesConst';
+import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
+import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
+import axios from 'axios'
+import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
+import { useHistory } from 'react-router'
 
-export const PlansPage = (props: PlansContainerProps) => {
+export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
@@ -33,19 +37,87 @@ export const PlansPage = (props: PlansContainerProps) => {
     const [currentPlan, setCurrentPlan] = React.useState<string>(null)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
+    const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
+    const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
+    const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
 
-    const purchasePlan = (recurlyToken: string, threeDSecureToken: string) => {
-        props.changeActivePlan({
-            planCode: stepperData.code,
-            token: recurlyToken,
-            threeDSecureToken: threeDSecureToken,
-            currency: 'USD',
-            couponCode: '',
-            allowances: stepperData.allownaceCode,
-            paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+    let history = useHistory()
 
+    const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+        await isTokenExpired()
+        
+        let {token, userId} = addTokenToHeader();
+        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+            {
+                planCode: stepperData.code,
+                token: recurlyToken,
+                threeDSecureToken: threeDSecureToken,
+                currency: 'USD',
+                couponCode: '',
+                allowances: stepperData.allownaceCode,
+                paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+                },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+            
+        ).then(response => {
+            debugger
+            if(response.data.data.tokenID) {
+                callback(response.data.data.tokenID)
+                setThreeDSecureActive(true)
+            } else {
+                setStepperPlanOpened(false)
+                console.log(`${stepperData.name} plan purchased successfully`)
+                setPaymentSuccessfulModalOpened(true)
+            }
+            
+        }).catch((error) => {
+            setStepperPlanOpened(false)
+            setPaymentDeclinedModalOpened(true)
         })
-        setCurrentPlan(stepperData.name)
+        
+    }
+
+    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+        await isTokenExpired()
+        
+        let {token, userId} = addTokenToHeader();
+        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase', 
+            {
+                planCode: stepperData.code,
+                token: recurlyToken,
+                threeDSecureToken: threeDSecureToken,
+                currency: 'USD',
+                couponCode: '',
+                allowances: stepperData.allownaceCode,
+                paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
+                },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+            
+        ).then(response => {
+            debugger
+                setStepperPlanOpened(false)
+                console.log(`3DS authentication successful. ${stepperData.name} plan purchased successfully`)
+                setPaymentSuccessfulModalOpened(true)
+                setThreeDSecureActive(false)
+            }
+            
+        ).catch((error) => {
+            
+        })
+        
+    }
+
+    const handleThreeDSecureFail = () => {
+        setStepperPlanOpened(false)
+        setPaymentDeclinedModalOpened(true)
     }
 
     const handleSteps = (plan: string) => {
@@ -67,7 +139,7 @@ export const PlansPage = (props: PlansContainerProps) => {
 
     return (
         <ScrollContainer>
-            <PlansPageContainer className='col col-12' isMobile={isMobile}>
+            <UpgradePageContainer className='col col-12' isMobile={isMobile}>
                 {
                     !isMobile ?
                         <AllowancesList className={marginBlocks}>
@@ -384,21 +456,35 @@ export const PlansPage = (props: PlansContainerProps) => {
                                     stepperData={stepperData}
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
-                                    finalFunction={() => console.log('yes')}
+                                    finalFunction={ threeDSecureActive ? purchasePlan3Ds : purchasePlan}
+                                    usefulFunctions={{'handleThreeDSecureFail': handleThreeDSecureFail}}
                                 />
                                 
                         }
 
                     </Elements>
                 </RecurlyProvider>
-                
-            </PlansPageContainer>
+                <Modal icon={{name: "check_circle_outline", color:"green"}} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} hasClose={false}>
+                    <div className="mt2 mb3">
+                        <Text  size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
+                    </div>  
+                    <ModalFooter>
+                        <Button onClick={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)}>Confirm</Button>
+                        <Button typeButton="tertiary">See Invoices</Button>
+                    </ModalFooter>
+                </Modal>
+                <Modal icon={{name: "warning_outlined", color:"red"}} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={false}>
+                    <div className="mt2 mb3">
+                        <Text  size={14}>Something went wrong during your upgrade. Your payment may have been declined. Please try again or <a href="/help">Contact Us</a> if you believe this is a mistake.</Text>
+                    </div>
+                </Modal>
+            </UpgradePageContainer>
             <Text onClick={() => setAllFeaturesOpen(!allFeaturesOpen)} className="justify-center items-center flex col-12 pt2 pointer" color="dark-violet" size={14} weight='reg'>View all features<IconStyle coloricon="dark-violet" customsize={customInfoIconSize} className="ml1">{allFeaturesOpen ? "expand_less" : "expand_more"}</IconStyle></Text>
         </ScrollContainer>
     )
 }
 
-const PlansPageContainer = styled.div<{isMobile: boolean}>`
+const UpgradePageContainer = styled.div<{isMobile: boolean}>`
     ${props => !props.isMobile && css`
     display: flex;
     `}

@@ -8,7 +8,7 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 export const DomainControlForm = (props: {item: DomainControl; toggle: Function; submit: Function}) => {
 
     const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(null);
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.name.length > 0);
+    const [enableSubmit, setEnableSubmit] = React.useState<boolean>((props.item.name.length > 0 && props.item.values.length > 0));
 
     console.log(domainControlItem)
 
@@ -18,7 +18,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
 
     React.useEffect(() => {
         if(domainControlItem) {
-            setEnableSubmit(domainControlItem.name.length > 0);
+            setEnableSubmit((domainControlItem.name.length > 0 && domainControlItem.values.length > 0));
         }
     }, [domainControlItem])
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
