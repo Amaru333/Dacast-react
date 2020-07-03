@@ -31,6 +31,10 @@ export const reducer = (state = planInitialState, action: PlanAction): BillingPa
             newExtras.splice(newExtras.length, 0, action.payload )
             return {...state,
                 extras: newExtras
+            }
+        case ActionTypes.GET_PRODUCT_DETAILS:
+            return {...state, 
+                ...action.payload.data
             } 
         default:
             return state;

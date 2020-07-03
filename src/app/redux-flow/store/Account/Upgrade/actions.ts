@@ -12,7 +12,7 @@ export interface GetPlanDetails {
 
 export interface ChangeActivePlan {
     type: ActionTypes.CHANGE_ACTIVE_PLAN;
-    payload: ChangePlan;
+    payload: Plan;
 }
 
 export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlanDetails> => {
@@ -31,10 +31,7 @@ export const changeActivePlanAction = (data: Plan, recurlyToken: any): ThunkDisp
         console.log('data(stepper data', data)
         await UpgradeServices.changeActivePlanService(data, recurlyToken)
             .then( response => {
-                console.log('action response', response)
-                
-                
-                // dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
+                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 console.log('error', error)

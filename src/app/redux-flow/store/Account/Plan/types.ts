@@ -5,6 +5,7 @@ export enum ActionTypes {
     EDIT_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/EDIT_BILLING_PAGE_PLAYBACK_PROTECTION",
     DELETE_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/DELETE_BILLING_PAGE_PLAYBACK_PROTECTION",
     ADD_BILLING_PAGE_EXTRAS = "@@account_plan/ADD_BILLING_PAGE_EXTRAS",
+    GET_PRODUCT_DETAILS = "@@account_plan/GET_PRODUCT_DETAILS"
 }
 
 
@@ -13,6 +14,7 @@ export interface BillingPageInfos {
     creditCard?: CreditCardPayment; 
     playbackProtection?: PlaybackProtection;
     extras?: Extras[];
+    products: Products
 }
 
 export interface PlaybackProtection {
@@ -51,7 +53,28 @@ export interface CreditCardPayment {
 
 }
 
+export interface Products {
+    bandwidth: BandWidthProduct
+}
+
+export interface BandWidthProduct {
+    eventBw10to100TB: Product;
+    eventBw1to4TB: Product;
+    eventBw5to10TB: Product;
+}
+
+export interface Product {
+    code: string;
+    description: string;
+    type: string;
+    minQuantity: number;
+    maxQuantity: number;
+    nextProductID: string;
+    unitPrice: number;
+}
+
 export const planInitialState: BillingPageInfos = {
     paypal: null,
-    creditCard: null
+    creditCard: null,
+    products: null
 };
