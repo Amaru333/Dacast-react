@@ -13,7 +13,7 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 
-export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos }) => {
+export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -23,7 +23,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()

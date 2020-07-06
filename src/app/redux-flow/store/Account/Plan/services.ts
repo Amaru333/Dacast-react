@@ -59,6 +59,18 @@ const addBillingPageExtrasService = (data: Extras) => {
     return axios.post(urlBase + 'billing-extras', {...data})
 }
 
+const getProductDetailsService = async () => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/products', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 
 export const BillingServices = {
     getBillingPagePaymentMethodService,
@@ -66,5 +78,6 @@ export const BillingServices = {
     addBillingPagePaymenPlaybackProtectionService,
     editBillingPagePaymenPlaybackProtectionService,
     deleteBillingPagePaymenPlaybackProtectionService,
-    addBillingPageExtrasService
+    addBillingPageExtrasService,
+    getProductDetailsService
 } 

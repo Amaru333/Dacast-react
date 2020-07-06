@@ -65,7 +65,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     }
     
     const subtitlesTableBody = () => {
-        return VodDetails.subtitles ? VodDetails.subtitles.map((value, key) => {
+        return props.vodDetails.subtitles ? props.vodDetails.subtitles.map((value, key) => {
             return {data: [
                 <div className='flex'>
                     <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>

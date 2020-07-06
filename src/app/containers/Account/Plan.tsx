@@ -2,9 +2,9 @@ import React from 'react';
 import { PlanPage } from '../../pages/Account/Plan/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction } from '../../redux-flow/store/Account/Plan/actions';
+import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
-import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras } from '../../redux-flow/store/Account/Plan/types';
+import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { DashboardInfos, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
@@ -19,6 +19,7 @@ interface PlanContainerProps {
     editBillingPagePaymenPlaybackProtection: Function;
     deleteBillingPagePaymenPlaybackProtection: Function;
     addBillingPageExtras: Function;
+    getProductDetails: Function
 }
 const Plan = (props: PlanContainerProps) => {
 
@@ -29,9 +30,12 @@ const Plan = (props: PlanContainerProps) => {
         if(!props.widgetData) {
             props.getWidgetData();
         }
+        if(!props.billingInfos.products) {
+            props.getProductDetails();
+        }
     }, [])
     return (
-        props.billingInfos && props.widgetData ?
+        props.billingInfos && props.widgetData && props.billingInfos.products ?
             <PlanPage plan={props.widgetData.isPayingPlan} {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -67,6 +71,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getWidgetData: () => {
             dispatch(getDashboardDetailsAction());
+        },
+        getProductDetails: () => {
+            dispatch(getProductDetailsAction());
         }
     };
 }

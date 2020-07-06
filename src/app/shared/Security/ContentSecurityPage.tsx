@@ -114,7 +114,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         
                 <Bubble type='info' className='my2'>
                     <BubbleContent>         
-                        These settings are inherited from your <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
+                        These settings are inherited from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
                     </BubbleContent>         
                 </Bubble>
                 :

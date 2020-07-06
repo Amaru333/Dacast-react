@@ -1,4 +1,4 @@
-import { ActionTypes, BillingPageInfos, CreditCardPayment, PaypalPayment, PlaybackProtection, Extras } from './types';
+import { ActionTypes, BillingPageInfos, CreditCardPayment, PaypalPayment, PlaybackProtection, Extras, Products } from './types';
 import { BillingServices } from './services';
 import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
@@ -33,6 +33,11 @@ export interface DeleteBillingPagePlaybackProtection {
 export interface AddBillingPageExtras {
     type: ActionTypes.ADD_BILLING_PAGE_EXTRAS;
     payload: Extras;
+}
+
+export interface GetProductDetails {
+    type: ActionTypes.GET_PRODUCT_DETAILS;
+    payload: {data: Products}
 }
 
 
@@ -107,6 +112,17 @@ export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<
     };
 }
 
+export const getProductDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetProductDetails> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProductDetails> ) => {
+        await BillingServices.getProductDetailsService()
+            .then( response => {
+                dispatch( {type: ActionTypes.GET_PRODUCT_DETAILS, payload: response.data} );
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
 
 
 export type PlanAction = 
@@ -116,3 +132,4 @@ GetBillingPageInfos
 | EditBillingPagePlaybackProtection
 | DeleteBillingPagePlaybackProtection
 | AddBillingPageExtras
+| GetProductDetails
