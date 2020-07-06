@@ -59,6 +59,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [logoFile, setLogoFile] = React.useState<File>(null);
+    const [brandImageSectionEditable, setBrandImageSectionEditable] = React.useState<boolean>(false)
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -191,7 +192,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
+            <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
             {getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Header className="mb2">
@@ -213,7 +214,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>
                             <IconStyle className="mr1">info_outlined</IconStyle>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                         </div>
                         <div className="clearfix mb2">
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
@@ -260,48 +261,53 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             </Card> */}
 
             <Card className="my2">
-                <TextStyle> 
-                    <Text size={20} weight='med'>Brand Image</Text>
-                </TextStyle>
-                <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
-
-
-                <div className="lg-col lg-col-12 mb1 flex">
-                    <div className="lg-col lg-col-6 mr2">
-                        <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
-                            {uploadedFileUrl ?
-                                <>
-                                    {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
-                                    <ImageStyle src={uploadedFileUrl}></ImageStyle>
-                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                    <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
-                                </>
-                                :
-                        <>
-                        <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
-                        <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
-                        <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
-                        <ButtonStyle className='my1'>
-                            <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
-                            <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
-                                Browse Files
-                            </Button>
-                        </ButtonStyle>
-                        </>
-                            } 
-                        </DragAndDrop>
-                        <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                <Header className="mb2">
+                    <TextStyle> 
+                        <Text size={20} weight='med'>Brand Image</Text>
+                    </TextStyle>
+                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => setBrandImageSectionEditable(!brandImageSectionEditable)}>
+                        {brandImageSectionEditable ? "lock_open" : "lock"}
+                    </IconStyle>
+                </Header>
+                
+                <DisabledSection settingsEditable={brandImageSectionEditable}>
+                    <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
+                    <div className="lg-col lg-col-12 mb1 mt25 flex">
+                        <div className="lg-col lg-col-6 mr2">
+                            <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                                {uploadedFileUrl ?
+                                    <>
+                                        {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                        <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
+                                        <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                    </>
+                                    :
+                            <>
+                            <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                            <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                            <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                            <ButtonStyle className='my1'>
+                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
+                                <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                    Browse Files
+                                </Button>
+                            </ButtonStyle>
+                            </>
+                                } 
+                            </DragAndDrop>
+                            <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                        </div>
+                        <div className="col col-6">
+                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
+                            callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
+                            ></DropdownSingle>
+                            <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
+                        </div>
                     </div>
-                    <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
-                        callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
-                        ></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
-                    <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
-                    </div>
-                </div>
-
+                </DisabledSection>
             </Card>
 
             <Card className='my2'>
