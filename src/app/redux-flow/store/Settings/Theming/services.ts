@@ -18,7 +18,7 @@ const  createTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes/',
-        {...data, offlineMessagePosition: 1}, 
+        {...data, offlineMessagePosition: "Top"}, 
         {
             headers: {
                 Authorization: token
@@ -31,7 +31,7 @@ const saveTheme = async (data: ThemeOptions) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/themes/' + data.id,
-        {...data, offlineMessagePosition: 1}, 
+        {...data, offlineMessagePosition: "Top"}, 
         {
             headers: {
                 Authorization: token

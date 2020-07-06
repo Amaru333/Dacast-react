@@ -31,7 +31,7 @@ const saveVodThemeService = async (data: ThemeOptions, vodId: string) => {
     } else {
         if(data.id === '-1') {
             return axios.post(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/themes/',
-                {...data, offlineMessagePosition: 1}, 
+                {...data, offlineMessagePosition: "Top"}, 
                 {
                     headers: {
                         Authorization: token
@@ -40,7 +40,7 @@ const saveVodThemeService = async (data: ThemeOptions, vodId: string) => {
             )
         } else {
             return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/themes/' + data.id,
-                {...data, offlineMessagePosition: 1}, 
+                {...data, offlineMessagePosition: "Top"}, 
                 {
                     headers: {
                         Authorization: token

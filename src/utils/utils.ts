@@ -37,9 +37,33 @@ export const getPrivilege = (privilege: Privilege) => {
     return getUserInfoItem(privilege) === 'true';
 }
 
+export const compareValues = (key: string, order: 'asc' | 'desc' = 'asc') => {
+    return function innerSort(a, b) {
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // property doesn't exist on either object
+            return 0;
+        }
+
+        const varA = (typeof a[key] === 'string')
+            ? a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string')
+            ? b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB) {
+            comparison = 1;
+        } else if (varA < varB) {
+            comparison = -1;
+        }
+        return (
+            (order === 'desc') ? (comparison * -1) : comparison
+        );
+    };
+}
+
 
 export function readableBytes(size: number): string {
-    if(size == 0) {
+    if (size == 0) {
         return "0";
     }
     var i = Math.floor(Math.log(size) / Math.log(1000));
@@ -63,10 +87,10 @@ export function intToTime(num: number) {
 
 export function getPercentage(num: number, max: number): number {
     var percentage = Math.round((num * 100) / max);
-    if(percentage > 100) {
+    if (percentage > 100) {
         percentage = 100;
     }
-    if(percentage < 0) {
+    if (percentage < 0) {
         percentage = 0;
     }
     return percentage
@@ -139,7 +163,7 @@ export function displayTimeForHumans(seconds: number) {
 }
 
 export function displayBytesForHumans(mbAmount: number, decimals = 2, fromAnalytics = false) {
-    if(fromAnalytics) {
+    if (fromAnalytics) {
         var bytes = mbAmount * 1000000000;
     } else {
         var bytes = mbAmount * 1000000;

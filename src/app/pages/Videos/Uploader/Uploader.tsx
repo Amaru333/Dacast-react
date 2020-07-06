@@ -108,6 +108,11 @@ export const UploaderPage = (props: UploaderProps) => {
                     (percent: number) => { updateItem(percent, file.name, startTime) },
                     (err: any) => {
                         console.log(err)
+                        console.log(uploadFileQueue, uploadingList)
+                        setUploadFileQueue((currentList: any[]) => {
+                            uploadNextFile(currentList)
+                            return currentList;
+                        })
                         if (err === 'Cancel') {
                             setUploadingList((currentList: UploaderItemProps[]) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "paused"; value.timeRemaining.num = 0 } return value })
@@ -118,7 +123,6 @@ export const UploaderPage = (props: UploaderProps) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;
                             })
-                            uploadNextFile()
                         }
                     }
                 )
@@ -165,11 +169,12 @@ export const UploaderPage = (props: UploaderProps) => {
 
     }
 
-    const uploadNextFile = () => {
-        if (uploadFileQueue.length >= 1) {
-            uploadFileQueue[0].startUpload()
-            setCurrentUpload(uploadFileQueue[0])
-            setUploadFileQueue(uploadFileQueue.filter((e, key) => key !== 0))
+    const uploadNextFile = (currentList?: any[]) => {
+        if (uploadFileQueue.length >= 1 || ( currentList && currentList.length >= 1) ) {
+            let list = currentList ? currentList : uploadFileQueue;
+            list[0].startUpload()
+            setCurrentUpload(list[0])
+            setUploadFileQueue(list.filter((e, key) => key !== 0))
         }
     }
 
@@ -239,8 +244,6 @@ export const UploaderPage = (props: UploaderProps) => {
 
     React.useEffect(() => {
     }, [uploadingList]);
-
-    console.log(props.encodingRecipe);
 
     var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item) => { return { ...reduced, [props.encodingRecipe.recipes[item].name]: false } }, {})
     var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
