@@ -32,7 +32,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             loadingStatus: 'loading',
             children: {}
         });
-        props.setMoveModalSelectedFolder(selectedModalFolder)
+        //props.setMoveModalSelectedFolder(selectedModalFolder)
         props.goToNode(selectedModalFolder)
             .then((node) => {
                 setCurrentNode(node);
