@@ -94,7 +94,7 @@ export const createVodAdAction = (data: Ad[], adsId: string, vodId: string): Thu
 
 export const deleteVodAdAction = (data: Ad[], adsId: string, vodId: string): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodAd> ) => {
-        await vodEngagementServices.saveVodAd(data, adsId, vodId)
+        await vodEngagementServices.deleteVodAd(vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: {ads: data, contentId: vodId}} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));

@@ -82,7 +82,6 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     let thumbnailEnable = Object.keys(props.liveDetails.thumbnail).length !== 0;
     let posterEnable = Object.keys(props.liveDetails.poster).length !== 0;
 
-
     return (
         <React.Fragment>
             <Card className="col-12 clearfix">

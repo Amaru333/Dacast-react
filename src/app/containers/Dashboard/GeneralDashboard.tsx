@@ -1,10 +1,10 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemFullWidthContainer, classItemThirdWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemFullWidthContainer, classItemThirdWidthContainer, classItemQuarterWidthContainer } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes } from '../../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes, getPrivilege } from '../../../utils/utils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
@@ -69,6 +69,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         setPurchaseStepperOpened(false)
     }
 
+
+    const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
@@ -79,9 +81,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             </div>
 
             <div className={classContainer}>
-                <WidgetElement className={classItemThirdWidthContainer}>
+                <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
+                        <Text size={16} weight="med" color="gray-3">{getPrivilege('privilege-china') ? 'World Data Remaining' : "Data Remaining"}</Text>
                         {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
@@ -90,7 +92,21 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <ProgressBarDashboard overage={props.profile.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                 </WidgetElement>
 
-                <WidgetElement className={classItemThirdWidthContainer}>
+                {
+                    getPrivilege('privilege-china') && 
+                    <WidgetElement className={classItem}>
+                        <WidgetHeader className="flex">
+                            <Text size={16} weight="med" color="gray-3"> China Data Remaining </Text>
+                            {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
+                        </WidgetHeader>
+                        <div className="flex flex-wrap items-baseline mb1">
+                            <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
+                        </div>
+                        <ProgressBarDashboard overage={props.profile.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                    </WidgetElement>
+                }
+
+                <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
                         {handleButtonToPurchase(storage.percentage, "Storage", handlePurchaseStepper)}
@@ -104,7 +120,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
                 {
                     (props.plan as DashboardTrial).daysLeft  ?
-                        <WidgetElement className={classItemThirdWidthContainer}>
+                        <WidgetElement className={classItem}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
@@ -114,7 +130,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :
-                        <WidgetElement className={classItemThirdWidthContainer}>
+                        <WidgetElement className={classItem}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
                                 <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/plans')}>Upgrade</Button>

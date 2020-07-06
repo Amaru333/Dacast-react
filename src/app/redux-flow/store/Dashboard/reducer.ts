@@ -44,7 +44,7 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                         },
                         storage: {
                             limit: 1000000000,
-                            consumed: 500000000
+                            consumed: 750000000
                         }
                     },
                     isPayingPlan: {
