@@ -12,18 +12,38 @@ import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 export const NewPaymentMethodForm = (props: { callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard');
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
     const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
+    const [payPalInstance, setPayPalInstance] = React.useState<any>(null)
 
     let formRef = React.useRef<HTMLFormElement>(null);
 
     const recurly = useRecurly()
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData))
+    React.useEffect(() => {
+        if(recurly){
+            setPayPalInstance(
+                recurly.PayPal(
+                    {display: { displayName: ' Dacast ' }}
+                )
+            )
+        }
+        
+    }, [])
+
+    React.useEffect(() => {
+        console.log(recurly)
+    }, [recurly])
+
+    
+    
+
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData, payPalInstance))
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -157,6 +177,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <Text size={14} weight='reg' color='gray-1'>
                         When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                     </Text>
+                    <Button onClick={() => payPalInstance.start()}>Recurly Checkout</Button>
                 </div>
 
             </RadioButtonOption>

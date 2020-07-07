@@ -13,13 +13,13 @@ export interface BillingContainerProps {
     saveBillingPagePaymentMethod: Function;
 }
 
-export const Billing = (props: BillingContainerProps) => {
+const Billing = (props: BillingContainerProps) => {
 
     React.useEffect(() => {
         if(!props.billingInfos) {
             props.getBillingPageInfos();
         }
-    })
+    }, [])
 
     return (
         props.billingInfos ? 

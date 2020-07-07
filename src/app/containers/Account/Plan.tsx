@@ -34,6 +34,7 @@ const Plan = (props: PlanContainerProps) => {
             props.getProductDetails();
         }
     }, [])
+
     return (
         props.billingInfos && props.widgetData && props.billingInfos.products ?
             <PlanPage plan={props.widgetData.isPayingPlan} {...props} />

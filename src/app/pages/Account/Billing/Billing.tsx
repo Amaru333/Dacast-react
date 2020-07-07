@@ -63,7 +63,7 @@ export const BillingPage = (props: BillingContainerProps) => {
     }
 
     const creditCardTableHeaderElement = () => {
-        return props.billingInfos.creditCard ? {data: [
+        return props.billingInfos.paymentMethod.type === "card" ? {data: [
             {cell: <Text  key={"creditCardTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>},
             {cell: <Text  key={"creditCardTableCardHolder"} size={14}  weight="med" color="gray-1">Card Holder</Text>},
             {cell: <Text  key={"creditCardTableCardNumber"} size={14}  weight="med" color="gray-1">Card Number</Text>},
@@ -78,12 +78,12 @@ export const BillingPage = (props: BillingContainerProps) => {
     }
 
     const creditCardBodyElement= () => {
-        if(props.billingInfos.creditCard) {
+        if(props.billingInfos.paymentMethod.type === "card") {
             return [{data:[
                 <Text key={'creditCardTableCreditCard'} size={14}  weight="reg" color="gray-1">Credit Card</Text>,
-                <Text key={'creditCardTable' + props.billingInfos.creditCard.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.firstName + props.billingInfos.creditCard.lastName}</Text>,
-                <Text key={'creditCardTable' + props.billingInfos.creditCard.cardNumber} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.cardNumber}</Text>,
-                <Text key={'creditCardTable' + props.billingInfos.creditCard.month} size={14}  weight="reg" color="gray-1">{props.billingInfos.creditCard.month + '/' + props.billingInfos.creditCard.year}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.firstName} {props.billingInfos.paymentMethod.lastName}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.lastFour} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.lastFour}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.expiryMonth} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.expiryMonth + '/' + props.billingInfos.paymentMethod.expiryYear}</Text>,
                 <IconStyle key={'creditCardTableActive'} coloricon='green'>checked</IconStyle>,
                 <span key={'creditCardTableBodyEmptyCell'}></span>
             ]}
@@ -103,7 +103,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         props.billingInfos.paypal? 
                             <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
-                            : props.billingInfos.creditCard ?                
+                            : props.billingInfos.paymentMethod.type === "card" ?                
                                 <Table className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
                                 : 
                                 <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowences and Enable Playback Protection')} />
