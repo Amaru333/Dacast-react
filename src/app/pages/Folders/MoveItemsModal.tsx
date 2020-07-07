@@ -4,7 +4,6 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { getNameFromFullPath } from '../../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
@@ -32,7 +31,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             loadingStatus: 'loading',
             children: {}
         });
-        //props.setMoveModalSelectedFolder(selectedModalFolder)
+        props.setMoveModalSelectedFolder(selectedModalFolder)
         props.goToNode(selectedModalFolder)
             .then((node) => {
                 setCurrentNode(node);
@@ -59,6 +58,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
         .then(() => {
             setSaveLoading(false)
             props.toggle(false)
+            props.setMoveModalSelectedFolder(null)
         }).catch(() => {
             setSaveLoading(false)
 
@@ -115,7 +115,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
 
             <div className='mt2'>
                 <Button isLoading={saveLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() =>{ props.toggle(false);props.setMoveModalSelectedFolder(null);}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
                 <Button style={{marginTop: 8}} onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>
         </div>

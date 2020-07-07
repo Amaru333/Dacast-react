@@ -14,7 +14,7 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { ThemeOptions, ThemesData } from '../../../redux-flow/store/Settings/Theming';
+import { ThemesData } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
@@ -177,7 +177,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         }                    
                     </div>,
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                    <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{readableBytes(value.size)}</Text>,
+                    <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                     <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
@@ -247,9 +247,8 @@ export const VideosListPage = (props: VideosListProps) => {
                     <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
                 </div>
                 <div className="flex items-center" >
-                    {selectedVod.length > 0 ?
+                    {selectedVod.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedVod.length} items</Text>
-                        : null
                     }
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedVod.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
@@ -271,7 +270,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedVod.map(vodId => {return {id: vodId, type: 'vod'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal setMoveModalSelectedFolder={(s: string) => {}} submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedVod.map(vodId => {return {id: vodId, type: 'vod'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
