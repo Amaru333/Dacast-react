@@ -6,14 +6,14 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
     let themes = null;
     switch (action.type) {
         case ActionTypes.GET_SETTING_THEMING_LIST :
-            // let standardTheme = action.payload.data.themes.filter(t => t.themeName === 'Standard')[0]
-            // return {
-            //     ...state,
-            //     themes: [standardTheme, ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
-            // }
+            let standardTheme = action.payload.data.themes.filter(t => t.themeName === 'Standard')[0]
             return {
                 ...state,
-                themes: [...action.payload.data.themes],
+                themes: [
+                    {...standardTheme,
+                        isDefault: action.payload.data.themes.filter(t => t.isDefault).length === 0
+                    }, 
+                    ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
             }
         case ActionTypes.CREATE_SETTING_THEME :
             themes = state.themes.slice()
@@ -39,7 +39,19 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
                 }
             })}
         case ActionTypes.DELETE_SETTING_THEME:
-            return {...state, themes: state.themes.filter((item) => item.id != action.payload.id)}
+            themes = state.themes.filter((item) => item.id != action.payload.id)
+            if(action.payload.isDefault) {
+                themes = themes.map(theme => {
+                    if(theme.themeName === 'Standard') {
+                        return {
+                            ...theme,
+                            isDefault: true
+                        }        
+                    }
+                    return theme
+                })
+            }
+            return {...state, themes: themes}
         default:
             return state;
     }

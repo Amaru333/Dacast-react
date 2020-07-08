@@ -8,6 +8,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { getPrivilege } from '../../../../utils/utils';
+var moment = require('moment');
 
 export interface FilteringVodState {
     status: {
@@ -65,6 +66,7 @@ export const VideosFiltering = (props: {setSelectedFilter: Function}) => {
 
     React.useEffect(() => {
         checkActiveFilter();
+        console.log(filteringState)
     }, [filteringState])
 
     const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key: string) => {
@@ -80,9 +82,8 @@ export const VideosFiltering = (props: {setSelectedFilter: Function}) => {
                 <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
                     {
-                        activeFilter > 0 ?
+                        activeFilter > 0 &&
                             <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                            : null
                     }
                 </Button>
             </div>
@@ -115,17 +116,17 @@ export const VideosFiltering = (props: {setSelectedFilter: Function}) => {
                     </div>
                     <div className="mb3" id="vodFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterSize">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                         <div className="mxn2 clearfix">
-                            <Input className="col col-6 px2" label="Min (Gb)" type="number" defaultValue={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
-                            <Input className="col col-6 px2" label="Max (Gb)" type="number" defaultValue={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
+                            <Input className="col col-6 px2" label="Min (Gb)" type="number" value={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
+                            <Input className="col col-6 px2" label="Max (Gb)" type="number" value={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
                         </div>
                     </div>
                 </div>

@@ -12,20 +12,24 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
     const [focusedInput, setFocusedInput] = React.useState<boolean>(false)
 
     React.useEffect(() => {
+        setDate(props.date)
+    }, [props.date])
+
+    const handleDateChange = (date: any) => {
         if (props.callback && date) {
             props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
         }
-        
-    }, [date])
+        setDate(date)
+    }
     
     return (
         <div className={props.className}>
             <div className="flex flex-column">
                 {
-                    props.datepickerTitle ?
+                    props.datepickerTitle &&
                         <div style={{ marginTop: 4, marginBottom: 4 }}>
                             <Text size={14} weight='med'>{props.datepickerTitle}</Text>
-                        </div> : null
+                        </div>
                 }
                 <SingleDatePicker
                     placeholder='Select date'
@@ -33,7 +37,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                     inputIconPosition='after'
                     {...(props.allowOustsideDate ? {isOutsideRange: ()=> false} : {})}
                     date={date}
-                    onDateChange={(date: any) => setDate(date)}
+                    onDateChange={(date: any) => handleDateChange(date)}
                     focused={focusedInput}
                     onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
                     id={props.id + "singleDatePicker"}
