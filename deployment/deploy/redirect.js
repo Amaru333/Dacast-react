@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
     if(code >= 200 && code < 400){
         return callback(null, response);
     }
-    let redirectTo = '/#!' + request.uri + request.querystring
+    let redirectTo = '/#!' + request.uri + '?' + request.querystring
     response.status = '302'
     response.statusDescription = 'Found'
     response.body = ''
