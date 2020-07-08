@@ -19,41 +19,38 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
     const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
-    const [payPalInstance, setPayPalInstance] = React.useState<any>(null)
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
-    const { recurly } = useRecurly()
+    recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
+    const paypal = recurly.PayPal(
+        { display: { displayName: " Dacast " } }
+    )
+
 
     React.useEffect(() => {
-        if (recurly) {
-            const paypal = recurly.PayPal('Dacast')
-            setPayPalInstance(paypal)
-        }
-    }, [])
-
-    React.useEffect(() => {
-        if (payPalInstance) {
-            payPalInstance.on('token', token => {
+        //Add state update depending on the event here
+        if (paypal) {
+            paypal.on('token', token => {
                 console.log('Token: ', token)
             })
 
-            payPalInstance.on('error', error => {
+            paypal.on('error', error => {
                 throw error
             })
 
-            payPalInstance.on('cancel', () => {
-                console.log('Cancelled')
+            paypal.on('cancel', (e) => {
+                console.log(e)
             })
 
-            payPalInstance.on('ready', () => {
+            paypal.on('ready', () => {
                 console.log('Ready')
             })
         }
 
-    }, [payPalInstance])
+    }, [paypal])
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData, payPalInstance))
+    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData, paypal))
 
     return (
         <form id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault() }} >
@@ -182,7 +179,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <Text size={14} weight='reg' color='gray-1'>
                         When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                     </Text>
-                    <Button onClick={() => { payPalInstance.start() }}>Recurly Checkout</Button>
+                    <Button onClick={() => { paypal.start() }}>Recurly Checkout</Button>
                 </div>
 
             </RadioButtonOption>
