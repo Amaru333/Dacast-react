@@ -40,7 +40,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const emptyAd: Ad = {
         id: "-1",
-        "ad-type": "",
+        "ad-type": "pre-roll",
         timestamp: 0,
         url: ""
     }
@@ -167,7 +167,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(item, props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                                onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>
