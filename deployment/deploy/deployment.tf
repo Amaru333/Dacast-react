@@ -131,7 +131,7 @@ resource "aws_cloudfront_distribution" "s3_distribution_client" {
         target_origin_id = "${local.s3_origin_id}"
 
         forwarded_values {
-            query_string = false
+            query_string = true
 
             cookies { 
                 forward = "none"
