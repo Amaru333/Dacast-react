@@ -47,8 +47,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
             {cell: 
                 <InputCheckbox 
                     className="inline-flex" id="globalCheckboxNotEncoded" 
-                    disabled={selectedEncodedRendition.length > 0} indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} 
-                    defaultChecked={selectedNotEncodedRendition.length === notEncodedRenditions.length}
+                    disabled={selectedEncodedRendition.length > 0} 
+                    indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} 
+                    defaultChecked={selectedNotEncodedRendition.length > 0 && selectedNotEncodedRendition.length === notEncodedRenditions.length}
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
                             const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.name })
@@ -89,7 +90,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const EncodedRenditionsTableHeader = () => {
         return {data: [
-            {cell: <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" disabled={selectedNotEncodedRendition.length > 0} indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} defaultChecked={selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
+            {cell: <InputCheckbox className="inline-flex" id="globalCheckboxEncoded" 
+                disabled={selectedNotEncodedRendition.length > 0} 
+                indeterminate={selectedEncodedRendition.length >= 1 && selectedEncodedRendition.length < props.renditions.encodedRenditions.length} 
+                defaultChecked={selectedEncodedRendition.length > 0 && selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
                         const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.name })
