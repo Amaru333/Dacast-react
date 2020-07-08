@@ -132,7 +132,6 @@ resource "aws_cloudfront_distribution" "s3_distribution_client" {
 
         forwarded_values {
             query_string = true
-            query_string_cache_keys = ["a"]
 
             cookies { 
                 forward = "none"
