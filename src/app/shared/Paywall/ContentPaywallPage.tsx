@@ -106,7 +106,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promosTableBody = () => {
         if(props.contentPaywallInfos.promos) {
-            return props.contentPaywallInfos.promos.map((promo, key) => {
+            return props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).map((promo, key) => {
                 return {data: [
                     <Text key={'promosTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promosTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
@@ -212,7 +212,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
                 <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
-                { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.length > 0 ?
+                { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).length > 0 ?
                     <Table id='promosTable' headerBackgroundColor="gray-10" header={promosTableHeader()} body={promosTableBody()} />
                     :                    
                     <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} body={emptyContentListBody('You have no Promos')} />
