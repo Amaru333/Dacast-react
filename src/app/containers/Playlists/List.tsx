@@ -25,12 +25,9 @@ const PlaylistList = (props: PlaylistListComponentProps) => {
         if (!props.playlistList) {
             props.getPlaylistList();
         }
-        if(!props.themeList) {
-            props.getThemingList();
-        }
     }, [])
 
-    if (!props.playlistList || !props.themeList) {
+    if (!props.playlistList) {
         return (
             <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
         )

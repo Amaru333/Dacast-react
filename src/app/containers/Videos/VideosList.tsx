@@ -17,12 +17,9 @@ const VideosList = (props: VideosListProps) => {
         if (!props.items) {
             props.getVodList();
         }
-        if(!props.themesList.themes) {
-            props.getThemesList()
-        }
     }, [])
 
-    if (!props.items || !props.themesList.themes) {
+    if (!props.items) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (

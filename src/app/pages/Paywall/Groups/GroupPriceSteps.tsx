@@ -133,16 +133,18 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
 export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
-    const [selectedFolder, setSelectedFolder] = React.useState<string>(null);
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
+    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
+    const [searchString, setSearchString] = React.useState<string>(null)
 
     const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS)
-    }, [selectedFolder])
+        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+    }, [selectedFolder, searchString])
+
 
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.type) {
@@ -258,7 +260,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
         <>
             <div className="inline-flex items-center flex col-12 mb2">
                 <IconStyle>search</IconStyle>
-                <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={[]} />
+                <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
             </div>
             <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <div className="pl1 pr1">

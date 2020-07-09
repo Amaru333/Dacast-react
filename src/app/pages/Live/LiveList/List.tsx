@@ -243,7 +243,11 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 <OnlineBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-                <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+
+                {
+                    bulkThemeOpen &&
+                    <ThemeBulkForm getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                }
                 <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
