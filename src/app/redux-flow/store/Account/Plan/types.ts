@@ -10,8 +10,9 @@ export enum ActionTypes {
 
 
 export interface BillingPageInfos {
-    paypal?: PaypalPayment;
-    creditCard?: CreditCardPayment; 
+    currentPlan: PlanSummary
+    paymentMethod?: PaymentDetails
+    paywallBalance: number;
     playbackProtection?: PlaybackProtection;
     extras?: Extras[];
     products: Products
@@ -30,26 +31,21 @@ export interface Extras {
     datePurchased?: Date;
 }
 
-export interface PaypalPayment {
-    emailAddress: string;
-    billingId: number;
-
-}
-
-export interface CreditCardPayment {
-    firstName: string;
-    lastName: string;
-    cardNumber: number;
-    month: number;
-    year: number;
-    cvv: number;
-    country: string;
-    vatNumber: string;
-    address1: string;
-    address2: string;
-    city: string;
-    state: string;
-    postCode: string;
+export interface PaymentDetails {
+    type: string;
+    address?: string;
+    address2?: string;
+    cardType?: string;
+    country?: string;
+    city?: string;
+    expiryMonth?: string;
+    expiryYear?: string;
+    firstName?: string;
+    lastName?: string;
+    firstSix?: string;
+    lastFour?: string;
+    billingID: string;
+    email?: string;
 
 }
 
@@ -73,8 +69,24 @@ export interface Product {
     unitPrice: number;
 }
 
+export interface PlanSummary {
+    displayName: string;
+    planCode: string;
+    planName: string;
+    state: string;
+    overageStorageUnitPrice: string;
+    playbackProtectionUnitPrice: string;
+    periodStartedAt: number;
+    periodEndsAt: number;
+    price: number;
+    currency: string;
+    paymentFrequency: string;
+    paymentTerm: number
+}
+
 export const planInitialState: BillingPageInfos = {
-    paypal: null,
-    creditCard: null,
-    products: null
+    paymentMethod: null,
+    products: null,
+    paywallBalance: null,
+    currentPlan: null
 };
