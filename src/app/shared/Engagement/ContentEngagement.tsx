@@ -108,8 +108,23 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
-
-
+  
+    React.useEffect(() => {
+        const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
+    
+        if(ads.length > 0 || adsEnabled){
+            setAdSectionEditable(true)
+        }
+        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
+            setBrandImageSectionEditable(true)
+        }
+        if(brandText || brandTextLink || isBrandTextAsTitle){
+            setBrandSectionEditable(true)
+        }
+        if(endScreenText || endScreenTextLink){
+            setEndScreenSectionEditable(true)
+        }
+    }, [props.contentEngagementSettings])
 
     const newAd = () => {
         setSelectedAd(emptyAd);
