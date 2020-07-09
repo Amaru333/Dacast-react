@@ -24,16 +24,12 @@ export interface FoldersComponentProps {
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData.requestedContent) {
-                props.getFolderContent(null)
-               
-        }
-        if(!props.themesList.themes) {
-            props.getThemesList()
+                props.getFolderContent(null)       
         }
         
     }, [])
     return (
-        props.folderData && props.themesList.themes ? 
+        props.folderData ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

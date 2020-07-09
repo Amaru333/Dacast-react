@@ -24,12 +24,9 @@ export const LiveList = (props: LiveListComponentProps) => {
         if (!props.liveList) {
             props.getLiveList();
         }
-        if(!props.themesList.themes) {
-            props.getThemesList()
-        }
     }, [])
 
-    if (!props.liveList || !props.themesList.themes) {
+    if (!props.liveList) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (

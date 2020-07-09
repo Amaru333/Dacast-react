@@ -266,7 +266,11 @@ export const VideosListPage = (props: VideosListProps) => {
             <OnlineBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            
+            {
+                bulkThemeOpen &&
+                <ThemeBulkForm getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            }
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 

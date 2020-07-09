@@ -172,7 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
-                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
+                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
@@ -204,7 +204,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepperData={stepperData}
                 widthSecondStep={60}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                functionCancel={() => {setGroupPricesStepperOpened(false)}}
+                functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
                 finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>
