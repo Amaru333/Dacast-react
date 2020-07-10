@@ -31,7 +31,7 @@ const savePlaylistThemeService = async (data: ThemeOptions, playlistId: string) 
     } else {
         if(data.id === '-1') {
             return axios.post(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes/',
-                {...data, offlineMessagePosition: "Top"}, 
+                {...data}, 
                 {
                     headers: {
                         Authorization: token
@@ -40,7 +40,7 @@ const savePlaylistThemeService = async (data: ThemeOptions, playlistId: string) 
             )
         } else {
             return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes/' + data.id,
-                {...data, offlineMessagePosition: "Top"}, 
+                {...data}, 
                 {
                     headers: {
                         Authorization: token
