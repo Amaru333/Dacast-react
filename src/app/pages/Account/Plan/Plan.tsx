@@ -38,7 +38,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
-    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false )
+    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection.enabled)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
@@ -47,11 +47,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
-
-    React.useEffect(() => {
-    }, [props.billingInfos.playbackProtection])
-
-    
+  
     const submitExtra = () => {
         if(stepperExtraItem) {
             props.addBillingPageExtras(stepperExtraItem);
@@ -76,7 +72,10 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     
 
     const disabledTableHeader = () => {
-        return {data: [
+        return props.billingInfos.paymentMethod ? {data: [
+            {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>}
+        ]}
+        : {data: [
             {cell: <span key={'disabledTableHeader'}></span>}
         ]}
     }
@@ -104,8 +103,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         if(props.billingInfos.playbackProtection && props.billingInfos.playbackProtection.enabled !== null) {
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
-                <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount}</Text>,
-                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.price}</Text>,
+                <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount} GB</Text>,
+                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">${props.billingInfos.playbackProtection.price}</Text>,
                 <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
@@ -116,16 +115,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             ]}]
         }
     }
-
-    const mockPlanDetails = [{
-        planType: "event",
-        paymentAmount: 890,
-        paymentCurrency: "USD",
-        recurring: "monthly",
-        nextBill: "09/10/2020",
-        status: "active",
-        paywallBalance: 5604
-    }]
 
     const planDetailsTableHeaderElement = () => {
         return {data:[
@@ -139,20 +128,19 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     }
 
     const planDetailsTableBodyElement = () => {
-        return mockPlanDetails.map((planDetails) => {
-            const color = planDetails.status === 'active' ? 'green' : planDetails.status === 'expired' ? 'yellow' : 'red';
+            const {state, displayName, currency, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
+            const color = state === 'active' ? 'green' : state === 'expired' ? 'yellow' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
-            return {data:[
-                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{planDetails.planType.charAt(0).toUpperCase() + planDetails.planType.slice(1)}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{planDetails.paymentCurrency === 'gbp' ? "£" : "$" + planDetails.paymentAmount + " " + planDetails.paymentCurrency.toUpperCase()}</Text>,
-                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{planDetails.recurring.charAt(0).toUpperCase() + planDetails.recurring.slice(1)}</Text>,
-                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{planDetails.nextBill}</Text>,
-                <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={planDetails.status.charAt(0).toUpperCase() + planDetails.status.slice(1)} />,
-                <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{planDetails.paymentCurrency === 'gbp' ? "£" : "$" + planDetails.paywallBalance + " " + planDetails.paymentCurrency.toUpperCase()}</Text>
-            ]}})    
-    }
-
-
+            return [{data:[
+                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency}</Text>,
+                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{paymentTerm === 12 ? "Yearly" : "Monthly"}</Text>,
+                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(periodEndsAt)}</Text>,
+                <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state} />,
+                <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
+            ]}]
+    }  
+    
     return (
         <div>
             <div className={classContainer}>
@@ -210,8 +198,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                
                 {
-                    (props.billingInfos.paypal === null || typeof props.billingInfos.paypal === 'undefined') && (props.billingInfos.creditCard=== null || typeof props.billingInfos.creditCard === 'undefined') && !playbackProtectionEnabled ?
-                        <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody('Add Payment Method before Enablind Playback Protection')} />
+                    (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
+                        <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody((props.billingInfos.paymentMethod ? 'Enable Playback Protection to ensure your content never stops playing': 'Add Payment Method before Enablind Playback Protection'))} />
                         :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                     
 
@@ -244,7 +232,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
                 <Elements>                
             <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal actionButton={props.billingInfos.playbackProtection ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection : null}/>
+                <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection.enabled ? props.billingInfos.playbackProtection : null}/>
             </Modal>
             <CustomStepper 
                 opened={extrasModalOpened}

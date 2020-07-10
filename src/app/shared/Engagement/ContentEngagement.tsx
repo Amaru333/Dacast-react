@@ -40,7 +40,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const emptyAd: Ad = {
         id: "-1",
-        "ad-type": "",
+        "ad-type": "pre-roll",
         timestamp: 0,
         url: ""
     }
@@ -108,8 +108,23 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
-
-
+  
+    React.useEffect(() => {
+        const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
+    
+        if(ads.length > 0 || adsEnabled){
+            setAdSectionEditable(true)
+        }
+        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
+            setBrandImageSectionEditable(true)
+        }
+        if(brandText || brandTextLink || isBrandTextAsTitle){
+            setBrandSectionEditable(true)
+        }
+        if(endScreenText || endScreenTextLink){
+            setEndScreenSectionEditable(true)
+        }
+    }, [props.contentEngagementSettings])
 
     const newAd = () => {
         setSelectedAd(emptyAd);
@@ -167,7 +182,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(item, props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                                onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>

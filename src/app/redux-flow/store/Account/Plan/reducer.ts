@@ -1,6 +1,6 @@
 
 import { ActionTypes, BillingPageInfos, PlanAction } from '.';
-import { CreditCardPayment, PaypalPayment, planInitialState } from './types';
+import { planInitialState } from './types';
 
 
 export const reducer = (state = planInitialState, action: PlanAction): BillingPageInfos => {
@@ -11,16 +11,15 @@ export const reducer = (state = planInitialState, action: PlanAction): BillingPa
             }
         case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
             return {...state,
-                paypal: Object.keys(action.payload).includes('emailAddress') ? {...action.payload} as PaypalPayment : null,
-                creditCard: Object.keys(action.payload).includes('firstName') ? {...action.payload} as CreditCardPayment : null
+                paymentMethod: {...action.payload}
             }
         case ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
-                playbackProtection: {...action.payload}
+                playbackProtection: {...state.playbackProtection, ...action.payload}
             }
         case ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
-                playbackProtection: {...action.payload}
+                playbackProtection: {...state.playbackProtection, ...action.payload}
             }
         case ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
