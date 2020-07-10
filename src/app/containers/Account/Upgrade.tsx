@@ -3,7 +3,7 @@ import { LoadingSpinner} from '../../../components/FormsComponents/Progress/Load
 import { UpgradePage } from '../../pages/Account/Upgrade/Upgrade';
 import { Plans, ChangePlan, Plan } from '../../redux-flow/store/Account/Upgrade/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { UpgradeAction, getPlanDetailsAction, changeActivePlanAction } from '../../redux-flow/store/Account/Upgrade/actions';
+import { UpgradeAction, getPlanDetailsAction, purchasePlanAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -12,7 +12,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 export interface UpgradeContainerProps {
     planDetails: Plans;
     getPlanDetails: () => void;
-    changeActivePlan: (data: ChangePlan) => void;
+    purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => void;
 }
 
 const UpgradeContainer = (props: UpgradeContainerProps) => {
@@ -41,8 +41,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
         },
-        changeActivePlan: async (data: Plan, recurlyData: any) => {
-            await dispatch(changeActivePlanAction(data, recurlyData))
+        purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
+            await dispatch(purchasePlanAction(data, recurlyToken, token3Ds, callback, fallback))
         }
     }
 }

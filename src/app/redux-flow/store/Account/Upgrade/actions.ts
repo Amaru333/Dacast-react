@@ -26,13 +26,15 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
     };
 }
 
-export const changeActivePlanAction = (data: Plan, recurlyToken: any): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
+export const purchasePlanAction = (data: Plan, recurlyToken: any, token3Ds?: string, callback?: Function, fallback?: Function): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
         console.log('data(stepper data', data)
-        await UpgradeServices.changeActivePlanService(data, recurlyToken)
+        await UpgradeServices.purchasePlanService(data, recurlyToken, token3Ds)
             .then( response => {
                 dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
+                callback(response);
             }).catch((error) => {
+                fallback(error);
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 console.log('error', error)
             })
