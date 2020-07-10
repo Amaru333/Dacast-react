@@ -13,10 +13,7 @@ export const reducerPlaylistList: Reducer<SearchResult | false> = (state = false
             })
             return {...action.payload.data, results: playlistList}        
         case ActionTypes.DELETE_PLAYLIST:
-            if(state) {
-                var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
-                return {...state, results: newList}
-            }
+            return state
         default:
             return state;
     }

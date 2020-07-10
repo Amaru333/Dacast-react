@@ -39,10 +39,7 @@ export const reducerList: Reducer<SearchResult| false> = (state = initialLiveLis
             let liveList = action.payload.data.results.map((live: LiveItem) => {return {...live, objectID: live.objectID.substring(8)}})
             return {...action.payload.data, results: liveList}
         case ActionTypes.DELETE_LIVE_CHANNEL:
-            if(state) {
-                var newList = state.results.filter(elem => elem.objectID !== action.payload)
-                return {...state, results: newList}
-            }
+            return state
         default:
             return state;
     }

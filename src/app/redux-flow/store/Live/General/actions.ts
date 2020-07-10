@@ -82,7 +82,6 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
         await LiveGeneralServices.deleteLiveChannelService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: data });
-                dispatch(showToastNotification("Channel has been deleted", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

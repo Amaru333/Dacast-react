@@ -69,7 +69,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             })
 
             if (filters.afterDate || filters.beforedate) {
-                returnedString += `created-at=${filters.beforedate ? filters.beforedate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+                returnedString += `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
             }
         }
         if (searchString) {
@@ -86,8 +86,10 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     React.useEffect(() => {
-        props.getPlaylistList(parseFiltersToQueryString(selectedFilters))
-    }, [selectedFilters, searchString, paginationInfo, sort])
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+            props.getPlaylistList(parseFiltersToQueryString(selectedFilters)) 
+        }
+    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
 
     const liveListHeaderElement = () => {
         return {
