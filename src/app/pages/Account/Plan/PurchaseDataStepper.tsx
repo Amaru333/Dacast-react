@@ -5,6 +5,7 @@ import { Table } from '../../../../components/Table/Table';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
+import { handleDataPrice } from '../../../../utils/utils';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function}) => {
 
@@ -19,18 +20,6 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
         props.updateStepperData({...props.stepperData, totalPrice: (dataPrice * dataAmount)})
     }, [dataAmount])
 
-    const handleDataPrice = (data: number) => {
-        setDataAmount(data)
-        if(data <= 4999 ){
-            setDataPrice(0.25)
-        } else if(data >= 5000 && data <= 9999){
-            setDataPrice(0.12)
-        } else if(data >= 10000) {
-            setDataPrice(0.09)
-        } else {
-            setDataPrice(null)
-        }
-    }
 
     const cartTableBodyElement = () => {
         return [
@@ -52,7 +41,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value));props.updateStepperData({...props.stepperData, dataAmount: event.currentTarget.value})}} />
+            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, dataAmount: event.currentTarget.value})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>

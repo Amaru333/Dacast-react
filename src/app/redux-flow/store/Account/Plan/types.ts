@@ -20,8 +20,8 @@ export interface BillingPageInfos {
 
 export interface PlaybackProtection {
     enabled: boolean;
-    amount: string;
-    price: string;
+    amount: number;
+    price: number;
 }
 
 export interface Extras {

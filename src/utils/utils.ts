@@ -291,3 +291,16 @@ export const calculateAnnualPrice = (total: number) => {
 export const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
+
+export const handleDataPrice = (data: number, setDataAmount: Function, setDataPrice: Function) => {
+    setDataAmount(data)
+    if(data <= 4999 ){
+        setDataPrice(0.25)
+    } else if(data >= 5000 && data <= 9999){
+        setDataPrice(0.12)
+    } else if(data >= 10000) {
+        setDataPrice(0.09)
+    } else {
+        setDataPrice(null)
+    }
+}
