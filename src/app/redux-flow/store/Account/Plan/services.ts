@@ -32,12 +32,13 @@ const saveBillingPagePaymentMethodService = async (data: CreditCardPayment | Pay
     )
 }
 
-const addBillingPagePaymenPlaybackProtectionService = async (data: number) => {
+const addBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
         {
-            data
+            'enabled': enabled,
+            'amount': amount
         },
         {
             headers: {
@@ -47,12 +48,13 @@ const addBillingPagePaymenPlaybackProtectionService = async (data: number) => {
     )
 }
 
-const editBillingPagePaymenPlaybackProtectionService = async (data: number) => {
+const editBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
         {
-            data
+            'enabled': enabled,
+            'amount': amount
         },
         {
             headers: {

@@ -66,7 +66,7 @@ export const saveBillingPagePaymentMethodAction = (data: CreditCardPayment | Pay
 
 export const addBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProtection): ThunkDispatch<Promise<void>, {}, AddBillingPagePlaybackProtection> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, AddBillingPagePlaybackProtection> ) => {
-        await BillingServices.addBillingPagePaymenPlaybackProtectionService(data.amount)
+        await BillingServices.addBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
                 dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
@@ -78,7 +78,7 @@ export const addBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProte
 
 export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProtection): ThunkDispatch<Promise<void>, {}, EditBillingPagePlaybackProtection> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, EditBillingPagePlaybackProtection> ) => {
-        await BillingServices.editBillingPagePaymenPlaybackProtectionService(data.amount)
+        await BillingServices.editBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
                 dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
