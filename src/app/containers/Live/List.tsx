@@ -9,13 +9,16 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveListComponentProps {
     liveList: SearchResult;
     getLiveList: Function;
     deleteLiveChannel: Function;
     getThemesList: Function;
-    themesList: ThemesData
+    themesList: ThemesData;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void
 }
 
 export const LiveList = (props: LiveListComponentProps) => {
@@ -52,7 +55,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getThemesList: () => {
             dispatch(getThemingListAction())
-        }
+        },
+        showToast: (text: string, size: Size, type: NotificationType) => {
+            dispatch(showToastNotification(text, size, type))
+        },
     };
 }
 

@@ -17,7 +17,7 @@ export interface FoldersComponentProps {
     getFolderContent: Function;
     deleteContent: Function;
     restoreContent: Function;
-    showToast: Function;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getThemesList: Function;
 }
 

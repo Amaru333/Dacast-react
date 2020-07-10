@@ -10,9 +10,7 @@ const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Ac
             return {
                 ...state,
                 themes: [
-                    {...standardTheme,
-                        isDefault: action.payload.data.themes.filter(t => t.isDefault).length === 0
-                    }, 
+                    standardTheme, 
                     ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
             }
         case ActionTypes.CREATE_SETTING_THEME :

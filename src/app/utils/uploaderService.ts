@@ -10,6 +10,7 @@ export class UploadObject {
         fileChunkSize: number,
         onProgressUpdate: (percent: number) => void,
         onError: (error: any) => void,
+        recipeId?: string,
         vodId?: string
     ) {
         this.file = file
@@ -18,6 +19,7 @@ export class UploadObject {
         this.fileChunkSize = fileChunkSize        
         this.onProgressUpdate = onProgressUpdate
         this.onError = onError
+        this.recipeId = recipeId
         this.vodId = vodId
         this.requestBatch = this.requestBatch.bind(this)
         this.uploadPart = this.uploadPart.bind(this)
@@ -31,6 +33,7 @@ export class UploadObject {
     private onProgressUpdate: (percent: number) => void
     private onError: (error: any) => void
     private vodId: string
+    private recipeId: string
     uploadId: string
     urlS3: string
     ETags: { partNumber: number; etag: string }[] = []
@@ -97,7 +100,8 @@ export class UploadObject {
         let { token } = addTokenToHeader();
         let bodyRequest = null
         bodyRequest = {
-            fileName: this.file.name
+            fileName: this.file.name,
+            recipeID: this.recipeId
         }
         let requestUrl = `${process.env.API_BASE_URL}/uploads/init-multipart/vod`
         if(this.vodId) {
@@ -146,7 +150,8 @@ export class UploadObject {
         let { token } = addTokenToHeader();
         let bodyRequest = null
         bodyRequest = {
-            fileName: this.file.name
+            fileName: this.file.name,
+            recipeID: this.recipeId
         }
         let requestUrl = `${process.env.API_BASE_URL}/uploads/signatures/singlepart/vod`
         if(this.vodId) {
