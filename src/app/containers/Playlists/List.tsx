@@ -8,6 +8,8 @@ import { getPlaylistListAction, Action, deletePlaylistAction } from '../../redux
 import { PlaylistListPage } from '../../pages/Playlist/List/PlaylistList';
 import { getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PlaylistListComponentProps {
     playlistList: SearchResult;
@@ -15,6 +17,7 @@ export interface PlaylistListComponentProps {
     themeList: ThemesData;
     getThemingList: Function;
     deletePlaylist: Function;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const PlaylistList = (props: PlaylistListComponentProps) => {
@@ -57,7 +60,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deletePlaylist: (playlistId: string, title: string) => {
             dispatch(deletePlaylistAction(playlistId, title));
-        }
+        },
+        showToast: (text: string, size: Size, type: NotificationType) => {
+            dispatch(showToastNotification(text, size, type))
+        },
     };
 }
 
