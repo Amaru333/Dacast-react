@@ -343,6 +343,7 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         props.setStepValidated(props.stepperData.termsAndConditions)
     }, [props.stepperData.termsAndConditions])
 
+    
     const step2header = () => {
 
         return {
@@ -375,27 +376,6 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         }]
     }
 
-    // I didn't use the one from the redux flow because I couldn't access the response from the Promise for some reason will change it back later
-    const test = async (recurlyToken: string, threeDSecureToken: string) => {
-        await isTokenExpired()
-        let { token, userId } = addTokenToHeader();
-        return await axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/plans/purchase',
-            {
-                planCode: props.stepperData.code,
-                token: recurlyToken,
-                threeDSecureToken: threeDSecureToken,
-                currency: 'USD',
-                couponCode: '',
-                allowances: props.stepperData.allownaceCode,
-                paidPrivileges: props.stepperData.privileges.map((privilege) => { return privilege.checked ? { code: privilege.code, quantity: 1 } : null }).filter(f => f)
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
-    }
     return (
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()} />

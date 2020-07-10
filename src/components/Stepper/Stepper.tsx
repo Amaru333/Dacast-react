@@ -70,7 +70,7 @@ export const CustomStepper = (props: StepperProps) => {
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData, props.finalFunction)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
-                    <StepperNextButton id='stepperNextButton' {...props.nextButtonProps} disabled={!stepValidated} onClick={nextStep}>
+                    <StepperNextButton id='stepperNextButton' {...props.nextButtonProps} isLoading={props.isLoading} disabled={!stepValidated} onClick={nextStep}>
                         {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
                     </StepperNextButton>
                     {stepIndex !== 0 ?
