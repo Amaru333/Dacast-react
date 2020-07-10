@@ -32,7 +32,7 @@ const getVodList = async (qs: string) => {
 const deleteVodService = async (vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/vods/' + vodId, 
+    return await axios.delete(process.env.API_BASE_URL + '/vods/' + vodId, 
         {
             headers: {
                 Authorization: token

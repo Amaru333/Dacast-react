@@ -26,6 +26,7 @@ import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/t
 import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
+import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
 
 export interface VideosListProps {
     items: SearchResult;
@@ -54,7 +55,8 @@ export const VideosListPage = (props: VideosListProps) => {
     const [sort, setSort] = React.useState<string>(null)
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
-
+    const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
+    const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -189,7 +191,7 @@ export const VideosListPage = (props: VideosListProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { props.deleteVodList(value.objectID);props.showVodDeletedToast(`${value.title} has been deleted`, 'flexible', "success") }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>  
                     </div>,
@@ -281,6 +283,12 @@ export const VideosListPage = (props: VideosListProps) => {
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                }
+            </Modal>
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+                {
+                    deleteContentModalOpened &&
+                    <DeleteContentModal showToast={props.showVodDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteVodList(contentToDelete.id)}} />
                 }
             </Modal>
         </>

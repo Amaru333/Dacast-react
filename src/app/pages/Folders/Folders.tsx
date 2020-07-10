@@ -530,7 +530,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
                     deleteFolderModalOpened &&
-                    <DeleteFolderModal toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath)}} />
+                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath)}} />
                 }
             </Modal>
             <OnlineBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />

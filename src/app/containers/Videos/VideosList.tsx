@@ -40,8 +40,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getVodList: (qs: string) => {
             dispatch(getVodListAction(qs));
         },
-        deleteVodList: (vodId: string) => {
-            dispatch(deleteVodAction(vodId));
+        deleteVodList: async (vodId: string) => {
+            await dispatch(deleteVodAction(vodId));
         },
         getThemesList: () => {
             dispatch(getThemingListAction())
