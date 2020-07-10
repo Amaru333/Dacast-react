@@ -55,7 +55,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 couponCode: '',
                 allowances: stepperData.allownaceCode,
                 paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
-                },
+            },
             {
                 headers: {
                     Authorization: token
@@ -63,7 +63,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             }
             
         ).then(response => {
-            debugger
             if(response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
@@ -74,7 +73,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             }
             
         }).catch((error) => {
-            setStepperPlanOpened(false)
             setPaymentDeclinedModalOpened(true)
         })
         
@@ -93,7 +91,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 couponCode: '',
                 allowances: stepperData.allownaceCode,
                 paidPrivileges: stepperData.privileges.map((privilege) => {return privilege.checked ? {code: privilege.code, quantity: 1} : null}).filter(f => f)
-                },
+            },
             {
                 headers: {
                     Authorization: token
@@ -101,12 +99,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             }
             
         ).then(response => {
-            debugger
-                setStepperPlanOpened(false)
-                console.log(`3DS authentication successful. ${stepperData.name} plan purchased successfully`)
-                setPaymentSuccessfulModalOpened(true)
-                setThreeDSecureActive(false)
-            }
+            setStepperPlanOpened(false)
+            console.log(`3DS authentication successful. ${stepperData.name} plan purchased successfully`)
+            setPaymentSuccessfulModalOpened(true)
+            setThreeDSecureActive(false)
+        }
             
         ).catch((error) => {
             
@@ -115,7 +112,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handleThreeDSecureFail = () => {
-        setStepperPlanOpened(false)
         setPaymentDeclinedModalOpened(true)
     }
 
@@ -235,8 +231,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                                 </div>
                                                 : 
                                                 <div className="flex flex-column mb25 col col-8 ">
-                                                <Text className='center' size={10} color='gray-5'>3 Month Minimum</Text>
-                                            </div>}
+                                                    <Text className='center' size={10} color='gray-5'>3 Month Minimum</Text>
+                                                </div>}
                                             {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
                                             <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === 'Annual Scale'} sizeButton='large' buttonColor='blue' onClick={() => {{planBillingFrequency === "Annually" ? setStepperData({...props.planDetails.scalePlanAnnual, selectedScalePlan: props.planDetails.scalePlanAnnual.allowances[0], paymentTerm: 12}) :setStepperData({...props.planDetails.scalePlanAnnual, selectedScalePlan: props.planDetails.scalePlanAnnual.allowances[0], paymentTerm: 1})};handleSteps('scale')}}>{currentPlan === 'Annual Scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
@@ -456,14 +452,14 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                     updateStepperData={(value: Plan) => setStepperData(value)}
                                     functionCancel={setStepperPlanOpened}
                                     finalFunction={ threeDSecureActive ? purchasePlan3Ds : props.changeActivePlan}
-                                    usefulFunctions={{'handleThreeDSecureFail': handleThreeDSecureFail}}
+                                    usefulFunctions={{'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan}}
                                 />
                                 
                         }
 
                     </Elements>
                 </RecurlyProvider>
-                <Modal icon={{name: "check_circle_outline", color:"green"}} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} hasClose={false}>
+                <Modal icon={{name: "check_circle_outline", color:"green"}} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} >
                     <div className="mt2 mb3">
                         <Text  size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
                     </div>  
@@ -472,7 +468,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                         <Button typeButton="tertiary">See Invoices</Button>
                     </ModalFooter>
                 </Modal>
-                <Modal icon={{name: "warning_outlined", color:"red"}} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={false}>
+                <Modal icon={{name: "warning_outlined", color:"red"}} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={true}>
                     <div className="mt2 mb3">
                         <Text  size={14}>Something went wrong during your upgrade. Your payment may have been declined. Please try again or <a href="/help">Contact Us</a> if you believe this is a mistake.</Text>
                     </div>

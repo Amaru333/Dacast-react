@@ -3,7 +3,7 @@ import { TextStyle, RadioButtonContainer, RadioButtonOption, RecurlyElementStyle
 import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { useRecurlySubmit } from '../../utils/useRecurlySubmit';
+import { useRecurlySubmit, getTokenRecurly } from '../../utils/useRecurlySubmit';
 import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
@@ -22,35 +22,69 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
+    const elements = recurly.Elements();
+
     recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
-    const paypal = recurly.PayPal(
-        { display: { displayName: " Dacast " } }
-    )
 
+    console.log(props);
 
-    React.useEffect(() => {
-        //Add state update depending on the event here
-        if (paypal) {
+    useStepperFinalStepAction('stepperNextButton', () => {
+        if(selectedOption === 'paypal') {
+            const paypal = recurly.PayPal(
+                { display: { displayName: " Dacast " } }
+            )
+
             paypal.on('token', token => {
-                console.log('Token: ', token)
+                props.purchasePlan(token.id, null, (token3Ds: string) => {
+                    setThreeDSecureActionToken(token3Ds);
+                });
             })
 
             paypal.on('error', error => {
-                throw error
+                props.handleThreeDSecureFail();
             })
 
             paypal.on('cancel', (e) => {
-                console.log(e)
+                props.handleThreeDSecureFail();
             })
 
             paypal.on('ready', () => {
                 console.log('Ready')
             })
+
+            paypal.start();
+
+        } else {
+            console.log(formRef.current);
+            recurly.token(formRef.current,(err: any, token: any) => {
+                console.log(token, err)
+                if (err) {
+                    console.log(err)
+                } 
+                else {
+                    console.log('sucees token', token.id)
+                    setRecurlyToken(token.id);
+                    props.purchasePlan(token.id, null, (token3Ds: string) => {
+                        setThreeDSecureActionToken(token3Ds);
+                    });
+                }
+            });
         }
+        
+    })
 
-    }, [paypal])
+    
+    const [isAttached, setIsAttached] = React.useState<boolean>(false)
 
-    useStepperFinalStepAction('stepperNextButton', () => useRecurlySubmit(formRef.current, selectedOption, props.callback, recurly, props.actionButton, setThreeDSecureActionToken, setRecurlyToken, props.stepperData, paypal))
+    React.useEffect(() => {
+        if(!isAttached) {
+            const CardElement = elements.CardElement();
+            CardElement.attach("#recurly-elements");
+            setIsAttached(true)
+        }
+    });
+
+    
 
     return (
         <form id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault() }} >
@@ -77,37 +111,7 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                         required={false}
                         onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, lastName: event.currentTarget.value } })}
                     />
-                    <div className={ClassHalfXsFullMd + 'pr1 mb2'}>
-                        <Text size={14} weight="med">Number</Text>
-                        <RecurlyElementStyle>
-                            <CardNumberElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} onChange={(state) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, cardNumber: state.lastFour } })} />
-                        </RecurlyElementStyle>
-
-                    </div>
-
-                    <div className="col col-6 sm-col-2 sm-pl1 mb2 pr1">
-                        <Text size={14} weight="med">CVV</Text>
-                        <RecurlyElementStyle>
-                            <CardCvvElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
-                        </RecurlyElementStyle>
-
-                    </div>
-
-                    <div className="col col-3 sm-col-2 pl1 mb2 pr1">
-                        <Text size={14} weight="med">Month</Text>
-                        <RecurlyElementStyle>
-                            <CardMonthElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
-                        </RecurlyElementStyle>
-
-                    </div>
-
-                    <div className="col col-3 sm-col-2 pl1 mb2">
-                        <Text size={14} weight="med">Year</Text>
-                        <RecurlyElementStyle>
-                            <CardYearElement style={{ fontColor: Theme.colors["gray-1"], fontFamily: 'Roboto', fontSize: '14px' }} />
-                        </RecurlyElementStyle>
-
-                    </div>
+                    <div className='mb2 col col-12' id="recurly-elements"></div>
                     <Input
                         data-recurly="vat_number"
                         className={ClassHalfXsFullMd + 'pr1 mb2'}
@@ -179,7 +183,6 @@ export const NewPaymentMethodForm = (props: { callback: Function; actionButton?:
                     <Text size={14} weight='reg' color='gray-1'>
                         When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                     </Text>
-                    <Button onClick={() => { paypal.start() }}>Recurly Checkout</Button>
                 </div>
 
             </RadioButtonOption>
