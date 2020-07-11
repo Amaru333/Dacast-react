@@ -128,7 +128,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                         else {
                             return {
                                 ...item,
-                                ...action.payload
+                                ...action.payload.data
                             }
                         }
                     })

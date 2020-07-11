@@ -241,7 +241,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             </Modal>
             <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit' : 'Create') + ' Promo'} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>
                 {
-                    promoModalOpened && <ContentPromoPresetsModal action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
+                    promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? 'Save' : 'Create'} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
                 }
             </Modal>
             <Prompt when={contentPaywallSettings !== props.contentPaywallInfos} message='' />
