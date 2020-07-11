@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { LiveTabs } from './LiveTabs';
@@ -35,6 +35,7 @@ export interface LivePaywallComponentProps {
     getPaywallThemes: Function;
     globalPresets: PresetsPageInfos;
     getPresetsInfo: Function;
+    getPromoPresetsInfo: Function;
     customPricePresetList: Preset[];
     createPricePreset: Function;
     customPromoPresetList: Promo[];
@@ -56,8 +57,11 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
         if(!props.theming) {
             props.getPaywallThemes()
         }
-        if(!props.globalPresets) {
+        if(!props.globalPresets|| !props.globalPresets.presets) {
             props.getPresetsInfo('page=1&per-page=100')
+        }
+        if(!props.globalPresets || !props.globalPresets.promos) {
+            props.getPromoPresetsInfo('page=1&per-page=100')
         }
         props.getLivePaywallPrices(liveId)
         props.getLivePaywallPromos(liveId)
@@ -189,6 +193,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getPresetsInfo: (qs: string) => {
             dispatch(getPricePresetsInfosAction(qs))
+        },
+        getPromoPresetsInfo: (qs: string) => {
+            dispatch(getPromoPresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));
