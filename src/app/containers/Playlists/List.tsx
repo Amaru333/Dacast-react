@@ -52,8 +52,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistList: (qs: string) => {
-            dispatch(getPlaylistListAction(qs));
+        getPlaylistList: async (qs: string) => {
+            await dispatch(getPlaylistListAction(qs));
         },
         getThemingList: () => {
             dispatch(getThemingListAction());

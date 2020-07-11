@@ -47,8 +47,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveList: (qs: string) => {
-            dispatch(getLiveListAction(qs));
+        getLiveList: async (qs: string) => {
+            await dispatch(getLiveListAction(qs));
         },
         deleteLiveChannel: (id: string) => {
             dispatch(deleteLiveChannelAction(id));

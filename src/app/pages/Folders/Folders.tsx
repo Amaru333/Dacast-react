@@ -56,7 +56,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
     const [assetToDelete, setAssetToDelete] = React.useState<ContentType & {name?: string}>(null)
-
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -117,7 +117,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     React.useEffect(() => {
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        setContentLoading(true)
+        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+            setContentLoading(false)
+        }).catch(() => {
+            setContentLoading(false)
+        })
     }, [selectedFilters, searchString, paginationInfo, sort])
 
     React.useEffect(() => {
@@ -136,7 +141,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     React.useEffect(() => {
         setCheckedItems([])
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        setContentLoading(true)
+        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+            setContentLoading(false)
+        }).catch(() => {
+            setContentLoading(false)
+        })
     }, [selectedFolder])
 
     // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
@@ -509,13 +519,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Table contentLoading={contentLoading} className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
                     <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
+                    newFolderModalOpened && 
+                    <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
