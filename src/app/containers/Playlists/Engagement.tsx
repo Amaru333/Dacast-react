@@ -3,7 +3,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction } from '../../redux-flow/store/Playlists/Engagement/actions';
+import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction, getUploadUrlAction, uploadPlaylistImageAction, deletePlaylistImageAction } from '../../redux-flow/store/Playlists/Engagement/actions';
 import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
@@ -20,6 +20,9 @@ export interface PlaylistEngagementComponentProps {
     createPlaylistAd: Function;
     deletePlaylistAd: Function;
     showToast: Function;
+    getUploadUrl: Function;
+    uploadPlaylistImage: Function;
+    deletePlaylistImage: Function;
 }
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
@@ -45,6 +48,9 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
                         saveContentAd={props.savePlaylistAd}
                         createContentAd={props.createPlaylistAd}
                         deleteContentAd={props.deletePlaylistAd}
+                        getUploadUrl={props.getUploadUrl}
+                        uploadContentImage={props.uploadPlaylistImage}
+                        deleteContentImage={props.deletePlaylistImage}
                         contentType='playlist'
                         contentId={playlistId}
                     />            
@@ -80,6 +86,15 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
+        },
+        getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
+        },
+        uploadPlaylistImage: (data: File, uploadUrl: string) => {
+            dispatch(uploadPlaylistImageAction(data, uploadUrl))
+        },
+        deletePlaylistImage: (targetId: string) => {
+            dispatch(deletePlaylistImageAction(targetId))
         }
     };
 }

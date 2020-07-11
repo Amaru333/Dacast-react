@@ -44,9 +44,55 @@ const savePlaylistAd = async (data: Ad[], adsId: string, playlistId: string) => 
     )
 }
 
+const getUploadUrl = async (data: string, playlistId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader()
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+        {
+            playlistID: playlistId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        })
+}
+
+const uploadFile = (data: File, uploadUrl: string) => {
+    return axios.put(uploadUrl, data)
+}
+
+const deletePlaylistAd = async (data: Ad[], adsId: string, playlistId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/engagement/brand-image',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const deleteFile = async (playlistId: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/engagement/brand-image',
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 
 export const playlistEngagementServices = {
     getPlaylistEngagementSettings,
     savePlaylistEngagementSettings,
-    savePlaylistAd
+    savePlaylistAd,
+    getUploadUrl,
+    uploadFile,
+    deleteFile,
+    deletePlaylistAd
 }

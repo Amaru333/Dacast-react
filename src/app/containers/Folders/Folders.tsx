@@ -17,23 +17,19 @@ export interface FoldersComponentProps {
     getFolderContent: Function;
     deleteContent: Function;
     restoreContent: Function;
-    showToast: Function;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getThemesList: Function;
 }
 
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData.requestedContent) {
-                props.getFolderContent(null)
-               
-        }
-        if(!props.themesList.themes) {
-            props.getThemesList()
+                props.getFolderContent(null)       
         }
         
     }, [])
     return (
-        props.folderData && props.themesList.themes ? 
+        props.folderData ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -49,8 +45,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolderContent: (qs: string) => {
-            dispatch(getFolderContentAction(qs))
+        getFolderContent: async (qs: string) => {
+            await dispatch(getFolderContentAction(qs))
         },
         deleteContent: (content: ContentType[]) => {
             dispatch(deleteContentAction(content))

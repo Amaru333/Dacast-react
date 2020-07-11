@@ -33,35 +33,35 @@ const Dashboard = (props: DashboardProps) => {
 
     React.useEffect(() => {
         if (props.infos) {
-            if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
-                props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
-            }
-            if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data && !props.infos.live.topChannels.loading  && !props.infos.live.topChannels.failed) {
-                props.getDashboardLiveTopChannels(props.infos.live.topChannels.jobID);
-            }
-            if(props.infos.vod.videoPlays.jobID && !props.infos.vod.videoPlays.data && !props.infos.vod.videoPlays.loading  && !props.infos.vod.videoPlays.failed) {
-                console.log(props.infos.vod.videoPlays)
-                props.getDashboardVodPlay(props.infos.vod.videoPlays.jobID);
-            }
-            if(props.infos.vod.playRate.jobID && !props.infos.vod.playRate.data && !props.infos.vod.playRate.loading  && !props.infos.vod.playRate.failed) {
-                props.getDashboardVodPlayRate(props.infos.vod.playRate.jobID);
-            }
-            if(props.infos.vod.impressions.jobID && !props.infos.vod.impressions.data && !props.infos.vod.impressions.loading  && !props.infos.vod.impressions.failed) {
-                // Useless and doesnt work, we got the answer in playrate vs impressions
-                //props.getDashboardVodImpressions(props.infos.vod.impressions.jobID);
-            }
-            if(props.infos.vod.topVideos.jobID && !props.infos.vod.topVideos.data && !props.infos.vod.topVideos.loading  && !props.infos.vod.topVideos.failed) {
-                props.getDashboardVodTopVideos(props.infos.vod.topVideos.jobID);
-            }
+            // if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
+            //     props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
+            // }
+            // if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data && !props.infos.live.topChannels.loading  && !props.infos.live.topChannels.failed) {
+            //     props.getDashboardLiveTopChannels(props.infos.live.topChannels.jobID);
+            // }
+            // if(props.infos.vod.videoPlays.jobID && !props.infos.vod.videoPlays.data && !props.infos.vod.videoPlays.loading  && !props.infos.vod.videoPlays.failed) {
+            //     console.log(props.infos.vod.videoPlays)
+            //     props.getDashboardVodPlay(props.infos.vod.videoPlays.jobID);
+            // }
+            // if(props.infos.vod.playRate.jobID && !props.infos.vod.playRate.data && !props.infos.vod.playRate.loading  && !props.infos.vod.playRate.failed) {
+            //     props.getDashboardVodPlayRate(props.infos.vod.playRate.jobID);
+            // }
+            // if(props.infos.vod.impressions.jobID && !props.infos.vod.impressions.data && !props.infos.vod.impressions.loading  && !props.infos.vod.impressions.failed) {
+            //     // Useless and doesnt work, we got the answer in playrate vs impressions
+            //     //props.getDashboardVodImpressions(props.infos.vod.impressions.jobID);
+            // }
+            // if(props.infos.vod.topVideos.jobID && !props.infos.vod.topVideos.data && !props.infos.vod.topVideos.loading  && !props.infos.vod.topVideos.failed) {
+            //     props.getDashboardVodTopVideos(props.infos.vod.topVideos.jobID);
+            // }
         }
     }, [props.infos])
 
     const renderDashboard = () => {
 
-        if (props.infos.isPayingPlan) {
+        if (true) {
             return (
                 <>
-                    <GeneralDashboard plan={props.infos.isPayingPlan} profile={props.infos.generalInfos} />
+                    <GeneralDashboard plan={props.infos.isTrial} profile={props.infos.generalInfos} />
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
                     {/* <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} /> */}

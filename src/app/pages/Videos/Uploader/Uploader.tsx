@@ -14,6 +14,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { useNetwork } from '../../../utils/customHooks';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -31,6 +32,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
+    const [selectedRecipe, setSelectedRecipe] = React.useState<string>(null)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
@@ -77,6 +79,9 @@ export const UploaderPage = (props: UploaderProps) => {
                 eta = Math.round(eta);
                 var etaUnit = ' seconds';
             }
+            if(percent >= 100) {
+                logAmplitudeEvent('upload video')
+            }
             return Object.assign([...currentList], {
                 [index]:
                 {
@@ -104,6 +109,11 @@ export const UploaderPage = (props: UploaderProps) => {
                     (percent: number) => { updateItem(percent, file.name, startTime) },
                     (err: any) => {
                         console.log(err)
+                        console.log(uploadFileQueue, uploadingList)
+                        setUploadFileQueue((currentList: any[]) => {
+                            uploadNextFile(currentList)
+                            return currentList;
+                        })
                         if (err === 'Cancel') {
                             setUploadingList((currentList: UploaderItemProps[]) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "paused"; value.timeRemaining.num = 0 } return value })
@@ -114,9 +124,9 @@ export const UploaderPage = (props: UploaderProps) => {
                                 const updatedList = currentList.map((value, key) => { if (value.name === file.name) { value.currentState = "failed"; value.progress = 100; value.timeRemaining.num = 0; } return value })
                                 return updatedList;
                             })
-                            uploadNextFile()
                         }
-                    }
+                    },
+                    selectedRecipe
                 )
                 if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress') && i === 0) {
                     newUpload.startUpload()
@@ -161,11 +171,12 @@ export const UploaderPage = (props: UploaderProps) => {
 
     }
 
-    const uploadNextFile = () => {
-        if (uploadFileQueue.length >= 1) {
-            uploadFileQueue[0].startUpload()
-            setCurrentUpload(uploadFileQueue[0])
-            setUploadFileQueue(uploadFileQueue.filter((e, key) => key !== 0))
+    const uploadNextFile = (currentList?: any[]) => {
+        if (uploadFileQueue.length >= 1 || ( currentList && currentList.length >= 1) ) {
+            let list = currentList ? currentList : uploadFileQueue;
+            list[0].startUpload()
+            setCurrentUpload(list[0])
+            setUploadFileQueue(list.filter((e, key) => key !== 0))
         }
     }
 
@@ -236,8 +247,6 @@ export const UploaderPage = (props: UploaderProps) => {
     React.useEffect(() => {
     }, [uploadingList]);
 
-    console.log(props.encodingRecipe);
-
     var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item) => { return { ...reduced, [props.encodingRecipe.recipes[item].name]: false } }, {})
     var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
 
@@ -253,7 +262,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
-                        callback={(value: string) => { console.log(value) }}
+                        callback={(value: string) => { setSelectedRecipe(props.encodingRecipe.recipes.find(recipe => recipe.name === value).id) }}
                     />
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>

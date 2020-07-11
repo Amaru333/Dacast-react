@@ -23,8 +23,8 @@ const createPricePreset = async (data: Preset) => {
             prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -75,8 +75,8 @@ const savePricePreset = async (data: Preset) => {
             prices: data.prices.map((p) => {return {...p, description: 'preset description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }

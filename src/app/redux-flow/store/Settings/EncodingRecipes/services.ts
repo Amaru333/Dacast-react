@@ -8,28 +8,38 @@ const getEncodingRecipesService = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.get(process.env.API_BASE_URL + '/settings/encoding-recipes',
-        {headers: {
-            'Authorization': token
-        }})
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const getEncodingRecipesPresetsService = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.get(process.env.API_BASE_URL + '/settings/encoding-recipes/presets',
-        {headers: {
-            'Authorization': token
-        }})
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const createEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.post(process.env.API_BASE_URL + '/settings/encoding-recipes',
-        {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            ...data
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -37,10 +47,14 @@ const saveEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/settings/encoding-recipes/' + data.id,
-        {...data}, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            ...data
+        }, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 
@@ -48,18 +62,25 @@ const deleteEncodingRecipeService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.delete(process.env.API_BASE_URL + '/settings/encoding-recipes/' + data.id,
-        {headers: {
-            'Authorization': token
-        }}
-    )}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
 
 const getUploadWatermarkUrlService = async () => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/uploads/signatures/singlepart/watermark',
-        {headers: {
-            'Authorization': token
-        }});
+    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/transcoding-watermark',
+        {},
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const uploadWatermarkService = (data: File, uploadUrl: string) => {
@@ -70,15 +91,18 @@ const deleteWatermarkService = async (data: EncodingRecipeItem) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/settings/encoding-recipes/' + data.id,
-        {"id": data.id,
-            "isDefault": data.isDefault,
-            "name": data.name,
-            "recipePresets": data.recipePresets,
-            "watermarkFileID": null
+        {
+            id: data.id,
+            isDefault: data.isDefault,
+            name: data.name,
+            recipePresets: data.recipePresets,
+            watermarkFileID: null
         }, 
-        {headers: {
-            'Authorization': token
-        }}
+        {
+            headers: {
+                Authorization: token
+            }
+        }
     )
 }
 

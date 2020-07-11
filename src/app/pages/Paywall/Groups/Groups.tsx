@@ -41,7 +41,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         },
         settings: {
             duration: {value: NaN, unit: 'Hours'},
-            recurrence: {recurrence: 'Weekly'},
+            recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
             timezone: 'Etc/UTC',
             startDate: 0,
@@ -56,7 +56,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         contents: [],
         groupSettings: {
             duration: {value: NaN, unit: 'Hours'},
-            recurrence: {recurrence: 'Weekly'},
+            recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
             timezone: 'Etc/UTC',
             startDate: 0,
@@ -101,7 +101,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
                     <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
                     <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Currencies'}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.recurrence : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
                     <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
@@ -138,7 +138,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPromosTableBody = () => {
         if(props.groupsInfos.promos) {
-            return props.groupsInfos.promos.promos.map((promo, key) => {
+            return props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0).map((promo, key) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,
@@ -172,7 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
-                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
+                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
@@ -204,7 +204,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 stepperData={stepperData}
                 widthSecondStep={60}
                 updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                functionCancel={() => {setGroupPricesStepperOpened(false)}}
+                functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
                 finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
             />
         </div>

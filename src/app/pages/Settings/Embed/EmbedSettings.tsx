@@ -12,7 +12,12 @@ import { Prompt } from 'react-router';
 
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
-    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(props.embedSettingsOption);
+    const defaultEmbedSettings = {
+        ['embed-type']:  'html5-video',
+        ['embed-scaling']:  'responsive',
+        'embed-size': 0
+    }
+    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
     let inputRef = React.useRef<HTMLInputElement>(null)

@@ -4,6 +4,9 @@ import { TableContainer, TableHeaderContainer, TableHeaderRow, TableHeaderCell, 
 import { isMobile } from 'react-device-detect';
 import Scrollbar from 'react-scrollbars-custom';
 import { IconStyle } from '../../shared/Common/Icon';
+import { LoadingSpinner } from '../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { OverlayStyle } from '../Modal/ModalStyle';
 
 export const Table = (props: TableProps) => {
 
@@ -25,7 +28,7 @@ export const Table = (props: TableProps) => {
             setSortApplied({name: sort, sortDesc: true})
         }
         if(props.header && props.header.sortCallback) {
-            props.header.sortCallback(sort + (newVal ? '-desc' : '-asc'))
+            props.header.sortCallback(sort + (newVal ? '-asc' : '-desc'))
         }
     }
 
@@ -84,30 +87,37 @@ export const Table = (props: TableProps) => {
     return (
         <WrapperResponsiveContainer tableHeight={props.tableHeight} hasContainer={props.hasContainer}>
             <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}}>
-                <TableContainer  {...props}>
+                <TableContainer className='relative'  {...props} contentLoading={props.contentLoading}>
             
-                    {props.header ? 
+                    {props.header &&
                         <TableHeaderContainer>
                             <TableHeaderRow backgroundColor={props.headerBackgroundColor}>
                                 {renderTableHeader()}
                             </TableHeaderRow>
-                        </TableHeaderContainer> : null
+                        </TableHeaderContainer>
                     }
                     {
-                        props.body ?
+                        props.body &&
                             <TableBodyContainer>
                                 {renderTableBody()}
                             </TableBodyContainer>
-                            : null
                     }
 
-                    {props.footer ? 
+                    {props.footer && 
                         <TableFooterContainer>
                             <TableFooterRow>
                                 {renderTableFooter()}
                             </TableFooterRow>
-                        </TableFooterContainer> : null
-                    }               
+                        </TableFooterContainer>
+                    }    
+                    {
+                        props.contentLoading && 
+                        <>
+                            <SpinnerContainer>
+                                <LoadingSpinner size='medium' color='violet' />    
+                            </SpinnerContainer>
+                        </>
+                    }           
                 </TableContainer>                
             </Scrollbar> 
         </WrapperResponsiveContainer>

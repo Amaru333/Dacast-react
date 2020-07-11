@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
@@ -34,6 +34,7 @@ export interface VodPaywallComponentProps {
     getPaywallThemes: Function;
     globalPresets: PresetsPageInfos;
     getPresetsInfo: Function;
+    getPromoPresetsInfo: Function;
     customPricePresetList: Preset[];
     customPromoPresetList: Promo[];
     createPromoPreset: Function;
@@ -55,8 +56,11 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if(!props.theming) {
             props.getPaywallThemes()
         }
-        if(!props.globalPresets) {
+        if(!props.globalPresets || !props.globalPresets.presets) {
             props.getPresetsInfo('page=1&per-page=100')
+        }
+        if(!props.globalPresets || !props.globalPresets.promos) {
+            props.getPromoPresetsInfo('page=1&per-page=100')
         }
         props.getVodPaywallPrices(vodId)
         props.getVodPaywallPromos(vodId)
@@ -82,7 +86,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 ],
                 settings: {
                     duration: {value: NaN, unit: 'Hours'},
-                    recurrence: {recurrence: 'Weekly'},
+                    recurrence: {unit: 'Weekly'},
                     startMethod: 'Upon Purchase',
                     timezone: null,
                     startDate: null,
@@ -116,6 +120,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
             <VideoTabs videoId={vodId} />
             <ContentPaywallPage
                 contentId={vodId}
+                contentType='vod'
                 contentPaywallInfos={props.vodPaywallInfos[vodId]}
                 getContentPrices={props.getVodPaywallPrices}
                 saveContentPaywallInfos={props.saveVodPaywallInfos}
@@ -188,6 +193,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getPresetsInfo: (qs: string) => {
             dispatch(getPricePresetsInfosAction(qs))
+        },
+        getPromoPresetsInfo: (qs: string) => {
+            dispatch(getPromoPresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

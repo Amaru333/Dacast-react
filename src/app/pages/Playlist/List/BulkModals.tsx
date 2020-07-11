@@ -9,6 +9,8 @@ import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentType } from '../../../redux-flow/store/Folders/types';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 interface PropsBulkModal {
     items?: ContentType[]; 
@@ -30,20 +32,43 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     )
 }
 
-const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[] }) => {
+const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThemesList:() => void}) => {
 
     const [selectedTheme, setSelectedTheme] = React.useState<string>(null);
+    const [themesList, setThemesList] = React.useState<ThemeOptions[]>([])
+
+    React.useEffect(() => {
+        if(props.themes.length === 0 && themesList.length === 0) {
+            props.getThemesList()
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if(props.themes.length > 0) {
+            setThemesList(props.themes)
+
+        }
+    }, [props.themes])
 
     return (
         <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
-                <DropdownSingle className="mb3"
-                    dropdownTitle='Theme' 
-                    id='thumbnailPositionDropdown' 
-                    list={props.themes.reduce((reduced: DropdownListType, item: ThemeOptions) => {return {...reduced, [item.themeName]: false}}, {})}
-                    isInModal={true} 
-                    callback={(value: string) => {setSelectedTheme(props.themes.filter(theme => theme.themeName === value)[0].id)}} />
+                {
+                    themesList.length === 0 ?
+                    <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+                    :
+                    <>
+                        <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
+                        <DropdownSingle className="mb3"
+                            dropdownTitle='Theme' 
+                            id='thumbnailPositionDropdown' 
+                            list={themesList.reduce((reduced: DropdownListType, item: ThemeOptions) => {return {...reduced, [item.themeName]: false}}, {})}
+                            isInModal={true} 
+                            callback={(value: string) => {setSelectedTheme(themesList.filter(theme => theme.themeName === value)[0].id)}} 
+                        />
+                    </>
+
+                }
                 <Button onClick={() => {props.actionFunction(props.items, 'theme', selectedTheme)}} sizeButton="large" disabled={selectedTheme === null} typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>

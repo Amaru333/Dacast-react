@@ -7,7 +7,7 @@ const getPlaylistListAction = async (qs: string) => {
     console.log(qs)
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/playlists' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
+    return await axios.get(process.env.API_BASE_URL + '/playlists' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
         {
             headers: {
                 Authorization: token

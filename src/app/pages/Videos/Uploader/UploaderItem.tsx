@@ -27,16 +27,11 @@ const UploaderItem = (props: UploaderItemProps & { actionFunction: Function }) =
         switch (props.currentState) {
             case 'completed':
                 return (
-                    <>
-                        <Text className="mr2" weight="reg" size={14} color="dark-violet">
-                            <a href={"javascript:;"} onClick={(e) => updateClipboard(props.idItem.toString(), '')}>Copy ID</a>
-                            <a> | </a>
-                            <a href={"javascript:;"} onClick={(e) => updateClipboard(props.embedCode, '')}>Copy Embed Code</a>
-                        </Text>
+                   
                         <Text className="mr2" weight="med" size={14} color="gray-1">
                             Completed
                         </Text>
-                    </>
+                    
                 );
             case 'failed':
                 return (

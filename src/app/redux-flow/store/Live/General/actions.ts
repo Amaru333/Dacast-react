@@ -27,7 +27,7 @@ export interface GetUploadUrl {
 
 export interface UploadImage {
     type: ActionTypes.UPLOAD_IMAGE;
-    payload: {file: File};
+    payload: {liveId: string};
 }
 
 export interface DeleteImage {
@@ -82,7 +82,6 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
         await LiveGeneralServices.deleteLiveChannelService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: data });
-                dispatch(showToastNotification("Channel has been deleted", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -103,11 +102,11 @@ export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDis
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string, liveId: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
         await LiveGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {liveId: liveId} })
                 dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
             })
             .catch((error) => {

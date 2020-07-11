@@ -1,6 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
-import { Plans, ActionTypes, ChangePlan } from './types'
-import { PlansServices } from './services'
+import { Plans, ActionTypes, ChangePlan, Plan } from './types'
+import { UpgradeServices } from './services'
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
 
@@ -12,12 +12,12 @@ export interface GetPlanDetails {
 
 export interface ChangeActivePlan {
     type: ActionTypes.CHANGE_ACTIVE_PLAN;
-    payload: ChangePlan;
+    payload: Plan;
 }
 
 export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlanDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlanDetails> ) => {
-        await PlansServices.getPlanDetailsService()
+        await UpgradeServices.getPlanDetailsService()
             .then( response => {
                 dispatch( {type: ActionTypes.GET_PLAN_DETAILS, payload: {data: response.data.data}} );
             }).catch(() => {
@@ -26,16 +26,19 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
     };
 }
 
-export const changeActivePlanAction = (data: ChangePlan): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
+export const purchasePlanAction = (data: Plan, recurlyToken: any, token3Ds?: string, callback?: Function, fallback?: Function): ThunkDispatch<Promise<void>, {}, ChangeActivePlan> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
-        await PlansServices.changeActivePlanService(data)
+        console.log('data(stepper data', data)
+        await UpgradeServices.purchasePlanService(data, recurlyToken, token3Ds)
             .then( response => {
-                return response
-                // dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
-            }).catch(() => {
+                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
+                callback(response);
+            }).catch((error) => {
+                fallback(error);
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                console.log('error', error)
             })
     };
 }
 
-export type PlansAction = GetPlanDetails | ChangeActivePlan
+export type UpgradeAction = GetPlanDetails | ChangeActivePlan

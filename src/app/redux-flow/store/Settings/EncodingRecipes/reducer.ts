@@ -26,12 +26,12 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
             }
         case ActionTypes.SAVE_ENCODING_RECIPES:
             recipes = state.recipes.slice()
-            if(action.payload.isDefault) {  
-                recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
-            }
             return  {...state, recipes: recipes.map((item) => {
                 if (item.id !== action.payload.id) {
-                    return item
+                    return {
+                        ...item,
+                        isDefault: (!action.payload.isDefault && item.name === 'Standard' && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : false
+                    }
                 }
                 return {
                     ...item,
@@ -39,7 +39,19 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 }
             })}
         case ActionTypes.DELETE_ENCODING_RECIPES:
-            return {...state, recipes: state.recipes.filter((item) => item.id != action.payload.id)}
+            recipes = state.recipes.filter((item) => item.id != action.payload.id)
+            if(action.payload.isDefault) {
+                recipes = recipes.map(recipe => {
+                    if(recipe.name === 'Standard') {
+                        return {
+                            ...recipe,
+                            isDefault: true
+                        }
+                    }
+                    return recipe
+                })
+            }
+            return {...state, recipes: recipes}
 
         case ActionTypes.GET_UPLOAD_WATERMARK_URL:   
             return {

@@ -63,10 +63,10 @@ const uploadFile = (data: File, uploadUrl: string) => {
     return axios.put(uploadUrl, data)
 }
 
-const deleteFile = async (targetId: string) => {
+const deleteFile = async () => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/targets/' + targetId,
+    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement/brand-image',
         {
             headers: {
                 Authorization: token

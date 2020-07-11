@@ -66,9 +66,7 @@ export interface SearchResult {
 }
 
 interface LiveStreamCountdown {
-    enabled?: boolean;
-    startDate?: number;
-    startTime?: number;
+    startTime: number;
     timezone?: string;
 }
 

@@ -19,7 +19,7 @@ const getLiveDetailsService = async (liveId: string) => {
 const getLiveList = async (qs: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/channels' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
+    return await axios.get(process.env.API_BASE_URL + '/channels' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
         {
             headers: {
                 Authorization: token

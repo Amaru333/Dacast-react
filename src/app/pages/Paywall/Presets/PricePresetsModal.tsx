@@ -9,6 +9,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { HalfSmFullXs } from '../../Analytics/AnalyticsCommun';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { CURRENCY } from '../../../constants/Currencies';
 
 var moment = require('moment-timezone');
 
@@ -58,7 +59,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
                         <Input className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
-                        <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={{'USD': false, 'AUD': false, 'GBP': false}} />
+                        <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) }  />
 
                         {
                             key === presetsList.prices.length - 1 ? 
@@ -101,7 +102,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
                     dropdownDefaultSelect={presetsList.type}
-                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {recurrence: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
                     list={{'Pay Per View': false, 'Subscription': false}} 
                 />
             </div>
@@ -112,15 +113,15 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                 {
                     presetsList.type === 'Subscription' ?
                         <DropdownSingle id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={presetsList.settings.recurrence.recurrence} 
+                            dropdownDefaultSelect={presetsList.settings.recurrence.unit} 
                             dropdownTitle='Recurrence' 
-                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {recurrence: value}}})}
+                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: value}}})}
                             list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} 
                         />
                         :
                         <>
                             <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Month': false}} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Months': false}} />
                         </>
                 }
 

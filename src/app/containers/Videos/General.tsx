@@ -71,8 +71,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
             dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
         },
-        uploadFile: (data: File, uploadUrl: string) => {
-            dispatch(uploadFileAction(data, uploadUrl))
+        uploadFile: (data: File, uploadUrl: string, vodId: string) => {
+            dispatch(uploadFileAction(data, uploadUrl, vodId))
         },
         uploadImageFromVideo: (vodId: string, time: number, imageType: string, callback?: Function)  => {
             dispatch(uploadImageFromVideoAction(vodId, time, imageType))

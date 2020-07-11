@@ -9,13 +9,16 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveListComponentProps {
     liveList: SearchResult;
     getLiveList: Function;
     deleteLiveChannel: Function;
     getThemesList: Function;
-    themesList: ThemesData
+    themesList: ThemesData;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void
 }
 
 export const LiveList = (props: LiveListComponentProps) => {
@@ -24,12 +27,9 @@ export const LiveList = (props: LiveListComponentProps) => {
         if (!props.liveList) {
             props.getLiveList();
         }
-        if(!props.themesList.themes) {
-            props.getThemesList()
-        }
     }, [])
 
-    if (!props.liveList || !props.themesList.themes) {
+    if (!props.liveList) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
@@ -47,15 +47,18 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveList: (qs: string) => {
-            dispatch(getLiveListAction(qs));
+        getLiveList: async (qs: string) => {
+            await dispatch(getLiveListAction(qs));
         },
         deleteLiveChannel: (id: string) => {
             dispatch(deleteLiveChannelAction(id));
         },
         getThemesList: () => {
             dispatch(getThemingListAction())
-        }
+        },
+        showToast: (text: string, size: Size, type: NotificationType) => {
+            dispatch(showToastNotification(text, size, type))
+        },
     };
 }
 

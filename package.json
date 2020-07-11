@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://universe-api-app.dacast.com  webpack-dev-server -d --config webpack.dev.config.js",
+    "start": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://singularity-api-app.dacast.com  webpack-dev-server -d --config webpack.dev.config.js",
     "start-admin": "cross-env NODE_ENV=development APP_ENV=admin --env.API_BASE_URL=https://singularity-api-app.dacast.com webpack-dev-server -d --config webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --env.API_BASE_URL=$API_BASE_URL -p --config webpack.prod.config.js",
     "build-preprod": "cross-env NODE_ENV=development --env.API_BASE_URL=$API_BASE_URL npm run lint && webpack -p --config webpack.prod.config.js",
@@ -52,7 +52,7 @@
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "identity-obj-proxy": "^3.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "react-docgen-typescript-loader": "^3.2.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-hot-loader": "^4.12.15",
@@ -64,9 +64,9 @@
     "typescript": "^3.4.1",
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-middleware": "^3.6.2",
-    "webpack-dev-server": "^3.2.1",
+    "webpack-dev-server": "^3.11.0",
     "webpack-hot-middleware": "^2.24.3"
   },
   "dependencies": {
@@ -89,6 +89,7 @@
     "@types/redux-logger": "^3.0.7",
     "@types/storybook__addon-knobs": "^5.0.4",
     "@types/storybook__react": "^4.0.2",
+    "amplitude-js": "^6.2.0",
     "axios": "^0.19.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",

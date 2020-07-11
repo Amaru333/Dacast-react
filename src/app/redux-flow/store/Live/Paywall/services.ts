@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-import { parse } from 'path';
 
 const getLivePaywallInfos = async (liveId: string) => {
     await isTokenExpired()
@@ -52,8 +51,8 @@ const createLivePricePreset = async (data: Preset, liveId: string) => {
             prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -105,8 +104,8 @@ const saveLivePricePreset = async (data: Preset, liveId: string) => {
             price: {value: data.price, currency: data.currency, description: data.description},
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -149,10 +148,10 @@ const saveLivePricePreset = async (data: Preset, liveId: string) => {
     )
 }
 
-const deleteLivePricePreset = async (data: Preset) => {
+const deleteLivePricePreset = async (data: Preset, liveId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    let {token, userId} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-live-${liveId}`, 
         {
             headers: {
                 Authorization: token
@@ -175,14 +174,11 @@ const getLivePaywallPromos = async () => {
 
 const createLivePromoPreset = async (data: Promo, liveId: string) => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    let {token} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
-                ...data,
-                assignedContentIds: [`${userId}-live-${liveId}`],
-                discountApplied: 'once',
-                id: null
+                ...data
             }  
         },
         {

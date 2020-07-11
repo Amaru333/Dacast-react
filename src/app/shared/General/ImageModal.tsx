@@ -66,7 +66,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl)
+            props.submit(logoFile, props.uploadUrl, props.contentId)
             props.toggle()
         }
     }, [props.uploadUrl, saveButtonLoading])
@@ -124,7 +124,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                         <div className="col col-12">
-                        <input type='file' ref={inputBrowseButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
+                        <input type='file' ref={inputBrowseButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/gif,image/jpeg,image/png,image/svg" />
                             <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                             <Button onClick={() => {inputBrowseButtonRef.current.click()} } className="mt2" sizeButton="xs" typeButton="secondary">
                                 Upload File
@@ -162,7 +162,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                 :
                 <ModalContent>
                     <div className="col col-12 mt2">
-                        <input type='file' ref={inputBrowseImageModalButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' />
+                        <input type='file' ref={inputBrowseImageModalButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' accept="image/gif,image/jpeg,image/png,image/svg" />
                         <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
                         <Button onClick={() => {inputBrowseImageModalButtonRef.current.click()} }  className="mt2" sizeButton="xs" typeButton="secondary">
                             Upload File

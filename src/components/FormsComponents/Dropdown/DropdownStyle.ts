@@ -176,7 +176,7 @@ export const CloseIconButton = styled.div`
     cursor: pointer;
 `
 
-export const ButtonContainer = styled.div<{isOpened: boolean; backgroundColor: string}>`
+export const ButtonContainer = styled.div<{isOpened: boolean; backgroundColor: string; disabled: boolean}>`
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -185,4 +185,5 @@ export const ButtonContainer = styled.div<{isOpened: boolean; backgroundColor: s
     border: 1px solid ${props => props.theme.colors['gray-7']};
     cursor: pointer;
     height: 22px;
+    pointer-events: ${props => props.disabled ? "none" : "auto"};
 `

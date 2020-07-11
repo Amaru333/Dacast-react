@@ -3,7 +3,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction } from '../../redux-flow/store/Live/Engagement/actions';
+import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction, getUploadUrlAction, uploadLiveImageAction, deleteLiveImageAction } from '../../redux-flow/store/Live/Engagement/actions';
 import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
@@ -18,6 +18,9 @@ export interface LiveEngagementComponentProps {
     saveLiveAd: Function;
     createLiveAd: Function;
     deleteLiveAd: Function;
+    getUploadUrl: Function;
+    uploadLiveImage: Function;
+    deleteLiveImage: Function;
 }
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
@@ -43,6 +46,9 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
                             saveContentAd={props.saveLiveAd}
                             createContentAd={props.createLiveAd}
                             deleteContentAd={props.deleteLiveAd}
+                            getUploadUrl={props.getUploadUrl}
+                            uploadContentImage={props.uploadLiveImage}
+                            deleteContentImage={props.deleteLiveImage}
                             contentType='live'
                             contentId={liveId}
                         />
@@ -75,8 +81,18 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteLiveAd: (data: Ad[], adsId: string, liveId: string) => {
             dispatch(deleteLiveAdAction(data, adsId, liveId))
+        },
+        getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)
+        },
+        uploadLiveImage: (data: File, uploadUrl: string) => {
+            dispatch(uploadLiveImageAction(data, uploadUrl))
+        },
+        deleteLiveImage: (targetId: string) => {
+            dispatch(deleteLiveImageAction(targetId))
         }
     };
-}
+};
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(LiveEngagement)

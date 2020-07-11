@@ -52,8 +52,8 @@ const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
             prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -104,8 +104,8 @@ const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
             price: {value: data.price, currency: data.currency, description: data.description},
             settings: {
                 recurrence: {
-                    recurrence: data.settings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.recurrence === 'Quarterly' ? 4 : data.settings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -148,10 +148,10 @@ const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
     )
 }
 
-const deletePlaylistPricePreset = async (data: Preset) => {
+const deletePlaylistPricePreset = async (data: Preset, playlistId: string) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    let {token, userId} = addTokenToHeader()
+    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-playlist-${playlistId}`, 
         {
             headers: {
                 Authorization: token
@@ -174,15 +174,11 @@ const getPlaylistPaywallPromos = async () => {
 
 const createPlaylistPromoPreset = async (data: Promo, playlistId: string) => {
     await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    let {token} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
             promo: {
-                ...data,
-                assignedContentIds: [`${userId}-playlist-${playlistId}`],
-                discountApplied: 'once',
-                id: null
-
+                ...data
             }  
         },
         {

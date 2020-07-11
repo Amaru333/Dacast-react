@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes  } from "./types";
 import { ContentPaywallState } from '../../Paywall/Presets/types'
+import { addTokenToHeader } from '../../../../utils/token';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
@@ -41,7 +42,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 : null,
                                 startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
                                 recurrence: price.settings.recurrence ? {
-                                    recurrence: price.settings.recurrence.recurrence === 'week' ? 'Weekly'
+                                    unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : price.settings.recurrence.value > 4 ? 'Biannual'
                                     : price.settings.recurrence.value < 1 ? 'Quaterly'
                                     : 'Monthly'
@@ -91,11 +92,12 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.GET_VOD_PAYWALL_PROMOS :
+            let {userId} = addTokenToHeader()
             return {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],
-                    promos: action.payload.data.promos.map((promo) => {
+                    promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-vod-${action.payload.contentId}`) !== -1).map((promo) => {
                         return {
                             ...promo,
                             rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
@@ -125,7 +127,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                         else {
                             return {
                                 ...item,
-                                ...action.payload
+                                ...action.payload.data
                             }
                         }
                     })

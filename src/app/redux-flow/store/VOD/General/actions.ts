@@ -41,7 +41,7 @@ export interface GetUploadUrl {
 
 export interface UploadImage {
     type: ActionTypes.UPLOAD_IMAGE;
-    payload: {file: File};
+    payload: {vodId: string};
 }
 
 export interface UploadImageFromVideo {
@@ -51,7 +51,7 @@ export interface UploadImageFromVideo {
 
 export interface DeleteImage {
     type: ActionTypes.DELETE_IMAGE;
-    payload: {id: string};
+    payload: {id: string, vodId: string};
 }
 
 export interface PostVod {
@@ -135,11 +135,11 @@ export const getUploadUrlAction = (uploadType: string, vodId: string, subtitleIn
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string, vodId: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {vodId: vodId} })
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
@@ -167,7 +167,7 @@ export const deleteFileAction = (vodId: string, targetId: string, fileName: stri
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await VodGeneralServices.deleteFile(vodId, targetId)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {id: targetId} })
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {vodId: vodId, id: targetId} })
                 dispatch(showToastNotification(`${fileName} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {

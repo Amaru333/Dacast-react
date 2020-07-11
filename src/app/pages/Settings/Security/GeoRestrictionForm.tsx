@@ -9,7 +9,7 @@ import { Text } from '../../../../components/Typography/Text';
 export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Function; submit: Function}) => {
 
     const [geoRestrictionItem, setGeoRestrictionItem] = React.useState<GeoRestriction>(null);
-    const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.name.length > 0);
+    const [enableSubmit, setEnableSubmit] = React.useState<boolean>((props.item.name.length > 0 && props.item.values.length > 0));
 
     React.useEffect(() => {
         setGeoRestrictionItem(props.item)
@@ -17,7 +17,7 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
 
     React.useEffect(() => {
         if(geoRestrictionItem) {
-            setEnableSubmit(geoRestrictionItem.name.length > 0)
+            setEnableSubmit((geoRestrictionItem.name.length > 0 && geoRestrictionItem.values.length > 0))
         }
     }, [geoRestrictionItem])
 

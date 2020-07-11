@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Extras } from '../../../redux-flow/store/Account/Billing';
+import { Extras } from '../../../redux-flow/store/Account/Plan';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../../public/assets/paypal_logo.svg');
 

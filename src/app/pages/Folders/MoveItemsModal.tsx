@@ -4,14 +4,14 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { getNameFromFullPath } from '../../../utils/utils';
 import { Breadcrumb } from './Breadcrumb';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 
-export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
+export const MoveItemModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
@@ -59,8 +59,11 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
         .then(() => {
             setSaveLoading(false)
             props.toggle(false)
+            props.setMoveModalSelectedFolder(null)
+            props.showToast('Items moved succesfully', 'flexible', 'success')
         }).catch(() => {
             setSaveLoading(false)
+            props.showToast('Items couldn\'t be moved', 'flexible', 'error')
 
         })
     } 
@@ -115,7 +118,7 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
 
             <div className='mt2'>
                 <Button isLoading={saveLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Move</Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() =>{ props.toggle(false);props.setMoveModalSelectedFolder(null);}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
                 <Button style={{marginTop: 8}} onClick={() => props.newFolderModalToggle(true)} className='right' typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Folder</Button>
             </div>
         </div>

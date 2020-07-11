@@ -44,9 +44,9 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
 
     return (
         <ContainerStyle {...props}>
-            <ButtonContainer isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <ButtonContainer disabled={props.disabled} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Text size={12}>{selectedItem}</Text>
-                <Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon>
+                { !props.disabled && <Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon> }
             </ButtonContainer>
             <DropdownList style={{position: 'static'}} hasSearch={false} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}

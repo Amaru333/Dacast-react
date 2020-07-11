@@ -9,7 +9,7 @@ import styled, { css } from 'styled-components';
 import { IconStyle, IconGreyActionsContainer } from '../../../../shared/Common/Icon';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
-import { useOutsideAlerter } from '../../../../utils/utils';
+import { useOutsideAlerter, compareValues } from '../../../../utils/utils';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { Badge } from '../../../../components/Badge/Badge';
@@ -325,13 +325,14 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const bulkActions = [
-        { name: 'Name (A-Z)', value: 'A-to-Z' },
-        { name: 'Name (Z-A)', value: 'Z-to-A' },
-        { name: 'Date Created (Newest First)', value: 'date-asc'},
-        { name: 'Date Created (Oldest First)', value: 'date-desc'},
+        { name: 'Name (A-Z)', value: 'A-to-Z', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('title', 'asc')))  } },
+        { name: 'Name (Z-A)', value: 'Z-to-A', callback: () => {  setSelectedItems( [...selectedItems].sort(compareValues('title', 'desc'))) } },
+        { name: 'Date Created (Newest First)', value: 'date-asc', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
+        { name: 'Date Created (Oldest First)', value: 'date-desc', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('createdAt', 'desc'))) } },
     ]
 
     const renderList = () => {
+        console.log(selectedItems);
         return bulkActions.map((item, key) => {
 
             return (
@@ -341,7 +342,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                     id={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={sortSettings.name === item.name}
-                    onClick={() => setSortSettings(item)}>
+                    onClick={() => { setSortSettings(item); item.callback() } }>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )

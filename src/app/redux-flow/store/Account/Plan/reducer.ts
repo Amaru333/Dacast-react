@@ -1,9 +1,9 @@
 
-import { ActionTypes, billingInitialState, BillingPageInfos, BillingAction } from './';
-import { CreditCardPayment, PaypalPayment } from './types';
+import { ActionTypes, BillingPageInfos, PlanAction } from '.';
+import { planInitialState } from './types';
 
 
-export const reducer = (state = billingInitialState, action: BillingAction): BillingPageInfos => {
+export const reducer = (state = planInitialState, action: PlanAction): BillingPageInfos => {
     switch (action.type) {
         case ActionTypes.GET_BILLING_PAGE_INFOS:
             return {...state, 
@@ -11,16 +11,15 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
             }
         case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
             return {...state,
-                paypal: Object.keys(action.payload).includes('emailAddress') ? {...action.payload} as PaypalPayment : null,
-                creditCard: Object.keys(action.payload).includes('firstName') ? {...action.payload} as CreditCardPayment : null
+                paymentMethod: {...action.payload}
             }
         case ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
-                playbackProtection: {...action.payload}
+                playbackProtection: {...state.playbackProtection, ...action.payload}
             }
         case ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
-                playbackProtection: {...action.payload}
+                playbackProtection: {...state.playbackProtection, ...action.payload}
             }
         case ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
@@ -31,6 +30,10 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
             newExtras.splice(newExtras.length, 0, action.payload )
             return {...state,
                 extras: newExtras
+            }
+        case ActionTypes.GET_PRODUCT_DETAILS:
+            return {...state, 
+                ...action.payload.data
             } 
         default:
             return state;
@@ -39,4 +42,4 @@ export const reducer = (state = billingInitialState, action: BillingAction): Bil
 
 
 
-export {reducer as BillingReducer}; 
+export {reducer as PlanReducer}; 

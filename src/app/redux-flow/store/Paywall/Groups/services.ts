@@ -25,8 +25,8 @@ const createGroupPrice = async (data: GroupPrice) => {
             prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.groupSettings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.groupSettings.recurrence.recurrence === 'Quarterly' ? 4 : data.groupSettings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
             contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
@@ -84,8 +84,8 @@ const saveGroupPrice = async (data: GroupPrice) => {
             prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
             settings: {
                 recurrence: {
-                    recurrence: data.groupSettings.recurrence.recurrence === 'Weekly' ? 'week' : 'month',
-                    value: data.groupSettings.recurrence.recurrence === 'Quarterly' ? 4 : data.groupSettings.recurrence.recurrence === 'Biannual' ? 6 : 1
+                    unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
+                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
             contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
@@ -193,7 +193,6 @@ const saveGroupPromo = async (data: GroupPromo) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     let parsedData = null
-    debugger
     if(data.rateType !== 'Pay Per View') {
         parsedData = {
             ...data,

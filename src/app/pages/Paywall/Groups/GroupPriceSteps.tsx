@@ -14,6 +14,7 @@ import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle
 import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { CURRENCY } from '../../../constants/Currencies';
 
 var moment = require('moment-timezone');
 
@@ -37,7 +38,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                 <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.prices.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
                         <Input className={"col sm-col-6 col-5 px1"} value={price.price.value > 0 ? price.price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
-                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.price.currency} list={{ 'USD': false, 'AUD': false, 'GBP': false }} />
+                        <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) } />
                     </div>
                     {
                         key === props.stepperData.firststep.prices.length - 1 ?
@@ -83,11 +84,11 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     props.stepperData.firststep.groupSettings.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.recurrence} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {recurrence: value}}}})} />
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.unit} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
                         :
                         <>
                             <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Month': false }} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }} />
                         </>
                 }
 
@@ -132,16 +133,18 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
 export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
-    const [selectedFolder, setSelectedFolder] = React.useState<string>(null);
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
+    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
+    const [searchString, setSearchString] = React.useState<string>(null)
 
     const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS)
-    }, [selectedFolder])
+        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+    }, [selectedFolder, searchString])
+
 
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.type) {
@@ -257,7 +260,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
         <>
             <div className="inline-flex items-center flex col-12 mb2">
                 <IconStyle>search</IconStyle>
-                <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={[]} />
+                <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
             </div>
             <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <div className="pl1 pr1">

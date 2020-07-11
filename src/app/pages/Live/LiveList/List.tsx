@@ -27,6 +27,7 @@ import { FolderTree, rootNode } from '../../../utils/folderService';
 import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 import { LiveListComponentProps } from '../../../containers/Live/List';
+import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
 
 export const LiveListPage = (props: LiveListComponentProps) => {
 
@@ -40,7 +41,13 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
-
+    const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
+    const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false)
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -66,7 +73,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
             })
 
             if(filters.afterDate || filters.beforedate) {
-                returnedString+= `created-at=${filters.beforedate ? filters.beforedate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+                returnedString+= `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
             }
         }
         if(searchString) {
@@ -83,8 +90,15 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     }
 
     React.useEffect(() => {
-        props.getLiveList(parseFiltersToQueryString(selectedFilters))    
-    }, [selectedFilters, searchString, paginationInfo, sort])
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+            setContentLoading(true)
+            props.getLiveList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+            }).catch(() => {
+                setContentLoading(false)
+            })
+        }
+    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
 
     const liveListHeaderElement = () => {
         return {
@@ -121,8 +135,8 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         if (props.liveList) {
             return props.liveList.results.map((value) => {
                 return {data: [
-                    <div key={"checkbox" + value.objectID} className='flex items-center'> 
-                        <InputCheckbox className="inline-flex" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                    <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
+                        <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                             if (event.currentTarget.checked && selectedLive.length < props.liveList.results.length) {
                                 setSelectedLive([...selectedLive, value.objectID])
                             } else {
@@ -133,9 +147,9 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                         } />
                         {
                             value.thumbnail ? 
-                                <img className="pl2" key={"thumbnail" + value.objectID} width={74} height={42} src={value.thumbnail} />
+                                <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                 :
-                                <div className='ml2 relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
+                                <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
                                     <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                 </div>
                         }
@@ -150,7 +164,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { {props.deleteLiveChannel(value.objectID)} }} className="right mr1" >delete</IconStyle>
+                            <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
                     </div>,
@@ -158,11 +172,6 @@ export const LiveListPage = (props: LiveListComponentProps) => {
             })
         }
     }
-
-    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
-    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
-    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
-    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen, enabled: true },
@@ -238,22 +247,32 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                     </div>
                 </div>
                 
-                <Table className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+                <Table contentLoading={contentLoading} className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
                 <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 <OnlineBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-                <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+
+                {
+                    bulkThemeOpen &&
+                    <ThemeBulkForm getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                }
                 <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedLive.map(vodId => {return {id: vodId, type: 'channel'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => {}} submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedLive.map(vodId => {return {id: vodId, type: 'channel'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                }
+            </Modal>
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+                {
+                    deleteContentModalOpened &&
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteLiveChannel(contentToDelete.id)}} />
                 }
             </Modal>
             </>

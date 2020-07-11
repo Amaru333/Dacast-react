@@ -19,6 +19,8 @@ import { getPrivilege } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
+import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
+import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyle';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -28,16 +30,19 @@ export interface ContentEngagementComponentProps {
     createContentAd: Function;
     deleteContentAd: Function;
     contentType?: string;
-    contentId: string
+    contentId: string;
+    getUploadUrl: Function;
+    uploadContentImage: Function;
+    deleteContentImage: Function;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
 
     const emptyAd: Ad = {
         id: "-1",
-        "ad-type": "",
+        "ad-type": "pre-roll",
         timestamp: 0,
-        url: "test"
+        url: ""
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -49,8 +54,78 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
     const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.contentEngagementSettings.engagementSettings.brandImageURL);
+    let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = React.useState<string>('')
+    const [logoFile, setLogoFile] = React.useState<File>(null);
+    const [brandImageSectionEditable, setBrandImageSectionEditable] = React.useState<boolean>(false)
 
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
+        if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                let acceptedRatio = true;
+                const img = new Image();
+                img.onload = () => {
+                    //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
+                }
+                if(acceptedRatio) {
+                    setUploadedFileUrl(reader.result.toString())
+                    setLogoFile(file[0])
+                    setErrorMessage('')
+                    setUploadButtonLoading(true)
+                    props.getUploadUrl('player-watermark', props.contentId);
+                }
+                else {
+                    setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
+                }
+            }
+            reader.readAsDataURL(file[0])
+        }
+        else{
+            setErrorMessage('File provided was not an image, please retry')
+        }
+    }
     
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        setUploadedFileUrl(null);
+        props.deleteContentImage(props.contentId);
+    }
+
+
+    React.useEffect(() => {
+        if(props.contentEngagementSettings.engagementSettings.uploadurl) {
+            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
+        }
+    }, [props.contentEngagementSettings.engagementSettings.uploadurl])
+  
+    React.useEffect(() => {
+        const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
+    
+        if(ads.length > 0 || adsEnabled){
+            setAdSectionEditable(true)
+        }
+        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
+            setBrandImageSectionEditable(true)
+        }
+        if(brandText || brandTextLink || isBrandTextAsTitle){
+            setBrandSectionEditable(true)
+        }
+        if(endScreenText || endScreenTextLink){
+            setEndScreenSectionEditable(true)
+        }
+    }, [props.contentEngagementSettings])
+
     const newAd = () => {
         setSelectedAd(emptyAd);
         setNewAdModalOpened(true)
@@ -61,7 +136,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         setNewAdModalOpened(true);
     }
 
-    const {userId} = addTokenToHeader()
+    const { userId } = addTokenToHeader()
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
 
@@ -70,27 +145,32 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        if(props.contentEngagementSettings.engagementSettings.ads.length > 0){
-        return {
-            data: [
-                { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
-                { cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text> },
-                { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
-                {
-                    cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
-                        <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
-                        <Button className='sm-show' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
-                    </div>
-                }
-            ]
+        if (props.contentEngagementSettings.engagementSettings.ads.length > 0) {
+            return {
+                data: [
+                    { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
+                    { cell: <Text key='advertisingTableHeaderPosition' size={14} weight='med'>Position</Text> },
+                    { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
+                    {
+                        cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
+                            <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
+                            <Button className='sm-show' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
+                        </div>
+                    }
+                ]
+            }
+        } else {
+            return {
+                data: [
+                    {
+                        cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
+                            <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
+                        </div>
+                    }
+                ]
+            }
         }
-    } else {
-        return {data: [
-            {cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'> 
-                <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => {newAd()}}>New Ad</Button>
-            </div>}
-        ]}
-    }}
+    }
 
     const advertisingTableBody = () => {
         return props.contentEngagementSettings.engagementSettings.ads.map((item, i) => {
@@ -102,7 +182,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(item, props.contentEngagementSettings.engagementSettings.adsId) }}
+                                onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>
@@ -127,7 +207,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>Interactions are a Global Setting so you need to click on the lock <IconStyle>lock</IconStyle> or edit your Advertising Settings </Bubble>
+            <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
             {getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Header className="mb2">
@@ -149,11 +229,11 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>
                             <IconStyle className="mr1">info_outlined</IconStyle>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the Knowledge Base</Text>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
                         </div>
                         <div className="clearfix mb2">
-                            <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => {event.preventDefault(); setPlayerModalOpened(true)}}>Preview</Button>
-                            <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => {newAd()}}>New Ad</Button>
+                            <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
+                            <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                         </div>
                         <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.contentEngagementSettings.engagementSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
@@ -194,6 +274,56 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     />
                 </DisabledSection>
             </Card> */}
+
+            <Card className="my2">
+                <Header className="mb2">
+                    <TextStyle> 
+                        <Text size={20} weight='med'>Brand Image</Text>
+                    </TextStyle>
+                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => setBrandImageSectionEditable(!brandImageSectionEditable)}>
+                        {brandImageSectionEditable ? "lock_open" : "lock"}
+                    </IconStyle>
+                </Header>
+                
+                <DisabledSection settingsEditable={brandImageSectionEditable}>
+                    <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
+                    <div className="lg-col lg-col-12 mb1 mt25 flex">
+                        <div className="lg-col lg-col-6 mr2">
+                            <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
+                                {uploadedFileUrl ?
+                                    <>
+                                        {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                        <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                        <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
+                                        <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                    </>
+                                    :
+                            <>
+                            <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
+                            <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                            <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                            <ButtonStyle className='my1'>
+                                <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
+                                <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                    Browse Files
+                                </Button>
+                            </ButtonStyle>
+                            </>
+                                } 
+                            </DragAndDrop>
+                            <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
+                        </div>
+                        <div className="col col-6">
+                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
+                            callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
+                            ></DropdownSingle>
+                            <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
+                        </div>
+                    </div>
+                </DisabledSection>
+            </Card>
 
             <Card className='my2'>
                 <Header className="mb2">
@@ -257,7 +387,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true);  props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: engagementSettings}, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
+                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
                         >
                             Save
                         </Button>
@@ -265,7 +395,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </div> : null
             }
 
-            <Modal hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
+            <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
             </Modal>
             {

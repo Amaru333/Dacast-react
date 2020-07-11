@@ -32,16 +32,29 @@ const saveBillingPagePaymentMethodService = async (data: CreditCardPayment | Pay
     )
 }
 
-const addBillingPagePaymenPlaybackProtectionService = (data: PlaybackProtection) => {
-    return axios.post(urlBase + 'billing-playback-protection', {...data})
-}
-
-const editBillingPagePaymenPlaybackProtectionService = async (data: PlaybackProtection) => {
+const addBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
         {
-            ...data
+            'enabled': enabled,
+            'amount': amount
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
+const editBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
+        {
+            'enabled': enabled,
+            'amount': amount
         },
         {
             headers: {
@@ -59,6 +72,18 @@ const addBillingPageExtrasService = (data: Extras) => {
     return axios.post(urlBase + 'billing-extras', {...data})
 }
 
+const getProductDetailsService = async () => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/products', 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 
 export const BillingServices = {
     getBillingPagePaymentMethodService,
@@ -66,5 +91,6 @@ export const BillingServices = {
     addBillingPagePaymenPlaybackProtectionService,
     editBillingPagePaymenPlaybackProtectionService,
     deleteBillingPagePaymenPlaybackProtectionService,
-    addBillingPageExtrasService
+    addBillingPageExtrasService,
+    getProductDetailsService
 } 

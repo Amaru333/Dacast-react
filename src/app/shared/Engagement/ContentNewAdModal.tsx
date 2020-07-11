@@ -34,16 +34,16 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
+                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] !== "" ? adData["ad-type"] : 'pre-roll'} />              
                 {
-                    adData["ad-type"] === 'Mid-roll' &&
+                    adData["ad-type"] === 'mid-roll' &&
                         <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp.toString()} onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})} />
 
                 }
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={buttonLoading} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
-                <Button onClick={() => {setAdData(props.selectedAd);props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button className='mr2' disabled={adData["ad-type"] === "" || adData.url === ""} typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={buttonLoading} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )

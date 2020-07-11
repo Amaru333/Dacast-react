@@ -9,14 +9,18 @@ export class UploadObject {
         maxMultiThreadingRequests: number,
         fileChunkSize: number,
         onProgressUpdate: (percent: number) => void,
-        onError: (error: any) => void
+        onError: (error: any) => void,
+        recipeId?: string,
+        vodId?: string
     ) {
         this.file = file
         this.uploadUrlBatchSize = uploadUrlBatchSize
         this.maxMultiThreadingRequests = maxMultiThreadingRequests
-        this.fileChunkSize = fileChunkSize
+        this.fileChunkSize = fileChunkSize        
         this.onProgressUpdate = onProgressUpdate
         this.onError = onError
+        this.recipeId = recipeId
+        this.vodId = vodId
         this.requestBatch = this.requestBatch.bind(this)
         this.uploadPart = this.uploadPart.bind(this)
         this.getUploadUrl = this.getUploadUrl.bind(this)
@@ -28,6 +32,8 @@ export class UploadObject {
     private fileChunkSize: number
     private onProgressUpdate: (percent: number) => void
     private onError: (error: any) => void
+    private vodId: string
+    private recipeId: string
     uploadId: string
     urlS3: string
     ETags: { partNumber: number; etag: string }[] = []
@@ -92,9 +98,22 @@ export class UploadObject {
         console.log('init upload for file ', this.file.name)
         await isTokenExpired()
         let { token } = addTokenToHeader();
-        let res = await axios.post(`${process.env.API_BASE_URL}/uploads/init-multipart`,
+        let bodyRequest = null
+        bodyRequest = {
+            fileName: this.file.name,
+            recipeID: this.recipeId
+        }
+        let requestUrl = `${process.env.API_BASE_URL}/uploads/init-multipart/vod`
+        if(this.vodId) {
+            bodyRequest = {
+                vodID: this.vodId
+            }
+            requestUrl += '-replace'
+        }
+
+        let res = await axios.post(requestUrl,
             {
-                fileName: this.file.name,
+                ...bodyRequest
             },
             {
                 headers: {
@@ -128,11 +147,22 @@ export class UploadObject {
     }
     private retrieveSinglePartURL = async () => {
         await isTokenExpired()
-        let { token, vodStorageId, userId } = addTokenToHeader();
-        let response = await axios.post(`${process.env.API_BASE_URL}/uploads/signatures/singlepart/`,
+        let { token } = addTokenToHeader();
+        let bodyRequest = null
+        bodyRequest = {
+            fileName: this.file.name,
+            recipeID: this.recipeId
+        }
+        let requestUrl = `${process.env.API_BASE_URL}/uploads/signatures/singlepart/vod`
+        if(this.vodId) {
+            bodyRequest = {
+                vodID: this.vodId
+            }
+            requestUrl += '-replace'
+        }
+        let response = await axios.post(requestUrl,
             {
-                fileName: this.file.name,
-                vodStorageID: vodStorageId
+                ...bodyRequest
             },
             {
                 headers: {

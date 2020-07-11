@@ -101,6 +101,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
     
+    console.log(props);
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
@@ -143,7 +144,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             
                             <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => {setSelectedTheme({...selectedTheme, offlineMessage: event.currentTarget.value});}} />
                             
-                            <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{'Top': false, 'Middle': false, 'Fullscreen': false}} dropdownDefaultSelect={selectedTheme.offlineMessagePosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, offlineMessagePosition: value})}}} />
+                            <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{'Top': false, 'Middle': false, 'Fullscreen': false}} dropdownDefaultSelect={selectedTheme.offlineMessagePosition.charAt(0).toUpperCase() + selectedTheme.offlineMessagePosition.slice(1)} callback={(value: string) => {{setSelectedTheme({...selectedTheme, offlineMessagePosition: value.toLowerCase()})}}} />
                         </DisabledSection>
 
                         <BorderStyle className="p1" />

@@ -2,6 +2,7 @@ import React from 'react';
 import { Size, Weight } from '../../Typography/TextTypes';
 
 export type InputType =
+'full-time'
 | 'text'
 | 'email'
 | 'select'

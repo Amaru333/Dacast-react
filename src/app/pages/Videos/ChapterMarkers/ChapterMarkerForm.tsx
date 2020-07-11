@@ -66,7 +66,7 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                     disabled={false}
                     onChange={(event) => setChapterMarker({...chapterMarker, start: parseInt(event.currentTarget.value)})}
                     id='chapterMarkerTime'
-                    type='number'
+                    type='full-time'
                     step='2'
                     className='col col-12 pb1'
                     label='Start Time'

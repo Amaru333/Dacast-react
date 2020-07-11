@@ -30,6 +30,21 @@ export interface DeleteVodAd {
     payload: {ads: Ad[]; contentId: string;}; 
 }
 
+export interface GetUploadUrl {
+    type: ActionTypes.GET_UPLOAD_URL;
+    payload: {data:  {presignedURL: string, vodId: string }};
+}
+
+export interface UploadVodImage {
+    type: ActionTypes.UPLOAD_IMAGE;
+    payload: {file: File};
+}
+
+export interface DeleteVodImage {
+    type: ActionTypes.DELETE_IMAGE;
+    payload: {file: File};
+}
+
 export const getVodEngagementSettingsAction = (vodId: string): ThunkDispatch<Promise<void>, {}, GetVodEngagementSettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodEngagementSettings> ) => {
         await vodEngagementServices.getVodEngagementSettings(vodId)
@@ -82,11 +97,52 @@ export const deleteVodAdAction = (data: Ad[], adsId: string, vodId: string): Thu
         await vodEngagementServices.saveVodAd(data, adsId, vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: {ads: data, contentId: vodId}} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
 
-export type Action = GetVodEngagementSettings | SaveVodEngagementSettings | SaveVodAd | CreateVodAd | DeleteVodAd
+export const getUploadUrlAction = (uploadType: string, vodId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
+        await vodEngagementServices.getUploadUrl(uploadType, vodId)
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, vodId: vodId} })
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const uploadVodImageAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadVodImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadVodImage>) => {
+        await vodEngagementServices.uploadFile(data, uploadUrl)
+            .then(response => {
+                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export const deleteVodImageAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeleteVodImage> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteVodImage>) => {
+        await vodEngagementServices.deleteFile(targetId)
+            .then(response => {
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
+            })
+            .catch((error) => {
+                console.log(error)
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+            })
+    }
+}
+
+export type Action = GetVodEngagementSettings | SaveVodEngagementSettings | SaveVodAd | CreateVodAd | DeleteVodAd | GetUploadUrl | UploadVodImage | DeleteVodImage

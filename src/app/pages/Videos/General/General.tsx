@@ -22,6 +22,7 @@ import { addTokenToHeader } from '../../../utils/token';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
@@ -64,7 +65,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     }
     
     const subtitlesTableBody = () => {
-        return VodDetails.subtitles ? VodDetails.subtitles.map((value, key) => {
+        return props.vodDetails.subtitles ? props.vodDetails.subtitles.map((value, key) => {
             return {data: [
                 <div className='flex'>
                     <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>
@@ -150,10 +151,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
         }
     }
 
+    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
+
     const vodAdvancedLinksOptions = [
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.vodDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.vodDetails.splashscreen.url },
-        { id: "poster", label: "Poster", enabled: true, link: props.vodDetails.poster.url },
+        { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.vodDetails.poster.url : '' },
         // { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
         // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
         // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
@@ -162,7 +165,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
-    let posterEnable = Object.keys(props.vodDetails.poster).length !== 0;
     
     return (
         VodDetails &&
@@ -214,10 +216,9 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <Divider className="col col-12" />
                     <div className='col col-12'>
                         <header className="flex justify-between">
-                        <Text className='col col-12' size={20} weight='med'>Sharing</Text>
-                        <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+                            <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                            <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
                         </header>
-                        
                         <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
@@ -226,7 +227,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -236,7 +237,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')} }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -246,7 +247,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => updateClipboard(`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'JS Embed Code Copied')}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'JS Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -316,7 +317,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <SelectedImage src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
+                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
