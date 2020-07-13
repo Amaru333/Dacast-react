@@ -138,7 +138,7 @@ export const deleteWatermark = (data: EncodingRecipeItem): ThunkDispatch<Promise
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: data} );
                 dispatch(showToastNotification("Watermark file has been deleted", 'flexible', "success"));
-            }).catch(() => {
+            }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

@@ -121,7 +121,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{props.liveDetails.id}</LinkText>
+                            <LinkText size={14} weight="reg">{userId + '-live-' + props.liveDetails.id}</LinkText>
                             <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyCOntentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
@@ -370,9 +370,28 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                     </Text>
                                 </BubbleContent>
                             </Bubble>
+
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
-                                    <Text size={14} weight="med">Login</Text>
+                                    <Text size={14} weight="med">Server</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.primaryPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard") } }>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Stream Key</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg">{props.liveDetails.streamKeys[0]}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.streamKeys[0], "Copied to clipboard")}>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">Username</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
                                     <LinkText size={14} weight="reg">{props.liveDetails.username}</LinkText>
@@ -386,24 +405,6 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 <LinkBox>
                                     <LinkText size={14} weight="reg">{props.liveDetails.password}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.password, "Copied to clipboard!")}>file_copy</IconStyle>
-                                </LinkBox>
-                            </LinkBoxContainer>
-                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                <LinkBoxLabel>
-                                    <Text size={14} weight="med">Stream URL</Text>
-                                </LinkBoxLabel>
-                                <LinkBox>
-                                    <LinkText size={14} weight="reg">{props.liveDetails.primaryPublishURL}</LinkText>
-                                    <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(props.liveDetails.primaryPublishURL, "Copied to clipboard") } }>file_copy</IconStyle>
-                                </LinkBox>
-                            </LinkBoxContainer>
-                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                <LinkBoxLabel>
-                                    <Text size={14} weight="med">Stream Name</Text>
-                                </LinkBoxLabel>
-                                <LinkBox>
-                                    <LinkText size={14} weight="reg">{props.liveDetails.streamKeys[0]}</LinkText>
-                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.liveDetails.streamKeys[0], "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                             <LinkBoxContainer className={ClassHalfXsFullMd}>

@@ -30,7 +30,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 if (item.id !== action.payload.id) {
                     return {
                         ...item,
-                        isDefault: (!action.payload.isDefault && item.name === 'Standard' && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : false
+                        isDefault: (!action.payload.isDefault && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault && !item.id) ? true : false
                     }
                 }
                 return {
@@ -66,10 +66,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 isUploading: false
             }
         case ActionTypes.DELETE_WATERMARK:
-            if(action.payload.isDefault) {  
-                recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
-            }
-            return  {...state, recipes: recipes.map((item) => {
+            return  {...state, recipes: state.recipes.map((item) => {
                 if (item.id !== action.payload.id) {
                     return item
                 }
