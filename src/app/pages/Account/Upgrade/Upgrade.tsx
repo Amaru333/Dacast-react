@@ -34,7 +34,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [allFeaturesOpen, setAllFeaturesOpen] = React.useState<boolean>(false);
     const [stepperData, setStepperData] = React.useState<Plan>(null);
     const [stepList, setStepList] = React.useState(fullSteps);
-    const [currentPlan, setCurrentPlan] = React.useState<string>()
+    const [currentPlan, setCurrentPlan] = React.useState<string>(Object.values(props.planDetails).find(plan => plan.isActive).name)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
@@ -56,6 +56,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepperPlanOpened(false)
                 console.log(`${stepperData.name} plan purchased successfully`)
                 setPaymentSuccessfulModalOpened(true)
+                setCurrentPlan(stepperData.name)
             }
         }, () => {
             setIsLoading(false);
@@ -72,6 +73,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             setIsLoading(false);
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
+            setCurrentPlan(stepperData.name)
         }, () => {
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
@@ -164,7 +166,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                             </PlanContainer>
                             <PlanContainer className={marginBlocks} style={{ width: "30%" }}>
                                 <Text size={16} weight='med' color='gray-1'>Scale</Text>
-                                <PlanCard className='mt1' isSelected={currentPlan === "scale"}>
+                                <PlanCard className='mt1' isSelected={currentPlan === "Annual Scale"}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
                                             <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' + (calculateDiscount(props.planDetails.scalePlanAnnual.price.usd / 100) / 12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd / 100)}</Text>
@@ -215,7 +217,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                             </PlanContainer>
                             <PlanContainer className={marginBlocks} >
                                 <Text size={16} weight='med' color='gray-1'>Event</Text>
-                                <PlanCard className="mt1" backgroundColor='violet10' isSelected={currentPlan === 'event'}>
+                                <PlanCard className="mt1" backgroundColor='violet10' isSelected={currentPlan === 'Event'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
                                             <Text className={textClassName} size={32} weight='med' color='gray-1'>${props.planDetails.eventPlan.price.usd / 100}</Text>
