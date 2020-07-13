@@ -27,6 +27,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
+    const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const fullSteps = [PlanStepperFirstStep, PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep];
     const developerPlanSteps = [PlanStepperThirdStep, PlanStepperFourthStep];
     const eventPlanSteps = [PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep]
@@ -34,7 +35,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [allFeaturesOpen, setAllFeaturesOpen] = React.useState<boolean>(false);
     const [stepperData, setStepperData] = React.useState<Plan>(null);
     const [stepList, setStepList] = React.useState(fullSteps);
-    const [currentPlan, setCurrentPlan] = React.useState<string>(Object.values(props.planDetails).find(plan => plan.isActive).name)
+    const [currentPlan, setCurrentPlan] = React.useState<string>(defaultCurrentPlan && defaultCurrentPlan.name)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)

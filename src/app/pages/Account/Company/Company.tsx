@@ -203,7 +203,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="companyName" 
                             label="Company Name" 
                             placeholder="Company Name"
-                            name="companyName" ref={register()}
+                            {...handleValidationForm('companyName', errors)}
+                            name="companyName" ref={register({required: "This field can’t be left empty"})}
                             help="The legal business name for use on invoices, etc."
                         />
                     </div>
