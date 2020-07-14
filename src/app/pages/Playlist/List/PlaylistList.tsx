@@ -46,6 +46,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
+
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -181,6 +183,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
         }
     }
 
+
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
         { name: 'Paywall On/Off', function: setBulkPaywallOpen },
@@ -197,15 +200,15 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => {item.function(true);setDropdownIsOpened(false)}}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch (action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -222,12 +225,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                 default:
                     break
             }
+            setSelectedPlaylist([])
         }).catch((error) => {
             console.log(error)
         })
     }
 
-    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     return (
         <>

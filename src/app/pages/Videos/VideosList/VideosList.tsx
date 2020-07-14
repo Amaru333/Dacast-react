@@ -229,8 +229,8 @@ export const VideosListPage = (props: VideosListProps) => {
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch(action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -247,6 +247,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 default:
                     break
             }
+            setSelectedVod([])
         }).catch((error) => {
             console.log(error)
         })

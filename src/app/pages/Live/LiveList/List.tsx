@@ -48,6 +48,8 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false)
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -192,7 +194,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => {item.function(true);setDropdownIsOpened(false)}}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
@@ -217,13 +219,11 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 default:
                     break
             }
+            setSelectedLive([])
         }).catch((error) => {
             console.log(error)
         })
     }
-
-    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
-    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
 
     return (
             <>
