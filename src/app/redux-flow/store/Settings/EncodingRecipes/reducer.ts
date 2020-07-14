@@ -27,16 +27,23 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
         case ActionTypes.SAVE_ENCODING_RECIPES:
             recipes = state.recipes.slice()
             return  {...state, recipes: recipes.map((item) => {
-                if (item.id !== action.payload.id) {
+                if (item.id !== action.payload.id && item.name === 'Standard') {
                     return {
                         ...item,
-                        isDefault: (!action.payload.isDefault && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault && !item.id) ? true : false
+                        isDefault: (!action.payload.isDefault && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : item.isDefault
+                    }
+                }
+                if(item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        ...action.payload
                     }
                 }
                 return {
                     ...item,
-                    ...action.payload
+                    isDefault: action.payload.isDefault ? false : item.isDefault
                 }
+
             })}
         case ActionTypes.DELETE_ENCODING_RECIPES:
             recipes = state.recipes.filter((item) => item.id != action.payload.id)
@@ -71,8 +78,11 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                     return item
                 }
                 return {
-                    ...item,
-                    ...action.payload
+                    ...action.payload,
+                    watermarkFileID: null,
+                    watermarkFilename: null,
+                    watermarkPositioningLeft: null,
+                    watermarkPositioningRight: null
                 }
             })}
         default:
