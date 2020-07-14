@@ -199,8 +199,8 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch(action) {
                 case 'online':
                     setBulkOnlineOpen(false)
