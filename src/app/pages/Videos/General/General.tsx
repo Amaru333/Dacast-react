@@ -11,7 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/M
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -42,6 +42,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
@@ -338,7 +339,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <IconStyle  className="col col-1 pointer">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                             <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
                         </div>                  
-                        <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
+                        <ExpandableContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                                 {
                                     if(item.link && item.link !== ''){
@@ -359,7 +360,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     }
                                 }
                             })}
-                        </AdvancedLinksContainer>
+                        </ExpandableContainer>
                     </div>
 
                    { subtitleModalOpen && 
@@ -387,7 +388,19 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                         </button>
                                     </SubtitleFile>
                                 }
-                                <InputCheckbox className='col col-12 my2' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? true : false} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                                <div>
+                                    <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
+                                        <IconStyle  className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
+                                        <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
+                                    </div>
+                                    <ExpandableContainer className="flex my2" isExpanded={advancedSubtitleSectionExpanded}>
+                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? uploadedSubtitleFile.convertToUTF8 : true} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                                        <IconStyle className="ml1" style={{marginTop: 5}} fontSize="small" id="utfTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="utfTooltip">Uncheck if you have already converted your file to UTF-8.</Tooltip>
+                                    </ExpandableContainer>
+                                </div>
+                                
+                                
                             </ModalContent>
                             <ModalFooter>
                                 <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
