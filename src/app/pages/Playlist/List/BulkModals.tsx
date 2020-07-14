@@ -11,21 +11,40 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { ContentType } from '../../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { NotificationType, Size } from '../../../../components/Toast/ToastTypes';
+import { button } from '@storybook/addon-knobs';
 
 interface PropsBulkModal {
     items?: ContentType[]; 
     open: boolean; 
     toggle: Function;
     actionFunction: Function;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 } 
 
 
-const DeleteBulkForm = (props: PropsBulkModal) => {    
+const DeleteBulkForm = (props: PropsBulkModal) => {   
+     
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.actionFunction(props.items, 'delete').then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+            props.showToast(`${props.items.length} have been deleted`, 'flexible', 'success')
+        }).catch(() => {
+            setButtonLoading(false)
+            props.showToast(`${props.items.length} couldn't be deleted`, 'flexible', 'success')
+
+        })
+    }
+
     return (
         <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Are you sure you want to deleted "+ props.items.length +" selected items?"}</Text>
-                <Button onClick={() => {props.actionFunction(props.items, 'delete')}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </Modal>
@@ -36,6 +55,20 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
 
     const [selectedTheme, setSelectedTheme] = React.useState<string>(null);
     const [themesList, setThemesList] = React.useState<ThemeOptions[]>([])
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.actionFunction(props.items, 'theme', selectedTheme).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+            props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
+        }).catch(() => {
+            setButtonLoading(false)
+            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'flexible', 'success')
+
+        })
+    }
 
     React.useEffect(() => {
         if(props.themes.length === 0 && themesList.length === 0) {
@@ -69,7 +102,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
                     </>
 
                 }
-                <Button onClick={() => {props.actionFunction(props.items, 'theme', selectedTheme)}} sizeButton="large" disabled={selectedTheme === null} typeButton="primary" buttonColor="blue" >Save</Button>
+                <Button isLoading={buttonLoading} onClick={() => {handleSubmit()}} sizeButton="large" disabled={selectedTheme === null} typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </Modal>
@@ -80,12 +113,27 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
 const OnlineBulkForm = (props: PropsBulkModal) => {
 
     const [online, setOnline] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.actionFunction(props.items, 'online', false).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+            props.showToast(`${props.items.length} items have been turned ` + online ? 'Online' : 'Offline', 'flexible', 'success')
+        }).catch(() => {
+            setButtonLoading(false)
+            props.showToast(`${props.items.length} items couldn't be turned ` + online ? 'Online' : 'Offline', 'flexible', 'success')
+
+        })
+    }
+
     return (
         <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for "+ props.items.length +" selected items?"}</Text>
                 <Toggle defaultChecked={online} onChange={(event) => {setOnline(!online)}}label={online ? "Online" : 'Offline'} className="mb3" />
-                <Button onClick={() => {props.actionFunction(props.items, 'online', false)}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                <Button isLoading={buttonLoading} onClick={() => {handleSubmit()}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </Modal>
@@ -94,12 +142,28 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
 
 
 const PaywallBulkForm = (props: PropsBulkModal) => {
+
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.actionFunction(props.items, 'paywall', false).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+            props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
+        }).catch(() => {
+            setButtonLoading(false)
+            props.showToast('Paywall couldn\'t be turned Offline', 'flexible', 'success')
+
+        })
+    }
+
     return (
         <Modal hasClose={false} toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Turn off Paywall Status for "+ props.items.length +" selected items?"}</Text>
                 <div className='mt2'>
-                    <Button onClick={() => {props.actionFunction(props.items, 'paywall', false)}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                    <Button isLoading={buttonLoading} onClick={() => {handleSubmit()}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
 
