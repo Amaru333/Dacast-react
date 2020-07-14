@@ -3,7 +3,7 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from '../../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
@@ -217,7 +217,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
                     </div>                 
-                    <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                    <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
                             {
                                 if(item.link && item.link !== ''){
@@ -236,7 +236,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 }
                             }
                         })}
-                    </AdvancedLinksContainer>
+                    </ExpandableContainer>
                 </div>
     
                 {

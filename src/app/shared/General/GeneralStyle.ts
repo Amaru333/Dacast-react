@@ -82,7 +82,7 @@ export const ButtonContainer = styled.div`
 margin-top: 24px;
 ` 
 
-export const AdvancedLinksContainer = styled.div<{ isExpanded: boolean }>`
+export const ExpandableContainer = styled.div<{ isExpanded: boolean }>`
    display: ${props => props.isExpanded ? "block" : "none"};
    `
 

@@ -4,7 +4,7 @@ import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from '../../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { ToggleTextInfo } from '../../Settings/Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
@@ -321,7 +321,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced Video Links</Text>
                     </div>
-                    <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                    <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {liveAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                             {
                                 if(item.link && item.link !== ''){
@@ -340,7 +340,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                 }
                             }
                         })}
-                    </AdvancedLinksContainer>
+                    </ExpandableContainer>
                 </div>
 
                 {
