@@ -61,7 +61,7 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
             {...newPromoPreset, 
                 startDate: startDate, 
                 endDate: endDate,
-                discountApplied: newPromoPreset.discountApplied ? newPromoPreset.discountApplied : 'once',
+                discountApplied: newPromoPreset.discountApplied ? newPromoPreset.discountApplied.toLowerCase() : 'once',
                 assignedContentIds:[`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
