@@ -24,7 +24,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     const defineAdAction = () => {
         let tempArray: Ad[] = props.interactionsInfos.ads
         if(props.selectedAd === -1) {
-            tempArray.push(adData)
+            tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type']})
             props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
             tempArray = tempArray.map(ad => {
