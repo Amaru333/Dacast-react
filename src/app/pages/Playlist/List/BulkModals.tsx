@@ -117,7 +117,7 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        props.actionFunction(props.items, 'online', false).then(() => {
+        props.actionFunction(props.items, 'online', online).then(() => {
             setButtonLoading(false)
             props.toggle(false)
             props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
