@@ -59,10 +59,10 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                                 The embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-settings" value="html5-video" label="HTML5 Video" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "html5-video" })} defaultChecked={props.embedSettingsOption["embed-type"] === "html5-video"} />
+                        <InputRadio name="embed-settings" value="html5-video" label="Script" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "html5-video" })} defaultChecked={props.embedSettingsOption["embed-type"] === "html5-video"} />
                         <RadioText>
                             <Text size={14} weight="reg">
-                                The most lightweight way to embed your video. Does not include all Dacast features & will not count video views. Only use if your CMS does not accept iframes.
+                                Script embed codes include all features including security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
                             </Text>
                         </RadioText>
                     </div>
