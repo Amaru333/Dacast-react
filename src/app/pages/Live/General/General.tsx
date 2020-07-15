@@ -250,7 +250,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>

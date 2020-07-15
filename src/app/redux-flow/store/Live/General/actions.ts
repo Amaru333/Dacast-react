@@ -107,7 +107,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, liveId: string):
         await LiveGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {liveId: liveId} })
-                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -121,6 +121,7 @@ export const deleteFileAction = (liveId: string, targetId: string): ThunkDispatc
         await LiveGeneralServices.deleteFile(liveId, targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification('Your file has been deleted', 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

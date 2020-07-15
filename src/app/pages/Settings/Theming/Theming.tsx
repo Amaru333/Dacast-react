@@ -25,7 +25,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const ThemingOptions = () => {
         return (
             <ThemingControlsCard
-                theme={{themes: [selectedTheme], id: null}} 
+                theme={{themes: [selectedTheme], contentId:null, contentThemeId: null}} 
                 saveTheme={props.saveTheme}
                 createTheme={props.createTheme}
                 cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}

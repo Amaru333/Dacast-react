@@ -58,10 +58,19 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setSubmitLoading(true);
         let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveSettingsSecurityOptions({...securityDetails, passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
-            setSubmitLoading(false);
-            setDisplayformActionButtons(false);
-        })
+        props.saveSettingsSecurityOptions(
+            {
+                ...securityDetails, 
+                passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
+                contentScheduling: {
+                    startTime:startTimeTs, 
+                    endTime: endTimeTs
+                } 
+            }, () => {
+                setSubmitLoading(false);
+                setDisplayformActionButtons(false);
+            }
+        )
     }
 
     const domainControlEmptyValues: DomainControl = {
