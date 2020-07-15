@@ -5,10 +5,29 @@ import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle, TextAreaStyle } from './InputStyle';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon';
+import { TextStyle } from '../../../app/containers/Navigation/NavigationStyle';
+import { replaceAt } from '../../../utils/utils';
 
 export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
 
     var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, tooltip, ...other } = props;
+
+    const handleValueInput = (event) => {
+        
+        if(event.target.value.length < 8) {
+            var returnValue =  event.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{2})/g, '$1:').trim();
+        } else {
+            var returnValue = event.target.value;
+        }
+        console.log(event.target.value.length)
+        if( parseInt(event.target.value.charAt(3)) > 5 ) {
+            returnValue = replaceAt(returnValue, 3, event.target.value.length > 4 ? '0' : '');   
+        }
+        if( parseInt(event.target.value.charAt(6)) > 5 ) {
+            returnValue =  replaceAt(returnValue, 6, event.target.value.length > 7 ? '0' : '');
+        }
+        props.onChange(returnValue)    
+    }
 
     return (
         <ContainerStyle hidden={props.hidden} className={className} >
@@ -19,12 +38,12 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                             {props.label}
                         </Text>
                         {
-                            tooltip ? 
+                            tooltip ?
                                 <div>
                                     <IconStyle fontSize="small" id={tooltip}>info_outlined</IconStyle>
                                     <Tooltip target={tooltip}>{tooltip}</Tooltip>
                                 </div> : null
-                            
+
                         }
                         {
                             indicationLabel ?
@@ -50,9 +69,12 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                 {
                     props.type === 'textarea' ?
                         <TextAreaStyle isError={isError} {...other} /> :
-                        <InputStyle ref={ref} isError={isError} {...other} />
+                        props.type === 'video-time' ?
+                            <InputStyle ref={ref} isError={isError} {...other} maxLength={8} onChange={(event) => handleValueInput(event)} /> :
+                            <InputStyle ref={ref} isError={isError} {...other} />
                 }
-                
+
+
                 {suffix ?
                     <AddonStyle suffix={true}>
                         {suffix}

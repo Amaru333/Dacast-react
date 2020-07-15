@@ -40,8 +40,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const emptyAd: Ad = {
         id: "-1",
-        "ad-type": "pre-roll",
-        timestamp: 0,
+        "ad-type": "",
+        timestamp: null,
         url: ""
     }
 

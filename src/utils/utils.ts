@@ -15,6 +15,18 @@ export default function ScrollToTop(): void {
     return null;
 }
 
+export const dataToTimeVideo = (value: number) => {
+    return value ? value.toString() : '';
+}
+
+export const inputTimeVideoToTs = (value: string) => {
+    var splitValue = value.split(':');
+    var hours = parseInt(splitValue[0]) * 3600;
+    var min = parseInt(splitValue[1]) * 60;
+    var sec = parseInt(splitValue[2]);
+    var total = hours+min+sec;
+    return total;
+}
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
@@ -96,6 +108,14 @@ export function getPercentage(num: number, max: number): number {
     return percentage
 }
 
+export const replaceAt = (string: string, index: number, replace: string | number) => {
+    return string.substring(0, index) + replace + string.substring(index + 1);
+}
+
+export const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+  
 
 export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {
