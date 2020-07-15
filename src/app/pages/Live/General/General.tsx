@@ -42,7 +42,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.liveDetails.countdown.startTime !== 0)
-    const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>(props.liveDetails)
+    const [newLiveDetails, setNewLiveDetails] = React.useState<LiveDetails>({...props.liveDetails, rewind: false})
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
@@ -225,7 +225,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         {
                             getPrivilege('privilege-dvr') &&
                             <div className="mb2 clearfix">
-                                <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind ? true : false} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
+                                <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
                                 </ToggleTextInfo>
