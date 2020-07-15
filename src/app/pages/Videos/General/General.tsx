@@ -224,11 +224,17 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Iframe Embed Code</Text>
+                                <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">
+                                { props.vodDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` }
+                                </LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.vodDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -239,16 +245,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`}</LinkText>
                                 <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}`, 'Share Link Copied')} }>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
-                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">JS Embed Code</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">{`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'JS Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -382,13 +378,15 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.name === "" ? null :
                                     <SubtitleFile className="col mt1">
-                                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        <SubtitleTextContainer>
+                                            <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        </SubtitleTextContainer>
                                         <button style={{ border: "none", backgroundColor: "inherit" }}>
                                             <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
                                         </button>
                                     </SubtitleFile>
                                 }
-                                <div>
+                                <div className="col col-12">
                                     <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
                                         <IconStyle  className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
                                         <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
@@ -448,4 +446,14 @@ const SubtitleFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 352px;
+    
+`
+
+const SubtitleTextContainer = styled.div`
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 352px;
 `

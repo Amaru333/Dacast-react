@@ -14,6 +14,7 @@ import { Toggle } from '../../../../components/Toggle/toggle';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -120,8 +121,14 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">
+                            { props.playlistDetails.embedType === "iframe" ? 
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` }
+                            </LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.playlistDetails.embedType === "iframe" ? 
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>

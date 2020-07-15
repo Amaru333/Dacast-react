@@ -35,6 +35,9 @@ export interface VodDetails {
     poster?: AssetType;
     subtitles: SubtitleInfo[];
     uploadurl: string;
+    embedType?: string;
+    embedScaling?: string;
+    embedSize?: number;
 }
 
 export interface VodItem {

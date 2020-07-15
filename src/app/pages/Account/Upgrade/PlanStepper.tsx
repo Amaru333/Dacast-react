@@ -40,7 +40,7 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
                             <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='planStepBillingFrequencyDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanLength(value)} dropdownDefaultSelect="Monthly"></DropdownButton>
                         </div>
                         ,
-                        <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${(props.stepperData.price.usd / 100).toLocaleString()}</Text>
+                        <Text key='totalPriceTableFooterValue' className='right pr2' size={14} weight='med' color='gray-3'>${((props.stepperData.price.usd / 100)/12).toLocaleString()}</Text>
                     ]
                 ) :
                 (

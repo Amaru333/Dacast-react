@@ -38,6 +38,9 @@ export interface LiveDetails {
     countdown: LiveStreamCountdown;
     rewind: boolean;
     uploadurl?: string;
+    embedType?: string;
+    embedSize?: number;
+    embedScaling?: string
 }
 
 interface PLaybackURLs {
