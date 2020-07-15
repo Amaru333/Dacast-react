@@ -12,6 +12,15 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
 
     var { inputPrefix, suffix, label, indicationLabel, icon, help, isError, className, tooltip, ...other } = props;
 
+
+    const handleOnBlurEvent= (event) => {
+        if(event.target.value.length < 8 && event.target.value.length > 0) {
+            var completePart = '00:00:00';
+            var returnValue =  event.target.value + completePart.slice(event.target.value.length);
+            props.onChange(returnValue)    
+        }
+    }
+
     const handleValueInput = (event) => {
         
         if(event.target.value.length < 8) {
@@ -70,7 +79,7 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     props.type === 'textarea' ?
                         <TextAreaStyle isError={isError} {...other} /> :
                         props.type === 'video-time' ?
-                            <InputStyle ref={ref} isError={isError} {...other} maxLength={8} onChange={(event) => handleValueInput(event)} /> :
+                            <InputStyle ref={ref} isError={isError} {...other} maxLength={8} onBlur={(event) => handleOnBlurEvent(event)} onChange={(event) => handleValueInput(event)} /> :
                             <InputStyle ref={ref} isError={isError} {...other} />
                 }
 
