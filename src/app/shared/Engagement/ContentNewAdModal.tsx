@@ -4,6 +4,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementComponentProps } from './ContentEngagement';
+import { dataToTimeVideo, capitalizeFirstLetter } from '../../../utils/utils';
 
 
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
@@ -34,11 +35,12 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"]} />              
+                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={capitalizeFirstLetter(adData["ad-type"])} />              
                 {
                     adData["ad-type"] === 'mid-roll' &&
-                        <Input type='time' className='ml1 mt1 col col-6' id='adPosition' label='Position' value={adData.timestamp.toString()} onChange={(event) => setAdData({...adData, timestamp: parseInt(event.currentTarget.value)})} />
-
+                        <Input className='ml1 mt1 col col-6' id='adPosition' placeholder="hh:mm:ss" label='Position' type='video-time' 
+                            value={dataToTimeVideo(adData.timestamp)} 
+                            onChange={(value) => setAdData({...adData, timestamp: value})} />
                 }
             </div>
             <div className='mt2 col col-12'>

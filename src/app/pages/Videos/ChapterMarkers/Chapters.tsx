@@ -19,7 +19,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
 
     const [chapterMarkerModalOpened, setChapterMarkerModalOpened] = React.useState<boolean>(false);
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
-    const [marker, setMarker] = React.useState<number>(0);
+    const [marker, setMarker] = React.useState<number>(null);
 
     const {userId} = addTokenToHeader()
 
@@ -110,7 +110,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
                         <ChapterMarkerForm 
                             vodId={props.vodId} 
                             chapters={props.chapterPageDetails.chapterMarkers} 
-                            item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: marker}} 
+                            item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: null}} 
                             toggle={setChapterMarkerModalOpened} 
                             submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker}
                             chapterState={props.chapterPageDetailsState}

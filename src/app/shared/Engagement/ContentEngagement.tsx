@@ -41,7 +41,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const emptyAd: Ad = {
         id: "-1",
         "ad-type": "",
-        timestamp: 0,
+        timestamp: null,
         url: ""
     }
 
