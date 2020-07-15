@@ -110,9 +110,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
                     startTime: startTimeTs, 
-                    startTimezone: startDateTimeValue.timezone,
+                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone : null,
                     endTime: endTimeTs,
-                    endTimezone: endDateTimeValue.timezone
+                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
                 }, 
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl

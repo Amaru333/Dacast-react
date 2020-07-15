@@ -64,9 +64,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
                 contentScheduling: {
                     startTime:startTimeTs, 
-                    startTimezone: startDateTimeValue.timezone,
+                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone : null,
                     endTime: endTimeTs,
-                    endTimezone: endDateTimeValue.timezone
+                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
                 } 
             }, () => {
                 setSubmitLoading(false);
