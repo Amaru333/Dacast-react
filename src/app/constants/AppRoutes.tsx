@@ -55,6 +55,7 @@ import Setup from '../containers/Playlists/Setup';
 import PlaylistPaywall from '../containers/Playlists/Paywall';
 import { ForgotPasswordEmail } from '../pages/Register/ResetPassword/ForgotPasswordEmail';
 import Plan from '../containers/Account/Plan';
+import { Impersonate } from '../pages/Impersonate/Impersonate';
 
 
 export const AppRoutes: Routes[] = [   
@@ -64,6 +65,13 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: Login
+    },
+    {
+        path:'/impersonate',
+        name: 'impersonate',
+        isPublic: true,
+        notDisplayedInNavigation: true,
+        component: Impersonate
     },
     {
         path:'/signup',
