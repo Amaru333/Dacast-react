@@ -4,7 +4,7 @@ import { Ad } from '../../../redux-flow/store/Settings/Interactions/types';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { dataToTimeVideo, capitalizeFirstLetter } from '../../../../utils/utils';
+import { dataToTimeVideo, capitalizeFirstLetter, inputTimeVideoToTs } from '../../../../utils/utils';
 
 
 export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedAd: number}) => {
@@ -19,17 +19,21 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
 
     React.useEffect(() => {
+
+        
         setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
     }, [props.selectedAd])
 
     const defineAdAction = () => {
         let tempArray: Ad[] = props.interactionsInfos.ads
+        var newAdData: Ad = {...adData};
+        newAdData.timestamp = inputTimeVideoToTs(adData.timestamp.toString());
         if(props.selectedAd === -1) {
             tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type']})
             props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
             tempArray = tempArray.map(ad => {
-                return ad.id === adData.id ? adData : ad
+                return ad.id === adData.id ? newAdData : ad
             })
             props.saveAd(tempArray, props.interactionsInfos.adsId)
         }
@@ -43,10 +47,10 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
                 {
                     adData["ad-type"] === 'mid-roll' &&
                         <Input type='video-time' 
-                            value={dataToTimeVideo(adData.timestamp)}
+                            value={dataToTimeVideo(adData.timestamp).toString()}
                             placeholder="hh:mm:ss"
                             className='ml1 mt1 col col-6' id='adPosition' label='Position' 
-                            onChange={(value) => setAdData({...adData, timestamp: value})}  />
+                            onChange={(value) => setAdData({...adData, timestamp: value })}  />
                 }             
             </div>
             <div className='mt2 col col-12'>

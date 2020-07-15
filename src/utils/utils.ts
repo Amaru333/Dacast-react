@@ -16,14 +16,23 @@ export default function ScrollToTop(): void {
 }
 
 export const dataToTimeVideo = (value: number) => {
-    return value ? value.toString() : '';
+    if(!value) {return ''}
+    if(typeof value === 'string' || value instanceof String) {return value}
+    var hours = Math.floor(value / 3600);
+    var minutes = Math.floor((value - (hours * 3600)) / 60);
+    var seconds = value - (hours * 3600) - (minutes * 60);
+
+    var timeString = hours.toString().padStart(2, '0') + ':' + 
+        minutes.toString().padStart(2, '0') + ':' + 
+        seconds.toString().padStart(2, '0');
+    return timeString;
 }
 
 export const inputTimeVideoToTs = (value: string) => {
     var splitValue = value.split(':');
     var hours = parseInt(splitValue[0]) * 3600;
-    var min = parseInt(splitValue[1]) * 60;
-    var sec = parseInt(splitValue[2]);
+    var min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60;
+    var sec = !splitValue[2] ? 0 :parseInt(splitValue[2]);
     var total = hours+min+sec;
     return total;
 }
