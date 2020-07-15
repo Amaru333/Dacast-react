@@ -67,8 +67,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).time, timezone: props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone : momentTZ.tz.guess()})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).time, timezone: props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone : momentTZ.tz.guess()})
 
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
@@ -105,7 +105,20 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         setButtonLoading(true)
         let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs =  (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentSecuritySettings({passwordProtection: selectedSettings.passwordProtection ,contentScheduling: {startTime: startTimeTs, endTime: endTimeTs}, selectedGeoRestriction: selectedSettings.selectedGeoRestriction, selectedDomainControl: selectedSettings.selectedDomainControl}, props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)})
+        props.saveContentSecuritySettings(
+            {
+                passwordProtection: selectedSettings.passwordProtection,
+                contentScheduling: {
+                    startTime: startTimeTs, 
+                    startTimezone: startDateTimeValue.timezone,
+                    endTime: endTimeTs,
+                    endTimezone: endDateTimeValue.timezone
+                }, 
+                selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
+                selectedDomainControl: selectedSettings.selectedDomainControl
+            }, 
+            props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)}
+        )
     }
 
     return (

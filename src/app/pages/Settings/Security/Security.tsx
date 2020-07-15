@@ -40,8 +40,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime).time, timezone: props.securityDetails.contentScheduling.startTimezone ? props.securityDetails.contentScheduling.startTimezone : momentTZ.tz.guess()})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime).time, timezone: props.securityDetails.contentScheduling.endTimezone ? props.securityDetails.contentScheduling.endTimezone : momentTZ.tz.guess()})
 
     React.useEffect(() => {
         if (props.securityDetails !== securityDetails) {
@@ -64,7 +64,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
                 contentScheduling: {
                     startTime:startTimeTs, 
-                    endTime: endTimeTs
+                    startTimezone: startDateTimeValue.timezone,
+                    endTime: endTimeTs,
+                    endTimezone: endDateTimeValue.timezone
                 } 
             }, () => {
                 setSubmitLoading(false);
