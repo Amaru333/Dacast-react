@@ -50,7 +50,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(0), timezone: ''})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.liveDetails.countdown.startTime), timezone: props.liveDetails.countdown.timezone ? props.liveDetails.countdown.timezone : momentTZ.tz.guess()})
 
 
     React.useEffect(() => {
@@ -470,7 +470,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
             </Card>
             <ButtonContainer>
-                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0}}, () => setLoadingButton(false)) }  }>Save</Button>
+                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0, timezone: startDateTimeValue.timezone}}, () => setLoadingButton(false)) }  }>Save</Button>
                 <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
             </ButtonContainer>
             {
