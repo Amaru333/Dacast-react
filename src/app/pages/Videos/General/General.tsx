@@ -378,13 +378,15 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.name === "" ? null :
                                     <SubtitleFile className="col mt1">
-                                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        <SubtitleTextContainer>
+                                            <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        </SubtitleTextContainer>
                                         <button style={{ border: "none", backgroundColor: "inherit" }}>
                                             <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
                                         </button>
                                     </SubtitleFile>
                                 }
-                                <div>
+                                <div className="col col-12">
                                     <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
                                         <IconStyle  className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
                                         <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
@@ -444,4 +446,14 @@ const SubtitleFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 352px;
+    
+`
+
+const SubtitleTextContainer = styled.div`
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 352px;
 `
