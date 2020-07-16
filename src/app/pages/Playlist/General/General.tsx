@@ -103,7 +103,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{userId + '-playlist-' + props.playlistDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {updateClipboard(props.playlistDetails.id, 'Content ID Copied')}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {updateClipboard(userId + '-playlist-' + props.playlistDetails.id, 'Content ID Copied')}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>

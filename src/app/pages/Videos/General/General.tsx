@@ -209,7 +209,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">{userId + '-vod-' + props.vodDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(props.vodDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-vod-' + props.vodDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>

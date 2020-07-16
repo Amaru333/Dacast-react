@@ -122,7 +122,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{userId + '-live-' + props.liveDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(props.liveDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyCOntentIdTooltip" onClick={() => updateClipboard(userId + '-live-' + props.liveDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyCOntentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
