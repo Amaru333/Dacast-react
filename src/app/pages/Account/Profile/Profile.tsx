@@ -43,7 +43,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
         reValidateMode: 'onChange',
         mode: 'onBlur',
-        defaultValues: props.ProfilePageDetails,
+        defaultValues: {...props.ProfilePageDetails, newEmail: props.ProfilePageDetails.emailAddress},
     })
 
     const { dirty } = formState;
