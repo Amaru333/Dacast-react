@@ -20,11 +20,11 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
         let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads
         setButtonLoading(true)
         if(props.selectedAd.id === '-1') {
-            tempArray.push({...adData, id: adData.url + inputTimeVideoToTs(adData.timestamp.toString()) + adData['ad-type'], timestamp: inputTimeVideoToTs(adData.timestamp.toString())})
+            tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type'], timestamp: adData['ad-type'] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null})
             props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         } else {
             tempArray = props.contentEngagementSettings.engagementSettings.ads.map((ad) => {
-                return ad.id === adData.id ? {...adData, timestamp: inputTimeVideoToTs(adData.timestamp.toString())} : ad
+                return ad.id === adData.id ? {...adData, timestamp: adData['ad-type'] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null} : ad
             })
             props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         }
