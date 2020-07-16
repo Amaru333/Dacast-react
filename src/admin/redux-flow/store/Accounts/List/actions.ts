@@ -5,7 +5,11 @@ import { AccountsServices } from './services';
 
 export interface GetAccounts {
     type: ActionTypes.GET_ACCOUNTS;
-    payload: Account[];
+    payload: {
+        data: {
+            accounts: Account[]
+        }
+    };
 }
 
 export const getAccountsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetAccounts> => {
