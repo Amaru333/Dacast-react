@@ -158,7 +158,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID)}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
@@ -181,7 +181,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         thumbnailEnable || uploadedImageFiles.thumbnail ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID)}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
@@ -202,8 +202,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        posterEnable || uploadedImageFiles.poster && 
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.poster.targetID)}}>Delete</Button>
+                                        (posterEnable || uploadedImageFiles.poster) &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.poster.targetID, "poster")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
