@@ -15,7 +15,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { getPrivilege } from '../../../utils/utils';
+import { getPrivilege, dataToTimeVideo } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
@@ -136,6 +136,16 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         setNewAdModalOpened(true);
     }
 
+    const handleAdPosition = (ad: Ad) => {
+        if(ad["ad-type"] === "pre-roll"){
+            return "Start"
+        } else if(ad["ad-type"] === "post-roll"){
+            return "End"
+        } else {
+            return dataToTimeVideo(ad.timestamp).toString()
+        }
+    }
+
     const { userId } = addTokenToHeader()
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
@@ -177,7 +187,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
-                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{item.timestamp}</Text>,
+                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
