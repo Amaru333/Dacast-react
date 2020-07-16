@@ -15,7 +15,7 @@ export const reducer = (state = profileInitialState, action: ProfileAction): Pro
         case ActionTypes.SAVE_PROFILE_PASSWORD:
             return {
                 ...state, 
-                lastChangedPassword: ""
+                passwordLastChanged: Math.round(Date.now()/1000)
             }
         default:
             return state;
