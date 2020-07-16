@@ -29,7 +29,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
         var newAdData: Ad = {...adData};
         newAdData.timestamp = inputTimeVideoToTs(adData.timestamp.toString());
         if(props.selectedAd === -1) {
-            tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type']})
+            tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData['ad-type']})
             props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
             tempArray = tempArray.map(ad => {

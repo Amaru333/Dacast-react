@@ -16,7 +16,7 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
-import { getPrivilege } from '../../../../utils/utils';
+import { getPrivilege, dataToTimeVideo } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
@@ -130,7 +130,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         } else if(ad["ad-type"] === "post-roll"){
             return "End"
         } else {
-            return ad.timestamp
+            return dataToTimeVideo(ad.timestamp).toString()
         }
     }
 

@@ -4,7 +4,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementComponentProps } from './ContentEngagement';
-import { dataToTimeVideo, capitalizeFirstLetter } from '../../../utils/utils';
+import { dataToTimeVideo, capitalizeFirstLetter, inputTimeVideoToTs } from '../../../utils/utils';
 
 
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
@@ -20,11 +20,11 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
         let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads
         setButtonLoading(true)
         if(props.selectedAd.id === '-1') {
-            tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type']})
+            tempArray.push({...adData, id: adData.url + inputTimeVideoToTs(adData.timestamp.toString()) + adData['ad-type'], timestamp: inputTimeVideoToTs(adData.timestamp.toString())})
             props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         } else {
             tempArray = props.contentEngagementSettings.engagementSettings.ads.map((ad) => {
-                return ad.id === adData.id ? adData : ad
+                return ad.id === adData.id ? {...adData, timestamp: inputTimeVideoToTs(adData.timestamp.toString())} : ad
             })
             props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
         }
@@ -39,7 +39,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
                 {
                     adData["ad-type"] === 'mid-roll' &&
                         <Input className='ml1 mt1 col col-6' id='adPosition' placeholder="hh:mm:ss" label='Position' type='video-time' 
-                            value={dataToTimeVideo(adData.timestamp)} 
+                            value={dataToTimeVideo(adData.timestamp).toString()} 
                             onChange={(value) => setAdData({...adData, timestamp: value})} />
                 }
             </div>
