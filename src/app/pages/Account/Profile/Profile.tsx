@@ -137,7 +137,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
 
-                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {DateTime.fromSeconds(props.ProfilePageDetails.passwordLastChanged).toFormat("yyyy-LL-dd HH:mm")}</Text></p>
+                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {DateTime.fromSeconds(props.ProfilePageDetails.passwordLastChanged ? props.ProfilePageDetails.passwordLastChanged : Math.round(Date.now()/1000)).toFormat("yyyy-LL-dd HH:mm")}</Text></p>
 
                     <p className="mx1"><Text size={14} weight='reg' color='gray-3'>For best security practices you should update your password every 6 months.</Text></p>
 
