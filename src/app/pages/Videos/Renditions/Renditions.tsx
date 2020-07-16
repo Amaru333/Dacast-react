@@ -279,12 +279,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                     <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
                     {
                         newSourceFileUpload && 
-                            <ProgressBar  size='small' color='violet' label='Upload Progress' startingValue={newSourceFileUploadProgress} />
+                            <ProgressBar static  size='small' color='violet' label='Upload Progress' startingValue={newSourceFileUploadProgress} />
 
                     }
                 </ModalContent>
                 <ModalFooter>
-                    <input type='file' ref={replaceSourceFileBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='replaceSourceFileBrowseButton' />
+                    <input type='file' accept='video/mp4, video/mov' ref={replaceSourceFileBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='replaceSourceFileBrowseButton' />
                     <Button onClick={() => {replaceSourceFileBrowseButtonRef.current.click()}}>Upload Replacement</Button>
                     <Button typeButton="tertiary" onClick={() => setReplaceSourceModalOpen(false)}>Cancel</Button>  
                 </ModalFooter>
