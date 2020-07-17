@@ -15,12 +15,12 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '@material-ui/core';
 import { Table } from '../../../components/Table/Table';
 
-export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any }) => {
+export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
     const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
-    const [hideForm, setHideForm] = React.useState<boolean>(true)
+    const [hideForm, setHideForm] = React.useState<boolean>(false)
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
@@ -31,6 +31,12 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
             setHideForm(true);
         }
     }, [threeDSecureActionToken])
+
+    React.useEffect(() => {
+        if (props.billingInfo.paymentMethod && !props.isUpdate) {
+            setHideForm(true);
+        }
+    }, [])
 
     recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
 
@@ -108,7 +114,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
     return (
         
         <> 
-        {props.billingInfo.paymentMethod && 
+        {(props.billingInfo.paymentMethod && !props.isUpdate)  && 
         <div>
             <Table id="paymentMethodTable" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} headerBackgroundColor="gray-10"></Table>
         </div>

@@ -105,7 +105,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal billingInfo={billingInfo} callback={setBillingInfo} actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={setBillingInfo} actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} isUpdate />
                     </Modal>
                 </Elements>
             </RecurlyProvider>
