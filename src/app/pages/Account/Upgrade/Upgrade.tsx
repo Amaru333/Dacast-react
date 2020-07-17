@@ -170,7 +170,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 <PlanCard className='mt1' isSelected={currentPlan === "Annual Scale"}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' + (calculateDiscount(props.planDetails.scalePlanAnnual.price.usd / 100) / 12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd / 100)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' + (calculateDiscount(props.planDetails.scalePlanAnnual.price.usd / 100, props.planDetails.scalePlanAnnual.discount) / 12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd / 100)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <div className='flex flex-baseline mb1'>
@@ -197,7 +197,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
                                             {planBillingFrequency === 'Annually' ?
                                                 <div className="flex flex-column mb25 col col-8 ">
-                                                    <Label className="mb1" color='green' backgroundColor='green20' label='25% Discount' />
+                                                    <Label className="mb1" color='green' backgroundColor='green20' label={props.planDetails.scalePlanAnnual.discount + '% Discount'} />
                                                     <Text className='center' size={10} color='gray-5'>When billed Annually compared to Monthly</Text>
                                                 </div>
                                                 :
@@ -313,7 +313,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 <Card>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' + (calculateDiscount(props.planDetails.scalePlanAnnual.price.usd / 100) / 12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd / 100)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? '$' + (calculateDiscount(props.planDetails.scalePlanAnnual.price.usd / 100, props.planDetails.scalePlanAnnual.discount) / 12).toFixed(0) : '$' + (props.planDetails.scalePlanMonthly.price.usd / 100)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <div className='flex flex-baseline'>
@@ -341,7 +341,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                                 </div>
                                                 : null}
                                             {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
-                                            <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => { { planBillingFrequency === "Annually" ? setStepperData({ ...props.planDetails.scalePlanAnnual, paymentTerm: 12 }) : setStepperData({ ...props.planDetails.scalePlanAnnual, paymentTerm: 1 }) }; handleSteps('scale') }}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                            <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => { { planBillingFrequency === "Annually" ? setStepperData({ ...props.planDetails.scalePlanAnnual }) : setStepperData({ ...props.planDetails.scalePlanMonthly }) }; handleSteps('scale') }}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
                                     </PlanInfosContainer>
                                 </Card>
@@ -424,7 +424,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 functionCancel={setStepperPlanOpened}
                                 isLoading={isLoading}
                                 finalFunction={threeDSecureActive ? purchasePlan3Ds : props.purchasePlan}
-                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos }}
+                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos, 'planDetails': props.planDetails }}
                             />
 
                         }

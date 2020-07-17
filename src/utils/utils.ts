@@ -309,8 +309,12 @@ export const useKeyboardSubmit = (callback: Function) => {
     }, []);
 }
 
-export const calculateDiscount = (total: number) => {
-    return total - ((total / 100) * 25)
+export const calculateDiscount = (total: number, discount: number) => {
+    if(discount === 0) {
+        return total
+    } else {
+    return total - ((total / 100) * discount)
+    }
 }
 
 export const calculateAnnualPrice = (total: number) => {

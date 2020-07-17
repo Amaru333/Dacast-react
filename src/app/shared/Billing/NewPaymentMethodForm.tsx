@@ -33,7 +33,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
     }, [threeDSecureActionToken])
 
     React.useEffect(() => {
-        if (props.billingInfo.paymentMethod && !props.isUpdate) {
+        if (props.billingInfo.paymentMethod.type !== "" && !props.isUpdate) {
             setHideForm(true);
         }
     }, [])
@@ -114,7 +114,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
     return (
         
         <> 
-        {(props.billingInfo.paymentMethod && !props.isUpdate)  && 
+        {(props.billingInfo.paymentMethod.type !== "" && !props.isUpdate)  && 
         <div>
             <Table id="paymentMethodTable" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} headerBackgroundColor="gray-10"></Table>
         </div>
