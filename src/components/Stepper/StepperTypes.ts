@@ -19,7 +19,7 @@ export interface StepperSpecificProps {
     functionCancel?: Function;
     stepperData?: any;
     updateStepperData?: any;
-    usefulFunctions?: {[key: string]: Function};
+    usefulFunctions?: {[key: string]: any};
     stepperStaticData?: {[key: string]: any};
     widthSecondStep? : number;
 }

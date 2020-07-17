@@ -424,7 +424,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 functionCancel={setStepperPlanOpened}
                                 isLoading={isLoading}
                                 finalFunction={threeDSecureActive ? purchasePlan3Ds : props.purchasePlan}
-                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan }}
+                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos }}
                             />
 
                         }
