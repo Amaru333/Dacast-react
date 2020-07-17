@@ -13,10 +13,8 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 
 const VideosList = (props: VideosListProps) => {
 
-    React.useEffect(() => {
-        if (!props.items) {
-            props.getVodList();
-        }
+    React.useEffect(() => {     
+        props.getVodList();
     }, [])
 
     if (!props.items) {

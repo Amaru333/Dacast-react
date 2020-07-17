@@ -271,7 +271,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
                         onClick={() => setEncodeRenditionsModalOpen(true)}
-                    >Encode ></Button>
+                    >Encode &gt;</Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
                         onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>

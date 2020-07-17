@@ -104,7 +104,7 @@ export const VideosListPage = (props: VideosListProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && sort) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {

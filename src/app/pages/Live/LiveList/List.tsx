@@ -92,7 +92,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && sort) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getLiveList(parseFiltersToQueryString(selectedFilters)).then(() => {

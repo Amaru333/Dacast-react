@@ -93,7 +93,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && sort) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {

@@ -24,9 +24,7 @@ export interface LiveListComponentProps {
 export const LiveList = (props: LiveListComponentProps) => {
 
     React.useEffect(() => {
-        if (!props.liveList) {
-            props.getLiveList();
-        }
+        props.getLiveList();
     }, [])
 
     if (!props.liveList) {
