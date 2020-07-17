@@ -24,22 +24,27 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className=' mt25'>
                     <Toggle  id='creditCardPurchasesToggle' label="Credit Card Purchases" defaultChecked={props.paywallSettingsInfos.creditCardPurchases} onChange={() => setSettingsInfos({...settingsInfos, creditCardPurchases: !settingsInfos.creditCardPurchases})} />
                     <div className="mt1">
-                        <Text size={14} weight='reg'>Videos won't be displayed publicy on your website</Text>  
+                        <Text size={14} weight='reg'>Allow your viewers to purchase using cards on the paywall.</Text>  
                     </div>
                 </div>
                 <div className='mt25'>
-                    <Toggle id='paypalPurchasesToggle' label='PayPal Purchases' defaultChecked={props.paywallSettingsInfos.paypalPurchases} onChange={() => setSettingsInfos({...settingsInfos, paypalPurchases: !settingsInfos.paypalPurchases})} />
+                    <Toggle id='paypalPurchasesToggle' label='PayPal Purchases' defaultChecked={props.paywallSettingsInfos.paypalPurchases} onChange={() => setSettingsInfos({...settingsInfos, paypalPurchases: !settingsInfos.paypalPurchases, paypalTC: settingsInfos.paypalPurchases ? false : settingsInfos.paypalTC})} />
                     {
                         settingsInfos.paypalPurchases &&
                             <>
                                 <div className="mt1">
-                                    <Text size={14} weight='reg'>Viewers must enter a password before viewing your content. You can edit the prompt time to let the viewer preview some of the video before being prompted by a password.</Text>
+                                    <Text size={14} weight='reg'>Allow your viewers to purchase using PayPal on the paywall.</Text>
                                 </div>
 
                                 <div className="clearfix mt1">
                                     <InputCheckbox className='left' id='paypalTCCheckbox' defaultChecked={settingsInfos.paypalTC} onChange={() => setSettingsInfos({...settingsInfos, paypalTC: !settingsInfos.paypalTC})} />
                                     <Text size={14} weight='reg' >Agree to <a target="_blank" rel="noopener noreferrer" href="https://www.paypal.com/us/webapps/mpp/ua/useragreement-full" > PayPal User Agreement</a></Text>
+                                   
                                 </div>
+                                {
+                                    (settingsInfos.paypalPurchases && !settingsInfos.paypalTC) &&
+                                    <Text size={10} weight='reg' color='red'>This field is required</Text>
+                                }
                             </>
                     }
 
@@ -49,7 +54,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className="mt3 mb1">
                     <Text size={16} weight='med'>Custom Terms of Services</Text>
                 </div>
-                <Text size={14} weight='reg'>Some text about the text of the customer thing</Text>
+                <Text size={14} weight='reg'>If you need viewers to accept your TOS, enter the URL here.</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
                 
                 <BorderStyle className='mt2' />
@@ -62,7 +67,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
             </Card>
             { settingsInfos !== props.paywallSettingsInfos &&
                 <div>
-                    <Button onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }
