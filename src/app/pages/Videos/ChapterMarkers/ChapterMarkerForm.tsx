@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/VOD/Chapters/types'
-import { dataToTimeVideo } from '../../../../utils/utils'
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/utils'
 
 export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function; chapterState: ChapterMarkerInfosState}) => {
 
@@ -47,7 +47,7 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
     }, [props.chapterState])
 
     return (
-        chapterMarker ?
+        chapterMarker &&
 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
@@ -63,9 +63,9 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                 />
 
                 <Input 
-                    value={dataToTimeVideo(chapterMarker.start)}
+                    value={dataToTimeVideo(chapterMarker.start).toString()}
                     disabled={false}
-                    onChange={(value) => setChapterMarker({...chapterMarker, start: value})}
+                    onChange={(value) => setChapterMarker({...chapterMarker, start: inputTimeVideoToTs(value)})}
                     id='chapterMarkerTime'
                     type='video-time'
                     placeholder='hh:mm:ss'
@@ -77,6 +77,5 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>
-            : null
     )
 }
