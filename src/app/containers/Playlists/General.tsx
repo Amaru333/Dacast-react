@@ -65,11 +65,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
             dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
         },
-        uploadFile: (data: File, uploadUrl: string, playlistId: string) => {
-            dispatch(uploadFileAction(data, uploadUrl, playlistId))
+        uploadFile: (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
+            dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))
         },
-        deleteFile: (liveId: string, targetId: string) => {
-            dispatch(deleteFileAction(liveId, targetId))
+        deleteFile: (liveId: string, targetId: string, uploadType: string) => {
+            dispatch(deleteFileAction(liveId, targetId, uploadType))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
