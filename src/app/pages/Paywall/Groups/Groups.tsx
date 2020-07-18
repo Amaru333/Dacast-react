@@ -158,10 +158,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 ]}
             })
         }
-    }
-
-    useStepperFinalStepAction('stepperNextButton', () => {{setGroupPricesStepperOpened(false);selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}})
-
+    }    
 
     return (
         <div>
@@ -191,22 +188,26 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
                 }
             </Modal>
-                  
-            <CustomStepper
-                opened={groupPricesStepperOpened}
-                stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
-                stepList={groupPriceSteps}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                stepTitles={['Group Details', 'Content Selection']}
-                lastStepButton="Create"
-                stepperData={stepperData}
-                widthSecondStep={60}
-                updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
-                finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
-            />
+
+            {
+                groupPricesStepperOpened && 
+                <CustomStepper
+                    opened={groupPricesStepperOpened}
+                    stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
+                    stepList={groupPriceSteps}
+                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    stepTitles={['Group Details', 'Content Selection']}
+                    lastStepButton={selectedGroupPrice ? "Save" : "Create"}
+                    stepperData={stepperData}
+                    widthSecondStep={60}
+                    updateStepperData={(value: GroupStepperData) => setStepperData(value)}
+                    functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
+                    finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+                />
+            }    
+            
         </div>
 
     )

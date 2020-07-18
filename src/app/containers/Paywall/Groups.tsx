@@ -83,8 +83,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteGroupPromo: (data: GroupPromo) => {
             dispatch(deleteGroupPromoAction(data));
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: async (folderPath: string) => {
+            await dispatch(getFolderContentAction(folderPath))
         },
         restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))

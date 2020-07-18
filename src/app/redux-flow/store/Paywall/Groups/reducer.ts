@@ -27,7 +27,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                         } 
                                         : null,
                                         type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
-                                        startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                        startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
                                         recurrence: price.settings.recurrence ? {
                                             unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                             : price.settings.recurrence.value > 4 ? 'Biannual'
@@ -46,7 +46,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                 } 
                                 : null,
                                 type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',
-                                startMethod: item.prices[0].settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                startMethod: item.prices[0].settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
                                 recurrence: item.prices[0].settings.recurrence ? {
                                     unit: item.prices[0].settings.recurrence.unit === 'week' ? 'Weekly'
                                     : item.prices[0].settings.recurrence.value > 4 ? 'Biannual'
