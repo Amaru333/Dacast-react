@@ -16,8 +16,10 @@ export interface BillingContainerProps {
 const Billing = (props: BillingContainerProps) => {
 
     React.useEffect(() => {
-        props.getBillingPageInfos();
-    }, [props.billingInfos.paymentMethod])
+        if(!props.billingInfos) {
+            props.getBillingPageInfos();
+        }
+    }, [])
 
     return (
         props.billingInfos ? 
