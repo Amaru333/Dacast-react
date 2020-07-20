@@ -8,7 +8,7 @@ import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 
 export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function; playbackProtection: PlaybackProtection}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<number>(50);
-    const [dataPrice, setDataPrice] = React.useState<number>(0.25)
+    const [dataPrice, setDataPrice] = React.useState<number>(props.playbackProtection.price)
 
     const ProtectionModalTableData = [
         {

@@ -22,7 +22,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
             <Card>
                 <Text size={20} weight='med'>Paywall Settings</Text>
                 <div className=' mt25'>
-                    <Toggle  id='creditCardPurchasesToggle' label="Credit Card Purchases" defaultChecked={props.paywallSettingsInfos.creditCardPurchases} onChange={() => setSettingsInfos({...settingsInfos, creditCardPurchases: !settingsInfos.creditCardPurchases})} />
+                    <Toggle  id='creditCardPurchasesToggle' label="Card Purchases" defaultChecked={props.paywallSettingsInfos.creditCardPurchases} onChange={() => setSettingsInfos({...settingsInfos, creditCardPurchases: !settingsInfos.creditCardPurchases})} />
                     <div className="mt1">
                         <Text size={14} weight='reg'>Allow your viewers to purchase using cards on the paywall.</Text>  
                     </div>

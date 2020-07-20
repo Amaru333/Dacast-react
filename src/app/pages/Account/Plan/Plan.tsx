@@ -212,28 +212,33 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
                 <div className="col col-2 mb2">
                     <DataPricingTable >
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">1+TB</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.25/GB</Text></PriceCell>
-                        </DataPricingTableRow>
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">5+TB</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.12/GB</Text></PriceCell>
-                        </DataPricingTableRow>
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">10TB+</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.09/GB</Text></PriceCell>
-                        </DataPricingTableRow>
+                        {
+                            props.billingInfos.products && 
+                            Object.values(props.billingInfos.products.bandwidth).map((item) => {
+                                return (
+                                    <DataPricingTableRow key={item.code}>
+                                        <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
+                                        <PriceCell><Text size={14}  weight="reg" color="gray-1">{'$' + item.unitPrice + '/GB'}</Text></PriceCell>
+                                    </DataPricingTableRow>
+                                )
+                            })
+                        }
+                        
+                        
                     </DataPricingTable>
                 </div>
                 <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
                 
             </Card>
             <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
-                <Elements>                
-            <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection.enabled ? props.billingInfos.playbackProtection : null}/>
-            </Modal>
+                <Elements>    
+                    {
+                        protectionModalOpened &&
+                        <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection}/>
+                        </Modal>
+                    }            
+
             <CustomStepper 
                 opened={extrasModalOpened}
                 stepperHeader='Purchase Extras'

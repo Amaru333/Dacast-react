@@ -38,7 +38,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType })
+        setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
     }, [selectedStreamType])
 
     const handleCancel = () => {
@@ -152,7 +152,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                 </StreamTypeSelectorContainer>
 
-                {getPrivilege('privilege-dvr') &&
+                {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
                             <Toggle defaultChecked={streamSetupOptions.rewind ? true : false} onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
