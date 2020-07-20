@@ -431,13 +431,13 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                     </Elements>
                 </RecurlyProvider>
-                <Modal icon={{ name: "check_circle_outline", color: "green" }} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} >
+                <Modal hasClose={false} icon={{ name: "check_circle_outline", color: "green" }} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} >
                     <div className="mt2 mb3">
                         <Text size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
                     </div>
                     <ModalFooter>
                         <Button onClick={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)}>Confirm</Button>
-                        <Button typeButton="tertiary">See Invoices</Button>
+                        <Button onClick={() => {history.push('/account/invoices')}} typeButton="tertiary">See Invoices</Button>
                     </ModalFooter>
                 </Modal>
                 <Modal icon={{ name: "warning_outlined", color: "red" }} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={true}>
