@@ -50,6 +50,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                 props.recurlyFunction(token.id, null, (token3Ds: string) => {
                     setThreeDSecureActionToken(token3Ds);
                 });
+                props.callback()
             })
 
             paypal.on('error', error => {
