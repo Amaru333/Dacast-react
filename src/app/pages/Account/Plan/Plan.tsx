@@ -38,7 +38,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
-    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection.enabled)
+    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);

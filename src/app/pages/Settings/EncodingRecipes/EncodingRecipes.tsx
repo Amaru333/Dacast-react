@@ -15,7 +15,6 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -134,9 +133,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
             FunctionRecipe(false)
         }
     }
-
-    useStepperFinalStepAction('stepperNextButton', () => submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe))
-
+    
     return(
         !props.encodingRecipeData? 
             <LoadingSpinner size='large' color='blue80' />
@@ -166,6 +163,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
                     stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}
                     usefulFunctions={{'getUploadUrl': props.getWatermarkUrlForUploading, 'uploadWatermark': props.uploadWatermark, 'deleteWatermark': props.deleteWatermark}}
+                    finalFunction={() => {submitRecipe(selectedRecipe, FunctionRecipe, props.createEncodingRecipe, props.saveEncodingRecipe)}}
                 />
                 <Modal size="small" modalTitle="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
                     <ModalContent>

@@ -13,7 +13,6 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 interface GroupStepperSecondStepProps {
