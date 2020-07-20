@@ -12,7 +12,7 @@ export interface GetBillingPageInfos {
 
 export interface SaveBillingPagePaymentMethod {
     type: ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD;
-    payload: CreditCardPayment | PaypalPayment;
+    payload: string;
 }
 
 export interface AddBillingPagePlaybackProtection {
@@ -52,7 +52,7 @@ export const getBillingPageInfosAction = (): ThunkDispatch<Promise<void>, {}, Ge
     };
 }
 
-export const saveBillingPagePaymentMethodAction = (data: CreditCardPayment | PaypalPayment): ThunkDispatch<Promise<void>, {}, SaveBillingPagePaymentMethod> => {
+export const saveBillingPagePaymentMethodAction = (data: string): ThunkDispatch<Promise<void>, {}, SaveBillingPagePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveBillingPagePaymentMethod> ) => {
         await BillingServices.saveBillingPagePaymentMethodService(data)
             .then( response => {

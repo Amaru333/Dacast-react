@@ -18,12 +18,12 @@ export const BillingPage = (props: BillingContainerProps) => {
     const [paymentMethodModalOpened, setPaymentMethodModalOpened] = React.useState<boolean>(false);
     const [billingInfo, setBillingInfo] = React.useState<BillingPageInfos>(props.billingInfos)
 
+    React.useEffect(() => {
+        setBillingInfo(props.billingInfos)
+    }, [props.billingInfos])
+
     let smScreen = useMedia('(max-width: 780px)');
 
-    const onSubmitFunctions = () => {
-        props.saveBillingPagePaymentMethod(billingInfo.paymentMethod);
-        setPaymentMethodModalOpened(false)
-    }
 
     const paypalTableHeaderElement = () => {
         return {data: [
@@ -105,7 +105,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal billingInfo={billingInfo} callback={setBillingInfo} actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} isUpdate />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={() => setPaymentMethodModalOpened(false)} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate savePaymentMethod={props.saveBillingPagePaymentMethod} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>

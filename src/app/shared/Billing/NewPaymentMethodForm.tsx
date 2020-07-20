@@ -15,7 +15,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '@material-ui/core';
 import { Table } from '../../../components/Table/Table';
 
-export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
+export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -47,7 +47,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
             )
 
             paypal.on('token', token => {
-                props.purchasePlan(token.id, null, (token3Ds: string) => {
+                props.recurlyFunction(token.id, null, (token3Ds: string) => {
                     setThreeDSecureActionToken(token3Ds);
                 });
             })
@@ -74,14 +74,18 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                     }
                     else {
                         setRecurlyToken(token.id);
-                        props.purchasePlan(token.id, null, (token3Ds: string) => {
-                            setThreeDSecureActionToken(token3Ds);
-                        });
+                        {props.isUpdate ? 
+                            props.recurlyFunction(token.id) :
+                            props.recurlyFunction(token.id, null, (token3Ds: string) => {
+                                setThreeDSecureActionToken(token3Ds);
+                            });
+                        }
+                        props.callback()
                     }
                 });
             } else {
                 setRecurlyToken("");
-                    props.purchasePlan("", null, (token3Ds: string) => {
+                    props.recurlyFunction("", null, (token3Ds: string) => {
                         setThreeDSecureActionToken(token3Ds);
                     });
             }      
@@ -140,7 +144,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Account's Holder First Name"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, firstName: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="last_name"
@@ -148,7 +152,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Account's Holder Last Name"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, lastName: event.currentTarget.value } })}
+                            
                         />
                         <div className='mb2 col col-12' id="recurly-elements"></div>
                         <Input
@@ -157,7 +161,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="VAT Number"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, vatNumber: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="country"
@@ -165,7 +169,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Country"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, country: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="address1"
@@ -173,7 +177,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Street Address 1"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, address: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="address2"
@@ -182,7 +186,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             indicationLabel='Optional'
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, address2: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="city"
@@ -190,7 +194,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Town/City"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, city: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="state"
@@ -199,7 +203,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             type='text'
                             indicationLabel='Optional'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, state: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="postal_code"
@@ -207,7 +211,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Zip/Postal Code"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, paymentMethod: { ...props.billingInfo.paymentMethod, postCode: event.currentTarget.value } })}
+                            
                         />
                     </div>
                     <input type="hidden" name="recurly-token" data-recurly="token"></input>
