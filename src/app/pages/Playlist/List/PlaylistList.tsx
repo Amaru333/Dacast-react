@@ -34,7 +34,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringPlaylistState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{ page: number; nbResults: number }>({ page: 1, nbResults: 10 })
     const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>('created-at-desc')
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
@@ -93,7 +93,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && sort) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
