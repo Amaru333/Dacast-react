@@ -41,7 +41,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
     recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
 
     useStepperFinalStepAction('stepperNextButton', () => {
-        if (selectedOption === 'paypal') {
+        if ((props.billingInfo.paymentMethod.type === "" && selectedOption === 'paypal') || props.billingInfo.paymentMethod.type === "paypal" ) {
             const paypal = recurly.PayPal(
                 { display: { displayName: " Dacast " } }
             )
@@ -67,17 +67,24 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
             paypal.start();
 
         } else {
-            recurly.token(formRef.current, (err: any, token: any) => {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-                    setRecurlyToken(token.id);
-                    props.purchasePlan(token.id, null, (token3Ds: string) => {
+            if (props.billingInfo.paymentMethod.type === "" || props.isUpdate){
+                recurly.token(formRef.current, (err: any, token: any) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        setRecurlyToken(token.id);
+                        props.purchasePlan(token.id, null, (token3Ds: string) => {
+                            setThreeDSecureActionToken(token3Ds);
+                        });
+                    }
+                });
+            } else {
+                setRecurlyToken("");
+                    props.purchasePlan("", null, (token3Ds: string) => {
                         setThreeDSecureActionToken(token3Ds);
                     });
-                }
-            });
+            }      
         }
 
     })
