@@ -32,7 +32,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{item.date}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
                 <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)}  />,
-                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a className="noTransition" href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><IconStyle>get_app</IconStyle></a> </IconContainer>
+                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a className="noTransition" href={item.downloadLink} download><IconStyle>get_app</IconStyle></a> </IconContainer>
 
             ]}
         })
