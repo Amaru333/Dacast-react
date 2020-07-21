@@ -28,6 +28,7 @@ export interface VodDetails {
     id: string;
     online: boolean;
     title: string;
+    downloadURL?: string;
     description: string;
     folders: string[];
     thumbnail: AssetType;

@@ -23,6 +23,7 @@ import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import Axios from 'axios';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
@@ -166,6 +167,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
+
+    function saveFile(url: string, filename: string) {
+        Axios.get(url).then(function(t) {
+            return t.blob().then((b)=>{
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(b);
+                a.setAttribute("download", filename);
+                a.click();
+            }
+            );
+        });
+        }
     
     return (
         VodDetails &&
@@ -174,7 +187,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <div className="details col col-12">
                         <header className="flex justify-between mb2">
                             <Text size={20} weight="med">Details</Text>
-                            { getPrivilege('privilege-web-download') && <Button sizeButton="xs" typeButton="secondary">Download</Button>}
+                            { getPrivilege('privilege-web-download') && <Button onClick={() => saveFile(VodDetails.downloadURL, VodDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>}
                         </header>
                         <Toggle
                             className="col col-12 mb2"
