@@ -32,6 +32,7 @@ interface PlanComponentProps {
     editBillingPagePaymenPlaybackProtection: Function;
     deleteBillingPagePaymenPlaybackProtection: Function;
     addBillingPageExtras: Function;
+    purchaseProducts: Function;
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
@@ -44,9 +45,48 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
+    const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
+
+    const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+        setIsLoading(true);
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null,  (response) => {
+            console.log(response);
+            setIsLoading(false);
+            if (response.data.data.tokenID) {
+                callback(response.data.data.tokenID)
+                setThreeDSecureActive(true)
+            } else {
+                setPurchaseDataOpen(false)
+                console.log("data purchased")
+                // setPaymentSuccessfulModalOpened(true)
+                // setCurrentPlan(stepperData.name)
+            }
+        }, () => {
+            setIsLoading(false);
+            // setPaymentDeclinedModalOpened(true)
+            console.log("payment failed")
+        })
+    }
+
+    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+        setIsLoading(true);
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, threeDSecureToken, (response) => {
+            setPurchaseDataOpen(false)
+            setIsLoading(false);
+            // setPaymentSuccessfulModalOpened(true)
+            // setThreeDSecureActive(false)
+            // setCurrentPlan(stepperData.name)
+        }, () => {
+            setIsLoading(false);
+            // setPaymentDeclinedModalOpened(true)
+            console.log("payment failed")
+        })
+
+    }
   
     const submitExtra = () => {
         if(stepperExtraItem) {
@@ -54,7 +94,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setExtrasModalOpened(false);
         }
     }
- 
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -262,10 +301,12 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 lastStepButton="Purchase"
-                finalFunction={() => {}}
+                finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
                 stepperData={purchaseDataStepperData}
                 updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
                 functionCancel={setPurchaseDataOpen}
+                usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                isLoading={isLoading}
             />
             </Elements>
             </RecurlyProvider>

@@ -5,7 +5,8 @@ export enum ActionTypes {
     EDIT_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/EDIT_BILLING_PAGE_PLAYBACK_PROTECTION",
     DELETE_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/DELETE_BILLING_PAGE_PLAYBACK_PROTECTION",
     ADD_BILLING_PAGE_EXTRAS = "@@account_plan/ADD_BILLING_PAGE_EXTRAS",
-    GET_PRODUCT_DETAILS = "@@account_plan/GET_PRODUCT_DETAILS"
+    GET_PRODUCT_DETAILS = "@@account_plan/GET_PRODUCT_DETAILS",
+    PURCHASE_PRODUCTS = "@@account_plan/PURCHASE_PRODUCTS"
 }
 
 
@@ -25,9 +26,9 @@ export interface PlaybackProtection {
 }
 
 export interface Extras {
-    type: string;
-    amount: string;
-    price: string;
+    code: string;
+    quantity: string;
+    price?: string;
     datePurchased?: Date;
 }
 
