@@ -167,6 +167,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     }
 
     const planDetailsTableBodyElement = () => {
+        if(props.billingInfos.currentPlan) {
             const {state, displayName, currency, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
             const color = state === 'active' ? 'green' : state === 'expired' ? 'yellow' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
@@ -178,6 +179,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]
+        }
+
     }  
     
     return (
