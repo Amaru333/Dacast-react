@@ -50,6 +50,7 @@ export const restoreContentAction = (content: ContentType[]): ThunkDispatch<Prom
         await FoldersServices.restoreContent(content)
             .then( response => {
                 dispatch( {type: ActionTypes.RESTORE_CONTENT, payload: content} );
+                dispatch(showToastNotification("Content has been restored", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

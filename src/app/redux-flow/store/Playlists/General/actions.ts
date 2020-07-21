@@ -73,7 +73,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, playlistId: stri
         await PlaylistGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {playlistId: playlistId}})
-                dispatch(showToastNotification(`${uploadType} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

@@ -175,7 +175,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName}</Text>,
                 <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{paymentTerm === 12 ? "Yearly" : "Monthly"}</Text>,
-                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(periodEndsAt)}</Text>,
+                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : ''}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]

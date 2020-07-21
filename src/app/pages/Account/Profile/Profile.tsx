@@ -17,6 +17,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { initUserInfo } from '../../../utils/token';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { DateTime } from 'luxon';
+import { tsToLocaleDate } from '../../../../utils/utils';
 
 var moment = require('moment-timezone');
 
@@ -126,8 +127,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Timezone'
-                            dropdownDefaultSelect={props.ProfilePageDetails.timezone}
-                            defaultValue={props.ProfilePageDetails.timezone}
+                            dropdownDefaultSelect={props.ProfilePageDetails.timezone ? props.ProfilePageDetails.timezone : moment.tz.guess}
                             id='dropdownTimezone'
                             callback={(value: string) => { setValue('timezone', value) }}
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
@@ -137,7 +137,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
 
-                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {DateTime.fromSeconds(props.ProfilePageDetails.passwordLastChanged ? props.ProfilePageDetails.passwordLastChanged : Math.round(Date.now()/1000)).toFormat("yyyy-LL-dd HH:mm")}</Text></p>
+                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {tsToLocaleDate(props.ProfilePageDetails.passwordLastChanged ? props.ProfilePageDetails.passwordLastChanged : Math.round(Date.now()/1000), DateTime.DATETIME_SHORT)}</Text></p>
 
                     <p className="mx1"><Text size={14} weight='reg' color='gray-3'>For best security practices you should update your password every 6 months.</Text></p>
 
@@ -206,7 +206,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                 </div>
                                 <div className="col col-12 mt2 flex relative">
                                 <Input
-                                    type={newPasswordVisible ? "text" : "password"}
+                                    type={confirmPasswordVisible ? "text" : "password"}
                                     className="col col-12"
                                     id="confirmPassword"
                                     label="Confirm Password"

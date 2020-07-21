@@ -215,7 +215,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             className="col col-12 sm-col-4 pl1 "
                                             hasSearch
                                             dropdownTitle='Timezone'
-                                            defaultValue={startDateTimeValue.timezone}
+                                            dropdownDefaultSelect={startDateTimeValue.timezone}
                                             id='dropdownTimezone'
                                             callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
                                             list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}

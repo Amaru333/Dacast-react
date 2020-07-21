@@ -140,7 +140,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, vodId: string, u
         await VodGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {vodId: vodId} })
-                dispatch(showToastNotification(`${uploadType} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -154,7 +154,7 @@ export const uploadImageFromVideoAction = (vodId: string, time: number, imageTyp
         await VodGeneralServices.uploadImageFromVideo(vodId, time, imageType)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE_FROM_VIDEO, payload: response.data })
-                dispatch(showToastNotification(`${imageType} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${imageType.charAt(0).toUpperCase() + imageType.slice(1)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

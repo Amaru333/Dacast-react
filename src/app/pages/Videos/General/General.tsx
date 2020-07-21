@@ -44,6 +44,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
+    const [unsavedChanges, setUnsavedChanges] = React.useState<boolean>(false)
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
@@ -51,6 +52,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
+        setUnsavedChanges(false)
     }, [props.vodDetails.title, props.vodDetails.folders, props.vodDetails.description, props.vodDetails.online]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -192,14 +194,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         <Toggle
                             className="col col-12 mb2"
                             defaultChecked={VodDetails.online}
-                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online })}}
+                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online });setUnsavedChanges(true)}}
                             label="Video Online"
                         />
                         <Input
                             className={ClassHalfXsFullMd + "pr2 mb2"}
                             label="Title"
                             value={VodDetails.title}
-                            onChange={event => setVodDetails({...VodDetails, title: event.currentTarget.value })}
+                            onChange={event => {setVodDetails({...VodDetails, title: event.currentTarget.value });setUnsavedChanges(true)}}
                         />
                         <InputTags
                             className={ClassHalfXsFullMd + "mb2"}
@@ -214,7 +216,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             type="textarea"
                             label="Description"
                             value={VodDetails.description ? VodDetails.description : ''}
-                            onChange={event => setVodDetails({ ...VodDetails, description: event.currentTarget.value })}
+                            onChange={event => {setVodDetails({ ...VodDetails, description: event.currentTarget.value });setUnsavedChanges(true)}}
                         />
                         <div className={"col col-3 flex flex-column"}>
                             <LinkBoxLabel>
@@ -439,14 +441,16 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     }
 
                 </Card>
-                <ButtonContainer>
-                    <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => setButtonLoading(false)) } }>Save</Button>
-                    <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
-                </ButtonContainer>
+               { unsavedChanges && 
+                    <ButtonContainer>
+                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => {setUnsavedChanges(false);setButtonLoading(false)}) } }>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);setUnsavedChanges(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                    </ButtonContainer>
+                }
                 {
                     previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.vodDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
-                <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
+                <Prompt when={unsavedChanges} message='' />
             </React.Fragment>
             
     )

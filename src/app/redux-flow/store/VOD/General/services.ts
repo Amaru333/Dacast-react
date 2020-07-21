@@ -43,8 +43,7 @@ const deleteVodService = async (vodId: string) => {
 const restoreVodService = async (vodId: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return await axios.post(process.env.API_BASE_URL + '/vods/' + vodId, 
-        {},
+    return await axios.get(process.env.API_BASE_URL + '/vods/' + vodId + '/restore', 
         {
             headers: {
                 Authorization: token
