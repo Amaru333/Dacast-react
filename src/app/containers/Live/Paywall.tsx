@@ -108,7 +108,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
                 assignedContentIds: [],
                 assignedGroupIds: []
             }
-            let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
+            let globalPricePresets: Preset[] = props.globalPresets.presets && props.globalPresets.presets.prices.length > 0 ? props.globalPresets.presets.prices : []
             let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
             setCustomPricePresetList([...globalPricePresets, customPricePreset])
             setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])

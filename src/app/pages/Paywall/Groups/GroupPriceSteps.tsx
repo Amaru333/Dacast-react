@@ -15,6 +15,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
+import { addTokenToHeader } from '../../../utils/token';
 
 var moment = require('moment-timezone');
 
@@ -133,6 +134,8 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
     const [searchString, setSearchString] = React.useState<string>(null)
 
+    let { userId } = addTokenToHeader()
+
     const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 
     React.useEffect(() => {
@@ -142,7 +145,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     React.useEffect(() => {
         if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
             setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
-                return props.stepperData.firststep.contents.includes(content.ownerID + '-' + content.type + '-' +  content.objectID)
+                return props.stepperData.firststep.contents.includes(userId + '-' + content.type + '-' +  content.objectID)
             }))
         }
     }, [props.stepperData.secondStep.folderData.requestedContent.results])
