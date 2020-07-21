@@ -2,7 +2,7 @@ import React from 'react';
 import { PlanPage } from '../../pages/Account/Plan/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction } from '../../redux-flow/store/Account/Plan/actions';
+import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
 import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -19,7 +19,8 @@ interface PlanContainerProps {
     editBillingPagePaymenPlaybackProtection: Function;
     deleteBillingPagePaymenPlaybackProtection: Function;
     addBillingPageExtras: Function;
-    getProductDetails: Function
+    getProductDetails: Function;
+    purchaseProducts: Function;
 }
 const Plan = (props: PlanContainerProps) => {
 
@@ -75,8 +76,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getProductDetails: () => {
             dispatch(getProductDetailsAction());
+        },
+        purchaseProducts: async (data: Extras, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
+            await dispatch(purchaseProductsAction(data, recurlyToken, token3Ds, callback, fallback))
         }
-    };
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Plan); 
