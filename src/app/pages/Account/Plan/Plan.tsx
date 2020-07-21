@@ -274,7 +274,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection}/>
+                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} billingInfos={props.billingInfos}/>
                         </Modal>
                     }            
 
