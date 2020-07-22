@@ -11,7 +11,6 @@ import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/ty
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
@@ -67,9 +66,6 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
     }
 
     const purchaseStepList = [CartStep, PaymentStep]
-
-    useStepperFinalStepAction('stepperNextButton', () => {console.log('final function executed');setPurchaseStepperOpen(false); props.updatePendingOrders(selectedPendingOrder)})
-
     
     return (
         <React.Fragment>

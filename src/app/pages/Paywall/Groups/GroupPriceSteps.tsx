@@ -15,6 +15,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
+import { addTokenToHeader } from '../../../utils/token';
 
 var moment = require('moment-timezone');
 
@@ -51,25 +52,19 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         })
     }
 
-    const initTimestampValues = (ts: number): {date: any; time: string} => {
+    const initTimestampValues = (ts: number): {date: any; time: string;} => {
         if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+            return {date: moment.tz(ts * 1000 , 'UTC').format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment.tz(ts * 1000, 'UTC').format('YYYY-MM-DD hh:mm').split(' ')[1]}
         } 
         return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
     }
 
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).date, time: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).time})
-
-
-    React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
-        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
-        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
-    }, [props.stepperData.firststep.groupSettings.timezone])
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).date, time: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).time, timezone: "Etc/UTC"})
 
     React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${props.stepperData.firststep.groupSettings.timezone}`).utc().valueOf()
-        props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone.split(' ')[0]}`).utc().valueOf() / 1000
+        props.updateStepperData({...props.stepperData, firststep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
+        console.log('start date: ',props.stepperData.firststep.groupSettings.startDate)
     }, [startDateTimeValue])
 
     return (
@@ -84,7 +79,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     props.stepperData.firststep.groupSettings.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.unit} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.unit} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
                         :
                         <>
                             <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
@@ -94,7 +89,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
             </div>
             <div className='col col-12 mb2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: value }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: value, startDate: value === 'Upon Purchase' ? 0 : props.stepperData.firststep.groupSettings.startDate }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
                 {
                     props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                         <DropdownSingle 
@@ -104,7 +99,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                             dropdownTitle='Timezone' 
                             dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
-                            callback={(value: string) => props.updateStepperData({...props.stepperData, firstStep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})} 
+                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
                         />
                 }
             </div>
@@ -133,16 +128,28 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
 export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
 
-    const [selectedFolder, setSelectedFolder] = React.useState<string>(null);
-    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
-    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
+    const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
+    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
+    const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
+    const [searchString, setSearchString] = React.useState<string>(null)
+
+    let { userId } = addTokenToHeader()
 
     const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS)
-    }, [selectedFolder])
+        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+    }, [selectedFolder, searchString])
+
+    React.useEffect(() => {
+        if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
+            setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
+                return props.stepperData.firststep.contents.includes(userId + '-' + content.type + '-' +  content.objectID)
+            }))
+        }
+    }, [props.stepperData.secondStep.folderData.requestedContent.results])
+
 
     const handleRowIconType = (item: FolderAsset) => {
         switch (item.type) {
@@ -165,8 +172,10 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     }
 
     React.useEffect(() => {
-        props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems} })
-    }, [checkedContents])
+        if(selectedItems && selectedItems.length > 0) {
+            props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems}})
+        }
+    }, [selectedItems])
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
@@ -200,12 +209,15 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 return el.objectID === elChecked.objectID;
             })
         });
+        if(newSelectedItems.length === 0) {
+            props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: newSelectedItems}})
+        }
         setSelectedItems(newSelectedItems);
         setCheckedSelectedItems([]);
     }
 
     const renderContentsList = () => {
-        if(props.stepperData.secondStep.folderData.requestedContent.results) {
+        if(props.stepperData.secondStep.folderData.requestedContent) {
             return props.stepperData.secondStep.folderData.requestedContent.results.map((row) => {
                 if (row.type === "playlist" || selectedItems.includes(row)) {
                     return;
@@ -240,7 +252,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     }
 
     const renderSelectedItems = () => {
-        return selectedItems.map((element, i) => {
+        return selectedItems ? selectedItems.map((element, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
                     <InputCheckbox className='mr2' id={element.objectID + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.objectID}
@@ -252,13 +264,14 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 </ItemSetupRow>
             )
         })
+        : null
     }
 
     return (
         <>
             <div className="inline-flex items-center flex col-12 mb2">
                 <IconStyle>search</IconStyle>
-                <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={[]} />
+                <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block", backgroundColor: 'white' }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
             </div>
             <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <div className="pl1 pr1">
@@ -267,17 +280,17 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                 {renderContentsList()}
             </ContainerHalfSelector>
             <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                <ArrowButton onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
-                <ArrowButton onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
+                <ArrowButton onClick={(event) => {event.preventDefault();handleMoveContentsToSelected()}} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_right</IconStyle></ArrowButton>
+                <ArrowButton onClick={(event) => {event.preventDefault();handleRemoveFromSelected()}} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle style={{paddingTop:'2px'}} coloricon="dark-violet" fontSize="small">chevron_left</IconStyle></ArrowButton>
             </div>
-            <Button disabled={selectedItems.length !== 0} onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2 col-12 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
+            <Button disabled={!selectedItems || selectedItems.length !== 0} onClick={() => handleMoveContentsToSelected()} className='block ml-auto mr-auto mb2 col-12 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
             <ContainerHalfSelector className="col sm-col-5 col-12" >
                 <HeaderBorder className="p2">
                     <Text color={"gray-1"} size={14} weight='med'>Selected Content</Text>
                 </HeaderBorder>
                 {renderSelectedItems()}
             </ContainerHalfSelector>
-            <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
+            <Button disabled={!selectedItems || selectedItems.length === 0} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
         </>
     )
 }

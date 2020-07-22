@@ -32,7 +32,7 @@ export interface UploadImage {
 
 export interface DeleteImage {
     type: ActionTypes.DELETE_IMAGE;
-    payload: {file: File};
+    payload: {liveId: string, id: string, uploadType: string};
 }
 
 export interface DeleteLiveChannel {
@@ -82,7 +82,6 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
         await LiveGeneralServices.deleteLiveChannelService(data)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_LIVE_CHANNEL, payload: data });
-                dispatch(showToastNotification("Channel has been deleted", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -103,12 +102,12 @@ export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDis
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string, liveId: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
+export const uploadFileAction = (data: File, uploadUrl: string, liveId: string, uploadType: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
         await LiveGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {liveId: liveId} })
-                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
+                dispatch(showToastNotification(`${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)
@@ -117,11 +116,12 @@ export const uploadFileAction = (data: File, uploadUrl: string, liveId: string):
     }
 }
 
-export const deleteFileAction = (liveId: string, targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+export const deleteFileAction = (liveId: string, targetId: string, uploadType: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await LiveGeneralServices.deleteFile(liveId, targetId)
             .then(response => {
-                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {liveId: liveId, id: targetId, uploadType: uploadType} })
+                dispatch(showToastNotification(`${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

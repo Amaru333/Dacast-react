@@ -25,14 +25,14 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
 
     const invoicesTableBody = () => {
         return props.invoices.map((item, i) => {
-            const color = item.status === 'Paid' ? 'green' : item.status === 'Failed' ? 'red' : 'yellow';
+            const color = item.status === 'paid' ? 'green' : item.status === 'failed' ? 'red' : 'yellow';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return {data: [
                 <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
-                <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
+                <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{item.date}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
-                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status}  />,
-                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a className="noTransition" href="http://localhost:8080/6701903f89c2ee62891b64a90a9b84d7.png" download><IconStyle>get_app</IconStyle></a> </IconContainer>
+                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)}  />,
+                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a className="noTransition" href={item.downloadLink} target='_blank' download={item.id + '.pdf'}><IconStyle>get_app</IconStyle></a> </IconContainer>
 
             ]}
         })

@@ -32,6 +32,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
+    const [selectedRecipe, setSelectedRecipe] = React.useState<string>(null)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
@@ -124,7 +125,8 @@ export const UploaderPage = (props: UploaderProps) => {
                                 return updatedList;
                             })
                         }
-                    }
+                    },
+                    selectedRecipe
                 )
                 if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress') && i === 0) {
                     newUpload.startUpload()
@@ -260,7 +262,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         list={list}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
-                        callback={(value: string) => { console.log(value) }}
+                        callback={(value: string) => { setSelectedRecipe(props.encodingRecipe.recipes.find(recipe => recipe.name === value).id) }}
                     />
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
@@ -278,7 +280,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 <BigIcon>cloud_upload</BigIcon>
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
-                    <input type='file' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                    <input type='file' accept='video/mp4, video/mov' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                     <Button onClick={() => { videoUploadBrowseButtonRef.current.click() }} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         Browse Files
                     </Button>

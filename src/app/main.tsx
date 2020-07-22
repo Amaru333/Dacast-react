@@ -247,6 +247,9 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
+                if(route.name === 'impersonate') {
+                    return <Route key={route.path} path={route.path}><route.component /></Route>;
+                }
                 if (route.isPublic) {
                     if (isLoggedIn()) {
                         if(route.path !== '*') {

@@ -94,7 +94,7 @@ export const createPlaylistAdAction = (data: Ad[], adsId: string, playlistId: st
 
 export const deletePlaylistAdAction = (data: Ad[], adsId: string, playlistId: string): ThunkDispatch<Promise<void>, {}, DeletePlaylistAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeletePlaylistAd> ) => {
-        await playlistEngagementServices.deletePlaylistAd(data, adsId, playlistId)
+        await playlistEngagementServices.savePlaylistAd(data, adsId, playlistId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_PLAYLIST_AD, payload: {ads: data, contentId: playlistId}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));

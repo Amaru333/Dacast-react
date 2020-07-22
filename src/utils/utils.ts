@@ -309,8 +309,12 @@ export const useKeyboardSubmit = (callback: Function) => {
     }, []);
 }
 
-export const calculateDiscount = (total: number) => {
-    return total - ((total / 100) * 25)
+export const calculateDiscount = (total: number, discount: number) => {
+    if(discount === 0) {
+        return total
+    } else {
+    return total - ((total / 100) * discount)
+    }
 }
 
 export const calculateAnnualPrice = (total: number) => {
@@ -319,4 +323,17 @@ export const calculateAnnualPrice = (total: number) => {
 
 export const useQuery = () => {
     return new URLSearchParams(useLocation().search);
+}
+
+export const handleDataPrice = (data: number, setDataAmount: Function, setDataPrice: Function) => {
+    setDataAmount(data)
+    if(data <= 4999 ){
+        setDataPrice(0.25)
+    } else if(data >= 5000 && data <= 9999){
+        setDataPrice(0.12)
+    } else if(data >= 10000) {
+        setDataPrice(0.09)
+    } else {
+        setDataPrice(null)
+    }
 }

@@ -111,10 +111,11 @@ export const reducerList: Reducer<SearchResult | false> = (state = initialVodLis
             let vodList = action.payload.data.results.map((vod: VodItem) => { return { ...vod, objectID: vod.objectID.substring(4) } })
             return { ...action.payload.data, results: vodList }
         case ActionTypes.DELETE_VOD:
-            if (state) {
-                var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
-                return { ...state, results: newList, totalResults: state.totalResults - 1 }
-            }
+            // if (state) {
+            //     var newList = state.results.filter(elem => elem.objectID !== action.payload.id)
+            //     return { ...state, results: newList, totalResults: state.totalResults - 1 }
+            // }
+            return state
         default:
             return state
     }

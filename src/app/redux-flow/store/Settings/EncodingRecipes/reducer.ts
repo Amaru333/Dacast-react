@@ -27,16 +27,23 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
         case ActionTypes.SAVE_ENCODING_RECIPES:
             recipes = state.recipes.slice()
             return  {...state, recipes: recipes.map((item) => {
-                if (item.id !== action.payload.id) {
+                if (item.id !== action.payload.id && item.name === 'Standard') {
                     return {
                         ...item,
-                        isDefault: (!action.payload.isDefault && item.name === 'Standard' && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : false
+                        isDefault: (!action.payload.isDefault && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : item.isDefault
+                    }
+                }
+                if(item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        ...action.payload
                     }
                 }
                 return {
                     ...item,
-                    ...action.payload
+                    isDefault: action.payload.isDefault ? false : item.isDefault
                 }
+
             })}
         case ActionTypes.DELETE_ENCODING_RECIPES:
             recipes = state.recipes.filter((item) => item.id != action.payload.id)
@@ -66,16 +73,16 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 isUploading: false
             }
         case ActionTypes.DELETE_WATERMARK:
-            if(action.payload.isDefault) {  
-                recipes = state.recipes.map((item) => {return {...item, isDefault: false}})
-            }
-            return  {...state, recipes: recipes.map((item) => {
+            return  {...state, recipes: state.recipes.map((item) => {
                 if (item.id !== action.payload.id) {
                     return item
                 }
                 return {
-                    ...item,
-                    ...action.payload
+                    ...action.payload,
+                    watermarkFileID: null,
+                    watermarkFilename: null,
+                    watermarkPositioningLeft: null,
+                    watermarkPositioningRight: null
                 }
             })}
         default:

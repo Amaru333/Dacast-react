@@ -15,7 +15,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { getPrivilege } from '../../../utils/utils';
+import { getPrivilege, dataToTimeVideo } from '../../../utils/utils';
 import { addTokenToHeader } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
@@ -108,8 +108,23 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
-
-
+  
+    React.useEffect(() => {
+        const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
+    
+        if(ads.length > 0 || adsEnabled){
+            setAdSectionEditable(true)
+        }
+        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
+            setBrandImageSectionEditable(true)
+        }
+        if(brandText || brandTextLink || isBrandTextAsTitle){
+            setBrandSectionEditable(true)
+        }
+        if(endScreenText || endScreenTextLink){
+            setEndScreenSectionEditable(true)
+        }
+    }, [props.contentEngagementSettings])
 
     const newAd = () => {
         setSelectedAd(emptyAd);
@@ -119,6 +134,16 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const editAd = (ad: Ad) => {
         setSelectedAd(ad);
         setNewAdModalOpened(true);
+    }
+
+    const handleAdPosition = (ad: Ad) => {
+        if(ad["ad-type"] === "pre-roll"){
+            return "Start"
+        } else if(ad["ad-type"] === "post-roll"){
+            return "End"
+        } else {
+            return dataToTimeVideo(ad.timestamp).toString()
+        }
     }
 
     const { userId } = addTokenToHeader()
@@ -162,12 +187,12 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
-                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{item.timestamp}</Text>,
+                    <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(item, props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                                onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
                             >delete
                             </IconStyle>
                         </ActionIcon>

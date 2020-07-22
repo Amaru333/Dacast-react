@@ -40,8 +40,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime).time, timezone: momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime).time, timezone: momentTZ.tz.guess()})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime).time, timezone: props.securityDetails.contentScheduling.startTimezone ? props.securityDetails.contentScheduling.startTimezone : momentTZ.tz.guess()})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime).time, timezone: props.securityDetails.contentScheduling.endTimezone ? props.securityDetails.contentScheduling.endTimezone : momentTZ.tz.guess()})
 
     React.useEffect(() => {
         if (props.securityDetails !== securityDetails) {
@@ -58,10 +58,21 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setSubmitLoading(true);
         let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
-        props.saveSettingsSecurityOptions({...securityDetails, passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, contentScheduling: {startTime:startTimeTs, endTime: endTimeTs} }, () => {
-            setSubmitLoading(false);
-            setDisplayformActionButtons(false);
-        })
+        props.saveSettingsSecurityOptions(
+            {
+                ...securityDetails, 
+                passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
+                contentScheduling: {
+                    startTime:startTimeTs, 
+                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone : null,
+                    endTime: endTimeTs,
+                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
+                } 
+            }, () => {
+                setSubmitLoading(false);
+                setDisplayformActionButtons(false);
+            }
+        )
     }
 
     const domainControlEmptyValues: DomainControl = {

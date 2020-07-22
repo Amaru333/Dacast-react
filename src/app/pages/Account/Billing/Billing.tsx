@@ -15,30 +15,15 @@ import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
 
 export const BillingPage = (props: BillingContainerProps) => {
 
-    const [paymentMethod, setpaymentMethod] = React.useState<string>(null);
     const [paymentMethodModalOpened, setPaymentMethodModalOpened] = React.useState<boolean>(false);
     const [billingInfo, setBillingInfo] = React.useState<BillingPageInfos>(props.billingInfos)
 
+    React.useEffect(() => {
+        setBillingInfo(props.billingInfos)
+    }, [props.billingInfos])
+
     let smScreen = useMedia('(max-width: 780px)');
 
-    React.useEffect(()=> {checkPaymentMethod()}, [props.billingInfos.paypal, props.billingInfos.creditCard])
-
-    const checkPaymentMethod = () => {
-        if(props.billingInfos.paypal) {
-            setpaymentMethod('paypal');
-        }
-        else if(props.billingInfos.creditCard) {
-            setpaymentMethod('creditCard');
-        }
-        else {
-            setpaymentMethod(null);
-        }
-    }
-
-    const onSubmitFunctions = () => {
-        props.saveBillingPagePaymentMethod(billingInfo.creditCard);
-        setPaymentMethodModalOpened(false)
-    }
 
     const paypalTableHeaderElement = () => {
         return {data: [
@@ -51,11 +36,11 @@ export const BillingPage = (props: BillingContainerProps) => {
     }
 
     const paypalBodyElement= () => {
-        if(props.billingInfos.paypal) {
+        if(props.billingInfos.paymentMethod.type === "paypal") {
             return [{data:[
                 <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
-                <Text key={'paypalTable' + props.billingInfos.paypal.billingId} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.billingId}</Text>,
-                <Text key={'paypalTable' + props.billingInfos.paypal.emailAddress} size={14}  weight="reg" color="gray-1">{props.billingInfos.paypal.emailAddress}</Text>,
+                <Text key={'paypalTable' + props.billingInfos.paymentMethod.billingID} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.billingID}</Text>,
+                <Text key={'paypalTable' + props.billingInfos.paymentMethod.email} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.email}</Text>,
                 <IconStyle key={'paypalTableActiveField'} coloricon='green' >checked</IconStyle>,
                 <span key={'paypalTableBodyEmptyCell'}></span>
             ]}]
@@ -100,7 +85,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                     <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
                     <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                     {
-                        props.billingInfos.paypal? 
+                        props.billingInfos.paymentMethod.type === "paypal" ? 
                             <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
                             : props.billingInfos.paymentMethod.type === "card" ?                
@@ -117,10 +102,10 @@ export const BillingPage = (props: BillingContainerProps) => {
                 <Elements>
                     <Modal 
                         hasClose={false} 
-                        modalTitle={(paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
+                        modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal billingInfo={billingInfo} callback={setBillingInfo} actionButton={() => onSubmitFunctions()} toggle={setPaymentMethodModalOpened} />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={() => setPaymentMethodModalOpened(false)} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate savePaymentMethod={props.saveBillingPagePaymentMethod} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>

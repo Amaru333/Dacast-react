@@ -27,9 +27,9 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     const defineAdAction = () => {
         let tempArray: Ad[] = props.interactionsInfos.ads
         var newAdData: Ad = {...adData};
-        newAdData.timestamp = inputTimeVideoToTs(adData.timestamp);
+        newAdData.timestamp = adData["ad-type"] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
-            tempArray.push(newAdData)
+            tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData['ad-type']})
             props.createAd(tempArray, props.interactionsInfos.adsId)
         } else {
             tempArray = tempArray.map(ad => {
@@ -47,14 +47,14 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
                 {
                     adData["ad-type"] === 'mid-roll' &&
                         <Input type='video-time' 
-                            value={dataToTimeVideo(adData.timestamp)}
+                            value={dataToTimeVideo(adData.timestamp).toString()}
                             placeholder="hh:mm:ss"
                             className='ml1 mt1 col col-6' id='adPosition' label='Position' 
                             onChange={(value) => setAdData({...adData, timestamp: value })}  />
                 }             
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button className='mr2' disabled={adData["ad-type"] === "" || adData.url === ""} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

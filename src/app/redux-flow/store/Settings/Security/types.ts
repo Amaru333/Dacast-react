@@ -51,7 +51,9 @@ export interface PasswordProtectedVideo {
 
 export interface VideoScheduling {
     startTime: number;
+    startTimezone: string;
     endTime: number;
+    endTimezone: string;
 }
 
 export interface SecuritySettings {
@@ -69,7 +71,9 @@ export const defaultStateSettingsSecurity: SecuritySettings = {
     },
     contentScheduling: {
         startTime: 0,
-        endTime: 0
+        startTimezone: null,
+        endTime: 0,
+        endTimezone: null
     },
     geoRestriction: [],
     domainControl: [],
@@ -89,7 +93,9 @@ const defaultStateSecuritySettings: SecuritySettings = {
     },
     contentScheduling: {
         startTime: 0,
-        endTime: 0
+        startTimezone: null,
+        endTime: 0,
+        endTimezone: null
     },
     geoRestriction: [],
     domainControl: [],

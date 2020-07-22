@@ -3,7 +3,7 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from "../../../../components/Typography/Text"
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ImagesContainer, ButtonContainer, ImageContainer, ImageArea, SelectedImage, ImageSection, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from '../../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { PlaylistDetails } from '../../../redux-flow/store/Playlists/General/types';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
@@ -14,6 +14,7 @@ import { Toggle } from '../../../../components/Toggle/toggle';
 import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 
 interface PlaylistGeneralComponentProps {
     playlistDetails: PlaylistDetails;
@@ -101,8 +102,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Content ID</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{props.playlistDetails.id}</LinkText>
-                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {updateClipboard(props.playlistDetails.id, 'Content ID Copied')}}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{userId + '-playlist-' + props.playlistDetails.id}</LinkText>
+                            <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => {updateClipboard(userId + '-playlist-' + props.playlistDetails.id, 'Content ID Copied')}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -120,8 +121,14 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <Text size={14} weight="med">Embed Code</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Embed Code Copied')}>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">
+                            { props.playlistDetails.embedType === "iframe" ? 
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` }
+                            </LinkText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.playlistDetails.embedType === "iframe" ? 
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -145,13 +152,13 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <div className="flex flex-center">
                                 <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                 <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
+                                <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
                                         splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button> : null
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
@@ -174,7 +181,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 <ButtonSection>
                                     {
                                         thumbnailEnable || uploadedImageFiles.thumbnail ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button> : null
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button> : null
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
@@ -195,8 +202,8 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        posterEnable || uploadedImageFiles.poster && 
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {}}>Delete</Button>
+                                        (posterEnable || uploadedImageFiles.poster) &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.poster.targetID, "poster")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
@@ -217,7 +224,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <IconStyle className="col col-1">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                         <Text className="col col-11" size={20} weight="med">Advanced  Links</Text>
                     </div>                 
-                    <AdvancedLinksContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                    <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
                         {playlistAdvancedLinksOptions.map((item) => {
                             {
                                 if(item.link && item.link !== ''){
@@ -236,7 +243,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                                 }
                             }
                         })}
-                    </AdvancedLinksContainer>
+                    </ExpandableContainer>
                 </div>
     
                 {

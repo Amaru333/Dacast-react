@@ -63,7 +63,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
                         <ActionIcon>
-                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, name: `${theme.name} Copy`})}>file_copy</IconStyle>
+                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>
                             <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -123,7 +123,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
                     }} />
                     <BorderStyle className='mt3 mb2' />
-                    <Tab className='col col-12 my1' orientation='horizontal' history={null} list={tabsList} callback={setSelectedTab} />
+                    <Tab className='col col-12 my1' orientation='horizontal' list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
                         <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
                         <div className="mt2">

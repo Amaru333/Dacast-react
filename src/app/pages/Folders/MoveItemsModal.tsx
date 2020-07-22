@@ -9,8 +9,9 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 
-export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
+export const MoveItemModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
@@ -59,8 +60,10 @@ export const MoveItemModal = (props: {submit: Function; initialSelectedFolder: s
             setSaveLoading(false)
             props.toggle(false)
             props.setMoveModalSelectedFolder(null)
+            props.showToast('Items moved succesfully', 'flexible', 'success')
         }).catch(() => {
             setSaveLoading(false)
+            props.showToast('Items couldn\'t be moved', 'flexible', 'error')
 
         })
     } 

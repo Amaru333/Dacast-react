@@ -25,6 +25,7 @@ import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
+import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -33,11 +34,19 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringPlaylistState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{ page: number; nbResults: number }>({ page: 1, nbResults: 10 })
     const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>('created-at-desc')
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
+    const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
+    const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false)
+    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
+    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
+    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
@@ -67,7 +76,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             })
 
             if (filters.afterDate || filters.beforedate) {
-                returnedString += `created-at=${filters.beforedate ? filters.beforedate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+                returnedString += `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
             }
         }
         if (searchString) {
@@ -84,8 +93,18 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     React.useEffect(() => {
-        props.getPlaylistList(parseFiltersToQueryString(selectedFilters))
-    }, [selectedFilters, searchString, paginationInfo, sort])
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
+            setContentLoading(true)
+            setTimeout(() => {
+                props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                    setContentLoading(false)
+                }).catch(() => {
+                    setContentLoading(false)
+                })    
+            }, 5000)
+    
+        }
+    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
 
     const liveListHeaderElement = () => {
         return {
@@ -154,7 +173,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { props.deletePlaylist(value.objectID, value.title) }} className="right mr1" >delete</IconStyle>
+                                <IconStyle onClick={() => { setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true) }} className="right mr1" >delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
                         </div>,
@@ -164,10 +183,6 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
         }
     }
 
-    const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
-    const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
-    const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false);
-    const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
@@ -185,15 +200,15 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => {item.function(true);setDropdownIsOpened(false)}}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch (action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -210,12 +225,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                 default:
                     break
             }
+            setSelectedPlaylist([])
         }).catch((error) => {
             console.log(error)
         })
     }
 
-    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     return (
         <>
@@ -240,22 +255,31 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                 </div>
             </HeaderPlaylistList>
-            <Table className="col-12" id="playlistListTable" headerBackgroundColor="white" header={props.playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Table contentLoading={contentLoading} className="col-12" id="playlistListTable" headerBackgroundColor="white" header={props.playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }) }} />
-            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
+            {
+                bulkThemeOpen &&
+                <ThemeBulkForm showToast={props.showToast} getThemesList={() => props.getThemingList()} actionFunction={handleBulkAction} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
-                    <MoveItemModal setMoveModalSelectedFolder={(s: string) => {}} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedPlaylist.map(vodId => { return { id: vodId, type: 'playlist' } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => {}} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedPlaylist.map(vodId => { return { id: vodId, type: 'playlist' } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => { }} />
+                }
+            </Modal>
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+                {
+                    deleteContentModalOpened &&
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deletePlaylist(contentToDelete.id, contentToDelete.title)}} />
                 }
             </Modal>
 

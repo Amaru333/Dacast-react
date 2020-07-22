@@ -13,7 +13,6 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 
 interface GroupStepperSecondStepProps {
@@ -158,10 +157,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 ]}
             })
         }
-    }
-
-    useStepperFinalStepAction('stepperNextButton', () => {{setGroupPricesStepperOpened(false);selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}})
-
+    }    
 
     return (
         <div>
@@ -172,7 +168,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
-                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
+                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
@@ -191,22 +187,26 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
                 }
             </Modal>
-                  
-            <CustomStepper
-                opened={groupPricesStepperOpened}
-                stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
-                stepList={groupPriceSteps}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                stepTitles={['Group Details', 'Content Selection']}
-                lastStepButton="Create"
-                stepperData={stepperData}
-                widthSecondStep={60}
-                updateStepperData={(value: GroupStepperData) => setStepperData(value)}
-                functionCancel={() => {setGroupPricesStepperOpened(false)}}
-                finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
-            />
+
+            {
+                groupPricesStepperOpened && 
+                <CustomStepper
+                    opened={groupPricesStepperOpened}
+                    stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
+                    stepList={groupPriceSteps}
+                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    stepTitles={['Group Details', 'Content Selection']}
+                    lastStepButton={selectedGroupPrice ? "Save" : "Create"}
+                    stepperData={stepperData}
+                    widthSecondStep={60}
+                    updateStepperData={(value: GroupStepperData) => setStepperData(value)}
+                    functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
+                    finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+                />
+            }    
+            
         </div>
 
     )

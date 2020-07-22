@@ -94,7 +94,7 @@ export const createLiveAdAction = (data: Ad[], adsId: string, liveId: string): T
 
 export const deleteLiveAdAction = (data: Ad[], adsId: string, liveId: string): ThunkDispatch<Promise<void>, {}, DeleteLiveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteLiveAd> ) => {
-        await liveEngagementServices.deleteLiveAd(data, adsId, liveId)
+        await liveEngagementServices.saveLiveAd(data, adsId, liveId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_LIVE_AD, payload: {ads: data, contentId: liveId}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));

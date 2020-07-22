@@ -16,7 +16,7 @@ const getGroupPrices = async () => {
 
 const createGroupPrice = async (data: GroupPrice) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
 
     let parsedPrice = null
     if(data.groupSettings.type === 'Subscription') {
@@ -29,7 +29,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
 
         }
     } else {
@@ -43,7 +43,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
 
             }
         } else {
@@ -57,7 +57,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
             }
         }
     } 
@@ -75,7 +75,7 @@ const createGroupPrice = async (data: GroupPrice) => {
 
 const saveGroupPrice = async (data: GroupPrice) => {
     await isTokenExpired()
-    let {token} = addTokenToHeader()
+    let {token, userId} = addTokenToHeader()
     let parsedPrice = null
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {
@@ -88,7 +88,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
 
         }
     } else {
@@ -103,7 +103,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
 
             }
         } else {
@@ -118,7 +118,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => content.ownerID + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
             }
         }
     } 

@@ -13,16 +13,11 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 
 const VideosList = (props: VideosListProps) => {
 
-    React.useEffect(() => {
-        if (!props.items) {
-            props.getVodList();
-        }
-        if(!props.themesList.themes) {
-            props.getThemesList()
-        }
+    React.useEffect(() => {     
+        props.getVodList();
     }, [])
 
-    if (!props.items || !props.themesList.themes) {
+    if (!props.items) {
         return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
     } else {
         return (
@@ -40,11 +35,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodList: (qs: string) => {
-            dispatch(getVodListAction(qs));
+        getVodList: async (qs: string) => {
+            await dispatch(getVodListAction(qs));
         },
-        deleteVodList: (vodId: string) => {
-            dispatch(deleteVodAction(vodId));
+        deleteVodList: async (vodId: string) => {
+            await dispatch(deleteVodAction(vodId));
         },
         getThemesList: () => {
             dispatch(getThemingListAction())

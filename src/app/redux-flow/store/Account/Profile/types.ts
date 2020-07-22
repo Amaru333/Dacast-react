@@ -9,7 +9,8 @@ export interface ProfilePageInfos {
     lastName: string;
     phoneNumber: string;
     emailAddress: string;
-    lastChangedPassword: string;
+    newEmail?: string;
+    passwordLastChanged: number;
     timezone: string;
     marketing: boolean;
     lowData: boolean;
@@ -21,7 +22,7 @@ export const profileInitialState = {
     lastName: "",
     phoneNumber: "",
     emailAddress: "",
-    lastChangedPassword: "",
+    passwordLastChanged: 0,
     timezone: "",
     marketing: false,
     lowData: false,

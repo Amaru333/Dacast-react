@@ -94,10 +94,10 @@ export const createVodAdAction = (data: Ad[], adsId: string, vodId: string): Thu
 
 export const deleteVodAdAction = (data: Ad[], adsId: string, vodId: string): ThunkDispatch<Promise<void>, {}, DeleteVodAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteVodAd> ) => {
-        await vodEngagementServices.deleteVodAd(vodId)
+        await vodEngagementServices.saveVodAd(data, adsId, vodId)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_VOD_AD, payload: {ads: data, contentId: vodId}} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
+                dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-export const EmptyTrashModal = (props: {toggle: Function}) => {
+export const EmptyTrashModal = (props: {toggle: (b: boolean) => void}) => {
 
     return (
         <div>

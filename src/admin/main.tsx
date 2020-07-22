@@ -14,6 +14,7 @@ import { isLoggedIn } from './utils/token';
 import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';
+import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
@@ -27,7 +28,9 @@ const PrivateRoute = (props: {key: string; component: any; path: string; exact: 
             >
                 <div className='flex flex-column px2' style={{backgroundColor: '#EBEFF5', height: '100vh'}}>
                     <Header />
-                    <props.component {...props} />
+                    <ErrorBoundary>
+                        <props.component {...props} />
+                    </ErrorBoundary>
                 </div> 
 
             </Route>
@@ -49,6 +52,32 @@ const returnRouter = (props: Routes[]) => {
                 />
         })
     )
+}
+
+class ErrorBoundary extends React.Component {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            hasError: false,
+            info: '',
+            errorDetails: null
+        };
+    }
+
+    componentDidCatch(error, info) {
+        // Display fallback UI
+        this.setState({ hasError: true, info: info.componentStack, errorDetails: error.message });
+        // You can also log the error to an error reporting service
+        //   logErrorToMyService(error, info);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <ErrorPlaceholder />
+        }
+        return this.props.children;
+    }
 }
 
 const AdminContent = () => {

@@ -2,13 +2,17 @@ import styled, {css} from "styled-components";
 import { ColorsApp } from '../../styled/types';
 import { IconGreyContainer } from '../../shared/Common/Icon';
 
-export const TableContainer = styled.table<{}>`
+export const TableContainer = styled.table<{contentLoading: boolean}>`
     height: auto;
     border-spacing: unset;
     border-collapse: collapse;
     width:100%;
     border-color: ${props => props.theme.colors["gray-7"]};
     border: 1px solid ${props => props.theme.colors["gray-8"]};
+    ${props => props.contentLoading && css`
+        cursor: not-allowed !important;
+        opacity: 0.5;
+    `}
 `;
 
 export const TableHeaderContainer = styled.thead<{}>`
@@ -16,7 +20,7 @@ export const TableHeaderContainer = styled.thead<{}>`
 
 export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean; tableHeight?: number}>`
     ${props => props.tableHeight && css `
-        height: ${props => props.tableHeight+"px"};
+        height: ${props.tableHeight+"px"};
         overflow-x: auto;
     `}
     margin: ${props => props.hasContainer ? "0"  : "16px 0" };

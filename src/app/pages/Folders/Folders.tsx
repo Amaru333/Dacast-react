@@ -26,6 +26,7 @@ import { FolderTree, rootNode } from '../../utils/folderService'
 import { useHistory } from 'react-router'
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
+import { DeleteFolderModal } from './DeleteFolderModal'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -42,6 +43,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(smallScreen)
     const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder')
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false)
+    const [deleteFolderModalOpened, setDeleteFolderModalOpened] = React.useState<boolean>(false)
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false)
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
@@ -53,6 +55,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
+    const [assetToDelete, setAssetToDelete] = React.useState<ContentType & {name?: string}>(null)
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -81,7 +85,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             })
 
             if(filters.afterDate || filters.beforedate) {
-                returnedString+= `created-at=${filters.beforedate ? filters.beforedate : ''},${filters.afterDate ? filters.afterDate : ''}&`
+                returnedString+= `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
             }
         }
         if(searchString) {
@@ -113,9 +117,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     React.useEffect(() => {
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        setContentLoading(true)
+        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+            setContentLoading(false)
+        }).catch(() => {
+            setContentLoading(false)
+        })
     }, [selectedFilters, searchString, paginationInfo, sort])
-
 
     React.useEffect(() => {
         const wait = async () => {
@@ -133,7 +141,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     React.useEffect(() => {
         setCheckedItems([])
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters))
+        setContentLoading(true)
+        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+            setContentLoading(false)
+        }).catch(() => {
+            setContentLoading(false)
+        })
     }, [selectedFolder])
 
     // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
@@ -273,16 +286,29 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 break
             case 'Delete':
                 if(asset.type !== 'folder') {
-                    props.deleteContent(asset)
+                    setAssetToDelete(asset)
+                    setDeleteFolderModalOpened(true)
                 } else {
-                    foldersTree.deleteFolders([asset.id], asset.fullPath)
+                    setAssetToDelete({id: folderNode.id, type: 'folder', fullPath: folderNode.fullPath + '/', name: folderNode.name})
+                    setDeleteFolderModalOpened(true)
                 }
                 break
             case 'View' :
                 foldersTree.navigateToFolder(folderNode)
                 break
             case 'Restore':
-                props.restoreContent([asset])
+                props.restoreContent([asset]).then(() => {
+                    setCheckedItems([])
+                    setContentLoading(true)
+                    setTimeout(() => {
+                        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+                            setContentLoading(false)
+                        }).catch(() => {
+                            setContentLoading(false)
+                        })
+                    }, 4000)
+
+                })
                 break
             case 'Rename':
                 setNewFolderModalAction('Rename Folder')
@@ -305,7 +331,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setMoveItemsModalOpened(true)
                 break
             case 'Delete':
-                foldersTree.deleteFolders([currentFolder.id], currentFolder.fullPath)
+                setAssetToDelete({id: currentFolder.id, type: 'folder', fullPath: currentFolder.fullPath, name: currentFolder.name})
+                setDeleteFolderModalOpened(true)
                 break
             case 'New Folder': 
                 setNewFolderModalAction('New Folder')
@@ -345,7 +372,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 return {
                     data: [
                         <div key={'foldersTableInputCheckbox' + row.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'>
-                            <InputCheckbox className="pr1" id={row.objectID + row.type + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.objectID) ? true : false} onChange={(event) => handleCheckboxChange({id: row.objectID, type: row.type}, event.currentTarget.checked)} />
+                            <InputCheckbox className="pr2" id={row.objectID + row.type + 'InputCheckbox'} defaultChecked={checkedItems.find(value => value.id === row.objectID) ? true : false} onChange={(event) => handleCheckboxChange({id: row.objectID, type: row.type}, event.currentTarget.checked)} />
                             <RowIconContainer>
                                 {handleRowIconType(row)}
                             </RowIconContainer>
@@ -503,28 +530,39 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Table contentLoading={contentLoading} className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
                     <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
+                    newFolderModalOpened && 
+                    <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal setMoveModalSelectedFolder={setMoveModalSelectedFolder}  submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={setMoveModalSelectedFolder}  submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
                 <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
             </Modal>
-            <OnlineBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm actionFunction={handleBulkAction} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            <ThemeBulkForm actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
+                {
+                    deleteFolderModalOpened &&
+                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath)}} />
+                }
+            </Modal>
+            <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            {
+                bulkThemeOpen &&
+                <ThemeBulkForm showToast={props.showToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            }
+            
         </div>
     )
 }

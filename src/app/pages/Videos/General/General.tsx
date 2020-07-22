@@ -11,7 +11,7 @@ import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/M
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../../shared/General/ImageModal';
 import { VodDetails, SubtitleInfo } from '../../../redux-flow/store/VOD/General/types';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, AdvancedLinksContainer, ClassHalfXsFullMd } from "../../../shared/General/GeneralStyle"
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../../shared/General/GeneralStyle"
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -23,6 +23,7 @@ import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import Axios from 'axios';
 
 
 export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
@@ -42,6 +43,8 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
+    const [unsavedChanges, setUnsavedChanges] = React.useState<boolean>(false)
 
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
@@ -49,6 +52,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
+        setUnsavedChanges(false)
     }, [props.vodDetails.title, props.vodDetails.folders, props.vodDetails.description, props.vodDetails.online]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -165,6 +169,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
     let splashScreenEnable = Object.keys(props.vodDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.vodDetails.thumbnail).length !== 0;
+
+    function saveFile(url: string, filename: string) {
+        Axios.get(url).then(function(t) {
+            return t.blob().then((b)=>{
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(b);
+                a.setAttribute("download", filename);
+                a.click();
+            }
+            );
+        });
+        }
     
     return (
         VodDetails &&
@@ -173,19 +189,19 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     <div className="details col col-12">
                         <header className="flex justify-between mb2">
                             <Text size={20} weight="med">Details</Text>
-                            { getPrivilege('privilege-web-download') && <Button sizeButton="xs" typeButton="secondary">Download</Button>}
+                            { getPrivilege('privilege-web-download') && <Button onClick={() => saveFile(VodDetails.downloadURL, VodDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>}
                         </header>
                         <Toggle
                             className="col col-12 mb2"
                             defaultChecked={VodDetails.online}
-                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online })}}
+                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online });setUnsavedChanges(true)}}
                             label="Video Online"
                         />
                         <Input
                             className={ClassHalfXsFullMd + "pr2 mb2"}
                             label="Title"
                             value={VodDetails.title}
-                            onChange={event => setVodDetails({...VodDetails, title: event.currentTarget.value })}
+                            onChange={event => {setVodDetails({...VodDetails, title: event.currentTarget.value });setUnsavedChanges(true)}}
                         />
                         <InputTags
                             className={ClassHalfXsFullMd + "mb2"}
@@ -200,15 +216,15 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             type="textarea"
                             label="Description"
                             value={VodDetails.description ? VodDetails.description : ''}
-                            onChange={event => setVodDetails({ ...VodDetails, description: event.currentTarget.value })}
+                            onChange={event => {setVodDetails({ ...VodDetails, description: event.currentTarget.value });setUnsavedChanges(true)}}
                         />
                         <div className={"col col-3 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{props.vodDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(props.vodDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{userId + '-vod-' + props.vodDetails.id}</LinkText>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-vod-' + props.vodDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -223,11 +239,17 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Iframe Embed Code</Text>
+                                <Text size={14} weight="med">Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}</LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="590" height="431" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">
+                                { props.vodDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` }
+                                </LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.vodDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -241,16 +263,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">JS Embed Code</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">{`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`}</LinkText>
-                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'JS Embed Code Copied') } }>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
                         <Divider className="col col-12" />
                     </div>
                     <div className="thumbnail col col-12">
@@ -261,7 +273,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <div className="flex flex-center">
                                     <Text size={16} weight="med" className="mr1">Splashscreen</Text>
                                     <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="splashscreenTooltip">Displayed when your content is offline</Tooltip>
+                                    <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
                                 </div>
                                 <ImageArea className="mt2">
                                     <ButtonSection>
@@ -307,7 +319,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster Image")}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster")}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.vodDetails.poster.url);setImageModalOpen(true)}}>
@@ -338,7 +350,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <IconStyle  className="col col-1 pointer">{advancedVideoLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
                             <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
                         </div>                  
-                        <AdvancedLinksContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
+                        <ExpandableContainer className="col col-12" isExpanded={advancedVideoLinksExpanded}>
                             {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
                                 {
                                     if(item.link && item.link !== ''){
@@ -359,7 +371,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     }
                                 }
                             })}
-                        </AdvancedLinksContainer>
+                        </ExpandableContainer>
                     </div>
 
                    { subtitleModalOpen && 
@@ -381,13 +393,27 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
                                 {uploadedSubtitleFile.name === "" ? null :
                                     <SubtitleFile className="col mt1">
-                                        <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        <SubtitleTextContainer>
+                                            <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        </SubtitleTextContainer>
                                         <button style={{ border: "none", backgroundColor: "inherit" }}>
                                             <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
                                         </button>
                                     </SubtitleFile>
                                 }
-                                <InputCheckbox className='col col-12 my2' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? true : false} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                                <div className="col col-12">
+                                    <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
+                                        <IconStyle  className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
+                                        <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
+                                    </div>
+                                    <ExpandableContainer className="flex my2" isExpanded={advancedSubtitleSectionExpanded}>
+                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? uploadedSubtitleFile.convertToUTF8 : true} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                                        <IconStyle className="ml1" style={{marginTop: 5}} fontSize="small" id="utfTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="utfTooltip">Uncheck if you have already converted your file to UTF-8.</Tooltip>
+                                    </ExpandableContainer>
+                                </div>
+                                
+                                
                             </ModalContent>
                             <ModalFooter>
                                 <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
@@ -415,14 +441,16 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                     }
 
                 </Card>
-                <ButtonContainer>
-                    <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => setButtonLoading(false)) } }>Save</Button>
-                    <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
-                </ButtonContainer>
+               { unsavedChanges && 
+                    <ButtonContainer>
+                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => {setUnsavedChanges(false);setButtonLoading(false)}) } }>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);setUnsavedChanges(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                    </ButtonContainer>
+                }
                 {
                     previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.vodDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
-                <Prompt when={ (VodDetails.online !== props.vodDetails.online) || (VodDetails.title !== props.vodDetails.title) || (VodDetails.description !== props.vodDetails.description) } message='' />
+                <Prompt when={unsavedChanges} message='' />
             </React.Fragment>
             
     )
@@ -435,4 +463,14 @@ const SubtitleFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 352px;
+    
+`
+
+const SubtitleTextContainer = styled.div`
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 352px;
 `

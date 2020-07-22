@@ -97,7 +97,11 @@ export const SetupPage = (props: SetupComponentProps) => {
             case 'vod':
                 return <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
             default:
-                return;
+                return (                                    
+                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    </div>
+                )
         }
     }
 
@@ -244,7 +248,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
                         />
                         : null}
-                    {handleRowIconType(row.type ? row.type : 'folder')}
+                    {handleRowIconType(row)}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
                         row.type === "folder" ?
@@ -276,14 +280,14 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const renderSelectedItems = () => {
-        return selectedItems.map((element, i) => {
+        return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={(element.objectID ? element.objectID : element.id) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID ? element.objectID : element.id)}
+                    <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
-                    {handleRowIconType(element.type ? element.type : 'folder')}
+                    {handleRowIconType(element)}
                     <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                     {
                         sortSettings.value === "custom" &&  

@@ -25,6 +25,9 @@ export interface PlaylistDetails {
     splashscreen: AssetType;
     poster?: AssetType;
     uploadurl?: string;
+    embedScaling?: string;
+    embedSize?: number;
+    embedType?: string;
 }
 
 export const initialPlaylistGeneralState: PlaylistDetailsState = {}

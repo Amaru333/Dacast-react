@@ -14,26 +14,22 @@ import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     themesList: ThemesData
-    getFolderContent: Function;
-    deleteContent: Function;
-    restoreContent: Function;
-    showToast: Function;
-    getThemesList: Function;
+    getFolderContent: (qs: string) => Promise<void>;
+    deleteContent: (content: ContentType[]) => Promise<void>;
+    restoreContent: (content: ContentType[]) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    getThemesList: () => void;
 }
 
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData.requestedContent) {
-                props.getFolderContent(null)
-               
-        }
-        if(!props.themesList.themes) {
-            props.getThemesList()
+            props.getFolderContent(null)       
         }
         
     }, [])
     return (
-        props.folderData && props.themesList.themes ? 
+        props.folderData ? 
             <FoldersPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -49,14 +45,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolderContent: (qs: string) => {
-            dispatch(getFolderContentAction(qs))
+        getFolderContent: async (qs: string) => {
+            await dispatch(getFolderContentAction(qs))
         },
-        deleteContent: (content: ContentType[]) => {
-            dispatch(deleteContentAction(content))
+        deleteContent: async (content: ContentType[]) => {
+            await dispatch(deleteContentAction(content))
         },
-        restoreContent: (content: ContentType[]) => {
-            dispatch(restoreContentAction(content))
+        restoreContent: async (content: ContentType[]) => {
+            await dispatch(restoreContentAction(content))
         },
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))

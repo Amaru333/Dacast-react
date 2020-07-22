@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
 import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction } from '../../redux-flow/store/Paywall/Presets/actions';
+import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets/actions';
 import { Preset, PresetsPageInfos, Promo, ContentPaywallPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
@@ -34,6 +34,7 @@ export interface VodPaywallComponentProps {
     getPaywallThemes: Function;
     globalPresets: PresetsPageInfos;
     getPresetsInfo: Function;
+    getPromoPresetsInfo: Function;
     customPricePresetList: Preset[];
     customPromoPresetList: Promo[];
     createPromoPreset: Function;
@@ -55,8 +56,11 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
         if(!props.theming) {
             props.getPaywallThemes()
         }
-        if(!props.globalPresets) {
+        if(!props.globalPresets || !props.globalPresets.presets) {
             props.getPresetsInfo('page=1&per-page=100')
+        }
+        if(!props.globalPresets || !props.globalPresets.promos) {
+            props.getPromoPresetsInfo('page=1&per-page=100')
         }
         props.getVodPaywallPrices(vodId)
         props.getVodPaywallPromos(vodId)
@@ -103,7 +107,7 @@ const VodPaywall = (props: VodPaywallComponentProps) => {
                 assignedContentIds: [],
                 assignedGroupIds: []
             }
-            let globalPricePresets: Preset[] = props.globalPresets.presets.prices ? props.globalPresets.presets.prices : []
+            let globalPricePresets: Preset[] = props.globalPresets.presets && props.globalPresets.presets.prices.length > 0 ? props.globalPresets.presets.prices : []
             let globalPromoPresets: Promo[] = props.globalPresets.promos && props.globalPresets.promos.totalItems > 0  ? props.globalPresets.promos.promos : []
             setCustomPricePresetList([...globalPricePresets, customPricePreset])
             setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])
@@ -189,6 +193,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getPresetsInfo: (qs: string) => {
             dispatch(getPricePresetsInfosAction(qs))
+        },
+        getPromoPresetsInfo: (qs: string) => {
+            dispatch(getPromoPresetsInfosAction(qs))
         },
         createPricePreset: (data: Preset) => {
             dispatch(createPricePresetAction(data));

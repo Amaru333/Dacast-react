@@ -7,6 +7,7 @@ export interface ProgressBarSpecificProps {
     color: ColorsApp;
     startingValue: number;
     label?: string;
+    static?: boolean;
 }
 
 export type ProgressBarProps = ProgressBarSpecificProps & React.HTMLAttributes<HTMLDivElement>;
