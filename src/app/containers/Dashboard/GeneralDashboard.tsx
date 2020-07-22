@@ -59,7 +59,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     
 
     const handleBillingPeriod = () => {
-        if(props.plan.displayName === "Free") {
+        if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
             return ;
         }else {
             return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
