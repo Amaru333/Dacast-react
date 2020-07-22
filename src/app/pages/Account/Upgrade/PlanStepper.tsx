@@ -301,10 +301,10 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
             return [
                 <div className="flex items-center">
                     <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now&nbsp;</Text>
-                    <Text key={"cartTableFooterTotalFrequency"} size={10} weight="reg" color="gray-5">(First 3 months paid upfront)</Text>
+                    {props.stepperData.commitment === 3 && <Text key={"cartTableFooterTotalFrequency"} size={10} weight="reg" color="gray-5">(First 3 months paid upfront)</Text>}
                 </div>
                 ,
-                <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{'$' + ((planPrice) + (featuresTotal)) * 3}</Text>,
+                <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + (planPrice + featuresTotal) * 3 : "$" + (planPrice + featuresTotal) }</Text>,
             ]
         }
     }
@@ -346,7 +346,7 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
                 props.stepperData.name === 'Developer' ?
                     { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">${planPrice}</Text> }
                     :
-                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.paymentTerm === 1 ? '$' + ((totalPrice)) * 3 : '$' + totalPrice}</Text> }
+                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + ((totalPrice)) * 3 : '$' + totalPrice}</Text> }
 
             ]
         }

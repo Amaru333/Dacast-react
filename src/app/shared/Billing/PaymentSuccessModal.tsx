@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, ModalFooter } from '../../../components/Modal/Modal';
-import { PaymentSuccessModalProps } from '../../../components/Modal/ModalTypes';
+import { PaymentModalProps } from '../../../components/Modal/ModalTypes';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { useHistory } from 'react-router';
 
 
 
-export const PaymentSuccessModal = (props: PaymentSuccessModalProps) => {
+export const PaymentSuccessModal = (props: PaymentModalProps) => {
 
     let history = useHistory()
 
