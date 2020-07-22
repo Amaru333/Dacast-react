@@ -3,7 +3,7 @@ import {Input} from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 
-export const NewFolderModal = (props: {submit: (folderName: string, folderPath: string) => Promise<void>; toggle: (b: boolean) => void; folderPath: string; buttonLabel: 'Create' | 'Rename'; showToast: (text: string, size: Size, notificationType: NotificationType) => void; loadContent?: () => void}) => {
+export const NewFolderModal = (props: {submit: (folderName: string, folderPath: string) => Promise<string>; toggle: (b: boolean) => void; folderPath: string; buttonLabel: 'Create' | 'Rename'; showToast: (text: string, size: Size, notificationType: NotificationType) => void; loadContent?: () => void}) => {
     const [folderName, setFolderName] =React.useState<string>('')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
