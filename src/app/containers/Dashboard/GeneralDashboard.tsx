@@ -136,8 +136,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                                 <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
                                 <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
                             </WidgetHeader>
-                            {/* <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(lastDay.getTime() / 1000)}</Text><br /> */}
-                            <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br />
+                            {
+                                props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
+
+                            }                            
                             <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
                         </WidgetElement>
                 }
