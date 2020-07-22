@@ -31,7 +31,7 @@ export const playlistDefaultState: PlaylistSetupState = {
         folderId: null,
         id: null,
         maxItems: NaN,
-        playlistType: null,
+        playlistType: 'folder',
         sortType: 'custom',
         title: null
     } 

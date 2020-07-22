@@ -5,56 +5,10 @@ import { ActionTypes, dashboardInitialState, DashboardState } from "./types";
 const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_DASHBOARD_DETAILS :
-            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-            var firstDay = new Date(y, m, 1);
-            var lastDay = new Date(y, m + 1, 0);
+            
             return {
                 ...state,
-                data: {
-                    ...action.payload.data,
-                    isTrial: {
-                        daysLeft: 30,
-                    },
-                    vod: {
-                        totalVideos: action.payload.data.vod.totalVideos,
-                        videoPlays: {data: 137},
-                        impressions: {data: 151 },
-                        topVideos: { data: [
-                            {name: 'COSTA_RICA_4K_60FPS_CRF16_AVC.mp4', viewers : 127},
-                            {name: 'Ford_green.mp4', viewers : 13},
-                            {name: '30daysofYoga-Day_1.mp4', viewers : 11},
-                        ]},
-                        playRate: {data: {impressions: 151, playRate: 137}}
-                    },
-                    live: {
-                        activeChannels: action.payload.data.live.activeChannels,
-                        totalChannels: action.payload.data.live.totalChannels,
-                        liveViewers: {data: 0},
-                        topChannels: {
-                            data: [
-                                {name: 'My Live Channel Larix', viewers : 27},
-                                {name: 'My Big Live Event', viewers : 5},
-                            ]
-                        }
-                    },
-                    generalInfos : {
-                        bandwidth: {
-                            limit: 10000000000,
-                            consumed: 6000000000
-                        },
-                        storage: {
-                            limit: 1000000000,
-                            consumed: 250000000
-                        }
-                    },
-                    isPayingPlan: {
-                        displayName: 'Scale',
-                        price: 390,
-                        nextBill: lastDay.getTime() / 1000,
-                        lastBill: firstDay.getTime() / 1000
-                    },
-                    
-                }
+                data: { ...action.payload.data }
             }
         case ActionTypes.GET_DASHBOARD_LIVE_VIEWERS: 
             return {
