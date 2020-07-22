@@ -187,11 +187,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
                 
                 <DropdownSingle 
-                    id='vodPaywallThemesDropdown' 
-                    className='col col-12 sm-col-3 my2' 
-                    dropdownTitle='Paywall Theme' 
+                    id='vodPaywallThemesDropdown'
+                    className='col col-12 sm-col-3 my2'
+                    dropdownTitle='Paywall Theme'
                     dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
-                    list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})} 
+                    list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})}
                     callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id})}
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
