@@ -5,21 +5,10 @@ import { ActionTypes, dashboardInitialState, DashboardState } from "./types";
 const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_DASHBOARD_DETAILS :
-            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-            var firstDay = new Date(y, m, 1);
-            var lastDay = new Date(y, m + 1, 0);
+            
             return {
                 ...state,
-                data: {
-                    ...action.payload.data,
-                    isPayingPlan: {
-                        displayName: 'Scale',
-                        price: 390,
-                        nextBill: lastDay.getTime() / 1000,
-                        lastBill: firstDay.getTime() / 1000
-                    },
-                    
-                }
+                data: { ...action.payload.data }
             }
         case ActionTypes.GET_DASHBOARD_LIVE_VIEWERS: 
             return {

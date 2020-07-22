@@ -11,9 +11,11 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { getBillingPageInfosAction, BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 
 export interface DashboardProps {
     infos: DashboardInfos;
+    billingInfos: BillingPageInfos;
     getDashboardDetails: Function;
     getDashboardVodPlayRate: Function;
     getDashboardVodPlay: Function;
@@ -21,6 +23,7 @@ export interface DashboardProps {
     getDashboardLiveTopChannels: Function;
     getDashboardVodTopVideos: Function;
     getDashboardVodImpressions: Function;
+    getBillingPageInfos: Function;
 }
 
 const Dashboard = (props: DashboardProps) => {
@@ -29,10 +32,13 @@ const Dashboard = (props: DashboardProps) => {
         if (!props.infos) {
             props.getDashboardDetails();
         }
+        if(!props.billingInfos) {
+            props.getBillingPageInfos();
+        }
     }, [])
 
     React.useEffect(() => {
-        if (props.infos) {
+        if (props.infos && props.billingInfos) {
             if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
                 props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
             }
@@ -54,14 +60,13 @@ const Dashboard = (props: DashboardProps) => {
                 props.getDashboardVodTopVideos(props.infos.vod.topVideos.jobID);
             }
         }
-    }, [props.infos])
+    }, [props.infos, props.billingInfos])
 
     const renderDashboard = () => {
-
-        if (props.infos.isPayingPlan) {
+        if (props.billingInfos.currentPlan.displayName !== "Free") {
             return (
                 <>
-                    <GeneralDashboard plan={props.infos.isPayingPlan} profile={props.infos.generalInfos} />
+                    <GeneralDashboard overage={props.billingInfos.playbackProtection} plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
                     {/* <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} /> */}
@@ -71,7 +76,7 @@ const Dashboard = (props: DashboardProps) => {
         } else {
             return (
                 <>
-                    <GeneralDashboard plan={props.infos.isTrial} profile={props.infos.generalInfos} />
+                    <GeneralDashboard plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
                     <TrialAdditionalDashboard />
                 </>
             )
@@ -81,7 +86,7 @@ const Dashboard = (props: DashboardProps) => {
     return (
         <>
             {
-                props.infos ?
+                props.infos && props.billingInfos?
                     <>
                         {renderDashboard()}
                         <div className="clearfix"></div>
@@ -95,12 +100,16 @@ const Dashboard = (props: DashboardProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
+        billingInfos: state.account.plan,
         infos: state.dashboard.data
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
+        getBillingPageInfos: () => {
+            dispatch(getBillingPageInfosAction());
+        },
         getDashboardDetails: () => {
             dispatch(getDashboardDetailsAction());
         },
