@@ -79,7 +79,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             .then(callback).catch(callback)
         },
         deleteFile: (vodId: string, targetId: string, fileName: string) => {
-            dispatch(deleteFileAction(vodId, targetId, fileName))
+            dispatch(deleteFileAction(vodId, targetId)).then(() => dispatch(getVodDetailsAction(vodId)))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

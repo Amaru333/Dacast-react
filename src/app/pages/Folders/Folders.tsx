@@ -297,7 +297,18 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 foldersTree.navigateToFolder(folderNode)
                 break
             case 'Restore':
-                props.restoreContent([asset])
+                props.restoreContent([asset]).then(() => {
+                    setCheckedItems([])
+                    setContentLoading(true)
+                    setTimeout(() => {
+                        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+                            setContentLoading(false)
+                        }).catch(() => {
+                            setContentLoading(false)
+                        })
+                    }, 4000)
+
+                })
                 break
             case 'Rename':
                 setNewFolderModalAction('Rename Folder')

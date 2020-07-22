@@ -319,7 +319,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                     <ButtonSection>
                                         {
                                             (posterEnable || uploadedImageFiles.poster) && 
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster Image")}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster")}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.vodDetails.poster.url);setImageModalOpen(true)}}>
