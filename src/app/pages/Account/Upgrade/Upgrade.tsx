@@ -22,6 +22,8 @@ import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import axios from 'axios'
 import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
+import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
+import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -431,20 +433,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                     </Elements>
                 </RecurlyProvider>
-                <Modal hasClose={false} icon={{ name: "check_circle_outline", color: "green" }} size="small" modalTitle="Payment Successful" toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened} >
-                    <div className="mt2 mb3">
-                        <Text size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
-                    </div>
-                    <ModalFooter>
-                        <Button onClick={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)}>Confirm</Button>
-                        <Button onClick={() => {history.push('/account/invoices')}} typeButton="tertiary">See Invoices</Button>
-                    </ModalFooter>
-                </Modal>
-                <Modal icon={{ name: "warning_outlined", color: "red" }} size="small" modalTitle="Payment Declined" toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened} hasClose={true}>
-                    <div className="mt2 mb3">
-                        <Text size={14}>Something went wrong during your upgrade. Your payment may have been declined. Please try again or <a href="/help">Contact Us</a> if you believe this is a mistake.</Text>
-                    </div>
-                </Modal>
+                <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
+                <Text size={14}>Welcome to the {stepperData && PlansName[stepperData.name]}!</Text>
+                </PaymentSuccessModal>
+                <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
+                    <Text size={14}>Something went wrong during your upgrade. Your payment may have been declined. Please try again or <a href="/help">Contact Us</a> if you believe this is a mistake.</Text>
+                </PaymentFailedModal>
             </UpgradePageContainer>
             <Text onClick={() => setAllFeaturesOpen(!allFeaturesOpen)} className="justify-center items-center flex col-12 pt2 pointer" color="dark-violet" size={14} weight='reg'>View all features<IconStyle coloricon="dark-violet" customsize={customInfoIconSize} className="ml1">{allFeaturesOpen ? "expand_less" : "expand_more"}</IconStyle></Text>
         </ScrollContainer>

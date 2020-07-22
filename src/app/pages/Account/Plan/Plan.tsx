@@ -23,6 +23,8 @@ import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../re
 import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { useHistory } from 'react-router-dom'
+import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
+import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -47,6 +49,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
+    const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
@@ -54,21 +58,17 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
         props.purchaseProducts(purchaseDataStepperData, recurlyToken, null,  (response) => {
-            console.log(response);
             setIsLoading(false);
             if (response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setPurchaseDataOpen(false)
-                console.log("data purchased")
-                // setPaymentSuccessfulModalOpened(true)
-                // setCurrentPlan(stepperData.name)
+                setDataPaymentSuccessOpen(true)
             }
         }, () => {
             setIsLoading(false);
-            // setPaymentDeclinedModalOpened(true)
-            console.log("payment failed")
+            setDataPaymentFailedOpen(true)
         })
     }
 
@@ -77,13 +77,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         props.purchaseProducts(purchaseDataStepperData, recurlyToken, threeDSecureToken, (response) => {
             setPurchaseDataOpen(false)
             setIsLoading(false);
-            // setPaymentSuccessfulModalOpened(true)
-            // setThreeDSecureActive(false)
-            // setCurrentPlan(stepperData.name)
+            setDataPaymentSuccessOpen(true)
+            setThreeDSecureActive(false)
         }, () => {
             setIsLoading(false);
-            // setPaymentDeclinedModalOpened(true)
-            console.log("payment failed")
+            setDataPaymentFailedOpen(true)
         })
 
     }
@@ -281,7 +279,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         </Modal>
                     }            
 
-            <CustomStepper 
+            {/* <CustomStepper 
                 opened={extrasModalOpened}
                 stepperHeader='Purchase Extras'
                 stepList={stepList}
@@ -294,7 +292,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 stepperData={stepperExtraItem}
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
-            />
+            /> */}
             <CustomStepper 
                 opened={purchaseDataOpen}
                 stepperHeader="Purchase Data"
@@ -325,7 +323,17 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     <Button typeButton="tertiary" onClick={()=> setDisableProtectionModalOpened(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-
+            {purchaseDataStepperData &&
+                <>
+                    <PaymentSuccessModal opened={dataPaymentSuccessOpen} toggle={() => setDataPaymentSuccessOpen(!dataPaymentSuccessOpen)}>
+                        <Text size={14}>You bought {purchaseDataStepperData.quantity}GB of data</Text>
+                    </PaymentSuccessModal>
+                    <PaymentFailedModal opened={dataPaymentFailedOpen} toggle={() => setDataPaymentFailedOpen(!dataPaymentSuccessOpen)}>
+                        <Text size={14}>Your payment of ${purchaseDataStepperData.totalPrice} was declined</Text>
+                    </PaymentFailedModal>
+                </>
+            }
+            
         </div>
 
     )

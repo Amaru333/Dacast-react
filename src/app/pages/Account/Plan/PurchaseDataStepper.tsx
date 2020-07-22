@@ -47,7 +47,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: event.currentTarget.value})}} />
+            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>
