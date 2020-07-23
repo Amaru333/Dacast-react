@@ -189,11 +189,8 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             {
                                 liveStreamCountdownToggle &&
                                     <div className="col col-12">
-                                        <div
-                                            className='col col-12 sm-col-4 pr1 mt1'
-                                        >
+                                        <div className='col col-12 sm-col-4 pr1'>
                                             <DateSinglePickerWrapper
-                                                className='mt25'
                                                 id="startDate"
                                                 datepickerTitle='Start Date'
                                                 date={moment(startDateTimeValue.date)}
