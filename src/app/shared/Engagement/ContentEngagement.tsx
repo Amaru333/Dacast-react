@@ -224,7 +224,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <TextStyle>
                             <Text size={20} weight='med'>Advertising</Text>
                         </TextStyle>
-                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => setAdSectionEditable(!adSectionEditable)}>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {setAdSectionEditable(!adSectionEditable);setSettingsEdited(true)}}>
                             {adSectionEditable ? "lock_open" : "lock"}
                         </IconStyle>
                         <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
@@ -290,7 +290,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle> 
                         <Text size={20} weight='med'>Brand Image</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => setBrandImageSectionEditable(!brandImageSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {setBrandImageSectionEditable(!brandImageSectionEditable);setSettingsEdited(true)}}>
                         {brandImageSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                 </Header>
@@ -340,7 +340,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => setBrandSectionEditable(!brandSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {setBrandSectionEditable(!brandSectionEditable);setSettingsEdited(true)}}>
                         {brandSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                     <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
@@ -369,7 +369,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => setEndScreenSectionEditable(!endScreenSectionEditable)}>
+                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {setEndScreenSectionEditable(!endScreenSectionEditable);setSettingsEdited(true)}}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                     <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
