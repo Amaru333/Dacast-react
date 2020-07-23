@@ -195,6 +195,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                             <DateSinglePickerWrapper
                                                 className='mt25'
                                                 id="startDate"
+                                                datepickerTitle='Start Date'
                                                 date={moment(startDateTimeValue.date)}
                                                 callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
                                             />
