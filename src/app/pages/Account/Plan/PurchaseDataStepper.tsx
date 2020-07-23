@@ -13,7 +13,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
     const [dataAmount, setDataAmount] = React.useState<number>(null)
 
     React.useEffect(() => {
-        props.setStepValidated(dataAmount && dataAmount < 100000)
+        props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
     }, [props.stepperData])
 
     React.useEffect(() => {
@@ -25,6 +25,16 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
             props.updateStepperData({...props.stepperData, code: "eventBw10to100TB", totalPrice: (dataPrice * dataAmount)})
         }
     }, [dataAmount])
+
+    const handleInputError = (dataAmount: number) => {
+        if(dataAmount > 99999) {
+            return "Contact us for purchases over 100,000 GB"
+        } else if (dataAmount < 1000) {
+            return "Purchases must be over 1TB"
+        } else {
+            return null
+        }
+    }
 
 
     const cartTableBodyElement = () => {
@@ -47,7 +57,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999} help={dataAmount > 99999 && "Contact us for purchases over 100,000 GB"} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
+            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount > 99999 || dataAmount < 1000} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>
