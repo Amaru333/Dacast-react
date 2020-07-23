@@ -22,6 +22,7 @@ export interface StepperSpecificProps {
     usefulFunctions?: {[key: string]: any};
     stepperStaticData?: {[key: string]: any};
     widthSecondStep? : number;
+    isLoading?: boolean;
 }
 
 export type StepperProps = StepperSpecificProps & React.HTMLAttributes<HTMLDivElement>

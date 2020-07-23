@@ -5,24 +5,22 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getFolderContentAction, restoreContentAction } from '../../redux-flow/store/Folders/actions';
-import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
+import { getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
-    getGroupPrices: Function;
-    getGroupPromos: Function;
-    createGroupPrice: Function;
-    saveGroupPrice: Function;
-    deleteGroupPrice: Function;
-    createGroupPromo: Function;
-    saveGroupPromo: Function;
-    deleteGroupPromo: Function;
+    getGroupPrices: () => Promise<void>;
+    getGroupPromos: () => Promise<void>;
+    createGroupPrice: (p: GroupPrice) => Promise<void>;
+    saveGroupPrice: (p: GroupPrice) => Promise<void>;
+    deleteGroupPrice: (p: GroupPrice) => Promise<void>;
+    createGroupPromo: (p: GroupPromo) => Promise<void>;
+    saveGroupPromo: (p: GroupPromo) => Promise<void>;
+    deleteGroupPromo: (p: GroupPromo) => Promise<void>;
     folderData: FoldersInfos;
-    getFolders: Function;
-    getFolderContent: Function;
-    restoreContent: Function;
+    getFolderContent: (path: string) => Promise<void>;
 }
 
 const Groups = (props: GroupsComponentProps) => {
@@ -37,7 +35,6 @@ const Groups = (props: GroupsComponentProps) => {
         if(!props.folderData) {
             const wait = async () => {
                 await props.getFolderContent('/')
-                //await props.getFolders('/');
             }
             wait()
         }
@@ -59,35 +56,32 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getGroupPrices: () => {
-            dispatch(getGroupPricesAction());
+        getGroupPrices: async () => {
+            await dispatch(getGroupPricesAction());
         },
-        getGroupPromos: () => {
-            dispatch(getGroupPromosAction());
+        getGroupPromos: async () => {
+            await dispatch(getGroupPromosAction());
         },
-        createGroupPrice: (data: GroupPrice) => {
-            dispatch(createGroupPriceAction(data));
+        createGroupPrice: async (data: GroupPrice) => {
+            await dispatch(createGroupPriceAction(data));
         },
-        saveGroupPrice: (data: GroupPrice) => {
-            dispatch(saveGroupPriceAction(data));
+        saveGroupPrice: async (data: GroupPrice) => {
+            await dispatch(saveGroupPriceAction(data));
         },
-        deleteGroupPrice: (data: GroupPrice) => {
-            dispatch(deleteGroupPriceAction(data));
+        deleteGroupPrice: async (data: GroupPrice) => {
+            await dispatch(deleteGroupPriceAction(data));
         },
-        createGroupPromo: (data: GroupPromo) => {
-            dispatch(createGroupPromoAction(data));
+        createGroupPromo: async (data: GroupPromo) => {
+            await dispatch(createGroupPromoAction(data));
         },
-        saveGroupPromo: (data: GroupPromo) => {
-            dispatch(saveGroupPromoAction(data));
+        saveGroupPromo: async (data: GroupPromo) => {
+            await dispatch(saveGroupPromoAction(data));
         },
-        deleteGroupPromo: (data: GroupPromo) => {
-            dispatch(deleteGroupPromoAction(data));
+        deleteGroupPromo: async (data: GroupPromo) => {
+            await dispatch(deleteGroupPromoAction(data));
         },
         getFolderContent: async (folderPath: string) => {
             await dispatch(getFolderContentAction(folderPath))
-        },
-        restoreContent: (content: ContentType[]) => {
-            dispatch(restoreContentAction(content))
         }
     }
 }
