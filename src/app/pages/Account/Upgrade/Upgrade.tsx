@@ -154,7 +154,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="mt25 col col-12" disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
                                                 <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.developerPlan }); handleSteps('developer') }}>{currentPlan === 'Developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
@@ -242,7 +242,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="col col-12" disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column">
                                                     {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
                                                     <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'Event'} sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.eventPlan }); handleSteps('event') }}>{currentPlan === 'Event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
