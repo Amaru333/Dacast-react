@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const adminApiUrlBase = 'https://x2dp01bwp9.execute-api.us-east-1.amazonaws.com/singularity/'
+const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
 
 const getAccounts = async (accountId: string) => { 
     await isTokenExpired()
@@ -15,6 +15,22 @@ const getAccounts = async (accountId: string) => {
     )
 }
 
+const impersonate = async (accountId: string) => { 
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return await axios.post(adminApiUrlBase + (accountId ? ('list-accounts?accountId=' + accountId) : 'list-accounts'),
+        {
+            userEmail: accountId
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
+}
+
 export const AccountsServices = {
-    getAccounts
+    getAccounts,
+    impersonate
 }

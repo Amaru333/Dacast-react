@@ -17,7 +17,6 @@ const getGroupPrices = async () => {
 const createGroupPrice = async (data: GroupPrice) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
-
     let parsedPrice = null
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {

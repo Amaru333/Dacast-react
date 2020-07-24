@@ -36,7 +36,7 @@ export const Table = (props: TableProps) => {
         return props.header.data ? 
             props.header.data.map((headerCell, i) => {
                 return (
-                    <TableHeaderCell onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={ headerCell.sort ? sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined': false} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
+                    <TableHeaderCell contentLoading={props.contentLoading} onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={ headerCell.sort ? sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined': false} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
 
                             
                         {
@@ -58,11 +58,11 @@ export const Table = (props: TableProps) => {
         return props.body ?
             props.body.map((bodyRow, i) => {
                 return (
-                    <TableBodyRow onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
+                    <TableBodyRow contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                         {
                             bodyRow.data.map((bodyCell: any, item) => {
                                 return (
-                                    <TableBodyCell key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
+                                    <TableBodyCell contentLoading={props.contentLoading} key={props.id+"tableBodyRow"+i.toString()+"TableBodyCell"+item.toString()} className="">
                                         {bodyCell}
                                     </TableBodyCell>
                                 )
@@ -99,6 +99,14 @@ export const Table = (props: TableProps) => {
                     {
                         props.body &&
                             <TableBodyContainer>
+                                {
+                                    props.contentLoading && 
+                                    <>
+                                        <SpinnerContainer>
+                                            <LoadingSpinner size='medium' color='violet' />    
+                                        </SpinnerContainer>
+                                    </>
+                                } 
                                 {renderTableBody()}
                             </TableBodyContainer>
                     }
@@ -110,14 +118,7 @@ export const Table = (props: TableProps) => {
                             </TableFooterRow>
                         </TableFooterContainer>
                     }    
-                    {
-                        props.contentLoading && 
-                        <>
-                            <SpinnerContainer>
-                                <LoadingSpinner size='medium' color='violet' />    
-                            </SpinnerContainer>
-                        </>
-                    }           
+          
                 </TableContainer>                
             </Scrollbar> 
         </WrapperResponsiveContainer>

@@ -17,9 +17,7 @@ import { emptyContentListBody } from '../../../shared/List/emptyContentListState
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
-    getFolders: Function;
-    getFolderContent: Function;
-    restoreContent: Function;
+    getFolderContent: (path: string) => Promise<void>;
 }
 
 export interface GroupStepperDataCreate {
@@ -65,6 +63,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
     const [selectedGroupPrice, setSelectedGroupPrice] = React.useState<GroupPrice>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [stepperLoading, setStepperLoading] = React.useState<boolean>(false)
     const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<GroupPromo>(null);
     const [stepperData, setStepperData] = React.useState<GroupStepperData>({firststep: defaultPrice, secondStep: {...props}});
     const groupPriceSteps = [GroupPriceStepperFirstStep, GroupPriceStepperSecondStep]
@@ -159,6 +159,24 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         }
     }    
 
+    const handleStepperSubmit = () => {
+        if(selectedGroupPrice) {
+            setStepperLoading(true)
+            props.saveGroupPrice(stepperData.firststep).then(() => {
+                setStepperLoading(false)
+                setGroupPricesStepperOpened(false)
+            })
+        } else {
+            setIsLoading(true)
+            setStepperLoading(true)
+            props.createGroupPrice(stepperData.firststep).then(() => {
+                setStepperLoading(false)
+                setGroupPricesStepperOpened(false)
+                props.getGroupPrices().then(() => {setIsLoading(false)})
+            })
+        }   
+    }
+
     return (
         <div>
             <Card>
@@ -169,7 +187,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
-                <Table id='groupPricessTable' headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
+                <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <BorderStyle className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
@@ -201,9 +219,10 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     lastStepButton={selectedGroupPrice ? "Save" : "Create"}
                     stepperData={stepperData}
                     widthSecondStep={60}
+                    isLoading={stepperLoading}
                     updateStepperData={(value: GroupStepperData) => setStepperData(value)}
                     functionCancel={() => {setGroupPricesStepperOpened(false);setStepperData({firststep: defaultPrice, secondStep: {...props}})}}
-                    finalFunction={() => {{setGroupPricesStepperOpened(false)};selectedGroupPrice ? props.saveGroupPrice(stepperData.firststep) : props.createGroupPrice(stepperData.firststep)}}
+                    finalFunction={() => handleStepperSubmit()}
                 />
             }    
             
