@@ -30,9 +30,9 @@ var momentTZ = require('moment-timezone')
 
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
-    const initTimestampValues = (ts: number): {date: string; time: string} => {
+    const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[0], time: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[1]}
         } 
         return {date: moment().toString(), time: '00:00'}
     }
@@ -50,7 +50,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
     const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.liveDetails.countdown.startTime), timezone: props.liveDetails.countdown.timezone ? props.liveDetails.countdown.timezone : momentTZ.tz.guess()})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone ? props.liveDetails.countdown.timezone : momentTZ.tz.guess()})
 
 
     React.useEffect(() => {

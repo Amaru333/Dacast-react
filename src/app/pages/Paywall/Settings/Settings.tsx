@@ -60,9 +60,9 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <BorderStyle className='mt2' />
                 
                 <div className="mt3 mb1">
-                    <Text size={16} weight='med'>Credit Card Statement</Text>
+                    <Text size={16} weight='med'>Card Statement</Text>
                 </div>
-                <Text size={14} weight='reg'>This is displayed on your viewer's bank statements</Text>
+                <Text size={14} weight='reg'>This is displayed on your viewers' bank statements</Text>
                 <Input  className='col col-2 py1' id='banckStatement' placeholder='' label='Seller Name / Description' defaultValue={props.paywallSettingsInfos.bankStatement} onChange={(event) => setSettingsInfos({...settingsInfos, bankStatement: event.currentTarget.value})} />
             </Card>
             { settingsInfos !== props.paywallSettingsInfos &&

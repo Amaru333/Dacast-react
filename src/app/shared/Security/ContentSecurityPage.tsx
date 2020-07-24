@@ -50,9 +50,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         return defaultValues
     }
 
-    const initTimestampValues = (ts: number): {date: string; time: string} => {
+    const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[0], time: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[1]}
         } 
         return {date: moment().toString(), time: '00:00'}
     }
@@ -67,8 +67,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime).time, timezone: props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone : momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).date, time: initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime).time, timezone: props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone : momentTZ.tz.guess()})
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime, props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone), timezone: props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone : momentTZ.tz.guess()})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime, props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone), timezone: props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone : momentTZ.tz.guess()})
 
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
