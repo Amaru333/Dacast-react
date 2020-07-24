@@ -24,6 +24,7 @@ import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyl
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
+    globalEngagementSettings: InteractionsInfos
     getContentEngagementSettings: Function;
     saveContentEngagementSettings: Function;
     saveContentAd: Function;
@@ -50,6 +51,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
+    const [adSectionSettings, setAdSectionSettings] = React.useState<Ad[]>(props.contentEngagementSettings.engagementSettings.ads)
     const [mailSectionEditable, setMailSectionEditable] = React.useState<boolean>(false);
     const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
@@ -60,6 +62,10 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [brandImageSectionEditable, setBrandImageSectionEditable] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        console.log('content settings', props.contentEngagementSettings)
+    }, [props.contentEngagementSettings])
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -102,6 +108,14 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         props.deleteContentImage(props.contentId);
     }
 
+    // React.useEffect(() => {
+    //     if(adSectionEditable) {
+    //         setAdSectionSettings(props.contentEngagementSettings.engagementSettings.ads)
+    //     } else {
+    //         setAdSectionSettings(props.globalEngagementSettings.ads)
+    //     }
+    // }, [adSectionEditable])
+
 
     React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
@@ -112,10 +126,10 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     React.useEffect(() => {
         const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
     
-        if(ads.length > 0 || adsEnabled){
+        if(ads !== props.globalEngagementSettings.ads || adsEnabled !== props.globalEngagementSettings.adsEnabled ){
             setAdSectionEditable(true)
         }
-        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
+        if(brandImageURL !==props.globalEngagementSettings.brandImageURL || brandImagePadding !==props.globalEngagementSettings.brandImagePadding || brandImagePosition !==props.globalEngagementSettings.brandImagePosition || brandImageText !==props.globalEngagementSettings.brandImageText || brandImageSize !==props.globalEngagementSettings.brandImageSize ){
             setBrandImageSectionEditable(true)
         }
         if(brandText || brandTextLink || isBrandTextAsTitle){
@@ -155,7 +169,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        if (props.contentEngagementSettings.engagementSettings.ads.length > 0) {
+        if (adSectionSettings.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -182,8 +196,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         }
     }
 
-    const advertisingTableBody = () => {
-        return props.contentEngagementSettings.engagementSettings.ads.map((item, i) => {
+    const advertisingTableBody = (ads: Ad[]) => {
+        return ads.map((item, i) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
@@ -191,10 +205,14 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
+                            {adSectionEditable && 
                             <IconStyle
-                                onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                            onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
                             >delete
-                            </IconStyle>
+                        </IconStyle>
+                            
+                            }
+                            
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + item.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + item.id}>
@@ -215,6 +233,19 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         setEndScreenSectionEditable(false);
     }
 
+    const handleSectionRevert = (section: string) => {
+        switch (section) {
+            case 'ads':
+                debugger;
+                setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
+                break;
+            case 'brandImage':
+                setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL})
+            default:
+                null;
+        }
+    }
+
     return (
         <div>
             <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
@@ -224,7 +255,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <TextStyle>
                             <Text size={20} weight='med'>Advertising</Text>
                         </TextStyle>
-                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {setAdSectionEditable(!adSectionEditable);setSettingsEdited(true)}}>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {setAdSectionEditable(!adSectionEditable);setSettingsEdited(true);handleSectionRevert('ads')}}>
                             {adSectionEditable ? "lock_open" : "lock"}
                         </IconStyle>
                         <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
@@ -245,7 +276,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
                             <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                         </div>
-                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.contentEngagementSettings.engagementSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={adSectionSettings.length > 0 ? advertisingTableBody(adSectionSettings) : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                     </DisabledSection>
                 </Card>
@@ -290,7 +321,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle> 
                         <Text size={20} weight='med'>Brand Image</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {setBrandImageSectionEditable(!brandImageSectionEditable);setSettingsEdited(true)}}>
+                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {setBrandImageSectionEditable(!brandImageSectionEditable);setSettingsEdited(true);handleSectionRevert('brandImage')}}>
                         {brandImageSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                 </Header>
@@ -397,7 +428,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false) }}
+                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false); debugger; }}
                         >
                             Save
                         </Button>
