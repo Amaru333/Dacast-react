@@ -26,7 +26,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         if(ts > 0 ) {
-            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[0], time: momentTZ(ts).tz(timezone).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
         } 
         return {date: moment().toString(), time: '00:00'}
     }
