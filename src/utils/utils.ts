@@ -20,7 +20,7 @@ export const dataToTimeVideo = (value: number) => {
     if(typeof value === 'string' || value instanceof String) {return value}
     var hours = Math.floor(value / 3600);
     var minutes = Math.floor((value - (hours * 3600)) / 60);
-    var seconds = value - (hours * 3600) - (minutes * 60);
+    var seconds = Math.floor(value - (hours * 3600) - (minutes * 60));
 
     var timeString = hours.toString().padStart(2, '0') + ':' + 
         minutes.toString().padStart(2, '0') + ':' + 

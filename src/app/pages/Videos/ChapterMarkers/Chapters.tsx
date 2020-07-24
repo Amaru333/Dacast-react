@@ -5,7 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal } from '../../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
-import { useMedia } from '../../../../utils/utils';
+import { useMedia, dataToTimeVideo } from '../../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
@@ -64,7 +64,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
         return props.chapterPageDetails.chapterMarkers.sort((a, b) => a.start - b.start ).map((value, key) => {
             return {data: [
                 <Text key={key.toString() +value.text} size={14}  weight="reg" color="gray-1">{value.text}</Text>,
-                <Text key={key.toString() +value.start} size={14}  weight="reg" color="gray-1">{value.start}</Text>,
+                <Text key={key.toString() +value.start} size={14}  weight="reg" color="gray-1">{dataToTimeVideo(value.start)}</Text>,
                 <IconContainer className="iconAction" key={key.toString()+value.text}>
                     <ActionIcon id={"deleteTooltip" + value.id}>
                         <IconStyle onClick={(event) => {event.preventDefault;props.deleteVodChapterMarker(props.vodId, props.chapterPageDetails.chapterMarkers.filter(chapterMarker => chapterMarker.id !== value.id))}} >delete</IconStyle>

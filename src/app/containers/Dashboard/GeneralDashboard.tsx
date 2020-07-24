@@ -49,8 +49,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     } 
     
     const handlePurchaseStepper = (purchaseItem: string) => {
-        setSelectedPurchaseItem(purchaseItem);
-        setPurchaseStepperOpened(true);
+        history.push('/account/upgrade');
+
+        // setSelectedPurchaseItem(purchaseItem);
+        // setPurchaseStepperOpened(true);
     }
 
     let date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -144,23 +146,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         </WidgetElement>
                 }
             </div>
-
-            <CustomStepper
-                opened={purchaseStepperOpened} 
-                stepperHeader={"Buy " + selectedPurchaseItem}
-                stepTitles={['Cart', 'Payment']}
-                stepList={stepList}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                functionCancel={() => setPurchaseStepperOpened(false)}
-                lastStepButton="Purchase"
-                finalFunction={onSubmitFunctions}
-                stepperData={mockPaymentMethod}
-                updateStepperData={(value: string) => console.log(value)}
-            />
-
-            
         </section>
     )
 

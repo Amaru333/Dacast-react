@@ -209,7 +209,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     <DataPricingTable >
                         {
                             props.billingInfos.products && 
-                            Object.values(props.billingInfos.products.bandwidth).map((item) => {
+                            Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  parseFloat(a.minQuantity) - parseFloat(b.minQuantity)).map((item) => {
                                 return (
                                     <DataPricingTableRow key={item.code}>
                                         <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
