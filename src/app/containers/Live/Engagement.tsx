@@ -4,11 +4,12 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction, getUploadUrlAction, uploadLiveImageAction, deleteLiveImageAction } from '../../redux-flow/store/Live/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
+import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
 
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: ContentEngagementSettings;
@@ -21,6 +22,8 @@ export interface LiveEngagementComponentProps {
     getUploadUrl: Function;
     uploadLiveImage: Function;
     deleteLiveImage: Function;
+    globalEngagementSettings: InteractionsInfos;
+    getGlobalEngagementSettings: Function;
 }
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
@@ -31,13 +34,16 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
         if (!props.liveEngagementSettingsState[liveId]) {
             props.getLiveEngagementSettings(liveId);
         }
+        if (!props.globalEngagementSettings){
+            props.getGlobalEngagementSettings()
+        }
     }, []);
 
     return (
         <>
             <LiveTabs liveId={liveId} />
             {
-                props.liveEngagementSettingsState[liveId] ?
+                props.liveEngagementSettingsState[liveId] && props.globalEngagementSettings ?
                     <div className='flex flex-column'>
                         <ContentEngagementPage
                             contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
@@ -51,6 +57,7 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
                             deleteContentImage={props.deleteLiveImage}
                             contentType='live'
                             contentId={liveId}
+                            globalEngagementSettings={props.globalEngagementSettings}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
@@ -61,7 +68,8 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveEngagementSettingsState: state.live.engagement
+        liveEngagementSettingsState: state.live.engagement,
+        globalEngagementSettings: state.settings.interactions
     };
 }
 
@@ -69,6 +77,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getLiveEngagementSettings: (liveId: string) => {
             dispatch(getLiveEngagementSettingsAction(liveId));
+        },
+        getGlobalEngagementSettings: () => {
+            dispatch(getSettingsInteractionsInfosAction());
         },
         saveLiveEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
             dispatch(saveLiveEngagementSettingsAction(data)).then(callback)

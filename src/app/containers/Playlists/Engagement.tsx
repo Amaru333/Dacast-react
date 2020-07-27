@@ -4,13 +4,14 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction, getUploadUrlAction, uploadPlaylistImageAction, deletePlaylistImageAction } from '../../redux-flow/store/Playlists/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
+import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettingsState: ContentEngagementSettingsState;
@@ -23,6 +24,8 @@ export interface PlaylistEngagementComponentProps {
     getUploadUrl: Function;
     uploadPlaylistImage: Function;
     deletePlaylistImage: Function;
+    globalEngagementSettings: InteractionsInfos;
+    getGlobalEngagementSettings: Function;
 }
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
@@ -33,13 +36,16 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
         if (!props.playlistEngagementSettingsState) {
             props.getPlaylistEngagementSettings(playlistId);
         }
+        if (!props.globalEngagementSettings){
+            props.getGlobalEngagementSettings()
+        }
     }, []);
 
     return (
 
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            {props.playlistEngagementSettingsState ?
+            {props.playlistEngagementSettingsState  && props.globalEngagementSettings ?
                 <div className='flex flex-column'>
                     <ContentEngagementPage 
                         contentEngagementSettings={props.playlistEngagementSettingsState[playlistId]}
@@ -53,6 +59,7 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
                         deleteContentImage={props.deletePlaylistImage}
                         contentType='playlist'
                         contentId={playlistId}
+                        globalEngagementSettings={props.globalEngagementSettings}
                     />            
                 </div>
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
@@ -63,12 +70,16 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistEngagementSettingsState: state.playlist.engagement
+        playlistEngagementSettingsState: state.playlist.engagement,
+        globalEngagementSettings: state.settings.interactions
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
+        getGlobalEngagementSettings: () => {
+            dispatch(getSettingsInteractionsInfosAction());
+        },
         getPlaylistEngagementSettings: (playlistId: string) => {
             dispatch(getPlaylistEngagementSettingsAction(playlistId));
         },
