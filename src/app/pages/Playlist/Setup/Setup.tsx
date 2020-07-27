@@ -322,7 +322,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
         newData.playlistType = selectedTab;
-        newData.sortType = sortSettings.value
+        newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
         props.savePlaylistSetup(newData, props.playlistData.id, () => {
             setSaveLoading(false)
         })

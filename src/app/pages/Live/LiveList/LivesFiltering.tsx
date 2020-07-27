@@ -7,6 +7,7 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { getPrivilege } from '../../../../utils/utils';
+var moment = require('moment');
 
 export interface FilteringLiveState {
     status: {
@@ -109,11 +110,11 @@ export const LivesFiltering = (props: { setSelectedFilter: Function }) => {
                     </div>
                     <div className="mb3" id="vodFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="vodFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
                     </div>
                 </div>
 

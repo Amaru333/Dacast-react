@@ -99,7 +99,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
                     <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
-                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Currencies'}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.currency : 'Multiple Currencies'}</Text>,
                     <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
                     <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>

@@ -6,6 +6,7 @@ import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/
 import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
+var moment = require('moment');
 
 export interface FilteringPlaylistState {
     status: {
@@ -90,11 +91,11 @@ export const PlaylistFiltering = (props: {setSelectedFilter: Function}) => {
                     </div>
                     <div className="mb3" id="playlistFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)}  allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="playlistFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)}  allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
                     </div>
                 </div>
                 <div className="flex" id="playlistFilterbuttons">

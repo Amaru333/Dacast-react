@@ -27,6 +27,7 @@ import { useHistory } from 'react-router'
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { DeleteFolderModal } from './DeleteFolderModal'
+import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -44,6 +45,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder')
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false)
     const [deleteFolderModalOpened, setDeleteFolderModalOpened] = React.useState<boolean>(false)
+    const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false)
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
@@ -55,7 +57,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>(null)
-    const [assetToDelete, setAssetToDelete] = React.useState<ContentType & {name?: string}>(null)
+    const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
@@ -287,7 +289,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             case 'Delete':
                 if(asset.type !== 'folder') {
                     setAssetToDelete(asset)
-                    setDeleteFolderModalOpened(true)
+                    setDeleteContentModalOpened(true)
                 } else {
                     setAssetToDelete({id: folderNode.id, type: 'folder', fullPath: folderNode.fullPath + '/', name: folderNode.name})
                     setDeleteFolderModalOpened(true)
@@ -386,7 +388,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type}, row.type == 'folder' ? {    isExpanded: true,
+                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' ? {    isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
                                     path: row.path,
@@ -553,6 +555,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 {
                     deleteFolderModalOpened &&
                     <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath)}} />
+                }
+            </Modal>
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+                {
+                    deleteContentModalOpened &&
+                    <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await props.deleteContent([assetToDelete])}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
                 }
             </Modal>
             <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />

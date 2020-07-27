@@ -21,10 +21,9 @@ export const DeleteFolderModal = (props: {showToast: (text: string, size: Size, 
 
     return (
         <div className='flex flex-column'>
-            <Text size={14} weight='reg'>Are you sure that you want to delete {props.folderName} ?</Text>
-            <Text size={14} weight='med' >This folder and any sub folders will be deleted permanently. </Text>
-            <Text size={14} weight='med' >Any items inside won’t be deleted and will be moved to Unsorted if it isn’t already in another location. </Text>
-            <div className='flex my2'>
+            <Text className='py1' size={14} weight='reg'>Are you sure that you want to delete {props.folderName} ?</Text>
+            <Text className='py1' size={14} weight='med' >Folders will be deleted permanently and assets will be moved to Unsorted. </Text>
+            <div className='flex mt2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Delete</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
