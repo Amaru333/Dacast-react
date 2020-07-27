@@ -3,12 +3,12 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { handleDataPrice } from '../../../../utils/utils';
-import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
+import { PlaybackProtection, BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
 
-export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function; playbackProtection: PlaybackProtection}) => {
+export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function; playbackProtection: PlaybackProtection; billingInfos: BillingPageInfos}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<number>(50);
-    const [dataPrice, setDataPrice] = React.useState<number>(0.25)
+    // const [dataPrice, setDataPrice] = React.useState<number>(props.playbackProtection.price)
+    const dataPrice = parseFloat(props.billingInfos.currentPlan.playbackProtectionUnitPrice).toFixed(2)
 
     const ProtectionModalTableData = [
         {
@@ -52,7 +52,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
                     list={{'50': false, '100': false, '250': false, '500': false, '1000': false, '2000': false, '5000': false}}
                     id='amountDropdown'
                     dropdownDefaultSelect={'50'}
-                    callback={(value: string) => handleDataPrice(parseInt(value), setPlaybackProtectionAmount, setDataPrice)}
+                    callback={(value: string) => setPlaybackProtectionAmount(parseInt(value))}
                         
                 />
             </div>

@@ -63,7 +63,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
                     <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
                         <ActionIcon>
-                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, name: `${theme.name} Copy`})}>file_copy</IconStyle>
+                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>
                             <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -85,7 +85,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             <div>
                 <Card>
                     <Text size={20} weight='med'>Paywall Theming</Text>
-                    <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your payment</Text>
+                    <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your payment.</Text>
                     <div className='flex item-center mt2'>
                         <IconStyle style={{marginRight: 10}}>info_outlined</IconStyle>
                         <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
@@ -123,7 +123,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
                     }} />
                     <BorderStyle className='mt3 mb2' />
-                    <Tab className='col col-12 my1' orientation='horizontal' history={null} list={tabsList} callback={setSelectedTab} />
+                    <Tab className='col col-12 my1' orientation='horizontal' list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
                         <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
                         <div className="mt2">
@@ -261,15 +261,15 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         onLoad={() => {
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
-                                value: !selectedTheme.loginScreen.buttonColor
+                                value: {hex : selectedTheme.loginScreen.buttonColor}
                             });  
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setPrimaryColor',
-                                value: !selectedTheme.loginScreen.primaryColor
+                                value: {hex : selectedTheme.loginScreen.primaryColor}
                             });  
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setHeaderColor',
-                                value: !selectedTheme.loginScreen.headerColor
+                                value: {hex : selectedTheme.loginScreen.headerColor}
                             });  
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setThemeLogo',

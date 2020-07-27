@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/VOD/Chapters/types'
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/utils'
 
 export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function; chapterState: ChapterMarkerInfosState}) => {
 
@@ -21,14 +22,15 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         let submittedChapterMarkers: ChapterMarker[] = props.chapters
+        var newChapterMarker = {...chapterMarker};
+        newChapterMarker.start = Number.isInteger(newChapterMarker.start) ? newChapterMarker.start :  inputTimeVideoToTs(newChapterMarker.start.toString()) ;
         if(props.item.text.length === 0) {
-            submittedChapterMarkers.push({...chapterMarker, id: chapterMarker.text + chapterMarker.start})
+            submittedChapterMarkers.push({...newChapterMarker, id: newChapterMarker.text + newChapterMarker.start})
         } else {
             submittedChapterMarkers = submittedChapterMarkers.map((chapter) => {
                 if(chapter.id === props.item.id) {
-                    return {...chapterMarker, id: props.item.id}
-                }
-                else {
+                    return {...newChapterMarker, id: props.item.id}
+                } else {
                     return chapter
                 }
             })
@@ -45,8 +47,9 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
         }
     }, [props.chapterState])
 
+    console.log(chapterMarker ? chapterMarker.start : null);
     return (
-        chapterMarker ?
+        chapterMarker &&
 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
@@ -62,12 +65,12 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                 />
 
                 <Input 
-                    value={chapterMarker.start.toString()}
+                    value={dataToTimeVideo(chapterMarker.start).toString()}
                     disabled={false}
-                    onChange={(event) => setChapterMarker({...chapterMarker, start: parseInt(event.currentTarget.value)})}
+                    onChange={(value) => setChapterMarker({...chapterMarker, start: value})}
                     id='chapterMarkerTime'
-                    type='full-time'
-                    step='2'
+                    type='video-time'
+                    placeholder='hh:mm:ss'
                     className='col col-12 pb1'
                     label='Start Time'
                 />
@@ -76,6 +79,5 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>
-            : null
     )
 }

@@ -25,7 +25,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const ThemingOptions = () => {
         return (
             <ThemingControlsCard
-                theme={{themes: [selectedTheme], id: null}} 
+                theme={{themes: [selectedTheme], contentId:null, contentThemeId: null}} 
                 saveTheme={props.saveTheme}
                 createTheme={props.createTheme}
                 cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}
@@ -56,7 +56,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'></Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
-                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
+                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, isDefault: false, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
                                 <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                             </ActionIcon>
                             
@@ -70,7 +70,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                         <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
-                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
+                                <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, isDefault: false, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
                                 <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                             </ActionIcon>
                             <ActionIcon>

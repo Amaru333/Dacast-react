@@ -203,7 +203,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="companyName" 
                             label="Company Name" 
                             placeholder="Company Name"
-                            name="companyName" ref={register()}
+                            {...handleValidationForm('companyName', errors)}
+                            name="companyName" ref={register({required: "This field can’t be left empty"})}
                             help="The legal business name for use on invoices, etc."
                         />
                     </div>
@@ -223,10 +224,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             defaultValue={CompanyPageDetails.companyEmail}
                             type="email" 
                             className="md-col md-col-6 p1" 
-                            id="emailAddress" 
+                            id="companyEmail" 
                             label="Email Address" 
                             placeholder="Email Address"
-                            {...handleValidationForm('emailAddress', errors, 'email', register)}
+                            {...handleValidationForm('companyEmail', errors, 'email', register)}
                         />
                     </div>
 

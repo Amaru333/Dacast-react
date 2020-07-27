@@ -39,7 +39,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                     unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
                                 } 
                                 : null,
-                                startMethod: price.settings.startDate ? 'Schedule' : 'Upon Purchase',
+                                startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
                                 recurrence: price.settings.recurrence ? {
                                     unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : price.settings.recurrence.value > 4 ? 'Biannual'

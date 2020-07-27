@@ -1,10 +1,18 @@
 import axios from 'axios'
 import { PlanInfo } from './types'
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
 
-const adminApiUrlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/'
+const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
 
-const getAccountPlan = (accountId: string) => {  
-    return axios.get(adminApiUrlBase   + 'admin/accounts/' + accountId + '/plan')
+const getAccountPlan = async (accountId: string) => {  
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return await axios.get(adminApiUrlBase   + 'privileges/' + accountId, 
+    {
+        headers: {
+            Authorization: token
+        }
+    })
 }
 
 const saveAccountPlan = (accountId: string, planInfo: PlanInfo) => {  

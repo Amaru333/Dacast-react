@@ -21,3 +21,10 @@ export interface ModalCardCustomProps {
 }
 
 export type ModalCardProps = ModalCardCustomProps & React.HTMLAttributes<HTMLDivElement>
+
+export interface PaymentModalCustomProps {
+    toggle: () => void;
+    opened: boolean
+}
+
+export type PaymentModalProps = PaymentModalCustomProps & React.HTMLAttributes<HTMLDivElement>

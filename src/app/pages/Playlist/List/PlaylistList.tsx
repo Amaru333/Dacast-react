@@ -34,7 +34,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringPlaylistState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{ page: number; nbResults: number }>({ page: 1, nbResults: 10 })
     const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>('created-at-desc')
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false);
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
@@ -46,6 +46,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false)
     const [bulkThemeOpen, setBulkThemeOpen] = React.useState<boolean>(false)
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
+    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
+
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -91,13 +93,17 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
             setContentLoading(true)
-            props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                setContentLoading(false)
-            }).catch(() => {
-                setContentLoading(false)
-            })        }
+            setTimeout(() => {
+                props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                    setContentLoading(false)
+                }).catch(() => {
+                    setContentLoading(false)
+                })    
+            }, 5000)
+    
+        }
     }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
 
     const liveListHeaderElement = () => {
@@ -177,6 +183,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
         }
     }
 
+
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
         { name: 'Paywall On/Off', function: setBulkPaywallOpen },
@@ -193,15 +200,15 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     key={item.name}
                     className={key === 1 ? 'mt1' : ''}
                     isSelected={false}
-                    onClick={() => item.function(true)}>
+                    onClick={() => {item.function(true);setDropdownIsOpened(false)}}>
                     <DropdownItemText size={14} weight='reg' color={'gray-1'}>{item.name}</DropdownItemText>
                 </DropdownItem>
             )
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch (action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -218,12 +225,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                 default:
                     break
             }
+            setSelectedPlaylist([])
         }).catch((error) => {
             console.log(error)
         })
     }
 
-    const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     return (
         <>
@@ -250,12 +257,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             </HeaderPlaylistList>
             <Table contentLoading={contentLoading} className="col-12" id="playlistListTable" headerBackgroundColor="white" header={props.playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }) }} />
-            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
+            <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm getThemesList={() => props.getThemingList()} actionFunction={handleBulkAction} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm showToast={props.showToast} getThemesList={() => props.getThemingList()} actionFunction={handleBulkAction} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

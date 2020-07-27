@@ -7,12 +7,16 @@ import { UpgradeAction, getPlanDetailsAction, purchasePlanAction } from '../../r
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/actions';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 
 
 export interface UpgradeContainerProps {
     planDetails: Plans;
     getPlanDetails: () => void;
     purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => void;
+    billingInfos: BillingPageInfos;
+    getBillingPageInfos: Function;
 }
 
 const UpgradeContainer = (props: UpgradeContainerProps) => {
@@ -20,11 +24,14 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
         if(!props.planDetails) {
             props.getPlanDetails();
         }
+        if(!props.billingInfos) {
+            props.getBillingPageInfos();
+        }
     }, [])
 
     return (
-        props.planDetails ? 
-            <UpgradePage planDetails={props.planDetails} {...props}/>
+        (props.planDetails && props.billingInfos) ? 
+            <UpgradePage planDetails={props.planDetails} billingInfos={props.billingInfos} {...props}/>
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -32,7 +39,8 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        planDetails: state.account.upgrade
+        planDetails: state.account.upgrade,
+        billingInfos: state.account.plan
     }
 }
 
@@ -40,6 +48,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getPlanDetails: () => {
             dispatch(getPlanDetailsAction())
+        },
+        getBillingPageInfos: () => {
+            dispatch(getBillingPageInfosAction());
         },
         purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
             await dispatch(purchasePlanAction(data, recurlyToken, token3Ds, callback, fallback))

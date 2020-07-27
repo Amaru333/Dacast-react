@@ -12,7 +12,7 @@ export interface GetBillingPageInfos {
 
 export interface SaveBillingPagePaymentMethod {
     type: ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD;
-    payload: CreditCardPayment | PaypalPayment;
+    payload: string;
 }
 
 export interface AddBillingPagePlaybackProtection {
@@ -40,6 +40,10 @@ export interface GetProductDetails {
     payload: {data: Products}
 }
 
+export interface PurchaseProducts {
+    type: ActionTypes.PURCHASE_PRODUCTS;
+    payload: Extras
+}
 
 export const getBillingPageInfosAction = (): ThunkDispatch<Promise<void>, {}, GetBillingPageInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetBillingPageInfos> ) => {
@@ -52,7 +56,7 @@ export const getBillingPageInfosAction = (): ThunkDispatch<Promise<void>, {}, Ge
     };
 }
 
-export const saveBillingPagePaymentMethodAction = (data: CreditCardPayment | PaypalPayment): ThunkDispatch<Promise<void>, {}, SaveBillingPagePaymentMethod> => {
+export const saveBillingPagePaymentMethodAction = (data: string): ThunkDispatch<Promise<void>, {}, SaveBillingPagePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveBillingPagePaymentMethod> ) => {
         await BillingServices.saveBillingPagePaymentMethodService(data)
             .then( response => {
@@ -123,6 +127,19 @@ export const getProductDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetP
     };
 }
 
+export const purchaseProductsAction = (data: Extras, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function): ThunkDispatch<Promise<void>, {}, PurchaseProducts> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, PurchaseProducts> ) => {
+        await BillingServices.purchaseProductsService(data, recurlyToken, token3Ds)
+            .then( response => {
+                dispatch( {type: ActionTypes.PURCHASE_PRODUCTS, payload: data} );
+                callback(response);
+            }).catch((error) => {
+                fallback(error);
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                console.log('error', error)
+            })
+    };
+}
 
 
 export type PlanAction = 

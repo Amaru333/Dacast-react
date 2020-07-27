@@ -280,7 +280,7 @@ export const UploaderPage = (props: UploaderProps) => {
                 <BigIcon>cloud_upload</BigIcon>
                 <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
                 <ButtonStyle className='my1'>
-                    <input type='file' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
+                    <input type='file' accept='video/mp4, video/mov' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                     <Button onClick={() => { videoUploadBrowseButtonRef.current.click() }} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
                         Browse Files
                     </Button>

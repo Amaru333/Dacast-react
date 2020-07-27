@@ -78,6 +78,7 @@ module.exports = {
         // Build html for the client app
         new HtmlWebpackPlugin({ 
             filename: 'index.html',
+            favicon: 'public/assets/favicon.ico',
             template: path.resolve(__dirname, 'src/app', 'index.html'),
             excludeAssets: [/admin.*/]
         }),

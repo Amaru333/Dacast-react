@@ -11,7 +11,7 @@ export const Modal = (props: ModalProps) => {
     var { icon, hasClose,  ...other } = props;
 
     let modalRef = React.useRef<HTMLDivElement>(null);
-    useOutsideAlerter(modalRef, () => props.toggle());
+    //useOutsideAlerter(modalRef, () => props.toggle());
     return (
         <React.Fragment>
             <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>

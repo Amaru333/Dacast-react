@@ -8,6 +8,7 @@ import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, Stepper
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
+import { useStepperFinalStepAction } from '../../app/utils/useStepperFinalStepAction';
 
 export const CustomStepper = (props: StepperProps) => {
 
@@ -19,6 +20,8 @@ export const CustomStepper = (props: StepperProps) => {
             setStepIndex(0)
         }
     }, [props.opened])
+
+    useStepperFinalStepAction('stepperNextButton', () => {props.finalFunction()})
 
     const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {    

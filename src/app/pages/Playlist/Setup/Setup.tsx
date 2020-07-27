@@ -50,7 +50,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [playlistSettingsOpen, setPlaylistSettingsOpen] = React.useState<boolean>(false);
 
-    const [sortSettings, setSortSettings] = React.useState<{name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc"}>({name: 'Sort', value: 'custom'});
+    const [sortSettings, setSortSettings] = React.useState<{name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none'}>({name: 'Sort', value: 'none'});
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
     const [maxNumberItems, setMaxNumberItems] = React.useState<number>(NaN);
 
@@ -82,12 +82,9 @@ export const SetupPage = (props: SetupComponentProps) => {
     }, [sortSettings, searchString])
 
     React.useEffect(() => {
-        if (!selectedFolder) {
+        if (!selectedFolder && selectedTab === 'folder') {
             setSelectedFolder('/');
-            return;
-        } else {
-            props.getFolderContent(selectedFolder)
-        }
+        } 
     }, [selectedFolder])
 
     const handleRowIconType = (item: FolderAsset) => {
@@ -100,7 +97,11 @@ export const SetupPage = (props: SetupComponentProps) => {
             case 'vod':
                 return <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
             default:
-                return;
+                return (                                    
+                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    </div>
+                )
         }
     }
 
@@ -247,7 +248,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
                         />
                         : null}
-                    {handleRowIconType(row.type ? row.type : 'folder')}
+                    {handleRowIconType(row)}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
                         row.type === "folder" ?
@@ -279,19 +280,22 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const renderSelectedItems = () => {
-        return selectedItems.map((element, i) => {
+        return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={(element.objectID ? element.objectID : element.id) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID ? element.objectID : element.id)}
+                    <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
                         defaultChecked={checkedSelectedItems.includes(element)}
                         onChange={() => handleCheckboxSelected(element)}
                     />
-                    {handleRowIconType(element.type ? element.type : 'folder')}
+                    {handleRowIconType(element)}
                     <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
-                    <div className="iconAction flex-auto justify-end">
-                        <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
-                        <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
-                    </div>
+                    {
+                        sortSettings.value === "custom" &&  
+                            <div className="iconAction flex-auto justify-end">
+                                <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
+                                <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
+                            </div>
+                    }
                 </ItemSetupRow>
             )
         })
@@ -324,15 +328,23 @@ export const SetupPage = (props: SetupComponentProps) => {
         })
     }
 
+    const switchTabSuccess = () => {
+        setSelectedFolderId(null); 
+        setSelectedTab(selectedTab === "content" ? 'folder' : 'content');
+        props.getFolderContent(null) 
+        setSelectedItems([]);
+    }
+
     const bulkActions = [
         { name: 'Name (A-Z)', value: 'A-to-Z', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('title', 'asc')))  } },
         { name: 'Name (Z-A)', value: 'Z-to-A', callback: () => {  setSelectedItems( [...selectedItems].sort(compareValues('title', 'desc'))) } },
         { name: 'Date Created (Newest First)', value: 'date-asc', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
         { name: 'Date Created (Oldest First)', value: 'date-desc', callback: () => { setSelectedItems( [...selectedItems].sort(compareValues('createdAt', 'desc'))) } },
+        { name: 'Custom', value: 'custom', callback: () => {  } },
+
     ]
 
     const renderList = () => {
-        console.log(selectedItems);
         return bulkActions.map((item, key) => {
 
             return (
@@ -351,7 +363,7 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     return (
         <>
-            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { setSelectedFolderId(null); setSelectedTab(selectedTab === "content" ? 'folder' : 'content'); setSelectedItems([]); }} />
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { switchTabSuccess(); }} />
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
@@ -365,8 +377,8 @@ export const SetupPage = (props: SetupComponentProps) => {
                     </div>
                 
                     <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name}</Button>
-                        <DropdownList style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: "+sortSettings.name : 'Sort'}</Button>
+                        <DropdownList style={{ width: 208, left: 16, top: 36  }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
                             {renderList()}
                         </DropdownList>
                     </div>
@@ -377,15 +389,15 @@ export const SetupPage = (props: SetupComponentProps) => {
             <div className="clearfix">
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <TabSetupContainer className="clearfix">
-                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { setSwitchTabOpen(true) }}>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess() }}>
                             <Text color={selectedTab === "folder" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
                         </TabSetupStyle>
-                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { setSwitchTabOpen(true);props.getFolderContent(null) }}>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess() }}>
                             <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
                         </TabSetupStyle>
                     </TabSetupContainer>
-                    <div className="pl1 pr1">
-                        <Breadcrumb options={selectedFolder} callback={(value: string) => {  console.log(value); setSelectedFolder(value) } } />
+                    <div hidden={selectedTab === 'content'} className="pl1 pr1">
+                        <Breadcrumb options={selectedFolder} callback={(value: string) => { setSelectedFolder(value) } } />
                     </div>
                     <div hidden={selectedTab !== "folder"} >
                         {renderFoldersList()}

@@ -27,7 +27,7 @@ export interface FilteringVodState {
     sizeEnd: string;
 }
 
-export const VideosFiltering = (props: {setSelectedFilter: Function}) => {
+export const VideosFiltering = (props: {setSelectedFilter: (filters: FilteringVodState) => void}) => {
 
 
 

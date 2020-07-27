@@ -9,6 +9,8 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditions/types';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { useWebSocket } from '../../../utils/customHooks';
+import { UploadObject } from '../../../utils/uploaderService';
+import { ProgressBar } from '../../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 
 interface VodRenditionsProps {
     renditions: RenditionsList;
@@ -19,15 +21,31 @@ interface VodRenditionsProps {
 
 export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) => {
 
+    const FILE_CHUNK_SIZE = 10000000 // 10MB
+    const MAX_REQUEST_PER_BATCH = 100
+    const NB_CONCURRENT_REQUESTS = 5
+
     const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
     const [encodeRenditionsModalOpen, setEncodeRenditionsModalOpen] = React.useState<boolean>(false)
     const [deleteRenditionsModalOpen, setDeleteRenditionsModalOpen] = React.useState<boolean>(false)
     const [replaceSourceModalOpen, setReplaceSourceModalOpen] = React.useState<boolean>(false)
-
+    const [newSourceFileUpload, setNewSourceFileUpload] = React.useState<UploadObject>(null)
+    const [newSourceFileUploadProgress, setNewSourceFileUploadProgress] = React.useState<number>(0)
+    const [uploadError, setUploadError] = React.useState<string>(null)
     // the data from the WS to know when the processing renditions are completed
     let wsData = useWebSocket()
+
+    let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+    React.useEffect(() => {
+        if(!replaceSourceModalOpen) {
+            setUploadError(null)
+            setNewSourceFileUpload(null)
+        }
+    }, [replaceSourceModalOpen])
+
     
     React.useEffect(() => {
         if(wsData){
@@ -153,6 +171,54 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
         setSelectedEncodedRendition([])
     }
 
+    const handleUploadProgress = (percent: number) => {
+        if(percent === 100) {
+            setNewSourceFileUpload(null)
+            setReplaceSourceModalOpen(false)
+        }
+        setNewSourceFileUploadProgress(percent)
+    }
+
+    const handleUploadError = (err: any) => {
+        if(err !== 'Cancel') {
+            setUploadError('Upload failed, cancel and try again.')
+        }
+    }
+
+    const handleDrop = (fileList: FileList) => {
+        for (var i = 0; i < fileList.length; i++) {
+            const file = fileList[i];
+            if (fileList.length > 0) {
+                let newUpload = new UploadObject(
+                    file,
+                    MAX_REQUEST_PER_BATCH,
+                    NB_CONCURRENT_REQUESTS,
+                    FILE_CHUNK_SIZE,
+                    (percent: number) => { handleUploadProgress(percent) },
+                    (err: any) => { handleUploadError(err)},
+                    null,
+                    props.vodId
+                )
+                setNewSourceFileUpload(newUpload)
+                newUpload.startUpload()
+            }
+        }
+    }
+
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if (e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    const handleCancelReplaceSourceFile = () => {
+        if(newSourceFileUpload) {
+            newSourceFileUpload.cancelUpload()
+        }
+        setReplaceSourceModalOpen(false)
+    }
+
     return (
         <React.Fragment>
             <div className="col col-12">
@@ -205,7 +271,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 <ButtonContainer className="col">
                     <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
                         onClick={() => setEncodeRenditionsModalOpen(true)}
-                    >Encode ></Button>
+                    >Encode &gt;</Button>
                     <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
                         onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>
@@ -238,15 +304,34 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                     <Button typeButton="tertiary" onClick={() => setDeleteRenditionsModalOpen(false)}>Cancel</Button>  
                 </ModalFooter>
             </Modal>
-            <Modal size="small" modalTitle="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
-                <ModalContent>
-                    <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
-                </ModalContent>
-                <ModalFooter>
-                    <Button onClick={() => {setReplaceSourceModalOpen(false)}}>Upload Replacement</Button>
-                    <Button typeButton="tertiary" onClick={() => setReplaceSourceModalOpen(false)}>Cancel</Button>  
-                </ModalFooter>
-            </Modal>
+            {
+                replaceSourceModalOpen && 
+                <Modal size="small" modalTitle="Replace Source File" opened={replaceSourceModalOpen} toggle={() => setReplaceSourceModalOpen(false)} hasClose={false}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
+                        {
+                            newSourceFileUpload && 
+                                <ProgressBar static  size='large' color={uploadError ? 'red' : 'violet'} label='Upload Progress' startingValue={newSourceFileUploadProgress} />
+
+                        }
+                        {
+                            uploadError && 
+                            <div>
+                                <Text weight='reg' color='red' size={10}>{uploadError}</Text>
+                            </div>
+                        }
+                    </ModalContent>
+                    <ModalFooter>
+                        <input type='file' accept='video/mp4, video/mov' ref={replaceSourceFileBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='replaceSourceFileBrowseButton' />
+                        {
+                            !newSourceFileUpload && 
+                            <Button onClick={() => {replaceSourceFileBrowseButtonRef.current.click()}}>Upload Replacement</Button>
+                        }
+                        <Button typeButton={newSourceFileUpload ? 'primary' : "tertiary"} onClick={() => handleCancelReplaceSourceFile()}>Cancel</Button>  
+                    </ModalFooter>
+                </Modal>
+            }
+            
         </React.Fragment>
     )
 }

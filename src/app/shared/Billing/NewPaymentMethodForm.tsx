@@ -12,8 +12,10 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Divider } from '@material-ui/core';
+import { Table } from '../../../components/Table/Table';
 
-export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any }) => {
+export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -30,18 +32,25 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
         }
     }, [threeDSecureActionToken])
 
+    React.useEffect(() => {
+        if (props.billingInfo.paymentMethod.type !== "" && !props.isUpdate) {
+            setHideForm(true);
+        }
+    }, [])
+
     recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
 
     useStepperFinalStepAction('stepperNextButton', () => {
-        if (selectedOption === 'paypal') {
+        if (((props.billingInfo.paymentMethod.type === "" || props.billingInfo.paymentMethod.type === "card") && selectedOption === 'paypal') || (props.billingInfo.paymentMethod.type === "paypal" && !props.isUpdate) ) {
             const paypal = recurly.PayPal(
                 { display: { displayName: " Dacast " } }
             )
 
             paypal.on('token', token => {
-                props.purchasePlan(token.id, null, (token3Ds: string) => {
+                props.recurlyFunction(token.id, null, (token3Ds: string) => {
                     setThreeDSecureActionToken(token3Ds);
                 });
+                props.callback()
             })
 
             paypal.on('error', error => {
@@ -59,17 +68,28 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
             paypal.start();
 
         } else {
-            recurly.token(formRef.current, (err: any, token: any) => {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-                    setRecurlyToken(token.id);
-                    props.purchasePlan(token.id, null, (token3Ds: string) => {
+            if (props.billingInfo.paymentMethod.type === "" || props.isUpdate){
+                recurly.token(formRef.current, (err: any, token: any) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    else {
+                        setRecurlyToken(token.id);
+                        {props.isUpdate ? 
+                            props.recurlyFunction(token.id) :
+                            props.recurlyFunction(token.id, null, (token3Ds: string) => {
+                                setThreeDSecureActionToken(token3Ds);
+                            });
+                        }
+                        props.callback()
+                    }
+                });
+            } else {
+                setRecurlyToken("");
+                    props.recurlyFunction("", null, (token3Ds: string) => {
                         setThreeDSecureActionToken(token3Ds);
                     });
-                }
-            });
+            }      
         }
 
     })
@@ -84,9 +104,33 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
         }
     });
 
+    const paymentMethodTableHeader = () => {
+        return {
+            data: [
+                { cell: <Text key={"step2PCardTableHeaderText"} size={14} weight="med" color="gray-1">Paying with {props.billingInfo.paymentMethod.type}</Text> },
+                { cell: <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} /> }
+            ]
+        }
+    }
+
+    const paymentMethodTableBody = () => {
+        return [{
+            data: [
+                <Text key={"step2PCreditCardBodyText"} size={14} weight="med" color="gray-1">{props.billingInfo.paymentMethod.type === "card" ? `Card ending with ${props.billingInfo.paymentMethod.lastFour}` : props.billingInfo.paymentMethod.email}</Text>,
+                <Text className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14} weight="med" color="gray-1">{props.billingInfo.paymentMethod.type === "card" ? props.billingInfo.paymentMethod.expiryMonth +  '/' + props.billingInfo.paymentMethod.expiryYear : props.billingInfo.paymentMethod.billingID}</Text>,
+
+            ]
+        }]
+    }
+
     return (
-        <>
-            
+        
+        <> 
+        {(props.billingInfo.paymentMethod.type !== "" && !props.isUpdate)  && 
+        <div>
+            <Table id="paymentMethodTable" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} headerBackgroundColor="gray-10"></Table>
+        </div>
+        }
             <form hidden={hideForm} id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault() }} >
                 <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
                 <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
@@ -101,7 +145,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Account's Holder First Name"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, firstName: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="last_name"
@@ -109,7 +153,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Account's Holder Last Name"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, lastName: event.currentTarget.value } })}
+                            
                         />
                         <div className='mb2 col col-12' id="recurly-elements"></div>
                         <Input
@@ -118,7 +162,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="VAT Number"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, vatNumber: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="country"
@@ -126,7 +170,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Country"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, country: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="address1"
@@ -134,7 +178,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Street Address 1"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, address1: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="address2"
@@ -143,7 +187,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             indicationLabel='Optional'
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, address2: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="city"
@@ -151,7 +195,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Town/City"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, city: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="state"
@@ -160,7 +204,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             type='text'
                             indicationLabel='Optional'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, state: event.currentTarget.value } })}
+                            
                         />
                         <Input
                             data-recurly="postal_code"
@@ -168,7 +212,7 @@ export const NewPaymentMethodForm = (props: { purchasePlan: Function; callback: 
                             label="Zip/Postal Code"
                             type='text'
                             required={false}
-                            onChange={(event) => props.callback({ ...props.billingInfo, creditCard: { ...props.billingInfo.creditCard, postCode: event.currentTarget.value } })}
+                            
                         />
                     </div>
                     <input type="hidden" name="recurly-token" data-recurly="token"></input>

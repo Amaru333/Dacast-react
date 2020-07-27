@@ -17,12 +17,12 @@ const getBillingPagePaymentMethodService = async () => {
     )
 }
 
-const saveBillingPagePaymentMethodService = async (data: CreditCardPayment | PaypalPayment) => {
+const saveBillingPagePaymentMethodService = async (data: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
     return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/payment-method', 
         {
-            ...data
+            token: data
         },
         {
             headers: {
@@ -84,6 +84,24 @@ const getProductDetailsService = async () => {
     )
 }
 
+const purchaseProductsService = async (data: Extras, recurlyToken: string, token3Ds?: string) => {
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/products/purchase',
+    {
+        code: data.code,
+        quantity: data.quantity,
+        token: recurlyToken,
+        threeDSecureToken: token3Ds ? token3Ds : undefined
+    },
+    {
+        headers: {
+            Authorization: token
+        }
+    }
+    ) 
+}
+
 
 export const BillingServices = {
     getBillingPagePaymentMethodService,
@@ -92,5 +110,6 @@ export const BillingServices = {
     editBillingPagePaymenPlaybackProtectionService,
     deleteBillingPagePaymenPlaybackProtectionService,
     addBillingPageExtrasService,
-    getProductDetailsService
+    getProductDetailsService,
+    purchaseProductsService
 } 

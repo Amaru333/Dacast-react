@@ -17,12 +17,14 @@ import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { WidgetElement } from '../../../containers/Dashboard/WidgetElement';
 import { WidgetHeader, classContainer, classItemThirdWidthContainer } from '../../../containers/Dashboard/DashboardStyles';
-import { ProgressBarDashboard } from '../../../containers/Dashboard/GeneralDashboard';
+import { ProgressBarDashboard, GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
 import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
 import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { useHistory } from 'react-router-dom'
+import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
+import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -32,21 +34,57 @@ interface PlanComponentProps {
     editBillingPagePaymenPlaybackProtection: Function;
     deleteBillingPagePaymenPlaybackProtection: Function;
     addBillingPageExtras: Function;
+    purchaseProducts: Function;
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
 
     
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
-    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection.enabled)
+    const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
     const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
+    const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
+    const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
     const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
+
+    const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+        setIsLoading(true);
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null,  (response) => {
+            setIsLoading(false);
+            if (response.data.data.tokenID) {
+                callback(response.data.data.tokenID)
+                setThreeDSecureActive(true)
+            } else {
+                setPurchaseDataOpen(false)
+                setDataPaymentSuccessOpen(true)
+            }
+        }, () => {
+            setIsLoading(false);
+            setDataPaymentFailedOpen(true)
+        })
+    }
+
+    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+        setIsLoading(true);
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, threeDSecureToken, (response) => {
+            setPurchaseDataOpen(false)
+            setIsLoading(false);
+            setDataPaymentSuccessOpen(true)
+            setThreeDSecureActive(false)
+        }, () => {
+            setIsLoading(false);
+            setDataPaymentFailedOpen(true)
+        })
+
+    }
   
     const submitExtra = () => {
         if(stepperExtraItem) {
@@ -54,7 +92,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setExtrasModalOpened(false);
         }
     }
- 
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -128,6 +165,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     }
 
     const planDetailsTableBodyElement = () => {
+        if(props.billingInfos.currentPlan) {
             const {state, displayName, currency, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
             const color = state === 'active' ? 'green' : state === 'expired' ? 'yellow' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
@@ -135,60 +173,17 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName}</Text>,
                 <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{paymentTerm === 12 ? "Yearly" : "Monthly"}</Text>,
-                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(periodEndsAt)}</Text>,
+                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : ''}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]
+        }
+
     }  
     
     return (
         <div>
-            <div className={classContainer}>
-                <WidgetElement className={classItemThirdWidthContainer}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Data Remaining </Text>
-                        {handleButtonToPurchase(bandwidth.percentage, "Data", setPurchaseDataOpen)}
-                    </WidgetHeader>
-                    <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
-                    </div>
-                    <ProgressBarDashboard overage={props.widgetData.generalInfos.overage} percentage={bandwidth.percentage} widget="bandwidth" />
-                </WidgetElement>
-
-                <WidgetElement className={classItemThirdWidthContainer}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                    </WidgetHeader>
-                    <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
-                    </div>
-                    <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
-                </WidgetElement>
-
-
-                {
-                    (props.plan as DashboardTrial).daysLeft  ?
-                        <WidgetElement className={classItemThirdWidthContainer}>
-                            <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
-                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
-                            </WidgetHeader>
-                            <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{(props.plan as DashboardTrial).daysLeft}  </Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
-                            </div>
-                            <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
-                        </WidgetElement> :
-                        <WidgetElement className={classItemThirdWidthContainer}>
-                            <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> {(props.plan as DashboardPayingPlan).displayName} </Text>
-                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
-                            </WidgetHeader>
-                            {/* <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(lastDay.getTime() / 1000)}</Text><br /> */}
-                            <Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate((props.plan as DashboardPayingPlan).nextBill)}</Text><br />
-                            <Text size={32} weight="reg" color="gray-1">${(props.plan as DashboardPayingPlan).price}</Text>
-                        </WidgetElement>
-                }
-            </div> 
+            <GeneralDashboard profile={props.profile} plan={props.plan} overage={props.plan.displayName !== "Free" ? props.overage : false} />
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
@@ -212,29 +207,34 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
                 <div className="col col-2 mb2">
                     <DataPricingTable >
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">1+TB</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.25/GB</Text></PriceCell>
-                        </DataPricingTableRow>
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">5+TB</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.12/GB</Text></PriceCell>
-                        </DataPricingTableRow>
-                        <DataPricingTableRow>
-                            <DataCell><Text size={14}  weight="med" color="gray-1">10TB+</Text></DataCell>
-                            <PriceCell><Text size={14}  weight="reg" color="gray-1">$0.09/GB</Text></PriceCell>
-                        </DataPricingTableRow>
+                        {
+                            props.billingInfos.products && 
+                            Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  parseFloat(a.minQuantity) - parseFloat(b.minQuantity)).map((item) => {
+                                return (
+                                    <DataPricingTableRow key={item.code}>
+                                        <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
+                                        <PriceCell><Text size={14}  weight="reg" color="gray-1">{'$' + item.unitPrice + '/GB'}</Text></PriceCell>
+                                    </DataPricingTableRow>
+                                )
+                            })
+                        }
+                        
+                        
                     </DataPricingTable>
                 </div>
                 <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
                 
             </Card>
             <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
-                <Elements>                
-            <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection.enabled ? props.billingInfos.playbackProtection : null}/>
-            </Modal>
-            <CustomStepper 
+                <Elements>    
+                    {
+                        protectionModalOpened &&
+                        <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} billingInfos={props.billingInfos}/>
+                        </Modal>
+                    }            
+
+            {/* <CustomStepper 
                 opened={extrasModalOpened}
                 stepperHeader='Purchase Extras'
                 stepList={stepList}
@@ -247,7 +247,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 stepperData={stepperExtraItem}
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
-            />
+            /> */}
             <CustomStepper 
                 opened={purchaseDataOpen}
                 stepperHeader="Purchase Data"
@@ -257,10 +257,12 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 lastStepButton="Purchase"
-                finalFunction={() => {}}
+                finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
                 stepperData={purchaseDataStepperData}
                 updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
                 functionCancel={setPurchaseDataOpen}
+                usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                isLoading={isLoading}
             />
             </Elements>
             </RecurlyProvider>
@@ -276,7 +278,17 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     <Button typeButton="tertiary" onClick={()=> setDisableProtectionModalOpened(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-
+            {purchaseDataStepperData &&
+                <>
+                    <PaymentSuccessModal opened={dataPaymentSuccessOpen} toggle={() => setDataPaymentSuccessOpen(!dataPaymentSuccessOpen)}>
+                        <Text size={14}>You bought {purchaseDataStepperData.quantity}GB of data</Text>
+                    </PaymentSuccessModal>
+                    <PaymentFailedModal opened={dataPaymentFailedOpen} toggle={() => setDataPaymentFailedOpen(!dataPaymentSuccessOpen)}>
+                        <Text size={14}>Your payment of ${purchaseDataStepperData.totalPrice} was declined</Text>
+                    </PaymentFailedModal>
+                </>
+            }
+            
         </div>
 
     )

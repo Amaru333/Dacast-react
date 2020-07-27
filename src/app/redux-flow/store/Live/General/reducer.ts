@@ -17,7 +17,7 @@ const reducer: Reducer<LiveDetailsState> = (state = initialLiveGeneralState, act
             return {
                 ...state,
                 [action.payload.id]: { ...state[action.payload.id], uploadurl: action.payload.data.presignedURL}
-            }
+            };
         case ActionTypes.UPLOAD_IMAGE:
             return {
                 ...state,
@@ -25,9 +25,15 @@ const reducer: Reducer<LiveDetailsState> = (state = initialLiveGeneralState, act
                     ...state[action.payload.liveId], 
                     uploadurl: null
                 }
-            }        
+            }     ;   
         case ActionTypes.DELETE_IMAGE:
-            return state
+                return {
+                    ...state,
+                    [action.payload.liveId]: {
+                        ...state[action.payload.liveId],
+                        [action.payload.uploadType]: {}
+                    }
+                };
         default:
             return state;
     }

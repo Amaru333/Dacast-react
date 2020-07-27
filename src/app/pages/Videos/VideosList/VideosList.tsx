@@ -52,7 +52,7 @@ export const VideosListPage = (props: VideosListProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>('created-at-desc')
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
@@ -104,13 +104,16 @@ export const VideosListPage = (props: VideosListProps) => {
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen) {
+        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
             setContentLoading(true)
-            props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                setContentLoading(false)
-            }).catch(() => {
-                setContentLoading(false)
-            })
+            setTimeout(() => {
+                props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                    setContentLoading(false)
+                }).catch(() => {
+                    setContentLoading(false)
+                })  
+            }, 5000)
+
         }
     }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
 
@@ -226,8 +229,8 @@ export const VideosListPage = (props: VideosListProps) => {
         })
     }
 
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
+    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
+        return await bulkActionsService(contentList, action, targetValue).then((response) => {
             switch(action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -244,6 +247,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 default:
                     break
             }
+            setSelectedVod([])
         }).catch((error) => {
             console.log(error)
         })
@@ -274,13 +278,13 @@ export const VideosListPage = (props: VideosListProps) => {
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-            <OnlineBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {

@@ -4,13 +4,16 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction, getUploadUrlAction, uploadVodImageAction, deleteVodImageAction } from '../../redux-flow/store/VOD/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
+import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions/actions';
 
 export interface VodEngagementComponentProps {
+    globalEngagementSettings: InteractionsInfos;
+    getGlobalEngagementSettings: Function;
     vodEngagementSettings: ContentEngagementSettings;
     vodEngagementSettingsState: ContentEngagementSettingsState;
     getVodEngagementSettings: Function;
@@ -28,6 +31,9 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
+        if (!props.globalEngagementSettings){
+            props.getGlobalEngagementSettings()
+        }
         if (!props.vodEngagementSettingsState[vodId])
             props.getVodEngagementSettings(vodId);
     }, []);
@@ -36,7 +42,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.vodEngagementSettingsState[vodId] ?
+                props.vodEngagementSettingsState[vodId] && props.globalEngagementSettings?
                     <div className='flex flex-column'>
                         <ContentEngagementPage
                             contentEngagementSettings={props.vodEngagementSettingsState[vodId]}
@@ -50,6 +56,7 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
                             deleteContentImage={props.deleteVodImage}
                             contentType='vod'
                             contentId={vodId}
+                            globalEngagementSettings={props.globalEngagementSettings}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
@@ -60,7 +67,8 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        vodEngagementSettingsState: state.vod.engagement
+        vodEngagementSettingsState: state.vod.engagement,
+        globalEngagementSettings: state.settings.interactions
     };
 }
 
@@ -68,6 +76,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getVodEngagementSettings: (vodId: string) => {
             dispatch(getVodEngagementSettingsAction(vodId));
+        },
+        getGlobalEngagementSettings: () => {
+            dispatch(getSettingsInteractionsInfosAction());
         },
         saveVodEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
             dispatch(saveVodEngagementSettingsAction(data)).then(callback)

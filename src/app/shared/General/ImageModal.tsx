@@ -18,6 +18,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
+    const [uploadType, setUploadType] = React.useState<string>(null)
 
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
@@ -33,6 +34,16 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
             setIsSaveDisabled(true) 
         }
     }, [selectedOption])
+
+    React.useEffect(() => {
+        if(props.imageType.includes("thumbnail")) {
+            setUploadType("Thumbnail")
+        } else if(props.imageType.includes("splashscreen")) {
+            setUploadType("Splashscreen")
+        } else {
+            setUploadType("Poster")
+        }
+    }, [])
 
     const handleClickNextFrame = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault()
@@ -66,7 +77,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId)
+            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType)
             props.toggle()
         }
     }, [props.uploadUrl, saveButtonLoading])

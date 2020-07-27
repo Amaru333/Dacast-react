@@ -187,6 +187,7 @@ export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>,
         await interactionsServices.deleteFile(targetId)
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
+                dispatch(showToastNotification("Brand Image has been successfully deleted", 'fixed', "success"))
             })
             .catch((error) => {
                 console.log(error)

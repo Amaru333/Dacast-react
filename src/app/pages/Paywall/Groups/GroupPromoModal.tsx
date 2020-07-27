@@ -24,7 +24,7 @@ const defaultPromo: GroupPromo = {
     assignedGroupIds: []
 }
 
-export const GroupPromoModal = (props: {action: Function; toggle: Function; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
+export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
     const initTimestampValues = (ts: number): {date: any; time: string} => {
         if(ts > 0 ) {
             return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}

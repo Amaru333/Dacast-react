@@ -28,6 +28,7 @@ export interface VodDetails {
     id: string;
     online: boolean;
     title: string;
+    downloadURL?: string;
     description: string;
     folders: string[];
     thumbnail: AssetType;
@@ -35,6 +36,9 @@ export interface VodDetails {
     poster?: AssetType;
     subtitles: SubtitleInfo[];
     uploadurl: string;
+    embedType?: string;
+    embedScaling?: string;
+    embedSize?: number;
 }
 
 export interface VodItem {

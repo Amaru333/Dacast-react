@@ -14,17 +14,17 @@ import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     themesList: ThemesData
-    getFolderContent: Function;
-    deleteContent: Function;
-    restoreContent: Function;
+    getFolderContent: (qs: string) => Promise<void>;
+    deleteContent: (content: ContentType[]) => Promise<void>;
+    restoreContent: (content: ContentType[]) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    getThemesList: Function;
+    getThemesList: () => void;
 }
 
 const Folders = (props: FoldersComponentProps) => {
     React.useEffect(() => {
         if(!props.folderData.requestedContent) {
-                props.getFolderContent(null)       
+            props.getFolderContent(null)       
         }
         
     }, [])
@@ -48,11 +48,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getFolderContent: async (qs: string) => {
             await dispatch(getFolderContentAction(qs))
         },
-        deleteContent: (content: ContentType[]) => {
-            dispatch(deleteContentAction(content))
+        deleteContent: async (content: ContentType[]) => {
+            await dispatch(deleteContentAction(content))
         },
-        restoreContent: (content: ContentType[]) => {
-            dispatch(restoreContentAction(content))
+        restoreContent: async (content: ContentType[]) => {
+            await dispatch(restoreContentAction(content))
         },
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))

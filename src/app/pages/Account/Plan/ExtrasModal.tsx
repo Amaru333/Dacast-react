@@ -52,7 +52,7 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
                     dropdownTitle='Protection Type'
                     list={{'Encoding Protection': false, 'Playback Protection': false}}
                     id='extraStepperStep1ProtectionTypeDropdown'
-                    callback={(value: string) => {setExtraItem({...extraItem, type: value})}}
+                    callback={(value: string) => {setExtraItem({...extraItem, code: value})}}
 
                 />
                 <DropdownSingle
@@ -61,7 +61,7 @@ export const ExtrasStepperFirstStep = (extraItem: Extras, setExtraItem: Function
                     dropdownTitle='Amount'
                     list={{'10 GB': false, '60 GB': false}}
                     id='extraStepperStep1AmountDropdown'
-                    callback={(value: string) => {setExtraItem({...extraItem, amount: value, price: '3'})}}
+                    callback={(value: string) => {setExtraItem({...extraItem, quantity: value, price: '3'})}}
                 />
             </div>
 

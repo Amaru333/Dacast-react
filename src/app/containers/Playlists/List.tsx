@@ -25,9 +25,7 @@ const PlaylistList = (props: PlaylistListComponentProps) => {
    
 
     React.useEffect(() => {
-        if (!props.playlistList) {
-            props.getPlaylistList();
-        }
+        props.getPlaylistList();
     }, [])
 
     if (!props.playlistList) {

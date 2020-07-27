@@ -15,6 +15,27 @@ export default function ScrollToTop(): void {
     return null;
 }
 
+export const dataToTimeVideo = (value: number) => {
+    if(!value) {return ''}
+    if(typeof value === 'string' || value instanceof String) {return value}
+    var hours = Math.floor(value / 3600);
+    var minutes = Math.floor((value - (hours * 3600)) / 60);
+    var seconds = Math.floor(value - (hours * 3600) - (minutes * 60));
+
+    var timeString = hours.toString().padStart(2, '0') + ':' + 
+        minutes.toString().padStart(2, '0') + ':' + 
+        seconds.toString().padStart(2, '0');
+    return timeString;
+}
+
+export const inputTimeVideoToTs = (value: string) => {
+    var splitValue = value.split(':');
+    var hours = parseInt(splitValue[0]) * 3600;
+    var min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60;
+    var sec = !splitValue[2] ? 0 :parseInt(splitValue[2]);
+    var total = hours+min+sec;
+    return total;
+}
 
 export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimalPlace'): string {
     var formatNumeral = ''
@@ -96,6 +117,14 @@ export function getPercentage(num: number, max: number): number {
     return percentage
 }
 
+export const replaceAt = (string: string, index: number, replace: string | number) => {
+    return string.substring(0, index) + replace + string.substring(index + 1);
+}
+
+export const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+  
 
 export function useEasyOutsideAlerter(ref: React.RefObject<HTMLElement>, callback: Function) {
     function handleClickOutside(event: MouseEvent): void {
@@ -280,8 +309,12 @@ export const useKeyboardSubmit = (callback: Function) => {
     }, []);
 }
 
-export const calculateDiscount = (total: number) => {
-    return total - ((total / 100) * 25)
+export const calculateDiscount = (total: number, discount: number) => {
+    if(discount === 0) {
+        return total
+    } else {
+    return total - ((total / 100) * discount)
+    }
 }
 
 export const calculateAnnualPrice = (total: number) => {

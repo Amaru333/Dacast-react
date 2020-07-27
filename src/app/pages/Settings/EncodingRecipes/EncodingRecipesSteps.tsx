@@ -128,6 +128,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             props.setStepValidated(props.stepperData.recipePresets.length > 0)
         }, [])
         if(props.staticStepperData['recipePresets']) {
+            debugger
             let presets: RecipePreset[] = props.staticStepperData['recipePresets']
             return presets.map((value, key) => {
     
@@ -143,7 +144,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
                         }
                     }
                     } />,
-                    <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size}</Text>,
+                    <Text key={'encodingRecipesPage_' + value.size + key} size={14} weight="reg">{value.size.toString() !== '0' ? value.size : 'Auto'}</Text>,
                     <Text key={'encodingRecipesPage_' + value.bitrate + key} size={14} weight="reg">{value.bitrate ? value.bitrate / 1000 : null}</Text>,
                 ]}
             })

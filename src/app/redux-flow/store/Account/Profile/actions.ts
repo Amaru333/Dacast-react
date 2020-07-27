@@ -51,7 +51,6 @@ export const saveProfilePasswordAction = (currentPassword: string, newPassword: 
                 dispatch(showToastNotification("Password saved!", 'flexible', "success"));
                 handleSuccess();
             }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 handleError()
             })
     };

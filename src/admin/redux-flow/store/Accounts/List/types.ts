@@ -1,5 +1,6 @@
 export enum ActionTypes {
-    GET_ACCOUNTS = "@@admin_accounts/GET_ACCOUNTS"
+    GET_ACCOUNTS = "@@admin_accounts/GET_ACCOUNTS",
+    IMPERSONATE = "@@admin_accounts/IMPERSONATE"
 }
 export type Flag = 'admin' | 'adult' | 'chipped' | 'platinium' | 'partner' | 'banned' | 'paused' | 'suspended' | 'cancelled' | 'test'
 

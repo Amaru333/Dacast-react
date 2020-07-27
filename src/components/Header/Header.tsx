@@ -178,7 +178,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             </IconContainerStyle>
             <VerticalDivider />
-            <Button onClick={() => history.push('/account/plans')} className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
+            <Button onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
         </HeaderStyle>
     )
 }

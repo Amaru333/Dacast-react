@@ -10,7 +10,8 @@ export const TableContainer = styled.table<{contentLoading: boolean}>`
     border-color: ${props => props.theme.colors["gray-7"]};
     border: 1px solid ${props => props.theme.colors["gray-8"]};
     ${props => props.contentLoading && css`
-        cursor: not-allowed;
+        cursor: not-allowed !important;
+        pointer-events: none;
         opacity: 0.5;
     `}
 `;
@@ -20,7 +21,7 @@ export const TableHeaderContainer = styled.thead<{}>`
 
 export const WrapperResponsiveContainer = styled.div<{hasContainer: boolean; tableHeight?: number}>`
     ${props => props.tableHeight && css `
-        height: ${props => props.tableHeight+"px"};
+        height: ${props.tableHeight+"px"};
         overflow-x: auto;
     `}
     margin: ${props => props.hasContainer ? "0"  : "16px 0" };
@@ -34,19 +35,24 @@ export const TableHeaderRow = styled.tr<{backgroundColor: ColorsApp}>`
     padding-left: 16px;
 `;
 
-export const TableHeaderCell = styled.td<{sortApplied: boolean}>`
+export const TableHeaderCell = styled.td<{sortApplied: boolean; contentLoading: boolean}>`
     padding-left: 16px;
     max-width: 150px;
     border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
     ${props => props.sortApplied && css `
         border-bottom: 2px solid ${props.theme.colors["dark-violet"]};
     `}
+    ${props => props.contentLoading && css`
+        cursor: not-allowed !important;
+        pointer-events: none;
+        opacity: 0.5;
+    `}
 `;
 
 export const TableBodyContainer = styled.tbody<{}>`
 `;
 
-export const TableBodyRow = styled.tr<{}>`
+export const TableBodyRow = styled.tr<{contentLoading: boolean}>`
     width: auto;
     height: 48px;
     background-color: ${props => props.theme.colors["white"]};
@@ -67,13 +73,23 @@ export const TableBodyRow = styled.tr<{}>`
                 visibility: visible;
             }
         }
+        ${props => props.contentLoading && css`
+            cursor: not-allowed !important;
+            pointer-events: none;
+            opacity: 0.5;
+        `}
     }
 `;
 
-export const TableBodyCell = styled.td<{}>`
+export const TableBodyCell = styled.td<{contentLoading: boolean}>`
     padding-left: 16px;
     min-width: 100px;
     box-sizing: border-box;
+    ${props => props.contentLoading && css`
+        cursor: not-allowed !important;
+        pointer-events: none;
+        opacity: 0.5;
+    `}
 `;
 
 export const TableFooterContainer = styled.tfoot<{}>`

@@ -6,7 +6,7 @@ export interface Invoice {
     id: string;
     date: number;
     total: number;
-    status: 'Pending' | 'Failed' | 'Paid';
+    status: 'pending' | 'failed' | 'paid';
     downloadLink: string;
 }
 

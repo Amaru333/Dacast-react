@@ -3,7 +3,6 @@ import { Text } from "../../../../components/Typography/Text"
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
-import { useStepperFinalStepAction } from '../../../utils/useStepperFinalStepAction';
 const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 
 export const CartStep = (props: {stepperData: PendingOrder}) => {
