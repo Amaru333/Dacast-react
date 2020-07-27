@@ -59,11 +59,14 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
     const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.contentEngagementSettings.engagementSettings.brandImageURL);
-    let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [brandImageSectionEditable, setBrandImageSectionEditable] = React.useState<boolean>(false)
+
+    let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    let brandImageChangeButtonRef = React.useRef<HTMLInputElement>(null)
+
 
     React.useEffect(() => {
         console.log('content settings', props.contentEngagementSettings)
@@ -341,8 +344,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                                             <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                                         </SpinnerContainer>}
                                         <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                        <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageChangeButtonRef} style={{display:'none'}} id='changeButton' />
                                         <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                        <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
+                                        <Button onClick={() => {brandImageChangeButtonRef.current.click()} }  sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
                                     </>
                                     :
                             <>

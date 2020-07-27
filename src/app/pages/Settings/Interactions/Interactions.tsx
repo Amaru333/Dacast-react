@@ -72,6 +72,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [errorMessage, setErrorMessage] = React.useState<string>('')
 
     let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    let brandImageChangeButtonRef = React.useRef<HTMLInputElement>(null)
+
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -291,8 +293,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                                         <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                                     </SpinnerContainer>}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageChangeButtonRef} style={{display:'none'}} id='changeButton' />
                                     <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
+                                    <Button onClick={() => {brandImageChangeButtonRef.current.click()} }  sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
                                 </>
                                 :
                         <>
