@@ -21,20 +21,22 @@ import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
 import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyle';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
     globalEngagementSettings: InteractionsInfos
-    getContentEngagementSettings: Function;
-    saveContentEngagementSettings: Function;
-    saveContentAd: Function;
-    createContentAd: Function;
-    deleteContentAd: Function;
+    getContentEngagementSettings: (contentId: string) => Promise<void>;
+    saveContentEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
+    saveContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    createContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    deleteContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
     contentType?: string;
     contentId: string;
-    getUploadUrl: Function;
-    uploadContentImage: Function;
-    deleteContentImage: Function;
+    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
+    deleteContentImage: (targetId: string) => Promise<void>;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -119,7 +121,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
-            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl, () => setUploadButtonLoading(false) );    
+            props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
+                setUploadButtonLoading(false)
+            })    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
   
@@ -333,10 +337,12 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
                                 {uploadedFileUrl ?
                                     <>
-                                        {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                        {uploadButtonLoading && <SpinnerContainer style={{zIndex: 1000}}>
+                                            <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                        </SpinnerContainer>}
                                         <ImageStyle src={uploadedFileUrl}></ImageStyle>
                                         <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                        <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                        <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
                                     </>
                                     :
                             <>
@@ -424,16 +430,16 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             </Card>
 
             {
-                settingsEdited ?
+                settingsEdited &&
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false); debugger; }}
+                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }).then(() => {setSettingsEdited(false); setSaveAllButtonLoading(false)})}}
                         >
                             Save
                         </Button>
                         <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
-                    </div> : null
+                    </div>
             }
 
             <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>

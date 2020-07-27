@@ -14,16 +14,16 @@ import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Setti
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: ContentEngagementSettings;
     liveEngagementSettingsState: ContentEngagementSettingsState;
-    getLiveEngagementSettings: Function;
-    saveLiveEngagementSettings: Function;
-    saveLiveAd: Function;
-    createLiveAd: Function;
-    deleteLiveAd: Function;
-    getUploadUrl: Function;
-    uploadLiveImage: Function;
-    deleteLiveImage: Function;
+    getLiveEngagementSettings: (liveId: string) => Promise<void>;
+    saveLiveEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
+    saveLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    createLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    deleteLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    uploadLiveImage: (data: File, uploadUrl: string) => Promise<void>;
+    deleteLiveImage: (targetId: string) => Promise<void>;
     globalEngagementSettings: InteractionsInfos;
-    getGlobalEngagementSettings: Function;
+    getGlobalEngagementSettings: () => Promise<void>;
 }
 
 export const LiveEngagement = (props: LiveEngagementComponentProps) => {
@@ -75,32 +75,32 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveEngagementSettings: (liveId: string) => {
-            dispatch(getLiveEngagementSettingsAction(liveId));
+        getLiveEngagementSettings: async (liveId: string) => {
+            await dispatch(getLiveEngagementSettingsAction(liveId));
         },
-        getGlobalEngagementSettings: () => {
-            dispatch(getSettingsInteractionsInfosAction());
+        getGlobalEngagementSettings: async  () => {
+            await dispatch(getSettingsInteractionsInfosAction());
         },
-        saveLiveEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
-            dispatch(saveLiveEngagementSettingsAction(data)).then(callback)
+        saveLiveEngagementSettings: async (data: ContentEngagementSettings) => {
+            await dispatch(saveLiveEngagementSettingsAction(data))
         },
-        saveLiveAd: (data: Ad[], adsId: string, liveId: string, callback?: Function) => {
-            dispatch(saveLiveAdAction(data, adsId, liveId)).then(callback)
+        saveLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
+            await dispatch(saveLiveAdAction(data, adsId, liveId))
         },
-        createLiveAd: (data: Ad[], adsId: string, liveId: string, callback?: Function) => {
-            dispatch(createLiveAdAction(data, adsId, liveId)).then(callback)
+        createLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
+            await dispatch(createLiveAdAction(data, adsId, liveId))
         },
-        deleteLiveAd: (data: Ad[], adsId: string, liveId: string) => {
-            dispatch(deleteLiveAdAction(data, adsId, liveId))
+        deleteLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
+            await dispatch(deleteLiveAdAction(data, adsId, liveId))
         },
-        getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)
+        getUploadUrl: async (uploadType: string, liveId: string) => {
+            await dispatch(getUploadUrlAction(uploadType, liveId))
         },
-        uploadLiveImage: (data: File, uploadUrl: string) => {
-            dispatch(uploadLiveImageAction(data, uploadUrl))
+        uploadLiveImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadLiveImageAction(data, uploadUrl))
         },
-        deleteLiveImage: (targetId: string) => {
-            dispatch(deleteLiveImageAction(targetId))
+        deleteLiveImage: async (targetId: string) => {
+            await dispatch(deleteLiveImageAction(targetId))
         }
     };
 };

@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { dataToTimeVideo, capitalizeFirstLetter, inputTimeVideoToTs } from '../../../../utils/utils';
 
 
-export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedAd: number}) => {
+export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (b: boolean) => void; selectedAd: number}) => {
 
     const emptyAd: Ad = { 
         id: "-1",
@@ -17,25 +17,30 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
     }
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
-
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     React.useEffect(() => {
-
-        
         setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
     }, [props.selectedAd])
 
     const defineAdAction = () => {
+        setButtonLoading(true)
         let tempArray: Ad[] = props.interactionsInfos.ads
         var newAdData: Ad = {...adData};
         newAdData.timestamp = adData["ad-type"] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
             tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData['ad-type']})
-            props.createAd(tempArray, props.interactionsInfos.adsId)
+            props.createAd(tempArray, props.interactionsInfos.adsId).then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            })
         } else {
             tempArray = tempArray.map(ad => {
                 return ad.id === adData.id ? newAdData : ad
             })
-            props.saveAd(tempArray, props.interactionsInfos.adsId)
+            props.saveAd(tempArray, props.interactionsInfos.adsId).then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            })
         }
     }
 
@@ -54,7 +59,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: F
                 }             
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' disabled={adData["ad-type"] === "" || adData.url === ""} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button isLoading={buttonLoading} className='mr2' disabled={adData["ad-type"] === "" || adData.url === "" || (adData["ad-type"] === 'mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>Save</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

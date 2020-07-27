@@ -139,9 +139,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         { uploadedFileUrl ? 
                         <>
                             <div className="flex flex-column">
-                                {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
+                                {props.CompanyPageDetails.isUploading && <SpinnerContainer style={{zIndex: 1000}}>
                                     <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
-                                </SpinnerContainer>: null}
+                                </SpinnerContainer>}
                                 <div style={{width:'100%'}} className=''>
                                     <input type='file' ref={changeCompanyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>

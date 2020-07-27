@@ -15,17 +15,17 @@ import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Setti
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettingsState: ContentEngagementSettingsState;
-    getPlaylistEngagementSettings: Function;
-    savePlaylistEngagementSettings: Function;
-    savePlaylistAd: Function;
-    createPlaylistAd: Function;
-    deletePlaylistAd: Function;
-    showToast: Function;
-    getUploadUrl: Function;
-    uploadPlaylistImage: Function;
-    deletePlaylistImage: Function;
+    getPlaylistEngagementSettings: (playlistId: string) => Promise<void>;
+    savePlaylistEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
+    savePlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    createPlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    deletePlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    uploadPlaylistImage: (data: File, uploadUrl: string) => Promise<void>;
+    deletePlaylistImage: (targetId: string) => Promise<void>;
     globalEngagementSettings: InteractionsInfos;
-    getGlobalEngagementSettings: Function;
+    getGlobalEngagementSettings: () => Promise<void>;
 }
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
@@ -77,35 +77,35 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getGlobalEngagementSettings: () => {
-            dispatch(getSettingsInteractionsInfosAction());
+        getGlobalEngagementSettings: async () => {
+            await dispatch(getSettingsInteractionsInfosAction());
         },
-        getPlaylistEngagementSettings: (playlistId: string) => {
-            dispatch(getPlaylistEngagementSettingsAction(playlistId));
+        getPlaylistEngagementSettings: async (playlistId: string) => {
+            await dispatch(getPlaylistEngagementSettingsAction(playlistId));
         },
-        savePlaylistEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
-            dispatch(savePlaylistEngagementSettingsAction(data)).then(callback)
+        savePlaylistEngagementSettings: async (data: ContentEngagementSettings) => {
+            await dispatch(savePlaylistEngagementSettingsAction(data))
         },
-        savePlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
-            dispatch(savePlaylistAdAction(data, adsId, playlistId)).then(callback)
+        savePlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(savePlaylistAdAction(data, adsId, playlistId))
         },
-        createPlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
-            dispatch(createPlaylistAdAction(data, adsId, playlistId)).then(callback)
+        createPlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(createPlaylistAdAction(data, adsId, playlistId))
         },
-        deletePlaylistAd: (data: Ad[], adsId: string, playlistId: string) => {
-            dispatch(deletePlaylistAdAction(data, adsId, playlistId))
+        deletePlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(deletePlaylistAdAction(data, adsId, playlistId))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
+        getUploadUrl: async (uploadType: string, playlistId: string) => {
+            await dispatch(getUploadUrlAction(uploadType, playlistId))
         },
-        uploadPlaylistImage: (data: File, uploadUrl: string) => {
-            dispatch(uploadPlaylistImageAction(data, uploadUrl))
+        uploadPlaylistImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadPlaylistImageAction(data, uploadUrl))
         },
-        deletePlaylistImage: (targetId: string) => {
-            dispatch(deletePlaylistImageAction(targetId))
+        deletePlaylistImage: async (targetId: string) => {
+            await dispatch(deletePlaylistImageAction(targetId))
         }
     };
 }

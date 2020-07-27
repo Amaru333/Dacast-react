@@ -9,17 +9,17 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface SettingsInteractionComponentProps {
     interactionsInfos: InteractionsInfos;
-    getInteractionsInfos: Function;
-    saveInteractionsInfos: Function;
-    saveAd: Function;
-    createAd: Function;
-    deleteAd: Function;
+    getInteractionsInfos: () => Promise<void>;
+    saveInteractionsInfos: (data: InteractionsInfos) => Promise<void>;
+    saveAd: (data: Ad[], adsId: string) => Promise<void>;
+    createAd: (data: Ad[], adsId: string) => Promise<void>;
+    deleteAd: (data: Ad[], adsId: string) => Promise<void>;
     saveMailCatcher: Function;
     createMailCatcher: Function;
     deleteMailCatcher: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
+    getUploadUrl: (uploadType: string) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string) => Promise<void>;
+    deleteFile: (targetId: string) => Promise<void>;
 }
 
 
@@ -49,26 +49,26 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getInteractionsInfos: () => {
             dispatch(getSettingsInteractionsInfosAction());
         },
-        saveInteractionsInfos: (data: InteractionsInfos) => {
-            dispatch(saveSettingsInteractionsInfosAction(data))
+        saveInteractionsInfos: async (data: InteractionsInfos) => {
+            await dispatch(saveSettingsInteractionsInfosAction(data))
         },
-        saveAd: (data: Ad[], adsId: string) => {
-            dispatch(saveAdAction(data, adsId))
+        saveAd: async (data: Ad[], adsId: string) => {
+           await dispatch(saveAdAction(data, adsId))
         },
-        createAd: (data: Ad[], adsId: string) => {
-            dispatch(createAdAction(data, adsId))
+        createAd: async (data: Ad[], adsId: string) => {
+            await dispatch(createAdAction(data, adsId))
         },
-        deleteAd: (data: Ad[], adsId: string) => {
-            dispatch(deleteAdAction(data, adsId))
+        deleteAd: async (data: Ad[], adsId: string) => {
+            await dispatch(deleteAdAction(data, adsId))
         },
-        getUploadUrl: (uploadType: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType)).then(callback)
+        getUploadUrl: async (uploadType: string) => {
+            await dispatch(getUploadUrlAction(uploadType))
         },
-        uploadFile: (data: File, uploadUrl: string) => {
-            dispatch(uploadFileAction(data, uploadUrl))
+        uploadFile: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadFileAction(data, uploadUrl))
         },
-        deleteFile: (targetId: string) => {
-            dispatch(deleteFileAction(targetId))
+        deleteFile: async (targetId: string) => {
+            await dispatch(deleteFileAction(targetId))
         },
         saveMailCatcher: (data: MailCatcher) => {
             dispatch(saveMailCatcherAction(data))

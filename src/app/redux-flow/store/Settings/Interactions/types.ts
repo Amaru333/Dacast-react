@@ -42,6 +42,7 @@ export interface InteractionsInfos {
     brandImagePadding: number;
     brandImageText: string;
     brandImageLink?: string;
+    brandImageID?: string;
     brandImageSize: number;
     uploadurl?: string;
 }

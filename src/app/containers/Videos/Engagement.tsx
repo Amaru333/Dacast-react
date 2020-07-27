@@ -13,17 +13,17 @@ import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Setti
 
 export interface VodEngagementComponentProps {
     globalEngagementSettings: InteractionsInfos;
-    getGlobalEngagementSettings: Function;
+    getGlobalEngagementSettings: () => Promise<void>;
     vodEngagementSettings: ContentEngagementSettings;
     vodEngagementSettingsState: ContentEngagementSettingsState;
-    getVodEngagementSettings: Function;
-    saveVodEngagementSettings: Function;
-    saveVodAd: Function;
-    createVodAd: Function;
-    deleteVodAd: Function;
-    getUploadUrl: Function;
-    uploadVodImage: Function;
-    deleteVodImage: Function;
+    getVodEngagementSettings: (vodId: string) => Promise<void>;
+    saveVodEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
+    saveVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    createVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    deleteVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    uploadVodImage: (data: File, uploadUrl: string) => Promise<void>;
+    deleteVodImage: (targetId: string) => Promise<void>;
 }
 
 export const VodEngagement = (props: VodEngagementComponentProps) => {
@@ -74,32 +74,32 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodEngagementSettings: (vodId: string) => {
-            dispatch(getVodEngagementSettingsAction(vodId));
+        getVodEngagementSettings: async (vodId: string) => {
+            await dispatch(getVodEngagementSettingsAction(vodId));
         },
-        getGlobalEngagementSettings: () => {
-            dispatch(getSettingsInteractionsInfosAction());
+        getGlobalEngagementSettings: async () => {
+            await dispatch(getSettingsInteractionsInfosAction());
         },
-        saveVodEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
-            dispatch(saveVodEngagementSettingsAction(data)).then(callback)
+        saveVodEngagementSettings: async (data: ContentEngagementSettings) => {
+            await dispatch(saveVodEngagementSettingsAction(data))
         },
-        saveVodAd: (data: Ad[], adsId: string, vodId: string, callback?: Function) => {
-            dispatch(saveVodAdAction(data, adsId, vodId)).then(callback)
+        saveVodAd: async (data: Ad[], adsId: string, vodId: string) => {
+            await dispatch(saveVodAdAction(data, adsId, vodId))
         },
-        createVodAd: (data: Ad[], adsId: string, vodId: string, callback?: Function) => {
-            dispatch(createVodAdAction(data, adsId, vodId)).then(callback)
+        createVodAd: async (data: Ad[], adsId: string, vodId: string) => {
+            await dispatch(createVodAdAction(data, adsId, vodId))
         },
-        deleteVodAd: (data: Ad[], adsId: string, vodId: string) => {
-            dispatch(deleteVodAdAction(data, adsId, vodId))
+        deleteVodAd: async (data: Ad[], adsId: string, vodId: string) => {
+            await dispatch(deleteVodAdAction(data, adsId, vodId))
         },
-        getUploadUrl: (uploadType: string, vodId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, vodId)).then(callback)
+        getUploadUrl: async (uploadType: string, vodId: string) => {
+            await dispatch(getUploadUrlAction(uploadType, vodId))
         },
-        uploadVodImage: (data: File, uploadUrl: string) => {
-            dispatch(uploadVodImageAction(data, uploadUrl))
+        uploadVodImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadVodImageAction(data, uploadUrl))
         },
-        deleteVodImage: (targetId: string) => {
-            dispatch(deleteVodImageAction(targetId))
+        deleteVodImage: async (targetId: string) => {
+            await dispatch(deleteVodImageAction(targetId))
         }
     };
 }

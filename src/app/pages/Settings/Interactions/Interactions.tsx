@@ -25,6 +25,8 @@ import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -86,7 +88,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark');
+                    props.getUploadUrl('player-watermark')
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -109,13 +111,22 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(interactionInfos.brandImageID);
+        props.deleteFile(interactionInfos.brandImageID).then(() => {
+            setTimeout(() => {
+                props.getInteractionsInfos()
+            }, 3000)
+        })
     }
 
 
     React.useEffect(() => {
         if(props.interactionsInfos.uploadurl) {
-            props.uploadFile(logoFile, props.interactionsInfos.uploadurl, () => setUploadButtonLoading(false) );
+            props.uploadFile(logoFile, props.interactionsInfos.uploadurl).then(() => {
+                setUploadButtonLoading(false)
+                setTimeout(() => {
+                    props.getInteractionsInfos()
+                }, 3000)
+            })
         }
     }, [props.interactionsInfos.uploadurl])
 
@@ -273,12 +284,15 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <div className="lg-col lg-col-12 mb1 flex">
                     <div className="lg-col lg-col-6 mr2">
                         <DragAndDrop className="flex flex-column" hasError={false} handleDrop={handleDrop}>
+
                             {uploadedFileUrl ?
                                 <>
-                                    {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                    {uploadButtonLoading && <SpinnerContainer style={{zIndex: 1000}}>
+                                        <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                    </SpinnerContainer>}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
                                     <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                    <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                    <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
                                 </>
                                 :
                         <>
