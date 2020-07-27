@@ -48,7 +48,6 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
         const themingTableBody = () => {
             return props.themingList.themes.map((theme, key) => {
-                console.log(theme.createdDate);
                 return ( theme.themeName === "Standard" ?
                     {data: [
                         <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,

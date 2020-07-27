@@ -1,12 +1,28 @@
 import { Reducer } from 'redux';
 import { Action } from './actions';
-import { ActionTypes, PaywallThemingData, paywallThemingInitialState } from './types';
+import { ActionTypes, PaywallThemingData, paywallThemingInitialState, PaywallTheme } from './types';
 
 
 const reducer: Reducer<PaywallThemingData> = (state = paywallThemingInitialState, action: Action) => {
     let themes = null;
     switch (action.type) {
         case ActionTypes.GET_PAYWALL_THEMES :
+            let standardTheme: PaywallTheme = {
+                id: '-1',
+                name: 'Standard Theme',
+                isDefault: !action.payload.data.themes.some(theme => theme.isDefault),
+                splashScreen: {
+                    buttonColor: '#2899F6',
+                    buttonTextColor: '#FFFFFF'
+                },
+                loginScreen: {
+                    buttonColor: '#2899F6',
+                    primaryColor: '#2899F6',
+                    headerColor: '#2899F6',
+                    hasCompanyLogo: true
+                }
+            }
+            action.payload.data.themes.unshift(standardTheme)
             return {
                 themes: action.payload.data.themes
             }
