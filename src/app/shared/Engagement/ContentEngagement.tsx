@@ -447,7 +447,10 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             }
 
             <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
-                <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
+                {
+                    newAdModalOpened &&
+                        <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
+                }
             </Modal>
             {
                 playerModalOpened && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId} toggle={setPlayerModalOpened} isOpened={playerModalOpened} />

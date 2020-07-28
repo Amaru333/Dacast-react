@@ -378,9 +378,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Modal>
             <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
-                    newAdModalOpened ?
+                    newAdModalOpened &&
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
-                        : null
                 }
             </Modal>
             {
