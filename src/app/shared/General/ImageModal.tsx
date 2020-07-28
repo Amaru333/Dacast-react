@@ -142,7 +142,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                             </Button>
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                             { !logoFile ? null : 
-                                <ThumbnailFile className="col col-6 mt1">
+                                <ThumbnailFile className="col mt1">
                                     <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
@@ -180,7 +180,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                         </Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { !logoFile ? null : 
-                            <ThumbnailFile className="col col-6 mt1">
+                            <ThumbnailFile className="col mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>

@@ -79,7 +79,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                         {props.stepperData.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
                             <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                         </SpinnerContainer>: 
-                            <WatermarkFile className="col lg-col-6 md-col-6 col-12 mt1">
+                            <WatermarkFile className="col mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</Text>
                                 <WatermarkDeleteButton>
                                     <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
