@@ -183,7 +183,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     
     return (
         <div>
-            <GeneralDashboard profile={props.profile} plan={props.plan} overage={props.plan.displayName !== "Free" ? props.overage : false} />
+            <GeneralDashboard openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.plan.displayName !== "Free" ? props.overage : false} />
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
@@ -248,28 +248,32 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 finalFunction={() => {submitExtra()}}
                 updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
             /> */}
-            <CustomStepper 
-                opened={purchaseDataOpen}
-                stepperHeader="Purchase Data"
-                stepTitles={["Cart", "Payment"]}
-                stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                lastStepButton="Purchase"
-                finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
-                stepperData={purchaseDataStepperData}
-                updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
-                functionCancel={setPurchaseDataOpen}
-                usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
-                isLoading={isLoading}
-            />
+            {
+                purchaseDataOpen && 
+                <CustomStepper 
+                    opened={purchaseDataOpen}
+                    stepperHeader="Purchase Data"
+                    stepTitles={["Cart", "Payment"]}
+                    stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
+                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    lastStepButton="Purchase"
+                    finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
+                    stepperData={purchaseDataStepperData}
+                    updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
+                    functionCancel={setPurchaseDataOpen}
+                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                    isLoading={isLoading}
+                />
+            }
+            
             </Elements>
             </RecurlyProvider>
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
                     <div className="mt1">
-                        <Text size={14} weight="reg">This means you won’t have any protection if you run out of data or stuff</Text>
+                        <Text size={14} weight="reg">If you disable Playback Protection then your content will no longer be viewable if you run out of data.</Text>
                     </div>
                     
                 </ModalContent>

@@ -22,6 +22,7 @@ interface PlanType {
     nextBill: string;
     isTrial: boolean;
     daysLeft?: number;
+    openOverage: Function;
 }
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; profile: DashboardGeneral}) => {
@@ -92,7 +93,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                     </div>
-                    <ProgressBarDashboard overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                    <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                 </WidgetElement>
 
                 {
@@ -105,7 +106,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <div className="flex flex-wrap items-baseline mb1">
                             <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                         </div>
-                        <ProgressBarDashboard overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                        <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                     </WidgetElement>
                 }
 
@@ -151,7 +152,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 }
 
-export const ProgressBarDashboard = (props: { percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number} }) => {
+export const ProgressBarDashboard = (props: { openOverage: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number} }) => {
     let history = useHistory()
 
     const handleProgressBar = (percentage: number) => {
@@ -164,13 +165,13 @@ export const ProgressBarDashboard = (props: { percentage: number; widget: 'bandw
             if(props.overage && props.overage.enabled && props.overage.amount > 0) {
                 return (
                     <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>
-                        <IconStyle className='pointer' onClick={() => history.push('/account/plan')} >settings</IconStyle>
+                        <IconStyle className='pointer' onClick={() => props.openOverage(true)} >settings</IconStyle>
                     </div>
                 )
             } else {
                 return (
                     <div color={props.percentage <= 25 ? 'red' : 'gray-1'} className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{props.percentage <= 25 ? "Enable Playback Protection" : "Playback Protection"}</Text>
-                        <IconStyle className='pointer' onClick={() => history.push('/account/plan')}>settings</IconStyle>
+                        <IconStyle className='pointer' onClick={() => props.openOverage(true)}>settings</IconStyle>
                     </div>
                 )
             }

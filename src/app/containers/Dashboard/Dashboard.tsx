@@ -11,7 +11,9 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getBillingPageInfosAction, BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { getBillingPageInfosAction, BillingPageInfos, PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction } from '../../redux-flow/store/Account/Plan';
+import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
+import { Modal } from '../../../components/Modal/Modal';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -24,6 +26,8 @@ export interface DashboardProps {
     getDashboardVodTopVideos: Function;
     getDashboardVodImpressions: Function;
     getBillingPageInfos: Function;
+    editBillingPagePaymenPlaybackProtection: Function;
+    addBillingPagePaymenPlaybackProtection: Function;
 }
 
 const Dashboard = (props: DashboardProps) => {
@@ -36,6 +40,8 @@ const Dashboard = (props: DashboardProps) => {
             props.getBillingPageInfos();
         }
     }, [])
+
+    const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         if (props.infos && props.billingInfos) {
@@ -66,9 +72,15 @@ const Dashboard = (props: DashboardProps) => {
         if (props.billingInfos.currentPlan.displayName !== "Free") {
             return (
                 <>
-                    <GeneralDashboard overage={props.billingInfos.playbackProtection} plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
+                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.billingInfos.playbackProtection} plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
+                    {
+                        protectionModalOpened &&
+                        <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.billingInfos.playbackProtection} billingInfos={props.billingInfos}/>
+                        </Modal>
+                    } 
                     {/* <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} /> */}
                 </>
             )
@@ -130,6 +142,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getDashboardLiveTopChannels: (jobID: string) => {
             dispatch(getDashboardLiveTopChannels(jobID))
+        },
+        editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
+            dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
+        },
+        addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
+            dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
         }
     };
 }

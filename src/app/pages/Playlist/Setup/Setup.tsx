@@ -166,17 +166,21 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleRemoveFromSelected = () => {
-        var newSelectedItems = selectedItems.filter(el => {
-            return !checkedSelectedItems.find(elChecked => {
-                if( (el as FolderAsset).type) {
-                    return el.objectID === elChecked.objectID;
-                } else {
-                    return el.id === el.id;
-                }
-            })
-        });
-        setSelectedItems(newSelectedItems);
-        setCheckedSelectedItems([]);
+        if(selectedTab === 'folder') {
+            setCheckedSelectedItems([]);
+        } else {
+            var newSelectedItems = selectedItems.filter(el => {
+                return !checkedSelectedItems.find(elChecked => {
+                    if( (el as FolderAsset).type) {
+                        return el.objectID === elChecked.objectID;
+                    } else {
+                        return el.id === el.id;
+                    }
+                })
+            });
+            setSelectedItems(newSelectedItems);
+            setCheckedSelectedItems([]);
+        }   
     }
 
     /** LOADING FOLDERS USING FOLDER SERVICE */
@@ -283,10 +287,14 @@ export const SetupPage = (props: SetupComponentProps) => {
         return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
-                        defaultChecked={checkedSelectedItems.includes(element)}
-                        onChange={() => handleCheckboxSelected(element)}
-                    />
+                    {
+                        selectedTab !== 'folder' && 
+                        <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
+                            defaultChecked={checkedSelectedItems.includes(element)}
+                            onChange={() => handleCheckboxSelected(element)}
+                        />
+                    }
+                    
                     {handleRowIconType(element)}
                     <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                     {
