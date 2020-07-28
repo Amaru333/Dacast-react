@@ -9,14 +9,14 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;
-    getPresetsInfos: Function;
-    getPromoPresets: Function;
-    createPricePreset: Function;
-    savePricePreset: Function;
-    deletePricePreset: Function;
-    createPromoPreset: Function;
-    savePromoPreset: Function;
-    deletePromoPreset: Function;
+    getPresetsInfos: (qs: string) => Promise<void>;
+    getPromoPresets: (qs: string) => Promise<void>;
+    createPricePreset: (p: Preset) => Promise<void>;
+    savePricePreset: (p: Preset) => Promise<void>;
+    deletePricePreset: (p: Preset) => Promise<void>;
+    createPromoPreset: (p: Promo) => Promise<void>;
+    savePromoPreset: (p: Promo) => Promise<void>;
+    deletePromoPreset: (p: Promo) => Promise<void>;
 }
 
 const Presets = (props: PresetsComponentProps) => {
@@ -45,29 +45,29 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPresetsInfos: (qs: string) => {
-            dispatch(getPricePresetsInfosAction(qs));
+        getPresetsInfos: async (qs: string) => {
+            await dispatch(getPricePresetsInfosAction(qs));
         },
-        getPromoPresets: (qs: string) => {
-            dispatch(getPromoPresetsInfosAction(qs));
+        getPromoPresets: async (qs: string) => {
+            await dispatch(getPromoPresetsInfosAction(qs));
         },
-        createPricePreset: (data: Preset) => {
-            dispatch(createPricePresetAction(data));
+        createPricePreset: async (data: Preset) => {
+            await dispatch(createPricePresetAction(data));
         },
-        savePricePreset: (data: Preset) => {
-            dispatch(savePricePresetAction(data));
+        savePricePreset: async (data: Preset) => {
+            await dispatch(savePricePresetAction(data));
         },
-        deletePricePreset: (data: Preset) => {
-            dispatch(deletePricePresetAction(data));
+        deletePricePreset: async (data: Preset) => {
+            await dispatch(deletePricePresetAction(data));
         },
-        createPromoPreset: (data: Promo) => {
-            dispatch(createPromoPresetAction(data));
+        createPromoPreset: async (data: Promo) => {
+            await dispatch(createPromoPresetAction(data));
         },
-        savePromoPreset: (data: Promo) => {
-            dispatch(savePromoPresetAction(data));
+        savePromoPreset: async (data: Promo) => {
+            await dispatch(savePromoPresetAction(data));
         },
-        deletePromoPreset: (data: Promo) => {
-            dispatch(deletePromoPresetAction(data));
+        deletePromoPreset: async (data: Promo) => {
+            await dispatch(deletePromoPresetAction(data));
         },
     }
 }

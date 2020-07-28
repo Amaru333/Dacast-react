@@ -41,6 +41,9 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
 
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).date, time: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).time})
     const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).date, time: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).time})
+    const [startDateTime, setStartDateTime] = React.useState<string>(newPromoPreset.startDate > 0 ? 'Set Date and Time' : 'Always')
+    const [endDateTime, setEndDateTime] = React.useState<string>(newPromoPreset.endDate > 0 ? 'Set Date and Time' : 'Forever')
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).utc().valueOf()
@@ -55,8 +58,8 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
             props.savePresetGlobally(newPromoPreset) 
         } 
         let {userId} = addTokenToHeader()
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf()
-        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf()
+        let startDate = startDateTime === 'Set Date and Time' ? moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
+        let endDate = endDateTime === 'Set Date and Time' ? moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
         props.action(
             {...newPromoPreset, 
                 startDate: startDate, 
@@ -99,40 +102,48 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
                 <Input className='col sm-col-3 col-6 px1' value={newPromoPreset.limit ? newPromoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, limit: parseInt(event.currentTarget.value) })} />
                 <DropdownSingle id='newPromoPresetRateTypeDropdown' dropdownDefaultSelect={newPromoPreset.rateType} className='col sm-col-6 col-12 sm-pl1' dropdownTitle='Rate Type' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, rateType: value })} list={{ 'Pay Per View': false, 'Subscription': false }} />
             </div>
-            <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper 
-                    openDirection='up' 
-                    className='col sm-col-6 col-8 pr1' 
-                    datepickerTitle='Promo Code Start Date' 
-                    id='promoCodeStartDate'
-                    callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
-                    date={moment(startDateTimeValue.date)} 
-                />
-                <Input 
-                    type='time' 
-                    label='Start Time' 
-                    value={startDateTimeValue.time} 
-                    className='col sm-col-3 col-4 pl1' 
-                    onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                />
+            <div className='col col-12 mb2 flex items-end'>
+            <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
+                {startDateTime === "Set Date and Time" &&
+                    <>
+                        <DateSinglePickerWrapper
+                            date={moment(startDateTimeValue.date)}
+                            callback={(date: string) => { setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                            className='col col-6 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            defaultValue={startDateTimeValue.time}
+                            onChange={(event) =>{ setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                            className='col col-6 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
+                        />
+                    </>
+                }
             </div>
-            <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper 
-                    openDirection='up' 
-                    className='col sm-col-6 col-8 pr1' 
-                    datepickerTitle='Promo Code End Date'
-                    date={moment(endDateTimeValue.date)}    
-                    callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
-                    id='promoCodeEndDate'
-
-                />
-                <Input 
-                    type='time' 
-                    label='End Time' 
-                    value={endDateTimeValue.time} 
-                    className='col sm-col-3 col-4 pl1' 
-                    onChange={(event) =>{setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})} }
-                />
+            <div className='col col-12 mb2 flex items-end'>
+                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => {setEndDateTime(value)}} />
+                {
+                    endDateTime === "Set Date and Time" &&
+                    <>
+                        <DateSinglePickerWrapper
+                            date={moment(endDateTimeValue.date)}
+                            callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
+                            className='col col-4 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            defaultValue={endDateTimeValue.time}
+                            onChange={(event) => {setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
+                            className='col col-3 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
+                        />
+                    </>
+                }
             </div>
             <div className=' col col-12 mb25'>
                 <DropdownSingle 
