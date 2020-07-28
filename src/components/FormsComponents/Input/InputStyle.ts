@@ -284,6 +284,7 @@ export const TagListStyle = styled.ul`
     display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
 `
 
 export const TagStyle = styled.li`
@@ -294,7 +295,7 @@ export const TagStyle = styled.li`
     display: flex;
     align-items: center;
     margin: 4px;
-    max-width: 335px;
+    max-width: 90%;
 `
 
 export const TagTextStyle = styled.p`
@@ -313,6 +314,7 @@ export const TagButtonStyle = styled.button`
 
 export const TagsWrapper = styled.div`
     margin: 4px;
+    width: 100%;
 `
 export const TagsTooltipStyle = styled.p`
     word-wrap: break-word;
