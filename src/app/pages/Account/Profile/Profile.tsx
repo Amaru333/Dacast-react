@@ -113,6 +113,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                         />
                         <Input
+                            disabled
                             type="email"
                             className="md-col md-col-6 p1"
                             id="newEmail"

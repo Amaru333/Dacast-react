@@ -20,7 +20,11 @@ import { addTokenToHeader } from '../../../utils/token';
 var moment = require('moment-timezone');
 
 
-export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
+export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function, setStepValidated: Function }) => {
+
+    React.useEffect(() => {
+        props.setStepValidated(props.stepperData.firststep.name && props.stepperData.firststep.groupSettings.duration.value && !props.stepperData.firststep.prices.some(price => !price.price.value))
+    }, [props.stepperData])
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = props.stepperData.firststep.prices;
@@ -126,13 +130,17 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
     )
 }
 
-export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function }) => {
+export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function; setStepValidated: Function }) => {
 
     const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
     const [searchString, setSearchString] = React.useState<string>(null)
+
+    React.useEffect(() => {
+        props.setStepValidated(selectedItems.length > 0)
+    }, [selectedItems])
 
     let { userId } = addTokenToHeader()
 

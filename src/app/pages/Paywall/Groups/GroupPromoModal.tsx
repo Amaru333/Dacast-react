@@ -38,8 +38,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
     React.useEffect(() => {
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
     }, [props.groupPromo])
+    const [modalValid, setModalValid] = React.useState<boolean>(false)
 
-
+    React.useEffect(() => {
+        setModalValid((groupPromo.alphanumericCode && groupPromo.alphanumericCode.length > 4) && (groupPromo.discount && groupPromo.discount !== null) && (groupPromo.limit && groupPromo.limit !== null) && (groupPromo.assignedGroupIds.length > 0)) 
+    }, [groupPromo])
+    
     React.useEffect(() => {
         let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${groupPromo.timezone}`).utc().valueOf()
         let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${groupPromo.timezone}`).utc().valueOf()
@@ -126,7 +130,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 }
             </div>
             <div className='col col-12 py2'>
-                <Button onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

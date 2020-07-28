@@ -61,20 +61,23 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                 return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
                     theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
-                    <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
-                        <ActionIcon>
-                            <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>
-                            <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</IconStyle>
-                            <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
-                            <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
-                        </ActionIcon>
-                         
+                        <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
+                            <ActionIcon>
+                                <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>
+                                <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
+                            </ActionIcon>
+                        {theme.name !== "Standard Theme" && 
+                            <ActionIcon>
+                                <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</IconStyle>
+                                <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
+                            </ActionIcon>
+                        }
+                        {theme.name !== "Standard Theme" && 
+                            <ActionIcon>
+                                <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
+                                <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
+                            </ActionIcon>
+                        }  
                     </IconContainer>
 
                 ]}
