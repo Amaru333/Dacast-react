@@ -15,8 +15,19 @@ const getAccountPlan = async (accountId: string) => {
     })
 }
 
-const saveAccountPlan = (accountId: string, planInfo: PlanInfo) => {  
-    return axios.put(adminApiUrlBase   + 'admin/accounts/' + accountId + '/plan', {...planInfo})
+const saveAccountPlan = async (accountId: string, planInfo: PlanInfo) => {  
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return await axios.post(adminApiUrlBase + 'privileges/' + accountId, 
+    {
+        privileges: [{...planInfo}],
+        privilegeLevel: 'plan'
+    },
+    {
+        headers: {
+            Authorization: token
+        }
+    })
 }
 
 const switchAccountPlan = (accountId: string, newPlan: string) => {  

@@ -26,7 +26,7 @@ const PrivateRoute = (props: {key: string; component: any; path: string; exact: 
                 path={props.path}
                 exact={props.exact}
             >
-                <div className='flex flex-column px2' style={{backgroundColor: '#EBEFF5', height: '100vh'}}>
+                <div className='flex flex-column px2' style={{backgroundColor: '#EBEFF5', minHeight: '100vh', height: 'auto'}}>
                     <Header />
                     <ErrorBoundary>
                         <props.component {...props} />

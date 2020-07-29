@@ -259,7 +259,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     lastStepButton="Purchase"
-                    finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
+                    finalFunction={() => {}}
                     stepperData={purchaseDataStepperData}
                     updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
                     functionCancel={setPurchaseDataOpen}
