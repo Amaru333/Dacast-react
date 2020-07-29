@@ -65,8 +65,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
             dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)
         },
-        uploadFile: (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
-            dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
+            await dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
         },
         deleteFile: (liveId: string, targetId: string, uploadType: string) => {
             dispatch(deleteFileAction(liveId, targetId, uploadType))

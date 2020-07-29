@@ -15,17 +15,9 @@ import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import { PlaylistGeneralProps } from '../../../containers/Playlists/General';
 
-interface PlaylistGeneralComponentProps {
-    playlistDetails: PlaylistDetails;
-    editPlaylistDetails: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
-    showToast: Function;
-}
-
-export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
+export const PlaylistGeneralPage = (props: PlaylistGeneralProps) => {
 
     const {userId} = addTokenToHeader()
 
@@ -34,7 +26,6 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
     const [newPlaylistDetails, setNewPlaylistDetails] = React.useState<PlaylistDetails>(props.playlistDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
-    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -157,18 +148,18 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button> : null
+                                        splashScreenEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button>
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
-                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
+                                            splashScreenEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.playlistDetails.splashscreen.url} /></ImageSection>}  
+                                {splashScreenEnable &&<ImageSection> <SelectedImage src={props.playlistDetails.splashscreen.url} /></ImageSection>}  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -180,17 +171,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button> : null
+                                        thumbnailEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
-                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
+                                            thumbnailEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
-                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.playlistDetails.thumbnail.url} /></ImageSection>}
+                            { thumbnailEnable && <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -202,17 +193,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        (posterEnable || uploadedImageFiles.poster) &&
+                                        posterEnable &&
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.poster.targetID, "poster")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
-                                            posterEnable || uploadedImageFiles.poster ?
+                                            posterEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
+                                {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.playlistDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -258,8 +249,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
                         title={imageModalTitle}
-                        uploadedImageFiles={uploadedImageFiles}
-                        setUploadedImageFiles={setUploadedImageFiles}
+                        getContentDetails={props.getPlaylistDetails}
                     />
                 }            
             </Card>

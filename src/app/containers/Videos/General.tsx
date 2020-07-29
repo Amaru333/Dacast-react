@@ -44,7 +44,7 @@ const General = (props: GeneralComponentProps) => {
                 props.vodDetailsState[vodId] ?
                     (
                         <div className='flex flex-column'>
-                            <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} vodId={vodId} />
+                            <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} />
                         </div>
                     )
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -71,11 +71,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
             dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
         },
-        uploadFile: (data: File, uploadUrl: string, vodId: string, uploadType: string) => {
-            dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, vodId: string, uploadType: string) => {
+           await dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType))
         },
-        uploadImageFromVideo: (vodId: string, time: number, imageType: string, callback?: Function)  => {
-            dispatch(uploadImageFromVideoAction(vodId, time, imageType))
+        uploadImageFromVideo: async (vodId: string, time: number, imageType: string, callback?: Function)  => {
+            await dispatch(uploadImageFromVideoAction(vodId, time, imageType))
             .then(callback).catch(callback)
         },
         deleteFile: (vodId: string, targetId: string, fileName: string) => {

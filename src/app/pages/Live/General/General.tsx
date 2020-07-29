@@ -48,7 +48,6 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
-    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone ? props.liveDetails.countdown.timezone : momentTZ.tz.guess()})
 
@@ -264,18 +263,18 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID, "splashscreen") } } >Delete</Button> : null
+                                        splashScreenEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID, "splashscreen") } } >Delete</Button>
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
                                         {
-                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
+                                            splashScreenEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
+                                {splashScreenEnable && <ImageSection><SelectedImage src={props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -288,17 +287,17 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        (thumbnailEnable || uploadedImageFiles.thumbnail) &&
+                                        thumbnailEnable &&
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
-                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
+                                            thumbnailEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
+                                { thumbnailEnable && <ImageSection> <SelectedImage src={ props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -310,15 +309,15 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                    { (posterEnable || uploadedImageFiles.poster) && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID, "poster") }}>Delete</Button> }
+                                    { posterEnable && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID, "poster") }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
-                                            posterEnable || uploadedImageFiles.poster ?
+                                            posterEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -364,8 +363,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
                         title={imageModalTitle}
-                        uploadedImageFiles={uploadedImageFiles}
-                        setUploadedImageFiles={setUploadedImageFiles}
+                        getContentDetails={props.getLiveDetails}
                     />
                 }
 
