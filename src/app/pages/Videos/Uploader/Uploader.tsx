@@ -32,7 +32,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const [File, setFile] = React.useState<File>(null)
     const [currentUpload, setCurrentUpload] = React.useState<UploadObject>(null)
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
-    const [selectedRecipe, setSelectedRecipe] = React.useState<string>(null)
+    const [selectedRecipe, setSelectedRecipe] = React.useState<string>(props.encodingRecipe.recipes.find(r => r.isDefault).id)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {

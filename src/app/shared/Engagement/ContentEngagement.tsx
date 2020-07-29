@@ -129,11 +129,25 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             })    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])
+
+    const objectsEqual = (o1: any, o2: any): boolean => {
+        if(typeof o1 === 'object' && Object.keys(o1).length > 0) {
+            return Object.keys(o1).length === Object.keys(o2).length 
+            && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
+        }
+        return o1 === o2};
+
+    const arraysEqual = (a1: Array<any>, a2: Array<any>): boolean => {
+        if(!a1 || !a2) {
+            return false
+        }
+        return a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]))
+    }
+        
   
     React.useEffect(() => {
         const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
-    
-        if(ads !== props.globalEngagementSettings.ads || adsEnabled !== props.globalEngagementSettings.adsEnabled ){
+        if(!arraysEqual(ads, props.globalEngagementSettings.ads) || adsEnabled !== props.globalEngagementSettings.adsEnabled ){
             setAdSectionEditable(true)
         }
         if(brandImageURL !==props.globalEngagementSettings.brandImageURL || brandImagePadding !==props.globalEngagementSettings.brandImagePadding || brandImagePosition !==props.globalEngagementSettings.brandImagePosition || brandImageText !==props.globalEngagementSettings.brandImageText || brandImageSize !==props.globalEngagementSettings.brandImageSize ){
@@ -244,13 +258,25 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         switch (section) {
             case 'ads':
                 debugger;
-                setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
+                props.saveContentEngagementSettings( {contentId: props.contentId, engagementSettings: {...engagementSettings, adsEnabled: false, ads: null}}).then(() => {
+                    setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
+                    setAdSectionEditable(false)
+                })
                 break;
             case 'brandImage':
-                setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL})
+                setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null})
             default:
                 null;
         }
+    }
+
+    const handleAdsLockChange = () => {
+        if (adSectionEditable) {
+            handleSectionRevert('ads')
+        } else {
+            setSettingsEdited(true)
+        }
+        setAdSectionEditable(!adSectionEditable)
     }
 
     return (
@@ -262,7 +288,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <TextStyle>
                             <Text size={20} weight='med'>Advertising</Text>
                         </TextStyle>
-                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {setAdSectionEditable(!adSectionEditable);setSettingsEdited(true);handleSectionRevert('ads')}}>
+                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
                             {adSectionEditable ? "lock_open" : "lock"}
                         </IconStyle>
                         <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>

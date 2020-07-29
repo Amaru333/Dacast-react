@@ -30,7 +30,7 @@ const reducer: Reducer<EncodingRecipesData> = (state = defaultEncodingRecipes , 
                 if (item.id !== action.payload.id && item.name === 'Standard') {
                     return {
                         ...item,
-                        isDefault: (!action.payload.isDefault && state.recipes.filter(f => f.id === action.payload.id)[0].isDefault) ? true : item.isDefault
+                        isDefault: action.payload.isDefault ? false : state.recipes.filter(f => f.id === action.payload.id)[0].isDefault ? true : item.isDefault
                     }
                 }
                 if(item.id === action.payload.id) {
