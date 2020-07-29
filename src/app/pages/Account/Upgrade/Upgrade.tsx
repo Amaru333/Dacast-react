@@ -270,7 +270,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                         </div>
-                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { }}>Contact Us</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact Us</ButtonStyle>
 
                                     </PlanInfosContainer>
                                 </Card>
