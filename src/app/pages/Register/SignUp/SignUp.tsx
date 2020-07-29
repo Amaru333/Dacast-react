@@ -12,6 +12,7 @@ import { useKeyboardSubmit } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { useForm } from 'react-hook-form'
 import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { Bubble } from '../../../../components/Bubble/Bubble';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -62,6 +63,9 @@ export const SignupPage = (props: SignupContainerProps) => {
                 </form>
                 
             </ModalContent>
+            <Bubble hidden={!props.UserInfo || (props.UserInfo && !props.UserInfo.signupError)} type='error' className='my2'>
+                {props.UserInfo.signupError}
+            </Bubble>
             <ModalFooter>
                 <Button sizeButton="large" isLoading={submitLoading} typeButton="primary" type="submit" form="formSignUp">Sign Up</Button>
                 <Button sizeButton="large" typeButton="tertiary" onClick={() => history.push("/login")}>Cancel</Button>
