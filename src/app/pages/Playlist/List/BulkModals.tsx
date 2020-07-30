@@ -44,12 +44,14 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
 
     return (
         <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
-            <div>
-                <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
-    <Text size={14} weight="reg" className='inline-block mb3 mt1' >{props.items.some(item => item.type === 'folder') ? 'Folders will be deleted permanently and assets will ' : 'Deleted assets '}stay in the Trash for 30 days.</Text>
+            <div className='flex flex-column'>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
+                <Text size={14} weight="med" className='inline-block mb3 mt1' >{props.items.some(item => item.type === 'folder') ? 'Folders will be deleted permanently and assets will ' : 'Deleted assets '}stay in the Trash for 30 days.</Text>
+                <div className='mt2'>
+                    <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                </div>
 
-                <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
-                <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
         </Modal>
     )

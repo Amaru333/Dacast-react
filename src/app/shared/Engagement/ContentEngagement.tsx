@@ -135,7 +135,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
        let tempSettings: InteractionsInfos = engagementSettings
         if(props.contentEngagementSettings.engagementSettings.adsId){
             setAdSectionEditable(true)
-            tempSettings = {...tempSettings, adsEnabled: props.contentEngagementSettings.engagementSettings.adsEnabled, ads: props.contentEngagementSettings.engagementSettings.ads}
+            tempSettings = {...tempSettings, adsEnabled: props.contentEngagementSettings.engagementSettings.adsEnabled, ads: props.contentEngagementSettings.engagementSettings.ads, adsId: props.contentEngagementSettings.engagementSettings.adsId}
         } else {
             tempSettings = {...tempSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads}
         }
