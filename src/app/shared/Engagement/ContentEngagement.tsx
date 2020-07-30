@@ -251,7 +251,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
                     setAdSectionEditable(false)
                 })
-                break;
+                break
             case 'brandImage':
                 if (engagementSettings.brandImageID) {
                     props.deleteContentImage(engagementSettings.brandImageID)
@@ -260,16 +260,19 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL})
                     setBrandImageSectionEditable(false)
                 })
+                break
             case 'brandText': 
                 props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, brandText: null, brandTextLink: null, isBrandTextAsTitle: false}}).then(() => {
                     setEngagementSettings({...engagementSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle})
                     setBrandSectionEditable(false)
                 })
+                break
             case 'endScreenText': 
                 props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, endScreenText: null, endScreenTextLink: null}}).then(() => {
                     setEngagementSettings({...engagementSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink})
                     setEndScreenSectionEditable(false)
                 })
+                break
             default:
                 null;
         }
