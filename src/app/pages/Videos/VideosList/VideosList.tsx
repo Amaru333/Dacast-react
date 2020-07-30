@@ -123,7 +123,7 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
-        { name: 'Paywall On/Off', function: setBulkPaywallOpen },
+        { name: 'Paywall Off', function: setBulkPaywallOpen },
         { name: 'Change Theme', function: setBulkThemeOpen },
         { name: 'Move To', function: setMoveItemsModalOpened },
         { name: 'Delete', function: setBulkDeleteOpen },

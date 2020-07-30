@@ -179,7 +179,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen, enabled: true },
-        { name: 'Paywall On/Off', function: setBulkPaywallOpen, enabled: getPrivilege('privilege-paywall') },
+        { name: 'Paywall Off', function: setBulkPaywallOpen, enabled: getPrivilege('privilege-paywall') },
         { name: 'Change Theme', function: setBulkThemeOpen, enabled: true },
         { name: 'Move To', function: setMoveItemsModalOpened, enabled: getPrivilege('privilege-folders') },
         { name: 'Delete', function: setBulkDeleteOpen, enabled: true },

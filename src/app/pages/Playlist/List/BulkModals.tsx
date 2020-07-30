@@ -29,13 +29,15 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
 
     const handleSubmit = async () => {
         setButtonLoading(true)
+        let item = props.items.length > 1 ? 'items' : 'item'
         props.actionFunction(props.items, 'delete').then(() => {
             setButtonLoading(false)
             props.toggle(false)
-            props.showToast(`${props.items.length} have been deleted`, 'flexible', 'success')
+            props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} couldn't be deleted`, 'flexible', 'success')
+            
+            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'flexible', 'success')
 
         })
     }
@@ -43,7 +45,9 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     return (
         <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div>
-                <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Are you sure you want to deleted "+ props.items.length +" selected items?"}</Text>
+                <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
+    <Text size={14} weight="reg" className='inline-block mb3 mt1' >{props.items.some(item => item.type === 'folder') ? 'Folders will be deleted permanently and assets will ' : 'Deleted assets '}stay in the Trash for 30 days.</Text>
+
                 <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
