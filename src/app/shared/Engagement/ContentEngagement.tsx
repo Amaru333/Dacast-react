@@ -135,22 +135,26 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
        let tempSettings: InteractionsInfos = engagementSettings
         if(props.contentEngagementSettings.engagementSettings.adsId){
             setAdSectionEditable(true)
+            tempSettings = {...tempSettings, adsEnabled: props.contentEngagementSettings.engagementSettings.adsEnabled, ads: props.contentEngagementSettings.engagementSettings.ads}
         } else {
             tempSettings = {...tempSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads}
         }
         if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
             setBrandImageSectionEditable(true)
+            tempSettings = {...tempSettings, brandImageID: props.contentEngagementSettings.engagementSettings.brandImageID, brandImageLink: props.contentEngagementSettings.engagementSettings.brandImageLink, brandImagePadding: props.contentEngagementSettings.engagementSettings.brandImagePadding, brandImagePosition: props.contentEngagementSettings.engagementSettings.brandImagePosition, brandImageSize: props.contentEngagementSettings.engagementSettings.brandImageSize, brandImageURL: props.contentEngagementSettings.engagementSettings.brandImageURL}
         } else {
             setUploadedFileUrl(props.globalEngagementSettings.brandImageURL)
             tempSettings = {...tempSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL}
         }
         if(brandText || brandTextLink || isBrandTextAsTitle ){
             setBrandSectionEditable(true)
+            tempSettings = {...tempSettings, brandText: props.contentEngagementSettings.engagementSettings.brandText, brandTextLink: props.contentEngagementSettings.engagementSettings.brandTextLink, isBrandTextAsTitle: props.contentEngagementSettings.engagementSettings.isBrandTextAsTitle}
         } else {
             tempSettings = {...tempSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle}
         }
         if(endScreenText || endScreenTextLink ){
             setEndScreenSectionEditable(true)
+            tempSettings = {...tempSettings, endScreenText: props.contentEngagementSettings.engagementSettings.endScreenText, endScreenTextLink: props.contentEngagementSettings.engagementSettings.endScreenTextLink}
         } else {
             tempSettings = {...tempSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink}
         }
@@ -180,10 +184,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const { userId } = addTokenToHeader()
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
-
-    // React.useEffect(() => {
-    //     setEngagementSettings(props.contentEngagementSettings.engagementSettings)
-    // }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
         if (engagementSettings.ads && engagementSettings.ads.length > 0) {
@@ -323,6 +323,33 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             setEngagementSettings({...engagementSettings, endScreenText: null, endScreenTextLink: null})
         }
         setEndScreenSectionEditable(!endScreenSectionEditable)
+    }
+
+    const handleSubmit = () => {
+        setSaveAllButtonLoading(true)
+        props.saveContentEngagementSettings({ 
+            contentId: props.contentId, 
+            engagementSettings: {
+                ads: adSectionEditable ? engagementSettings.ads : null,
+                adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
+                adsId: adSectionEditable ? engagementSettings.adsId : null,
+                brandImageID: brandImageSectionEditable ? engagementSettings.brandImageID : null,
+                brandImageLink: brandImageSectionEditable ? engagementSettings.brandImageLink : null,
+                brandImagePadding: brandImageSectionEditable ? engagementSettings.brandImagePadding : null,
+                brandImagePosition: brandImageSectionEditable ? engagementSettings.brandImagePosition : null,
+                brandImageSize: brandImageSectionEditable ? engagementSettings.brandImageSize : null,
+                brandImageText: brandImageSectionEditable ? engagementSettings.brandImageText : null,
+                brandImageURL: brandImageSectionEditable ? engagementSettings.brandImageURL : null,
+                brandText: brandSectionEditable ? engagementSettings.brandText : null,
+                brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
+                isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
+                endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
+                endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
+            } 
+        }).then(() => {
+            setSettingsEdited(false)
+            setSaveAllButtonLoading(false)
+        })
     }
 
     return (
@@ -511,7 +538,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }).then(() => {setSettingsEdited(false); setSaveAllButtonLoading(false)})}}
+                            onClick={() => { handleSubmit()}}
                         >
                             Save
                         </Button>
