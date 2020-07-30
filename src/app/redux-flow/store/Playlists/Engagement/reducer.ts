@@ -46,9 +46,9 @@ const reducer: Reducer<ContentEngagementSettingsState> = (state = contentEngagem
             case ActionTypes.GET_UPLOAD_URL:
                     return {
                         ...state,
-                        [action.payload.playlistID]: {
-                            ...state[action.payload.playlistID],
-                            engagementSettings: {...state[action.payload.playlistID].engagementSettings,
+                        [action.payload.data.playlistId]: {
+                            ...state[action.payload.data.playlistId],
+                            engagementSettings: {...state[action.payload.data.playlistId].engagementSettings,
                             uploadurl: action.payload.data.presignedURL}
                         }                  
                     }

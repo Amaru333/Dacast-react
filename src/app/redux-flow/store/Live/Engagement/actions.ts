@@ -32,7 +32,7 @@ export interface DeleteLiveAd {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string, liveID: string }};
+    payload: {data:  {presignedURL: string, liveId: string }};
 }
 
 export interface UploadLiveImage {
@@ -49,7 +49,7 @@ export const getLiveEngagementSettingsAction = (liveId: string): ThunkDispatch<P
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetLiveEngagementSettings> ) => {
         await liveEngagementServices.getLiveEngagementSettings(liveId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS, payload: {contentId: liveId, engagementSettings: response.data.data}} );
+                dispatch( {type: ActionTypes.GET_LIVE_ENGAGEMENT_SETTINGS, payload: {contentId: liveId, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
