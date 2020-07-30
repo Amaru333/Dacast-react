@@ -53,7 +53,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
     const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
-    const [adSectionSettings, setAdSectionSettings] = React.useState<Ad[]>(props.contentEngagementSettings.engagementSettings.ads)
     const [mailSectionEditable, setMailSectionEditable] = React.useState<boolean>(false);
     const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
     const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
@@ -113,15 +112,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         props.deleteContentImage(props.contentId);
     }
 
-    // React.useEffect(() => {
-    //     if(adSectionEditable) {
-    //         setAdSectionSettings(props.contentEngagementSettings.engagementSettings.ads)
-    //     } else {
-    //         setAdSectionSettings(props.globalEngagementSettings.ads)
-    //     }
-    // }, [adSectionEditable])
-
-
     React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
@@ -153,10 +143,10 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         if(brandImageURL !==props.globalEngagementSettings.brandImageURL || brandImagePadding !==props.globalEngagementSettings.brandImagePadding || brandImagePosition !==props.globalEngagementSettings.brandImagePosition || brandImageText !==props.globalEngagementSettings.brandImageText || brandImageSize !==props.globalEngagementSettings.brandImageSize ){
             setBrandImageSectionEditable(true)
         }
-        if(brandText || brandTextLink || isBrandTextAsTitle){
+        if(brandText !== props.globalEngagementSettings.brandText || brandTextLink !== props.globalEngagementSettings.brandTextLink || isBrandTextAsTitle !== props.globalEngagementSettings.isBrandTextAsTitle){
             setBrandSectionEditable(true)
         }
-        if(endScreenText || endScreenTextLink){
+        if(endScreenText !== props.globalEngagementSettings.endScreenText || endScreenTextLink !== props.globalEngagementSettings.endScreenTextLink){
             setEndScreenSectionEditable(true)
         }
     }, [props.contentEngagementSettings])
@@ -190,7 +180,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
-        if (adSectionSettings.length > 0) {
+        if (engagementSettings.ads && engagementSettings.ads.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -218,7 +208,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }
 
     const advertisingTableBody = (ads: Ad[]) => {
-        return ads.map((item, i) => {
+        return ads && ads.length > 0 ? ads.map((item, i) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
@@ -243,7 +233,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </IconContainer>
                 ]
             }
-        })
+        }) : null
     }
 
     const revertSettings = () => {
@@ -257,14 +247,29 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleSectionRevert = (section: string) => {
         switch (section) {
             case 'ads':
-                debugger;
                 props.saveContentEngagementSettings( {contentId: props.contentId, engagementSettings: {...engagementSettings, adsEnabled: false, ads: null}}).then(() => {
                     setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
                     setAdSectionEditable(false)
                 })
                 break;
             case 'brandImage':
-                setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null})
+                if (engagementSettings.brandImageID) {
+                    props.deleteContentImage(engagementSettings.brandImageID)
+                }
+                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, brandImageID: null, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null}}).then(() => {
+                    setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL})
+                    setBrandImageSectionEditable(false)
+                })
+            case 'brandText': 
+                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, brandText: null, brandTextLink: null, isBrandTextAsTitle: false}}).then(() => {
+                    setEngagementSettings({...engagementSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle})
+                    setBrandSectionEditable(false)
+                })
+            case 'endScreenText': 
+                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, endScreenText: null, endScreenTextLink: null}}).then(() => {
+                    setEngagementSettings({...engagementSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink})
+                    setEndScreenSectionEditable(false)
+                })
             default:
                 null;
         }
@@ -275,8 +280,40 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             handleSectionRevert('ads')
         } else {
             setSettingsEdited(true)
+            setEngagementSettings({...engagementSettings, adsEnabled: false, ads: null})
         }
         setAdSectionEditable(!adSectionEditable)
+    }
+
+    const handleBrandImageLockChange = () => {
+        if (brandImageSectionEditable) {
+            handleSectionRevert('brandImage')
+        } else {
+            setSettingsEdited(true)
+            setUploadedFileUrl(null)
+            setEngagementSettings({...engagementSettings, brandImageID: null, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null})
+        }
+        setBrandImageSectionEditable(!brandImageSectionEditable)
+    }
+
+    const handleBrandTextLockChange = () => {
+        if (brandSectionEditable) {
+            handleSectionRevert('brandText')
+        } else {
+            setSettingsEdited(true)
+            setEngagementSettings({...engagementSettings, brandText: null, brandTextLink: null, isBrandTextAsTitle: false})
+        }
+        setBrandSectionEditable(!brandSectionEditable)
+    }
+
+    const handleEndScreenTextLockChange = () => {
+        if (endScreenSectionEditable) {
+            handleSectionRevert('endScreenText')
+        } else {
+            setSettingsEdited(true)
+            setEngagementSettings({...engagementSettings, endScreenText: null, endScreenTextLink: null})
+        }
+        setEndScreenSectionEditable(!endScreenSectionEditable)
     }
 
     return (
@@ -309,7 +346,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
                             <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                         </div>
-                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={adSectionSettings.length > 0 ? advertisingTableBody(adSectionSettings) : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={engagementSettings.ads && engagementSettings.ads.length > 0 ? advertisingTableBody(engagementSettings.ads) : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                     </DisabledSection>
                 </Card>
@@ -354,7 +391,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle> 
                         <Text size={20} weight='med'>Brand Image</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {setBrandImageSectionEditable(!brandImageSectionEditable);setSettingsEdited(true);handleSectionRevert('brandImage')}}>
+                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {handleBrandImageLockChange()}}>
                         {brandImageSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                 </Header>
@@ -394,9 +431,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
                             callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
                             ></DropdownSingle>
-                            <Input className="col col-4 pr2" defaultValue={engagementSettings.brandImageSize && engagementSettings.brandImageSize.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                            <Input className="col col-4" label="Padding (px)" defaultValue={engagementSettings.brandImagePadding && engagementSettings.brandImagePadding.toString()} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={engagementSettings.brandImageLink && engagementSettings.brandImageLink} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
+                            <Input className="col col-4 pr2" value={engagementSettings.brandImageSize ? engagementSettings.brandImageSize.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImagePadding ? engagementSettings.brandImagePadding.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={engagementSettings.brandImageLink ? engagementSettings.brandImageLink : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
                         </div>
                     </div>
                 </DisabledSection>
@@ -407,7 +444,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {setBrandSectionEditable(!brandSectionEditable);setSettingsEdited(true)}}>
+                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {handleBrandTextLockChange()}}>
                         {brandSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                     <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
@@ -436,7 +473,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <TextStyle>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
-                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {setEndScreenSectionEditable(!endScreenSectionEditable);setSettingsEdited(true)}}>
+                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {handleEndScreenTextLockChange()}}>
                         {endScreenSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
                     <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
