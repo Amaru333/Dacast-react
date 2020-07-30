@@ -253,7 +253,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleSectionRevert = (section: string) => {
         switch (section) {
             case 'ads':
-                props.saveContentEngagementSettings( {contentId: props.contentId, engagementSettings: {...engagementSettings, adsEnabled: false, ads: null}}).then(() => {
+                props.saveContentEngagementSettings( {contentId: props.contentId, engagementSettings: {...engagementSettings, adsEnabled: false, ads: null, adsId: null}}).then(() => {
                     setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
                     setAdSectionEditable(false)
                 })
