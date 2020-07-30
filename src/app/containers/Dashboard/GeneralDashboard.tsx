@@ -25,7 +25,7 @@ interface PlanType {
     openOverage: Function;
 }
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; profile: DashboardGeneral}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; profile: DashboardGeneral; isPlanPage?: boolean}) => {
 
     let history = useHistory()
     
@@ -77,13 +77,15 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
     return (
         <section className="col col-12">
-            <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
-                <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb3 inline-block"}>
-                    Dashboard
-                </Text>
-                {handleBillingPeriod()}
-            </div>
-
+            {
+                !props.isPlanPage &&
+                    <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
+                        <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb3 inline-block"}>
+                            Dashboard
+                        </Text>
+                        {handleBillingPeriod()}
+                    </div>
+            }
             <div className={classContainer}>
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
@@ -106,7 +108,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <div className="flex flex-wrap items-baseline mb1">
                             <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                         </div>
-                        <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
+                        <ProgressBarDashboard  percentage={bandwidth.percentage} widget="bandwidth" />
                     </WidgetElement>
                 }
 
@@ -152,7 +154,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 }
 
-export const ProgressBarDashboard = (props: { openOverage: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number} }) => {
+export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number} }) => {
     let history = useHistory()
 
     const handleProgressBar = (percentage: number) => {
