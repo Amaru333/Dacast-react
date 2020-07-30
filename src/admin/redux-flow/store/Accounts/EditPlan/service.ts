@@ -20,7 +20,7 @@ const saveAccountPlan = async (accountId: string, planInfo: PlanInfo) => {
     let {token} = addTokenToHeader();
     return await axios.post(adminApiUrlBase + 'privileges/' + accountId, 
     {
-        privileges: [{...planInfo}],
+        ...planInfo,
         privilegeLevel: 'plan'
     },
     {

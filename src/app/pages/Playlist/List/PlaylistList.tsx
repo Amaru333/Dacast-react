@@ -240,9 +240,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     <InputTags noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]) }} />
                 </div>
                 <div className="flex items-center" >
-                    {selectedPlaylist.length > 0 ?
+                    {selectedPlaylist.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedPlaylist.length} items</Text>
-                        : null
                     }
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedPlaylist.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>

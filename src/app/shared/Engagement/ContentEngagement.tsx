@@ -66,11 +66,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let brandImageChangeButtonRef = React.useRef<HTMLInputElement>(null)
 
-
-    React.useEffect(() => {
-        console.log('content settings', props.contentEngagementSettings)
-    }, [props.contentEngagementSettings])
-
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
         if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
@@ -136,19 +131,30 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         
   
     React.useEffect(() => {
-        const {ads, adsEnabled, brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
-        if(!arraysEqual(ads, props.globalEngagementSettings.ads) || adsEnabled !== props.globalEngagementSettings.adsEnabled ){
+        const {brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
+       let tempSettings: InteractionsInfos = engagementSettings
+        if(props.contentEngagementSettings.engagementSettings.adsId){
             setAdSectionEditable(true)
+        } else {
+            tempSettings = {...tempSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads}
         }
-        if(brandImageURL !==props.globalEngagementSettings.brandImageURL || brandImagePadding !==props.globalEngagementSettings.brandImagePadding || brandImagePosition !==props.globalEngagementSettings.brandImagePosition || brandImageText !==props.globalEngagementSettings.brandImageText || brandImageSize !==props.globalEngagementSettings.brandImageSize ){
+        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
             setBrandImageSectionEditable(true)
+        } else {
+            setUploadedFileUrl(props.globalEngagementSettings.brandImageURL)
+            tempSettings = {...tempSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL}
         }
-        if(brandText !== props.globalEngagementSettings.brandText || brandTextLink !== props.globalEngagementSettings.brandTextLink || isBrandTextAsTitle !== props.globalEngagementSettings.isBrandTextAsTitle){
+        if(brandText || brandTextLink || isBrandTextAsTitle ){
             setBrandSectionEditable(true)
+        } else {
+            tempSettings = {...tempSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle}
         }
-        if(endScreenText !== props.globalEngagementSettings.endScreenText || endScreenTextLink !== props.globalEngagementSettings.endScreenTextLink){
+        if(endScreenText || endScreenTextLink ){
             setEndScreenSectionEditable(true)
+        } else {
+            tempSettings = {...tempSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink}
         }
+        setEngagementSettings({...tempSettings})
     }, [props.contentEngagementSettings])
 
     const newAd = () => {
@@ -175,9 +181,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        setEngagementSettings(props.contentEngagementSettings.engagementSettings)
-    }, [props.contentEngagementSettings.engagementSettings])
+    // React.useEffect(() => {
+    //     setEngagementSettings(props.contentEngagementSettings.engagementSettings)
+    // }, [props.contentEngagementSettings.engagementSettings])
 
     const advertisingTableHeader = () => {
         if (engagementSettings.ads && engagementSettings.ads.length > 0) {
@@ -337,6 +343,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Toggle
                             className="mb2"
                             id='advertisingEnabled'
+                            checked={engagementSettings.adsEnabled}
                             defaultChecked={engagementSettings.adsEnabled}
                             onChange={() => { setEngagementSettings({ ...engagementSettings, adsEnabled: !engagementSettings.adsEnabled }); setSettingsEdited(true) }} label='Advertising enabled'
                         />
