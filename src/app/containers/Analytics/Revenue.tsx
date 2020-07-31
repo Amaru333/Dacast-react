@@ -7,7 +7,7 @@ import { Action, restoreContentAction, getFolderContentAction } from '../../redu
 import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsRevenueState, getAnalyticsRevenueRevenueTimeAction, GetAnalyticsRevenueOptions, getAnalyticsRevenueSalesTimeAction, getAnalyticsRevenueSalesCountryAction } from '../../redux-flow/store/Analytics/Revenue';
+import { AnalyticsRevenueState, getAnalyticsRevenueRevenueTimeAction, GetAnalyticsRevenueOptions, getAnalyticsRevenueSalesTimeAction, getAnalyticsRevenueSalesCountryAction, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -19,9 +19,7 @@ export interface RevenueComponentProps {
     restoreContent: Function;
     renameFolder: Function;
     analyticsRevenueData: AnalyticsRevenueState;
-    getRevenueByTime: Function;
-    getSalesByTime: Function;
-    getSalesPerCountry: Function;
+    getAnalyticsRevenue: Function;
 }
 
 const Revenue = (props: RevenueComponentProps) => {
@@ -33,18 +31,12 @@ const Revenue = (props: RevenueComponentProps) => {
             }
             wait()
         }
-        if(!props.analyticsRevenueData.data.revenueByTime) {
-            props.getRevenueByTime();
-        }
-        if(!props.analyticsRevenueData.data.salesByTime) {
-            props.getSalesByTime();
-        }
-        if(!props.analyticsRevenueData.data.salesPerCountry) {
-            props.getSalesPerCountry();
+        if(!props.analyticsRevenueData.data) {
+            props.getAnalyticsRevenue();
         }
     }, [])
     return (
-        props.folderData ? 
+        props.folderData && props.analyticsRevenueData.data ? 
             <RevenueAnalytics {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -60,21 +52,15 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
+        getAnalyticsRevenue: (options: GetAnalyticsRevenueOptions) => {
+            dispatch(getAnalyticsRevenueAction(options))
+        },
         getFolderContent: (folderPath: string) => {
             dispatch(getFolderContentAction(folderPath))
         },
         restoreContent: (content: ContentType[]) => {
             dispatch(restoreContentAction(content))
-        },
-        getRevenueByTime: (options: GetAnalyticsRevenueOptions) => {
-            dispatch(getAnalyticsRevenueRevenueTimeAction(options))
-        },
-        getSalesByTime: (options: GetAnalyticsRevenueOptions) => {
-            dispatch(getAnalyticsRevenueSalesTimeAction(options))
-        },
-        getSalesPerCountry: (options: GetAnalyticsRevenueOptions) => {
-            dispatch(getAnalyticsRevenueSalesCountryAction(options))
-        },
+        }
     };
 }
 
