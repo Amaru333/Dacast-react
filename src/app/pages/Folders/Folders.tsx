@@ -83,38 +83,37 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     })  
                     returnedString += '&'                
                     returnedString = returnedString.replace(',&','&')
-                }            
+                } 
             })
 
             if(filters.afterDate || filters.beforedate) {
                 returnedString+= `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
             }
         }
+
+        if(returnedString.indexOf('status') ===- 1) {
+            returnedString += `status=${selectedFolder === 'Trash' ? 'deleted&' : 'online,offline,processing&'}`
+        }
+
+        if(returnedString.indexOf('content-types') ===- 1) {
+            returnedString += `content-types=channel,vod,playlist${FIXED_FOLDERS.indexOf(selectedFolder) > -1 ? '&' : ',folder&'}`
+        }  
+
         if(searchString) {
             returnedString += `keyword=${searchString}&`
         }
         if(sort) {
             returnedString += `sort-by=${sort}&`
         }
-        if(returnedString.indexOf('status') === -1 && selectedFolder !== 'Trash') {
-            returnedString += 'status=online,offline,processing'
-        } else if(selectedFolder === 'Trash') {
-            returnedString += 'status=deleted'
-        }
 
         if(FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder) {
-            returnedString += `&folders=${currentFolder.id}`
+            returnedString += `folders=${currentFolder.id}&`
         }
 
-        if(FIXED_FOLDERS.indexOf(selectedFolder) > -1) {
-            returnedString += `&content-types=channel,vod,playlist`
-        } else {
-            returnedString += `&content-types=channel,vod,playlist,folder`
-        }
         if(selectedFolder === 'Unsorted') {
-            returnedString += '&tags=no_folder'
+            returnedString += 'tags=no_folder&'
         }
-        return returnedString
+        return returnedString.charAt(returnedString.length - 1) === '&' ? returnedString.slice(0, returnedString.length - 1) : returnedString
 
     }
 
