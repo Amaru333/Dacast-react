@@ -253,8 +253,30 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleSectionRevert = (section: string) => {
         switch (section) {
             case 'ads':
-                props.saveContentEngagementSettings( {contentId: props.contentId, engagementSettings: {...engagementSettings, adsEnabled: false, ads: null, adsId: null}}).then(() => {
-                    setEngagementSettings({...engagementSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads})
+                props.saveContentEngagementSettings({
+                    contentId: props.contentId, 
+                    engagementSettings: {
+                        ads: null,
+                        adsEnabled: false,
+                        adsId: null,
+                        brandImageID: brandImageSectionEditable ? engagementSettings.brandImageID : null,
+                        brandImageLink: brandImageSectionEditable ? engagementSettings.brandImageLink : null,
+                        brandImagePadding: brandImageSectionEditable ? engagementSettings.brandImagePadding : null,
+                        brandImagePosition: brandImageSectionEditable ? engagementSettings.brandImagePosition : null,
+                        brandImageSize: brandImageSectionEditable ? engagementSettings.brandImageSize : null,
+                        brandImageText: brandImageSectionEditable ? engagementSettings.brandImageText : null,
+                        brandImageURL: brandImageSectionEditable ? engagementSettings.brandImageURL : null,
+                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
+                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
+                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
+                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
+                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
+                    }}).then(() => {
+                    setEngagementSettings({
+                        ...engagementSettings, 
+                        adsEnabled: props.globalEngagementSettings.adsEnabled, 
+                        ads: props.globalEngagementSettings.ads
+                    })
                     setAdSectionEditable(false)
                 })
                 break
@@ -262,20 +284,91 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 if (engagementSettings.brandImageID) {
                     props.deleteContentImage(engagementSettings.brandImageID)
                 }
-                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, brandImageID: null, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null}}).then(() => {
-                    setEngagementSettings({...engagementSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL})
+                props.saveContentEngagementSettings({
+                    contentId: props.contentId, 
+                    engagementSettings: {
+                        ads: adSectionEditable ? engagementSettings.ads : null,
+                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
+                        adsId: adSectionEditable ? engagementSettings.adsId : null,
+                        brandImageID: null,
+                        brandImageLink: null,
+                        brandImagePadding: null,
+                        brandImagePosition: null,
+                        brandImageSize: null,
+                        brandImageText: null,
+                        brandImageURL: null,
+                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
+                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
+                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
+                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
+                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
+                    }}).then(() => {
+                    setEngagementSettings({
+                        ...engagementSettings, 
+                        brandImageID: props.globalEngagementSettings.brandImageID, 
+                        brandImageLink: props.globalEngagementSettings.brandImageLink, 
+                        brandImagePadding: props.globalEngagementSettings.brandImagePadding, 
+                        brandImagePosition: props.globalEngagementSettings.brandImagePosition, 
+                        brandImageSize: props.globalEngagementSettings.brandImageSize, 
+                        brandImageURL: props.globalEngagementSettings.brandImageURL
+                    })
                     setBrandImageSectionEditable(false)
                 })
                 break
             case 'brandText': 
-                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, brandText: null, brandTextLink: null, isBrandTextAsTitle: false}}).then(() => {
-                    setEngagementSettings({...engagementSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle})
+                props.saveContentEngagementSettings({
+                    contentId: props.contentId, 
+                    engagementSettings: {
+                        ads: adSectionEditable ? engagementSettings.ads : null,
+                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
+                        adsId: adSectionEditable ? engagementSettings.adsId : null,
+                        brandImageID: null,
+                        brandImageLink: null,
+                        brandImagePadding: null,
+                        brandImagePosition: null,
+                        brandImageSize: null,
+                        brandImageText: null,
+                        brandImageURL: null,
+                        brandText: null,
+                        brandTextLink: null,
+                        isBrandTextAsTitle: false,
+                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
+                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
+                    }}).then(() => {
+                    setEngagementSettings({
+                        ...engagementSettings, 
+                        brandText: props.globalEngagementSettings.brandText, 
+                        brandTextLink: props.globalEngagementSettings.brandTextLink, 
+                        isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle
+                    })
                     setBrandSectionEditable(false)
                 })
                 break
             case 'endScreenText': 
-                props.saveContentEngagementSettings({contentId: props.contentId, engagementSettings: {...engagementSettings, endScreenText: null, endScreenTextLink: null}}).then(() => {
-                    setEngagementSettings({...engagementSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink})
+                props.saveContentEngagementSettings({
+                    contentId: props.contentId, 
+                    engagementSettings: {
+                        ads: adSectionEditable ? engagementSettings.ads : null,
+                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
+                        adsId: adSectionEditable ? engagementSettings.adsId : null,
+                        brandImageID: null,
+                        brandImageLink: null,
+                        brandImagePadding: null,
+                        brandImagePosition: null,
+                        brandImageSize: null,
+                        brandImageText: null,
+                        brandImageURL: null,
+                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
+                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
+                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
+                        endScreenText: null,
+                        endScreenTextLink: null
+                    }}).then(() => {
+                    setEngagementSettings({
+                        ...engagementSettings, 
+                        endScreenText: props.globalEngagementSettings.endScreenText, 
+                        endScreenTextLink: props.globalEngagementSettings.endScreenTextLink
+                    })
                     setEndScreenSectionEditable(false)
                 })
                 break
