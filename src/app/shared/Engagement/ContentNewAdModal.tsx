@@ -17,7 +17,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
     }, [props.selectedAd])
 
     const defineAdAction = () => {
-        let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads
+        let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads ? props.contentEngagementSettings.engagementSettings.ads : []
         setButtonLoading(true)
         if(props.selectedAd.id === '-1') {
             tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type'], timestamp: adData['ad-type'] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null})

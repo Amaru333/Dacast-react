@@ -134,7 +134,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 Upload File
                             </Button>
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                            { !logoFile ? null : 
+                            { logoFile &&
                                 <ThumbnailFile className="col mt1">
                                     <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
@@ -150,7 +150,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                         <div className="col col-12">
                             <PlayerSection className='col col-12 mr2 mb1'>
-                                <PlayerContainer className="col col-12 mx2 my2">
+                                <PlayerContainer>
                                     <div ref={playerRef}>
                                     </div>
                                 </PlayerContainer>
@@ -172,7 +172,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                             Upload File
                         </Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { !logoFile ? null : 
+                        { logoFile &&
                             <ThumbnailFile className="col mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
@@ -225,10 +225,11 @@ export const PlayerSection = styled.div`
 `
 
 export const PlayerContainer = styled.div`
-    width: 100%;
+    width: 95%;
     height: 100%;
     min-height: 341px;
     position: relative;
+    margin: 16px auto;
 `
 
 export const ButtonsArea = styled.div`
