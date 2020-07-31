@@ -8,12 +8,13 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import moment from 'moment';
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
@@ -22,6 +23,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
+    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
@@ -132,16 +134,15 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     }
 
     const updateData = (dates: any) => {
+        setDates(dates);
         let options = { ...dates, selectedContents: selectedItems.map(e => e.id) };
-        props.getRevenueByTime(options);
-        props.getSalesByTime(options);
-        props.getSalesPerCountry(options);
+        props.getAnalyticsRevenue(options);
     }
 
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
-                <DateFilteringAnalytics refreshData={updateData} />
+                <DateFilteringAnalytics defaultDates={dates} refreshData={updateData} />
                 <div className="flex items-center col col-12">
                     <div className="inline-flex items-center flex col-7 mb2">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -172,6 +173,9 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                     <AnalyticsCard infoText="Number of sales over time" title="Sales by Time">
                         {
                             props.analyticsRevenueData.data.salesByTime ?
+                            props.analyticsRevenueData.data.salesByTime.failed ?
+                                    <FailedCardAnalytics />
+                                    :
                                 <BarChart
                                     datasetName="Sales"
                                     beginAtZero={true}
@@ -187,6 +191,9 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                     <AnalyticsCard infoText="Revenue generation over time" title="Revenue by Time">
                         {
                             props.analyticsRevenueData.data.revenueByTime ?
+                            props.analyticsRevenueData.data.revenueByTime.failed ?
+                            <FailedCardAnalytics />
+                            :
                                 <BarChart
                                     datasetName="Revenue ($)"
                                     beginAtZero={true}
@@ -202,6 +209,9 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Country">
                         {
                             props.analyticsRevenueData.data.salesPerCountry ?
+                            props.analyticsRevenueData.data.salesPerCountry.failed ?
+                            <FailedCardAnalytics />
+                            :
                                 renderMap(props.analyticsRevenueData.data.salesPerCountry, 'revenueAnalyticsDevices') :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

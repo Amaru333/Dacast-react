@@ -14,7 +14,6 @@ export function addTokenToHeader() {
         var tokenObject =  JSON.parse(localStorage.getItem('adminToken'));
         let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
         return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken}
-
     }
     throw new Error('No user token found')
 }
@@ -25,6 +24,7 @@ export function isLoggedIn() {
 
 export function isTokenExpired() {
     let token: TokenInfos = JSON.parse(localStorage.getItem('adminToken'))
+    console.log(token);
     if(Math.abs(DateTime.fromSeconds(parseInt(token.expires)).diffNow('minutes').minutes) <= 5) {
         axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh})
             .then(response => {

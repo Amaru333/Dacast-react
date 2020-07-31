@@ -14,7 +14,8 @@ const getLiveThemeService = async (liveId: string) => {
                 Authorization: token
             }
         }
-    )}
+    )
+}
 
 const saveLiveThemeService = async (data: ThemeOptions, liveId: string) => {
     await isTokenExpired()
