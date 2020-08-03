@@ -29,13 +29,11 @@ export const dataToTimeVideo = (value: number) => {
 }
 
 export const inputTimeVideoToTs = (value: string) => {
-    console.log(value);
     var splitValue = value.split(':');
     var hours = parseInt(splitValue[0]) * 3600;
     var min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60;
     var sec = !splitValue[2] ? 0 :parseInt(splitValue[2]);
     var total = hours+min+sec;
-    console.log(total);
     return total;
 }
 

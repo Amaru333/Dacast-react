@@ -32,18 +32,13 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                         </div>
                 }
                 <SingleDatePicker
-                    placeholder='Select date'
-                    showDefaultInputIcon
-                    inputIconPosition='after'
-                    {...(props.allowOustsideDate ? {isOutsideRange: ()=> false} : {})}
+                    
                     date={date}
                     onDateChange={(date: any) => handleDateChange(date)}
                     focused={focusedInput}
                     onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
-                    id={props.id + "singleDatePicker"}
                     numberOfMonths={1}
-                    keepOpenOnDateSelect={false}
-                    openDirection={props.openDirection ? props.openDirection : 'down'}
+                    isOutsideRange={() => false}
                 />
             </div>
         </div>

@@ -325,7 +325,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         </DisabledSection>
                         
                         {
-                            props.contentType === 'live' || props.contentType === 'settings' ?
+                            props.contentType === 'live' || props.contentType === 'settings' &&
                                 <>
                                     <BorderStyle className="p1" />
 
@@ -338,24 +338,22 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
                                         </ControlToggleContainer>
                                         {
-                                            selectedTheme.isViewerCounterEnabled ?
+                                            selectedTheme.isViewerCounterEnabled &&
                                                 <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => {setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)});}} />
-                                                : null
                                         }
                                     </DisabledSection>
                                 </>
-                                : null
                         }
 
 
                         {
-                            props.contentType === 'playlist' || props.contentType === 'settings' ?
+                            props.contentType === 'playlist' || props.contentType === 'settings' &&
                                 <> 
                                     <BorderStyle className="p1" />
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Playlists</Text></TextStyle>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Top': false, 'Left': false, 'Right': false, 'Bottom': false}} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});}}} tooltip="The position of the links to other content in the Playlist" />
+                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false}} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => {{setSelectedTheme({...selectedTheme, thumbnailPosition: value});}}} tooltip="The position of the links to other content in the Playlist" />
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => {setSelectedTheme({...selectedTheme, continuousPlay: !selectedTheme.continuousPlay});}} />
@@ -364,13 +362,12 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         </ControlToggleContainer>
                                         
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Skip Videos' checked={selectedTheme.skipVideos} onChange={() => {setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos});}} />
+                                            <Toggle className={togglePadding} label='Skip Content' checked={selectedTheme.skipVideos} onChange={() => {setSelectedTheme({...selectedTheme, skipVideos: !selectedTheme.skipVideos});}} />
                                             <IconStyle id="skipVideosTooltip">info_outlined</IconStyle>
                                             <Tooltip target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
                                 </>
-                                : null
                         }
             
                     </>  
