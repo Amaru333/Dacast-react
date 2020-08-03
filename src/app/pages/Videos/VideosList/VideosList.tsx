@@ -156,7 +156,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 // {cell: <></>},
                 {cell: <Text key="nameVodList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
                 {cell: <Text key="sizeVodList" size={14} weight="med" color="gray-1">Size</Text>},
-                {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
+                // NOT V1 {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Views</Text>},
                 {cell: <Text key="viewsVodList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Status</Text>},
                 {cell: <Text key="statusVodList" size={14} weight="med" color="gray-1">Features</Text>},
@@ -192,19 +192,19 @@ export const VideosListPage = (props: VideosListProps) => {
                     </div>,
                     <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                     <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                    <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
+                    // NOT V1 <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
                     <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
                     <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID.toString()) : null}</div>,
                     <div key={"more" + value.objectID} className="iconAction right mr2" >
-                        <ActionIcon id={"editTooltip" + value.objectID}>
-                            <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                         <ActionIcon id={"deleteTooltip" + value.objectID}>
                             <IconStyle onClick={() => { setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true) }} className="right mr1" >delete</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>  
+                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
+                        <ActionIcon id={"editTooltip" + value.objectID}>
+                            <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                        </ActionIcon>
+                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>  
                     </div>,
                 ], 
                 callback: (value: VodItem) => { },

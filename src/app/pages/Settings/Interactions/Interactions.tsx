@@ -9,7 +9,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MailCatcherModal } from './MailCatcherModal';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { TextStyle } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, AdTableURLContainer } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
@@ -181,7 +181,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
-                    <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
+                    <AdTableURLContainer>
+                        <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
+                    </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
                             <IconStyle id={'adTableCopy' + i} onClick={() => { console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item)); props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId) }} >delete</IconStyle>
