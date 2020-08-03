@@ -7,7 +7,7 @@ import { Action, restoreContentAction, getFolderContentAction } from '../../redu
 import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsRevenueState, getAnalyticsRevenueRevenueTimeAction, GetAnalyticsRevenueOptions, getAnalyticsRevenueSalesTimeAction, getAnalyticsRevenueSalesCountryAction, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
+import { AnalyticsRevenueState, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
