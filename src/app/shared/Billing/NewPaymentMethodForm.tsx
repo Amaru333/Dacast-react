@@ -11,8 +11,8 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { Table } from '../../../components/Table/Table';
-import { countryList } from '../Common/countryList';
 import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
+import {countries} from 'countries-list'
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
@@ -161,13 +161,13 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             label="VAT Number"
                             type='text'
                             required={false}
-                            
+                            indicationLabel='Optional'
                         />
                         <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country">
                             <option value="">Select</option>
-                           {countryList.map(country => {
+                           {Object.keys(countries).map(country => {
                                return (
-                                <option>{country}</option>
+                                <option>{countries[country].name}</option>
                                )
                            })}
                         </DropdownSelect>
