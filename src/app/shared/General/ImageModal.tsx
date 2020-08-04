@@ -66,7 +66,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
         if(!saveButtonLoading && !isSaveDisabled) {
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                props.getUploadUrl(props.imageType, props.contentId, () => {})
+                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], () => {})
             } else {
                 props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType).then(() => {
                     props.getContentDetails(props.contentId)
@@ -79,7 +79,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType, '.' + logoFile.type.split('/')[1]).then(() => {
+            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType).then(() => {
                 setTimeout(() => {
                     props.getContentDetails(props.contentId)
                     setSaveButtonLoading(false)

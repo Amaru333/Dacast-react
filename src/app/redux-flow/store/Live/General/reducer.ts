@@ -7,7 +7,7 @@ const reducer: Reducer<LiveDetailsState> = (state = initialLiveGeneralState, act
     switch (action.type) {
         case ActionTypes.GET_LIVE_DETAILS:
             return {
-                ...state, [action.payload.data.id] : {...action.payload.data}
+                ...state, [action.payload.data.id] : {...action.payload.data, countdown: {...action.payload.data.countdown, startTime: action.payload.data.countdown.startTime * 1000}}
             };
         case ActionTypes.SAVE_LIVE_DETAILS:
             return {

@@ -32,7 +32,13 @@ const saveLiveDetailsService = async (data: LiveDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.put(process.env.API_BASE_URL + '/channels/' + data.id, 
-        {...data},
+        {
+            ...data,
+            countdown: {
+                ...data.countdown,
+                startTime: Math.floor(data.countdown.startTime / 1000)
+            }
+        },
         {
             headers: {
                 Authorization: token
