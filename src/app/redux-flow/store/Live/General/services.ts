@@ -53,12 +53,13 @@ const deleteLiveChannelService = async (data: string) => {
     )
 }
 
-const getUploadUrl = async (data: string, liveId: string) => {
+const getUploadUrl = async (data: string, liveId: string, extension: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
-            liveID: liveId
+            liveID: liveId,
+            extension: extension
         },
         {
             headers: {

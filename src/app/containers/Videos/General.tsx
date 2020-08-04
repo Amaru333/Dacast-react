@@ -68,8 +68,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editVodDetails: (data: VodDetails, callback?: Function) => {
             dispatch(editVodDetailsAction(data)).then(callback).catch(callback);
         },
-        getUploadUrl: (uploadType: string, vodId: string, subtitleInfo?: SubtitleInfo) => {
-            dispatch(getUploadUrlAction(uploadType, vodId, subtitleInfo))
+        getUploadUrl: (uploadType: string, vodId: string, extension: string, subtitleInfo?: SubtitleInfo) => {
+            dispatch(getUploadUrlAction(uploadType, vodId, extension, subtitleInfo))
         },
         uploadFile: async (data: File, uploadUrl: string, vodId: string, uploadType: string) => {
            await dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType))

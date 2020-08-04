@@ -166,14 +166,14 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                 </StreamTypeSelectorContainer>
 
-                {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
+                {/* {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
                             <Toggle defaultChecked={streamSetupOptions.rewind ? true : false} checked={streamSetupOptions.rewind} onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
                         </div>
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
-                    </div>}
+                    </div>} */}
 
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
