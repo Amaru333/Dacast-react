@@ -16,10 +16,10 @@ interface LiveSecurityProps {
     liveSecuritySettings: ContentSecuritySettings;
     liveSecuritySettingsState: ContentSecuritySettingsState;
     globalSecuritySettings: SecuritySettings;
-    getLiveSecuritySettings: Function;
-    saveLiveSecuritySettings: Function;
-    getSettingsSecurityOptions: Function;
-    showDiscardToast: Function;
+    getLiveSecuritySettings: (liveId: string) => Promise<void>;
+    saveLiveSecuritySettings: (data: SecuritySettings, liveId: string) => Promise<void>;
+    getSettingsSecurityOptions: () => Promise<void>;
+    showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const LiveSecurity = (props: LiveSecurityProps) => {
@@ -48,6 +48,7 @@ const LiveSecurity = (props: LiveSecurityProps) => {
                             globalSecuritySettings={props.globalSecuritySettings}
                             saveContentSecuritySettings={props.saveLiveSecuritySettings}
                             getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                            showToast={props.showDiscardToast}
                         />
                     </div>
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -66,14 +67,14 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveSecuritySettings: (liveId: string) => {
-            dispatch(getLiveSecuritySettingsAction(liveId));
+        getLiveSecuritySettings: async (liveId: string) => {
+            await dispatch(getLiveSecuritySettingsAction(liveId));
         },
-        saveLiveSecuritySettings: (data: SecuritySettings, liveId: string, callback?: Function) => {
-            dispatch(saveLiveSecuritySettingsAction(data, liveId)).then(callback);
+        saveLiveSecuritySettings: async (data: SecuritySettings, liveId: string) => {
+            await dispatch(saveLiveSecuritySettingsAction(data, liveId));
         },
-        getSettingsSecurityOptions: () => {
-            dispatch(getSettingsSecurityOptionsAction());
+        getSettingsSecurityOptions: async () => {
+            await dispatch(getSettingsSecurityOptionsAction());
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

@@ -11,6 +11,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
+    folderData: FoldersInfos;
     getGroupPrices: () => Promise<void>;
     getGroupPromos: () => Promise<void>;
     createGroupPrice: (p: GroupPrice) => Promise<void>;
@@ -19,7 +20,6 @@ export interface GroupsComponentProps {
     createGroupPromo: (p: GroupPromo) => Promise<void>;
     saveGroupPromo: (p: GroupPromo) => Promise<void>;
     deleteGroupPromo: (p: GroupPromo) => Promise<void>;
-    folderData: FoldersInfos;
     getFolderContent: (path: string) => Promise<void>;
 }
 

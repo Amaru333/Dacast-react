@@ -9,7 +9,7 @@ import { LoginInfos, TokenInfos } from '../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 
 interface LoginContainerProps {
-    login: Function;
+    login: (loginInfo: LoginInfos) => Promise<void>;
     loginInfos: TokenInfos;
 }
 const Login = (props: LoginContainerProps) => {
@@ -41,8 +41,8 @@ export function mapStateToProps( state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        login: (data: LoginInfos) => {
-            dispatch(loginAction(data));
+        login: async (data: LoginInfos) => {
+            await dispatch(loginAction(data));
         },
 
     };

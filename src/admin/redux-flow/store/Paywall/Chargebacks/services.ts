@@ -1,10 +1,22 @@
 import axios from 'axios'
 import { Chargeback } from './types'
+import { addTokenToHeader, isTokenExpired } from '../../../../utils/token'
 
-const adminApiUrlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/'
+const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
 
-const submitChargeback = (data: Chargeback) => {  
-    return axios.post(adminApiUrlBase   + 'admin/paywall/chargeback', {...data})
+const submitChargeback = async (data: Chargeback) => {  
+    await isTokenExpired()
+    let {token, userId} = addTokenToHeader();
+    return await axios.post(adminApiUrlBase   + 'add-transaction/' + userId, 
+        {
+            ...data
+        },
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 export const ChargebackServices = {
