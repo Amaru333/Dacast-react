@@ -48,6 +48,11 @@ interface DropdownButtonSpecificProps {
     disabled?: boolean
 }
 
+interface DropdownSelectSpecificProps {
+    dropdownTitle: string;
+    dataRecurly?: string;
+}
+
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement> & { defaultSelected?: string; direction?: 'up' | 'down' };
 
@@ -55,4 +60,4 @@ export type DropdownCountriesProps =  DropdownCountriesSpecificProps & React.Htm
 
 export type DropdownButtonProps = DropdownButtonSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
-
+export type DropdownSelectProps = DropdownSelectSpecificProps & React.HtmlHTMLAttributes<HTMLSelectElement>;
