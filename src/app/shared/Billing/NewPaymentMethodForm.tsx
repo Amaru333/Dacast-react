@@ -3,7 +3,6 @@ import { TextStyle, RadioButtonContainer, RadioButtonOption, RecurlyElementStyle
 import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { Theme } from '../../../styled/themes/dacast-theme';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
@@ -11,9 +10,9 @@ import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
-import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Divider } from '@material-ui/core';
 import { Table } from '../../../components/Table/Table';
+import { countryList } from '../Common/countryList';
+import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
@@ -164,14 +163,14 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             required={false}
                             
                         />
-                        <Input
-                            data-recurly="country"
-                            className={ClassHalfXsFullMd + 'pl1 mb2'}
-                            label="Country"
-                            type='text'
-                            required={false}
-                            
-                        />
+                        <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country">
+                            <option value="">Select</option>
+                           {countryList.map(country => {
+                               return (
+                                <option>{country}</option>
+                               )
+                           })}
+                        </DropdownSelect>
                         <Input
                             data-recurly="address1"
                             className={ClassHalfXsFullMd + 'pr1 mb2'}
