@@ -168,6 +168,7 @@ export const SetupPage = (props: SetupComponentProps) => {
     const handleRemoveFromSelected = () => {
         if(selectedTab === 'folder') {
             setCheckedSelectedItems([]);
+            setSelectedItems([]);
         } else {
             var newSelectedItems = selectedItems.filter(el => {
                 return !checkedSelectedItems.find(elChecked => {

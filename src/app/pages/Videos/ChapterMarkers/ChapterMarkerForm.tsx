@@ -23,7 +23,10 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         let submittedChapterMarkers: ChapterMarker[] = props.chapters
         var newChapterMarker = {...chapterMarker};
-        newChapterMarker.start = inputTimeVideoToTs(newChapterMarker.start.toString()) ;
+
+        console.log(newChapterMarker.start);
+
+        newChapterMarker.start = typeof newChapterMarker.start !== 'string' ? Math.floor(newChapterMarker.start) :  inputTimeVideoToTs(newChapterMarker.start.toString()) ;
         if(props.item.text.length === 0) {
             submittedChapterMarkers.push({...newChapterMarker, id: newChapterMarker.text + newChapterMarker.start})
         } else {
@@ -47,7 +50,6 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
         }
     }, [props.chapterState])
 
-    console.log(chapterMarker ? chapterMarker.start : null);
     return (
         chapterMarker &&
 

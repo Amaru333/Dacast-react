@@ -224,7 +224,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                     </div>
                             }
                         </div>
-                        {
+                        {/* {
                             getPrivilege('privilege-dvr') &&
                             <div className="mb2 clearfix">
                                 <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
@@ -245,7 +245,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         </div>
                                 }
                             </div>
-                        }
+                        } */}
 
                     </div>
                 </div>

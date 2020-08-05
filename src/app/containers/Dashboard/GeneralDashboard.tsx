@@ -74,7 +74,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     }
 
 
-    const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
+    // const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
+    const classItem = classItemThirdWidthContainer;
     return (
         <section className="col col-12">
             {
@@ -89,7 +90,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             <div className={classContainer}>
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3">{getPrivilege('privilege-china') ? 'World Data Remaining' : "Data Remaining"}</Text>
+                        <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
                         {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
@@ -98,7 +99,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" />
                 </WidgetElement>
 
-                {
+                {/* {
                     getPrivilege('privilege-china') && 
                     <WidgetElement className={classItem}>
                         <WidgetHeader className="flex">
@@ -110,7 +111,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         </div>
                         <ProgressBarDashboard  percentage={bandwidth.percentage} widget="bandwidth" />
                     </WidgetElement>
-                }
+                } */}
 
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
@@ -132,7 +133,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{/*TODO: ADD DAY LEFT HERE*/}30</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.profile.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :

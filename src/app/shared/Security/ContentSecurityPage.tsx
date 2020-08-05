@@ -15,16 +15,17 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import moment from 'moment'
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 
 var momentTZ = require('moment-timezone')
 
 interface ContentSecurityComponentProps {
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
-    getSettingsSecurityOptions: Function;
-    saveContentSecuritySettings: Function;
+    getSettingsSecurityOptions: (contentId: string) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string) => Promise<void>;
     contentId: string;
-    showToast: Function
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
@@ -117,8 +118,34 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl
             }, 
-            props.contentId, () => {setButtonLoading(false);setHasToggleChanged(false)}
-        )
+            props.contentId
+            ).then(() => {
+                setButtonLoading(false)
+                setHasToggleChanged(false)
+            })
+    }
+
+    const handleRevert = () => {
+        props.saveContentSecuritySettings(
+            {
+                passwordProtection: {
+                    password: null
+                }, 
+                contentScheduling: {
+                    startTime: 0, 
+                    startTimezone: null,
+                    endTime: 0,
+                    endTimezone: null
+                }, 
+                selectedDomainControl: null, 
+                selectedGeoRestriction: null
+            }, 
+            props.contentId).then(() => {
+                setSettingsEditable(!settingsEditable)
+                setSelectedSettings(props.globalSecuritySettings)
+                setRevertSettingsModalOpen(false)
+                setHasToggleChanged(false)
+            })
     }
 
     return (
@@ -342,7 +369,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">This will discard settings for this content and use your global settings instead.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);props.saveContentSecuritySettings({passwordProtection:{password: null}, contentScheduling:{startTime: 0, endTime: 0}, selectedDomainControl: null, selectedGeoRestriction: null}, props.contentId);setSelectedSettings(props.globalSecuritySettings);setRevertSettingsModalOpen(false);setHasToggleChanged(false)}}>Revert</Button>
+                    <Button onClick={() => handleRevert()}>Revert</Button>
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>

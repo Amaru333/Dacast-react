@@ -17,10 +17,10 @@ export interface PlaylistSecurityContainerProps {
     playlistSecuritySettings: ContentSecuritySettingsState;
     playlistSecurity: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
-    getPlaylistSecuritySettings: Function;
-    savePlaylistSecuritySettings: Function;
-    getSettingsSecurityOptions: Function;
-    showToast: Function;
+    getPlaylistSecuritySettings: (playlistId: string) => Promise<void>;
+    savePlaylistSecuritySettings: (data: SecuritySettings, playlistId: string) => Promise<void>;
+    getSettingsSecurityOptions: () => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
@@ -64,14 +64,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistSecuritySettings: (playlistId: string) => {
-            dispatch(getPlaylistSecuritySettingsAction(playlistId));
+        getPlaylistSecuritySettings: async (playlistId: string) => {
+            await dispatch(getPlaylistSecuritySettingsAction(playlistId));
         },
-        savePlaylistSecuritySettings: (data: SecuritySettings, playlistId: string) => {
-            dispatch(savePlaylistSecuritySettingsAction(data, playlistId));
+        savePlaylistSecuritySettings: async (data: SecuritySettings, playlistId: string) => {
+            await dispatch(savePlaylistSecuritySettingsAction(data, playlistId));
         },
-        getSettingsSecurityOptions: () => {
-            dispatch(getSettingsSecurityOptionsAction());
+        getSettingsSecurityOptions: async () => {
+            await dispatch(getSettingsSecurityOptionsAction());
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

@@ -17,7 +17,8 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     let history = useHistory()
     const [accountInfo, setAccountInfo] = React.useState<AccountInfo>(props.accountInfo)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
-    
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
     const handleSubmit = () => {
         props.saveAccountInfo(accountInfo)
         setOpenConfirmationModal(false)
@@ -88,7 +89,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {history.push('/accounts')}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
-            <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading} submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
 
         </div>
     )

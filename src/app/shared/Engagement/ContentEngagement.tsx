@@ -111,6 +111,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
                 setUploadButtonLoading(false)
+                setTimeout(() => {
+                    props.getContentEngagementSettings(props.contentId)
+                }, 3000)
             })    
         }
     }, [props.contentEngagementSettings.engagementSettings.uploadurl])

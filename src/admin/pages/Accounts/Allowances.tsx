@@ -11,6 +11,7 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [selectedAllowance, setSelectedAllowance] = React.useState<string>('Data')
     const [allowanceValue, setAllowanceValue] = React.useState<string>(null)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit =() => {
         props.saveAccountAllowances({[selectedAllowance]: allowanceValue}, props.accountId)
@@ -33,7 +34,7 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
             <Button className='my1 col col-1' onClick={() => setOpenConfirmationModal(true)} typeButton='primary' sizeButton='large' buttonColor='blue'>Submit</Button>
             <Text size={14}>A positive Amount adds the allowance</Text>
             <Text size={14}>whereas a negative Amount susbtracts from it.</Text>
-            <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading} submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     )
 }

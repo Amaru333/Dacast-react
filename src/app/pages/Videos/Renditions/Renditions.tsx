@@ -74,10 +74,17 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                     indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} 
                     defaultChecked={selectedNotEncodedRendition.length > 0 && selectedNotEncodedRendition.length === notEncodedRenditions.length}
                     onChange={(event) => {
-                        if (event.currentTarget.checked) {
-                            const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.name })
+                        if (event.currentTarget.checked && !(selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length)) {
+                            const editedSelectedRenditions = notEncodedRenditions.filter(item => { 
+                                const disabledRendition = item.size > props.renditions.videoInfo.width;
+                                if(!disabledRendition) {
+                                    return true
+                                } else {
+                                    return false;
+                                }
+                            }).map( (renditions) => {return renditions.name} )
                             setSelectedNotEncodedRendition(editedSelectedRenditions);
-                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        } else {
                             setSelectedNotEncodedRendition([])
                         }
                     }} 
@@ -168,7 +175,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
         let ids: string[] = []
         props.renditions.encodedRenditions.map(rendition => {
             if(selectedEncodedRendition.includes(rendition.name)) {
-                console.log(rendition.renditionID)
                 ids.push(rendition.renditionID)
             }
         })

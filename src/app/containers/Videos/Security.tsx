@@ -17,10 +17,10 @@ interface VodSecurityContainerProps {
     vodSecuritySettings: ContentSecuritySettings;
     vodSecuritySettingsState: ContentSecuritySettingsState;
     globalSecuritySettings: SecuritySettings;
-    getVodSecuritySettings: Function;
-    saveVodSecuritySettings: Function;
-    getSettingsSecurityOptions: Function;
-    showToast: Function;
+    getVodSecuritySettings: (contentId: string) => Promise<void>;
+    saveVodSecuritySettings: (data: SecuritySettings, vodId: string) => Promise<void>;
+    getSettingsSecurityOptions: () => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 export const VodSecurity = (props: VodSecurityContainerProps) => {
@@ -65,14 +65,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodSecuritySettings: (vodId: string) => {
-            dispatch(getVodSecuritySettingsAction(vodId));
+        getVodSecuritySettings: async (vodId: string) => {
+            await dispatch(getVodSecuritySettingsAction(vodId));
         },
-        saveVodSecuritySettings: (data: SecuritySettings, vodId: string, callback?: Function) => {
-            dispatch(saveVodSecuritySettingsAction(data, vodId)).then(callback);
+        saveVodSecuritySettings: async (data: SecuritySettings, vodId: string) => {
+            await dispatch(saveVodSecuritySettingsAction(data, vodId));
         },
-        getSettingsSecurityOptions: () => {
-            dispatch(getSettingsSecurityOptionsAction());
+        getSettingsSecurityOptions: async () => {
+            await dispatch(getSettingsSecurityOptionsAction());
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

@@ -11,6 +11,8 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
 
     const [submittedData, setSubmittedData] = React.useState<Chargeback>({amount: NaN, accountId: null, type: null})
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
     const handleSubmit = () => {
         props.submitChargeback()
         setOpenConfirmationModal(false)
@@ -31,7 +33,7 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
             <Button disabled={(!submittedData.amount || !submittedData.accountId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='my1 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
             <Text size={14} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>
             <Text size={14} weight='med'>and a negative Amount will issue a refund</Text>
-            <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading}  submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     )
 }

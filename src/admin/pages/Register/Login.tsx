@@ -10,13 +10,14 @@ import { IconStyle } from '../../../shared/Common/Icon';
 const logo = require('../../../../public/assets/logo.png');
 
 interface LoginComponentProps {
-    login: Function;
+    login: (username: string, password: string) => Promise<void>;
 }
 export const LoginPage = (props: LoginComponentProps) => {
 
     const [username, setUsername] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const enableSubmit = () => {
         return username.length > 0 && password.length > 0
@@ -24,7 +25,12 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     const submitLogin = () => {
         if(enableSubmit()) {
-            props.login(username, password)
+            setButtonLoading(true)
+            props.login(username, password).then(() => {
+                setButtonLoading(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
         }
     }
 
@@ -44,7 +50,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                     </div>                
                 </ModalContent>
                 <ModalFooter>
-                    <Button sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
+                    <Button isLoading={buttonLoading} sizeButton="large" onClick={() => submitLogin()} typeButton="primary">Log In</Button>
                 </ModalFooter>
             </ModalCard>
         </LoginContainer>

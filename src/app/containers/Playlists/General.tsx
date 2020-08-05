@@ -62,8 +62,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editPlaylistDetails: (data: PlaylistDetails) => {
             dispatch(editPlaylistDetailsAction(data));
         },
-        getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
+        getUploadUrl: (uploadType: string, playlistId: string, extension: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, playlistId, extension)).then(callback)
         },
         uploadFile: async (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
             await dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))

@@ -13,7 +13,8 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
 
     const [selectedStatus, setSelectedStatus] = React.useState<string>(null)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
-    
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
     const handleSubmit = () => {
         props.saveWithdrawalStatus(props.withdrawalId, selectedStatus)
         setOpenConfirmationModal(false)
@@ -51,7 +52,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {history.push('/withdrawals')}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
-            <ConfirmationModal submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading} submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>  
     )
 }

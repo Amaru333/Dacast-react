@@ -55,9 +55,9 @@ export const editPlaylistDetailsAction = (data: PlaylistDetails): ThunkDispatch<
 }
 
 
-export const getUploadUrlAction = (uploadType: string, playlistId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+export const getUploadUrlAction = (uploadType: string, playlistId: string, extension: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await PlaylistGeneralServices.getUploadUrl(uploadType, playlistId)
+        await PlaylistGeneralServices.getUploadUrl(uploadType, playlistId, extension)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload:{ id: playlistId, data: response.data.data } })
             })

@@ -24,13 +24,20 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
     const [selectedPlan, setSelectedPlan] = React.useState<string>(props.accountPlan.name)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         setPlanData(props.accountPlan)
         console.log(planData)
     }, [props.accountPlan])
 
     const handleSubmit = () => {
-        props.saveAccountPlan(props.accountId, planData)
+        setButtonLoading(true)
+        props.saveAccountPlan(props.accountId, planData).then(() => {
+            setButtonLoading(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
         setOpenConfirmationModal(false)
     }
 
@@ -117,7 +124,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 SwitchPlanContent()
                 : EditPlanContent()
             }
-            <ConfirmationModal submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading} submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     ) 
 }

@@ -54,7 +54,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className="mt3 mb1">
                     <Text size={16} weight='med'>Custom Terms of Services</Text>
                 </div>
-                <Text size={14} weight='reg'>If you need viewers to accept your TOS, enter the URL here.</Text>
+                <Text size={14} weight='reg'>If you need viewers to accept your TOS, enter the URL (starting with https://) here.</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
                 
                 <BorderStyle className='mt2' />

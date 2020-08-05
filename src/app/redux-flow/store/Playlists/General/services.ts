@@ -29,12 +29,13 @@ const editPlaylistDetailsService = async (data: PlaylistDetails) => {
     )
 }
 
-const getUploadUrl = async (data: string, playlistId: string) => {
+const getUploadUrl = async (data: string, playlistId: string, extension: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
-            playlistID: playlistId
+            playlistID: playlistId,
+            extension: extension
         },
         {
             headers: {
