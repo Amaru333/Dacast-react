@@ -13,6 +13,8 @@ import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { Table } from '../../../components/Table/Table';
 import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
 import {countries} from 'countries-list'
+import { StateList, ProvinceList } from '../Common/countryList';
+import { Bubble } from '../../../components/Bubble/Bubble';
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
 
@@ -20,6 +22,8 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
     const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
     const [hideForm, setHideForm] = React.useState<boolean>(false)
+    const [billingCountry, setBillingCountry] = React.useState<string>(null)
+    const [recurlyError, setRecurlyError] = React.useState<string>(null)
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
@@ -70,7 +74,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
             if (props.billingInfo.paymentMethod.type === "" || props.isUpdate){
                 recurly.token(formRef.current, (err: any, token: any) => {
                     if (err) {
-                        console.log(err)
+                        setRecurlyError(err.message)
                     }
                     else {
                         setRecurlyToken(token.id);
@@ -81,6 +85,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             });
                         }
                         props.callback()
+                        setRecurlyError(null)
                     }
                 });
             } else {
@@ -163,7 +168,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             required={false}
                             indicationLabel='Optional'
                         />
-                        <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country">
+                        <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country" setValue={setBillingCountry}>
                             <option value="">Select</option>
                            {Object.keys(countries).map(country => {
                                return (
@@ -196,15 +201,27 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             required={false}
                             
                         />
-                        <Input
-                            data-recurly="state"
-                            className='col sm-col-4 col-6 pr1 sm-pl1 xs-mb2'
-                            label="State/Province"
-                            type='text'
-                            indicationLabel='Optional'
-                            required={false}
-                            
-                        />
+                        {
+                            billingCountry === "United States" || billingCountry === "Canada" ?
+                                <DropdownSelect dataRecurly="state" className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2" dropdownTitle="State/Province">
+                                    <option value="">Select</option>
+                                    {(billingCountry === "United States" ? StateList : ProvinceList).map(state => {
+                                        return (
+                                            <option>{state}</option>
+                                        )
+                                    })}
+                                </DropdownSelect>
+                                :
+                                <Input
+                                    data-recurly="state"
+                                    className='col sm-col-4 col-6 pr1 sm-pl1 xs-mb2'
+                                    label="State/Province"
+                                    type='text'
+                                    indicationLabel='Optional'
+                                    required={false}
+                                />
+                        }
+                        
                         <Input
                             data-recurly="postal_code"
                             className='col sm-col-4 col-6 pl1'
@@ -230,6 +247,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
 
                 </RadioButtonOption>
             </form>
+            <Bubble className="mt25" type="error" hidden={!recurlyError}>
+                {recurlyError}
+            </Bubble>
 
             {
                 threeDSecureActionToken && hideForm &&

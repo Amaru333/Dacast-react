@@ -51,6 +51,7 @@ interface DropdownButtonSpecificProps {
 interface DropdownSelectSpecificProps {
     dropdownTitle: string;
     dataRecurly?: string;
+    setValue?: Function;
 }
 
 

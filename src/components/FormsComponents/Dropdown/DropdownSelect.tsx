@@ -14,7 +14,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = (props: DropdownSel
                         </Text>
                     </DropdownLabel>                
             }
-            <DropdownSelectList data-recurly={props.dataRecurly}>
+            <DropdownSelectList data-recurly={props.dataRecurly} onChange={(event) => props.setValue(event.currentTarget.value)}>
                 {props.children}
             </DropdownSelectList>    
         </ContainerStyle>
