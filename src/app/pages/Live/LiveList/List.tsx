@@ -50,6 +50,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+    const [fetchContent, setFetchContent] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -87,22 +88,27 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         if(returnedString.indexOf('status') === -1) {
             returnedString += 'status=online,offline,processing'
         }
+        if(!fetchContent) {
+            setFetchContent(true)
+        }
         return returnedString
 
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
+        if(fetchContent) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getLiveList(parseFiltersToQueryString(selectedFilters)).then(() => {
                     setContentLoading(false)
+                    setFetchContent(false)
                 }).catch(() => {
                     setContentLoading(false)
+                    setFetchContent(false)
                 })
             }, 5000)
         }
-    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
+    }, [fetchContent])
 
     const liveListHeaderElement = () => {
         return {
@@ -131,7 +137,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 {cell: <div key="emptyCellLiveList" style={{ width: "80px" }} ></div>},
             ], 
             defaultSort: 'created-at',
-            sortCallback: (value: string) => setSort(value)    
+            sortCallback: (value: string) => {setSort(value); if(!fetchContent) { setFetchContent(true)} }  
         }
     }
 
@@ -203,6 +209,9 @@ export const LiveListPage = (props: LiveListComponentProps) => {
 
     const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
         return await bulkActionsService(contentList, action, targetValue).then((response) => {
+            if(!fetchContent) { 
+                setFetchContent(true)
+            }
             switch(action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -230,7 +239,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 <div className='flex items-center mb2'>
                     <div className="flex-auto items-center flex">
                         <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}   />
+                        <InputTags  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}}   />
                     </div>
                     <div className="flex items-center" >
                         {selectedLive.length > 0 ?
@@ -250,7 +259,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 </div>
                 
                 <Table contentLoading={contentLoading} className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-                <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+                <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
                 <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
                 <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
@@ -274,7 +283,7 @@ export const LiveListPage = (props: LiveListComponentProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteLiveChannel(contentToDelete.id)}} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteLiveChannel(contentToDelete.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
             </>

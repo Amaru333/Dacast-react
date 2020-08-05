@@ -58,6 +58,7 @@ export const VideosListPage = (props: VideosListProps) => {
     const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
     const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [fetchContent, setFetchContent] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -99,23 +100,29 @@ export const VideosListPage = (props: VideosListProps) => {
         if(returnedString.indexOf('status') === -1) {
             returnedString += 'status=online,offline,processing'
         }
+        if(!fetchContent) {
+            setFetchContent(true)
+        }
         return returnedString
 
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
+        if(fetchContent) {
             setContentLoading(true)
             setTimeout(() => {
                 props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
                     setContentLoading(false)
+                    setFetchContent(false)
+
                 }).catch(() => {
                     setContentLoading(false)
+                    setFetchContent(false)
                 })  
             }, 5000)
 
         }
-    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
+    }, [fetchContent])
 
     useOutsideAlerter(bulkDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -163,7 +170,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 {cell: <div style={{ width: "80px" }} ></div>},
             ], 
             defaultSort: 'created-at',
-            sortCallback: (value: string) => setSort(value)
+            sortCallback: (value: string) => {setSort(value); if(!fetchContent) { setFetchContent(true)}}
         }
     }
 
@@ -231,6 +238,9 @@ export const VideosListPage = (props: VideosListProps) => {
 
     const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
         return await bulkActionsService(contentList, action, targetValue).then((response) => {
+            if(!fetchContent) {
+                setFetchContent(true)
+            }
             switch(action) {
                 case 'online':
                     setBulkOnlineOpen(false)
@@ -259,7 +269,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log('search');setFetchContent(true)}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 &&
@@ -277,7 +287,7 @@ export const VideosListPage = (props: VideosListProps) => {
                 </div>
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});console.log('pagination');if(!fetchContent) { setFetchContent(true)}}} />
             <OnlineBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
@@ -300,7 +310,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showVodDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteVodList(contentToDelete.id)}} />
+                    <DeleteContentModal showToast={props.showVodDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteVodList(contentToDelete.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
         </>

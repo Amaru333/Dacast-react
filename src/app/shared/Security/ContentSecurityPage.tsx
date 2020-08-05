@@ -22,9 +22,9 @@ var momentTZ = require('moment-timezone')
 interface ContentSecurityComponentProps {
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
+    contentId: string;
     getSettingsSecurityOptions: (contentId: string) => Promise<void>;
     saveContentSecuritySettings: (data: SecuritySettings, contentId: string) => Promise<void>;
-    contentId: string;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 

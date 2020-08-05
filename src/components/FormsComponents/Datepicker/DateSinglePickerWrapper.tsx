@@ -41,6 +41,8 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                         </div>
                 }
                 <SingleDatePicker
+                    showDefaultInputIcon
+                    inputIconPosition='after'
                     date={date}
                     onDateChange={(date: any) => handleDateChange(date)}
                     focused={focusedInput}
