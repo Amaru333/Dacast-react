@@ -21,6 +21,15 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
         }
         setDate(date)
     }
+
+    const handleOutsideRange = (day: any): boolean => {
+        let isDateOutOfRange: boolean = false
+        if(props.allowOustsideDate) {
+            return isDateOutOfRange
+        }
+        isDateOutOfRange = moment().diff(day) >= 0
+        return isDateOutOfRange
+    }
     
     return (
         <div className={props.className}>
@@ -32,13 +41,12 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                         </div>
                 }
                 <SingleDatePicker
-                    
                     date={date}
                     onDateChange={(date: any) => handleDateChange(date)}
                     focused={focusedInput}
                     onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
                     numberOfMonths={1}
-                    isOutsideRange={() => false}
+                    isOutsideRange={handleOutsideRange}
                 />
             </div>
         </div>
