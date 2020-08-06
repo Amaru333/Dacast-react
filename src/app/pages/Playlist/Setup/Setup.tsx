@@ -76,6 +76,10 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     }
 
+    React.useEffect(() => {
+        console.log('checked content', checkedContents)
+    }, [checkedContents])
+
     React.useEffect(() => { 
         setDropdownIsOpened(false); 
         props.getFolderContent(parseFiltersToQueryString())
@@ -237,30 +241,31 @@ export const SetupPage = (props: SetupComponentProps) => {
     /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
+        console.log(props.folderData.requestedContent.results)
         return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
             if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    selected={checkedContents.includes(row)}
+                    selected={checkedContents.some(item => item.objectID ===row.objectID)}
                     onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
-                    {row.type !== "folder" ?
+                    {row.type !== "folder" &&
                         <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckboxTab'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
-                            defaultChecked={checkedContents.includes(row)}
+                            checked={checkedContents.some(item => item.objectID ===row.objectID)}
+                            defaultChecked={checkedContents.some(item => item.objectID ===row.objectID)}
 
                         />
-                        : null}
+                    }
                     {handleRowIconType(row)}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
-                        row.type === "folder" ?
+                        row.type === "folder" &&
                             <div className="flex-auto justify-end">
                                 <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
-                            : null
                     }
                 </ItemSetupRow>
             )
@@ -342,6 +347,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         setSelectedTab(selectedTab === "content" ? 'folder' : 'content');
         props.getFolderContent(null) 
         setSelectedItems([]);
+        setSearchString(null)
     }
 
     const bulkActions = [
@@ -377,7 +383,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div>
