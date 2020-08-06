@@ -74,6 +74,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         setSubmitLoading(true);
         props.saveCompanyPageDetails(data, () => {
             setSubmitLoading(false);
+            reset(data);
         });
     }
     

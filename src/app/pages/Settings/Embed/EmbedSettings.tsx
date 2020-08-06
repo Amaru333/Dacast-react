@@ -40,6 +40,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
             return false;
         }
     }
+
     return (
         <React.Fragment>
             <form>

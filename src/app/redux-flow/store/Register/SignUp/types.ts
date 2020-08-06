@@ -12,6 +12,7 @@ export interface UserInfo {
     phone: string;
     password: string;
     timezone: string;
+    token? : string;
 }
 
 export const defaultStateSignup: UserInfo = {

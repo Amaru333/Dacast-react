@@ -29,6 +29,7 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
 
     const {userId} = addTokenToHeader()
 
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [newPlaylistDetails, setNewPlaylistDetails] = React.useState<PlaylistDetails>(props.playlistDetails)
@@ -263,10 +264,13 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                     />
                 }            
             </Card>
-            <ButtonContainer>
-                <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
-                <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
-            </ButtonContainer>
+            {
+                JSON.stringify(newPlaylistDetails) !== JSON.stringify(props.playlistDetails) && 
+                    <ButtonContainer>
+                        <Button className="mr2" isLoading={saveLoading} type="button" onClick={() => {setSaveLoading(true); props.editPlaylistDetails(newPlaylistDetails, ()=>{setSaveLoading(false)}) }}>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
+                    </ButtonContainer>
+            }
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }

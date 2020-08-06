@@ -53,6 +53,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         setSubmitLoading(true);
         props.saveProfilePageDetails(data,() => {
             setSubmitLoading(false);
+            reset(data);
         });
     }
 

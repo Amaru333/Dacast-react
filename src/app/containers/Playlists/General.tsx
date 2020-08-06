@@ -59,8 +59,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistDetails: (playlistId: string) => {
             dispatch(getPlaylistDetailsAction(playlistId));
         },
-        editPlaylistDetails: (data: PlaylistDetails) => {
-            dispatch(editPlaylistDetailsAction(data));
+        editPlaylistDetails: (data: PlaylistDetails, callback?: Function) => {
+            dispatch(editPlaylistDetailsAction(data)).then(callback);
         },
         getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
             dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
