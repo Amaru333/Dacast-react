@@ -10,6 +10,7 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
+import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
 import {
@@ -212,6 +213,10 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             </React.Fragment>
         )
     }
+
+    React.useEffect(() => {
+        loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
+    }, [])
 
     if (isLoggedIn()) {
         let tagManagerArgs = {

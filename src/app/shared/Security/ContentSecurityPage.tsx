@@ -353,7 +353,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { handleSave()}}>Save</Button>
                     <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {{handleReset();props.showToast(`Changes have been discarded`, 'fixed', "success")}}}>Discard</Button>
-                </div>}
+                </div>
+            }
             <Modal size="small" modalTitle="Edit Security Settings" icon={{name: "warning", color: "red"}} opened={editSettingsModalOpen} toggle={() => setEditSettingsModalOpen(false)} hasClose={false}>
                 <ModalContent>
                     <Text size={14} weight="reg">After unlocking these settings your global settings will no longer apply to this content.</Text>
