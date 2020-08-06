@@ -5,11 +5,9 @@ import { Text } from '../../../../components/Typography/Text';
 import { tsToLocaleDate, getPrivilege } from '../../../../utils/utils';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { SearchResult } from '../../../redux-flow/store/Live/General/types';
 import { LivesFiltering, FilteringLiveState } from './LivesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Tooltip } from '../../../../components/Tooltip/Tooltip'
-import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
@@ -24,8 +22,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
-import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
+import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 import { LiveListComponentProps } from '../../../containers/Live/List';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
 
@@ -207,33 +204,6 @@ export const LiveListPage = (props: LiveListComponentProps) => {
         })
     }
 
-    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        return await bulkActionsService(contentList, action, targetValue).then((response) => {
-            if(!fetchContent) { 
-                setFetchContent(true)
-            }
-            switch(action) {
-                case 'online':
-                    setBulkOnlineOpen(false)
-                    break
-                case 'delete':
-                    setBulkDeleteOpen(false)
-                    break
-                case 'theme': 
-                    setBulkThemeOpen(false)
-                    break
-                case 'paywall': 
-                    setBulkPaywallOpen(false)
-                    break
-                default:
-                    break
-            }
-            setSelectedLive([])
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
-
     return (
             <>
                 <div className='flex items-center mb2'>
@@ -260,13 +230,13 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 
                 <Table contentLoading={contentLoading} className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
                 <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
-                <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-                <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-                <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <OnlineBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
 
                 {
                     bulkThemeOpen &&
-                    <ThemeBulkForm showToast={props.showToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                    <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
                 }
                 <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

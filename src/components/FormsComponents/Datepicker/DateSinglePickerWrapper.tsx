@@ -6,7 +6,7 @@ import './datepicker_override.css';
 import { Text } from '../../Typography/Text'
 import moment from 'moment';
 
-export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOustsideDate?: boolean; className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
+export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?: moment.Moment; allowOustsideDate?: boolean; className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
 
     const [date, setDate] = React.useState<any>(props.date)
     const [focusedInput, setFocusedInput] = React.useState<boolean>(false)
@@ -14,6 +14,12 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
     React.useEffect(() => {
         setDate(props.date)
     }, [props.date])
+
+    React.useEffect(() => {
+        if(props.minDate && props.minDate.diff(props.date) > 0) {
+            setDate(props.minDate)
+        }
+    }, [props.minDate])
 
     const handleDateChange = (date: any) => {
         if (props.callback && date) {
@@ -27,7 +33,11 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
         if(props.allowOustsideDate) {
             return isDateOutOfRange
         }
-        isDateOutOfRange = moment().diff(day) >= 0
+        if(props.minDate) {
+            isDateOutOfRange = props.minDate.diff(day) > 0
+            return isDateOutOfRange
+        }
+        isDateOutOfRange = moment().diff(day) > 0
         return isDateOutOfRange
     }
     
@@ -41,6 +51,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                         </div>
                 }
                 <SingleDatePicker
+                    id={props.id + 'SingleDatePicker'}
                     showDefaultInputIcon
                     inputIconPosition='after'
                     date={date}

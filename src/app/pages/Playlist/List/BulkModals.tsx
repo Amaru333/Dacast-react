@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
@@ -12,13 +10,13 @@ import { ContentType } from '../../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../../components/Toast/ToastTypes';
-import { button } from '@storybook/addon-knobs';
+import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 
 interface PropsBulkModal {
     items?: ContentType[]; 
     open: boolean; 
     toggle: (b: boolean) => void;
-    actionFunction: Function;
+    refreshContent?: (b: boolean) => void;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 } 
 
@@ -30,14 +28,18 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     const handleSubmit = async () => {
         setButtonLoading(true)
         let item = props.items.length > 1 ? 'items' : 'item'
-        props.actionFunction(props.items, 'delete').then(() => {
+        bulkActionsService(props.items, 'delete').then((response) => {
+            if (!response.data.data.errors) {
+                props.toggle(false)
+                props.refreshContent(true)
+                props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
+            } else {
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+            }
             setButtonLoading(false)
-            props.toggle(false)
-            props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
         }).catch(() => {
             setButtonLoading(false)
-            
-            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'flexible', 'success')
+            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'flexible', 'error')
 
         })
     }
@@ -65,13 +67,18 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        props.actionFunction(props.items, 'theme', selectedTheme).then(() => {
+        bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
+            if (!response.data.data.errors) {
+                props.toggle(false)
+                props.refreshContent(true)
+                props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
+            } else {
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+            }
             setButtonLoading(false)
-            props.toggle(false)
-            props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'flexible', 'success')
+            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'flexible', 'error')
 
         })
     }
@@ -123,13 +130,18 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        props.actionFunction(props.items, 'online', online).then(() => {
+        bulkActionsService(props.items, 'online', online).then((response) => {
+            if (!response.data.data.errors) {
+                props.toggle(false)
+                props.refreshContent(true)
+                props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
+            } else {
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+            }
             setButtonLoading(false)
-            props.toggle(false)
-            props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} items couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
+            props.showToast(`${props.items.length} items couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'error')
 
         })
     }
@@ -153,13 +165,18 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        props.actionFunction(props.items, 'paywall', false).then(() => {
+        bulkActionsService(props.items, 'paywall', false).then((response) => {
+            if (!response.data.data.errors) {
+                props.toggle(false)
+                props.refreshContent(true)
+                props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
+            } else {
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+            }
             setButtonLoading(false)
-            props.toggle(false)
-            props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast('Paywall couldn\'t be turned Offline', 'flexible', 'success')
+            props.showToast('Paywall couldn\'t be turned Offline', 'flexible', 'error')
 
         })
     }

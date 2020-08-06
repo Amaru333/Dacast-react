@@ -15,7 +15,7 @@ import { DateTime } from 'luxon'
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     const [accountId, setAccountId] = React.useState<string>('')
-    const [contentLoading, setContentLoading] = React.useState<boolean>(true)
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     let query = useHistory()
     let {url} = useRouteMatch()
 

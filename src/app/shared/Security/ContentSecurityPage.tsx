@@ -36,15 +36,13 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             editableSettings: boolean;
             selectedSettings: SecuritySettings;
             passwordProtectionToggle: boolean;
-            contentSchedulingToggle: boolean;
             startDateTime: 'Always' | 'Set Date and Time';
             endDateTime: 'Forever' | 'Set Date and Time';
-        } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, contentSchedulingToggle: false, startDateTime: "Always", endDateTime: "Forever"}
+        } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, startDateTime: "Always", endDateTime: "Forever"}
         if(props.contentSecuritySettings.securitySettings && props.globalSecuritySettings) {
             defaultValues.editableSettings = JSON.stringify(props.globalSecuritySettings) === JSON.stringify(props.contentSecuritySettings.securitySettings) ? false : true
             defaultValues.selectedSettings = props.contentSecuritySettings.securitySettings
             defaultValues.passwordProtectionToggle = props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false
-            defaultValues.contentSchedulingToggle = props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 && props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? false : true
             defaultValues.startDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
             defaultValues.endDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
         }
@@ -273,6 +271,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                             date={moment(endDateTimeValue.date)}
                                             className='mt2' 
                                             id="endDate"
+                                            minDate={moment(startDateTimeValue.date)}
                                             callback={(endDateValue: string) => {setHasToggleChanged(true);setEndDateTimeValue({...endDateTimeValue, date: endDateValue})}}
                                         />
                                     </div>

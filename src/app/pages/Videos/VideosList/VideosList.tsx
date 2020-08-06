@@ -22,9 +22,8 @@ import { emptyContentListHeader, emptyContentListBody } from '../../../shared/Li
 import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
-import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
 
@@ -236,34 +235,6 @@ export const VideosListPage = (props: VideosListProps) => {
         })
     }
 
-    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        return await bulkActionsService(contentList, action, targetValue).then((response) => {
-            if(!fetchContent) {
-                setFetchContent(true)
-            }
-            switch(action) {
-                case 'online':
-                    setBulkOnlineOpen(false)
-                    break
-                case 'delete':
-                    setBulkDeleteOpen(false)
-                    break
-                case 'theme': 
-                    setBulkThemeOpen(false)
-                    break
-                case 'paywall': 
-                    setBulkPaywallOpen(false)
-                    break
-                default:
-                    break
-            }
-            setSelectedVod([])
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
-
-
     return (
         <>
             <div className='flex items-center mb2'>
@@ -288,13 +259,13 @@ export const VideosListPage = (props: VideosListProps) => {
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});console.log('pagination');if(!fetchContent) { setFetchContent(true)}}} />
-            <OnlineBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm refreshContent={setFetchContent} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm refreshContent={setFetchContent} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
