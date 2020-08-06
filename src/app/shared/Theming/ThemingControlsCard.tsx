@@ -325,7 +325,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         </DisabledSection>
                         
                         {
-                            props.contentType === 'live' || props.contentType === 'settings' &&
+                            (props.contentType === 'live' || props.contentType === 'settings') &&
                                 <>
                                     <BorderStyle className="p1" />
 
@@ -347,7 +347,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
 
                         {
-                            props.contentType === 'playlist' || props.contentType === 'settings' &&
+                            (props.contentType === 'playlist' || props.contentType === 'settings') &&
                                 <> 
                                     <BorderStyle className="p1" />
 
