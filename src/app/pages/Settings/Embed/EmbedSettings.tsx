@@ -97,7 +97,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     Object.entries(inputOptions).toString() === Object.entries(props.embedSettingsOption).toString() ? null :
                         <ButtonContainer>
                             <ButtonStyle isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
-                            <ButtonStyle typeButton="tertiary">Discard</ButtonStyle>
+                            <ButtonStyle onClick={() => {setInputOptions(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption)}} typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>
             <Prompt when={Object.entries(inputOptions).toString() !== Object.entries(props.embedSettingsOption).toString() } message='' />

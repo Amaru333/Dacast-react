@@ -428,7 +428,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     <div className="mt1">
                         <Button
                             isLoading={saveAllButtonLoading}
-                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false); debugger; }}
+                            onClick={() => { setSaveAllButtonLoading(true); props.saveContentEngagementSettings({ contentId: props.contentId, engagementSettings: engagementSettings }, () => setSaveAllButtonLoading(false)); setSettingsEdited(false); }}
                         >
                             Save
                         </Button>
