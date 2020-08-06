@@ -9,14 +9,16 @@ import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, u
 import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
-import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, PaymentDetails, DefaultPaymentDetails } from '../../redux-flow/store/Account/Plan/types';
 import { Table } from '../../../components/Table/Table';
 import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
 import {countries} from 'countries-list'
 import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
+import { handleValidationForm } from '../../utils/hooksFormSubmit';
+import { useForm } from 'react-hook-form';
 
-export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean }) => {
+export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -24,8 +26,21 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     const [hideForm, setHideForm] = React.useState<boolean>(false)
     const [billingCountry, setBillingCountry] = React.useState<string>(null)
     const [recurlyError, setRecurlyError] = React.useState<string>(null)
+    const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
 
     let formRef = React.useRef<HTMLFormElement>(null)
+
+    React.useEffect(() => {
+        setFormData({...formData, country: billingCountry})
+    }, [billingCountry])
+
+    React.useEffect(() => {
+        if((formData.firstName && formData.lastName && formData.address && formData.country && formData.city && formData.postCode) || selectedOption === "paypal"){
+            props.setFormValid(true)
+        } else {
+            props.setFormValid(false)
+        }
+    }, [formData, selectedOption])
 
     const elements = recurly.Elements();
 
@@ -127,6 +142,11 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
         }]
     }
 
+    const {register, errors} = useForm({
+        reValidateMode: 'onChange',
+        mode: 'onBlur'
+    })
+
     return (
         
         <> 
@@ -145,18 +165,22 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                     <div className='col col-12 pt2 pb25 px2'>
                         <Input
                             data-recurly="first_name"
+                            id="first_name"
                             className={ClassHalfXsFullMd + 'pr1 mb2'}
                             label="Account's Holder First Name"
                             type='text'
-                            required={false}
+                            onChange={(event) => setFormData({...formData, firstName: event.currentTarget.value})}
+                            {...handleValidationForm('first_name', errors)} ref={register({ required: "Required" })}
                             
                         />
                         <Input
                             data-recurly="last_name"
+                            id="last_name"
                             className={ClassHalfXsFullMd + 'pl1 mb2'}
                             label="Account's Holder Last Name"
                             type='text'
-                            required={false}
+                            onChange={(event) => setFormData({...formData, lastName: event.currentTarget.value})}
+                            {...handleValidationForm('last_name', errors)} ref={register({ required: "Required" })}
                             
                         />
                         <div className='mb2 col col-12' id="recurly-elements"></div>
@@ -176,12 +200,15 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                                )
                            })}
                         </DropdownSelect>
+                        <div className="mb2 col col-12">
                         <Input
                             data-recurly="address1"
+                            id="address1"
                             className={ClassHalfXsFullMd + 'pr1 mb2'}
                             label="Street Address 1"
                             type='text'
-                            required={false}
+                            onChange={(event) => setFormData({...formData, address: event.currentTarget.value})}
+                            {...handleValidationForm('address1', errors)} ref={register({ required: "Required" })}
                             
                         />
                         <Input
@@ -193,12 +220,16 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             required={false}
                             
                         />
+                        </div>
+                        
                         <Input
                             data-recurly="city"
+                            id="city"
                             className='col sm-col-4 col-12 xs-no-gutter pr1 xs-mb2'
                             label="Town/City"
                             type='text'
-                            required={false}
+                            onChange={(event) => setFormData({...formData, city: event.currentTarget.value})}
+                            {...handleValidationForm('city', errors)} ref={register({ required: "Required" })}
                             
                         />
                         {
@@ -224,10 +255,12 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                         
                         <Input
                             data-recurly="postal_code"
+                            id="postal_code"
                             className='col sm-col-4 col-6 pl1'
                             label="Zip/Postal Code"
                             type='text'
-                            required={false}
+                            onChange={(event) => setFormData({...formData, postCode: event.currentTarget.value})}
+                            {...handleValidationForm('postal_code', errors)} ref={register({ required: "Required" })}
                             
                         />
                     </div>

@@ -47,7 +47,18 @@ export interface PaymentDetails {
     lastFour?: string;
     billingID: string;
     email?: string;
+    postCode?: string;
+}
 
+export const DefaultPaymentDetails: PaymentDetails = {
+    type: 'card',
+    billingID: 'default',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    postCode: '',
+    country: ''
 }
 
 export interface Products {
