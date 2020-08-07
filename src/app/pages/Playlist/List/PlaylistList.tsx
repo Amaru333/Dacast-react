@@ -241,7 +241,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
             <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemingList()} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

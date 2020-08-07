@@ -16,13 +16,13 @@ enum PaymentMethodType {
     PayPal = 'PayPal'
 }
 
-const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod, paymentMethodRecipientType: string) => {
+const BankAccountUS = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMethodData: PaymentMethod, paymentMethodRecipientType: 'Business' | 'Personal') => {
     return (
         <div className='flex flex-column'>
             <Text size={20} weight='reg'>Account Details</Text>
              <div className='col col-12 sm-col-9 my2'>
-             <Input className='col col-12 sm-col-7 pr1 xs-no-gutter' id='accountNumber' label='Account Number' placeholder='Account Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, accountNumber: event.currentTarget.value})} />
-             <Input className='col col-12 sm-col-5 pl1 xs-no-gutter' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, routingNumber: event.currentTarget.value})} />
+             <Input className='col col-12 sm-col-7 pr1 xs-no-gutter' id='accountNumber' label='Account Number' placeholder='Account Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, accountNumber: parseInt(event.currentTarget.value)})} />
+             <Input className='col col-12 sm-col-5 pl1 xs-no-gutter' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, routingNumber: parseInt(event.currentTarget.value)})} />
              </div>
             
             <div className='col sm-col-9 col-12 mb2'>
@@ -59,7 +59,7 @@ const BankAccountUS = (updatePaymentMethod: Function, paymentMethodData: Payment
 } 
 
 
-const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod, paymentMethodRecipientType: string) => {
+const BankAccountInternational = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMethodData: PaymentMethod, paymentMethodRecipientType: 'Business' | 'Personal') => {
     return (
         <div className='flex flex-column'>
             <Text className='col col-12' size={20} weight='reg'>Account Details</Text>
@@ -102,7 +102,7 @@ const BankAccountInternational = (updatePaymentMethod: Function, paymentMethodDa
     )
 } 
 
-const Check = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod) => {
+const Check = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMethodData: PaymentMethod) => {
     return (
         <div>
             <Text className='col col-12' size={20} weight='reg'>Check Details</Text>
@@ -124,7 +124,7 @@ const Check = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod) 
     )
 }
 
-const PayPal = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod) => {
+const PayPal = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMethodData: PaymentMethod) => {
     return (
         <div>
             <Text size={20} weight='reg'>PayPal Details</Text>
@@ -138,10 +138,11 @@ const PayPal = (updatePaymentMethod: Function, paymentMethodData: PaymentMethod)
     )
 }
 
-export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMethodRequest: Function, selectedPaymentMethod: PaymentMethod}) => {
+export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>('Bank Account (US)');
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
-    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<string>('Business')
+    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>('Business')
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const renderPaymentMethod = () => {
         switch(selectedPaymentMethod) {
@@ -157,20 +158,31 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
     }
 
     const handleSave = () => {
+        let paymentMethod: string = null
+
         switch(selectedPaymentMethod) {
             case PaymentMethodType.BankAccountUS: 
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'us-transfer', recipientType: paymentMethodRecipientType.toLowerCase()})
+                paymentMethod = 'us-transfer'
                 break;
             case PaymentMethodType.BankAccountInternational:
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'international-transfer', recipientType: paymentMethodRecipientType.toLowerCase()})
+                paymentMethod = 'international-transfer'
                 break;
             case PaymentMethodType.Check: 
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'check', recipientType: paymentMethodRecipientType.toLowerCase()})
+                paymentMethod = 'check'
                 break;
             case PaymentMethodType.PayPal:
-                props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: 'paypal', recipientType: paymentMethodRecipientType.toLowerCase()})
+                paymentMethod = 'paypal'
                 break;
         }
+        setButtonLoading(true)
+        props.addPaymentMethodRequest({...paymentMethodData, paymentMethodType: paymentMethod, recipientType: paymentMethodRecipientType.toLowerCase()})
+        .then(() => {
+            setButtonLoading(false)
+            props.displayPage(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
+
 
     }
 
@@ -220,7 +232,7 @@ export const PaywallPaymentMethod = (props: {displayPage: Function; addPaymentMe
                 {renderPaymentMethod()}
             </Card> 
             <div className='my2'>
-                <Button className='mr2' onClick={() => {handleSave();props.displayPage(false)}} typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button isLoading={buttonLoading} className='mr2' onClick={() => {handleSave()}} typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {props.displayPage(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

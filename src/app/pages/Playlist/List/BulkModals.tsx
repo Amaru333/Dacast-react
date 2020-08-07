@@ -59,7 +59,7 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     )
 }
 
-const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThemesList:() => void}) => {
+const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThemesList: () => Promise<void>}) => {
 
     const [selectedTheme, setSelectedTheme] = React.useState<string>(null);
     const [themesList, setThemesList] = React.useState<ThemeOptions[]>([])
@@ -84,13 +84,13 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     }
 
     React.useEffect(() => {
-        if(props.themes.length === 0 && themesList.length === 0) {
+        if(!props.themes || props.themes.length === 0 || themesList.length === 0) {
             props.getThemesList()
         }
     }, [])
 
     React.useEffect(() => {
-        if(props.themes.length > 0) {
+        if(props.themes && props.themes.length > 0) {
             setThemesList(props.themes)
 
         }
@@ -98,10 +98,12 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
 
     return (
         <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
-            <div>
+            <div className='col col-12 flex flex-column'>
                 {
                     themesList.length === 0 ?
-                    <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+                    <div className='my2 ml4 col col-12 relative'>
+                        <LoadingSpinner size='medium' color='violet' />
+                    </div>
                     :
                     <>
                         <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
@@ -115,8 +117,11 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
                     </>
 
                 }
+                <div className='flex'>
                 <Button isLoading={buttonLoading} onClick={async () => {await handleSubmit()}} sizeButton="large" disabled={selectedTheme === null} typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                </div>
+
             </div>
         </Modal>
     )

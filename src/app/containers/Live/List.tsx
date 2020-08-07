@@ -14,26 +14,23 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveListComponentProps {
     liveList: SearchResult;
-    getLiveList: Function;
-    deleteLiveChannel: Function;
-    getThemesList: Function;
     themesList: ThemesData;
+    getLiveList: (qs: string) => Promise<void>;
+    deleteLiveChannel: (id: string) => Promise<void>;
+    getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void
 }
 
 export const LiveList = (props: LiveListComponentProps) => {
 
     React.useEffect(() => {
-        props.getLiveList();
+        props.getLiveList(null)
     }, [])
 
-    if (!props.liveList) {
-        return <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
-    } else {
-        return (
-            <LiveListPage {...props}/>
-        )
-    }
+    return props.liveList ? 
+        <LiveListPage {...props}/>
+
+        : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {
@@ -48,11 +45,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getLiveList: async (qs: string) => {
             await dispatch(getLiveListAction(qs));
         },
-        deleteLiveChannel: (id: string) => {
-            dispatch(deleteLiveChannelAction(id));
+        deleteLiveChannel: async (id: string) => {
+            await dispatch(deleteLiveChannelAction(id));
         },
-        getThemesList: () => {
-            dispatch(getThemingListAction())
+        getThemesList: async () => {
+            await dispatch(getThemingListAction())
         },
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))

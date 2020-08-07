@@ -11,13 +11,22 @@ import { Prompt } from 'react-router';
 import { BorderStyle } from '../../Account/Company/CompanyStyle';
 
 export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
-    const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos);
-    const [loadingSave, setLoadingSave] = React.useState<boolean>(false);
+    const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos)
+    const [loadingSave, setLoadingSave] = React.useState<boolean>(false)
 
-    
     React.useEffect(() => {
-        setSettingsInfos(props.paywallSettingsInfos);
+        setSettingsInfos(props.paywallSettingsInfos)
     }, [props.paywallSettingsInfos])
+
+    const handleSubmit = () => {
+        setLoadingSave(true)
+        props.savePaywallSettingsInfos(settingsInfos)
+        .then(() => {
+            setLoadingSave(false)
+        }).catch(() => {
+            setLoadingSave(false)
+        })
+    }
 
     return (
         <div>
@@ -69,7 +78,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
             </Card>
             { JSON.stringify(settingsInfos) !== JSON.stringify(props.paywallSettingsInfos) &&
                 <div>
-                    <Button isLoading={loadingSave} disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {setLoadingSave(true);props.savePaywallSettingsInfos(settingsInfos, ()=>{setLoadingSave(false)})}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button isLoading={loadingSave} disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {handleSubmit()}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }

@@ -10,14 +10,14 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface TransactionsComponentProps {
     transactionsInfos: TransactionsInfos;
-    getTransactions: Function;
+    getTransactions: () => Promise<void>;
 }
 
 const Transactions = (props: TransactionsComponentProps) => {
 
     React.useEffect(() => {
         if(!props.transactionsInfos) {
-            props.getTransactions();
+            props.getTransactions()
         }
     }, [])
 
@@ -36,10 +36,10 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getTransactions: () => {
-            dispatch(getTransactionsAction());
+        getTransactions: async () => {
+            await dispatch(getTransactionsAction())
         },
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Transactions);
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions)

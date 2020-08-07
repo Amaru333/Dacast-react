@@ -3,7 +3,7 @@ import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
 import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../../utils/utils';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
-import { VodItem, SearchResult } from '../../../redux-flow/store/VOD/General/types';
+import { VodItem } from '../../../redux-flow/store/VOD/General/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { VideosFiltering, FilteringVodState } from './VideosFiltering';
@@ -14,7 +14,6 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { ThemesData } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
@@ -24,17 +23,8 @@ import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
-import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
-
-export interface VideosListProps {
-    items: SearchResult;
-    themesList: ThemesData;
-    getVodList: Function;
-    deleteVodList: Function;
-    getThemesList: Function;
-    showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => void;
-}
+import { VideosListProps } from '../../../containers/Videos/VideosList';
 
 export const VideosListPage = (props: VideosListProps) => {
 
