@@ -35,10 +35,12 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     }, [billingCountry])
 
     React.useEffect(() => {
-        if((formData.firstName && formData.lastName && formData.address && formData.country && formData.city && formData.postCode) || selectedOption === "paypal"){
-            props.setFormValid(true)
-        } else {
-            props.setFormValid(false)
+        if(props.setFormValid){
+            if((formData.firstName && formData.lastName && formData.address && formData.country && formData.city && formData.postCode) || selectedOption === "paypal"){
+                props.setFormValid(true)
+            } else {
+                props.setFormValid(false)
+            }
         }
     }, [formData, selectedOption])
 
