@@ -11,8 +11,8 @@ import { useParams } from 'react-router-dom';
 
 export interface EditPlanComponentProps {
     accountPlan: PlanInfo;
-    getAccountPlan: Function;
-    saveAccountPlan: Function;
+    getAccountPlan: (accountId: string) => Promise<void>;
+    saveAccountPlan: (accountId: string, planDetails: PlanInfo) => Promise<void>;
     switchAccountPlan: Function;
 }
 const EditPlan = (props: EditPlanComponentProps) => {
@@ -37,11 +37,11 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccountPlan: (accountId: string) => {
-            dispatch(getAccountPlanAction(accountId));
+        getAccountPlan: async (accountId: string) => {
+            await dispatch(getAccountPlanAction(accountId));
         },
-        saveAccountPlan: (accountInfo: string, planInfo: PlanInfo) => {
-            dispatch(saveAccountPlanAction(accountInfo, planInfo))
+        saveAccountPlan: async (accountInfo: string, planInfo: PlanInfo) => {
+            await dispatch(saveAccountPlanAction(accountInfo, planInfo))
         }
     };
 }

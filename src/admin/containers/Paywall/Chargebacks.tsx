@@ -7,7 +7,7 @@ import { Chargeback } from '../../redux-flow/store/Paywall/Chargebacks/types';
 import { AdminState } from '../../redux-flow/store';
 
 export interface ChargebackComponentProps {
-    submitChargeback: Function;
+    submitChargeback: (data: Chargeback) => Promise<void>;
 }
 const Chargebacks = (props: ChargebackComponentProps) => {
 
@@ -18,8 +18,8 @@ const Chargebacks = (props: ChargebackComponentProps) => {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        submitChargeback: (data: Chargeback) => {
-            dispatch(submitChargebackAction(data));
+        submitChargeback: async (data: Chargeback) => {
+            await dispatch(submitChargebackAction(data));
         }
     };
 }

@@ -10,29 +10,28 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
-interface CompanyContainerProps {
-    CompanyInfos: CompanyPageInfos;
-    getCompanyPageDetails: Function;
-    saveCompanyPageDetails: Function;
-    getLogoUrlForUploading: Function;
-    uploadCompanyLogo: Function;
-    getCompanyPageLogoUrl: Function;
-    deleteCompanyLogo: Function;
-    showToast: Function;
+export interface CompanyComponentProps {
+    CompanyPageDetails: CompanyPageInfos;
+    getCompanyPageDetails: () => Promise<void>;
+    saveCompanyPageDetails: (data: CompanyPageInfos) => Promise<void>;
+    getLogoUrlForUploading: () => Promise<void>;
+    uploadCompanyLogo: (data: File, uploadUrl: string) => Promise<void>;
+    deleteCompanyLogo: () => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
-const Company = (props: CompanyContainerProps) => {
+const Company = (props: CompanyComponentProps) => {
 
     /** Fetching data using redux and services */
     React.useEffect( () => {
-        if(!props.CompanyInfos) {
-            props.getCompanyPageDetails();
+        if(!props.CompanyPageDetails) {
+            props.getCompanyPageDetails()
         }
 
     }, [])
 
     return (
-        props.CompanyInfos ? 
-            <CompanyPage CompanyPageDetails={props.CompanyInfos} {...props} />
+        props.CompanyPageDetails ? 
+            <CompanyPage {...props} />
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -42,30 +41,30 @@ const Company = (props: CompanyContainerProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        CompanyInfos: state.account.company
+        CompanyPageDetails: state.account.company
     };
 }
 
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, CompanyAction>) {
     return {
-        getCompanyPageDetails: () => {
-            dispatch(getCompanyPageDetailsAction());
+        getCompanyPageDetails: async () => {
+            await dispatch(getCompanyPageDetailsAction())
         },
-        saveCompanyPageDetails: (data: CompanyPageInfos, callback: Function) => {
-            dispatch(saveCompanyPageDetailsAction(data)).then(callback);
+        saveCompanyPageDetails: async (data: CompanyPageInfos) => {
+            await dispatch(saveCompanyPageDetailsAction(data))
         },
-        getLogoUrlForUploading: () => {
-            dispatch(getUploadLogoUrlAction());
+        getLogoUrlForUploading: async () => {
+            await dispatch(getUploadLogoUrlAction())
         },
-        uploadCompanyLogo: (data: File, uploadUrl: string, callback: Function) => {
-            dispatch(uploadCompanyLogo(data, uploadUrl)).then(callback);
+        uploadCompanyLogo: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadCompanyLogo(data, uploadUrl))
         },
-        deleteCompanyLogo: () => {
-            dispatch(deleteCompanyLogo());
+        deleteCompanyLogo: async () => {
+            await dispatch(deleteCompanyLogo())
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType));
+            dispatch(showToastNotification(text, size, notificationType))
         }
     };
 }

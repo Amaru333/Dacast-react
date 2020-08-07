@@ -233,7 +233,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                             
                         />
                         {
-                            billingCountry === "United States" || billingCountry === "Canada" ?
+                            (billingCountry === "United States" || billingCountry === "Canada") ?
                                 <DropdownSelect dataRecurly="state" className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2" dropdownTitle="State/Province">
                                     <option value="">Select</option>
                                     {(billingCountry === "United States" ? StateList : ProvinceList).map(state => {
@@ -285,7 +285,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
             </Bubble>
 
             {
-                threeDSecureActionToken && hideForm &&
+                (threeDSecureActionToken && hideForm) &&
                 <div >
                     <ThreeDSecure
                         style={{ height: 400 }}

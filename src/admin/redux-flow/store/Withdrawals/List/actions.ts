@@ -5,7 +5,11 @@ import { WithdrawalsServices } from './services';
 
 export interface GetWithdrawals {
     type: ActionTypes.GET_WITHDRAWALS;
-    payload: Withdrawal[];
+    payload: { 
+        data: {
+            operations: Withdrawal[]
+        }
+    };
 }
 
 export const getWithdrawalsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetWithdrawals> => {

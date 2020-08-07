@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import { getWithdrawalsAction, Action } from '../../redux-flow/store/Withdrawals/List/actions';
 import { Withdrawal } from '../../redux-flow/store/Withdrawals/List/types';
 import { useQuery } from '../../../utils/utils';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface WithdrawalsComponentsProps {
     withdrawals: Withdrawal[] | false;
-    getWithdrawals: Function;
+    getWithdrawals: (qs: string) => Promise<void>;
 }
 
 const Withdrawals = (props: WithdrawalsComponentsProps) => {
@@ -25,7 +27,10 @@ const Withdrawals = (props: WithdrawalsComponentsProps) => {
     }, [])
     
     return (
+        props.withdrawals ? 
         <WithdrawalsPage {...props} />
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+
     )
 }
 
@@ -37,8 +42,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getWithdrawals: (accountId: string) => {
-            dispatch(getWithdrawalsAction(accountId));
+        getWithdrawals: async (accountId: string) => {
+            await dispatch(getWithdrawalsAction(accountId));
         }
     };
 }
