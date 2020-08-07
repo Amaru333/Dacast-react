@@ -96,7 +96,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
                     </div>
-                    <ProgressBarDashboard percentage={bandwidth.percentage} widget="bandwidth" />
+                    <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" plan={props.plan} />
                 </WidgetElement>
 
                 {/* {
@@ -126,7 +126,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 
                 {
-                    props.plan.displayName === "Free"  ?
+                    props.plan.displayName === "Free" ?
                         <WidgetElement className={classItem}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
@@ -155,7 +155,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 }
 
-export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number} }) => {
+export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number}; plan?: PlanSummary }) => {
     let history = useHistory()
 
     const handleProgressBar = (percentage: number) => {
@@ -164,21 +164,22 @@ export const ProgressBarDashboard = (props: { openOverage?: Function; percentage
         )
     }
     const handleInfos = () => {
-        // if(props.widget === "bandwidth") {
-        //     if(props.overage && props.overage.enabled && props.overage.amount > 0) {
-        //         return (
-        //             <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>
-        //                 <IconStyle className='pointer' onClick={() => props.openOverage(true)} >settings</IconStyle>
-        //             </div>
-        //         )
-        //     } else {
-        //         return (
-        //             <div color={props.percentage <= 25 ? 'red' : 'gray-1'} className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{props.percentage <= 25 ? "Enable Playback Protection" : "Playback Protection"}</Text>
-        //                 <IconStyle className='pointer' onClick={() => props.openOverage(true)}>settings</IconStyle>
-        //             </div>
-        //         )
-        //     }
-        // }
+        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && !props.plan.displayName.includes('Canceled')) {
+            if(props.overage && props.overage.enabled && props.overage.amount > 0) {
+                return (
+                    <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>
+                        <IconStyle className='pointer' onClick={() => props.openOverage(true)} >settings</IconStyle>
+                    </div>
+                )
+            } else {
+                
+                return (
+                    <div color={props.percentage <= 25 ? 'red' : 'gray-1'} className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{props.percentage <= 25 ? "Enable Playback Protection" : "Playback Protection"}</Text>
+                        <IconStyle className='pointer' onClick={() => props.openOverage(true)}>settings</IconStyle>
+                    </div>
+                )
+            }
+        }
         if(props.percentage <= 25 && props.percentage > 0) {
             return <Text size={12} weight="reg" color="red"> Upgrade before you run out of {props.widget}</Text>
         }
