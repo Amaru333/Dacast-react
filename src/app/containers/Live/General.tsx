@@ -26,9 +26,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 
 
     React.useEffect(() => {
-        if (!props.liveDetailsState[liveId]) {
-            props.getLiveDetails(liveId);
-        }
+        props.getLiveDetails(liveId);
     }, [])
 
     return (

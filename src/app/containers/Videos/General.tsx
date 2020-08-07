@@ -32,9 +32,7 @@ const General = (props: GeneralComponentProps) => {
     let { vodId } = useParams();
 
     React.useEffect(() => {
-        if (!props.vodDetailsState[vodId]) {
             props.getVodDetails(vodId);
-        }
     }, [])
 
     return (
