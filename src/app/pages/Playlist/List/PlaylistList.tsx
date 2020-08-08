@@ -26,6 +26,7 @@ import { NewFolderModal } from '../../Folders/NewFolderModal';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 import { emptyContentListHeader, emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
+import { SearchResult } from '../../../redux-flow/store/Playlists/List/types';
 
 export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
@@ -48,7 +49,8 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false)
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
-
+    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
+    const [playlistList, setPlaylistList] = React.useState<SearchResult>(props.playlistList)
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -58,6 +60,32 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
 
 
     let history = useHistory()
+
+    React.useEffect(() => {
+        setPlaylistList(props.playlistList)
+    }, [props.playlistList])
+
+    React.useEffect(() => {
+        if(selectedPlaylist.length > 0) {
+            setPlaylistList({
+                ...playlistList, 
+                results: playlistList.results.map((item) => {
+                    if(selectedPlaylist.indexOf(item.objectID) > -1) {
+                        return {
+                            ...item,
+                            status: updateList !== 'paywall' ? updateList : item.status,
+                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? {...item.featuresList, paywall: false} : item.featuresList
+                        }
+                    }
+                    return {
+                        ...item
+                    }
+
+                })
+            })
+        }
+        setSelectedPlaylist([])
+    }, [updateList])
 
     const parseFiltersToQueryString = (filters: FilteringPlaylistState) => {
         let returnedString = `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
@@ -120,12 +148,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         <InputCheckbox
                             className="inline-flex"
                             key="checkboxLiveListBulkAction"
-                            indeterminate={selectedPlaylist.length >= 1 && selectedPlaylist.length < props.playlistList.results.length}
-                            defaultChecked={selectedPlaylist.length === props.playlistList.results.length}
+                            indeterminate={selectedPlaylist.length >= 1 && selectedPlaylist.length < playlistList.results.length}
+                            defaultChecked={selectedPlaylist.length === playlistList.results.length}
                             id="globalCheckboxPlaylistList"
                             onChange={(event) => {
                                 if (event.currentTarget.checked) {
-                                    const editedselectedLive = props.playlistList.results.map(item => { return item.objectID })
+                                    const editedselectedLive = playlistList.results.map(item => { return item.objectID })
                                     setSelectedPlaylist(editedselectedLive);
                                 } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                                     setSelectedPlaylist([])
@@ -145,13 +173,13 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     }
 
     const liveListBodyElement = () => {
-        if (props.playlistList.results) {
-            return props.playlistList.results.map((value, key) => {
+        if (playlistList.results) {
+            return playlistList.results.map((value) => {
                 return {
                     data: [
-                        <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'>
+                        <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
                             <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedPlaylist.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
-                                if (event.currentTarget.checked && selectedPlaylist.length < props.playlistList.results.length) {
+                                if (event.currentTarget.checked && selectedPlaylist.length < playlistList.results.length) {
                                     setSelectedPlaylist([...selectedPlaylist, value.objectID])
                                 } else {
                                     const editedselectedLive = selectedPlaylist.filter(item => item !== value.objectID)
@@ -160,30 +188,34 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                             }
                             } />
                             {
-                                value.thumbnail ?
+                                value.thumbnail ? 
                                     <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                     :
-                                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                                    <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
                                         <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                     </div>
                             }
-                        </div>
-                        ,
+                        </div>,
                         <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                         <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === 'online' ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                        <div className='flex'>{handleFeatures(value, value.objectID)}</div>,
-                        <div key={"more" + value.objectID} className="iconAction right mr2" >
+                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
+                        <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                            value.status !== 'deleted' ?
+                            <div key={"more" + value.objectID} className="iconAction right mr2" >
                             <ActionIcon id={"editTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { history.push('/playlists/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true) }} className="right mr1" >delete</IconStyle>
+                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
                             </ActionIcon>
-                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
-                        </div>,
-                    ]
+                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
+                        </div>
+                        : <span></span>
+
+                    ],
+                    isSelected: selectedPlaylist.includes(value.objectID),
+                    isDisabled: value.status === 'deleted'
                 }
             })
         }
@@ -234,14 +266,14 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                     <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                 </div>
             </HeaderPlaylistList>
-            <Table contentLoading={contentLoading} className="col-12" id="playlistListTable" headerBackgroundColor="white" header={props.playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={props.playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); if(!fetchContent) { setFetchContent(true)} }} />
-            <OnlineBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
+            <Table contentLoading={contentLoading} className="col-12" id="playlistListTable" headerBackgroundColor="white" header={playlistList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={playlistList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Pagination totalResults={playlistList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); if(!fetchContent) { setFetchContent(true)} }} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />  
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themeList.themes} items={selectedPlaylist.map((playlist) => { return { id: playlist, type: 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <Modal hasClose={false} modalTitle={selectedPlaylist.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedPlaylist.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>

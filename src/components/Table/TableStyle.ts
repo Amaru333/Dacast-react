@@ -52,10 +52,14 @@ export const TableHeaderCell = styled.td<{sortApplied: boolean; contentLoading: 
 export const TableBodyContainer = styled.tbody<{}>`
 `;
 
-export const TableBodyRow = styled.tr<{contentLoading: boolean}>`
+export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: boolean; isDisabled: boolean}>`
     width: auto;
     height: 48px;
-    background-color: ${props => props.theme.colors["white"]};
+    background-color: ${props => props.isSelected ? props.theme.colors['violet20'] : props.isDisabled ? props.theme.colors['gray-5'] : props.theme.colors["white"] };
+    ${props => props.isDisabled && css`
+        pointer-events: none;
+        opacity: 0.5;
+    `}
     :not(:last-child) {
         border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
     }

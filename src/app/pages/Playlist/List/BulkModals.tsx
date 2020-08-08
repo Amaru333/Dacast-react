@@ -6,9 +6,8 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentType } from '../../../redux-flow/store/Folders/types';
+import { ContentType, SearchResult } from '../../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../../components/Toast/ToastTypes';
 import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
 
@@ -16,7 +15,7 @@ interface PropsBulkModal {
     items?: ContentType[]; 
     open: boolean; 
     toggle: (b: boolean) => void;
-    refreshContent?: (b: boolean) => void;
+    updateList?: (data: 'online' | 'offline' | 'paywall' | 'deleted') => void;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 } 
 
@@ -31,7 +30,7 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
         bulkActionsService(props.items, 'delete').then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.refreshContent(true)
+                props.updateList('deleted')
                 props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
@@ -70,7 +69,6 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.refreshContent(true)
                 props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
@@ -138,7 +136,7 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
         bulkActionsService(props.items, 'online', online).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.refreshContent(true)
+                props.updateList(online ? 'online' : 'offline')
                 props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
@@ -173,7 +171,7 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
         bulkActionsService(props.items, 'paywall', false).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.refreshContent(true)
+                props.updateList('paywall')
                 props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')

@@ -10,6 +10,8 @@ interface BodyTable {
     data: ReactElement[];
     callback?: Function;
     callbackData?: any;
+    isSelected?: boolean;
+    isDisabled?: boolean;
 }
 
 interface HeaderCell {

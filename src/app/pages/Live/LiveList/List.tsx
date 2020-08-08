@@ -25,6 +25,7 @@ import { FolderTree, rootNode } from '../../../utils/folderService';
 import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 import { LiveListComponentProps } from '../../../containers/Live/List';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
+import { SearchResult } from '../../../redux-flow/store/Live/General/types';
 
 export const LiveListPage = (props: LiveListComponentProps) => {
 
@@ -48,12 +49,40 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
+    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
+    const [liveList, setLiveList] = React.useState<SearchResult>(props.liveList)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
     React.useEffect(() => {
         foldersTree.initTree()
     }, [])
+
+    React.useEffect(() => {
+        setLiveList(props.liveList)
+    }, [props.liveList])
+
+    React.useEffect(() => {
+        if(selectedLive.length > 0) {
+            setLiveList({
+                ...liveList, 
+                results: liveList.results.map((item) => {
+                    if(selectedLive.indexOf(item.objectID) > -1) {
+                        return {
+                            ...item,
+                            status: updateList !== 'paywall' ? updateList : item.status,
+                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? {...item.featuresList, paywall: false} : item.featuresList
+                        }
+                    }
+                    return {
+                        ...item
+                    }
+
+                })
+            })
+        }
+        setSelectedLive([])
+    }, [updateList])
 
     const parseFiltersToQueryString = (filters: FilteringLiveState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
@@ -113,12 +142,12 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 {cell: <InputCheckbox
                     className="inline-flex"
                     key="checkboxLiveListBulkAction"
-                    indeterminate={selectedLive.length >= 1 && selectedLive.length < props.liveList.results.length}
-                    defaultChecked={selectedLive.length === props.liveList.results.length}
+                    indeterminate={selectedLive.length >= 1 && selectedLive.length < liveList.results.length}
+                    defaultChecked={selectedLive.length === liveList.results.length}
                     id="globalCheckboxLiveList"
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
-                            const editedselectedLive = props.liveList.results.map(item => { return item.objectID })
+                            const editedselectedLive = liveList.results.map(item => { return item.objectID })
                             setSelectedLive(editedselectedLive);
                         } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                             setSelectedLive([])
@@ -139,43 +168,50 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     }
 
     const liveListBodyElement = () => {
-        if (props.liveList) {
-            return props.liveList.results.map((value) => {
-                return {data: [
-                    <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
-                        <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
-                            if (event.currentTarget.checked && selectedLive.length < props.liveList.results.length) {
-                                setSelectedLive([...selectedLive, value.objectID])
-                            } else {
-                                const editedselectedLive = selectedLive.filter(item => item !== value.objectID)
-                                setSelectedLive(editedselectedLive);
+        if (liveList) {
+            return liveList.results.map((value) => {
+                return {
+                    data: [
+                        <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
+                            <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedLive.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                                if (event.currentTarget.checked && selectedLive.length < liveList.results.length) {
+                                    setSelectedLive([...selectedLive, value.objectID])
+                                } else {
+                                    const editedselectedLive = selectedLive.filter(item => item !== value.objectID)
+                                    setSelectedLive(editedselectedLive);
+                                }
                             }
-                        }
-                        } />
-                        {
-                            value.thumbnail ? 
-                                <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
-                                :
-                                <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
-                                    <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                                </div>
-                        }
-                    </div>,
-                    <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                    <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label="Offline" />}</Text>,
-                    <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
-                    <div key={"more" + value.objectID} className="iconAction right mr2" >
-                        <ActionIcon id={"editTooltip" + value.objectID}>
-                            <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
-                        <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
-                    </div>,
-                ]}
+                            } />
+                            {
+                                value.thumbnail ? 
+                                    <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                    :
+                                    <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
+                                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                    </div>
+                            }
+                        </div>,
+                        <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
+                        <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                            value.status !== 'deleted' ?
+                            <div key={"more" + value.objectID} className="iconAction right mr2" >
+                            <ActionIcon id={"editTooltip" + value.objectID}>
+                                <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
+                            <ActionIcon id={"deleteTooltip" + value.objectID}>
+                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
+                        </div>
+                        : <span></span>
+
+                    ],
+                    isSelected: selectedLive.includes(value.objectID),
+                    isDisabled: value.status === 'deleted'
+                }
             })
         }
     }
@@ -212,9 +248,8 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                         <InputTags  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}}   />
                     </div>
                     <div className="flex items-center" >
-                        {selectedLive.length > 0 ?
+                        {selectedLive.length > 0 &&
                             <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedLive.length} items</Text>
-                            : null
                         }
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedLive.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
@@ -228,15 +263,15 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                     </div>
                 </div>
                 
-                <Table contentLoading={contentLoading} className="col-12" id="liveListTable" headerBackgroundColor="white" header={props.liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={props.liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-                <Pagination totalResults={props.liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
-                <OnlineBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-                <DeleteBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-                <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+                <Table contentLoading={contentLoading} className="col-12" id="liveListTable" headerBackgroundColor="white" header={liveList.results.length > 0 ? liveListHeaderElement() : emptyContentListHeader()} body={liveList.results.length > 0 ? liveListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+                <Pagination totalResults={liveList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
+                <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+                <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+                <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
 
                 {
                     bulkThemeOpen &&
-                    <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                    <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedLive.map((live) => {return {id: live, type:'channel'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
                 }
                 <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                 <Modal hasClose={false} modalTitle={selectedLive.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedLive.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
