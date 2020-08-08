@@ -145,12 +145,12 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         <InputCheckbox
                             className="inline-flex"
                             key="checkboxLiveListBulkAction"
-                            indeterminate={selectedPlaylist.length >= 1 && selectedPlaylist.length < playlistList.results.length}
-                            defaultChecked={selectedPlaylist.length === playlistList.results.length}
+                            indeterminate={selectedPlaylist.length >= 1 && selectedPlaylist.length < playlistList.results.filter(item => item.status !== 'deleted').length}
+                            defaultChecked={selectedPlaylist.length === playlistList.results.filter(item => item.status !== 'deleted').length}
                             id="globalCheckboxPlaylistList"
                             onChange={(event) => {
                                 if (event.currentTarget.checked) {
-                                    const editedselectedLive = playlistList.results.map(item => { return item.objectID })
+                                    const editedselectedLive = playlistList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
                                     setSelectedPlaylist(editedselectedLive);
                                 } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                                     setSelectedPlaylist([])

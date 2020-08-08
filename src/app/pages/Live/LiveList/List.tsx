@@ -140,12 +140,12 @@ export const LiveListPage = (props: LiveListComponentProps) => {
                 {cell: <InputCheckbox
                     className="inline-flex"
                     key="checkboxLiveListBulkAction"
-                    indeterminate={selectedLive.length >= 1 && selectedLive.length < liveList.results.length}
-                    defaultChecked={selectedLive.length === liveList.results.length}
+                    indeterminate={selectedLive.length >= 1 && selectedLive.length < liveList.results.filter(item => item.status !== 'deleted').length}
+                    defaultChecked={selectedLive.length === liveList.results.filter(item => item.status !== 'deleted').length}
                     id="globalCheckboxLiveList"
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
-                            const editedselectedLive = liveList.results.map(item => { return item.objectID })
+                            const editedselectedLive = liveList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
                             setSelectedLive(editedselectedLive);
                         } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                             setSelectedLive([])

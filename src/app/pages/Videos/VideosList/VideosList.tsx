@@ -165,10 +165,10 @@ export const VideosListPage = (props: VideosListProps) => {
     const vodListHeaderElement = () => {
         return {
             data: [
-                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < vodList.results.length} defaultChecked={selectedVod.length === vodList.results.length} id="globalCheckboxVodList"
+                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < vodList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedVod.length === vodList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxVodList"
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
-                            const editedSelectedVod = vodList.results.map(item => { return item.objectID })
+                            const editedSelectedVod = vodList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
                             setSelectedVod(editedSelectedVod);
                         } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                             setSelectedVod([])
