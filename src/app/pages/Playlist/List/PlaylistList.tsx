@@ -127,16 +127,13 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            setTimeout(() => {
-                props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
-                }).catch(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
-                })    
-            }, 5000)
-    
+            props.getPlaylistList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            }).catch(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            })    
         }
     }, [fetchContent])
 

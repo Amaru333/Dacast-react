@@ -127,17 +127,14 @@ export const VideosListPage = (props: VideosListProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            setTimeout(() => {
-                props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
+            props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+                setFetchContent(false)
 
-                }).catch(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
-                })  
-            }, 5000)
-
+            }).catch(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            })  
         }
     }, [fetchContent])
 

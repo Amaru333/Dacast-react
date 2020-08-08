@@ -124,15 +124,13 @@ export const LiveListPage = (props: LiveListComponentProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            setTimeout(() => {
-                props.getLiveList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
-                }).catch(() => {
-                    setContentLoading(false)
-                    setFetchContent(false)
-                })
-            }, 5000)
+            props.getLiveList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            }).catch(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            })
         }
     }, [fetchContent])
 
