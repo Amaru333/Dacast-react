@@ -213,10 +213,11 @@ export const VideosListPage = (props: VideosListProps) => {
                             }
                         </div>,
                         <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
                         <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
-                            value.status !== 'deleted' ?
+                        value.status !== 'deleted' ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                             <ActionIcon id={"editTooltip" + value.objectID}>
                                 <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
@@ -226,7 +227,7 @@ export const VideosListPage = (props: VideosListProps) => {
                                 <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
-                        </div>
+                            </div>
                         : <span></span>
 
                     ],
