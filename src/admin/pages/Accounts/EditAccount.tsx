@@ -20,8 +20,12 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
-        props.saveAccountInfo(accountInfo)
-        setOpenConfirmationModal(false)
+        props.saveAccountInfo(accountInfo).then(() => {
+            setButtonLoading(false)
+            setOpenConfirmationModal(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
     }
 
     React.useEffect(() => {

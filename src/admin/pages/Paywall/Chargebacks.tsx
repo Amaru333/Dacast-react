@@ -14,8 +14,13 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
-        props.submitChargeback()
-        setOpenConfirmationModal(false)
+        setButtonLoading(true)
+        props.submitChargeback(null).then(() => {
+            setButtonLoading(false)
+            setOpenConfirmationModal(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
     }
 
     return (

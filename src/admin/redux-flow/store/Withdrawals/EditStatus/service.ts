@@ -1,9 +1,18 @@
 import axios from 'axios'
+import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 
-const adminApiUrlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/'
+const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
 
-const getWithdrawalInfo = (withdrawalId: string) => {  
-    return axios.get(adminApiUrlBase   + 'admin/withdrawal/' + withdrawalId + '/info')
+const getWithdrawalInfo = async (withdrawalId: string) => {  
+    await isTokenExpired()
+    let {token} = addTokenToHeader();
+    return await axios.get(adminApiUrlBase   + 'paywall/withdrawal/' + withdrawalId, 
+        {
+            headers: {
+                Authorization: token
+            }
+        }
+    )
 }
 
 const saveWithdrawalStatus = (withdrawalId: string, withdrawalStatus: string) => {  
