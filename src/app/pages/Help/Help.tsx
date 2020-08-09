@@ -25,7 +25,7 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs">Visit FAQ</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/support/faq/")}>Visit FAQ</Button>
                     </div> 
                 </SmallHelpCard>
 
@@ -41,7 +41,7 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs">Knowledge Base</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/support/knowledgebase/")}>Knowledge Base</Button>
                     </div> 
                 </SmallHelpCard>
 
@@ -57,7 +57,7 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs">Read Documentation</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/player-api-documentation/")}>Read Documentation</Button>
                     </div> 
                 </SmallHelpCard>
 
@@ -73,7 +73,7 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs">Visit Blog</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/blog/")}>Visit Blog</Button>
                     </div> 
                 </SmallHelpCard>
             </div>
@@ -88,7 +88,7 @@ export const HelpPage = () => {
                         <Text size={16} weight="med">Email</Text>
                         <Text className="mt2" size={12}>Don’t have access to our Phone Support? Why not contact our support agents by email and they will respond in a timely manner. </Text>
                         <ButtonContainer className="col col-12 mt2">
-                            <Button typeButton="secondary" sizeButton="xs">Visit Blog</Button>
+                            <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/contact/")}>Contact Us</Button>
                         </ButtonContainer>   
                     </HelpCardContent>
                     <CardPlaceholder className="flex col col-1 items-center">
@@ -114,7 +114,7 @@ export const HelpPage = () => {
                         <Text size={16} weight="med">Phone Support</Text>
                         <Text className="mt2" size={12}>Have a chat with one of our Support Agents over the phone. Only available to our Scale Customers.</Text>
                         <ButtonContainer className="col col-12 mt2">
-                            <Button typeButton="secondary" sizeButton="xs">Call Us</Button>
+                            <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/contact/")}>Call Us</Button>
                         </ButtonContainer>   
                     </HelpCardContent>
                     <CardPlaceholder className="flex col col-1 items-center">
