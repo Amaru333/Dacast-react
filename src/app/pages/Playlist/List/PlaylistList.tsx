@@ -200,7 +200,7 @@ export const PlaylistListPage = (props: PlaylistListComponentProps) => {
                         value.status !== 'deleted' ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                             <ActionIcon id={"editTooltip" + value.objectID}>
-                                <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                <IconStyle onClick={() => {history.push('/playlists/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
