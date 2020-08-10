@@ -11,7 +11,7 @@ import { Pagination } from '../../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
-import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
+import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../../shared/List/BulkModals';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../../shared/Common/Features';

@@ -24,6 +24,7 @@ import { DeleteContentModal } from '../../shared/List/DeleteContentModal';
 import { SearchResult } from '../../redux-flow/store/VOD/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
 
 interface ContentListProps {
     contentType: string
@@ -159,6 +160,17 @@ export const ContentListPage = (props: ContentListProps) => {
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
+    const handleBulkActionType = (contentType: string) => {
+        switch (contentType) {
+            case 'videos':
+                return 'vod'
+            case 'livestreams':
+                return 'channel'
+            case 'playlists':
+                return 'playlist'
+        }
+    }
+
     const renderStatusLabel = (status: string) => {
         switch (status) {
             case 'online':
@@ -286,14 +298,14 @@ export const ContentListPage = (props: ContentListProps) => {
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={contentList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});console.log('pagination');if(!fetchContent) { setFetchContent(true)}}} />
-            {/* <OnlineBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showContentDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showContentDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showContentDeletedToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
-            } */}
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showContentDeletedToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 

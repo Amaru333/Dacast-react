@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Pagination } from '../../../../components/Pagination/Pagination'
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../../../shared/List/BulkModals';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { handleFeatures } from '../../../shared/Common/Features';

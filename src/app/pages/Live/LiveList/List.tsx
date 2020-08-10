@@ -12,7 +12,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
-import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
+import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '../../../shared/List/BulkModals';
 import { AddStreamModal } from '../../../containers/Navigation/AddStreamModal';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom'
