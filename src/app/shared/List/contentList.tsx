@@ -25,6 +25,8 @@ import { SearchResult } from '../../redux-flow/store/VOD/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
+import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
+import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 
 interface ContentListProps {
     contentType: string
@@ -60,6 +62,9 @@ export const ContentListPage = (props: ContentListProps) => {
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
     const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
     const [contentList, setContentList] = React.useState<SearchResult>(props.items)
+    const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+    const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -293,7 +298,18 @@ export const ContentListPage = (props: ContentListProps) => {
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
                     {/* <VideosFiltering setSelectedFilter={setSelectedFilter} />                 */}
-                    <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                    {
+                        props.contentType === "videos" &&
+                            <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                    }
+                    {
+                        props.contentType === "livestreams" &&
+                            <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
+                    }
+                    {
+                        props.contentType === "playlists" && 
+                            <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
+                    }
                 </div>
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
@@ -323,6 +339,8 @@ export const ContentListPage = (props: ContentListProps) => {
                     <DeleteContentModal showToast={props.showContentDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
+            <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+            <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
         </>
 
     )
