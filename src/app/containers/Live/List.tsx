@@ -1,5 +1,4 @@
 import React from 'react';
-import { LiveListPage } from '../../pages/Live/LiveList/List';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -36,7 +35,7 @@ export const LiveList = (props: LiveListComponentProps) => {
             getContentList={props.getLiveList}
             deleteContentList={props.deleteLiveChannel}
             getThemesList={props.getThemesList}
-            showContentDeletedToast={props.showToast}
+            showToast={props.showToast}
         />
 
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>

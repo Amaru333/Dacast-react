@@ -5,7 +5,6 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SearchResult } from '../../redux-flow/store/Playlists/List/types';
 import { getPlaylistListAction, Action, deletePlaylistAction } from '../../redux-flow/store/Playlists/List/actions';
-import { PlaylistListPage } from '../../pages/Playlist/List/PlaylistList';
 import { getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
@@ -35,7 +34,7 @@ const PlaylistList = (props: PlaylistListComponentProps) => {
             getContentList={props.getPlaylistList}
             deleteContentList={props.deletePlaylist}
             getThemesList={props.getThemesList}
-            showContentDeletedToast={props.showToast}
+            showToast={props.showToast}
 
         />
         : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
