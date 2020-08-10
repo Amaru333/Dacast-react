@@ -31,9 +31,6 @@ export interface FilteringContentState {
 
 export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringContentState) => void, contentType: string}) => {
 
-
-
-
     var filteringDefault = {
         status: {
             online: false,

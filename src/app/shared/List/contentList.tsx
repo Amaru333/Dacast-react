@@ -177,18 +177,6 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
-    const renderStatusLabel = (status: string) => {
-        switch (status) {
-            case 'online':
-                return <Label backgroundColor="green20" color="green" label="Online" />
-            case 'offline':
-                return <Label backgroundColor="red20" color="red" label="Offline" />
-            default:
-                return <Label backgroundColor="gray-7" color="gray-1" label="Processing" />
-
-        }
-    }
-
     const contentListHeaderElement = () => {
         return {
             data: [
